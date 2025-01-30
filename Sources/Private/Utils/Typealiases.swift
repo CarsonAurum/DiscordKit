@@ -10,4 +10,4 @@ import AnyCodable
 
 internal typealias DiscordModel = Codable & Hashable & Sendable
 internal typealias CoderPackage = (encoder: JSONEncoder, decoder: JSONDecoder)
-internal typealias GatewayEventAsyncStream = AsyncStream<Void>
+internal typealias GatewayEventAsyncStream = AsyncStream<GatewayEvent<AnyCodable>>
