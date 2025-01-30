@@ -1,7 +1,6 @@
 #  `/Private/Utils/`
 
-Utility extensions and other generic modifications to libraries in use 
-throughout DiscordKit.
+Utility extensions and other generic modifications to libraries in use throughout DiscordKit.
 
 ## Changelog
 

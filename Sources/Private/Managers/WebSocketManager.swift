@@ -15,16 +15,16 @@ import WebSocketKit
 actor WebSocketManager {
     
     /// The async stream providing events from the web socket.
-    public let eventStream: GatewayEventAsyncStream
+    let eventStream: GatewayEventAsyncStream
     
     /// The async stream providing sequence numbers from the web socket.
-    public let sequenceStream: AsyncStream<Int>
+    let sequenceStream: AsyncStream<Int>
     
     /// Construct a new web socket manager.
     /// - Parameters:
     ///   - coders: The JSON encoder/decoder to use within this manager.
     ///   - eventLoopGroup: The event loop on which the web socket should run.
-    public init(coders: CoderPackage, eventLoopGroup: EventLoopGroup) {
+    init(coders: CoderPackage, eventLoopGroup: EventLoopGroup) {
         self.coders = coders
         self.eventLoopGroup = eventLoopGroup
         
@@ -39,7 +39,7 @@ actor WebSocketManager {
     
     /// Attempt a new web socket connection to the given URL.
     /// - Parameter endpoint: The endpoint URL to connect.
-    public func connect(to endpoint: String) async throws {
+    func connect(to endpoint: String) async throws {
         try await WebSocket.connect(
             to: endpoint,
             configuration: .init(maxFrameSize: 1 << 24),

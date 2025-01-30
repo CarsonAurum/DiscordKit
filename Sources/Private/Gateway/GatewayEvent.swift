@@ -11,6 +11,7 @@ import AnyCodable
 /// An event received from/sent to Discord's gateway.
 struct GatewayEvent<EventPayload>: DiscordModel
 where EventPayload: DiscordModel {
+    
     /// The opcode of the event.
     let opcode: Opcode
     /// Event payload.
@@ -44,6 +45,7 @@ extension GatewayEvent: CustomStringConvertible {
 // MARK: - Opcode
 
 extension GatewayEvent {
+    
     /// A numeric identifier to determine event type.
     enum Opcode: Int, DiscordModel {
         /// An event was dispatched.
