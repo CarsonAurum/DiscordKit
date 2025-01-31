@@ -13,3 +13,4 @@ Types that directly shadow objects from the Discord API.
 - `Application` added.
 - `Guild` added.
 - `User` added.
+- `Presence`: `Activity` added.

@@ -71,7 +71,7 @@ public final actor DiscordBot {
     private let intents: GatewayIntents
     
     /// The logger to use within this manager.
-    private let logger = Logger(label: "DiscordKit")
+    private let logger = Logger(label: "DiscordBot")
     
     /// The coders to use throughout the library.
     private let coders: CoderPackage

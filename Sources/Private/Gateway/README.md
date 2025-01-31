@@ -13,3 +13,4 @@ Types related to Discord's real-time gateway.
 ### January 31, 2025
 - `GatewayEvent`: `Name` added.
 - `IdentifyPayload` added.
+- `ReadyPayload` created.
