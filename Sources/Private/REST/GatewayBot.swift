@@ -146,6 +146,7 @@ extension GatewayBot.Payload.SessionStartLimit: CustomStringConvertible {
             resetUnit = "hours"
         }
         
-        return "[{\(maxConcurrency)}: \(remaining)/\(total) reconnects; Resets in \(resetTime) \(resetUnit).]"
+        return "[{\(maxConcurrency)}: \(remaining)/\(total) reconnects; " +
+        "Resets in \(String(format: "%.2f", resetTime)) \(resetUnit).]"
     }
 }
