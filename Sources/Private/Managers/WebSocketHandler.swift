@@ -7,6 +7,7 @@
 
 import Foundation
 import Logging
+import AnyCodable
 
 // MARK: - WebSocketHandler
 
@@ -37,7 +38,7 @@ actor WebSocketHandler {
                 switch msg.opcode {
                 case .dispatch:
                     Task {
-                        handleDispatch()
+                        handleDispatch(msg)
                     }
                 case .heartbeat:
                     Task {
@@ -107,8 +108,17 @@ actor WebSocketHandler {
 extension WebSocketHandler {
     
     /// A private handler to specifically isolate dispatch messages.
-    private func handleDispatch() {
-        
+    private func handleDispatch(_ message: GatewayEvent<AnyCodable>) {
+        switch message.name {
+        case .ready:
+            print(message.data)
+        case .guildCreate:
+            print(message.data)
+        case .unknown(let name):
+            logger.debug("Unhandled Dispatch: \(name.uppercased())")
+        default:
+            return
+        }
     }
 }
 
