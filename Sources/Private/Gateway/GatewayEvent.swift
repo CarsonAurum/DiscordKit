@@ -24,7 +24,7 @@ where EventPayload: DiscordModel {
     let sequence: Int?
     
     /// A title used to identify dispatch event types.
-    let name: String?
+    let name: Name
     
     /// Construct a new gateway event.
     /// - Parameters:
@@ -34,7 +34,7 @@ where EventPayload: DiscordModel {
         self.opcode = opcode
         self.data = data
         self.sequence = nil
-        self.name = nil
+        self.name = .none
     }
 }
 
@@ -66,7 +66,7 @@ extension GatewayEvent: CustomStringConvertible {
     var description: String {
         var result = "EVENT: \(opcode)"
         if opcode == .dispatch {
-            result += " - \(name ?? "NO NAME")"
+            result += " - \(name)"
             if let sequence = sequence {
                 result += " - \(sequence)"
             }
@@ -137,6 +137,63 @@ extension GatewayEvent.Opcode: CustomStringConvertible {
         case .hello:                    return "Hello"
         case .heartbeatACK:             return "Heartbeat ACK"
         case .requestSoundboardSounds:  return "Request Soundboard Sounds"
+        }
+    }
+}
+
+// MARK: - Name
+
+extension GatewayEvent {
+    enum Name: DiscordModel {
+        case hello
+        case unknown(String)
+        case none
+    }
+}
+
+// MARK: Codable
+
+extension GatewayEvent.Name {
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if container.decodeNil() {
+            self = .none
+            return
+        }
+        let rawValue = try container.decode(String.self)
+        switch rawValue {
+        case "hello":
+            self = .hello
+        default:
+            self = .unknown(rawValue)
+        }
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .hello:
+            try container.encode("hello")
+        case .unknown(let value):
+            try container.encode(value)
+        case .none:
+            try container.encodeNil()
+        }
+        
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension GatewayEvent.Name: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .hello:
+            return "HELLO"
+        case .unknown(let string):
+            return string.uppercased()
+        case .none:
+            return "NO_NAME"
         }
     }
 }

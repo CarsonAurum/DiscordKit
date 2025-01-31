@@ -31,6 +31,7 @@ actor WebSocketHandler {
     func handle() async throws {
         if let socketManager = socketManager {
             for await msg in socketManager.eventStream {
+                logger.debug("\(msg)")
                 switch msg.opcode {
                 case .dispatch:
                     Task {
