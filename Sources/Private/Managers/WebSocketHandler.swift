@@ -114,14 +114,14 @@ extension WebSocketHandler {
         case .ready:
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
-                logger.trace("\(payload)")
+                logger.trace("Payload: \(payload)")
             } catch {
                 logger.error("\(error)")
             }
         case .guildCreate:
             do {
                 let payload = try decoder.decode(Guild.self, from: message.getData())
-                logger.trace("\(payload)")
+                logger.trace("Payload: \(payload)")
             } catch {
                 logger.error("\(error)")
             }

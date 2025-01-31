@@ -40,7 +40,7 @@ public struct GatewayIntents: OptionSet, Codable, Hashable, Sendable {
     public static let guildPresences = GatewayIntents(rawValue: 1 << 8)
     
     /// Receive message events sent within a guild.
-    /// - Note: To receive content, ``GatewayIntent/messageContent`` is required
+    /// - Note: To receive content, ``GatewayIntents/messageContent`` is required
     public static let guildMessages = GatewayIntents(rawValue: 1 << 9)
     
     /// Receive message reaction events sent within a guild.

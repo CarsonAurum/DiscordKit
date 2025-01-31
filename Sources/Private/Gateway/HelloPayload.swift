@@ -26,6 +26,6 @@ extension HelloPayload {
 
 extension HelloPayload: CustomStringConvertible {
     public var description: String {
-        return "[interval: \(interval)]"
+        return "[interval: \(interval) ms]"
     }
 }
