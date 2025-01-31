@@ -131,6 +131,11 @@ public struct GatewayIntents: OptionSet, Codable, Hashable, Sendable {
 
 extension GatewayIntents: CustomStringConvertible {
     public var description: String {
+        
+        if self == .all {
+            return "All Intents"
+        }
+        
         var cases = [String]()
         
         if contains(.guilds) { cases.append("Guilds") }
