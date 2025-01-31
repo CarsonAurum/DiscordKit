@@ -5,6 +5,8 @@
 //  Created by Carson Rau on 1/30/25.
 //
 
+// MARK: - Snowflake
+
 /// A unique identifier.
 public struct Snowflake: DiscordModel {
     
@@ -14,6 +16,8 @@ public struct Snowflake: DiscordModel {
     /// The raw snowflake value.
     public let value: UInt64
 }
+
+// MARK: Codable
 
 extension Snowflake {
     public init(from decoder: Decoder) throws {
