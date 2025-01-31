@@ -6,4 +6,5 @@ Types that directly shadow objects from the Discord API.
 
 ### January 30, 2025
 - `Snowflake` added.
+- `GatewayIntent` added
 

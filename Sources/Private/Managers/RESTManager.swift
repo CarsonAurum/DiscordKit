@@ -17,10 +17,10 @@ actor RESTManager {
     
     /// Construct a new rest manager.
     /// - Parameters:
-    ///   - eventLoopGroup: The event loop on which requests to the REST API should be made.
-    ///   - token: The token to use when authorizing endpoint requests.
     ///   - coders: The JSON coders to use when working with requests over the REST API.
-    init(eventLoopGroup: EventLoopGroup, token: String, coders: CoderPackage) {
+    ///   - token: The token to use when authorizing endpoint requests.
+    ///   - eventLoopGroup: The event loop on which requests to the REST API should be made.
+    init(coders: CoderPackage, token: String, eventLoopGroup: EventLoopGroup) {
         self.headers = [
             "Authorization": "Bot \(token)",
             "Content-Type": "application/json"

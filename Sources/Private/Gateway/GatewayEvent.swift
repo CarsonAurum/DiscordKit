@@ -38,6 +38,14 @@ where EventPayload: DiscordModel {
     }
 }
 
+// MARK: GatewayEvent+getData()
+
+extension GatewayEvent where EventPayload == AnyCodable {
+    func getData() throws -> Data {
+        try JSONSerialization.data(withJSONObject: data.value)
+    }
+}
+
 // MARK: Codable
 
 extension GatewayEvent {
