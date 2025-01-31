@@ -173,8 +173,8 @@ extension GatewayEvent.Name {
         }
         let rawValue = try container.decode(String.self)
         switch rawValue {
-        case "ready":           self = .ready
-        case "guild_create":    self = .guildCreate
+        case "READY":           self = .ready
+        case "GUILD_CREATE":    self = .guildCreate
         default:                self = .unknown(rawValue)
         }
     }
