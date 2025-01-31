@@ -111,7 +111,12 @@ extension WebSocketHandler {
     private func handleDispatch(_ message: GatewayEvent<AnyCodable>) {
         switch message.name {
         case .ready:
-            print(message.data)
+            do {
+                let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
+                logger.trace("\(payload)")
+            } catch {
+                logger.error("\(error)")
+            }
         case .guildCreate:
             print(message.data)
         case .unknown(let name):
