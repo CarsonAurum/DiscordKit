@@ -41,3 +41,14 @@ extension ReadyPayload {
         case application
     }
 }
+
+// MARK: CustomStringConvertible
+
+extension ReadyPayload: CustomStringConvertible {
+    var description: String {
+        """
+        [v\(version) || Reconnect At: \(resumeURL) with ID: \(sessionID) || \(guilds.count) Guilds || \(user) || 
+        \(application)]
+        """
+    }
+}
