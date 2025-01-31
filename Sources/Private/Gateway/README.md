@@ -8,3 +8,4 @@ Types related to Discord's real-time gateway.
 - README created.
 - `GatewayEvent<>` and `GatewayEvent.Opcode` created and documented.
 - `GatewayEvent`: `init()` and `getData()` added.
+- `HelloPayload` created.
