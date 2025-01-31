@@ -21,9 +21,11 @@ actor WebSocketHandler {
     init(
         socketManager: WebSocketManager,
         heartbeatManager: HeartbeatManager,
+        identifyManager: IdentifyManager,
         decoder: JSONDecoder) {
             self.socketManager = socketManager
             self.heartbeatManager = heartbeatManager
+            self.identifyManager = identifyManager
             self.decoder = decoder
     }
     
@@ -52,6 +54,12 @@ actor WebSocketHandler {
                             logger.trace("\(payload)")
                             if let heartbeatManager = heartbeatManager {
                                 await heartbeatManager.setInterval(payload.interval)
+                                if let identifyManager = identifyManager {
+                                    await identifyManager.send()
+                                    await heartbeatManager.startHeartbeat()
+                                } else {
+                                    self.logger.error("No IdentifyManager found!")
+                                }
                             } else {
                                 self.logger.error("No HeartbeatManager found!")
                             }
@@ -86,6 +94,9 @@ actor WebSocketHandler {
     
     /// The heartbeat manager to use when heartbeating.
     private weak var heartbeatManager: HeartbeatManager?
+    
+    /// The identify manager to use for identification.
+    private weak var identifyManager: IdentifyManager?
     
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder

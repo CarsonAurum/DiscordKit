@@ -31,9 +31,11 @@ public final actor DiscordBot {
             self.socketManager,
             sequenceStream: self.socketManager.sequenceStream
         )
+        self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents)
         self.socketHandler = WebSocketHandler(
             socketManager: self.socketManager,
             heartbeatManager: self.heartbeatManager,
+            identifyManager: identifyManager,
             decoder: self.coders.decoder
         )
     }
@@ -88,4 +90,7 @@ public final actor DiscordBot {
     
     /// The manager to control responses to the web socket.
     private let socketHandler: WebSocketHandler
+    
+    /// The manager to handle identification to the discord gateway.
+    private let identifyManager: IdentifyManager
 }

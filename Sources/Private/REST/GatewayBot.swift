@@ -79,6 +79,8 @@ extension GatewayBot {
         let sessionStartLimit: SessionStartLimit
     }
 }
+
+// MARK: Codable
     
 extension GatewayBot.Payload {
     enum CodingKeys: String, CodingKey {
@@ -87,6 +89,16 @@ extension GatewayBot.Payload {
         case sessionStartLimit = "session_start_limit"
     }
 }
+
+// MARK: CustomStringConvertible
+
+extension GatewayBot.Payload: CustomStringConvertible {
+    var description: String {
+        "[Connect to \(url) with \(shards) shards. \(sessionStartLimit)]"
+    }
+}
+
+// MARK: - SessionStartLimit
         
 extension GatewayBot.Payload {
     
@@ -104,12 +116,24 @@ extension GatewayBot.Payload {
         
         /// Number of identify requests allowed per 5 seconds.
         let maxConcurrency: Int
-        
-        enum CodingKeys: String, CodingKey {
-            case total
-            case remaining
-            case resetAfter = "reset_after"
-            case maxConcurrency = "max_concurrency"
-        }
+    }
+}
+
+// MARK: Codable
+
+extension GatewayBot.Payload.SessionStartLimit {
+    enum CodingKeys: String, CodingKey {
+        case total
+        case remaining
+        case resetAfter = "reset_after"
+        case maxConcurrency = "max_concurrency"
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension GatewayBot.Payload.SessionStartLimit: CustomStringConvertible {
+    var description: String {
+        "[{\(maxConcurrency)}: \(remaining)/\(total) reconnects; Resets in \(Double(resetAfter) / 60000) minutes.]"
     }
 }

@@ -10,3 +10,6 @@ Types responsible for action within the library. These tend to be task-isolated 
 - `HeartbeatManager` created.
 - `WebSocketManager`: `send(opcode:data:)` and `disconnect()` added.
 - `WebSocketHandler` created.
+
+### January 31, 2025
+- `IdentifyManager` added.

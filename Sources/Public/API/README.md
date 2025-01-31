@@ -8,3 +8,5 @@ Types that directly shadow objects from the Discord API.
 - `Snowflake` added.
 - `GatewayIntent` added
 
+### January 31, 2025
+- `Presence` added.
