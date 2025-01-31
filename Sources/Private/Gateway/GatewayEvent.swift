@@ -144,9 +144,23 @@ extension GatewayEvent.Opcode: CustomStringConvertible {
 // MARK: - Name
 
 extension GatewayEvent {
+    
+    /// A type-safe wrapper for the string name of dispatch events.
     enum Name: DiscordModel {
+        
+        /// The hello event.
         case hello
+        
+        /// The ready event.
+        case ready
+        
+        /// The guild create event.
+        case guildCreate
+        
+        /// An unknown event.
         case unknown(String)
+        
+        /// Not a dispatch event.
         case none
     }
 }
@@ -162,22 +176,21 @@ extension GatewayEvent.Name {
         }
         let rawValue = try container.decode(String.self)
         switch rawValue {
-        case "hello":
-            self = .hello
-        default:
-            self = .unknown(rawValue)
+        case "hello":           self = .hello
+        case "ready":           self = .ready
+        case "guild_create":    self = .guildCreate
+        default:                self = .unknown(rawValue)
         }
     }
     
     func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
-        case .hello:
-            try container.encode("hello")
-        case .unknown(let value):
-            try container.encode(value)
-        case .none:
-            try container.encodeNil()
+        case .hello:                try container.encode("hello")
+        case .ready:                try container.encode("ready")
+        case .guildCreate:          try container.encode("guild_create")
+        case .unknown(let value):   try container.encode(value)
+        case .none:                 try container.encodeNil()
         }
         
     }
@@ -188,12 +201,11 @@ extension GatewayEvent.Name {
 extension GatewayEvent.Name: CustomStringConvertible {
     var description: String {
         switch self {
-        case .hello:
-            return "HELLO"
-        case .unknown(let string):
-            return string.uppercased()
-        case .none:
-            return "NO_NAME"
+        case .hello:                return "HELLO"
+        case .ready:                return "READY"
+        case .guildCreate:          return "GUILD_CREATE"
+        case .unknown(let string):  return string.uppercased()
+        case .none:                 return "NO_NAME"
         }
     }
 }

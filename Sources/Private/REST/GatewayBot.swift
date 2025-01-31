@@ -134,6 +134,6 @@ extension GatewayBot.Payload.SessionStartLimit {
 
 extension GatewayBot.Payload.SessionStartLimit: CustomStringConvertible {
     var description: String {
-        "[{\(maxConcurrency)}: \(remaining)/\(total) reconnects; Resets in \(Double(resetAfter) / 60000) minutes.]"
+        "[{\(maxConcurrency)}: \(remaining)/\(total) reconnects; Resets in \(Double(resetAfter) / 1000) minutes.]"
     }
 }

@@ -5,10 +5,25 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+// MARK: - IdentifyManager
+
+/// A manager to handle the identify mechanism with Discord's gateway.
 actor IdentifyManager {
+    
+    /// The socket manager to use when sending the identify.
     private weak var socket: WebSocketManager?
+    
+    /// The payload to send.
     private(set) var payload: IdentifyPayload
-    private var shouldIdentify: Bool = false
+    
+    /// Construct a new identify manager with any information known at creation time.
+    /// - Parameters:
+    ///   - socket: The manager to use when sending identify connections.
+    ///   - token: The token to use when identifying.
+    ///   - intents: The intents to use when identifying.
+    ///   - largeThreshold: An optional flag to determine
+    ///   - shardInfo: The optional information to use when identifying a specific shard.
+    ///   - presence: The optional presence information to send on initial identification.
     init(
         socket: WebSocketManager,
         token: String,
@@ -41,6 +56,10 @@ actor IdentifyManager {
             presence: presence,
             intents: intents)
     }
+    
+    /// Update the presence used when identifying.
+    /// - Note: This is only available before the identify message has been sent.
+    /// - Parameter presence: The new presence to include.
     func setPresence(_ presence: Presence?) {
         self.payload = .init(
             token: payload.token,
@@ -51,6 +70,8 @@ actor IdentifyManager {
             presence: presence,
             intents: payload.intents)
     }
+    
+    /// Send the identify message.
     func send() async {
         await self.socket?.send(opcode: .identify, data: payload)
     }
