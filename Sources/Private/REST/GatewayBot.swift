@@ -10,6 +10,8 @@ import Logging
 import NIOHTTP1
 import Foundation
 
+// MARK: - GatewayBot
+
 /// An actor for the `/gateway/bot` endpoint.
 actor GatewayBot {
     
@@ -51,6 +53,8 @@ actor GatewayBot {
         return nil
     }
     
+    // MARK: Private
+    
     /// The logger to use for this requester.
     private let logger = Logger(label: "/gateway/bot/")
     
@@ -61,6 +65,8 @@ actor GatewayBot {
 // MARK: - Payload
 
 extension GatewayBot {
+    
+    /// The data sent from the `/gateway/bot` endpoint.
     struct Payload: DiscordModel {
         
         /// WSS URL that can be used for connecting to the gateway.
@@ -71,33 +77,39 @@ extension GatewayBot {
         
         /// Information on the current session start limit.
         let sessionStartLimit: SessionStartLimit
+    }
+}
+    
+extension GatewayBot.Payload {
+    enum CodingKeys: String, CodingKey {
+        case url
+        case shards
+        case sessionStartLimit = "session_start_limit"
+    }
+}
+        
+extension GatewayBot.Payload {
+    
+    /// Information about starting a new session.
+    struct SessionStartLimit: DiscordModel {
+        
+        /// Total number of session starts the current user is allowed.
+        let total: Int
+        
+        /// Remaining number of session starts the current user is allowed.
+        let remaining: Int
+        
+        /// Number of milliseconds after which the limit resets.
+        let resetAfter: Int
+        
+        /// Number of identify requests allowed per 5 seconds.
+        let maxConcurrency: Int
         
         enum CodingKeys: String, CodingKey {
-            case url
-            case shards
-            case sessionStartLimit = "session_start_limit"
-        }
-        
-        struct SessionStartLimit: DiscordModel {
-            
-            /// Total number of session starts the current user is allowed.
-            let total: Int
-            
-            /// Remaining number of session starts the current user is allowed.
-            let remaining: Int
-            
-            /// Number of milliseconds after which the limit resets.
-            let resetAfter: Int
-            
-            /// Number of identify requests allowed per 5 seconds.
-            let maxConcurrency: Int
-            
-            enum CodingKeys: String, CodingKey {
-                case total
-                case remaining
-                case resetAfter = "reset_after"
-                case maxConcurrency = "max_concurrency"
-            }
+            case total
+            case remaining
+            case resetAfter = "reset_after"
+            case maxConcurrency = "max_concurrency"
         }
     }
 }

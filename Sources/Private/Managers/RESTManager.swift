@@ -10,6 +10,8 @@ import NIO
 import NIOHTTP1
 import AsyncHTTPClient
 
+// MARK: - RESTManager
+
 /// A manager handling HTTP requests to Discord.
 actor RESTManager {
     
@@ -33,6 +35,8 @@ actor RESTManager {
         let request = try GatewayBot(client: self.client, headers: self.headers, decoder: coders.decoder)
         return try await request.get()
     }
+    
+    // MARK: Private
     
     /// The headers to attach to a Discord request.
     private let headers: HTTPHeaders

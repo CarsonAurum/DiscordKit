@@ -11,6 +11,8 @@ import Logging
 import NIO
 import WebSocketKit
 
+// MARK: - WebSocketManager
+
 /// A manager handling an active web socket connection.
 actor WebSocketManager {
     
@@ -80,6 +82,31 @@ actor WebSocketManager {
             }
         }.get()
     }
+    
+    /// Send a gateway event with a given payload.
+    /// - Parameters:
+    ///   - opcode: The opcode of the event to send.
+    ///   - data: The payload to send.
+    func send<T>(opcode: GatewayEvent<T>.Opcode, data: T) where T: DiscordModel {
+        do {
+            let payload = GatewayEvent(opcode: opcode, data: data)
+            let data = try self.coders.encoder.encode(payload)
+            if let dataString = String(data: data, encoding: .utf8) {
+                self.webSocket?.send(dataString)
+                logger.debug("Sent: \(payload)")
+                logger.trace("Payload: \(payload.data)")
+            }
+        } catch {
+            logger.error("\(error)")
+        }
+    }
+    
+    /// Disconnect the active websocket with a normal closure code.
+    func disconnect() async throws {
+        try await webSocket?.close(code: .normalClosure)
+    }
+    
+    // MARK: Private
     
     /// The logger to use within this manager.
     private let logger = Logger(label: "WebSocketManager")
