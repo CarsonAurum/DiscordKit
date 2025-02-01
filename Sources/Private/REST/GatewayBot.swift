@@ -134,7 +134,6 @@ extension GatewayBot.Payload.SessionStartLimit {
 
 extension GatewayBot.Payload.SessionStartLimit: CustomStringConvertible {
     var description: String {
-        
         var resetTime = Double(resetAfter) / 1000
         var resetUnit = "seconds"
         if (resetTime > 1000) {
@@ -145,7 +144,6 @@ extension GatewayBot.Payload.SessionStartLimit: CustomStringConvertible {
             resetTime /= 60
             resetUnit = "hours"
         }
-        
         return "[{\(maxConcurrency)}: \(remaining)/\(total) reconnects; " +
         "Resets in \(String(format: "%.2f", resetTime)) \(resetUnit).]"
     }

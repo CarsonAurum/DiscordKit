@@ -48,6 +48,8 @@ extension IdentifyPayload {
     }
 }
 
+// MARK: CustomStringConvertible
+
 extension IdentifyPayload: CustomStringConvertible {
     var description: String {
         var result = "[Token: \(token) || Intents: \(intents)"
@@ -65,29 +67,5 @@ extension IdentifyPayload: CustomStringConvertible {
         }
         result += "]"
         return result
-    }
-}
-
-// MARK: - Properties
-
-extension IdentifyPayload {
-    
-    /// Information about the connecting client.
-    struct Properties: Codable, Hashable, Sendable {
-        
-        /// The operating system of the client.
-        public let os: String
-        
-        /// The browser of the client.
-        public let browser: String
-        
-        /// The device of the client.
-        public let device: String
-    }
-}
-
-extension IdentifyPayload.Properties: CustomStringConvertible {
-    var description: String {
-        "[\(browser)@\(device)-\(os)]"
     }
 }

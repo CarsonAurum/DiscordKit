@@ -9,12 +9,23 @@ import Foundation
 
 // MARK: - Presence
 
+/// The presence object used to update discord of the client's current activity.
 public struct Presence: DiscordModel {
+    
+    /// Time the client went idle, or nil if not idle
     public let idleSince: Date?
+    
+    /// The user's activities
     public let activities: [Activity]
+    
+    /// The user's status
     public let status: Status
+    
+    /// Whether or not the cient is AFK.
     public let isAFK: Bool
 }
+
+// MARK: Codable
 
 extension Presence {
     enum CodingKeys: String, CodingKey {
@@ -48,13 +59,26 @@ extension Presence {
     }
 }
 
+// MARK: - Status
 
 extension Presence {
+    
+    /// The online status of a client.
     public enum Status: String, DiscordModel {
+        
+        /// This client is online.
         case online
+        
+        /// This client is in do not disturb mode.
         case doNotDisturb = "dnd"
+        
+        /// This client is idle.
         case idle
+        
+        /// This client is invisible.
         case invisible
+        
+        /// This client is offline.
         case offline
     }
 }
