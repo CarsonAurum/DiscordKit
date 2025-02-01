@@ -14,6 +14,8 @@ Types that directly shadow objects from the Discord API.
 - `Guild` added.
 - `User` added.
 - `Presence`: `Activity` added.
-- `Prsence`: `Update` added.
+- `Presence`: `Update` added.
 
 ### Fabruary 1, 2025
+- `Presence.Activity`: `ActivityType`, `Timestamps`, `Emoji`, `Party`, `Assets`, `Secrets`, `Flags`, and `Buttons` 
+added.
