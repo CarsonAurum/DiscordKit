@@ -14,3 +14,6 @@ Types related to Discord's real-time gateway.
 - `GatewayEvent`: `Name` added.
 - `IdentifyPayload` added.
 - `ReadyPayload` created.
+
+### February 1, 2025
+- `GatewayEvent.Name`: `.presenceUpdate` added.

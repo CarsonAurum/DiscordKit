@@ -52,7 +52,7 @@ extension IdentifyPayload {
 
 extension IdentifyPayload: CustomStringConvertible {
     var description: String {
-        var result = "[Token: \(token) || Intents: \(intents)"
+        var result = "[Token: \(token) || Intents: \(intents) || Properties: \(properties)"
         if let isCompressed = isCompressed {
             result += " || Compressed: \(isCompressed)"
         }

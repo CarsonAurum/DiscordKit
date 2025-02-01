@@ -74,7 +74,7 @@ actor WebSocketManager {
             socket.onClose.whenComplete { result in
                 Task {
                     self.logger.info(
-                        "Socket closed. Code: \(socket.closeCode.debugDescription)"
+                        "Socket closed. Code: \(String(describing: socket.closeCode))"
                     )
                     await self.eventContinuation?.finish()
                     await self.sequenceContinuation?.finish()

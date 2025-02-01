@@ -35,13 +35,13 @@ extension Presence.Update {
     public enum ClientStatus: DiscordModel {
         
         /// If the client is connected through a desktop connection, this will be filled.
-        case desktop(String)
+        case desktop(Presence.Status)
         
         /// If the client is connected through a moblie connection, this will be filled.
-        case mobile(String)
+        case mobile(Presence.Status)
         
         /// If the client is connected through a web connection, this will be filled.
-        case web(String)
+        case web(Presence.Status)
     }
 }
 
@@ -53,11 +53,11 @@ extension Presence.Update.ClientStatus {
     }
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        if let status = try container.decodeIfPresent(String.self, forKey: .desktop) {
+        if let status = try container.decodeIfPresent(Presence.Status.self, forKey: .desktop) {
             self = .desktop(status)
-        } else if let status = try container.decodeIfPresent(String.self, forKey: .mobile) {
+        } else if let status = try container.decodeIfPresent(Presence.Status.self, forKey: .mobile) {
             self = .mobile(status)
-        } else if let status = try container.decodeIfPresent(String.self, forKey: .web) {
+        } else if let status = try container.decodeIfPresent(Presence.Status.self, forKey: .web) {
             self = .web(status)
         } else {
             throw DecodingError.dataCorrupted(

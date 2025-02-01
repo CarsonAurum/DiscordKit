@@ -111,16 +111,22 @@ extension WebSocketHandler {
     /// - Parameter message: The message to handle.
     private func handleDispatch(_ message: GatewayEvent<AnyCodable>) {
         switch message.name {
-        case .ready:
+        case .guildCreate:
             do {
-                let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
+                let payload = try decoder.decode(Guild.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
             } catch {
                 logger.error("\(error)")
             }
-        case .guildCreate:
+        case .presenceUpdate:
             do {
-                let payload = try decoder.decode(Guild.self, from: message.getData())
+                let payload = try decoder.decode(Presence.Update.self, from: message.getData())
+            } catch {
+                logger.error("\(error)")
+            }
+        case .ready:
+            do {
+                let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
             } catch {
                 logger.error("\(error)")

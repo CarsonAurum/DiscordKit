@@ -18,6 +18,9 @@ extension GatewayEvent {
         /// Not a dispatch event.
         case none
         
+        /// Presence update event.
+        case presenceUpdate
+        
         /// The ready event.
         case ready
         
@@ -37,8 +40,9 @@ extension GatewayEvent.Name {
         }
         let rawValue = try container.decode(String.self)
         switch rawValue {
-        case "READY":           self = .ready
         case "GUILD_CREATE":    self = .guildCreate
+        case "PRESENCE_UPDATE": self = .presenceUpdate
+        case "READY":           self = .ready
         default:                self = .unknown(rawValue)
         }
     }
@@ -46,8 +50,9 @@ extension GatewayEvent.Name {
     func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
-        case .ready:                try container.encode("ready")
-        case .guildCreate:          try container.encode("guild_create")
+        case .guildCreate:          try container.encode("GUILD_CREATE")
+        case .presenceUpdate:       try container.encode("PRESENCE_UPDATE")
+        case .ready:                try container.encode("READY")
         case .unknown(let value):   try container.encode(value)
         case .none:                 try container.encodeNil()
         }
@@ -60,8 +65,9 @@ extension GatewayEvent.Name {
 extension GatewayEvent.Name: CustomStringConvertible {
     var description: String {
         switch self {
-        case .ready:                return "READY"
         case .guildCreate:          return "GUILD_CREATE"
+        case .presenceUpdate:       return "PRESENCE_UPDATE"
+        case .ready:                return "READY"
         case .unknown(let string):  return string.uppercased()
         case .none:                 return "NO_NAME"
         }
