@@ -34,3 +34,11 @@ extension Snowflake {
         try container.encode(String(value))
     }
 }
+
+// MARK: CustomStringConvertible
+
+extension Snowflake: CustomStringConvertible {
+    public var description: String {
+        "<<\(value)>>"
+    }
+}

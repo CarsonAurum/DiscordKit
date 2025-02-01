@@ -29,6 +29,8 @@ extension Presence {
     }
 }
 
+// MARK: Codable
+
 extension Presence.Update {
     enum CodingKeys: String, CodingKey {
         case user
@@ -39,7 +41,24 @@ extension Presence.Update {
     }
 }
 
-// MARK: ClientStatus
+// MARK: CustomStringConvertible
+
+extension Presence.Update: CustomStringConvertible {
+    public var description: String {
+        var result = "[\(clientStatus) || "
+        if activities.count > 0 {
+            for activity in activities {
+                result += "\(activity) "
+            }
+        } else {
+            result += "No Activities "
+        }
+        result += "|| \(user) || Guild ID: \(guildID)]"
+        return result
+    }
+}
+
+// MARK: - ClientStatus
 
 extension Presence.Update {
     
@@ -56,6 +75,8 @@ extension Presence.Update {
         case web(Presence.Status)
     }
 }
+
+// MARK: Codable
 
 extension Presence.Update.ClientStatus {
     enum CodingKeys: String, CodingKey {
@@ -87,6 +108,21 @@ extension Presence.Update.ClientStatus {
             try container.encode(status, forKey: .mobile)
         case .web(let status):
             try container.encode(status, forKey: .web)
+        }
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension Presence.Update.ClientStatus: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .desktop(let status):
+            return "Desktop (\(status))"
+        case .mobile(let status):
+            return "Mobile (\(status))"
+        case .web(let status):
+            return "Web (\(status))"
         }
     }
 }

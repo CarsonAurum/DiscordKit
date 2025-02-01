@@ -83,3 +83,17 @@ extension Presence {
     }
 }
 
+// MARK: CustomStringConvertible
+
+extension Presence.Status: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .online:       return "Online"
+        case .doNotDisturb: return "Do Not Disturb"
+        case .idle:         return "Idle"
+        case .invisible:    return "Invisible"
+        case .offline:      return "Offline"
+        }
+    }
+}
+
