@@ -5,6 +5,8 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+// MARK: - Update
+
 extension Presence {
     
     /// An event sent when a presence update occurs.
@@ -24,6 +26,16 @@ extension Presence {
         
         /// The client status -- specifying which client was used.
         public let clientStatus: ClientStatus
+    }
+}
+
+extension Presence.Update {
+    enum CodingKeys: String, CodingKey {
+        case user
+        case guildID = "guild_id"
+        case status
+        case activities
+        case clientStatus = "client_status"
     }
 }
 
