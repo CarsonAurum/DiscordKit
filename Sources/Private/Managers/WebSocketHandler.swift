@@ -121,6 +121,7 @@ extension WebSocketHandler {
         case .presenceUpdate:
             do {
                 let payload = try decoder.decode(Presence.Update.self, from: message.getData())
+                logger.trace("\(payload)")
             } catch {
                 logger.error("\(error)")
             }
