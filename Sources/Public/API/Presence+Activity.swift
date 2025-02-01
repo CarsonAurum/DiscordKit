@@ -142,12 +142,49 @@ extension Presence.Activity {
     }
 }
 
+// MARK: CustomStringConvertible
+
+extension Presence.Activity.ActivityType: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .playing:
+            return "Playing"
+        case .streaming:
+            return "Streaming"
+        case .listening:
+            return "Listening to"
+        case .watching:
+            return "Watching"
+        case .custom:
+            return ""
+        case .competing:
+            return "Competing in"
+        }
+    }
+}
+
 // MARK: - Timestamps
 
 extension Presence.Activity {
     public struct Timestamps: DiscordModel {
         public let start: Date?
         public let end: Date?
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension Presence.Activity.Timestamps: CustomStringConvertible {
+    public var description: String {
+        var result = "["
+        if let start = start {
+            result += "Starting: \(start)"
+        }
+        if let end = end {
+            result += " Ending: \(end)"
+        }
+        result += "]"
+        return result
     }
 }
 
@@ -197,12 +234,34 @@ extension Presence.Activity {
         public let id: Snowflake?
         public let isAnimated: Bool?
     }
-    
+}
+
+extension Presence.Activity.Emoji: CustomStringConvertible {
+    public var description: String {
+        var result = "[\(name)"
+        if let id = id {
+            result += " || \(id)"
+        }
+        if let isAnimated = isAnimated {
+            result += " || Animated: \(isAnimated)"
+        }
+        result += "]"
+        return result
+    }
+}
+
+// MARK: - Party
+
+extension Presence.Activity {
     public struct Party: DiscordModel {
         public let id: String?
         public let size: [Int]?
     }
-    
+}
+
+// MARK: - Assets
+
+extension Presence.Activity {
     public struct Assets: DiscordModel {
         public let largeImage: String?
         public let largeText: String?
@@ -216,13 +275,21 @@ extension Presence.Activity {
             case smallText = "small_text"
         }
     }
-    
+}
+
+// MARK: - Secrets
+
+extension Presence.Activity {
     public struct Secrets: DiscordModel {
         public let join: String?
         public let spectate: String?
         public let match: String?
     }
-    
+}
+
+// MARK: - Flags
+ 
+extension Presence.Activity {
     public struct Flags: OptionSet, DiscordModel {
         
         public static let instance = Flags(rawValue: 1 << 0)
@@ -240,7 +307,11 @@ extension Presence.Activity {
             self.rawValue = rawValue
         }
     }
-    
+}
+
+// MARK: - Button
+
+extension Presence.Activity {
     public struct Button: DiscordModel {
         public let label: String
         public let url: String
