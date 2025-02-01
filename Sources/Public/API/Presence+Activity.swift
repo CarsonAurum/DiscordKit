@@ -199,7 +199,7 @@ extension Presence.Activity {
     }
     
     public struct Party: DiscordModel {
-        public let id: String
+        public let id: String?
         public let size: [Int]?
     }
     
@@ -208,6 +208,13 @@ extension Presence.Activity {
         public let largeText: String?
         public let smallImage: String?
         public let smallText: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case largeImage = "large_image"
+            case largeText = "large_text"
+            case smallImage = "small_image"
+            case smallText = "small_text"
+        }
     }
     
     public struct Secrets: DiscordModel {
