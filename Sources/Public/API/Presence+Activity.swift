@@ -129,6 +129,77 @@ extension Presence.Activity {
     }
 }
 
+extension Presence.Activity: CustomStringConvertible {
+    public var description: String {
+        var values = [String]()
+        switch type {
+        case .playing:
+            values.append("\(type) \(name)")
+        case .streaming:
+            if let details = details {
+                values.append("\(type) \(details)")
+            } else {
+                values.append("\(type)")
+            }
+        case .listening:
+            values.append("\(type) \(name)")
+        case .watching:
+            values.append("\(type) \(name)")
+        case .custom:
+            if let emoji = emoji, let state = state {
+                values.append("Custom: \(emoji) \(state)")
+            } else if let state = state {
+                values.append("Custom: \(state)")
+            } else if let emoji = emoji {
+                values.append("Custom: \(emoji)")
+            }
+        case .competing:
+            values.append("\(type) \(name)")
+        }
+        if let url = url {
+            values.append(url)
+        }
+        values.append("\(createdAt)")
+        if let timestamps = timestamps {
+            values.append("\(timestamps)")
+        }
+        if let details = details {
+            values.append("Details: \(details)")
+        }
+        if let state = state {
+            values.append("State: \(state)")
+        }
+        if let emoji = emoji {
+            values.append("Emoji: \(emoji)")
+        }
+        if let party = party {
+            values.append("Party: \(party)")
+        }
+        if let assets = assets {
+            values.append("Assets: \(assets)")
+        }
+        if let secrets = secrets {
+            values.append("Secrets: \(secrets)")
+        }
+        if let instance = instance {
+            values.append("Is Instanced: \(instance)")
+        }
+        if let flags = flags {
+            values.append("Flags: \(flags)")
+        }
+        if let buttons = buttons {
+            var result = "Buttons: ["
+            for button in buttons {
+                result += "\(button)"
+            }
+            result += "]"
+            values.append(result)
+        }
+        
+        return "[\(values.joined(separator: " || "))]"
+    }
+}
+
 // MARK: - ActivityType
 
 extension Presence.Activity {
@@ -259,6 +330,22 @@ extension Presence.Activity {
     }
 }
 
+// MARK: CustomStringConvertible
+
+extension Presence.Activity.Party: CustomStringConvertible {
+    public var description: String {
+        var result = "["
+        if let id = id {
+            result += "\(id)"
+        }
+        if let size = size {
+            result += " || Current Size: \(size[0]) Max Size: \(size[1])"
+        }
+        result += "]"
+        return result
+    }
+}
+
 // MARK: - Assets
 
 extension Presence.Activity {
@@ -267,13 +354,40 @@ extension Presence.Activity {
         public let largeText: String?
         public let smallImage: String?
         public let smallText: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case largeImage = "large_image"
-            case largeText = "large_text"
-            case smallImage = "small_image"
-            case smallText = "small_text"
+    }
+}
+
+// MARK: Codable
+
+extension Presence.Activity.Assets {
+    enum CodingKeys: String, CodingKey {
+        case largeImage = "large_image"
+        case largeText = "large_text"
+        case smallImage = "small_image"
+        case smallText = "small_text"
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension Presence.Activity.Assets: CustomStringConvertible {
+    public var description: String {
+        var result = "["
+        if let largeImage = largeImage {
+            result += "Large Image: \(largeImage)"
         }
+        if let largeText = largeText {
+            result += ", Large Text: \(largeText)"
+        }
+        if let smallImage = smallImage {
+            if largeImage.isSome { result += " || " }
+            result += "Small Image: \(smallImage)"
+        }
+        if let smallText = smallText {
+            result += ", Small Text: \(smallText)"
+        }
+        result += "]"
+        return result
     }
 }
 
@@ -284,6 +398,25 @@ extension Presence.Activity {
         public let join: String?
         public let spectate: String?
         public let match: String?
+    }
+}
+
+extension Presence.Activity.Secrets: CustomStringConvertible {
+    public var description: String {
+        var result = "["
+        if let join = join {
+            result += "Join: \(join)"
+        }
+        if let spectate = spectate {
+            if join.isSome { result += " || " }
+            result += "Spectate: \(spectate)"
+        }
+        if let match = match {
+            if join.isSome || spectate.isSome { result += " || " }
+            result += "Match: \(match)"
+        }
+        result += "]"
+        return result
     }
 }
 
@@ -306,6 +439,15 @@ extension Presence.Activity {
         public init(rawValue: Int) {
             self.rawValue = rawValue
         }
+    }
+}
+
+extension Presence.Activity.Flags: CustomStringConvertible {
+    public var description: String {
+        var result = "["
+        if contains(.instance) { result += "Instance" }
+        result += "]"
+        return result
     }
 }
 
