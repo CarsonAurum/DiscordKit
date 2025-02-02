@@ -9,7 +9,7 @@ public struct Application: DiscordModel {
     public let id: Snowflake
     public let name: String?
     public let icon: String?
-    public let description: String?
+    public let appDescription: String?
     public let rpcOrigins: [String]?
     public let isPublicBot: Bool?
     public let requiresCodeGrant: Bool?
@@ -44,7 +44,7 @@ extension Application {
         case id
         case name
         case icon
-        case description
+        case appDescription = "description"
         case rpcOrigins = "rpc_origins"
         case isPublicBot = "bot_public"
         case requiresCodeGrant = "bot_require_code_grant"
@@ -72,6 +72,74 @@ extension Application {
         case installParams = "install_params"
         case integrationTypesConfig = "integration_types_config"
         case customInstallURL = "custom_install_url"
+    }
+}
+
+extension Application: CustomStringConvertible {
+    public var description: String {
+        var values = [String]()
+        values.append("\(id)")
+        if let name = name {
+            values.append(name)
+        }
+        if let icon = icon {
+            values.append(icon)
+        }
+        if let appDescription = appDescription {
+            values.append("Description: \(appDescription)")
+        }
+        if let rpcOrigins = rpcOrigins {
+            values.append("RPC: \(rpcOrigins.joined(separator: ", "))")
+        }
+        if let isPublicBot = isPublicBot {
+            values.append("Is Public Bot: \(isPublicBot)")
+        }
+        if let requiresCodeGrant = requiresCodeGrant {
+            values.append("Requires Code Grant: \(requiresCodeGrant)")
+        }
+        if let bot = bot {
+            values.append("Bot User: \(bot)")
+        }
+        if let termsOfServiceURL = termsOfServiceURL {
+            values.append("TOS: \(termsOfServiceURL)")
+        }
+        if let privacyPolicyURL = privacyPolicyURL {
+            values.append("Privacy Policy: \(privacyPolicyURL)")
+        }
+        if let owner = owner {
+            values.append("Owner: \(owner)")
+        }
+        if let verifyKey = verifyKey {
+            values.append("Verify Key")
+        }
+        if let team = team {
+            values.append("\(team)")
+        }
+        if let guildID = guildID {
+            values.append("Guild: \(guildID)")
+        }
+        if let guild = guild {
+            values.append("Guild: \(guild)")
+        }
+        if let primarySKUID = primarySKUID {
+            values.append("Primary SKU: \(primarySKUID)")
+        }
+        if let slug = slug {
+            values.append("Slug: \(slug)")
+        }
+        if let coverImage = coverImage {
+            values.append("Cover Image: \(coverImage)")
+        }
+        if let flags = flags {
+            values.append("Flags: \(flags)")
+        }
+        if let approximateGuildCount = approximateGuildCount {
+            values.append("Approximate Guild Count: \(approximateGuildCount)")
+        }
+        if let approximateUserInstallCount = approximateUserInstallCount {
+            values.append("Approximate User Install Count: \(approximateUserInstallCount)")
+        }
+        return "[\(values.joined(separator: " || "))]"
     }
 }
 
