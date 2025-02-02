@@ -156,37 +156,19 @@ extension Presence.Activity: CustomStringConvertible {
         case .competing:
             values.append("\(type) \(name)")
         }
-        if let url = url {
-            values.append(url)
-        }
+        if let url = url { values.append(url) }
         values.append("\(createdAt)")
         if let timestamps = timestamps {
             values.append("\(timestamps)")
         }
-        if let details = details {
-            values.append("Details: \(details)")
-        }
-        if let state = state {
-            values.append("State: \(state)")
-        }
-        if let emoji = emoji {
-            values.append("Emoji: \(emoji)")
-        }
-        if let party = party {
-            values.append("Party: \(party)")
-        }
-        if let assets = assets {
-            values.append("Assets: \(assets)")
-        }
-        if let secrets = secrets {
-            values.append("Secrets: \(secrets)")
-        }
-        if let instance = instance {
-            values.append("Is Instanced: \(instance)")
-        }
-        if let flags = flags {
-            values.append("Flags: \(flags)")
-        }
+        if let details = details { values.append("Details: \(details)") }
+        if let state = state { values.append("State: \(state)") }
+        if let emoji = emoji { values.append("Emoji: \(emoji)") }
+        if let party = party { values.append("Party: \(party)") }
+        if let assets = assets { values.append("Assets: \(assets)") }
+        if let secrets = secrets { values.append("Secrets: \(secrets)") }
+        if let instance = instance { values.append("Is Instanced: \(instance)") }
+        if let flags = flags { values.append("Flags: \(flags)") }
         if let buttons = buttons {
             var result = "Buttons: ["
             for button in buttons {
@@ -203,12 +185,26 @@ extension Presence.Activity: CustomStringConvertible {
 // MARK: - ActivityType
 
 extension Presence.Activity {
+    
+    /// The kind of activity being used.
     public enum ActivityType: Int, DiscordModel {
+        
+        /// Playing a game.
         case playing = 0
+        
+        /// Streaming a video.
         case streaming = 1
+        
+        /// Listening to content.
         case listening = 2
+        
+        /// Watching content.
         case watching = 3
+        
+        /// Custom status
         case custom = 4
+        
+        /// Competing in competition.
         case competing = 5
     }
 }
@@ -237,8 +233,14 @@ extension Presence.Activity.ActivityType: CustomStringConvertible {
 // MARK: - Timestamps
 
 extension Presence.Activity {
+    
+    /// Information regarding the start and end of an activity.
     public struct Timestamps: DiscordModel {
+        
+        /// The start of the current activity.
         public let start: Date?
+        
+        /// The end of the current activity.
         public let end: Date?
     }
 }
@@ -300,9 +302,17 @@ extension Presence.Activity.Timestamps {
 // MARK: - Emoji
 
 extension Presence.Activity {
+    
+    /// An emoji used in a custom presence.
     public struct Emoji: DiscordModel {
+        
+        /// The name of the custom emoji.
         public let name: String
+        
+        /// The ID of the custom emoji
         public let id: Snowflake?
+        
+        /// `true` if this is an animated emoji, `false` otherwise.
         public let isAnimated: Bool?
     }
 }
@@ -324,8 +334,14 @@ extension Presence.Activity.Emoji: CustomStringConvertible {
 // MARK: - Party
 
 extension Presence.Activity {
+    
+    /// Information about the party the activity occurs in.
     public struct Party: DiscordModel {
+        
+        /// The ID of the party.
         public let id: String?
+        
+        /// Size information
         public let size: [Int]?
     }
 }
@@ -349,10 +365,20 @@ extension Presence.Activity.Party: CustomStringConvertible {
 // MARK: - Assets
 
 extension Presence.Activity {
+    
+    /// Information regarding the image assets attached to this activity.
     public struct Assets: DiscordModel {
+        
+        /// The large image ID.
         public let largeImage: String?
+        
+        /// The large image hover text.
         public let largeText: String?
+        
+        /// The small image ID.
         public let smallImage: String?
+        
+        /// The small image hover text
         public let smallText: String?
     }
 }
@@ -394,9 +420,17 @@ extension Presence.Activity.Assets: CustomStringConvertible {
 // MARK: - Secrets
 
 extension Presence.Activity {
+    
+    /// Secrets for joining a rich activity.
     public struct Secrets: DiscordModel {
+        
+        /// Secret for joining a party.
         public let join: String?
+        
+        /// Secret for spectating a game.
         public let spectate: String?
+        
+        /// Secret for a specific instanced game match.
         public let match: String?
     }
 }
@@ -414,16 +448,35 @@ extension Presence.Activity.Secrets: CustomStringConvertible {
 // MARK: - Flags
  
 extension Presence.Activity {
+    
+    /// Flags indicating what values are within the payload.
     public struct Flags: OptionSet, DiscordModel {
         
+        /// An instanced activity.
         public static let instance = Flags(rawValue: 1 << 0)
+        
+        /// A joinable activity.
         public static let join = Flags(rawValue: 1 << 1)
+        
+        /// A spectatable activity.
         public static let spectate = Flags(rawValue: 1 << 2)
+        
+        /// A request to join another activity.
         public static let joinRequest = Flags(rawValue: 1 << 3)
+        
+        /// A sync update between activities.
         public static let sync = Flags(rawValue: 1 << 4)
+        
+        /// A game activity.
         public static let play = Flags(rawValue: 1 << 5)
+        
+        /// A party with the friends privacy setting.
         public static let partyPrivacyFriends = Flags(rawValue: 1 << 6)
+        
+        /// A party with the voice channel privacy setting.
         public static let partyPrivacyVoiceChannel = Flags(rawValue: 1 << 7)
+        
+        /// An embedded activity
         public static let embedded = Flags(rawValue: 1 << 8)
         
         public let rawValue: Int
@@ -452,8 +505,14 @@ extension Presence.Activity.Flags: CustomStringConvertible {
 // MARK: - Button
 
 extension Presence.Activity {
+    
+    /// A button within a rich presence activity.
     public struct Button: DiscordModel {
+        
+        /// The label associated with the button.
         public let label: String
+        
+        /// The url to be routed when the button is clicked.
         public let url: String
     }
 }
