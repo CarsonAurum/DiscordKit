@@ -160,6 +160,6 @@ extension GatewayIntents: CustomStringConvertible {
         if contains(.guildMessagePolls) { cases.append("Guild Message Polls") }
         if contains(.directMessagePolls) { cases.append("Direct Message Polls") }
         
-        return "\(cases.joined(separator: ", "))"
+        return "[\(cases.joined(separator: ", "))]"
     }
 }

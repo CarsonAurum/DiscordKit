@@ -403,20 +403,11 @@ extension Presence.Activity {
 
 extension Presence.Activity.Secrets: CustomStringConvertible {
     public var description: String {
-        var result = "["
-        if let join = join {
-            result += "Join: \(join)"
-        }
-        if let spectate = spectate {
-            if join.isSome { result += " || " }
-            result += "Spectate: \(spectate)"
-        }
-        if let match = match {
-            if join.isSome || spectate.isSome { result += " || " }
-            result += "Match: \(match)"
-        }
-        result += "]"
-        return result
+        var values = [String]()
+        if let join = join { values.append("Join: \(join)") }
+        if let spectate = spectate { values.append("Spectate: \(spectate)") }
+        if let match = match { values.append("Match: \(match)") }
+        return "[\(values.joined(separator: " || "))]"
     }
 }
 
@@ -444,10 +435,17 @@ extension Presence.Activity {
 
 extension Presence.Activity.Flags: CustomStringConvertible {
     public var description: String {
-        var result = "["
-        if contains(.instance) { result += "Instance" }
-        result += "]"
-        return result
+        var cases = [String]()
+        if contains(.instance) { cases.append("Instance") }
+        if contains (.join) { cases.append("Join") }
+        if contains (.spectate) { cases.append("Spectate") }
+        if contains (.joinRequest) { cases.append("JoinRequest") }
+        if contains (.sync) { cases.append("Sync") }
+        if contains (.play) { cases.append("Play") }
+        if contains (.partyPrivacyFriends) { cases.append("PartyPrivacyFriends") }
+        if contains (.partyPrivacyVoiceChannel) { cases.append("PartyPrivacyVoiceChannel") }
+        if contains (.embedded) { cases.append("Embedded") }
+        return "[\(cases.joined(separator: ", "))]"
     }
 }
 
@@ -457,5 +455,11 @@ extension Presence.Activity {
     public struct Button: DiscordModel {
         public let label: String
         public let url: String
+    }
+}
+
+extension Presence.Activity.Button: CustomStringConvertible {
+    public var description: String {
+        "[Label: \(url) || URL: \(url)]"
     }
 }
