@@ -7,31 +7,31 @@
 
 public struct Application: DiscordModel {
     public let id: Snowflake
-    public let name: String
+    public let name: String?
     public let icon: String?
-    public let description: String
+    public let description: String?
     public let rpcOrigins: [String]?
-    public let isPublicBot: Bool
-    public let requiresCodeGrant: Bool
+    public let isPublicBot: Bool?
+    public let requiresCodeGrant: Bool?
     public let bot: User?
     public let termsOfServiceURL: String?
     public let privacyPolicyURL: String?
     public let owner: User?
-    public let verifyKey: String
+    public let verifyKey: String?
     public let team: Team?
-    public let guildID: Snowflake
+    public let guildID: Snowflake?
     public let guild: Guild?
     public let primarySKUID: Snowflake?
     public let slug: String?
     public let coverImage: String?
-    public let flags: Flags
+    public let flags: Flags?
     public let approximateGuildCount: Int?
     public let approximateUserInstallCount: Int?
     public let redirectURIs: [String]?
     public let interactionsEndpointURL: String?
     public let roleConnectionsVerificationURL: String?
     public let eventWebhooksURL: String?
-    public let eventWebhooksStatus: EventWebhookStatus
+    public let eventWebhooksStatus: EventWebhookStatus?
     public let eventWebhooksTypes: [String]?
     public let tags: [String]?
     public let installParams: InstallParams?
