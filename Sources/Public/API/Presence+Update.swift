@@ -73,6 +73,9 @@ extension Presence.Update {
         
         /// If the client is connected through a web connection, this will be filled.
         case web(Presence.Status)
+        
+        /// If no client is connected.
+        case offline
     }
 }
 
@@ -93,9 +96,7 @@ extension Presence.Update.ClientStatus {
         } else if let status = try container.decodeIfPresent(Presence.Status.self, forKey: .web) {
             self = .web(status)
         } else {
-            throw DecodingError.dataCorrupted(
-                .init(codingPath: decoder.codingPath, debugDescription: "No valid session status found")
-            )
+            self = .offline
         }
     }
     public func encode(to encoder: Encoder) throws {
@@ -108,6 +109,8 @@ extension Presence.Update.ClientStatus {
             try container.encode(status, forKey: .mobile)
         case .web(let status):
             try container.encode(status, forKey: .web)
+        case .offline:
+            return
         }
     }
 }
@@ -123,6 +126,8 @@ extension Presence.Update.ClientStatus: CustomStringConvertible {
             return "Mobile (\(status))"
         case .web(let status):
             return "Web (\(status))"
+        case .offline:
+            return "Offline"
         }
     }
 }
