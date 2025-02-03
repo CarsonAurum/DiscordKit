@@ -48,7 +48,6 @@ actor WebSocketManager {
             on: eventLoopGroup
         ) { socket in
             Task { await self.setSocket(socket) }
-            Task { await self.reconnectManager?.startSequenceTask(self.sequenceStream) }
             
             socket.onText { socket, txt in
                 Task {

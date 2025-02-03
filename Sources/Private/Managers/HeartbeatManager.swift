@@ -108,7 +108,7 @@ actor HeartbeatManager {
     private let sequenceStream: AsyncStream<Int>
     
     /// The most recent sequence value, if it exists.
-    private var sequence: Int?
+    private(set) var sequence: Int?
     
     /// The most recent interval value, if it exists.
     private var interval: Int?

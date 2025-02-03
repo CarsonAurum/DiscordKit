@@ -12,7 +12,6 @@ actor ReconnectManager {
     private let logger = Logger(label: "ReconnectManager")
     private weak var socket: WebSocketManager?
     private weak var heartbeatManager: HeartbeatManager?
-    private var sequenceTask: Task<Void, Never>?
     private let token: String
     private var reconnectURL: String?
     private var sessionID: String?
@@ -24,16 +23,6 @@ actor ReconnectManager {
         self.heartbeatManager = heartbeatManager
     }
     
-    func startSequenceTask(_ stream: AsyncStream<Int>) {
-        sequenceTask = Task {
-            for await newSequence in stream {
-                self.sequence = newSequence
-            }
-        }
-    }
-    func stopSequenceTask() {
-        sequenceTask?.cancel()
-    }
     func setReconnectInfo(url reconnectURL: String, id sessionID: String) {
         self.reconnectURL = reconnectURL
         self.sessionID = sessionID
@@ -41,9 +30,9 @@ actor ReconnectManager {
     func reconnect() async throws {
         if let reconnectURL = reconnectURL, let sessionID = sessionID {
             try await socket?.disconnect()
-            try await Task.sleep(for: .seconds(2))
+            try await Task.sleep(for: .seconds(5))
             try await socket?.connect(to: reconnectURL)
-            let payload = ResumePayload(token: token, sessionID: sessionID, sequence: sequence)
+            let payload = await ResumePayload(token: token, sessionID: sessionID, sequence: heartbeatManager?.sequence)
             await socket?.send(opcode: .resume, data: payload)
         } else {
             fatalError()
