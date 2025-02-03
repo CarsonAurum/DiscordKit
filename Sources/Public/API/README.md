@@ -25,3 +25,4 @@ added.
 
 ### February 2, 2025
 - `Application`: Fields added
+- `/Presence/` folder added.

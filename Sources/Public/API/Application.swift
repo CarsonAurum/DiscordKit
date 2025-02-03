@@ -5,39 +5,106 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+// MARK: - Application
+
+/// A container for developer platform features that can be installed to discord servers and user accounts.
 public struct Application: DiscordModel {
+    
+    /// The ID of the application.
     public let id: Snowflake
+    
+    /// The name of the app.
     public let name: String?
+    
+    /// The icon hash of the app.
     public let icon: String?
+    
+    /// Description of the app
     public let appDescription: String?
+    
+    /// List of RPC origin URLs, if RPC is enabled.
     public let rpcOrigins: [String]?
+    
+    /// When `false`, only the app owner can add the app to guilds.
     public let isPublicBot: Bool?
+    
+    /// When `true` the app's bot will only join on completion of the full OAuth2 code grant flow.
     public let requiresCodeGrant: Bool?
+    
+    /// Partial user object for the bot associated with the app.
     public let bot: User?
+    
+    /// URL of the app's terms of service.
     public let termsOfServiceURL: String?
+    
+    /// URL of the app's privacy policy.
     public let privacyPolicyURL: String?
+    
+    /// Partial user for the owner of the app.
     public let owner: User?
+    
+    /// Hex encoded key for verification in interactions and the GameSDK's GetTicket
     public let verifyKey: String?
+    
+    /// If the app belongs to a team, this will be a list of the members of that team.
     public let team: Team?
+    
+    /// Guild associated with the app.
     public let guildID: Snowflake?
+    
+    /// Partial object of the associated guild.
     public let guild: Guild?
+    
+    /// If this app is a game sold on discord, this field will be the id of the "Game SKU" that is created, if exists.
     public let primarySKUID: Snowflake?
+    
+    /// If this app is a game sold on discord, this field will be the URL slug that links to the store page.
     public let slug: String?
+    
+    /// App's default rich presence invite cover hash.
     public let coverImage: String?
+    
+    /// Apps public flags.
     public let flags: Flags?
+    
+    /// Approximate count of the guilds the app has been added to.
     public let approximateGuildCount: Int?
+    
+    /// Approximate count of users that have installed the app.
     public let approximateUserInstallCount: Int?
+    
+    /// Array of redirect URIs for the app.
     public let redirectURIs: [String]?
+    
+    /// Interactions endpoint URL for the app.
     public let interactionsEndpointURL: String?
+    
+    /// Role connection verification URL for the app.
     public let roleConnectionsVerificationURL: String?
+    
+    /// Event webhooks URL for the app to receive webhook events.
     public let eventWebhooksURL: String?
+    
+    /// If webhook events are enabled for the app, this value will be filled.
     public let eventWebhooksStatus: EventWebhookStatus?
+    
+    /// List of webhook event types the app subscribes to.
     public let eventWebhooksTypes: [String]?
+    
+    /// List of tags describing the content and functionality of the app.
     public let tags: [String]?
+    
+    /// Settings for the app's default in-app authorization link, if enabled.
     public let installParams: InstallParams?
+    
+    /// Default scopes and permissions for each supported installation context.
     public let integrationTypesConfig: [IntegrationType: String]?
+    
+    /// Default custom authorization URL for the app, if enabled.
     public let customInstallURL: String?
 }
+
+// MARK: Codable
 
 extension Application {
     enum CodingKeys: String, CodingKey {
@@ -74,6 +141,8 @@ extension Application {
         case customInstallURL = "custom_install_url"
     }
 }
+
+// MARK: CustomStringConvertible
 
 extension Application: CustomStringConvertible {
     public var description: String {
@@ -125,12 +194,22 @@ extension Application: CustomStringConvertible {
     }
 }
 
+// MARK: - IntegrationType
+
 extension Application {
+    
+    /// Where an app can be installed.
     public enum IntegrationType: Int, DiscordModel {
+        
+        /// App is installable to servers.
         case guildInstall = 0
+        
+        /// App is installable to users.
         case userInstall = 1
     }
 }
+
+// MARK: CustomStringConvertible
 
 extension Application.IntegrationType: CustomStringConvertible {
     public var description: String {
@@ -143,13 +222,57 @@ extension Application.IntegrationType: CustomStringConvertible {
     }
 }
 
+// MARK: - IntegrationTypeConfiguration
+
 extension Application {
+    
+    /// Configuration for a specific installation context.
+    public struct IntegrationTypeConfiguration: DiscordModel {
+        
+        /// Install params for the specific in-app authorization context.
+        public let installParams: InstallParams?
+    }
+}
+
+// MARK: Codable
+
+extension Application.IntegrationTypeConfiguration {
+    enum CodingKeys: String, CodingKey {
+        case installParams = "oauth2_install_params"
+    }
+}
+
+// MARK: CustomStringConvertible
+
+extension Application.IntegrationTypeConfiguration: CustomStringConvertible {
+    public var description: String {
+        if let installParams = installParams {
+            return "\(installParams)"
+        } else {
+            return "None"
+        }
+    }
+}
+
+// MARK: - EventWebhookStatus
+
+extension Application {
+    
+    /// Status indicating whether event webhooks are enabled or disabled for an application.
     public enum EventWebhookStatus: Int, DiscordModel {
+        
+        /// Webhook events disabled by developer.
         case disabled = 1
+        
+        /// Webhook events enabled by developer.
         case enabled = 2
+        
+        /// Webhook events disabled by discord -- usually due to activity.
         case disabledByDiscord = 3
     }
 }
+
+// MARK: CustomStringConvertible
 
 extension Application.EventWebhookStatus: CustomStringConvertible {
     public var description: String {
@@ -163,6 +286,8 @@ extension Application.EventWebhookStatus: CustomStringConvertible {
         }
     }
 }
+
+// MARK: - Flags
 
 extension Application {
     public struct Flags: OptionSet, DiscordModel {
