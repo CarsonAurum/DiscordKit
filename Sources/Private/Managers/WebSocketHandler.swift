@@ -80,6 +80,7 @@ actor WebSocketHandler {
                     }
                 case .invalidSession:
                     do {
+                        logger.trace("\(msg.data)")
                         let isResumable = try decoder.decode(Bool.self, from: msg.getData())
                         if isResumable {
                             logger.warning("Invalid session, attempting to resume...")
