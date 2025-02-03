@@ -49,6 +49,7 @@ actor WebSocketManager {
         ) { socket in
             Task { await self.setSocket(socket) }
             Task { await self.reconnectManager?.startSequenceTask(self.sequenceStream) }
+            
             socket.onText { socket, txt in
                 Task {
                     guard let data = txt.data(using: .utf8) else {
@@ -78,8 +79,8 @@ actor WebSocketManager {
                     if socket.closeCode?.shouldReconnect ?? false {
                         try await self.bot?.reconnect(shouldBlock: true)
                     } else {
-                        await self.eventContinuation?.finish()
-                        await self.sequenceContinuation?.finish()
+                        // await self.eventContinuation?.finish()
+                        // await self.sequenceContinuation?.finish()
                     }
                 }
             }
