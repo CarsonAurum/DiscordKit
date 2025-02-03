@@ -76,7 +76,7 @@ actor WebSocketManager {
                 self.logger.info("Socket closed. Code: \(String(describing: socket.closeCode))")
                 Task {
                     if socket.closeCode?.shouldReconnect ?? false {
-                        try await self.reconnectManager?.reconnect(shouldBlock: true)
+                        try await self.bot?.reconnect(shouldBlock: true)
                     } else {
                         await self.eventContinuation?.finish()
                         await self.sequenceContinuation?.finish()
@@ -114,6 +114,10 @@ actor WebSocketManager {
         self.reconnectManager = manager
     }
     
+    func setBot(_ bot: DiscordBot) {
+        self.bot = bot
+    }
+    
     // MARK: Private
     
     /// The logger to use within this manager.
@@ -135,6 +139,8 @@ actor WebSocketManager {
     private var sequenceContinuation: AsyncStream<Int>.Continuation?
     
     private weak var reconnectManager: ReconnectManager?
+    
+    private weak var bot: DiscordBot?
     
     /// Set the socket, within this actor's context.
     /// - Parameter socket: The socket to set.

@@ -84,7 +84,8 @@ actor WebSocketHandler {
                         let isResumable = try decoder.decode(Bool.self, from: msg.getData())
                         if isResumable {
                             logger.warning("Invalid session, attempting to resume...")
-                            try await reconnectManager?.reconnect(shouldBlock: true)
+                            try await bot?.reconnect(shouldBlock: true)
+                            
                         } else {
                             logger.warning("Invalid session, full reconnect required. Waiting 5s...")
                             try await socketManager.disconnect()
@@ -103,6 +104,10 @@ actor WebSocketHandler {
         }
     }
     
+    func setBot(_ bot: DiscordBot) {
+        self.bot = bot
+    }
+    
     // MARK: Private
     
     /// The logger to use within this manager.
@@ -118,6 +123,8 @@ actor WebSocketHandler {
     private weak var identifyManager: IdentifyManager?
     
     private weak var reconnectManager: ReconnectManager?
+    
+    private weak var bot: DiscordBot?
     
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder

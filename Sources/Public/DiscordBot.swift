@@ -45,7 +45,8 @@ public final actor DiscordBot {
         )
         Task {
             await self.socketManager.setReconnectManager(reconnectManager)
-            await self.reconnectManager.setHandler(self.socketHandler)
+            await self.socketManager.setBot(self)
+            await self.socketHandler.setBot(self)
         }
     }
     
@@ -75,7 +76,14 @@ public final actor DiscordBot {
     }
     
     public func reconnect(shouldBlock: Bool) async throws {
-        try await self.reconnectManager.reconnect(shouldBlock: shouldBlock)
+        try await self.reconnectManager.reconnect()
+        if shouldBlock {
+            try await socketHandler.handle()
+        } else {
+            Task {
+                try await socketHandler.handle()
+            }
+        }
         logger.info("Reconnected.")
     }
     
