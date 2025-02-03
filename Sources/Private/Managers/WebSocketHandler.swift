@@ -87,7 +87,6 @@ actor WebSocketHandler {
                             try await reconnectManager?.reconnect()
                         } else {
                             logger.warning("Invalid session, full reconnect required. Waiting 5s...")
-                            try await Task.sleep(for: .seconds(5))
                             try await socketManager.disconnect()
                             try await Task.sleep(for: .seconds(2))
                             try await socketManager.connect(to: "wss://gateway.discord.gg/?v=10&encoding=json")

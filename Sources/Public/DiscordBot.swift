@@ -68,6 +68,11 @@ public final actor DiscordBot {
         logger.info("Disconnected.")
     }
     
+    public func reconnect() async throws {
+        try await self.reconnectManager.reconnect()
+        logger.info("Reconnected.")
+    }
+    
     // MARK: Private
     
     /// The intents to use when connecting to the Discord gateway.
