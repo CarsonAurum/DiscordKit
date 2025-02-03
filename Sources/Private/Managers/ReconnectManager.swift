@@ -40,11 +40,9 @@ actor ReconnectManager {
     }
     func reconnect() async throws {
         if let reconnectURL = reconnectURL, let sessionID = sessionID {
-            await heartbeatManager?.stopHeartbeat()
             try await socket?.reconnect(to: reconnectURL)
             let payload = ResumePayload(token: token, sessionID: sessionID, sequence: sequence)
             await socket?.send(opcode: .resume, data: payload)
-            await heartbeatManager?.startHeartbeat()
         } else {
             fatalError()
         }
