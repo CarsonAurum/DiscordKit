@@ -45,7 +45,7 @@ extension GatewayEvent where EventPayload == AnyCodable {
     /// Access the raw data from a gateway event that has codable JSON data.
     /// - Returns: The parsed JSON data.
     func getData() throws -> Data {
-        try JSONSerialization.data(withJSONObject: data.value)
+        try JSONEncoder().encode(data)
     }
 }
 
