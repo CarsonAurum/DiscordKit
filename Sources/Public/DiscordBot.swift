@@ -32,7 +32,7 @@ public final actor DiscordBot {
             sequenceStream: self.socketManager.sequenceStream
         )
         self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents)
-        self.reconnectManager = ReconnectManager(socketManager, token: token)
+        self.reconnectManager = ReconnectManager(socketManager, heartbeatManager: heartbeatManager, token: token)
         self.socketHandler = WebSocketHandler(
             socketManager: self.socketManager,
             heartbeatManager: self.heartbeatManager,

@@ -123,7 +123,6 @@ extension WebSocketHandler {
                 logger.error("\(error)")
             }
         case .invalidSession:
-            logger.debug("Invalid session.")
             do {
                 let payload = try decoder.decode(Bool.self, from: message.getData())
                 if payload {
