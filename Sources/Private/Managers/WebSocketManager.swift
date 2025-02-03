@@ -48,6 +48,7 @@ actor WebSocketManager {
             on: eventLoopGroup
         ) { socket in
             Task { await self.setSocket(socket) }
+            Task { await self.reconnectManager?.startSequenceTask(self.sequenceStream) }
             socket.onText { socket, txt in
                 Task {
                     guard let data = txt.data(using: .utf8) else {

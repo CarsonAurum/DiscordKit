@@ -31,6 +31,9 @@ actor ReconnectManager {
             }
         }
     }
+    func stopSequenceTask() {
+        sequenceTask?.cancel()
+    }
     func setReconnectInfo(url reconnectURL: String, id sessionID: String) {
         self.reconnectURL = reconnectURL
         self.sessionID = sessionID
