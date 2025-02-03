@@ -16,6 +16,8 @@ actor IdentifyManager {
     /// The payload to send.
     private(set) var payload: IdentifyPayload
     
+    private var hasIdentified: Bool = false
+    
     /// Construct a new identify manager with any information known at creation time.
     /// - Parameters:
     ///   - socket: The manager to use when sending identify connections.
@@ -73,6 +75,9 @@ actor IdentifyManager {
     
     /// Send the identify message.
     func send() async {
-        await self.socket?.send(opcode: .identify, data: payload)
+        if !hasIdentified {
+            await self.socket?.send(opcode: .identify, data: payload)
+            hasIdentified = true
+        }
     }
 }
