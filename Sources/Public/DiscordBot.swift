@@ -32,12 +32,15 @@ public final actor DiscordBot {
             sequenceStream: self.socketManager.sequenceStream
         )
         self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents)
+        self.reconnectManager = ReconnectManager(socketManager, token: token)
         self.socketHandler = WebSocketHandler(
             socketManager: self.socketManager,
             heartbeatManager: self.heartbeatManager,
-            identifyManager: identifyManager,
+            identifyManager: self.identifyManager,
+            reconnectManager: self.reconnectManager,
             decoder: self.coders.decoder
         )
+        Task { await self.socketManager.setReconnectManager(reconnectManager) }
     }
     
     /// Finalize the configuration process and connect to the Discord gateway.
@@ -93,4 +96,6 @@ public final actor DiscordBot {
     
     /// The manager to handle identification to the discord gateway.
     private let identifyManager: IdentifyManager
+    
+    private let reconnectManager: ReconnectManager
 }

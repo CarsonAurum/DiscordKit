@@ -23,10 +23,12 @@ actor WebSocketHandler {
         socketManager: WebSocketManager,
         heartbeatManager: HeartbeatManager,
         identifyManager: IdentifyManager,
+        reconnectManager: ReconnectManager,
         decoder: JSONDecoder) {
             self.socketManager = socketManager
             self.heartbeatManager = heartbeatManager
             self.identifyManager = identifyManager
+            self.reconnectManager = reconnectManager
             self.decoder = decoder
     }
     
@@ -99,6 +101,8 @@ actor WebSocketHandler {
     /// The identify manager to use for identification.
     private weak var identifyManager: IdentifyManager?
     
+    private weak var reconnectManager: ReconnectManager?
+    
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder
 }
@@ -118,10 +122,26 @@ extension WebSocketHandler {
             } catch {
                 logger.error("\(error)")
             }
+        case .invalidSession:
+            logger.debug("Invalid session.")
+            do {
+                let payload = try decoder.decode(Bool.self, from: message.getData())
+                if payload {
+                    Task {
+                        try await reconnectManager?.reconnect()
+                    }
+                } else {
+                    Task {
+                        try await socketManager?.disconnect()
+                    }
+                }
+            } catch {
+                logger.error("\(error)")
+            }
         case .presenceUpdate:
             do {
                 let payload = try decoder.decode(Presence.Update.self, from: message.getData())
-                logger.trace("\(payload)")
+                logger.trace("Payload: \(payload)")
             } catch {
                 logger.error("\(error)")
             }
@@ -129,6 +149,7 @@ extension WebSocketHandler {
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
+                Task { await reconnectManager?.setReconnectInfo(url: payload.resumeURL, id: payload.sessionID) }
             } catch {
                 logger.error("\(error)")
             }

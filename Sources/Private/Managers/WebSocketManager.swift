@@ -37,7 +37,6 @@ actor WebSocketManager {
         self.eventContinuation = localEventContinuation
         self.sequenceStream = .init { localSequenceContinuation = $0 }
         self.sequenceContinuation = localSequenceContinuation
-        self.isConnected = false
     }
     
     /// Attempt a new web socket connection to the given URL.
@@ -73,9 +72,14 @@ actor WebSocketManager {
                 }
             }
             socket.onClose.whenComplete { result in
-                self.logger.info(
-                    "Socket closed. Code: \(String(describing: socket.closeCode))"
-                )
+                self.logger.info("Socket closed. Code: \(String(describing: socket.closeCode))")
+                Task {
+                    if socket.closeCode?.shouldReconnect ?? false {
+                        try await self.reconnectManager?.reconnect()
+                    } else {
+                        
+                    }
+                }
             }
         }.get()
     }
@@ -101,6 +105,18 @@ actor WebSocketManager {
     /// Disconnect the active websocket with a normal closure code.
     func disconnect() async throws {
         try await webSocket?.close(code: .normalClosure)
+        try await Task.sleep(for: .milliseconds(100))
+    }
+    
+    func reconnect(to endpoint: String) async throws {
+        logger.info("Reconnecting to Discord Gateway...")
+        try await self.disconnect()
+        try await Task.sleep(for: .seconds(2))
+        try await self.connect(to: endpoint)
+    }
+    
+    func setReconnectManager(_ manager: ReconnectManager) {
+        self.reconnectManager = manager
     }
     
     // MARK: Private
@@ -123,12 +139,11 @@ actor WebSocketManager {
     /// The continuation to push sequence numbers.
     private var sequenceContinuation: AsyncStream<Int>.Continuation?
     
-    private var isConnected: Bool
+    private weak var reconnectManager: ReconnectManager?
     
     /// Set the socket, within this actor's context.
     /// - Parameter socket: The socket to set.
     private func setSocket(_ socket: WebSocket) {
         self.webSocket = socket
-        self.isConnected = true
     }
 }

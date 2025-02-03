@@ -5,8 +5,11 @@
 //  Created by Carson Rau on 2/2/25.
 //
 
+import Logging
+
 actor ReconnectManager {
     
+    private let logger = Logger(label: "ReconnectManager")
     private weak var socket: WebSocketManager?
     private var sequenceTask: Task<Void, Never>?
     private let token: String
@@ -31,6 +34,12 @@ actor ReconnectManager {
         self.sessionID = sessionID
     }
     func reconnect() async throws {
-        
+        if let reconnectURL = reconnectURL, let sessionID = sessionID {
+            try await socket?.reconnect(to: reconnectURL)
+            let payload = ResumePayload(token: token, sessionID: sessionID, sequence: sequence)
+            await socket?.send(opcode: .resume, data: payload)
+        } else {
+            fatalError()
+        }
     }
 }
