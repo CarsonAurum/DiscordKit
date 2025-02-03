@@ -75,7 +75,7 @@ actor WebSocketManager {
             socket.onClose.whenComplete { result in
                 self.logger.info("Socket closed. Code: \(String(describing: socket.closeCode))")
                 Task {
-                    if socket.closeCode?.shouldReconnect ?? false {
+                    if socket.closeCode?.shouldReconnect ?? true {
                         try await self.bot?.reconnect(shouldBlock: true)
                     } else {
                         // await self.eventContinuation?.finish()
