@@ -54,7 +54,7 @@ actor WebSocketHandler {
                     Task {
                         do {
                             let payload = try decoder.decode(HelloPayload.self, from: msg.getData())
-                            logger.trace("\(payload)")
+                            logger.trace("Payload: \(payload)")
                             if let heartbeatManager = heartbeatManager {
                                 await heartbeatManager.setInterval(payload.interval)
                                 if let identifyManager = identifyManager {
@@ -77,6 +77,22 @@ actor WebSocketHandler {
                         }
                     } else {
                         self.logger.error("No HeartbeatManager found!")
+                    }
+                case .invalidSession:
+                    do {
+                        let isResumable = try decoder.decode(Bool.self, from: msg.getData())
+                        if isResumable {
+                            logger.warning("Invalid session, attempting to resume...")
+                            try await reconnectManager?.reconnect()
+                        } else {
+                            logger.warning("Invalid session, full reconnect required. Waiting 5s...")
+                            try await Task.sleep(for: .seconds(5))
+                            try await socketManager.disconnect()
+                            try await Task.sleep(for: .seconds(2))
+                            try await socketManager.connect(to: "wss://gateway.discord.gg/?v=10&encoding=json")
+                        }
+                    } catch {
+                        logger.error("\(error)")
                     }
                 default:
                     self.logger.warning("Unhandled Opcode: \(msg.opcode)")
@@ -119,21 +135,6 @@ extension WebSocketHandler {
             do {
                 let payload = try decoder.decode(Guild.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
-            } catch {
-                logger.error("\(error)")
-            }
-        case .invalidSession:
-            do {
-                let payload = try decoder.decode(Bool.self, from: message.getData())
-                if payload {
-                    Task {
-                        try await reconnectManager?.reconnect()
-                    }
-                } else {
-                    Task {
-                        try await socketManager?.disconnect()
-                    }
-                }
             } catch {
                 logger.error("\(error)")
             }
