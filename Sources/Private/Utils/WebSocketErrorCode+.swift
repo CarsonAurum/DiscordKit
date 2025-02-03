@@ -9,6 +9,11 @@ import NIOWebSocket
 
 extension WebSocketErrorCode {
     public var shouldReconnect: Bool {
-        return true
+        switch self {
+        case .normalClosure:
+            return false
+        default:
+            return true
+        }
     }
 }
