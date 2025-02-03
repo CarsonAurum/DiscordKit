@@ -32,7 +32,10 @@ public final actor DiscordBot {
             sequenceStream: self.socketManager.sequenceStream
         )
         self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents)
-        self.reconnectManager = ReconnectManager(socketManager, heartbeatManager: heartbeatManager, token: token)
+        self.reconnectManager = ReconnectManager(
+            socketManager,
+            heartbeatManager: heartbeatManager,
+            token: token)
         self.socketHandler = WebSocketHandler(
             socketManager: self.socketManager,
             heartbeatManager: self.heartbeatManager,
@@ -40,7 +43,10 @@ public final actor DiscordBot {
             reconnectManager: self.reconnectManager,
             decoder: self.coders.decoder
         )
-        Task { await self.socketManager.setReconnectManager(reconnectManager) }
+        Task {
+            await self.socketManager.setReconnectManager(reconnectManager)
+            await self.reconnectManager.setHandler(self.socketHandler)
+        }
     }
     
     /// Finalize the configuration process and connect to the Discord gateway.
@@ -68,8 +74,8 @@ public final actor DiscordBot {
         logger.info("Disconnected.")
     }
     
-    public func reconnect() async throws {
-        try await self.reconnectManager.reconnect()
+    public func reconnect(shouldBlock: Bool) async throws {
+        try await self.reconnectManager.reconnect(shouldBlock: shouldBlock)
         logger.info("Reconnected.")
     }
     

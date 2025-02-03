@@ -76,7 +76,7 @@ actor WebSocketManager {
                 self.logger.info("Socket closed. Code: \(String(describing: socket.closeCode))")
                 Task {
                     if socket.closeCode?.shouldReconnect ?? false {
-                        try await self.reconnectManager?.reconnect()
+                        try await self.reconnectManager?.reconnect(shouldBlock: true)
                     } else {
                         await self.eventContinuation?.finish()
                         await self.sequenceContinuation?.finish()
@@ -108,13 +108,6 @@ actor WebSocketManager {
     func disconnect() async throws {
         try await webSocket?.close(code: .normalClosure)
         try await Task.sleep(for: .milliseconds(100))
-    }
-    
-    func reconnect(to endpoint: String) async throws {
-        logger.info("Reconnecting to Discord Gateway...")
-        try await self.disconnect()
-        try await Task.sleep(for: .seconds(2))
-        try await self.connect(to: endpoint)
     }
     
     func setReconnectManager(_ manager: ReconnectManager) {

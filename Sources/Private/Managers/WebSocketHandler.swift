@@ -84,7 +84,7 @@ actor WebSocketHandler {
                         let isResumable = try decoder.decode(Bool.self, from: msg.getData())
                         if isResumable {
                             logger.warning("Invalid session, attempting to resume...")
-                            try await reconnectManager?.reconnect()
+                            try await reconnectManager?.reconnect(shouldBlock: true)
                         } else {
                             logger.warning("Invalid session, full reconnect required. Waiting 5s...")
                             try await socketManager.disconnect()
