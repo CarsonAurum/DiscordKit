@@ -76,6 +76,7 @@ public final actor DiscordBot {
     }
     
     public func reconnect(shouldBlock: Bool) async throws {
+        try await self.heartbeatManager.stopHeartbeat()
         try await self.reconnectManager.reconnect()
         if shouldBlock {
             try await socketHandler.handle()
