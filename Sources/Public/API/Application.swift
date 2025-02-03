@@ -79,66 +79,48 @@ extension Application: CustomStringConvertible {
     public var description: String {
         var values = [String]()
         values.append("\(id)")
-        if let name = name {
-            values.append(name)
-        }
-        if let icon = icon {
-            values.append(icon)
-        }
-        if let appDescription = appDescription {
-            values.append("Description: \(appDescription)")
-        }
-        if let rpcOrigins = rpcOrigins {
-            values.append("RPC: \(rpcOrigins.joined(separator: ", "))")
-        }
-        if let isPublicBot = isPublicBot {
-            values.append("Is Public Bot: \(isPublicBot)")
-        }
-        if let requiresCodeGrant = requiresCodeGrant {
-            values.append("Requires Code Grant: \(requiresCodeGrant)")
-        }
-        if let bot = bot {
-            values.append("Bot User: \(bot)")
-        }
-        if let termsOfServiceURL = termsOfServiceURL {
-            values.append("TOS: \(termsOfServiceURL)")
-        }
-        if let privacyPolicyURL = privacyPolicyURL {
-            values.append("Privacy Policy: \(privacyPolicyURL)")
-        }
-        if let owner = owner {
-            values.append("Owner: \(owner)")
-        }
-        if let verifyKey = verifyKey {
-            values.append("Verify Key")
-        }
-        if let team = team {
-            values.append("\(team)")
-        }
-        if let guildID = guildID {
-            values.append("Guild: \(guildID)")
-        }
-        if let guild = guild {
-            values.append("Guild: \(guild)")
-        }
-        if let primarySKUID = primarySKUID {
-            values.append("Primary SKU: \(primarySKUID)")
-        }
-        if let slug = slug {
-            values.append("Slug: \(slug)")
-        }
-        if let coverImage = coverImage {
-            values.append("Cover Image: \(coverImage)")
-        }
-        if let flags = flags {
-            values.append("Flags: \(flags)")
-        }
+        if let name = name { values.append(name) }
+        if let icon = icon { values.append(icon) }
+        if let appDescription = appDescription { values.append("Description: \(appDescription)") }
+        if let rpcOrigins = rpcOrigins { values.append("RPC: \(rpcOrigins.joined(separator: ", "))") }
+        if let isPublicBot = isPublicBot { values.append("Is Public Bot: \(isPublicBot)") }
+        if let requiresCodeGrant = requiresCodeGrant { values.append("Requires Code Grant: \(requiresCodeGrant)") }
+        if let bot = bot { values.append("Bot User: \(bot)") }
+        if let termsOfServiceURL = termsOfServiceURL { values.append("TOS: \(termsOfServiceURL)") }
+        if let privacyPolicyURL = privacyPolicyURL { values.append("Privacy Policy: \(privacyPolicyURL)") }
+        if let owner = owner { values.append("Owner: \(owner)") }
+        if let verifyKey = verifyKey { values.append("Verify Key \(verifyKey)") }
+        if let team = team { values.append("\(team)") }
+        if let guildID = guildID { values.append("Guild: \(guildID)") }
+        if let guild = guild { values.append("Guild: \(guild)") }
+        if let primarySKUID = primarySKUID { values.append("Primary SKU: \(primarySKUID)") }
+        if let slug = slug { values.append("Slug: \(slug)") }
+        if let coverImage = coverImage { values.append("Cover Image: \(coverImage)") }
+        if let flags = flags { values.append("Flags: \(flags)") }
         if let approximateGuildCount = approximateGuildCount {
             values.append("Approximate Guild Count: \(approximateGuildCount)")
         }
         if let approximateUserInstallCount = approximateUserInstallCount {
             values.append("Approximate User Install Count: \(approximateUserInstallCount)")
         }
+        if let redirectURIs = redirectURIs { values.append("Redirects: \(redirectURIs.joined(separator: ", "))") }
+        if let interactionsEndpointURL = interactionsEndpointURL {
+            values.append("Interactions Endpoint: \(interactionsEndpointURL)")
+        }
+        if let roleConnectionsVerificationURL = roleConnectionsVerificationURL {
+            values.append("Role Connections Verification URL: \(roleConnectionsVerificationURL)")
+        }
+        if let eventWebhooksURL = eventWebhooksURL { values.append("Event Webhooks URL: \(eventWebhooksURL)") }
+        if let eventWebhooksStatus = eventWebhooksStatus { values.append("Webhook Status: \(eventWebhooksStatus)") }
+        if let eventWebhooksTypes = eventWebhooksTypes {
+            values.append("Webhook Types: \(eventWebhooksTypes.joined(separator: ", "))")
+        }
+        if let tags = tags { values.append("Tags: \(tags.joined(separator: ", "))") }
+        if let installParams = installParams { values.append("Install Params: \(installParams)") }
+        if let integrationTypesConfig = integrationTypesConfig {
+            values.append("Integration Types Config: \(integrationTypesConfig)")
+        }
+        if let customInstallURL = customInstallURL { values.append("Custom Install URL: \(customInstallURL)") }
         return "[\(values.joined(separator: " || "))]"
     }
 }
@@ -150,11 +132,35 @@ extension Application {
     }
 }
 
+extension Application.IntegrationType: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .guildInstall:
+            return "Guild Install"
+        case .userInstall:
+            return "User Install"
+        }
+    }
+}
+
 extension Application {
     public enum EventWebhookStatus: Int, DiscordModel {
         case disabled = 1
         case enabled = 2
         case disabledByDiscord = 3
+    }
+}
+
+extension Application.EventWebhookStatus: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .disabled:
+            return "Disabled"
+        case .enabled:
+            return "Enabled"
+        case .disabledByDiscord:
+            return "Disabled by Discord"
+        }
     }
 }
 
@@ -179,9 +185,34 @@ extension Application {
     }
 }
 
+extension Application.Flags: CustomStringConvertible {
+    public var description: String {
+        var result: [String] = []
+        if self.contains(.applicationAutoModerationRuleCreateBadge) {
+            result.append("App Auto Moderation Rule Create Bage")
+        }
+        if self.contains(.gatewayPresence) { result.append("Gateway Presence") }
+        if contains(.gatewayPresenceLimited) { result.append("Gateway Presence (Limited)") }
+        if contains(.gatewayGuildMembers) { result.append("Gateway Guild Members") }
+        if contains(.gatewayGuildMembersLimited) { result.append("Gateway Guild Members (Limited)") }
+        if contains(.verificationPendingGuildLimit) { result.append("Verification Pending Guild Limit") }
+        if contains(.embedded) { result.append("Embedded") }
+        if contains(.gatewayMessageContent) { result.append("Gateway Message Content") }
+        if contains(.gatewayMessageContentLimited) { result.append("Gateway Message Content (Limited)") }
+        if contains(.applicationCommandBadge) { result.append("Application Command Badge") }
+        return "[\(result.joined(separator: ", "))]"
+    }
+}
+
 extension Application {
     public struct InstallParams: DiscordModel {
         public let scopes: [String]
         public let permissions: String
+    }
+}
+
+extension Application.InstallParams: CustomStringConvertible {
+    public var description: String {
+        "[Scopes: \(scopes.joined(separator: ", ")) || Permission: \(permissions)]"
     }
 }
