@@ -37,6 +37,7 @@ actor WebSocketManager {
         self.eventContinuation = localEventContinuation
         self.sequenceStream = .init { localSequenceContinuation = $0 }
         self.sequenceContinuation = localSequenceContinuation
+        self.isConnected = false
     }
     
     /// Attempt a new web socket connection to the given URL.
@@ -72,13 +73,9 @@ actor WebSocketManager {
                 }
             }
             socket.onClose.whenComplete { result in
-                Task {
-                    self.logger.info(
-                        "Socket closed. Code: \(String(describing: socket.closeCode))"
-                    )
-                    await self.eventContinuation?.finish()
-                    await self.sequenceContinuation?.finish()
-                }
+                self.logger.info(
+                    "Socket closed. Code: \(String(describing: socket.closeCode))"
+                )
             }
         }.get()
     }
@@ -126,7 +123,12 @@ actor WebSocketManager {
     /// The continuation to push sequence numbers.
     private var sequenceContinuation: AsyncStream<Int>.Continuation?
     
+    private var isConnected: Bool
+    
     /// Set the socket, within this actor's context.
     /// - Parameter socket: The socket to set.
-    private func setSocket(_ socket: WebSocket) { self.webSocket = socket }
+    private func setSocket(_ socket: WebSocket) {
+        self.webSocket = socket
+        self.isConnected = true
+    }
 }

@@ -17,3 +17,6 @@ Types related to Discord's real-time gateway.
 
 ### February 1, 2025
 - `GatewayEvent.Name`: `.presenceUpdate` added.
+
+### February 2, 2025
+- `/Payload/` folder created.
