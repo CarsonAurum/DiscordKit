@@ -77,7 +77,8 @@ actor WebSocketManager {
                     if socket.closeCode?.shouldReconnect ?? false {
                         try await self.reconnectManager?.reconnect()
                     } else {
-                        
+                        await self.eventContinuation?.finish()
+                        await self.sequenceContinuation?.finish()
                     }
                 }
             }
