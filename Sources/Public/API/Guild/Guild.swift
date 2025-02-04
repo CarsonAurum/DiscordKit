@@ -14,5 +14,5 @@ public struct Guild: DiscordModel {
     public let discoverySplash: String?
     public let isOwner: Bool?
     public let ownerID: Snowflake?
-    public let permissions: Permissions
+    public let permissions: Permissions?
 }
