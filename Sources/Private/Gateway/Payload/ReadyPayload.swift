@@ -46,7 +46,7 @@ extension ReadyPayload {
 
 extension ReadyPayload: CustomStringConvertible {
     var description: String {
-        "[v\(version) || Reconnect At: \(resumeURL) with ID: \(sessionID) || \(guilds.count) Guilds || \(user) || " +
-        "\(application)]"
+        "[v\(version) || Reconnect At: \(resumeURL) with ID: \(sessionID) || \(guilds.count) Guilds || User: \(user) || "
+        + "App: \(application)]"
     }
 }
