@@ -102,7 +102,11 @@ extension Presence.Activity {
         self.secrets = try container.decodeIfPresent(Presence.Activity.Secrets.self, forKey: .secrets)
         self.instance = try container.decodeIfPresent(Bool.self, forKey: .instance)
         self.flags = try container.decodeIfPresent(Presence.Activity.Flags.self, forKey: .flags)
-        self.buttons = try container.decodeIfPresent([Presence.Activity.Button].self, forKey: .buttons)
+        if let buttonLabels = try? container.decodeIfPresent([String].self, forKey: .buttons) {
+            self.buttons = buttonLabels.map { Button(label: $0, url: nil) }
+        } else {
+            self.buttons = try container.decodeIfPresent([Presence.Activity.Button].self, forKey: .buttons)
+        }
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -513,12 +517,17 @@ extension Presence.Activity {
         public let label: String
         
         /// The url to be routed when the button is clicked.
-        public let url: String
+        public let url: String?
     }
 }
 
 extension Presence.Activity.Button: CustomStringConvertible {
     public var description: String {
-        "[Label: \(url) || URL: \(url)]"
+        var result = "[Label: \(label)"
+        if let url = url {
+            result += " || URL: \(url)"
+        }
+        result += "]"
+        return result
     }
 }
