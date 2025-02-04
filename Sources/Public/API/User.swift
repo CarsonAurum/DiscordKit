@@ -7,8 +7,8 @@
 
 public struct User: DiscordModel {
     public let id: Snowflake
-    public let username: String
-    public let discriminator: String
+    public let username: String?
+    public let discriminator: String?
     public let globalName: String?
     public let avatar: String?
     public let isBot: Bool?
@@ -44,6 +44,32 @@ extension User {
         case nitroType = "premium_type"
         case publicFlags = "public_flags"
         case avatarDecorationData = "avatar_decoration_data"
+    }
+}
+
+extension User: CustomStringConvertible {
+    public var description: String {
+        var result = [String]()
+        result.append("\(id)")
+        if let username = username { result.append("Username: \(username)") }
+        if let disctriminator = discriminator, discriminator != "0" { result.append("#\(disctriminator)") }
+        if let globalName = globalName { result.append("(Global Name: \(globalName))") }
+        if let avatar = avatar { result.append("Avatar: \(avatar)") }
+        if let isBot = isBot { result.append("Is Bot: \(isBot)") }
+        if let isSystem = isSystem { result.append("Is System: \(isSystem)") }
+        if let isMFAEnabled = isMFAEnabled { result.append("Is MFA Enabled: \(isMFAEnabled)") }
+        if let banner = banner { result.append("Banner: \(banner)") }
+        if let accentColor = accentColor { result.append("Accent Color: \(accentColor)") }
+        if let locale = locale { result.append("Locale: \(locale)") }
+        if let isVerified = isVerified { result.append("Is Verified: \(isVerified)") }
+        if let email = email { result.append("Email: \(email)") }
+        if let flags = flags { result.append("Flags: \(flags)") }
+        if let nitroType = nitroType { result.append("Nitro Type: \(nitroType)") }
+        if let publicFlags = publicFlags { result.append("Public Flags: \(publicFlags)") }
+        if let avatarDecorationData = avatarDecorationData {
+            result.append("Avatar Decoration Data: \(avatarDecorationData)")
+        }
+        return "[\(result.joined(separator: " || "))]"
     }
 }
 
