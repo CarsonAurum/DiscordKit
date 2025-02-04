@@ -35,3 +35,4 @@ added.
 - `/Commands/` folder added.
 - `Locale` added.
 - `Emoji` added.
+- `Role` added.

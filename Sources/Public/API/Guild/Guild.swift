@@ -15,4 +15,11 @@ public struct Guild: DiscordModel {
     public let isOwner: Bool?
     public let ownerID: Snowflake?
     public let permissions: Permissions?
+    public let afkChannelID: Snowflake?
+    public let afkTimeout: Int?
+    public let isWidgetEnabled: Bool?
+    public let widgetChannelID: Snowflake?
+    public let verificationLevel: VerificationLevel?
+    public let defaultMessageNotifications: DefaultMessageNotificationLevel?
+    public let explicitContentFilter: ExplicitContentFilter?
 }

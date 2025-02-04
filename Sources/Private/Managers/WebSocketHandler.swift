@@ -70,11 +70,13 @@ actor WebSocketHandler {
                             logger.error("\(error)")
                         }
                     }
+                case .invalidSession:
+                    Task {
+                        try await socketManager.disconnect()
+                    }
                 case .heartbeatACK:
                     if let heartbeatManager = heartbeatManager {
-                        Task {
-                            await heartbeatManager.acknowledgeHeartbeat()
-                        }
+                        Task { await heartbeatManager.acknowledgeHeartbeat() }
                     } else {
                         self.logger.error("No HeartbeatManager found!")
                     }
