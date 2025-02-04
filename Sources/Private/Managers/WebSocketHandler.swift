@@ -55,12 +55,14 @@ actor WebSocketHandler {
                             logger.trace("Payload: \(payload)")
                             if let heartbeatManager = heartbeatManager {
                                 await heartbeatManager.setInterval(payload.interval)
-                                if let identifyManager = identifyManager {
+                                if msg.sequence.isNone, let identifyManager = identifyManager {
                                     await identifyManager.send()
-                                    await heartbeatManager.startHeartbeat()
+                                } else if msg.sequence.isSome {
+                                    self.logger.error("Resume necessary.")
                                 } else {
-                                    self.logger.error("No IdentifyManager found!")
+                                    self.logger.error("No identify manager found.")
                                 }
+                                await heartbeatManager.startHeartbeat()
                             } else {
                                 self.logger.error("No HeartbeatManager found!")
                             }

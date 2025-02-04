@@ -6,5 +6,6 @@
 //
 
 public struct User: DiscordModel {
+    public let id: Snowflake
     
 }

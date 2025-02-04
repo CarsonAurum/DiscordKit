@@ -38,6 +38,7 @@ public final actor DiscordBot {
             identifyManager: self.identifyManager,
             decoder: self.coders.decoder
         )
+        Task { await self.socketManager.setHeartbeatManager(self.heartbeatManager) }
     }
     
     /// Finalize the configuration process and connect to the Discord gateway.

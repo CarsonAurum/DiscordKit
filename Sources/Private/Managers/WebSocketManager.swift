@@ -74,6 +74,11 @@ actor WebSocketManager {
             }
             socket.onClose.whenComplete { result in
                 self.logger.info("Socket closed. Code: \(String(describing: socket.closeCode))")
+                Task {
+                    if let heartbeatManager = await self.heartbeatManager {
+                        await heartbeatManager.stopHeartbeat()
+                    }
+                }
             }
         }.get()
     }
@@ -102,6 +107,10 @@ actor WebSocketManager {
         try await Task.sleep(for: .milliseconds(100))
     }
     
+    func setHeartbeatManager(_ heartbeatManager: HeartbeatManager) {
+        self.heartbeatManager = heartbeatManager
+    }
+    
     // MARK: Private
     
     /// The logger to use within this manager.
@@ -121,6 +130,8 @@ actor WebSocketManager {
     
     /// The continuation to push sequence numbers.
     private var sequenceContinuation: AsyncStream<Int>.Continuation?
+    
+    private weak var heartbeatManager: HeartbeatManager?
     
     /// Set the socket, within this actor's context.
     /// - Parameter socket: The socket to set.
