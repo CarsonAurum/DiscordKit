@@ -78,6 +78,8 @@ actor WebSocketManager {
                     if let heartbeatManager = await self.heartbeatManager {
                         await heartbeatManager.stopHeartbeat()
                     }
+                    await self.sequenceContinuation?.finish()
+                    await self.eventContinuation?.finish()
                 }
             }
         }.get()

@@ -53,7 +53,7 @@ extension Presence.Update: CustomStringConvertible {
         } else {
             result += "No Activities "
         }
-        result += "|| \(user) || Guild ID: \(guildID)]"
+        result += "|| User: \(user) || Guild ID: \(guildID)]"
         return result
     }
 }

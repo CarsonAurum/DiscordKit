@@ -30,3 +30,6 @@ added.
 ### February 3, 2025
 - `/Application/` folder added.
 - `/Guild/` folder added
+
+### February 4, 2025
+- `/Commands/` folder added.
