@@ -32,22 +32,12 @@ public final actor DiscordBot {
             sequenceStream: self.socketManager.sequenceStream
         )
         self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents)
-        self.reconnectManager = ReconnectManager(
-            socketManager,
-            heartbeatManager: heartbeatManager,
-            token: token)
         self.socketHandler = WebSocketHandler(
             socketManager: self.socketManager,
             heartbeatManager: self.heartbeatManager,
             identifyManager: self.identifyManager,
-            reconnectManager: self.reconnectManager,
             decoder: self.coders.decoder
         )
-        Task {
-            await self.socketManager.setReconnectManager(reconnectManager)
-            await self.socketManager.setBot(self)
-            await self.socketHandler.setBot(self)
-        }
     }
     
     /// Finalize the configuration process and connect to the Discord gateway.
@@ -73,19 +63,6 @@ public final actor DiscordBot {
     public func disconnect() async throws {
         try await self.socketManager.disconnect()
         logger.info("Disconnected.")
-    }
-    
-    public func reconnect(shouldBlock: Bool) async throws {
-        await self.heartbeatManager.stopHeartbeat()
-        try await self.reconnectManager.reconnect()
-        if shouldBlock {
-            try await socketHandler.handle()
-        } else {
-            Task {
-                try await socketHandler.handle()
-            }
-        }
-        logger.info("Reconnected.")
     }
     
     // MARK: Private
@@ -116,6 +93,4 @@ public final actor DiscordBot {
     
     /// The manager to handle identification to the discord gateway.
     private let identifyManager: IdentifyManager
-    
-    private let reconnectManager: ReconnectManager
 }

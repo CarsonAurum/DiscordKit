@@ -23,12 +23,10 @@ actor WebSocketHandler {
         socketManager: WebSocketManager,
         heartbeatManager: HeartbeatManager,
         identifyManager: IdentifyManager,
-        reconnectManager: ReconnectManager,
         decoder: JSONDecoder) {
             self.socketManager = socketManager
             self.heartbeatManager = heartbeatManager
             self.identifyManager = identifyManager
-            self.reconnectManager = reconnectManager
             self.decoder = decoder
     }
     
@@ -78,23 +76,6 @@ actor WebSocketHandler {
                     } else {
                         self.logger.error("No HeartbeatManager found!")
                     }
-                case .invalidSession:
-                    do {
-                        logger.trace("\(msg.data)")
-                        let isResumable = try decoder.decode(Bool.self, from: msg.getData())
-                        if isResumable {
-                            logger.warning("Invalid session, attempting to resume...")
-                            try await bot?.reconnect(shouldBlock: true)
-                            
-                        } else {
-                            logger.warning("Invalid session, full reconnect required. Waiting 5s...")
-                            try await socketManager.disconnect()
-                            try await Task.sleep(for: .seconds(2))
-                            try await socketManager.connect(to: "wss://gateway.discord.gg/?v=10&encoding=json")
-                        }
-                    } catch {
-                        logger.error("\(error)")
-                    }
                 default:
                     self.logger.warning("Unhandled Opcode: \(msg.opcode)")
                 }
@@ -102,10 +83,6 @@ actor WebSocketHandler {
         } else {
             logger.error("No WebSocket found!")
         }
-    }
-    
-    func setBot(_ bot: DiscordBot) {
-        self.bot = bot
     }
     
     // MARK: Private
@@ -121,10 +98,6 @@ actor WebSocketHandler {
     
     /// The identify manager to use for identification.
     private weak var identifyManager: IdentifyManager?
-    
-    private weak var reconnectManager: ReconnectManager?
-    
-    private weak var bot: DiscordBot?
     
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder
@@ -156,7 +129,6 @@ extension WebSocketHandler {
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
-                Task { await reconnectManager?.setReconnectInfo(url: payload.resumeURL, id: payload.sessionID) }
             } catch {
                 logger.error("\(error)")
             }
