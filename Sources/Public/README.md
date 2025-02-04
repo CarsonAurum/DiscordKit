@@ -9,3 +9,6 @@ The types created DiscordKit's forward-facing API.
 
 ### January 31, 2025
 - `DiscordBot`: `connect(shouldBlock:)` and `disconnect()` added.
+
+### February 3, 2025
+- `ReadyData` added.

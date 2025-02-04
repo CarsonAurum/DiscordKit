@@ -87,6 +87,10 @@ actor WebSocketHandler {
         }
     }
     
+    func setReadyHandler(_ handler: @Sendable @escaping (ReadyData) async -> Void) {
+        self.readyHandler = handler
+    }
+    
     // MARK: Private
     
     /// The logger to use within this manager.
@@ -103,6 +107,8 @@ actor WebSocketHandler {
     
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder
+    
+    private var readyHandler: (@Sendable (ReadyData) async -> Void)?
 }
 
 // MARK: Private Handlers
@@ -131,6 +137,13 @@ extension WebSocketHandler {
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
+                Task {
+                    await readyHandler?(ReadyData(
+                        guilds: payload.guilds,
+                        user: payload.user,
+                        application: payload.application
+                    ))
+                }
             } catch {
                 logger.error("\(error)")
             }

@@ -66,6 +66,10 @@ public final actor DiscordBot {
         logger.info("Disconnected.")
     }
     
+    public func onReady(_ handler: @Sendable @escaping (ReadyData) async -> Void) async {
+        await self.socketHandler.setReadyHandler(handler)
+    }
+    
     // MARK: Private
     
     /// The intents to use when connecting to the Discord gateway.

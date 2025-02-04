@@ -7,4 +7,12 @@
 
 public struct Guild: DiscordModel {
     public let id: Snowflake
+    public let name: String?
+    public let icon: String?
+    public let iconHash: String?
+    public let splash: String?
+    public let discoverySplash: String?
+    public let isOwner: Bool?
+    public let ownerID: Snowflake?
+    public let permissions: Permissions
 }
