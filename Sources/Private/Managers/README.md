@@ -14,3 +14,9 @@ Types responsible for action within the library. These tend to be task-isolated 
 ### January 31, 2025
 - `IdentifyManager` added.
 - `WebSocketHandler`: `handleDispatch(_:)` modified.
+
+### February 2, 2025
+- `ReconnectManager` started.
+
+### February 3, 2025
+- Rollback to undo all reconnect features.

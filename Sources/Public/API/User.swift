@@ -53,7 +53,7 @@ extension User: CustomStringConvertible {
         result.append("\(id)")
         if let username = username { result.append("Username: \(username)") }
         if let disctriminator = discriminator, discriminator != "0" { result.append("#\(disctriminator)") }
-        if let globalName = globalName { result.append("(Global Name: \(globalName))") }
+        if let globalName = globalName { result.append("Global Name: \(globalName)") }
         if let avatar = avatar { result.append("Avatar: \(avatar)") }
         if let isBot = isBot { result.append("Is Bot: \(isBot)") }
         if let isSystem = isSystem { result.append("Is System: \(isSystem)") }
