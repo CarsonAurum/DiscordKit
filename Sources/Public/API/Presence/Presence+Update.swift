@@ -16,7 +16,7 @@ extension Presence {
         public let user: User
         
         /// The guild in which this event was detected.
-        public let guildID: Snowflake
+        public let guildID: Snowflake?
         
         /// The new status.
         public let status: Status
