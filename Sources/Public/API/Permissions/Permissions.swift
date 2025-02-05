@@ -93,45 +93,47 @@ extension Permissions: CustomStringConvertible {
         if contains(.viewAuditLog) { activePermissions.append("View Audit Log") }
         if contains(.prioritySpeaker) { activePermissions.append("Priority Speaker") }
         if contains(.stream) { activePermissions.append("Stream") }
-        if contains(.viewChannel)                     { activePermissions.append("viewChannel") }
-        if contains(.sendMessages)                    { activePermissions.append("sendMessages") }
-        if contains(.sendTTSMessages)                 { activePermissions.append("sendTTSMessages") }
-        if contains(.manageMessages)                  { activePermissions.append("manageMessages") }
-        if contains(.embedLinks)                      { activePermissions.append("embedLinks") }
-        if contains(.attachFiles)                     { activePermissions.append("attachFiles") }
-        if contains(.readMessageHistory)              { activePermissions.append("readMessageHistory") }
-        if contains(.mentionEveryone)                 { activePermissions.append("mentionEveryone") }
-        if contains(.useExternalEmojis)               { activePermissions.append("useExternalEmojis") }
-        if contains(.viewGuildInsights)               { activePermissions.append("viewGuildInsights") }
-        if contains(.connect)                         { activePermissions.append("connect") }
-        if contains(.speak)                           { activePermissions.append("speak") }
-        if contains(.muteMembers)                     { activePermissions.append("muteMembers") }
-        if contains(.deafenMembers)                   { activePermissions.append("deafenMembers") }
-        if contains(.moveMembers)                     { activePermissions.append("moveMembers") }
-        if contains(.useVAD)                          { activePermissions.append("useVAD") }
-        if contains(.changeNickname)                  { activePermissions.append("changeNickname") }
-        if contains(.manageNickname)                  { activePermissions.append("manageNickname") }
-        if contains(.manageRoles)                     { activePermissions.append("manageRoles") }
-        if contains(.manageWebhooks)                  { activePermissions.append("manageWebhooks") }
-        if contains(.manageGuildExpressions)          { activePermissions.append("manageGuildExpressions") }
-        if contains(.useApplicationCommands)          { activePermissions.append("useApplicationCommands") }
-        if contains(.requestToSpeak)                  { activePermissions.append("requestToSpeak") }
-        if contains(.manageEvents)                    { activePermissions.append("manageEvents") }
-        if contains(.manageThreads)                   { activePermissions.append("manageThreads") }
-        if contains(.createPublicThreads)             { activePermissions.append("createPublicThreads") }
-        if contains(.createPrivateThreads)            { activePermissions.append("createPrivateThreads") }
-        if contains(.useExternalStickers)             { activePermissions.append("useExternalStickers") }
-        if contains(.sendMessagesInThreads)           { activePermissions.append("sendMessagesInThreads") }
-        if contains(.useEmbeddedActivities)           { activePermissions.append("useEmbeddedActivities") }
-        if contains(.moderateMembers)                 { activePermissions.append("moderateMembers") }
-        if contains(.viewCreatorMonetizationAnalytics){ activePermissions.append("viewCreatorMonetizationAnalytics") }
-        if contains(.useSoundboard)                   { activePermissions.append("useSoundboard") }
-        if contains(.createGuildExpressions)          { activePermissions.append("createGuildExpressions") }
-        if contains(.createEvents)                    { activePermissions.append("createEvents") }
-        if contains(.useExternalSounds)               { activePermissions.append("useExternalSounds") }
-        if contains(.sendVoiceMessages)               { activePermissions.append("sendVoiceMessages") }
-        if contains(.sendPolls)                       { activePermissions.append("sendPolls") }
-        if contains(.useExternalApps)                 { activePermissions.append("useExternalApps") }
+        if contains(.viewChannel) { activePermissions.append("View Channel") }
+        if contains(.sendMessages) { activePermissions.append("Send Messages") }
+        if contains(.sendTTSMessages) { activePermissions.append("Send TTS Messages") }
+        if contains(.manageMessages) { activePermissions.append("Manage Messages") }
+        if contains(.embedLinks) { activePermissions.append("Embed Links") }
+        if contains(.attachFiles) { activePermissions.append("Attach Files") }
+        if contains(.readMessageHistory) { activePermissions.append("Read Message History") }
+        if contains(.mentionEveryone) { activePermissions.append("Mention Everyone") }
+        if contains(.useExternalEmojis) { activePermissions.append("Use External Emojis") }
+        if contains(.viewGuildInsights) { activePermissions.append("View Guild Insights") }
+        if contains(.connect) { activePermissions.append("Connect") }
+        if contains(.speak) { activePermissions.append("Speak") }
+        if contains(.muteMembers) { activePermissions.append("Mute Members") }
+        if contains(.deafenMembers) { activePermissions.append("Deafen Members") }
+        if contains(.moveMembers) { activePermissions.append("Move Members") }
+        if contains(.useVAD) { activePermissions.append("Use VAD") }
+        if contains(.changeNickname) { activePermissions.append("Change Nickname") }
+        if contains(.manageNickname) { activePermissions.append("Manage Nicknmae") }
+        if contains(.manageRoles) { activePermissions.append("Manage Roles") }
+        if contains(.manageWebhooks) { activePermissions.append("Manage Webhooks") }
+        if contains(.manageGuildExpressions) { activePermissions.append("Manage Guild Expressions") }
+        if contains(.useApplicationCommands) { activePermissions.append("Use Application Commands") }
+        if contains(.requestToSpeak) { activePermissions.append("Request to Speak") }
+        if contains(.manageEvents) { activePermissions.append("Manage Events") }
+        if contains(.manageThreads) { activePermissions.append("Manage Threads") }
+        if contains(.createPublicThreads) { activePermissions.append("Create Public Threads") }
+        if contains(.createPrivateThreads) { activePermissions.append("Create Private Threads") }
+        if contains(.useExternalStickers) { activePermissions.append("Use External Stickers") }
+        if contains(.sendMessagesInThreads) { activePermissions.append("Send Messages in Threads") }
+        if contains(.useEmbeddedActivities) { activePermissions.append("Use Embedded Activities") }
+        if contains(.moderateMembers) { activePermissions.append("Moderate Members") }
+        if contains(.viewCreatorMonetizationAnalytics) {
+            activePermissions.append("View Creator Monetization Analytics")
+        }
+        if contains(.useSoundboard) { activePermissions.append("Use Soundboard") }
+        if contains(.createGuildExpressions) { activePermissions.append("Create Guild Expressions") }
+        if contains(.createEvents) { activePermissions.append("Create Events") }
+        if contains(.useExternalSounds) { activePermissions.append("Use External Sounds") }
+        if contains(.sendVoiceMessages) { activePermissions.append("Send Voice Messages") }
+        if contains(.sendPolls) { activePermissions.append("Send Polls") }
+        if contains(.useExternalApps) { activePermissions.append("Use External Apps") }
 
         return "\(activePermissions.joined(separator: ", "))"
     }

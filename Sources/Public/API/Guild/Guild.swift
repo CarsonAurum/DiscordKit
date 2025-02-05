@@ -36,10 +36,10 @@ public struct Guild: DiscordModel {
     public let maxPresences: Int?
     public let maxMembers: Int?
     public let vanityURLCode: String?
-    public let description: String?
+    public let serverDescription: String?
     public let banner: String?
-    public let premiumTier: BoostTier?
-    public let premiumSubscriptionCount: Int?
+    public let boostTier: BoostTier?
+    public let boostCount: Int?
     public let preferredLocale: Locale?
     public let publicUpdatesChannelID: Snowflake?
     public let maxVideoChannelUsers: Int?
@@ -96,7 +96,7 @@ extension Guild {
         case maxPresences = "max_presences"
         case maxMembers = "max_members"
         case vanityURLCode = "vanity_url_code"
-        case description
+        case serverDescription = "description"
         case banner
         case premiumTier = "premium_tier"
         case premiumSubscriptionCount = "premium_subscription_count"
@@ -155,10 +155,10 @@ extension Guild {
         self.maxPresences = try container.decodeIfPresent(Int.self, forKey: .maxPresences)
         self.maxMembers = try container.decodeIfPresent(Int.self, forKey: .maxMembers)
         self.vanityURLCode = try container.decodeIfPresent(String.self, forKey: .vanityURLCode)
-        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.serverDescription = try container.decodeIfPresent(String.self, forKey: .serverDescription)
         self.banner = try container.decodeIfPresent(String.self, forKey: .banner)
-        self.premiumTier = try container.decodeIfPresent(BoostTier.self, forKey: .premiumTier)
-        self.premiumSubscriptionCount = try container.decodeIfPresent(Int.self, forKey: .premiumSubscriptionCount)
+        self.boostTier = try container.decodeIfPresent(BoostTier.self, forKey: .premiumTier)
+        self.boostCount = try container.decodeIfPresent(Int.self, forKey: .premiumSubscriptionCount)
         self.preferredLocale = try container.decodeIfPresent(Locale.self, forKey: .preferredLocale)
         self.publicUpdatesChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .publicUpdatesChannelID)
         self.maxVideoChannelUsers = try container.decodeIfPresent(Int.self, forKey: .maxVideoChannelUsers)
@@ -222,10 +222,10 @@ extension Guild {
         try container.encodeIfPresent(maxPresences, forKey: .maxPresences)
         try container.encodeIfPresent(maxMembers, forKey: .maxMembers)
         try container.encodeIfPresent(vanityURLCode, forKey: .vanityURLCode)
-        try container.encodeIfPresent(description, forKey: .description)
+        try container.encodeIfPresent(serverDescription, forKey: .serverDescription)
         try container.encodeIfPresent(banner, forKey: .banner)
-        try container.encodeIfPresent(premiumTier, forKey: .premiumTier)
-        try container.encodeIfPresent(premiumSubscriptionCount, forKey: .premiumSubscriptionCount)
+        try container.encodeIfPresent(boostTier, forKey: .premiumTier)
+        try container.encodeIfPresent(boostCount, forKey: .premiumSubscriptionCount)
         try container.encodeIfPresent(preferredLocale, forKey: .preferredLocale)
         try container.encodeIfPresent(publicUpdatesChannelID, forKey: .publicUpdatesChannelID)
         try container.encodeIfPresent(maxVideoChannelUsers, forKey: .maxVideoChannelUsers)
@@ -257,5 +257,90 @@ extension Guild {
         try container.encodeIfPresent(stageInstances, forKey: .stageInstances)
         try container.encodeIfPresent(guildScheduledEvents, forKey: .guildScheduledEvents)
         try container.encodeIfPresent(soundboardSounds, forKey: .soundboardSounds)
+    }
+}
+
+extension Guild: CustomStringConvertible {
+    public var description: String {
+        var result = [String]()
+        result.append("ID: \(id)")
+        if let name = name { result.append("Name: \(name)") }
+        if let icon = icon { result.append("Icon: \(icon)") }
+        if let iconHash = iconHash { result.append("Icon (Template): \(iconHash)") }
+        if let splash = splash { result.append("Splash: \(splash)") }
+        if let discoverySplash = discoverySplash { result.append("Discovery Splash: \(discoverySplash)") }
+        if let isOwner = isOwner { result.append("Is Owner: \(isOwner)") }
+        if let ownerID = ownerID { result.append("Owner ID: \(ownerID)") }
+        if let permissions = permissions { result.append("Permissions: \(permissions)") }
+        if let afkChannelID = afkChannelID { result.append("AFK Channel ID: \(afkChannelID)") }
+        if let afkTimeout = afkTimeout { result.append("AFK Timeout: \(afkTimeout)") }
+        if let isWidgetEnabled = isWidgetEnabled { result.append("Is Widget Enabled: \(isWidgetEnabled)") }
+        if let widgetChannelID = widgetChannelID { result.append("Widget Channel ID: \(widgetChannelID)") }
+        if let verificationLevel = verificationLevel { result.append("Verification Level: \(verificationLevel)") }
+        if let defaultMessageNotifications = defaultMessageNotifications {
+            result.append("Default Message Notifications: \(defaultMessageNotifications)")
+        }
+        if let explicitContentFilter = explicitContentFilter {
+            result.append("Explicit Content Filter: \(explicitContentFilter)")
+        }
+        if let roles = roles {
+            if roles.count > 0 {
+                var result2 = [String]()
+                for role in roles { result2.append("\(role)") }
+                result.append("\(roles.count) Roles: [\(result2.joined(separator: ", "))]")
+            } else {
+                result.append("0 Roles.")
+            }
+        }
+        if let emojis = emojis {
+            if emojis.count > 0 {
+                var result2 = [String]()
+                for emoji in emojis { result2.append("\(emoji)") }
+                result.append("\(emojis.count) Emojis: [\(result2.joined(separator: ", "))]")
+            } else {
+                result.append("0 Emojis.")
+            }
+        }
+        if let features = features {
+            if features.count > 0 {
+                var result2 = [String]()
+                for feature in features { result2.append("\(feature)") }
+                result.append("\(features.count) Features: [\(result2.joined(separator: ", "))]")
+            } else {
+                result.append("0 Features.")
+            }
+        }
+        if let mfaLevel = mfaLevel { result.append("MFA Level: \(mfaLevel)") }
+        if let applicationID = applicationID { result.append("Application ID: \(applicationID)") }
+        if let systemChannelID = systemChannelID { result.append("System Channel ID: \(systemChannelID)") }
+        if let systemChannelFlags = systemChannelFlags { result.append("System Channel Flags: \(systemChannelFlags)") }
+        if let rulesChannelID = rulesChannelID { result.append("Rules Channel ID: \(rulesChannelID)") }
+        if let maxPresences = maxPresences { result.append("Max Presences: \(maxPresences)") }
+        if let maxMembers = maxMembers { result.append("Max Members: \(maxMembers)") }
+        if let vanityURLCode = vanityURLCode { result.append("Vanity URL Code: \(vanityURLCode)") }
+        if let serverDescription = serverDescription { result.append("Description: \(serverDescription)") }
+        if let banner = banner { result.append("Banner: \(banner)") }
+        if let boostTier = boostTier { result.append("Boost Tier: \(boostTier)") }
+        if let boostCount = boostCount { result.append("Boost Count: \(boostCount)") }
+        if let preferredLocale = preferredLocale { result.append("Preferred Locale: \(preferredLocale)") }
+        if let publicUpdatesChannelID = publicUpdatesChannelID {
+            result.append("Public Updates Channel ID: \(publicUpdatesChannelID)")
+        }
+        if let publicUpdatesChannelID = publicUpdatesChannelID {
+            result.append("Public Updates Channel ID: \(publicUpdatesChannelID)")
+        }
+        if let maxVideoChannelUsers = maxVideoChannelUsers {
+            result.append("Max Video Channel Users: \(maxVideoChannelUsers)")
+        }
+        if let maxStageVideoChannelUsers = maxStageVideoChannelUsers {
+            result.append("Max Stage Video Channel Users: \(maxStageVideoChannelUsers)")
+        }
+        if let approximateMemberCount = approximateMemberCount {
+            result.append("Approximate Member Count: \(approximateMemberCount)")
+        }
+        if let approximatePresenceCount = approximatePresenceCount {
+            result.append("Approximate Presence Count: \(approximatePresenceCount)")
+        }
+        return "[\(result.joined(separator: " || "))]"
     }
 }
