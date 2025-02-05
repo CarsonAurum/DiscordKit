@@ -16,19 +16,23 @@ actor WebSocketHandler {
     
     /// Construct a new socket handler.
     /// - Parameters:
-    ///  - socketManager: The socket manager to use when listening for messages.
-    ///  - heartbeatManager: The heartbeat manager to use when heartbeating.
-    ///  - identifyManager: The identify manager to use for authentication/resume.
-    ///  - decoder: The decoder to use when reading messages.
+    ///   - socketManager: The socket manager to use when listening for messages.
+    ///   - heartbeatManager: The heartbeat manager to use when heartbeating.
+    ///   - identifyManager: The identify manager to use for authentication/resume.
+    ///   - decoder: The decoder to use when reading messages.
+    ///   - reconnectManager: The reconnect manager to use for handling reconnections.
     init(
         socketManager: WebSocketManager,
         heartbeatManager: HeartbeatManager,
         identifyManager: IdentifyManager,
-        decoder: JSONDecoder) {
-            self.socketManager = socketManager
-            self.heartbeatManager = heartbeatManager
-            self.identifyManager = identifyManager
-            self.decoder = decoder
+        decoder: JSONDecoder,
+        reconnectManager: ReconnectManager
+    ) {
+        self.socketManager = socketManager
+        self.heartbeatManager = heartbeatManager
+        self.identifyManager = identifyManager
+        self.decoder = decoder
+        self.reconnectManager = reconnectManager
     }
     
     /// Run an async-for loop to handle incoming events.
@@ -54,6 +58,7 @@ actor WebSocketHandler {
                         do {
                             let payload = try decoder.decode(HelloPayload.self, from: msg.getData())
                             logger.trace("Hello payload: \(payload)")
+                            
                             if let heartbeatManager = heartbeatManager {
                                 await heartbeatManager.setInterval(payload.interval)
                                 await heartbeatManager.startHeartbeat()
@@ -61,7 +66,8 @@ actor WebSocketHandler {
                                 self.logger.error("No HeartbeatManager found!")
                             }
                             
-                            if let shouldResume = await identifyManager?.shouldAttemptResume, shouldResume,
+                            if let shouldResume = await identifyManager?.shouldAttemptResume,
+                               shouldResume,
                                let lastSequence = await heartbeatManager?.sequence {
                                 logger.info("Attempting resume with sequence \(lastSequence)")
                                 await identifyManager?.sendResume(sequence: lastSequence)
@@ -79,7 +85,7 @@ actor WebSocketHandler {
                         do {
                             try await socketManager.disconnect(shouldTerminate: false)
                             try await Task.sleep(for: .seconds(1))
-                            try await socketManager.reconnect()
+                            try await reconnectManager?.attemptReconnect(socketManager: socketManager)
                         } catch {
                             logger.error("Error during reconnect: \(error)")
                         }
@@ -97,7 +103,7 @@ actor WebSocketHandler {
                             } else {
                                 await identifyManager?.clearSession()
                             }
-                            try await socketManager.reconnect()
+                            try await reconnectManager?.attemptReconnect(socketManager: socketManager)
                         } catch {
                             logger.error("Error handling invalid session: \(error)")
                         }
@@ -135,6 +141,9 @@ actor WebSocketHandler {
     /// The identify manager to use for identification.
     private weak var identifyManager: IdentifyManager?
     
+    /// The reconnect manager used for reconnection logic.
+    private weak var reconnectManager: ReconnectManager?
+    
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder
     
@@ -167,7 +176,7 @@ extension WebSocketHandler {
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
-                Task { await socketManager?.setEndpoint(payload.resumeURL) }
+                Task { await reconnectManager?.setEndpoint(payload.resumeURL) }
                 Task { await identifyManager?.setSessionID(payload.sessionID) }
                 Task {
                     await readyHandler?(ReadyData(

@@ -47,6 +47,11 @@ actor ReconnectManager {
         logger.debug("Stored session ID: \(sessionID)")
     }
     
+    /// Retrieve the stored session ID.
+    func getSessionID() -> String? {
+        return sessionID
+    }
+    
     /// Clear the saved session.
     func clearSession() {
         self.sessionID = nil
@@ -65,7 +70,7 @@ actor ReconnectManager {
         
         if reconnectAttempts >= maxReconnectAttempts {
             logger.error("Maximum reconnect attempts reached (\(maxReconnectAttempts)). Terminating connection.")
-            socketManager.terminate()
+            await socketManager.terminate()
             return
         }
         
