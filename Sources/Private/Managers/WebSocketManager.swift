@@ -42,6 +42,8 @@ actor WebSocketManager {
     /// Attempt a new web socket connection to the given URL.
     /// - Parameter endpoint: The endpoint URL to connect.
     func connect(to endpoint: String) async throws {
+        // Store the endpoint for potential reconnects.
+        self.endpoint = endpoint
         try await WebSocket.connect(
             to: endpoint,
             configuration: .init(maxFrameSize: 1 << 24),
@@ -78,11 +80,19 @@ actor WebSocketManager {
                     if let heartbeatManager = await self.heartbeatManager {
                         await heartbeatManager.stopHeartbeat()
                     }
-                    await self.sequenceContinuation?.finish()
-                    await self.eventContinuation?.finish()
                 }
             }
         }.get()
+    }
+    
+    /// Reconnect to the previously stored endpoint.
+    func reconnect() async throws {
+        guard let endpoint = self.endpoint else {
+            logger.error("No stored endpoint to reconnect to.")
+            return
+        }
+        logger.info("Reconnecting to \(endpoint)")
+        try await self.connect(to: endpoint)
     }
     
     /// Send a gateway event with a given payload.
@@ -104,9 +114,13 @@ actor WebSocketManager {
     }
     
     /// Disconnect the active websocket with a normal closure code.
-    func disconnect() async throws {
+    func disconnect(shouldTerminate: Bool = true) async throws {
         try await webSocket?.close(code: .normalClosure)
         try await Task.sleep(for: .milliseconds(100))
+        if shouldTerminate {
+            eventContinuation?.finish()
+            sequenceContinuation?.finish()
+        }
     }
     
     func setHeartbeatManager(_ heartbeatManager: HeartbeatManager) {
@@ -134,6 +148,9 @@ actor WebSocketManager {
     private var sequenceContinuation: AsyncStream<Int>.Continuation?
     
     private weak var heartbeatManager: HeartbeatManager?
+    
+    /// The stored endpoint used for connecting (and reconnecting).
+    private var endpoint: String?
     
     /// Set the socket, within this actor's context.
     /// - Parameter socket: The socket to set.

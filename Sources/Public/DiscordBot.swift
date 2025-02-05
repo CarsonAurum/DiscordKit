@@ -49,6 +49,7 @@ public final actor DiscordBot {
             logger.critical("Could not get gateway route.")
             fatalError()
         }
+        // Note: the URL string is stored in the socket manager for reconnects.
         try await socketManager.connect(to: url + "/?v=10&encoding=json")
         logger.info("Connected.")
         if shouldBlock {

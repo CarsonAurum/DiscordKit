@@ -18,6 +18,7 @@ actor WebSocketHandler {
     /// - Parameters:
     ///  - socketManager: The socket manager to use when listening for messages.
     ///  - heartbeatManager: The heartbeat manager to use when heartbeating.
+    ///  - identifyManager: The identify manager to use for authentication/resume.
     ///  - decoder: The decoder to use when reading messages.
     init(
         socketManager: WebSocketManager,
@@ -30,11 +31,11 @@ actor WebSocketHandler {
             self.decoder = decoder
     }
     
-    /// Run an async-for loop
+    /// Run an async-for loop to handle incoming events.
     func handle() async throws {
         if let socketManager = socketManager {
             for await msg in socketManager.eventStream {
-                logger.debug("\(msg)")
+                logger.debug("Received: \(msg)")
                 switch msg.opcode {
                 case .dispatch:
                     Task {
@@ -52,27 +53,55 @@ actor WebSocketHandler {
                     Task {
                         do {
                             let payload = try decoder.decode(HelloPayload.self, from: msg.getData())
-                            logger.trace("Payload: \(payload)")
+                            logger.trace("Hello payload: \(payload)")
                             if let heartbeatManager = heartbeatManager {
                                 await heartbeatManager.setInterval(payload.interval)
-                                if msg.sequence.isNone, let identifyManager = identifyManager {
-                                    await identifyManager.send()
-                                } else if msg.sequence.isSome {
-                                    self.logger.error("Resume necessary.")
-                                } else {
-                                    self.logger.error("No identify manager found.")
-                                }
                                 await heartbeatManager.startHeartbeat()
                             } else {
                                 self.logger.error("No HeartbeatManager found!")
                             }
+                            
+                            // On hello, decide whether to resume or send a new identify.
+                            if let shouldResume = await identifyManager?.shouldAttemptResume, shouldResume,
+                               let lastSequence = await heartbeatManager?.sequence {
+                                logger.info("Attempting resume with sequence \(lastSequence)")
+                                await identifyManager?.sendResume(sequence: lastSequence)
+                            } else {
+                                logger.info("Sending new identify payload.")
+                                await identifyManager?.sendIdentify()
+                            }
                         } catch {
-                            logger.error("\(error)")
+                            logger.error("Error decoding hello payload: \(error)")
+                        }
+                    }
+                case .reconnect:
+                    Task {
+                        logger.info("Received reconnect opcode from gateway. Reconnecting...")
+                        do {
+                            try await socketManager.disconnect(shouldTerminate: false)
+                            try await Task.sleep(for: .seconds(1))
+                            try await socketManager.reconnect()
+                        } catch {
+                            logger.error("Error during reconnect: \(error)")
                         }
                     }
                 case .invalidSession:
                     Task {
-                        try await socketManager.disconnect()
+                        do {
+                            // The invalid session payload is expected to be a Boolean.
+                            let canResume = try decoder.decode(Bool.self, from: msg.getData())
+                            logger.info("Received invalid session opcode. canResume: \(canResume)")
+                            try await socketManager.disconnect()
+                            try await Task.sleep(for: .seconds(1))
+                            if canResume {
+                                await identifyManager?.setShouldAttemptResume(true)
+                            } else {
+                                await identifyManager?.clearSession()
+                            }
+                            try await socketManager.reconnect()
+                        } catch {
+                            logger.error("Error handling invalid session: \(error)")
+                        }
                     }
                 case .heartbeatACK:
                     if let heartbeatManager = heartbeatManager {
@@ -124,21 +153,22 @@ extension WebSocketHandler {
         case .guildCreate:
             do {
                 let payload = try decoder.decode(Guild.self, from: message.getData())
-                logger.trace("Payload: \(payload)")
+                logger.trace("Guild Create payload: \(payload)")
             } catch {
-                logger.error("\(error)")
+                logger.error("Error decoding guild create: \(error)")
             }
         case .presenceUpdate:
             do {
                 let payload = try decoder.decode(Presence.Update.self, from: message.getData())
-                logger.trace("Payload: \(payload)")
+                logger.trace("Presence Update payload: \(payload)")
             } catch {
-                logger.error("\(error)")
+                logger.error("Error decoding presence update: \(error)")
             }
         case .ready:
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
-                logger.trace("Payload: \(payload)")
+                logger.trace("Ready payload: \(payload)")
+                Task { await identifyManager?.setSessionID(payload.sessionID) }
                 Task {
                     await readyHandler?(ReadyData(
                         guilds: payload.guilds,
@@ -147,7 +177,7 @@ extension WebSocketHandler {
                     ))
                 }
             } catch {
-                logger.error("\(error)")
+                logger.error("Error decoding ready payload: \(error)")
             }
         case .unknown(let name):
             logger.debug("Unhandled Dispatch: \(name.uppercased())")
@@ -156,5 +186,3 @@ extension WebSocketHandler {
         }
     }
 }
-
-

@@ -124,6 +124,4 @@ actor HeartbeatManager {
     
     /// Flag to determine if the manager is waiting for acknowledgement on the previously sent heartbeat.
     private var pendingAck: Bool = false
-    
 }
-
