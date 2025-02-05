@@ -13,7 +13,11 @@ Types shadowing the discord application commands features.
 - `Guild+ExplicitContentFilter`: Created.
 - `Guild+MFALevel`: Created.
 - `Guild+NSFWLevel`: Created
+- `Guild`: Fields started.
+- `Guild+SystemChannelFlags`
 
 ### Febrary 5, 2025
+- `Guild`: Fields complete.
 - `Guild+BoostTier`: Created.
-
+- `Guild+Feature`: Created.
+- `Guild+WelcomeScreen` Created.
