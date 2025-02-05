@@ -75,10 +75,16 @@ actor WebSocketManager {
                 }
             }
             socket.onClose.whenComplete { result in
+                let shouldReset = socket.closeCode?.shouldReconnect ?? true
                 self.logger.info("Socket closed. Code: \(String(describing: socket.closeCode))")
                 Task {
                     if let heartbeatManager = await self.heartbeatManager {
                         await heartbeatManager.stopHeartbeat()
+                    }
+                    if shouldReset {
+                        try await self.reconnect()
+                    } else {
+                        await self.terminate()
                     }
                 }
             }
@@ -118,13 +124,21 @@ actor WebSocketManager {
         try await webSocket?.close(code: .normalClosure)
         try await Task.sleep(for: .milliseconds(100))
         if shouldTerminate {
-            eventContinuation?.finish()
-            sequenceContinuation?.finish()
+            terminate()
         }
+    }
+    
+    func terminate() {
+        eventContinuation?.finish()
+        sequenceContinuation?.finish()
     }
     
     func setHeartbeatManager(_ heartbeatManager: HeartbeatManager) {
         self.heartbeatManager = heartbeatManager
+    }
+    
+    func setEndpoint(_ endpoint: String) {
+        self.endpoint = endpoint
     }
     
     // MARK: Private

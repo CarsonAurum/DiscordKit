@@ -153,21 +153,22 @@ extension WebSocketHandler {
         case .guildCreate:
             do {
                 let payload = try decoder.decode(Guild.self, from: message.getData())
-                logger.trace("Guild Create payload: \(payload)")
+                logger.trace("Payload: \(payload)")
             } catch {
-                logger.error("Error decoding guild create: \(error)")
+                logger.error("\(error)")
             }
         case .presenceUpdate:
             do {
                 let payload = try decoder.decode(Presence.Update.self, from: message.getData())
-                logger.trace("Presence Update payload: \(payload)")
+                logger.trace("Payload: \(payload)")
             } catch {
-                logger.error("Error decoding presence update: \(error)")
+                logger.error("\(error)")
             }
         case .ready:
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
-                logger.trace("Ready payload: \(payload)")
+                logger.trace("Payload: \(payload)")
+                Task { await socketManager?.setEndpoint(payload.resumeURL) }
                 Task { await identifyManager?.setSessionID(payload.sessionID) }
                 Task {
                     await readyHandler?(ReadyData(
@@ -177,7 +178,7 @@ extension WebSocketHandler {
                     ))
                 }
             } catch {
-                logger.error("Error decoding ready payload: \(error)")
+                logger.error("\(error)")
             }
         case .unknown(let name):
             logger.debug("Unhandled Dispatch: \(name.uppercased())")
