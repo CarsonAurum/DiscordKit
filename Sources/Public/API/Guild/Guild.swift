@@ -22,4 +22,7 @@ public struct Guild: DiscordModel {
     public let verificationLevel: VerificationLevel?
     public let defaultMessageNotifications: DefaultMessageNotificationLevel?
     public let explicitContentFilter: ExplicitContentFilter?
+    public let roles: [Role]
+    public let emojis: [Emoji]
+    public let features: [Feature]
 }

@@ -101,7 +101,7 @@ actor WebSocketManager {
         // Check if maximum reconnect attempts have been reached.
         if reconnectAttempts >= maxReconnectAttempts {
             logger.error("Maximum reconnect attempts reached (\(maxReconnectAttempts)). Terminating connection.")
-            await self.terminate()
+            self.terminate()
             return
         }
         
