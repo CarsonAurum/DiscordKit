@@ -97,8 +97,23 @@ actor WebSocketManager {
             logger.error("No stored endpoint to reconnect to.")
             return
         }
-        logger.info("Reconnecting to \(endpoint)")
+        
+        // Check if maximum reconnect attempts have been reached.
+        if reconnectAttempts >= maxReconnectAttempts {
+            logger.error("Maximum reconnect attempts reached (\(maxReconnectAttempts)). Terminating connection.")
+            await self.terminate()
+            return
+        }
+        
+        // Increment the reconnect attempt counter.
+        reconnectAttempts += 1
+        logger.info("Attempting reconnect \(reconnectAttempts) of \(maxReconnectAttempts) to \(endpoint)")
+        
+        // Attempt the reconnect.
         try await self.connect(to: endpoint)
+        
+        // On a successful connection, reset the counter.
+        reconnectAttempts = 0
     }
     
     /// Send a gateway event with a given payload.
@@ -165,6 +180,14 @@ actor WebSocketManager {
     
     /// The stored endpoint used for connecting (and reconnecting).
     private var endpoint: String?
+    
+    // MARK: Reconnect Attempt Counter
+    
+    /// The current number of reconnect attempts.
+    private var reconnectAttempts = 0
+    
+    /// The maximum allowed reconnect attempts.
+    private let maxReconnectAttempts = 5
     
     /// Set the socket, within this actor's context.
     /// - Parameter socket: The socket to set.

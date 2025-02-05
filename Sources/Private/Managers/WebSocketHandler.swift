@@ -61,7 +61,6 @@ actor WebSocketHandler {
                                 self.logger.error("No HeartbeatManager found!")
                             }
                             
-                            // On hello, decide whether to resume or send a new identify.
                             if let shouldResume = await identifyManager?.shouldAttemptResume, shouldResume,
                                let lastSequence = await heartbeatManager?.sequence {
                                 logger.info("Attempting resume with sequence \(lastSequence)")
