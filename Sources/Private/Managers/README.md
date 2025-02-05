@@ -20,3 +20,6 @@ Types responsible for action within the library. These tend to be task-isolated 
 
 ### February 3, 2025
 - Rollback to undo all reconnect features.
+
+### February 4, 2025
+- `IdentifyManager`: Expanded to support 

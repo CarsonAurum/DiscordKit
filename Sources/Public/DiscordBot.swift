@@ -14,42 +14,16 @@ import Logging
 
 // MARK: - DiscordBot
 
-/// The primary source of truth for the Discord app.
 public final actor DiscordBot {
     
-    /// Start the bot creation process by providing intents and a token.
-    /// - Parameters:
-    ///   - token: The token to use when connecting to Discord.
-    ///   - intents: The intents to specify when connecting to the Discord gateway.
-    public init(token: String, intents: GatewayIntents) {
-        self.intents = intents
-        self.coders = (JSONEncoder(), JSONDecoder())
-        self.eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
-        self.socketManager = WebSocketManager(coders: self.coders, eventLoopGroup: self.eventLoopGroup)
-        self.restManager = RESTManager(coders: self.coders, token: token, eventLoopGroup: self.eventLoopGroup)
-        self.heartbeatManager = HeartbeatManager(
-            self.socketManager,
-            sequenceStream: self.socketManager.sequenceStream
-        )
-        self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents)
-        self.socketHandler = WebSocketHandler(
-            socketManager: self.socketManager,
-            heartbeatManager: self.heartbeatManager,
-            identifyManager: self.identifyManager,
-            decoder: self.coders.decoder
-        )
-        Task { await self.socketManager.setHeartbeatManager(self.heartbeatManager) }
-    }
-    
     /// Finalize the configuration process and connect to the Discord gateway.
-    /// - Parameter shouldBlock: `true` if the bot should block the calling thread; `false` otherwise.
     public func connect(shouldBlock: Bool = false) async throws {
         let endpoint = try await restManager.getGatewayBot()
         guard let url = endpoint?.url else {
             logger.critical("Could not get gateway route.")
             fatalError()
         }
-        // Note: the URL string is stored in the socket manager for reconnects.
+        // Note: the URL string is stored in the reconnect manager for reconnects.
         try await socketManager.connect(to: url + "/?v=10&encoding=json")
         logger.info("Connected.")
         if shouldBlock {
@@ -71,12 +45,12 @@ public final actor DiscordBot {
         await self.socketHandler.setReadyHandler(handler)
     }
     
-    // MARK: Private
+    // MARK: - Private
     
     /// The intents to use when connecting to the Discord gateway.
     private let intents: GatewayIntents
     
-    /// The logger to use within this manager.
+    /// The logger for the bot.
     private let logger = Logger(label: "DiscordBot")
     
     /// The coders to use throughout the library.
@@ -99,4 +73,31 @@ public final actor DiscordBot {
     
     /// The manager to handle identification to the discord gateway.
     private let identifyManager: IdentifyManager
+    
+    /// The new manager for handling reconnection logic.
+    private let reconnectManager: ReconnectManager
+    
+    public init(token: String, intents: GatewayIntents) {
+        self.intents = intents
+        self.coders = (JSONEncoder(), JSONDecoder())
+        self.eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
+        
+        // Initialize the new ReconnectManager.
+        self.reconnectManager = ReconnectManager()
+        
+        self.socketManager = WebSocketManager(coders: self.coders, eventLoopGroup: self.eventLoopGroup, reconnectManager: reconnectManager)
+        self.restManager = RESTManager(coders: self.coders, token: token, eventLoopGroup: self.eventLoopGroup)
+        self.heartbeatManager = HeartbeatManager(
+            self.socketManager,
+            sequenceStream: self.socketManager.sequenceStream
+        )
+        self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents, reconnectManager: reconnectManager)
+        self.socketHandler = WebSocketHandler(
+            socketManager: self.socketManager,
+            heartbeatManager: self.heartbeatManager,
+            identifyManager: self.identifyManager,
+            decoder: self.coders.decoder
+        )
+        Task { await self.socketManager.setHeartbeatManager(self.heartbeatManager) }
+    }
 }

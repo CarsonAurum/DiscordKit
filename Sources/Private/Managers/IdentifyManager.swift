@@ -5,6 +5,7 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+import Foundation
 import Logging
 
 actor IdentifyManager {
@@ -12,10 +13,12 @@ actor IdentifyManager {
     private weak var socket: WebSocketManager?
     private var identifyPayload: IdentifyPayload
     private let token: String
-    private var sessionID: String?
     
     // When true, we will attempt a resume upon receiving the hello event.
     private(set) var shouldAttemptResume: Bool = false
+    
+    /// The reconnect manager for storing session IDs.
+    private let reconnectManager: ReconnectManager
     
     init(
         socket: WebSocketManager,
@@ -23,9 +26,13 @@ actor IdentifyManager {
         intents: GatewayIntents = .default,
         largeThreshold: Int? = nil,
         shardInfo: (id: Int, nShards: Int)? = nil,
-        presence: Presence? = nil
+        presence: Presence? = nil,
+        reconnectManager: ReconnectManager
     ) {
         self.socket = socket
+        self.token = token
+        self.reconnectManager = reconnectManager
+        
         let shardInfoComputed: [Int]? = shardInfo.map { [$0.id, $0.nShards] }
         let adjustedThreshold = largeThreshold.map { max(50, min($0, 250)) }
         
@@ -38,7 +45,6 @@ actor IdentifyManager {
             presence: presence,
             intents: intents
         )
-        self.token = token
     }
     
     /// Send an identify payload.
@@ -50,7 +56,8 @@ actor IdentifyManager {
     
     /// Send a resume payload.
     func sendResume(sequence: Int? = nil) async {
-        guard let sessionID = sessionID else {
+        // Retrieve the stored session ID from the reconnect manager.
+        guard let sessionID = await reconnectManager.getSessionID() else {
             logger.error("Cannot resume: No session ID set.")
             return
         }
@@ -65,13 +72,13 @@ actor IdentifyManager {
     
     /// Save the session ID from a ready event.
     func setSessionID(_ sessionID: String) async {
-        self.sessionID = sessionID
+        await reconnectManager.setSessionID(sessionID)
         shouldAttemptResume = true
     }
     
     /// Clear the saved session.
     func clearSession() async {
-        self.sessionID = nil
+        await reconnectManager.clearSession()
         shouldAttemptResume = false
     }
     

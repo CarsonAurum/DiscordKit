@@ -25,4 +25,5 @@ public struct Guild: DiscordModel {
     public let roles: [Role]
     public let emojis: [Emoji]
     public let features: [Feature]
+    
 }

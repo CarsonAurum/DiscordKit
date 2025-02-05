@@ -69,8 +69,13 @@ extension Guild.Feature {
         case "ROLE_ICONS":                                  self = .roleIcons
         case "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE":   self = .roleSubscriptionsAvailableForPurchase
         case "ROLE_SUBSCRIPTIONS_ENABLED":                  self = .roleSubscriptionsEnabled
-        default:
-            self = .unknown(stringValue)
+        case "SOUNDBOARD":                                  self = .soundboard
+        case "TICKETED_EVENTS_URL":                         self = .ticketedEventsURL
+        case "VANITY_URL":                                  self = .vanityURL
+        case "VERIFIED":                                    self = .verified
+        case "VIP_REGIONS":                                 self = .vipRegions
+        case "WELCOME_SCREEN_ENABLED":                      self = .welcomeScreenEnabled
+        default:                                            self = .unknown(stringValue)
         }
     }
     

@@ -4,16 +4,14 @@
 //
 //  Created by Carson Rau on 1/30/25.
 //
-
-import AnyCodable
 import Foundation
 import Logging
 import NIO
 import WebSocketKit
+import AnyCodable
 
 // MARK: - WebSocketManager
 
-/// A manager handling an active web socket connection.
 actor WebSocketManager {
     
     /// The async stream providing events from the web socket.
@@ -22,28 +20,50 @@ actor WebSocketManager {
     /// The async stream providing sequence numbers from the web socket.
     let sequenceStream: AsyncStream<Int>
     
-    /// Construct a new web socket manager.
-    /// - Parameters:
-    ///   - coders: The JSON encoder/decoder to use within this manager.
-    ///   - eventLoopGroup: The event loop on which the web socket should run.
-    init(coders: CoderPackage, eventLoopGroup: EventLoopGroup) {
+    /// The reconnect manager to handle reconnection state.
+    private let reconnectManager: ReconnectManager
+    
+    /// The JSON coders used within this manager.
+    private let coders: CoderPackage
+    
+    /// The event loop group on which the web socket should run.
+    private let eventLoopGroup: EventLoopGroup
+    
+    /// The living web socket, while it is available.
+    private var webSocket: WebSocket?
+    
+    /// The continuation to push events.
+    private var eventContinuation: GatewayEventAsyncStream.Continuation?
+    
+    /// The continuation to push sequence numbers.
+    private var sequenceContinuation: AsyncStream<Int>.Continuation?
+    
+    /// A logger for this manager.
+    let logger = Logger(label: "WebSocketManager")
+    
+    // MARK: - Initialization
+    
+    init(coders: CoderPackage, eventLoopGroup: EventLoopGroup, reconnectManager: ReconnectManager) {
         self.coders = coders
         self.eventLoopGroup = eventLoopGroup
+        self.reconnectManager = reconnectManager
         
         var localEventContinuation: GatewayEventAsyncStream.Continuation?
         var localSequenceContinuation: AsyncStream<Int>.Continuation?
-        
         self.eventStream = .init { localEventContinuation = $0 }
         self.eventContinuation = localEventContinuation
         self.sequenceStream = .init { localSequenceContinuation = $0 }
         self.sequenceContinuation = localSequenceContinuation
     }
     
+    // MARK: - Connection Management
+    
     /// Attempt a new web socket connection to the given URL.
     /// - Parameter endpoint: The endpoint URL to connect.
     func connect(to endpoint: String) async throws {
-        // Store the endpoint for potential reconnects.
-        self.endpoint = endpoint
+        // Store the endpoint in the reconnect manager for future reconnect attempts.
+        await reconnectManager.setEndpoint(endpoint)
+        
         try await WebSocket.connect(
             to: endpoint,
             configuration: .init(maxFrameSize: 1 << 24),
@@ -70,7 +90,7 @@ actor WebSocketManager {
                             }
                         }
                     } catch {
-                        self.logger.error("Unable to decode event.")
+                        self.logger.error("Unable to decode event: \(error)")
                     }
                 }
             }
@@ -82,7 +102,7 @@ actor WebSocketManager {
                         await heartbeatManager.stopHeartbeat()
                     }
                     if shouldReset {
-                        try await self.reconnect()
+                        try await self.reconnectManager.attemptReconnect(socketManager: self)
                     } else {
                         await self.terminate()
                     }
@@ -91,35 +111,7 @@ actor WebSocketManager {
         }.get()
     }
     
-    /// Reconnect to the previously stored endpoint.
-    func reconnect() async throws {
-        guard let endpoint = self.endpoint else {
-            logger.error("No stored endpoint to reconnect to.")
-            return
-        }
-        
-        // Check if maximum reconnect attempts have been reached.
-        if reconnectAttempts >= maxReconnectAttempts {
-            logger.error("Maximum reconnect attempts reached (\(maxReconnectAttempts)). Terminating connection.")
-            self.terminate()
-            return
-        }
-        
-        // Increment the reconnect attempt counter.
-        reconnectAttempts += 1
-        logger.info("Attempting reconnect \(reconnectAttempts) of \(maxReconnectAttempts) to \(endpoint)")
-        
-        // Attempt the reconnect.
-        try await self.connect(to: endpoint)
-        
-        // On a successful connection, reset the counter.
-        reconnectAttempts = 0
-    }
-    
     /// Send a gateway event with a given payload.
-    /// - Parameters:
-    ///   - opcode: The opcode of the event to send.
-    ///   - data: The payload to send.
     func send<T>(opcode: GatewayEvent<T>.Opcode, data: T) where T: DiscordModel {
         do {
             let payload = GatewayEvent(opcode: opcode, data: data)
@@ -148,50 +140,17 @@ actor WebSocketManager {
         sequenceContinuation?.finish()
     }
     
-    func setHeartbeatManager(_ heartbeatManager: HeartbeatManager) {
-        self.heartbeatManager = heartbeatManager
-    }
+    // MARK: - Private Helpers
     
-    func setEndpoint(_ endpoint: String) {
-        self.endpoint = endpoint
-    }
-    
-    // MARK: Private
-    
-    /// The logger to use within this manager.
-    private let logger = Logger(label: "WebSocketManager")
-    
-    /// The event loop on which to run the web socket connection.
-    private let eventLoopGroup: EventLoopGroup
-    
-    /// The JSON coders to use within this manager.
-    private let coders: CoderPackage
-    
-    /// The living web socket, while it is available.
-    private var webSocket: WebSocket?
-    
-    /// The continuation to push events.
-    private var eventContinuation: GatewayEventAsyncStream.Continuation?
-    
-    /// The continuation to push sequence numbers.
-    private var sequenceContinuation: AsyncStream<Int>.Continuation?
-    
-    private weak var heartbeatManager: HeartbeatManager?
-    
-    /// The stored endpoint used for connecting (and reconnecting).
-    private var endpoint: String?
-    
-    // MARK: Reconnect Attempt Counter
-    
-    /// The current number of reconnect attempts.
-    private var reconnectAttempts = 0
-    
-    /// The maximum allowed reconnect attempts.
-    private let maxReconnectAttempts = 5
-    
-    /// Set the socket, within this actor's context.
-    /// - Parameter socket: The socket to set.
+    /// Set the active socket.
     private func setSocket(_ socket: WebSocket) {
         self.webSocket = socket
+    }
+    
+    /// A weak reference to the heartbeat manager.
+    private weak var heartbeatManager: HeartbeatManager?
+    
+    func setHeartbeatManager(_ heartbeatManager: HeartbeatManager) {
+        self.heartbeatManager = heartbeatManager
     }
 }
