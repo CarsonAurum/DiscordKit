@@ -53,7 +53,11 @@ extension Presence.Update: CustomStringConvertible {
         } else {
             result += "No Activities "
         }
-        result += "|| User: \(user) || Guild ID: \(guildID)]"
+        result += "|| User: \(user)"
+        
+        if let guildID = guildID { result += " || Guild ID: \(guildID)" }
+        
+        result += "]"
         return result
     }
 }
