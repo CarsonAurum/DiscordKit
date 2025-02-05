@@ -49,7 +49,7 @@ public struct Guild: DiscordModel {
     public let welcomeScreen: WelcomeScreen?
     public let nsfwLevel: NSFWLevel?
     public let stickers: [Sticker]?
-    public let premiumProgressBarEnabled: Bool?
+    public let isBoostBarEnabled: Bool?
     public let safetyAlertsChannelID: Snowflake?
     
     // MARK: - GuildCreate
@@ -168,7 +168,7 @@ extension Guild {
         self.welcomeScreen = try container.decodeIfPresent(WelcomeScreen.self, forKey: .welcomeScreen)
         self.nsfwLevel = try container.decodeIfPresent(NSFWLevel.self, forKey: .nsfwLevel)
         self.stickers = try container.decodeIfPresent([Sticker].self, forKey: .stickers)
-        self.premiumProgressBarEnabled = try container.decodeIfPresent(Bool.self, forKey: .premiumProgressBarEnabled)
+        self.isBoostBarEnabled = try container.decodeIfPresent(Bool.self, forKey: .premiumProgressBarEnabled)
         self.safetyAlertsChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .safetyAlertsChannelID)
         
         // Decode joinedAt using ISO8601
@@ -235,7 +235,7 @@ extension Guild {
         try container.encodeIfPresent(welcomeScreen, forKey: .welcomeScreen)
         try container.encodeIfPresent(nsfwLevel, forKey: .nsfwLevel)
         try container.encodeIfPresent(stickers, forKey: .stickers)
-        try container.encodeIfPresent(premiumProgressBarEnabled, forKey: .premiumProgressBarEnabled)
+        try container.encodeIfPresent(isBoostBarEnabled, forKey: .premiumProgressBarEnabled)
         try container.encodeIfPresent(safetyAlertsChannelID, forKey: .safetyAlertsChannelID)
         
         // Encode joinedAt as ISO8601 if present
@@ -283,33 +283,9 @@ extension Guild: CustomStringConvertible {
         if let explicitContentFilter = explicitContentFilter {
             result.append("Explicit Content Filter: \(explicitContentFilter)")
         }
-        if let roles = roles {
-            if roles.count > 0 {
-                var result2 = [String]()
-                for role in roles { result2.append("\(role)") }
-                result.append("\(roles.count) Roles: [\(result2.joined(separator: ", "))]")
-            } else {
-                result.append("0 Roles.")
-            }
-        }
-        if let emojis = emojis {
-            if emojis.count > 0 {
-                var result2 = [String]()
-                for emoji in emojis { result2.append("\(emoji)") }
-                result.append("\(emojis.count) Emojis: [\(result2.joined(separator: ", "))]")
-            } else {
-                result.append("0 Emojis.")
-            }
-        }
-        if let features = features {
-            if features.count > 0 {
-                var result2 = [String]()
-                for feature in features { result2.append("\(feature)") }
-                result.append("\(features.count) Features: [\(result2.joined(separator: ", "))]")
-            } else {
-                result.append("0 Features.")
-            }
-        }
+        if let roles = roles { result.append("\(roles.count) Roles.") }
+        if let emojis = emojis { result.append("\(emojis.count) Emojis.") }
+        if let features = features { result.append("\(features.count) Features.") }
         if let mfaLevel = mfaLevel { result.append("MFA Level: \(mfaLevel)") }
         if let applicationID = applicationID { result.append("Application ID: \(applicationID)") }
         if let systemChannelID = systemChannelID { result.append("System Channel ID: \(systemChannelID)") }
@@ -341,6 +317,29 @@ extension Guild: CustomStringConvertible {
         if let approximatePresenceCount = approximatePresenceCount {
             result.append("Approximate Presence Count: \(approximatePresenceCount)")
         }
+        if let welcomeScreen = welcomeScreen { result.append("Welcome Screen: \(welcomeScreen)") }
+        if let nsfwLevel = nsfwLevel { result.append("NSFW Level: \(nsfwLevel)") }
+        if let stickers = stickers { result.append("\(stickers.count) Stickers") }
+        if let isBoostBarEnabled = isBoostBarEnabled { result.append("Is Boost Bar Enabled: \(isBoostBarEnabled)") }
+        if let safetyAlertsChannelID = safetyAlertsChannelID {
+            result.append("Safety Alerts Channel ID: \(safetyAlertsChannelID)")
+        }
+        if let joinedAt = joinedAt {
+            result.append("Joined At: \(joinedAt)")
+        }
+        if let isLarge = isLarge { result.append("Is Large: \(isLarge)") }
+        if let isUnavailable = isUnavailable { result.append("Is Unavailable: \(isUnavailable)") }
+        if let memberCount = memberCount { result.append("\(memberCount) Members.") }
+        if let voiceStates = voiceStates { result.append("\(voiceStates.count) Voice States.") }
+        if let members = members { result.append("\(members.count) Members.") }
+        if let channels = channels { result.append("\(channels.count) Channels.")}
+        if let threads = threads { result.append("\(threads.count) Threads.")}
+        if let presences = presences { result.append("\(presences.count) Presences.") }
+        if let stageInstances = stageInstances { result.append("\(stageInstances.count) Stage Instances.") }
+        if let guildScheduledEvents = guildScheduledEvents {
+            result.append("\(guildScheduledEvents.count) Scheduled Events.")
+        }
+        if let soundboardSounds = soundboardSounds { result.append("\(soundboardSounds.count) Soundboard Sounds.") }
         return "[\(result.joined(separator: " || "))]"
     }
 }
