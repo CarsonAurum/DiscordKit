@@ -165,6 +165,27 @@ extension WebSocketHandler {
             } catch {
                 logger.error("\(error)")
             }
+        case .guildScheduledEventCreate:
+            do {
+                let payload = try decoder.decode(Guild.ScheduledEvent.self, from: message.getData())
+                logger.trace("Payload: \(payload)")
+            } catch {
+                logger.error("\(error)")
+            }
+        case .guildScheduledEventDelete:
+            do {
+                let payload = try decoder.decode(Guild.ScheduledEvent.self, from: message.getData())
+                logger.trace("Payload: \(payload)")
+            } catch {
+                logger.error("\(error)")
+            }
+        case .guildScheduledEventUpdate:
+            do {
+                let payload = try decoder.decode(Guild.ScheduledEvent.self, from: message.getData())
+                logger.trace("Payload: \(payload)")
+            } catch {
+                logger.error("\(error)")
+            }
         case .presenceUpdate:
             do {
                 let payload = try decoder.decode(Presence.Update.self, from: message.getData())
