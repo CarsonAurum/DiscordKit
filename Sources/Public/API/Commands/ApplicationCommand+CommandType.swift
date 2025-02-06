@@ -7,6 +7,6 @@
 
 extension ApplicationCommand {
     public enum CommandType: Int, DiscordModel {
-        
+        case slashCommand = 1
     }
 }
