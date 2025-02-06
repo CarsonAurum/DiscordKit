@@ -21,5 +21,6 @@ Types related to Discord's real-time gateway.
 ### February 2, 2025
 - `/Payload/` folder created.
 
-### February 3, 2025
-- `GatewayEvent.Name`: 
+### February 6, 2025
+- `GatewayEvent.Name`: `resumed` added.
+- `GatewayEvent.Name`: `guildScheduledEventCreate`, `guildScheduledEventUpdate`, `guildScheduledEventDelete` added. 

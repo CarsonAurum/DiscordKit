@@ -94,11 +94,13 @@ actor WebSocketHandler {
                             // The invalid session payload is expected to be a Boolean.
                             let canResume = try decoder.decode(Bool.self, from: msg.getData())
                             logger.info("Received invalid session opcode. canResume: \(canResume)")
-                            try await socketManager.disconnect()
-                            try await Task.sleep(for: .seconds(1))
                             if canResume {
+                                try await socketManager.disconnect(shouldTerminate: false)
+                                try await Task.sleep(for: .seconds(1))
                                 await identifyManager?.setShouldAttemptResume(true)
                             } else {
+                                try await socketManager.disconnect()
+                                try await Task.sleep(for: .seconds(1))
                                 await identifyManager?.clearSession()
                             }
                             try await reconnectManager?.attemptReconnect(socketManager: socketManager)
@@ -175,7 +177,7 @@ extension WebSocketHandler {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
                 Task {
-                    await self.reconnectManager?.setEndpoint(payload.resumeURL)
+                    await self.reconnectManager?.setEndpoint(payload.resumeURL, .reconnect)
                     await self.identifyManager?.setSessionID(payload.sessionID)
                     await self.readyHandler?(.init(
                         guilds: payload.guilds,
@@ -186,6 +188,8 @@ extension WebSocketHandler {
             } catch {
                 logger.error("\(error)")
             }
+        case .resumed:
+            print("Resumed.")
         case .unknown(let name):
             logger.debug("Unhandled Dispatch: \(name.uppercased())")
         default:

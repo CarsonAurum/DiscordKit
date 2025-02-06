@@ -14,6 +14,8 @@ actor ReconnectManager {
     /// The URL endpoint to reconnect to.
     private var endpoint: String?
     
+    private var reconnectEndpoint: String?
+    
     /// The session identifier (used during resume).
     private var sessionID: String?
     
@@ -29,13 +31,18 @@ actor ReconnectManager {
     // MARK: - Endpoint Management
     
     /// Store the endpoint.
-    func setEndpoint(_ endpoint: String) {
-        self.endpoint = endpoint
-        logger.debug("Stored reconnect endpoint: \(endpoint)")
+    func setEndpoint(_ endpoint: String, _ type: EndpointType) {
+        if type == .reconnect {
+            self.reconnectEndpoint = endpoint
+            logger.debug("Stored reconnect endpoint: \(endpoint)")
+        } else if type == .main {
+            self.endpoint = endpoint
+            logger.debug("Stored main endpoint: \(endpoint)")
+        }
     }
     
     /// Retrieve the stored endpoint.
-    func getEndpoint() -> String? {
+    func getEndpoint(_ type: EndpointType) -> String? {
         return endpoint
     }
     
@@ -55,6 +62,7 @@ actor ReconnectManager {
     /// Clear the saved session.
     func clearSession() {
         self.sessionID = nil
+        self.reconnectEndpoint = nil
         logger.debug("Cleared session ID")
     }
     
@@ -63,12 +71,12 @@ actor ReconnectManager {
     /// Attempt a reconnection using the stored endpoint.
     /// - Parameter socketManager: The WebSocketManager to use for reconnecting.
     func attemptReconnect(socketManager: WebSocketManager) async throws {
-        guard let endpoint = self.endpoint else {
+        guard var endpoint = self.endpoint else {
             logger.error("No stored endpoint to reconnect to.")
             return
         }
         
-        if reconnectAttempts >= maxReconnectAttempts {
+        if reconnectEndpoint != nil, reconnectAttempts >= maxReconnectAttempts {
             logger.error("Maximum reconnect attempts reached (\(maxReconnectAttempts)). Terminating connection.")
             await socketManager.terminate()
             return
@@ -77,6 +85,12 @@ actor ReconnectManager {
         reconnectAttempts += 1
         logger.info("Attempting reconnect \(reconnectAttempts) of \(maxReconnectAttempts) to \(endpoint)")
         try await socketManager.connect(to: endpoint)
-        reconnectAttempts = 0
+    }
+}
+
+extension ReconnectManager {
+    enum EndpointType {
+        case main
+        case reconnect
     }
 }
