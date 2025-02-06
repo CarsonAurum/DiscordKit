@@ -77,7 +77,6 @@ actor HeartbeatManager {
     
     /// Send a heartbeat.
     func sendHeartbeat() async {
-        logger.debug("Sending heartbeat with sequence \(sequence.map(String.init) ?? "<nil>").")
         pendingAck = true
         await self.socketManager?.send(opcode: .heartbeat, data: sequence)
         ackTimeoutTask?.cancel()
