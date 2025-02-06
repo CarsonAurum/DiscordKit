@@ -10,7 +10,7 @@ import NIOWebSocket
 extension WebSocketErrorCode {
     public var shouldAutoReconnect: Bool {
         switch self {
-        case .normalClosure, .policyViolation:
+        case .normalClosure:
             return false
         default:
             return true
