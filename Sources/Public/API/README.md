@@ -36,3 +36,8 @@ added.
 - `Locale` added.
 - `Emoji` added.
 - `Role` added.
+
+### February 5, 2025
+- `/Channel/` folder added.
+- `/Permissions/` folder added.
+- `/Voice/` folder added.

@@ -21,3 +21,5 @@ Types shadowing the discord application commands features.
 - `Guild+BoostTier`: Created.
 - `Guild+Feature`: Created.
 - `Guild+WelcomeScreen` Created.
+- `Guild+Member`: Added.
+- `/ScheduledEvent/` folder added.
