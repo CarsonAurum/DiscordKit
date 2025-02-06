@@ -40,9 +40,11 @@ actor HeartbeatManager {
             return
         }
         logger.debug("Starting heartbeat loop. Interval: \(interval) ms.")
-        sequenceTask = Task {
-            for await newSequence in sequenceStream {
-                self.sequence = newSequence
+        if sequenceTask.isNone {
+            sequenceTask = Task {
+                for await newSequence in sequenceStream {
+                    self.sequence = newSequence
+                }
             }
         }
         heartbeatTask = Task {
@@ -60,8 +62,6 @@ actor HeartbeatManager {
         logger.debug("Stopping heartbeat...")
         heartbeatTask?.cancel()
         heartbeatTask = nil
-        sequenceTask?.cancel()
-        sequenceTask = nil
         ackTimeoutTask?.cancel()
         ackTimeoutTask = nil
         pendingAck = false

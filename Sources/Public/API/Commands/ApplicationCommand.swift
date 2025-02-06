@@ -6,5 +6,7 @@
 //
 
 public struct ApplicationCommand: DiscordModel {
+    public let id: Snowflake
+    public let type: CommandType
     
 }
