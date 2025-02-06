@@ -24,7 +24,7 @@ public final actor DiscordBot {
             fatalError()
         }
         // Note: the URL string is stored in the reconnect manager for reconnects.
-        try await socketManager.connect(to: url + "/?v=10&encoding=json")
+        try await socketManager.connect(to: url)
         logger.info("Connected.")
         if shouldBlock {
             try await socketHandler.handle()
