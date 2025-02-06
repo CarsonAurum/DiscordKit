@@ -131,7 +131,7 @@ actor WebSocketManager {
         if shouldTerminate {
             try await webSocket?.close(code: .normalClosure)
         } else {
-            try await webSocket?.close(code: .policyViolation)
+            try await webSocket?.close(code: .unknown(1))
         }
         try await Task.sleep(for: .milliseconds(100))
         if shouldTerminate {
