@@ -128,7 +128,11 @@ actor WebSocketManager {
     
     /// Disconnect the active websocket with a normal closure code.
     func disconnect(shouldTerminate: Bool = true) async throws {
-        try await webSocket?.close(code: .normalClosure)
+        if shouldTerminate {
+            try await webSocket?.close(code: .normalClosure)
+        } else {
+            try await webSocket?.close()
+        }
         try await Task.sleep(for: .milliseconds(100))
         if shouldTerminate {
             terminate()

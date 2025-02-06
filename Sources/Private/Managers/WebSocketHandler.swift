@@ -54,7 +54,7 @@ actor WebSocketHandler {
                         }
                     }
                 case .hello:
-                    Task {
+                    Task { 
                         do {
                             let payload = try decoder.decode(HelloPayload.self, from: msg.getData())
                             logger.trace("Hello payload: \(payload)")
@@ -174,10 +174,10 @@ extension WebSocketHandler {
             do {
                 let payload = try decoder.decode(ReadyPayload.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
-                Task { await reconnectManager?.setEndpoint(payload.resumeURL) }
-                Task { await identifyManager?.setSessionID(payload.sessionID) }
                 Task {
-                    await readyHandler?(ReadyData(
+                    await self.reconnectManager?.setEndpoint(payload.resumeURL)
+                    await self.identifyManager?.setSessionID(payload.sessionID)
+                    await self.readyHandler?(.init(
                         guilds: payload.guilds,
                         user: payload.user,
                         application: payload.application
