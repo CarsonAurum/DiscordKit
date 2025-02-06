@@ -58,14 +58,6 @@ actor WebSocketHandler {
                         do {
                             let payload = try decoder.decode(HelloPayload.self, from: msg.getData())
                             logger.trace("Hello payload: \(payload)")
-                            
-                            if let heartbeatManager = heartbeatManager {
-                                await heartbeatManager.setInterval(payload.interval)
-                                await heartbeatManager.startHeartbeat()
-                            } else {
-                                self.logger.error("No HeartbeatManager found!")
-                            }
-                            
                             if let shouldResume = await identifyManager?.shouldAttemptResume,
                                shouldResume,
                                let lastSequence = await heartbeatManager?.sequence {
@@ -74,6 +66,12 @@ actor WebSocketHandler {
                             } else {
                                 logger.info("Sending new identify payload.")
                                 await identifyManager?.sendIdentify()
+                                if let heartbeatManager = heartbeatManager {
+                                    await heartbeatManager.setInterval(payload.interval)
+                                    await heartbeatManager.startHeartbeat()
+                                } else {
+                                    self.logger.error("No HeartbeatManager found!")
+                                }
                             }
                         } catch {
                             logger.error("Error decoding hello payload: \(error)")
