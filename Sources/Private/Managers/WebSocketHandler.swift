@@ -66,12 +66,12 @@ actor WebSocketHandler {
                             } else {
                                 logger.info("Sending new identify payload.")
                                 await identifyManager?.sendIdentify()
-                                if let heartbeatManager = heartbeatManager {
-                                    await heartbeatManager.setInterval(payload.interval)
-                                    await heartbeatManager.startHeartbeat()
-                                } else {
-                                    self.logger.error("No HeartbeatManager found!")
-                                }
+                            }
+                            if let heartbeatManager = heartbeatManager {
+                                await heartbeatManager.setInterval(payload.interval)
+                                await heartbeatManager.startHeartbeat()
+                            } else {
+                                self.logger.error("No HeartbeatManager found!")
                             }
                         } catch {
                             logger.error("Error decoding hello payload: \(error)")
