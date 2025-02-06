@@ -75,7 +75,7 @@ extension Guild.ScheduledEvent {
         privacyLevel = try container.decode(PrivacyLevel.self, forKey: .privacyLevel)
         status = try container.decode(Status.self, forKey: .status)
         entityType = try container.decode(EntityType.self, forKey: .entityType)
-        entityID = try container.decode(Snowflake.self, forKey: .entityID)
+        entityID = try container.decodeIfPresent(Snowflake.self, forKey: .entityID)
         entityMetadata = try container.decodeIfPresent(EntityMetadata.self, forKey: .entityMetadata)
         creator = try container.decodeIfPresent(User.self, forKey: .creator)
         userCount = try container.decodeIfPresent(Int.self, forKey: .userCount)
