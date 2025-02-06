@@ -8,5 +8,8 @@
 extension ApplicationCommand {
     public enum CommandType: Int, DiscordModel {
         case slashCommand = 1
+        case user = 2
+        case message = 3
+        case activityEntry = 4
     }
 }

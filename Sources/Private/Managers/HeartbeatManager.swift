@@ -43,7 +43,9 @@ actor HeartbeatManager {
         if sequenceTask.isNone {
             sequenceTask = Task {
                 for await newSequence in sequenceStream {
-                    self.sequence = newSequence
+                    if newSequence > self.sequence ?? -1 {
+                        self.sequence = newSequence
+                    }
                 }
             }
         }

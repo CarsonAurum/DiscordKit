@@ -22,4 +22,5 @@ Types responsible for action within the library. These tend to be task-isolated 
 - Rollback to undo all reconnect features.
 
 ### February 4, 2025
-- `IdentifyManager`: Expanded to support 
+- `IdentifyManager`: Expanded to support reconnections.
+- `ReconnectManager`: Created.
