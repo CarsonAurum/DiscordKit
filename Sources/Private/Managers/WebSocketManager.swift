@@ -61,9 +61,8 @@ actor WebSocketManager {
     /// Attempt a new web socket connection to the given URL.
     /// - Parameter endpoint: The endpoint URL to connect.
     func connect(to endpoint: String) async throws {
-        let endpoint = endpoint + "/?v=10&encoding=json"
-        // Store the endpoint in the reconnect manager for future reconnect attempts.
         await reconnectManager.setEndpoint(endpoint)
+        let endpoint = endpoint + "/?v=10&encoding=json"
         
         try await WebSocket.connect(
             to: endpoint,
