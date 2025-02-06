@@ -8,9 +8,9 @@
 import NIOWebSocket
 
 extension WebSocketErrorCode {
-    public var shouldReconnect: Bool {
+    public var shouldAutoReconnect: Bool {
         switch self {
-        case .normalClosure:
+        case .normalClosure, .policyViolation:
             return false
         default:
             return true

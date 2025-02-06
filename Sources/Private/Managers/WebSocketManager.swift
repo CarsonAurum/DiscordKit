@@ -95,7 +95,7 @@ actor WebSocketManager {
                 }
             }
             socket.onClose.whenComplete { result in
-                let shouldReset = socket.closeCode?.shouldReconnect ?? true
+                let shouldReset = socket.closeCode?.shouldAutoReconnect ?? true
                 self.logger.info("Socket closed. Code: \(String(describing: socket.closeCode))")
                 Task {
                     if let heartbeatManager = await self.heartbeatManager {
