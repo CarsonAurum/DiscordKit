@@ -41,14 +41,6 @@ public final actor DiscordBot {
         logger.info("Disconnected.")
     }
     
-    public func reconnect() async throws {
-        logger.info("Reconnecting...")
-        try await socketManager.disconnect()
-        try await Task.sleep(for: .seconds(1))
-        try await reconnectManager.attemptReconnect(socketManager: socketManager)
-        logger.info("Reconnected.")
-    }
-    
     public func onReady(_ handler: @Sendable @escaping (ReadyData) async -> Void) async {
         await self.socketHandler.setReadyHandler(handler)
     }
