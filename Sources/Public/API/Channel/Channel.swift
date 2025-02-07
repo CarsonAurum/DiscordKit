@@ -87,7 +87,7 @@ extension Channel {
     
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(Snowflake.self, forKey: .name)
+        self.id = try container.decode(Snowflake.self, forKey: .id)
         self.type = try container.decode(ChannelType.self, forKey: .type)
         self.guildID = try container.decodeIfPresent(Snowflake.self, forKey: .guildID)
         self.position = try container.decodeIfPresent(Int.self, forKey: .position)
