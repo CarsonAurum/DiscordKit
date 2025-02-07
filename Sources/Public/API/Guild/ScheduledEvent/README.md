@@ -11,6 +11,7 @@ Types relating to the guild's scheduled events API.
 - `GuildScheduledEvent+PrivacyLevel`: Created
 - `GuildScheduledEvent+Status`: Created
 - `GuildScheduledEvent+User`: Added.
+- `/RecurrenceRule/` folder added.
 
 ### February 6, 2025
 - Custom codable support added.

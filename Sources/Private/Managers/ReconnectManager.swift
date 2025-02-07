@@ -71,20 +71,24 @@ actor ReconnectManager {
     /// Attempt a reconnection using the stored endpoint.
     /// - Parameter socketManager: The WebSocketManager to use for reconnecting.
     func attemptReconnect(socketManager: WebSocketManager) async throws {
-        guard var endpoint = self.endpoint else {
-            logger.error("No stored endpoint to reconnect to.")
-            return
-        }
-        
-        if reconnectEndpoint != nil, reconnectAttempts >= maxReconnectAttempts {
+        // Check if we've reached the maximum number of reconnect attempts.
+        guard reconnectAttempts < maxReconnectAttempts else {
             logger.error("Maximum reconnect attempts reached (\(maxReconnectAttempts)). Terminating connection.")
             await socketManager.terminate()
             return
         }
         
+        // Determine which endpoint to use: reconnectEndpoint has priority.
+        guard let targetEndpoint = reconnectEndpoint ?? endpoint else {
+            logger.error("No stored endpoint to reconnect to.")
+            return
+        }
+        
         reconnectAttempts += 1
-        logger.info("Attempting reconnect \(reconnectAttempts) of \(maxReconnectAttempts) to \(endpoint)")
-        try await socketManager.connect(to: endpoint)
+        logger.info("Attempting reconnect \(reconnectAttempts) of \(maxReconnectAttempts) to \(targetEndpoint)")
+        
+        // Attempt the connection using the decided endpoint.
+        try await socketManager.connect(to: targetEndpoint)
     }
 }
 
