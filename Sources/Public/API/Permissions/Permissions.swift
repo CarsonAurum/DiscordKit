@@ -140,13 +140,13 @@ extension Permissions: CustomStringConvertible {
 }
 
 extension Permissions {
-    public struct Overwrite: Codable, Hashable, Sendable {
+    public struct Overwrite: DiscordModel {
         public let id: Snowflake
         public let type: OverwriteType
         public let allow: Permissions
         public let deny: Permissions
         
-        public enum OverwriteType: Int, Codable, Hashable, Sendable {
+        public enum OverwriteType: Int, DiscordModel {
             case role = 0
             case member = 1
         }
