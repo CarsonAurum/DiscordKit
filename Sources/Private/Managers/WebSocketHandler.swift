@@ -210,7 +210,7 @@ extension WebSocketHandler {
                 logger.error("\(error)")
             }
         case .resumed:
-            print("Resumed.")
+            logger.debug("Resumed")
         case .unknown(let name):
             logger.debug("Unhandled Dispatch: \(name.uppercased())")
         default:
