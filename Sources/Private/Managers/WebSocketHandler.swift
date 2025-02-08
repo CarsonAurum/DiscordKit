@@ -186,6 +186,13 @@ extension WebSocketHandler {
             } catch {
                 logger.error("\(error)")
             }
+        case .interactionCreate:
+            do {
+                let payload = try decoder.decode(Interaction<AnyCodable>.self, from: message.getData())
+                logger.trace("Payload: \(payload)")
+            } catch {
+                logger.error("\(error)")
+            }
         case .presenceUpdate:
             do {
                 let payload = try decoder.decode(Presence.Update.self, from: message.getData())

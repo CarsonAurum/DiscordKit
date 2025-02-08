@@ -16,6 +16,7 @@ actor HeartbeatManager {
     /// Construct a new heartbeat manager.
     /// - Parameters:
     ///   - socketManager: The socket manager to use when sending heartbeats.
+    ///   - reconnectManager: The reconnect manager to use when the heartbeat is not acknowledged.
     ///   - sequenceStream: The stream to observe for changes in sequence value from the web socket.
     init(_ socketManager: WebSocketManager, _ reconnectManager: ReconnectManager, sequenceStream: AsyncStream<Int>) {
         self.socketManager = socketManager
@@ -29,7 +30,7 @@ actor HeartbeatManager {
         self.interval = interval
     }
     
-    /// Initialize the new heartbeat task and sequence task.
+    /// Initialize the new heartbeat task..
     /// - Note: This will only happen if the interval is set, and no previous heartbeat task is running.
     func startHeartbeat() {
         guard let interval = self.interval else {
@@ -130,5 +131,6 @@ actor HeartbeatManager {
     /// Flag to determine if the manager is waiting for acknowledgement on the previously sent heartbeat.
     private var pendingAck: Bool = false
     
+    /// The reconnect manager to use when a heartbeat is not acknowledged.
     private weak var reconnectManager: ReconnectManager?
 }

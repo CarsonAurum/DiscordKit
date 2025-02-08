@@ -24,6 +24,9 @@ extension GatewayEvent {
         /// Guild scheduled event was updated.
         case guildScheduledEventUpdate
         
+        /// User used an interaction, such as an application command.
+        case interactionCreate
+        
         /// Not a dispatch event.
         case none
         
@@ -55,6 +58,7 @@ extension GatewayEvent.Name {
         case "GUILD_SCHEDULED_EVENT_CREATE":    self = .guildScheduledEventCreate
         case "GUILD_SCHEDULED_EVENT_DELETE":    self = .guildScheduledEventDelete
         case "GUILD_SCHEDULED_EVENT_UPDATE":    self = .guildScheduledEventUpdate
+        case "INTERACTION_CREATE":              self = .interactionCreate
         case "PRESENCE_UPDATE":                 self = .presenceUpdate
         case "READY":                           self = .ready
         case "RESUMED":                         self = .resumed
@@ -69,6 +73,7 @@ extension GatewayEvent.Name {
         case .guildScheduledEventCreate:    try container.encode("GUILD_SCHEDULED_EVENT_CREATE")
         case .guildScheduledEventDelete:    try container.encode("GUILD_SCHEDULED_EVENT_DELETE")
         case .guildScheduledEventUpdate:    try container.encode("GUILD_SCHEDULED_EVENT_UPDATE")
+        case .interactionCreate:            try container.encode("INTERACTION_CREATE")
         case .presenceUpdate:               try container.encode("PRESENCE_UPDATE")
         case .ready:                        try container.encode("READY")
         case .resumed:                      try container.encode("RESUMED")
@@ -88,6 +93,7 @@ extension GatewayEvent.Name: CustomStringConvertible {
         case .guildScheduledEventCreate:    return "GUILD_SCHEDULED_EVENT_CREATE"
         case .guildScheduledEventDelete:    return "GUILD_SCHEDULED_EVENT_DELETE"
         case .guildScheduledEventUpdate:    return "GUILD_SCHEDULED_EVENT_UPDATE"
+        case .interactionCreate:            return "INTERACTION_CREATE"
         case .presenceUpdate:               return "PRESENCE_UPDATE"
         case .ready:                        return "READY"
         case .resumed:                      return "RESUMED"

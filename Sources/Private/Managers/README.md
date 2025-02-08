@@ -1,26 +1,3 @@
 #  `/Private/Managers`
 
 Types responsible for action within the library. These tend to be task-isolated (actors).
-
-## Changelog
-
-### January 30, 2025
-- `WebSocketManager` created.
-- `RESTManager` created.
-- `HeartbeatManager` created.
-- `WebSocketManager`: `send(opcode:data:)` and `disconnect()` added.
-- `WebSocketHandler` created.
-
-### January 31, 2025
-- `IdentifyManager` added.
-- `WebSocketHandler`: `handleDispatch(_:)` modified.
-
-### February 2, 2025
-- `ReconnectManager` started.
-
-### February 3, 2025
-- Rollback to undo all reconnect features.
-
-### February 4, 2025
-- `IdentifyManager`: Expanded to support reconnections.
-- `ReconnectManager`: Created.

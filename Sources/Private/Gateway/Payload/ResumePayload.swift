@@ -5,9 +5,16 @@
 //  Created by Carson Rau on 2/2/25.
 //
 
+/// The payload to send on resuming a previous session.
 struct ResumePayload: DiscordModel {
+    
+    /// The token associated with the session.
     let token: String
+    
+    /// The ID of the session to be resumed.
     let sessionID: String
+    
+    /// The last received sequence number.
     let sequence: Int?
 }
 

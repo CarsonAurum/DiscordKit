@@ -1,26 +1,3 @@
 #  `/Private/Gateway/`
 
 Types related to Discord's real-time gateway.
-
-## Changelog
-
-### January 30, 2025
-- README created.
-- `GatewayEvent<>` and `GatewayEvent.Opcode` created and documented.
-- `GatewayEvent`: `init()` and `getData()` added.
-- `HelloPayload` created.
-
-### January 31, 2025
-- `GatewayEvent`: `Name` added.
-- `IdentifyPayload` added.
-- `ReadyPayload` created.
-
-### February 1, 2025
-- `GatewayEvent.Name`: `.presenceUpdate` added.
-
-### February 2, 2025
-- `/Payload/` folder created.
-
-### February 6, 2025
-- `GatewayEvent.Name`: `resumed` added.
-- `GatewayEvent.Name`: `guildScheduledEventCreate`, `guildScheduledEventUpdate`, `guildScheduledEventDelete` added. 

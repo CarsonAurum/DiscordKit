@@ -25,5 +25,28 @@ public struct Interaction<T>: DiscordModel where T: Codable, T: Hashable, T: Sen
     public let entitlements: [Entitlement]
     public let authorizingIntegrationOwners: [Application.IntegrationType: Snowflake]
     public let context: ContextType?
-    
+}
+
+extension Interaction {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case applicationID = "application_id"
+        case type
+        case data
+        case guild
+        case guildID = "guild_id"
+        case channel
+        case channelID = "channel_id"
+        case member
+        case user
+        case token
+        case version
+        case message
+        case appPermissions = "application_permissions"
+        case locale
+        case guildLocale = "guild_locale"
+        case entitlements
+        case authorizingIntegrationOwners = "authorizing_integration_owners"
+        case context
+    }
 }
