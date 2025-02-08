@@ -90,6 +90,7 @@ public final actor DiscordBot {
         self.restManager = RESTManager(coders: self.coders, token: token, eventLoopGroup: self.eventLoopGroup)
         self.heartbeatManager = HeartbeatManager(
             self.socketManager,
+            self.reconnectManager,
             sequenceStream: self.socketManager.sequenceStream
         )
         self.identifyManager = IdentifyManager(socket: socketManager, token: token, intents: intents, reconnectManager: reconnectManager)

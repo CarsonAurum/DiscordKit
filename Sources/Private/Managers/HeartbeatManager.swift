@@ -17,8 +17,9 @@ actor HeartbeatManager {
     /// - Parameters:
     ///   - socketManager: The socket manager to use when sending heartbeats.
     ///   - sequenceStream: The stream to observe for changes in sequence value from the web socket.
-    init(_ socketManager: WebSocketManager, sequenceStream: AsyncStream<Int>) {
+    init(_ socketManager: WebSocketManager, _ reconnectManager: ReconnectManager, sequenceStream: AsyncStream<Int>) {
         self.socketManager = socketManager
+        self.reconnectManager = reconnectManager
         self.sequenceStream = sequenceStream
     }
     
@@ -85,7 +86,7 @@ actor HeartbeatManager {
         ackTimeoutTask = Task {
             do {
                 try await Task.sleep(for: .seconds(5))
-                handleAckTimeout()
+                try await handleAckTimeout()
             } catch { }
         }
     }
@@ -93,10 +94,13 @@ actor HeartbeatManager {
     // MARK: Private
     
     /// The handler for acknowledgement timeouts.
-    private func handleAckTimeout() {
+    private func handleAckTimeout() async throws {
         guard pendingAck else { return }
         logger.error("Heartbeat not acknowledged: Connection Unstable.")
         stopHeartbeat()
+        if let reconnectManager = reconnectManager, let socketManager = self.socketManager {
+            try await reconnectManager.attemptReconnect(socketManager: socketManager)
+        }
     }
     
     /// The socket manager to use when sending heartbeats.
@@ -125,4 +129,6 @@ actor HeartbeatManager {
     
     /// Flag to determine if the manager is waiting for acknowledgement on the previously sent heartbeat.
     private var pendingAck: Bool = false
+    
+    private weak var reconnectManager: ReconnectManager?
 }
