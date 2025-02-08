@@ -19,7 +19,7 @@ public struct Interaction<T>: DiscordModel where T: Codable, T: Hashable, T: Sen
     public let token: String
     public let version: Int
     public let message: Message?
-    public let appPermissions: Permissions
+    public let appPermissions: Permissions?
     public let locale: Locale?
     public let guildLocale: Locale?
     public let entitlements: [Entitlement]
