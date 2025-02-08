@@ -63,7 +63,8 @@ actor ReconnectManager {
     func clearSession() {
         self.sessionID = nil
         self.reconnectEndpoint = nil
-        logger.debug("Cleared session ID")
+        self.reconnectAttempts = 0
+        logger.debug("Cleared session.")
     }
     
     // MARK: - Reconnection Logic
@@ -80,7 +81,7 @@ actor ReconnectManager {
         
         // Determine which endpoint to use: reconnectEndpoint has priority.
         guard let targetEndpoint = reconnectEndpoint ?? endpoint else {
-            logger.error("No stored endpoint to reconnect to.")
+            logger.error("No stored endpoint to reconnect with.")
             return
         }
         

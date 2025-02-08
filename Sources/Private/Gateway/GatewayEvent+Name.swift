@@ -12,13 +12,16 @@ extension GatewayEvent {
     /// A type-safe wrapper for the string name of dispatch events.
     enum Name: DiscordModel {
         
-        /// The guild create event.
+        /// Lazy-load for an unavailable guild, guild becomes available, or user joined a new guild.
         case guildCreate
         
+        /// Guild scheduled event was created.
         case guildScheduledEventCreate
         
+        /// Guild scheduled event was deleted.
         case guildScheduledEventDelete
         
+        /// Guild scheduled event was updated.
         case guildScheduledEventUpdate
         
         /// Not a dispatch event.

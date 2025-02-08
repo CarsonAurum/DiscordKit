@@ -18,4 +18,12 @@ public struct Interaction<T>: DiscordModel where T: Codable, T: Hashable, T: Sen
     public let user: User?
     public let token: String
     public let version: Int
+    public let message: Message?
+    public let appPermissions: Permissions
+    public let locale: Locale?
+    public let guildLocale: Locale?
+    public let entitlements: [Entitlement]
+    public let authorizingIntegrationOwners: [Application.IntegrationType: Snowflake]
+    public let context: ContextType?
+    
 }

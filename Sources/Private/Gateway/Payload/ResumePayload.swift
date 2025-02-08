@@ -18,3 +18,16 @@ extension ResumePayload {
         case sequence = "seq"
     }
 }
+
+extension ResumePayload: CustomStringConvertible {
+    public var description: String {
+        var result = "[Token: \(token) || Session ID: \(sessionID) || Sequence: "
+        if let sequence = sequence {
+            result += "\(sequence)"
+        } else {
+            result += "<nil>"
+        }
+        result += "]"
+        return result
+    }
+}

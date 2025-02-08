@@ -99,7 +99,7 @@ actor WebSocketHandler {
                                 try await Task.sleep(for: .seconds(1))
                                 await identifyManager?.setShouldAttemptResume(true)
                             } else {
-                                try await socketManager.disconnect()
+                                try await socketManager.disconnect(shouldTerminate: false)
                                 try await Task.sleep(for: .seconds(1))
                                 await identifyManager?.clearSession()
                             }
