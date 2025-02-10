@@ -98,14 +98,11 @@ actor WebSocketHandler {
                             logger.info("Received invalid session opcode. canResume: \(canResume)")
                             if canResume {
                                 try await socketManager.disconnect(shouldTerminate: false)
-                                try await Task.sleep(for: .seconds(1))
                                 await identifyManager?.setShouldAttemptResume(true)
                             } else {
                                 try await socketManager.disconnect(shouldTerminate: false)
-                                try await Task.sleep(for: .seconds(1))
                                 await identifyManager?.clearSession()
                             }
-                            try await reconnectManager?.attemptReconnect(socketManager: socketManager)
                         } catch {
                             logger.error("Error handling invalid session: \(error)")
                         }
