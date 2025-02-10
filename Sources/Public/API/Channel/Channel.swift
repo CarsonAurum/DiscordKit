@@ -134,3 +134,4 @@ extension Channel {
         self.defaultForumLayout = try container.decodeIfPresent(ForumLayoutType.self, forKey: .defaultForumLayout)
     }
 }
+

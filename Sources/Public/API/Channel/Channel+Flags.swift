@@ -16,3 +16,13 @@ extension Channel {
         public init(rawValue: Int) { self.rawValue = rawValue }
     }
 }
+
+extension Channel.Flags: CustomStringConvertible {
+    public var description: String {
+        var cases = [String]()
+        if contains(.pinned) { cases.append("Pinned") }
+        if contains(.requireTag) { cases.append("Require Tag") }
+        if contains(.hideMediaDownloadOptions) { cases.append("Hide Media Download Options") }
+        return "[\(cases.joined(separator: ", "))]"
+    }
+}

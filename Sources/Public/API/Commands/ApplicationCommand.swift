@@ -20,7 +20,7 @@ public struct ApplicationCommand: DiscordModel {
     public let defaultPermissions: Permissions?
     public let isNSFW: Bool?
     public let integrationTypes: [Application.IntegrationType]?
-    public let contexts: [Interaction<AnyCodable>.ContextType]?
+    public let contexts: [Interaction.ContextType]?
     public let version: Snowflake
     public let handler: EntryPointHandlerType?
 }

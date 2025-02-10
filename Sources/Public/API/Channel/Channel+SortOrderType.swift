@@ -11,3 +11,14 @@ extension Channel {
         case creationDate = 1
     }
 }
+
+extension Channel.SortOrderType: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .latestActivity:
+            return "Latest Activity"
+        case .creationDate:
+            return "Creation Date"
+        }
+    }
+}

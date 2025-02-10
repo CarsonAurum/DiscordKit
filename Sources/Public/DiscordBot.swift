@@ -99,7 +99,8 @@ public final actor DiscordBot {
             heartbeatManager: self.heartbeatManager,
             identifyManager: self.identifyManager,
             decoder: self.coders.decoder,
-            reconnectManager: self.reconnectManager
+            reconnectManager: self.reconnectManager,
+            restManager: self.restManager
         )
         Task { await self.socketManager.setHeartbeatManager(self.heartbeatManager) }
     }

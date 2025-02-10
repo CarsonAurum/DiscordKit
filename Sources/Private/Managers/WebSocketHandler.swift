@@ -26,13 +26,15 @@ actor WebSocketHandler {
         heartbeatManager: HeartbeatManager,
         identifyManager: IdentifyManager,
         decoder: JSONDecoder,
-        reconnectManager: ReconnectManager
+        reconnectManager: ReconnectManager,
+        restManager: RESTManager
     ) {
         self.socketManager = socketManager
         self.heartbeatManager = heartbeatManager
         self.identifyManager = identifyManager
         self.decoder = decoder
         self.reconnectManager = reconnectManager
+        self.restManager = restManager
     }
     
     /// Run an async-for loop to handle incoming events.
@@ -144,6 +146,8 @@ actor WebSocketHandler {
     /// The reconnect manager used for reconnection logic.
     private weak var reconnectManager: ReconnectManager?
     
+    private weak var restManager: RESTManager?
+    
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder
     
@@ -188,8 +192,12 @@ extension WebSocketHandler {
             }
         case .interactionCreate:
             do {
-                let payload = try decoder.decode(Interaction<AnyCodable>.self, from: message.getData())
+                let payload = try decoder.decode(Interaction.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
+                Task {
+                    let ctx = await restManager?.getInteractionContext(payload)
+                    logger.trace("Context: \(ctx)")
+                }
             } catch {
                 logger.error("\(error)")
             }

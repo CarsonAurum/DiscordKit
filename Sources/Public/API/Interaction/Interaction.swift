@@ -5,11 +5,11 @@
 //  Created by Carson Rau on 2/6/25.
 //
 
-public struct Interaction<T>: DiscordModel where T: Codable, T: Hashable, T: Sendable {
+public struct Interaction: DiscordModel {
     public let id: Snowflake
     public let applicationID: Snowflake
     public let type: InteractionType
-    public let data: T?
+    public let data: Data?
     public let guild: Guild?
     public let guildID: Snowflake?
     public let channel: Channel?
@@ -57,7 +57,20 @@ extension Interaction {
         self.id = try container.decode(Snowflake.self, forKey: .id)
         self.applicationID = try container.decode(Snowflake.self, forKey: .applicationID)
         self.type = try container.decode(InteractionType.self, forKey: .type)
-        self.data = try container.decodeIfPresent(T.self, forKey: .data)
+        if container.contains(.data) {
+            switch self.type {
+            case .applicationCommand, .applicationCommandAutocomplete:
+                self.data = .applicationCommand(try container.decode(Data.ApplicationCommand.self, forKey: .data))
+            case .messageComponent:
+                self.data = .messageComponent(try container.decode(Data.MessageComponent.self, forKey: .data))
+            case .modalSubmit:
+                self.data = .modalSubmit(try container.decode(Data.ModalSubmit.self, forKey: .data))
+            default:
+                fatalError("Unexpected Interaction data detected.")
+            }
+        } else {
+            self.data = nil
+        }
         self.guild = try container.decodeIfPresent(Guild.self, forKey: .guild)
         self.guildID = try container.decodeIfPresent(Snowflake.self, forKey: .guildID)
         self.channel = try container.decodeIfPresent(Channel.self, forKey: .channel)
@@ -91,7 +104,7 @@ extension Interaction {
         try container.encode(id, forKey: .id)
         try container.encode(applicationID, forKey: .applicationID)
         try container.encode(type, forKey: .type)
-        try container.encodeIfPresent(data, forKey: .data)
+        // try container.encodeIfPresent(data, forKey: .data)
         try container.encodeIfPresent(guild, forKey: .guild)
         try container.encodeIfPresent(guildID, forKey: .guildID)
         try container.encodeIfPresent(channel, forKey: .channel)

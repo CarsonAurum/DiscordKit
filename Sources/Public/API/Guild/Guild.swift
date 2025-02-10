@@ -329,7 +329,7 @@ extension Guild: CustomStringConvertible {
         }
         if let isLarge = isLarge { result.append("Is Large: \(isLarge)") }
         if let isUnavailable = isUnavailable { result.append("Is Unavailable: \(isUnavailable)") }
-        if let memberCount = memberCount { result.append("\(memberCount) Members.") }
+        if let memberCount = memberCount { result.append("Member Count: \(memberCount)") }
         if let voiceStates = voiceStates { result.append("\(voiceStates.count) Voice States.") }
         if let members = members { result.append("\(members.count) Members.") }
         if let channels = channels { result.append("\(channels.count) Channels.")}

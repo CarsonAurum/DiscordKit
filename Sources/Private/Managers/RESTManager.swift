@@ -36,6 +36,10 @@ actor RESTManager {
         return try await request.get()
     }
     
+    func getInteractionContext(_ interaction: Interaction) -> InteractionContext {
+        return InteractionContext(client: self.client, headers: self.headers, coders: coders, interaction: interaction)
+    }
+    
     // MARK: Private
     
     /// The headers to attach to a Discord request.

@@ -68,3 +68,16 @@ extension Channel.ThreadMetadata {
         }
     }
 }
+
+extension Channel.ThreadMetadata: CustomStringConvertible {
+    public var description: String {
+        var result = [String]()
+        result.append("Is Archived \(isArchived)")
+        result.append("Auto Archive Duration: \(autoArchiveDuration)")
+        result.append("Archive Timestamp: \(archiveTimestamp)")
+        result.append("Is Locked: \(isLocked)")
+        if let isInvitable = isInvitable { result.append("Is Invitable: \(isInvitable)") }
+        if let createTimestamp = createTimestamp { result.append("Create Timestamp: \(createTimestamp)") }
+        return "[\(result.joined(separator: " || "))]"
+    }
+}

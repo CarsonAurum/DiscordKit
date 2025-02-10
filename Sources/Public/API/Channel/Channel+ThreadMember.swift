@@ -56,3 +56,15 @@ extension Channel.ThreadMember {
         
     }
 }
+
+extension Channel.ThreadMember: CustomStringConvertible {
+    public var description: String {
+        var result = [String]()
+        if let id = id { result.append("ID: \(id)") }
+        if let userID = userID { result.append("User ID: \(userID)") }
+        result.append("Join Timestamp: \(joinTimestamp)")
+        result.append("Flags: \(flags)")
+        if let member = member { result.append("Member: \(member)") }
+        return "[\(result.joined(separator: " || "))]"
+    }
+}

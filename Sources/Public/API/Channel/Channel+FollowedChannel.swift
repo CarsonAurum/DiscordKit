@@ -18,3 +18,9 @@ extension Channel.FollowedChannel {
         case webhookID = "webhook_id"
     }
 }
+
+extension Channel.FollowedChannel: CustomStringConvertible {
+    public var description: String {
+        return "[Channel ID: \(channelID) || Webhook ID: \(webhookID)]"
+    }
+}
