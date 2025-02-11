@@ -101,6 +101,7 @@ actor WebSocketHandler {
                                 await identifyManager?.setShouldAttemptResume(true)
                             } else {
                                 try await socketManager.disconnect(shouldTerminate: false)
+                                await heartbeatManager?.reset()
                                 await identifyManager?.clearSession()
                             }
                         } catch {

@@ -92,6 +92,10 @@ actor HeartbeatManager {
         }
     }
     
+    func reset() {
+        self.sequence = nil
+    }
+    
     // MARK: Private
     
     /// The handler for acknowledgement timeouts.
