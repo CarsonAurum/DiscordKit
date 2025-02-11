@@ -84,8 +84,6 @@ actor WebSocketHandler {
                         logger.info("Received reconnect opcode from gateway. Reconnecting...")
                         do {
                             try await socketManager.disconnect(shouldTerminate: false)
-                            try await Task.sleep(for: .seconds(1))
-                            try await reconnectManager?.attemptReconnect(socketManager: socketManager)
                         } catch {
                             logger.error("Error during reconnect: \(error)")
                         }
