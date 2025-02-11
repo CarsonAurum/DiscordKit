@@ -1,19 +1,11 @@
 //
-//  Interaction+InteractionData.swift
+//  Data+ApplicationCommand.swift
 //  DiscordKit
 //
-//  Created by Carson Rau on 2/9/25.
+//  Created by Carson Rau on 2/11/25.
 //
 
 import AnyCodable
-
-extension Interaction {
-    public enum Data: DiscordModel {
-        case applicationCommand(Interaction.Data.ApplicationCommand)
-        case messageComponent(Interaction.Data.MessageComponent)
-        case modalSubmit(Interaction.Data.ModalSubmit)
-    }
-}
 
 extension Interaction.Data {
     public struct ApplicationCommand: DiscordModel {
@@ -56,17 +48,5 @@ extension Interaction.Data.ApplicationCommand.Option {
         case value
         case options
         case isFocused = "focused"
-    }
-}
-
-extension Interaction.Data {
-    public struct MessageComponent: DiscordModel {
-        
-    }
-}
-
-extension Interaction.Data {
-    public struct ModalSubmit: DiscordModel {
-        
     }
 }

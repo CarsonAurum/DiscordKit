@@ -13,4 +13,5 @@ public struct Message: DiscordModel {
     public let author: User
     public let content: String
     public let timestamp: Date
+    public let editedTimestamp: Date
 }
