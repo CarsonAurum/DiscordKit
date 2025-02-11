@@ -61,12 +61,12 @@ actor WebSocketHandler {
                             let payload = try decoder.decode(HelloPayload.self, from: msg.getData())
                             logger.trace("Hello payload: \(payload)")
                             if let shouldResume = await identifyManager?.shouldAttemptResume,
-                               shouldResume,
-                               let lastSequence = await heartbeatManager?.sequence {
-                                logger.info("Attempting resume with sequence \(lastSequence)")
-                                await identifyManager?.sendResume(sequence: lastSequence)
+                               shouldResume {
+                                logger.info("Attempting resume.")
+                                await identifyManager?.sendResume(sequence: heartbeatManager?.sequence)
                             } else {
                                 logger.info("Sending new identify payload.")
+                                await heartbeatManager?.reset()
                                 await identifyManager?.sendIdentify()
                             }
                             if let heartbeatManager = heartbeatManager {
@@ -84,6 +84,7 @@ actor WebSocketHandler {
                         logger.info("Received reconnect opcode from gateway. Reconnecting...")
                         do {
                             try await socketManager.disconnect(shouldTerminate: false)
+                            await identifyManager?.setShouldAttemptResume(true)
                         } catch {
                             logger.error("Error during reconnect: \(error)")
                         }
