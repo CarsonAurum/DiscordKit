@@ -11,10 +11,11 @@ import AnyCodable
 import AsyncHTTPClient
 
 public actor InteractionContext {
-    let responseRoute: String
-    let client: HTTPClient
-    let headers: HTTPHeaders
-    let coders: CoderPackage
+    private let
+    private let responseRoute: String
+    private let client: HTTPClient
+    private let headers: HTTPHeaders
+    private let coders: CoderPackage
     init(
         client: HTTPClient,
         headers: HTTPHeaders,
@@ -24,5 +25,18 @@ public actor InteractionContext {
             self.headers = headers
             self.coders = coders
         self.responseRoute = "/interactions/\(interaction.id.value)/\(interaction.token)/callback/"
+    }
+    
+    public func sendMessage(_ msg: String) async {
+        let body = Interaction.Response(
+            type: .channelMessageWithSource,
+            data: .message(.init(
+                isTTS: nil,
+                content: msg,
+                flags: nil,
+                components: nil,
+                attachments: nil
+            ))
+        )
     }
 }

@@ -104,7 +104,16 @@ extension Interaction {
         try container.encode(id, forKey: .id)
         try container.encode(applicationID, forKey: .applicationID)
         try container.encode(type, forKey: .type)
-        // try container.encodeIfPresent(data, forKey: .data)
+        if let data = self.data {
+            switch data {
+            case .applicationCommand(let command):
+                try container.encode(command, forKey: .data)
+            case .messageComponent(let component):
+                try container.encode(component, forKey: .data)
+            case .modalSubmit(let modal):
+                try container.encode(modal, forKey: .data)
+            }
+        }
         try container.encodeIfPresent(guild, forKey: .guild)
         try container.encodeIfPresent(guildID, forKey: .guildID)
         try container.encodeIfPresent(channel, forKey: .channel)
