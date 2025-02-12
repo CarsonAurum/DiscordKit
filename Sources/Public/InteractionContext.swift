@@ -25,7 +25,7 @@ public actor InteractionContext {
             self.client = client
             self.headers = headers
             self.coders = coders
-        self.responseRoute = "/interactions/\(interaction.id.value)/\(interaction.token)/callback/?with_response=true"
+        self.responseRoute = "interactions/\(interaction.id.value)/\(interaction.token)/callback?with_response=true"
     }
     
     public func sendMessage(_ msg: String) async {
