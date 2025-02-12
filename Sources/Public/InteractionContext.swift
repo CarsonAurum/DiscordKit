@@ -49,9 +49,12 @@ public actor InteractionContext {
             )
             let response = try await self.client.execute(request: request).get()
             if response.status == .ok {
+                logger.trace("Status: OK.")
                 if let body = response.body {
                     let callbackResponse = try self.coders.decoder.decode(Interaction.CallbackResponse.self, from: .init(buffer: body))
                     logger.trace("Payload: \(callbackResponse)")
+                } else {
+                    logger.error("No Body.")
                 }
             } else {
                 logger.error("Received: \(response.status)")
