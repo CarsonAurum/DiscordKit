@@ -60,7 +60,7 @@ public actor InteractionContext {
                 logger.error("Received: \(response.status)")
             }
         } catch {
-            
+            logger.error("\(error)")
         }
     }
 }
