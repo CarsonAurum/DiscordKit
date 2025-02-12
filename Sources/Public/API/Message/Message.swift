@@ -19,7 +19,9 @@ public struct Message: DiscordModel {
     public let mentions: [User]
     public let mentionRoles: [Role]
     public let mentionChannels: [Channel]?
-    
+    public let attachments: [Attachment]
+    public let embeds: [Embed]
+    public let reactions: [Reaction]?
 }
 
 extension Message {
@@ -35,6 +37,9 @@ extension Message {
         case mentions
         case mentionRoles = "mention_roles"
         case mentionChannels = "mention_channels"
+        case attachments
+        case embeds
+        case reactions
     }
     
     public init(from decoder: Decoder) throws {
@@ -62,5 +67,35 @@ extension Message {
         mentions = try container.decode([User].self, forKey: .mentions)
         mentionRoles = try container.decode([Role].self, forKey: .mentionRoles)
         mentionChannels = try container.decodeIfPresent([Channel].self, forKey: .mentionChannels)
+        attachments = try container.decode([Attachment].self, forKey: .attachments)
+        embeds = try container.decode([Embed].self, forKey: .embeds)
+        reactions = try container.decodeIfPresent([Reaction].self, forKey: .reactions)
+    }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(channelID, forKey: .channelID)
+        try container.encode(author, forKey: .author)
+        try container.encode(content, forKey: .content)
+        
+        let dateString = ISO8601DateFormatter().string(from: timestamp)
+        try container.encode(dateString, forKey: .timestamp)
+        
+        if let editedTimestamp = editedTimestamp {
+            let dateString = ISO8601DateFormatter().string(from: editedTimestamp)
+            try container.encode(dateString, forKey: .editedTimestamp)
+        } else {
+            try container.encodeNil(forKey: .editedTimestamp)
+        }
+        
+        try container.encode(isTTS, forKey: .isTTS)
+        try container.encode(isMentionEveryone, forKey: .isMentionEveryone)
+        try container.encode(mentions, forKey: .mentions)
+        try container.encode(mentionRoles, forKey: .mentionRoles)
+        try container.encodeIfPresent(mentionChannels, forKey: .mentionChannels)
+        try container.encode(attachments, forKey: .attachments)
+        try container.encode(embeds, forKey: .embeds)
+        try container.encodeIfPresent(reactions, forKey: .reactions)
     }
 }

@@ -24,7 +24,6 @@ public final actor DiscordBot {
             fatalError()
         }
         await reconnectManager.setEndpoint(url, .main)
-        // Note: the URL string is stored in the reconnect manager for reconnects.
         try await socketManager.connect(to: url)
         logger.info("Connected.")
         if shouldBlock {
