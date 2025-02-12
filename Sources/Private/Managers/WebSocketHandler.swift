@@ -194,6 +194,7 @@ extension WebSocketHandler {
                 Task {
                     let ctx = await restManager?.getInteractionContext(payload)
                     logger.trace("Context: \(ctx)")
+                    await ctx?.sendMessage("Pong!")
                 }
             } catch {
                 logger.error("\(error)")
