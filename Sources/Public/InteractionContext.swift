@@ -42,7 +42,7 @@ public actor InteractionContext {
         logger.trace("Sending: \(body)")
         do {
             let request = try HTTPClient.Request(
-                url: self.responseRoute,
+                url: DiscordURL.BASE_URL + self.responseRoute,
                 method: .POST,
                 headers: self.headers,
                 body: .bytes(self.coders.encoder.encode(body))
