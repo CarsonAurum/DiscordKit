@@ -16,4 +16,8 @@ enum DiscordURL {
     
     /// The `/gateway/bot/` endpoint.
     internal static let GATEWAY_BOT = BASE_URL + "gateway/bot"
+    
+    internal static func GLOBAL_APPLICATION_COMMANDS(appID: Snowflake) -> String {
+        BASE_URL + "applications/\(appID.value)/commands"
+    }
 }

@@ -21,8 +21,9 @@ actor CommandManager {
         }
     }
     
-    func registerCommands() {
-        
+    func registerCommands(appID: Snowflake) async throws {
+        let globals = commands.filter { $0.scope == .global }
+        try await restManager?.registerGlobalCommands(appID: appID, globals)
     }
     
     func getCommand(

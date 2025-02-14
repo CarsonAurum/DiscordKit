@@ -207,7 +207,6 @@ extension WebSocketHandler {
                                     scope: .global
                                 )
                                 await cmd?.onInteraction(ctx)
-                                
                             default:
                                 return
                             }
@@ -231,7 +230,7 @@ extension WebSocketHandler {
                 Task {
                     await self.reconnectManager?.setEndpoint(payload.resumeURL, .reconnect)
                     await self.identifyManager?.setSessionID(payload.sessionID)
-                    await self.commandManager?.registerCommands()
+                    try await self.commandManager?.registerCommands(appID: payload.application.id)
                     await self.readyHandler?(.init(
                         guilds: payload.guilds,
                         user: payload.user,

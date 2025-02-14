@@ -36,8 +36,14 @@ actor RESTManager {
         return try await request.get()
     }
     
-    func registerCommands(_ commands: [BotCommand]) {
-        
+    func registerGlobalCommands(appID: Snowflake, _ commands: [BotCommand]) async throws {
+        let request = GlobalApplicationCommands(client: self.client, headers: self.headers, appID: appID, coders: coders)
+        for command in commands {
+            let result = try await request.post(command)
+            if let result = result {
+                logger.trace("\(result)")
+            }
+        }
     }
     
     func getInteractionContext(_ interaction: Interaction) -> InteractionContext {
