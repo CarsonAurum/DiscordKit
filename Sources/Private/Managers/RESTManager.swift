@@ -36,8 +36,12 @@ actor RESTManager {
         return try await request.get()
     }
     
+    func registerCommands(_ commands: [BotCommand]) {
+        
+    }
+    
     func getInteractionContext(_ interaction: Interaction) -> InteractionContext {
-        return InteractionContext(client: self.client, headers: self.headers, coders: coders, interaction: interaction)
+        InteractionContext(client: self.client, headers: self.headers, coders: coders, interaction: interaction)
     }
     
     // MARK: Private

@@ -27,7 +27,8 @@ actor WebSocketHandler {
         identifyManager: IdentifyManager,
         decoder: JSONDecoder,
         reconnectManager: ReconnectManager,
-        restManager: RESTManager
+        restManager: RESTManager,
+        commandManager: CommandManager
     ) {
         self.socketManager = socketManager
         self.heartbeatManager = heartbeatManager
@@ -35,6 +36,7 @@ actor WebSocketHandler {
         self.decoder = decoder
         self.reconnectManager = reconnectManager
         self.restManager = restManager
+        self.commandManager = commandManager
     }
     
     /// Run an async-for loop to handle incoming events.
@@ -145,6 +147,8 @@ actor WebSocketHandler {
     
     private weak var restManager: RESTManager?
     
+    private weak var commandManager: CommandManager?
+    
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder
     
@@ -191,9 +195,24 @@ extension WebSocketHandler {
             do {
                 let payload = try decoder.decode(Interaction.self, from: message.getData())
                 logger.trace("Payload: \(payload)")
-                Task {
-                    let ctx = await restManager?.getInteractionContext(payload)
-                    await ctx?.sendMessage("Pong!")
+                if payload.type == .applicationCommand {
+                    Task {
+                        let ctx = await restManager?.getInteractionContext(payload)
+                        if let ctx = ctx {
+                            switch payload.data {
+                            case .applicationCommand(let value):
+                                let cmd = await commandManager?.getCommand(
+                                    name: value.name,
+                                    type: value.type,
+                                    scope: .global
+                                )
+                                await cmd?.onInteraction(ctx)
+                                
+                            default:
+                                return
+                            }
+                        }
+                    }
                 }
             } catch {
                 logger.error("\(error)")
@@ -212,6 +231,7 @@ extension WebSocketHandler {
                 Task {
                     await self.reconnectManager?.setEndpoint(payload.resumeURL, .reconnect)
                     await self.identifyManager?.setSessionID(payload.sessionID)
+                    await self.commandManager?.registerCommands()
                     await self.readyHandler?(.init(
                         guilds: payload.guilds,
                         user: payload.user,

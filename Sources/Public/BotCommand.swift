@@ -16,7 +16,7 @@ public struct BotCommand: DiscordModel {
     public let defaultMemberPermissions: Permissions?
     public let type: ApplicationCommand.CommandType?
     public let isNSFW: Bool?
-    
+    public let scope: Scope?
     public let onInteraction: (@Sendable (InteractionContext) async -> Void)
     
     public init(
@@ -24,10 +24,11 @@ public struct BotCommand: DiscordModel {
         nameLocalizations: [Locale: String]? = nil,
         commandDescription: String? = nil,
         descriptionLocalizations: [Locale: String]? = nil,
-        options: [ApplicationCommand.Option<AnyCodable>],
+        options: [ApplicationCommand.Option<AnyCodable>] = [],
         defaultMemberPermissions: Permissions? = nil,
-        type: ApplicationCommand.CommandType? = nil,
-        isNSFW: Bool? = nil,
+        isNSFW: Bool? = false,
+        type: ApplicationCommand.CommandType? = .slashCommand,
+        scope: Scope = .global,
         onInteraction: @escaping @Sendable (InteractionContext) async -> Void
     ) {
         self.name = name
@@ -38,6 +39,7 @@ public struct BotCommand: DiscordModel {
         self.defaultMemberPermissions = defaultMemberPermissions
         self.type = type
         self.isNSFW = isNSFW
+        self.scope = scope
         self.onInteraction = onInteraction
     }
 }
@@ -52,6 +54,7 @@ extension BotCommand {
         case defaultMemberPermissions = "default_member_permissions"
         case type
         case isNSFW = "nsfw"
+        case scope
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -76,6 +79,7 @@ extension BotCommand {
         defaultMemberPermissions = try container.decodeIfPresent(Permissions.self, forKey: .defaultMemberPermissions)
         type = try container.decodeIfPresent(ApplicationCommand.CommandType.self, forKey: .type)
         isNSFW = try container.decodeIfPresent(Bool.self, forKey: .isNSFW)
+        scope = nil
         onInteraction = { _ in
             fatalError("BotCommand.onInteraction was not decoded. You must provide a closure when initializing.")
         }
@@ -98,7 +102,6 @@ extension BotCommand {
     }
     
     public static func == (lhs: BotCommand, rhs: BotCommand) -> Bool {
-        // Compare only the properties that are encoded.
         return lhs.name == rhs.name &&
             lhs.nameLocalizations == rhs.nameLocalizations &&
             lhs.commandDescription == rhs.commandDescription &&
@@ -106,10 +109,18 @@ extension BotCommand {
             lhs.options == rhs.options &&
             lhs.defaultMemberPermissions == rhs.defaultMemberPermissions &&
             lhs.type == rhs.type &&
-            lhs.isNSFW == rhs.isNSFW
+            lhs.isNSFW == rhs.isNSFW &&
+            lhs.scope == rhs.scope
     }
 }
 
 // MARK: - Sendable Conformance
 
 extension BotCommand { }
+
+extension BotCommand {
+    public enum Scope: DiscordModel {
+        case global
+        case guild(String)
+    }
+}

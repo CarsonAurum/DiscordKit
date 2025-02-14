@@ -12,11 +12,11 @@ import AsyncHTTPClient
 import Logging
 
 public actor InteractionContext {
+    private let logger = Logger(label: "InteractionContext")
     private let responseRoute: String
     private let client: HTTPClient
     private let headers: HTTPHeaders
     private let coders: CoderPackage
-    private let logger = Logger(label: "InteractionContext")
     init(
         client: HTTPClient,
         headers: HTTPHeaders,

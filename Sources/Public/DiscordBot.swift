@@ -45,6 +45,10 @@ public final actor DiscordBot {
         await self.socketHandler.setReadyHandler(handler)
     }
     
+    public func addCommands(_ commands: [BotCommand]) async {
+        await self.commandManager.addCommands(commands)
+    }
+    
     // MARK: - Private
     
     /// The intents to use when connecting to the Discord gateway.
@@ -77,16 +81,17 @@ public final actor DiscordBot {
     /// The new manager for handling reconnection logic.
     private let reconnectManager: ReconnectManager
     
+    private let commandManager: CommandManager
+    
     public init(token: String, intents: GatewayIntents) {
         self.intents = intents
         self.coders = (JSONEncoder(), JSONDecoder())
         self.eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
         
-        // Initialize the new ReconnectManager.
         self.reconnectManager = ReconnectManager()
-        
         self.socketManager = WebSocketManager(coders: self.coders, eventLoopGroup: self.eventLoopGroup, reconnectManager: reconnectManager)
         self.restManager = RESTManager(coders: self.coders, token: token, eventLoopGroup: self.eventLoopGroup)
+        self.commandManager = CommandManager(restManager: self.restManager)
         self.heartbeatManager = HeartbeatManager(
             self.socketManager,
             self.reconnectManager,
@@ -99,7 +104,8 @@ public final actor DiscordBot {
             identifyManager: self.identifyManager,
             decoder: self.coders.decoder,
             reconnectManager: self.reconnectManager,
-            restManager: self.restManager
+            restManager: self.restManager,
+            commandManager: self.commandManager
         )
         Task { await self.socketManager.setHeartbeatManager(self.heartbeatManager) }
     }

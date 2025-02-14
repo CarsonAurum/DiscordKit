@@ -22,6 +22,11 @@ public struct Message: DiscordModel {
     public let attachments: [Attachment]
     public let embeds: [Embed]
     public let reactions: [Reaction]?
+    public let nonce: Nonce?
+    public let isPinned: Bool
+    public let webhookID: Snowflake?
+    public let type: MessageType
+    public let activity: Activity?
 }
 
 extension Message {
@@ -40,6 +45,11 @@ extension Message {
         case attachments
         case embeds
         case reactions
+        case nonce
+        case isPinned = "pinned"
+        case webhookID = "webhook_id"
+        case type
+        case activity
     }
     
     public init(from decoder: Decoder) throws {
@@ -70,6 +80,19 @@ extension Message {
         attachments = try container.decode([Attachment].self, forKey: .attachments)
         embeds = try container.decode([Embed].self, forKey: .embeds)
         reactions = try container.decodeIfPresent([Reaction].self, forKey: .reactions)
+        
+        if let stringNonce = try? container.decodeIfPresent(String.self, forKey: .nonce) {
+            self.nonce = .string(stringNonce)
+        } else if let intNonce = try? container.decodeIfPresent(Int.self, forKey: .nonce) {
+            self.nonce = .int(intNonce)
+        } else {
+            self.nonce = nil
+        }
+        
+        self.isPinned = try container.decode(Bool.self, forKey: .isPinned)
+        self.webhookID = try container.decodeIfPresent(Snowflake.self, forKey: .webhookID)
+        self.type = try container.decode(MessageType.self, forKey: .type)
+        self.activity = try container.decodeIfPresent(Activity.self, forKey: .activity)
     }
     
     public func encode(to encoder: any Encoder) throws {
@@ -97,5 +120,18 @@ extension Message {
         try container.encode(attachments, forKey: .attachments)
         try container.encode(embeds, forKey: .embeds)
         try container.encodeIfPresent(reactions, forKey: .reactions)
+        
+        if let nonce = nonce {
+            switch nonce {
+            case .int(let intNonce):
+                try container.encode(intNonce, forKey: .nonce)
+            case .string(let stringNonce):
+                try container.encode(stringNonce, forKey: .nonce)
+            }
+        }
+        try container.encode(isPinned, forKey: .isPinned)
+        try container.encodeIfPresent(webhookID, forKey: .webhookID)
+        try container.encode(type, forKey: .type)
+        try container.encode(activity, forKey: .activity)
     }
 }
