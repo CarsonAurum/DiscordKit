@@ -47,7 +47,21 @@ actor GlobalApplicationCommands {
         return createdCommand
     }
     
-    public func put(_ command: BotCommand) async {
+    public func put(_ commands: [BotCommand]) async throws -> [ApplicationCommand]? {
+        var request = try HTTPClient.Request(url: self.url, method: .PUT, headers: self.headers)
+        request.body = try .bytes(coders.encoder.encode(commands))
+        let response = try await self.client.execute(request: request).get()
         
+        guard response.status == .ok else {
+            logger.error("Received \(response.status) when putting commands.")
+            return nil
+        }
+        guard let responseBody = response.body else {
+            logger.error("No command information received when putting commands.")
+            return nil
+        }
+        let responseData = Data(buffer: responseBody)
+        let createdCommands = try coders.decoder.decode([ApplicationCommand].self, from: responseData)
+        return createdCommands
     }
 }

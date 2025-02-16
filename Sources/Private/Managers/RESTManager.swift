@@ -36,13 +36,19 @@ actor RESTManager {
         return try await request.get()
     }
     
+    func registerGlobalCommand(appID: Snowflake, _ command: BotCommand) async throws {
+        let request = GlobalApplicationCommands(client: self.client, headers: headers, appID: appID, coders: coders)
+        let result = try await request.post(command)
+        if let result = result {
+            logger.trace("Response: \(result)")
+        }
+    }
+    
     func registerGlobalCommands(appID: Snowflake, _ commands: [BotCommand]) async throws {
         let request = GlobalApplicationCommands(client: self.client, headers: self.headers, appID: appID, coders: coders)
-        for command in commands {
-            let result = try await request.post(command)
-            if let result = result {
-                logger.trace("\(result)")
-            }
+        let result = try await request.put(commands)
+        if let result = result {
+            logger.trace("Response: \(result)")
         }
     }
     

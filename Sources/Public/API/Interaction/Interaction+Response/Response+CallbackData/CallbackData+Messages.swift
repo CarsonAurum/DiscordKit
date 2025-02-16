@@ -9,7 +9,7 @@ extension Interaction.Response.CallbackData {
     public struct Messages: DiscordModel {
         public let isTTS: Bool?
         public let content: String?
-        // public let embeds: [Message.Embed]?
+        public let embeds: [Message.Embed]?
         // public let allowedMentions: Message.AllowedMentions?
         public let flags: Message.Flags?
         public let components: [Component]?
@@ -22,7 +22,7 @@ extension Interaction.Response.CallbackData.Messages {
     enum CodingKeys: String, CodingKey {
         case isTTS = "tts"
         case content
-        // case embeds
+        case embeds
         // case allowedMentions = "allowed_mentions"
         case flags
         case components

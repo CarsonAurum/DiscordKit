@@ -54,7 +54,6 @@ extension BotCommand {
         case defaultMemberPermissions = "default_member_permissions"
         case type
         case isNSFW = "nsfw"
-        case scope
     }
     
     public func encode(to encoder: Encoder) throws {
