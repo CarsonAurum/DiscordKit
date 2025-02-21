@@ -11,6 +11,7 @@ import AnyCodable
 import AsyncHTTPClient
 import Logging
 import Foundation
+import Collections
 
 public actor InteractionContext {
     private let logger = Logger(label: "InteractionContext")
@@ -18,6 +19,8 @@ public actor InteractionContext {
     private let client: HTTPClient
     private let headers: HTTPHeaders
     private let coders: CoderPackage
+    private var responseDeque: Deque<Interaction.Response>
+    private var callbackDeque: Deque<Interaction.CallbackResponse>
     init(
         client: HTTPClient,
         headers: HTTPHeaders,
@@ -26,13 +29,13 @@ public actor InteractionContext {
             self.client = client
             self.headers = headers
             self.coders = coders
-        self.responseRoute = "interactions/\(interaction.id.value)/\(interaction.token)/callback?with_response=true"
+            self.responseRoute = "interactions/\(interaction.id.value)/\(interaction.token)/callback?with_response=true"
+            self.responseDeque = []
+            self.callbackDeque = []
     }
     
     public func deferReply(isEphemeral: Bool = false) async {
-        
         let flags: Message.Flags = isEphemeral ? [.ephemeral] : []
-        
         let body = Interaction.Response(
             type: .deferredChannelMessageWithSource,
             data: .message(.init(
@@ -44,9 +47,12 @@ public actor InteractionContext {
                 attachments: nil
             ))
         )
+        responseDeque.append(body)
         logger.trace("Sending: \(body)")
         do {
-            try await _sendData(coders.encoder.encode(body))
+            let bodyData = try coders.encoder.encode(body)
+            let result = try await _sendData(bodyData)
+            
         } catch {
             logger.error("\(error)")
         }
@@ -62,17 +68,21 @@ public actor InteractionContext {
                 flags: nil,
                 components: nil,
                 attachments: nil
-            ))
-        )
-        logger.trace("Sending: \(body)")
-        do {
-            try await _sendData(coders.encoder.encode(body))
-        } catch {
-            logger.error("\(error)")
+            )))
+        if callbackDeque.isEmpty {
+            logger.trace("Sending: \(body)")
+            do {
+                let result = try await _sendData(coders.encoder.encode(body))
+            } catch {
+                logger.error("\(error)")
+            }
+        } else {
+            
         }
     }
     
     private func _sendData(_ data: Data) async throws -> Interaction.CallbackResponse? {
+        
         let request = try HTTPClient.Request(
             url: DiscordURL.BASE_URL + self.responseRoute,
             method: .POST,
@@ -88,6 +98,7 @@ public actor InteractionContext {
                     from: .init(buffer: body)
                 )
                 logger.trace("Payload: \(callbackResponse)")
+                callbackDeque.append(callbackResponse)
                 return callbackResponse
             } else {
                 logger.error("No Body.")

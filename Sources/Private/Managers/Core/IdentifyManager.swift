@@ -8,18 +8,36 @@
 import Foundation
 import Logging
 
+/// A manager responsible for handling identify and resume payloads.
 actor IdentifyManager {
+    
+    /// The logger for this actor.
     private let logger = Logger(label: "IdentifyManager")
+    
+    /// The socket over which messages should be sent.
     private weak var socket: WebSocketManager?
+    
+    /// The computed identify payload.
     private var identifyPayload: IdentifyPayload
+    
+    /// The bot token.
     private let token: String
     
-    // When true, we will attempt a resume upon receiving the hello event.
+    /// When true, a resume should be attempted.
     private(set) var shouldAttemptResume: Bool = false
     
     /// The reconnect manager for storing session IDs.
     private let reconnectManager: ReconnectManager
     
+    /// Construct a new actor with the given data.
+    /// - Parameters:
+    ///   - socket: The websocket to send messages over.
+    ///   - token: The token associated with this bot.
+    ///   - intents: The intents to use when connecting to the gateway.
+    ///   - largeThreshold: The number of users before a guild will not include all members.
+    ///   - shardInfo: Sharding information
+    ///   - presence: The initial presence to use when connecting.
+    ///   - reconnectManager: The manager to use when sending reconnect requests.
     init(
         socket: WebSocketManager,
         token: String,
@@ -49,19 +67,17 @@ actor IdentifyManager {
     
     /// Send an identify payload.
     func sendIdentify() async {
-        // When sending a fresh identify, clear any resume flag.
         shouldAttemptResume = false
         await self.socket?.send(opcode: .identify, data: identifyPayload)
     }
     
     /// Send a resume payload.
+    /// - Parameter sequence: The sequence to use when reconnecting.
     func sendResume(sequence: Int? = nil) async {
-        // Retrieve the stored session ID from the reconnect manager.
         guard let sessionID = await reconnectManager.getSessionID() else {
             logger.error("Cannot resume: No session ID set.")
             return
         }
-        // After attempting a resume, clear the flag.
         shouldAttemptResume = false
         await self.socket?.send(opcode: .resume, data: ResumePayload(
             token: token,
@@ -71,6 +87,7 @@ actor IdentifyManager {
     }
     
     /// Save the session ID from a ready event.
+    /// - Parameter sessionID: The session ID to store.
     func setSessionID(_ sessionID: String) async {
         await reconnectManager.setSessionID(sessionID)
         shouldAttemptResume = true

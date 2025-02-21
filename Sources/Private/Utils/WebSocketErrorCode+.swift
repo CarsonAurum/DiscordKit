@@ -8,7 +8,7 @@
 import NIOWebSocket
 
 extension WebSocketErrorCode {
-    var shouldAutoReconnect: Bool {
+    internal var shouldAutoReconnect: Bool {
         switch self {
         case .normalClosure,
              .unknown(4004),

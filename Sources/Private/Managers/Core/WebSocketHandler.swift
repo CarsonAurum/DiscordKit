@@ -241,6 +241,7 @@ extension WebSocketHandler {
                 logger.error("\(error)")
             }
         case .resumed:
+            await self.reconnectManager?.
             logger.debug("Resumed")
         case .unknown(let name):
             logger.debug("Unhandled Dispatch: \(name.uppercased())")

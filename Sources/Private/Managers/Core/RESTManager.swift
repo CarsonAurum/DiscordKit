@@ -52,6 +52,9 @@ actor RESTManager {
         }
     }
     
+    /// Create a new context for a given interaction.
+    /// - Parameter interaction: The interaction whose context will be generated.
+    /// - Returns: The newly created context.
     func getInteractionContext(_ interaction: Interaction) -> InteractionContext {
         InteractionContext(client: self.client, headers: self.headers, coders: coders, interaction: interaction)
     }

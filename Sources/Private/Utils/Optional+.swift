@@ -6,6 +6,6 @@
 //
 
 extension Optional {
-    var isSome: Bool { self != nil }
-    var isNone: Bool { self == nil }
+    internal var isSome: Bool { self != nil }
+    internal var isNone: Bool { self == nil }
 }

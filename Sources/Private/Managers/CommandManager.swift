@@ -31,8 +31,10 @@ actor CommandManager {
         type: ApplicationCommand.CommandType = .slashCommand,
         scope: BotCommand.Scope = .global
     ) -> BotCommand? {
-        commands.first { $0.name == name &&
+        commands.first {
+            $0.name == name &&
             $0.type == type &&
-            $0.scope == scope }
+            $0.scope == scope
+        }
     }
 }

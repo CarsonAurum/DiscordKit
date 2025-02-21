@@ -45,10 +45,9 @@ actor ReconnectManager {
     func getEndpoint(_ type: EndpointType) -> String? {
         return endpoint
     }
-    
-    // MARK: - Session ID Management
-    
+
     /// Save the session ID.
+    /// - Parameter sessionID: The new session ID to store.
     func setSessionID(_ sessionID: String) {
         self.sessionID = sessionID
         logger.debug("Stored session ID: \(sessionID)")
@@ -66,8 +65,7 @@ actor ReconnectManager {
         self.reconnectAttempts = 0
         logger.debug("Cleared session.")
     }
-    
-    // MARK: - Reconnection Logic
+
     
     /// Attempt a reconnection using the stored endpoint.
     /// - Parameter socketManager: The WebSocketManager to use for reconnecting.
