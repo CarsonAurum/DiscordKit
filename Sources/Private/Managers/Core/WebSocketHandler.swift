@@ -128,6 +128,8 @@ actor WebSocketHandler {
         self.readyHandler = handler
     }
     
+    weak var delegate: DiscordBotDelegate?
+    
     // MARK: Private
     
     /// The logger to use within this manager.
@@ -241,12 +243,14 @@ extension WebSocketHandler {
                 logger.error("\(error)")
             }
         case .resumed:
-            await self.reconnectManager?.
             logger.debug("Resumed")
         case .unknown(let name):
             logger.debug("Unhandled Dispatch: \(name.uppercased())")
         default:
             return
         }
+    }
+    func setDelegate(_ delegate: DiscordBotDelegate?) {
+        self.delegate = delegate
     }
 }

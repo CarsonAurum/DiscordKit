@@ -83,6 +83,8 @@ public final actor DiscordBot {
     
     private let commandManager: CommandManager
     
+    weak var delegate: DiscordBotDelegate?
+    
     public init(token: String, intents: GatewayIntents) {
         self.intents = intents
         self.coders = (JSONEncoder(), JSONDecoder())
@@ -106,7 +108,13 @@ public final actor DiscordBot {
             reconnectManager: self.reconnectManager,
             restManager: self.restManager,
             commandManager: self.commandManager
+            
         )
-        Task { await self.socketManager.setHeartbeatManager(self.heartbeatManager) }
+        Task {
+            await self.socketManager.setHeartbeatManager(self.heartbeatManager)
+            await self.socketHandler.setDelegate (
+                self.delegate
+            )
+        }
     }
 }
