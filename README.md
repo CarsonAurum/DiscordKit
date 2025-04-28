@@ -12,3 +12,4 @@ A Swift 6.0 async-ready Discord wrapper.
 | 0.0.0-BETA4 | February 9, 2025  | Reconnect v2.0, Presence Update, Channel |
 | 0.0.0-BETA5 | February 11, 2025 | Reconnect v3.0, Interaction + AppCommand |
 | 0.0.0-BETA6 | February 12, 2025 | Command creation flow.                   |
+| 0.0.0-BETA7 | April 28, 2025    | Deferred interaction response            |
