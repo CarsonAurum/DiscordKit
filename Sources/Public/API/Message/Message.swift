@@ -5,7 +5,28 @@
 //  Created by Carson Rau on 2/7/25.
 //
 
+
 import Foundation
+
+/// Box wrapper to break recursive struct cycles for Codable
+public final class Box<T>: DiscordModel where T: Codable, T: Hashable, T: Sendable {
+    let value: T
+    init(_ value: T) { self.value = value }
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.value = try container.decode(T.self)
+    }
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.value)
+    }
+    public func hash(into hasher: inout Hasher) {
+        self.value.hash(into: &hasher)
+    }
+    public static func == (lhs: Box<T>, rhs: Box<T>) -> Bool {
+        return lhs.value == rhs.value
+    }
+}
 
 public struct Message: DiscordModel {
     public let id: Snowflake
@@ -27,7 +48,21 @@ public struct Message: DiscordModel {
     public let webhookID: Snowflake?
     public let type: MessageType
     public let activity: Activity?
-    
+    public let application: Application?
+    public let applicationID: Snowflake?
+    public let flags: Flags?
+    public let messageReference: Reference?
+    public let messageSnapshots: [Snapshot]?
+    public let referencedMessage: Box<Message>?
+    public let interactionMetadata: InteractionMetadata?
+    public let thread: Channel?
+    // public let components: [Component]?
+    public let stickerItems: [Sticker.Item]?
+    public let position: Int?
+    public let roleSubscriptionData: RoleSubscriptionData?
+    public let resolved: Interaction.ResolvedData?
+    public let poll: Poll?
+    public let call: Call?
 }
 
 extension Message {
@@ -51,6 +86,22 @@ extension Message {
         case webhookID = "webhook_id"
         case type
         case activity
+        
+        case application
+        case applicationID = "application_id"
+        case flags
+        case messageReference = "message_reference"
+        case messageSnapshots = "message_snapshots"
+        case referencedMessage = "referenced_message"
+        case interactionMetadata = "interaction_metadata"
+        case thread
+        // case components
+        case stickerItems = "sticker_items"
+        case position
+        case roleSubscriptionData = "role_subscription_data"
+        case resolved
+        case poll
+        case call
     }
     
     public init(from decoder: Decoder) throws {
@@ -94,6 +145,34 @@ extension Message {
         self.webhookID = try container.decodeIfPresent(Snowflake.self, forKey: .webhookID)
         self.type = try container.decode(MessageType.self, forKey: .type)
         self.activity = try container.decodeIfPresent(Activity.self, forKey: .activity)
+        application = try container.decodeIfPresent(Application.self, forKey: .application)
+        applicationID = try container.decodeIfPresent(Snowflake.self, forKey: .applicationID)
+        flags = try container.decodeIfPresent(Flags.self, forKey: .flags)
+        messageReference = try container.decodeIfPresent(Reference.self, forKey: .messageReference)
+        messageSnapshots = try container.decodeIfPresent([Snapshot].self, forKey: .messageSnapshots)
+        referencedMessage = try container.decodeIfPresent(Box<Message>.self, forKey: .referencedMessage)
+        if container.contains(.interactionMetadata) {
+            if let metadata = try? container.decode(InteractionMetadata.ApplicationCommand.self, forKey: .interactionMetadata) {
+                self.interactionMetadata = .applicationCommand(metadata)
+            } else if let metadata = try? container.decode(InteractionMetadata.MessageComponent.self, forKey: .interactionMetadata) {
+                self.interactionMetadata = .messageComponent(metadata)
+            } else if let metadata = try? container.decode(InteractionMetadata.ModalSubmit.self, forKey: .interactionMetadata) {
+                self.interactionMetadata = .modalSubmit(metadata)
+            } else {
+                fatalError()
+                // TODO: Be more graceful
+            }
+        } else {
+            self.interactionMetadata = nil
+        }
+        thread = try container.decodeIfPresent(Channel.self, forKey: .thread)
+        // components = try container.decodeIfPresent([Component].self, forKey: .components)
+        stickerItems = try container.decodeIfPresent([Sticker.Item].self, forKey: .stickerItems)
+        position = try container.decodeIfPresent(Int.self, forKey: .position)
+        roleSubscriptionData = try container.decodeIfPresent(RoleSubscriptionData.self, forKey: .roleSubscriptionData)
+        resolved = try container.decodeIfPresent(Interaction.ResolvedData.self, forKey: .resolved)
+        poll = try container.decodeIfPresent(Poll.self, forKey: .poll)
+        call = try container.decodeIfPresent(Call.self, forKey: .call)
     }
     
     public func encode(to encoder: any Encoder) throws {
@@ -134,5 +213,20 @@ extension Message {
         try container.encodeIfPresent(webhookID, forKey: .webhookID)
         try container.encode(type, forKey: .type)
         try container.encode(activity, forKey: .activity)
+        try container.encodeIfPresent(application, forKey: .application)
+        try container.encodeIfPresent(applicationID, forKey: .applicationID)
+        try container.encodeIfPresent(flags, forKey: .flags)
+        try container.encodeIfPresent(messageReference, forKey: .messageReference)
+        try container.encodeIfPresent(messageSnapshots, forKey: .messageSnapshots)
+        try container.encodeIfPresent(referencedMessage, forKey: .referencedMessage)
+        try container.encodeIfPresent(interactionMetadata, forKey: .interactionMetadata)
+        try container.encodeIfPresent(thread, forKey: .thread)
+        // try container.encodeIfPresent(components, forKey: .components)
+        try container.encodeIfPresent(stickerItems, forKey: .stickerItems)
+        try container.encodeIfPresent(position, forKey: .position)
+        try container.encodeIfPresent(roleSubscriptionData, forKey: .roleSubscriptionData)
+        try container.encodeIfPresent(resolved, forKey: .resolved)
+        try container.encodeIfPresent(poll, forKey: .poll)
+        try container.encodeIfPresent(call, forKey: .call)
     }
 }

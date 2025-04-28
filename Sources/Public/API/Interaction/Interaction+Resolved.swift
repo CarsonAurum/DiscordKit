@@ -6,6 +6,7 @@
 //
 
 extension Interaction {
+    
     public struct ResolvedData: DiscordModel {
         public let user: [Snowflake: User]?
         public let members: [Snowflake: Guild.Member]?

@@ -19,6 +19,7 @@ extension Message {
         public static let suppressNotifications = Flags(rawValue: 1 << 12)
         public static let isVoiceMessage = Flags(rawValue: 1 << 13)
         public static let hasSnapshot = Flags(rawValue: 1 << 14)
+        public static let isComponentsV2 = Flags(rawValue: 1 << 15)
         
         public let rawValue: Int
         public init(rawValue: Int) { self.rawValue = rawValue }

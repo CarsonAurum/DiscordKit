@@ -5,27 +5,51 @@
 //  Created by Carson Rau on 2/6/25.
 //
 
+/// A message received when a user uses an application command or a message component.
 public struct Interaction: DiscordModel {
+    /// The ID of the interaction.
     public let id: Snowflake
+    /// The ID of the application this interaction is for.
     public let applicationID: Snowflake
+    /// The type of interaction.
     public let type: InteractionType
+    /// Interaction data payload.
     public let data: Data?
+    /// Guild that the interaction was sent from.
     public let guild: Guild?
+    /// Guild that the interaction was sent from.
     public let guildID: Snowflake?
+    /// Channel that the interaction was sent from.
     public let channel: Channel?
+    /// Channel that the interaction was sent from.
     public let channelID: Snowflake?
+    /// Guild member data for the invoking user, including permissions.
     public let member: Guild.Member?
+    /// User object for the invoking user, if involved in a DM.
     public let user: User?
+    /// Continuation token for responding to the interaction.
     public let token: String
+    /// Read-only property, always 1.
     public let version: Int
+    /// For components, the message they were attached to.
     public let message: Message?
+    /// Bitwise set of permissions the app has in the source location of the interaction.
     public let appPermissions: Permissions?
+    /// Selected language of the invoking user.
     public let locale: Locale?
+    /// Guild's preferred locale, if invoked in a guild.
     public let guildLocale: Locale?
+    /// For monetized apps, any entitlements for the invoking user, representing access to premium SKUs.
     public let entitlements: [Entitlement]
+    /// Mapping of installation contexts that the interaction was authorized for to related user or guild IDs.
     public let authorizingIntegrationOwners: [Application.IntegrationType: String]
+    /// Context where the interaction was triggered from.
     public let context: ContextType?
+    /// Attachment size limit in bytes.
+    public let attachmentSizeLimit: Int
 }
+
+// MARK: - Codable
 
 extension Interaction {
     enum CodingKeys: String, CodingKey {
@@ -48,6 +72,7 @@ extension Interaction {
         case entitlements
         case authorizingIntegrationOwners = "authorizing_integration_owners"
         case context
+        case attachmentSizeLimit = "attachment_size_limit"
     }
     
     
@@ -96,6 +121,7 @@ extension Interaction {
             convertedDict[enumKey] = value
         }
         self.authorizingIntegrationOwners = convertedDict
+        self.attachmentSizeLimit = try container.decode(Int.self, forKey: .attachmentSizeLimit)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -134,5 +160,6 @@ extension Interaction {
             rawDict["\(key.rawValue)"] = value
         }
         try container.encode(rawDict, forKey: .authorizingIntegrationOwners)
+        try container.encode(attachmentSizeLimit, forKey: .attachmentSizeLimit)
     }
 }

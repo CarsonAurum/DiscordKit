@@ -6,11 +6,17 @@
 //
 
 extension Interaction {
+    /// The type of interaction.
     public enum InteractionType: Int, DiscordModel {
+        /// Ping interactions.
         case ping = 1
+        /// Application commands (of any type).
         case applicationCommand = 2
+        /// Message component interactions.
         case messageComponent = 3
+        /// Autocomplete interactions.
         case applicationCommandAutocomplete = 4
+        /// Modal submit interactions.
         case modalSubmit = 5
     }
 }

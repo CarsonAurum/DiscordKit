@@ -13,10 +13,6 @@ import Logging
 import Foundation
 import Collections
 
-internal struct EditWebookMessagePayload: DiscordModel {
-    public let content: String?
-}
-
 public actor InteractionContext {
     private let logger = Logger(label: "InteractionContext")
     private let initialResponseRoute: String
@@ -26,6 +22,7 @@ public actor InteractionContext {
     private let coders: CoderPackage
     private var responseDeque: Deque<Interaction.Response>
     private var callbackDeque: Deque<Interaction.CallbackResponse>
+    public let interaction: Interaction
     init(
         client: HTTPClient,
         headers: HTTPHeaders,
@@ -39,6 +36,7 @@ public actor InteractionContext {
                 "webhooks/\(interaction.applicationID.value)/\(interaction.token)/"
             self.responseDeque = []
             self.callbackDeque = []
+            self.interaction = interaction
     }
     
     public func deferReply(isEphemeral: Bool = false) async {
@@ -87,7 +85,7 @@ public actor InteractionContext {
                 logger.error("\(error)")
             }
         } else if callbackDeque.first?.interaction.isResponseMessageLoading ?? false {
-            let payload = EditWebookMessagePayload(content: msg)
+            let payload = EditWebhookMessagePayload(content: msg)
             logger.trace("Editing original deferred message with payload: \(payload)")
             do {
                 let bodyData = try coders.encoder.encode(payload)
