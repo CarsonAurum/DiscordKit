@@ -7,7 +7,6 @@
 
 extension Message {
     public struct Flags: OptionSet, DiscordModel {
-        
         public static let crossposted = Flags(rawValue: 1 << 0)
         public static let isCrosspost = Flags(rawValue: 1 << 1)
         public static let suppressEmbeds = Flags(rawValue: 1 << 2)

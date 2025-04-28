@@ -49,7 +49,8 @@ actor GlobalApplicationCommands {
     
     public func put(_ commands: [BotCommand]) async throws -> [ApplicationCommand]? {
         var request = try HTTPClient.Request(url: self.url, method: .PUT, headers: self.headers)
-        request.body = try .bytes(coders.encoder.encode(commands))
+        let cmds = try coders.encoder.encode(commands)
+        request.body = .bytes(cmds)
         let response = try await self.client.execute(request: request).get()
         
         guard response.status == .ok else {

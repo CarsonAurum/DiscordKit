@@ -41,12 +41,12 @@ public final actor DiscordBot {
         logger.info("Disconnected.")
     }
     
-    public func onReady(_ handler: @Sendable @escaping (ReadyData) async -> Void) async {
-        await self.socketHandler.setReadyHandler(handler)
-    }
-    
     public func addCommands(_ commands: [BotCommand]) async {
         await self.commandManager.addCommands(commands)
+    }
+    
+    public func setDelegate(_ delegate: DiscordBotDelegate?) {
+        self.delegate = delegate
     }
     
     // MARK: - Private
@@ -83,7 +83,9 @@ public final actor DiscordBot {
     
     private let commandManager: CommandManager
     
-    weak var delegate: DiscordBotDelegate?
+    weak var delegate: DiscordBotDelegate? {
+        didSet { Task { await self.socketHandler.setDelegate(self.delegate) } }
+    }
     
     public init(token: String, intents: GatewayIntents) {
         self.intents = intents
@@ -108,13 +110,9 @@ public final actor DiscordBot {
             reconnectManager: self.reconnectManager,
             restManager: self.restManager,
             commandManager: self.commandManager
-            
         )
         Task {
             await self.socketManager.setHeartbeatManager(self.heartbeatManager)
-            await self.socketHandler.setDelegate (
-                self.delegate
-            )
         }
     }
 }

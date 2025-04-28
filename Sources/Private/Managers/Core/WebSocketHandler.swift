@@ -124,8 +124,8 @@ actor WebSocketHandler {
         }
     }
     
-    func setReadyHandler(_ handler: @Sendable @escaping (ReadyData) async -> Void) {
-        self.readyHandler = handler
+    func setDelegate(_ delegate: DiscordBotDelegate?) {
+        self.delegate = delegate
     }
     
     weak var delegate: DiscordBotDelegate?
@@ -154,7 +154,6 @@ actor WebSocketHandler {
     /// The decoder to use when reading messages.
     private let decoder: JSONDecoder
     
-    private var readyHandler: (@Sendable (ReadyData) async -> Void)?
 }
 
 // MARK: Private Handlers
@@ -218,6 +217,14 @@ extension WebSocketHandler {
             } catch {
                 logger.error("\(error)")
             }
+        case .messageCreate:
+            do {
+                let payload = try decoder.decode(Message.self, from: message.getData())
+                logger.trace("Payload: \(payload)")
+                Task { await delegate?.discordBot(onMessageCreate: payload) }
+            } catch {
+                logger.error("\(error)")
+            }
         case .presenceUpdate:
             do {
                 let payload = try decoder.decode(Presence.Update.self, from: message.getData())
@@ -233,7 +240,7 @@ extension WebSocketHandler {
                     await self.reconnectManager?.setEndpoint(payload.resumeURL, .reconnect)
                     await self.identifyManager?.setSessionID(payload.sessionID)
                     try await self.commandManager?.registerCommands(appID: payload.application.id)
-                    await self.readyHandler?(.init(
+                    await self.delegate?.discordBot(onReady: .init(
                         guilds: payload.guilds,
                         user: payload.user,
                         application: payload.application
@@ -249,8 +256,5 @@ extension WebSocketHandler {
         default:
             return
         }
-    }
-    func setDelegate(_ delegate: DiscordBotDelegate?) {
-        self.delegate = delegate
     }
 }

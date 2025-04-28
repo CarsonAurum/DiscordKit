@@ -27,6 +27,7 @@ public struct Message: DiscordModel {
     public let webhookID: Snowflake?
     public let type: MessageType
     public let activity: Activity?
+    
 }
 
 extension Message {
