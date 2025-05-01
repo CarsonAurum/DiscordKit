@@ -8,8 +8,11 @@
 // MARK: - InstallParams
 
 extension Application {
+    /// Settings for the app's default in-app authorization link.
     public struct InstallParams: DiscordModel {
+        /// Scopes to add the application to the server with.
         public let scopes: [String]
+        /// Permissions to request for the bot role.
         public let permissions: String
     }
 }

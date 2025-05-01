@@ -202,12 +202,14 @@ extension WebSocketHandler {
                         if let ctx = ctx {
                             switch payload.data {
                             case .applicationCommand(let value):
-                                let cmd = await commandManager?.getCommand(
-                                    name: value.name,
-                                    type: value.type,
-                                    scope: .global
-                                )
-                                await cmd?.onInteraction(ctx)
+                                if let interactionContext = payload.context {
+                                    let cmd = await commandManager?.getCommand(
+                                        name: value.name,
+                                        type: value.type,
+                                        scope: .global(Array(payload.authorizingIntegrationOwners.keys), [interactionContext])
+                                    )
+                                    await cmd?.onInteraction(ctx)
+                                }
                             default:
                                 return
                             }

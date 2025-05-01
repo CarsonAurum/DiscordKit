@@ -7,41 +7,78 @@
 
 import Foundation
 
+/// A model representing a Discord channel, covering text, voice, DM, forum, and other channel types.
+/// Conforms to `DiscordModel` for decoding from Discord API responses.
 public struct Channel: DiscordModel {
+    /// The unique identifier of the channel.
     public let id: Snowflake
+    /// The type of the channel (text, voice, DM, etc.).
     public let type: ChannelType
+    /// The ID of the guild this channel belongs to, if any.
     public let guildID: Snowflake?
+    /// The position of the channel in the guild's channel list.
     public let position: Int?
+    /// A list of permission overwrite objects for roles and members.
     public let permissionOverwrites: [Permissions.Overwrite]?
+    /// The name of the channel.
     public let name: String?
+    /// The channel topic (for forum and text channels).
     public let topic: String?
+    /// Whether the channel is marked as NSFW.
     public let isNSFW: Bool?
+    /// The ID of the last message sent in this channel.
     public let lastMessageID: Snowflake?
+    /// The bitrate (in bits) of the channel (for voice channels).
     public let bitrate: Int?
+    /// The maximum number of users allowed in a voice channel.
     public let userLimit: Int?
+    /// The time (in seconds) a user must wait between sending messages (slowmode).
     public let rateLimitPerUser: Int?
+    /// The recipients of a DM or group DM channel.
     public let recipients: [User]?
+    /// The icon hash of the channel (for group DM channels).
     public let icon: Snowflake?
+    /// The ID of the user who owns the channel (for group DM channels).
     public let ownerID: Snowflake?
+    /// The application ID of the channel creator (for application-owned channels).
     public let applicationID: Snowflake?
+    /// Whether the channel is managed by an integration.
     public let isManaged: Bool?
+    /// The ID of the parent category for this channel.
     public let parentID: Snowflake?
+    /// The timestamp of the last pinned message in the channel.
     public let lastPinTimestamp: Date?
+    /// The voice region ID for voice channels.
     public let rtcRegion: String?
+    /// The camera video quality mode (for voice channels with video support).
     public let videoQualityMode: VideoQualityMode?
+    /// The total number of messages in the channel (for threads).
     public let messageCount: Int?
+    /// The number of members in the channel (for threads).
     public let memberCount: Int?
+    /// Additional metadata for thread channels.
     public let threadMetadata: ThreadMetadata?
+    /// Thread member data for the current user.
     public let member: ThreadMember?
+    /// The default auto-archive duration (in minutes) for new threads.
     public let defaultAutoArchiveDuration: Int?
+    /// Computed permissions for the current user in this channel.
     public let permissions: Permissions?
+    /// Channel-specific flags.
     public let flags: Flags?
+    /// Approximate total messages sent in a thread, rounded down.
     public let totalMessageSent: Int?
+    /// The forum tags that can be used in a forum channel.
     public let availableTags: [ForumTag]?
+    /// The tag IDs that have been applied to the channel in a forum.
     public let appliedTags: [Snowflake]?
+    /// The default reaction emoji for the channel.
     public let defaultReactionEmoji: DefaultReaction?
+    /// The default per-user rate limit (slowmode) for threads.
     public let defaultThreadRateLimitPerUser: Int?
+    /// The default sorting order for posts in forum channels.
     public let defaultSortOrder: SortOrderType?
+    /// The default layout view for forum channels.
     public let defaultForumLayout: ForumLayoutType?
     
 }

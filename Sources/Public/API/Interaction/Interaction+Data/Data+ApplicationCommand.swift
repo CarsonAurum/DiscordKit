@@ -35,7 +35,7 @@ extension Interaction.Data.ApplicationCommand {
     public struct Option<T>: DiscordModel where T: Codable, T: Hashable, T: Sendable {
         public let name: String
         public let type: ApplicationCommand.Option<T>.OptionType
-        public let value: T?
+        public let _value: T?
         public let options: [Option<AnyCodable>]?
         public let isFocused: Bool?
     }
@@ -45,8 +45,14 @@ extension Interaction.Data.ApplicationCommand.Option {
     enum CodingKeys: String, CodingKey {
         case name
         case type
-        case value
+        case _value = "value"
         case options
         case isFocused = "focused"
+    }
+}
+
+extension Interaction.Data.ApplicationCommand.Option where T == AnyCodable {
+    public var value: Any? {
+        _value?.value
     }
 }

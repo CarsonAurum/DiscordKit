@@ -16,7 +16,7 @@ public struct BotCommand: DiscordModel {
     public let defaultMemberPermissions: Permissions?
     public let type: ApplicationCommand.CommandType?
     public let isNSFW: Bool?
-    public let scope: Scope?
+    public let scope: Scope
     public let onInteraction: (@Sendable (InteractionContext) async -> Void)
     
     public init(
@@ -28,7 +28,7 @@ public struct BotCommand: DiscordModel {
         defaultMemberPermissions: Permissions? = nil,
         isNSFW: Bool? = false,
         type: ApplicationCommand.CommandType? = .slashCommand,
-        scope: Scope = .global,
+        scope: Scope = .global([.guildInstall, .userInstall], [.guild, .botDM, .privateChannel]),
         onInteraction: @escaping @Sendable (InteractionContext) async -> Void
     ) {
         self.name = name
@@ -54,6 +54,8 @@ extension BotCommand {
         case defaultMemberPermissions = "default_member_permissions"
         case type
         case isNSFW = "nsfw"
+        case integrationTypes = "integration_types"
+        case contexts
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -66,6 +68,13 @@ extension BotCommand {
         try container.encode(defaultMemberPermissions, forKey: .defaultMemberPermissions)
         try container.encode(type, forKey: .type)
         try container.encode(isNSFW, forKey: .isNSFW)
+        switch scope {
+        case .global(let integrationTypes, let contexts):
+            try container.encode(integrationTypes, forKey: .integrationTypes)
+            try container.encode(contexts, forKey: .contexts)
+        case .guild:
+            break
+        }
     }
     
     public init(from decoder: Decoder) throws {
@@ -78,7 +87,11 @@ extension BotCommand {
         defaultMemberPermissions = try container.decodeIfPresent(Permissions.self, forKey: .defaultMemberPermissions)
         type = try container.decodeIfPresent(ApplicationCommand.CommandType.self, forKey: .type)
         isNSFW = try container.decodeIfPresent(Bool.self, forKey: .isNSFW)
-        scope = nil
+        let integrationTypes = try container.decodeIfPresent([Application.IntegrationType].self, forKey: .integrationTypes)
+            ?? [.guildInstall]
+        let contexts = try container.decodeIfPresent([Interaction.ContextType].self, forKey: .contexts)
+            ?? [.guild, .botDM, .privateChannel]
+        scope = .global(integrationTypes, contexts)
         onInteraction = { _ in
             fatalError("BotCommand.onInteraction was not decoded. You must provide a closure when initializing.")
         }
@@ -119,7 +132,7 @@ extension BotCommand { }
 
 extension BotCommand {
     public enum Scope: DiscordModel {
-        case global
+        case global([Application.IntegrationType], [Interaction.ContextType])
         case guild(String)
     }
 }

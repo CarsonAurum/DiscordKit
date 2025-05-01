@@ -8,10 +8,8 @@
 // MARK: - IntegrationTypeConfiguration
 
 extension Application {
-    
     /// Configuration for a specific installation context.
     public struct IntegrationTypeConfiguration: DiscordModel {
-        
         /// Install params for the specific in-app authorization context.
         public let installParams: InstallParams?
     }

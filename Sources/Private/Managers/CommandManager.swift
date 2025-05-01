@@ -22,19 +22,34 @@ actor CommandManager {
     }
     
     func registerCommands(appID: Snowflake) async throws {
-        let globals = commands.filter { $0.scope == .global }
+        let globals = commands.filter {
+            if case .global = $0.scope {
+                return true
+            } else {
+                return false
+            }
+        }
         try await restManager?.registerGlobalCommands(appID: appID, globals)
     }
     
     func getCommand(
         name: String,
         type: ApplicationCommand.CommandType = .slashCommand,
-        scope: BotCommand.Scope = .global
+        scope: BotCommand.Scope
     ) -> BotCommand? {
-        commands.first {
-            $0.name == name &&
-            $0.type == type &&
-            $0.scope == scope
+        commands.first { command in
+            guard command.name == name,
+                  command.type == type else {
+                return false
+            }
+            switch (command.scope, scope) {
+            case let (.global(candidateIntegrationTypes, candidateContexts),
+                      .global(requestedIntegrationTypes, requestedContexts)):
+                return Set(requestedIntegrationTypes).isSubset(of: Set(candidateIntegrationTypes))
+                    && Set(requestedContexts).isSubset(of: Set(candidateContexts))
+            default:
+                return command.scope == scope
+            }
         }
     }
 }

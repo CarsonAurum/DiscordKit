@@ -31,7 +31,8 @@ public actor InteractionContext {
             self.client = client
             self.headers = headers
             self.coders = coders
-            self.initialResponseRoute = "interactions/\(interaction.id.value)/\(interaction.token)/callback?with_response=true"
+            self.initialResponseRoute = 
+                "interactions/\(interaction.id.value)/\(interaction.token)/callback?with_response=true&with_components=true"
             self.webhookRoute =
                 "webhooks/\(interaction.applicationID.value)/\(interaction.token)/"
             self.responseDeque = []
@@ -84,9 +85,8 @@ public actor InteractionContext {
             } catch {
                 logger.error("\(error)")
             }
-        } else if callbackDeque.first?.interaction.isResponseMessageLoading ?? false {
+        } else if callbackDeque.count == 1, callbackDeque.last?.interaction.isResponseMessageLoading ?? false {
             let payload = EditWebhookMessagePayload(content: msg)
-            logger.trace("Editing original deferred message with payload: \(payload)")
             do {
                 let bodyData = try coders.encoder.encode(payload)
                 _ = try await _sendEditInitialData(bodyData)
@@ -95,6 +95,37 @@ public actor InteractionContext {
             }
         } else {
             // Possibly handle followup logic here in future
+        }
+    }
+}
+
+
+extension InteractionContext {
+    private func _sendInitialData(_ data: Data) async throws -> Interaction.CallbackResponse? {
+        let request = try HTTPClient.Request(
+            url: DiscordURL.BASE_URL + self.initialResponseRoute,
+            method: .POST,
+            headers: self.headers,
+            body: .bytes(data)
+        )
+        let response = try await self.client.execute(request: request).get()
+        if response.status == .ok {
+            logger.trace("Status: OK.")
+            if let body = response.body {
+                let callbackResponse = try self.coders.decoder.decode(
+                    Interaction.CallbackResponse.self,
+                    from: .init(buffer: body)
+                )
+                logger.trace("Payload: \(callbackResponse)")
+                callbackDeque.append(callbackResponse)
+                return callbackResponse
+            } else {
+                logger.error("No Body.")
+                return nil
+            }
+        } else {
+            logger.error("Received: \(response.status)")
+            return nil
         }
     }
     
@@ -114,34 +145,6 @@ public actor InteractionContext {
                     from: .init(buffer: body)
                 )
                 logger.trace("Payload: \(callbackResponse)")
-                return callbackResponse
-            } else {
-                logger.error("No Body.")
-                return nil
-            }
-        } else {
-            logger.error("Received: \(response.status)")
-            return nil
-        }
-    }
-    
-    private func _sendInitialData(_ data: Data) async throws -> Interaction.CallbackResponse? {
-        let request = try HTTPClient.Request(
-            url: DiscordURL.BASE_URL + self.initialResponseRoute,
-            method: .POST,
-            headers: self.headers,
-            body: .bytes(data)
-        )
-        let response = try await self.client.execute(request: request).get()
-        if response.status == .ok {
-            logger.trace("Status: OK.")
-            if let body = response.body {
-                let callbackResponse = try self.coders.decoder.decode(
-                    Interaction.CallbackResponse.self,
-                    from: .init(buffer: body)
-                )
-                logger.trace("Payload: \(callbackResponse)")
-                callbackDeque.append(callbackResponse)
                 return callbackResponse
             } else {
                 logger.error("No Body.")
