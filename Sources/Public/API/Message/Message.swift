@@ -36,7 +36,7 @@ public struct Message: DiscordModel {
     public let referencedMessage: Box<Message>?
     public let interactionMetadata: InteractionMetadata?
     public let thread: Channel?
-    // public let components: [Component]?
+    public let components: [Component]?
     public let stickerItems: [Sticker.Item]?
     public let position: Int?
     public let roleSubscriptionData: RoleSubscriptionData?
@@ -75,7 +75,7 @@ extension Message {
         case referencedMessage = "referenced_message"
         case interactionMetadata = "interaction_metadata"
         case thread
-        // case components
+        case components
         case stickerItems = "sticker_items"
         case position
         case roleSubscriptionData = "role_subscription_data"
@@ -146,7 +146,7 @@ extension Message {
             self.interactionMetadata = nil
         }
         thread = try container.decodeIfPresent(Channel.self, forKey: .thread)
-        // components = try container.decodeIfPresent([Component].self, forKey: .components)
+        components = try container.decodeIfPresent([Component].self, forKey: .components)
         stickerItems = try container.decodeIfPresent([Sticker.Item].self, forKey: .stickerItems)
         position = try container.decodeIfPresent(Int.self, forKey: .position)
         roleSubscriptionData = try container.decodeIfPresent(RoleSubscriptionData.self, forKey: .roleSubscriptionData)
@@ -201,7 +201,7 @@ extension Message {
         try container.encodeIfPresent(referencedMessage, forKey: .referencedMessage)
         try container.encodeIfPresent(interactionMetadata, forKey: .interactionMetadata)
         try container.encodeIfPresent(thread, forKey: .thread)
-        // try container.encodeIfPresent(components, forKey: .components)
+        try container.encodeIfPresent(components, forKey: .components)
         try container.encodeIfPresent(stickerItems, forKey: .stickerItems)
         try container.encodeIfPresent(position, forKey: .position)
         try container.encodeIfPresent(roleSubscriptionData, forKey: .roleSubscriptionData)

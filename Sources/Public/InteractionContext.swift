@@ -32,7 +32,7 @@ public actor InteractionContext {
             self.headers = headers
             self.coders = coders
             self.initialResponseRoute = 
-                "interactions/\(interaction.id.value)/\(interaction.token)/callback?with_response=true&with_components=true"
+                "interactions/\(interaction.id.value)/\(interaction.token)/callback?with_response=true"
             self.webhookRoute =
                 "webhooks/\(interaction.applicationID.value)/\(interaction.token)/"
             self.responseDeque = []
@@ -81,7 +81,10 @@ public actor InteractionContext {
             responseDeque.append(body)
             logger.trace("Sending: \(body)")
             do {
-                _ = try await _sendInitialData(coders.encoder.encode(body))
+                let result = try await _sendInitialData(coders.encoder.encode(body))
+                if let result = result {
+                    callbackDeque.append(result)
+                }
             } catch {
                 logger.error("\(error)")
             }
@@ -117,7 +120,6 @@ extension InteractionContext {
                     from: .init(buffer: body)
                 )
                 logger.trace("Payload: \(callbackResponse)")
-                callbackDeque.append(callbackResponse)
                 return callbackResponse
             } else {
                 logger.error("No Body.")
