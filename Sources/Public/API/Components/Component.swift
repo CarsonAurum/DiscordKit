@@ -18,8 +18,8 @@ public indirect enum Component: DiscordModel {
     case textDisplay(Component.TextDisplay)
     case thumbnail(Component.Thumbnail)
     case mediaGallery(Component.MediaGallery)
-    case file
-    case separator
+    case file(Component.File)
+    case separator(Component.Separator)
     case container
 }
 
@@ -47,8 +47,8 @@ extension Component {
         case 10:    self = .textDisplay(try .init(from: decoder))
         case 11:    self = .thumbnail(try .init(from: decoder))
         case 12:    self = .mediaGallery(try .init(from: decoder))
-        case 13:    self = .file
-        case 14:    self = .separator
+        case 13:    self = .file(try .init(from: decoder))
+        case 14:    self = .separator(try .init(from: decoder))
         case 17:    self = .container
         default:    fatalError("Unexpected component type encountered") // TODO: Be more graceful
         }
@@ -92,10 +92,12 @@ extension Component {
         case .mediaGallery(let value):
             try container.encode(12, forKey: .type)
             try value.encode(to: encoder)
-        case .file:
+        case .file(let value):
             try container.encode(13, forKey: .type)
-        case .separator:
+            try value.encode(to: encoder)
+        case .separator(let value):
             try container.encode(14, forKey: .type)
+            try value.encode(to: encoder)
         case .container:
             try container.encode(17, forKey: .type)
         }

@@ -15,6 +15,17 @@ public struct Snowflake: DiscordModel {
     
     /// The raw snowflake value.
     public let value: UInt64
+    
+    public init(value: UInt64) {
+        self.value = value
+    }
+    
+    public init?(value: String) {
+        guard let parsed = UInt64(value) else {
+            return nil
+        }
+        self.value = parsed
+    }
 }
 
 // MARK: Codable
