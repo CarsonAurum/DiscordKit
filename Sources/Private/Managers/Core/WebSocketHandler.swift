@@ -109,7 +109,7 @@ actor WebSocketHandler {
                             logger.error("Error handling invalid session: \(error)")
                         }
                     }
-                case .heartbeatACK:
+                case .heartbeatAck:
                     if let heartbeatManager = heartbeatManager {
                         Task { await heartbeatManager.acknowledgeHeartbeat() }
                     } else {

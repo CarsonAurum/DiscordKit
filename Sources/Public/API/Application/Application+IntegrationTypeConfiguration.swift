@@ -14,20 +14,9 @@ extension Application {
     @CodingKeys(.custom([
         "installParams": "oauth2_install_params"
     ]))
-    public struct IntegrationTypeConfiguration: Codable, Hashable, Sendable {
+    @PrettyDescription
+    public struct IntegrationTypeConfiguration: Codable, Hashable, Sendable, CustomStringConvertible {
         /// Install params for the specific in-app authorization context.
         public let installParams: InstallParams?
-    }
-}
-
-// MARK: CustomStringConvertible
-
-extension Application.IntegrationTypeConfiguration: CustomStringConvertible {
-    public var description: String {
-        if let installParams = installParams {
-            return "\(installParams)"
-        } else {
-            return "None"
-        }
     }
 }

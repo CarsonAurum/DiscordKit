@@ -6,9 +6,17 @@
 //
 
 import Foundation
+import NovaMacros
 
 extension Channel {
-    public struct ThreadMetadata: DiscordModel {
+    @CodingKeys(.custom([
+        "isArchived": "archived",
+        "isLocked": "locked",
+        "isInvitable": "invitable",
+        "createTimestamp": "created_at"
+    ]))
+    @PrettyDescription
+    public struct ThreadMetadata: Codable, Hashable, Sendable, CustomStringConvertible {
         public let isArchived: Bool
         public let autoArchiveDuration: Int
         public let archiveTimestamp: Date
@@ -19,15 +27,6 @@ extension Channel {
 }
 
 extension Channel.ThreadMetadata {
-    enum CodingKeys: String, CodingKey {
-        case isArchived = "archived"
-        case autoArchiveDuration = "auto_archive_duration"
-        case archiveTimestamp = "archive_timestamp"
-        case isLocked = "locked"
-        case isInvitable = "invitable"
-        case createTimestamp = "created_at"
-    }
-    
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.isArchived = try container.decode(Bool.self, forKey: .isArchived)
@@ -66,18 +65,5 @@ extension Channel.ThreadMetadata {
         } else {
             try container.encodeNil(forKey: .createTimestamp)
         }
-    }
-}
-
-extension Channel.ThreadMetadata: CustomStringConvertible {
-    public var description: String {
-        var result = [String]()
-        result.append("Is Archived \(isArchived)")
-        result.append("Auto Archive Duration: \(autoArchiveDuration)")
-        result.append("Archive Timestamp: \(archiveTimestamp)")
-        result.append("Is Locked: \(isLocked)")
-        if let isInvitable = isInvitable { result.append("Is Invitable: \(isInvitable)") }
-        if let createTimestamp = createTimestamp { result.append("Create Timestamp: \(createTimestamp)") }
-        return "[\(result.joined(separator: " || "))]"
     }
 }

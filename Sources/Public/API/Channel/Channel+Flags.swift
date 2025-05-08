@@ -5,8 +5,12 @@
 //  Created by Carson Rau on 2/6/25.
 //
 
+import NovaMacros
+
 extension Channel {
-    public struct Flags: OptionSet, DiscordModel {
+    
+    @PrettyDescription
+    public struct Flags: OptionSet, Codable, Hashable, Sendable, CustomStringConvertible {
         
         public static let pinned = Flags(rawValue: 1 << 1)
         public static let requireTag = Flags(rawValue: 1 << 4)
@@ -14,15 +18,5 @@ extension Channel {
         
         public let rawValue: Int
         public init(rawValue: Int) { self.rawValue = rawValue }
-    }
-}
-
-extension Channel.Flags: CustomStringConvertible {
-    public var description: String {
-        var cases = [String]()
-        if contains(.pinned) { cases.append("Pinned") }
-        if contains(.requireTag) { cases.append("Require Tag") }
-        if contains(.hideMediaDownloadOptions) { cases.append("Hide Media Download Options") }
-        return "[\(cases.joined(separator: ", "))]"
     }
 }

@@ -5,12 +5,15 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+import NovaMacros
+
 // MARK: - Opcode
 
 extension GatewayEvent {
     
     /// A numeric identifier to determine event type.
-    enum Opcode: Int, DiscordModel {
+    @PrettyDescription
+    enum Opcode: Int, DiscordModel, CustomStringConvertible {
         
         /// An event was dispatched.
         case dispatch = 0
@@ -43,30 +46,9 @@ extension GatewayEvent {
         case hello = 10
         
         /// Sent in response to receiving a heartbeat to acknowledge that it has been received.
-        case heartbeatACK = 11
+        case heartbeatAck = 11
         
         /// Request information about soundboard sounds in a set of guilds.
         case requestSoundboardSounds = 31
-    }
-}
-
-// MARK: CustomStringConvertible
-
-extension GatewayEvent.Opcode: CustomStringConvertible {
-    var description: String {
-        switch self {
-        case .dispatch:                 return "Dispatch"
-        case .heartbeat:                return "Heartbeat"
-        case .identify:                 return "Identify"
-        case .presenceUpdate:           return "Presence Update"
-        case .voiceStateUpdate:         return "Voice State Update"
-        case .resume:                   return "Resume"
-        case .reconnect:                return "Reconnect"
-        case .requestGuildMembers:      return "Request Guild Members"
-        case .invalidSession:           return "Invalid Session"
-        case .hello:                    return "Hello"
-        case .heartbeatACK:             return "Heartbeat ACK"
-        case .requestSoundboardSounds:  return "Request Soundboard Sounds"
-        }
     }
 }

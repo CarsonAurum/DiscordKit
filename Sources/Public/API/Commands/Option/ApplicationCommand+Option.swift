@@ -6,9 +6,18 @@
 //
 
 import AnyCodable
+import NovaMacros
 
 extension ApplicationCommand {
-    public struct Option<T>: DiscordModel
+    
+    @CodingKeys(.custom([
+        "optionDescription": "description",
+        "isRequired": "required",
+        "channelType": "channel_types",
+        "isAutocompleteAvailable": "autocomplete"
+    ]))
+    @PrettyDescription
+    public struct Option<T>: Codable, Hashable, Sendable, CustomStringConvertible
     where T: Codable, T: Hashable, T: Sendable {
         public let type: OptionType
         public let name: String
@@ -56,24 +65,5 @@ extension ApplicationCommand {
             self.maxLength = maxLength
             self.isAutocompleteAvailable = isAutocompleteAvailable
         }
-    }
-}
-
-extension ApplicationCommand.Option {
-    enum CodingKeys: String, CodingKey {
-        case type
-        case name
-        case nameLocalizations = "name_localizations"
-        case optionDescription = "description"
-        case descriptionLocalizations = "description_localizations"
-        case isRequired = "required"
-        case choices
-        case options
-        case channelType = "channel_types"
-        case minValue = "min_value"
-        case maxValue = "max_value"
-        case minLength = "min_length"
-        case maxLength = "max_length"
-        case isAutocompleteAvailable = "autocomplete"
     }
 }

@@ -5,9 +5,12 @@
 //  Created by Carson Rau on 2/6/25.
 //
 
+import NovaMacros
+
 extension Channel {
     /// An enumeration of the various channel types supported by Discord.
-    public enum ChannelType: Int, DiscordModel {
+    @PrettyDescription
+    public enum ChannelType: Int, DiscordModel, CustomStringConvertible {
         /// A text channel within a guild.
         case guildText = 0
         /// A direct message channel between two users.
@@ -15,7 +18,7 @@ extension Channel {
         /// A voice channel within a guild.
         case guildVoice = 2
         /// A group direct message channel.
-        case groupDM = 3
+        case groupDm = 3
         /// A category channel that contains other channels.
         case guildCategory = 4
         /// An announcement channel in a guild.
@@ -34,26 +37,5 @@ extension Channel {
         case guildForum = 15
         /// A channel for sharing media content.
         case guildMedia = 16
-    }
-}
-
-/// Provides human-readable descriptions for each ChannelType case.
-extension Channel.ChannelType: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .guildText:            return "Guild Text"
-        case .dm:                   return "DM"
-        case .guildVoice:           return "Guild Voice"
-        case .groupDM:              return "Group DM"
-        case .guildCategory:        return "Guild Category"
-        case .guildAnnouncement:    return "Guild Announcement"
-        case .announcementThread:   return "Announcement Thread"
-        case .publicThread:         return "Public Thread"
-        case .privateThread:        return "Private Thread"
-        case .guildStageVoice:      return "Guild Stage Voice"
-        case .guildDirectory:       return "Guild Directory"
-        case .guildForum:           return "Guild Forum"
-        case .guildMedia:           return "Guild Media"
-        }
     }
 }

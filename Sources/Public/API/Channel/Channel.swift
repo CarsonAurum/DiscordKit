@@ -6,16 +6,18 @@
 //
 
 import Foundation
+import NovaMacros
 
 /// A model representing a Discord channel, covering text, voice, DM, forum, and other channel types.
-/// Conforms to `DiscordModel` for decoding from Discord API responses.
-public struct Channel: DiscordModel {
+@CodingKeys(.custom(["isNsfw": "nsfw"]))
+@PrettyDescription
+public struct Channel: Codable, Hashable, Sendable, CustomStringConvertible {
     /// The unique identifier of the channel.
     public let id: Snowflake
     /// The type of the channel (text, voice, DM, etc.).
     public let type: ChannelType
     /// The ID of the guild this channel belongs to, if any.
-    public let guildID: Snowflake?
+    public let guildId: Snowflake?
     /// The position of the channel in the guild's channel list.
     public let position: Int?
     /// A list of permission overwrite objects for roles and members.
@@ -25,9 +27,9 @@ public struct Channel: DiscordModel {
     /// The channel topic (for forum and text channels).
     public let topic: String?
     /// Whether the channel is marked as NSFW.
-    public let isNSFW: Bool?
+    public let isNsfw: Bool?
     /// The ID of the last message sent in this channel.
-    public let lastMessageID: Snowflake?
+    public let lastMessageId: Snowflake?
     /// The bitrate (in bits) of the channel (for voice channels).
     public let bitrate: Int?
     /// The maximum number of users allowed in a voice channel.
@@ -39,13 +41,13 @@ public struct Channel: DiscordModel {
     /// The icon hash of the channel (for group DM channels).
     public let icon: Snowflake?
     /// The ID of the user who owns the channel (for group DM channels).
-    public let ownerID: Snowflake?
+    public let ownerId: Snowflake?
     /// The application ID of the channel creator (for application-owned channels).
-    public let applicationID: Snowflake?
+    public let applicationId: Snowflake?
     /// Whether the channel is managed by an integration.
     public let isManaged: Bool?
     /// The ID of the parent category for this channel.
-    public let parentID: Snowflake?
+    public let parentId: Snowflake?
     /// The timestamp of the last pinned message in the channel.
     public let lastPinTimestamp: Date?
     /// The voice region ID for voice channels.
@@ -84,49 +86,11 @@ public struct Channel: DiscordModel {
 }
 
 extension Channel {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case type
-        case guildID = "guild_id"
-        case position
-        case permissionOverwrites = "permission_overwrites"
-        case name
-        case topic
-        case isNSFW = "nsfw"
-        case lastMessageID = "last_message_id"
-        case bitrate
-        case userLimit = "user_limit"
-        case rateLimitPerUser = "rate_limit_per_user"
-        case recipients
-        case icon
-        case ownerID = "owner_id"
-        case applicationID = "application_id"
-        case isManaged = "managed"
-        case parentID = "parent_id"
-        case lastPinTimestamp = "last_pin_timestamp"
-        case rtcRegion = "rtc_region"
-        case videoQualityMode = "video_quality_mode"
-        case messageCount = "message_count"
-        case memberCount = "member_count"
-        case threadMetadata = "thread_metadata"
-        case member
-        case defaultAutoArchiveDuration = "default_auto_archive_duration"
-        case permissions
-        case flags
-        case totalMessageSent = "total_message_sent"
-        case availableTags = "available_tags"
-        case appliedTags = "applied_tags"
-        case defaultReactionEmoji = "default_reaction_emoji"
-        case defaultThreadRateLimitPerUser = "default_thread_rate_limit_per_user"
-        case defaultSortOrder = "default_sort_order"
-        case defaultForumLayout = "default_forum_layout"
-    }
-    
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Snowflake.self, forKey: .id)
         self.type = try container.decode(ChannelType.self, forKey: .type)
-        self.guildID = try container.decodeIfPresent(Snowflake.self, forKey: .guildID)
+        self.guildId = try container.decodeIfPresent(Snowflake.self, forKey: .guildId)
         self.position = try container.decodeIfPresent(Int.self, forKey: .position)
         self.permissionOverwrites = try container.decodeIfPresent(
             [Permissions.Overwrite].self,
@@ -134,17 +98,17 @@ extension Channel {
         )
         self.name = try container.decodeIfPresent(String.self, forKey: .name)
         self.topic = try container.decodeIfPresent(String.self, forKey: .topic)
-        self.isNSFW = try container.decodeIfPresent(Bool.self, forKey: .isNSFW)
-        self.lastMessageID = try container.decodeIfPresent(Snowflake.self, forKey: .lastMessageID)
+        self.isNsfw = try container.decodeIfPresent(Bool.self, forKey: .isNsfw)
+        self.lastMessageId = try container.decodeIfPresent(Snowflake.self, forKey: .lastMessageId)
         self.bitrate = try container.decodeIfPresent(Int.self, forKey: .bitrate)
         self.userLimit = try container.decodeIfPresent(Int.self, forKey: .userLimit)
         self.rateLimitPerUser = try container.decodeIfPresent(Int.self, forKey: .rateLimitPerUser)
         self.recipients = try container.decodeIfPresent([User].self, forKey: .recipients)
         self.icon = try container.decodeIfPresent(Snowflake.self, forKey: .icon)
-        self.ownerID = try container.decodeIfPresent(Snowflake.self, forKey: .ownerID)
-        self.applicationID = try container.decodeIfPresent(Snowflake.self, forKey: .applicationID)
+        self.ownerId = try container.decodeIfPresent(Snowflake.self, forKey: .ownerId)
+        self.applicationId = try container.decodeIfPresent(Snowflake.self, forKey: .applicationId)
         self.isManaged = try container.decodeIfPresent(Bool.self, forKey: .isManaged)
-        self.parentID = try container.decodeIfPresent(Snowflake.self, forKey: .parentID)
+        self.parentId = try container.decodeIfPresent(Snowflake.self, forKey: .parentId)
         
         if let lastPinTimestampString = try container.decodeIfPresent(String.self, forKey: .lastPinTimestamp) {
             let fmt = ISO8601DateFormatter()

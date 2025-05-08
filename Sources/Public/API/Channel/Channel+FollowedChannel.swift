@@ -5,22 +5,13 @@
 //  Created by Carson Rau on 2/7/25.
 //
 
+import NovaMacros
+
 extension Channel {
-    public struct FollowedChannel: DiscordModel {
-        public let channelID: Snowflake
-        public let webhookID: Snowflake
-    }
-}
-
-extension Channel.FollowedChannel {
-    enum CodingKeys: String, CodingKey {
-        case channelID = "channel_id"
-        case webhookID = "webhook_id"
-    }
-}
-
-extension Channel.FollowedChannel: CustomStringConvertible {
-    public var description: String {
-        return "[Channel ID: \(channelID) || Webhook ID: \(webhookID)]"
+    @CodingKeys(.all)
+    @PrettyDescription
+    public struct FollowedChannel: Codable, Hashable, Sendable, CustomStringConvertible {
+        public let channelId: Snowflake
+        public let webhookId: Snowflake
     }
 }

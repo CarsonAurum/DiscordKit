@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import NovaMacros
 
 extension Channel {
-    public struct ThreadMember: DiscordModel {
+    
+    @CodingKeys(.all)
+    @PrettyDescription
+    public struct ThreadMember: Codable, Hashable, Sendable, CustomStringConvertible {
         public let id: Snowflake?
-        public let userID: Snowflake?
+        public let userId: Snowflake?
         public let joinTimestamp: Date
         public let flags: Int
         public let member: Guild.Member?
@@ -18,19 +22,12 @@ extension Channel {
 }
 
 extension Channel.ThreadMember {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userID = "user_id"
-        case joinTimestamp = "join_timestamp"
-        case flags
-        case member
-    }
     
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         id = try container.decodeIfPresent(Snowflake.self, forKey: .id)
-        userID = try container.decodeIfPresent(Snowflake.self, forKey: .userID)
+        userId = try container.decodeIfPresent(Snowflake.self, forKey: .userId)
         
         let joinTimestampString = try container.decode(String.self, forKey: .joinTimestamp)
         let fmt = ISO8601DateFormatter()
@@ -45,7 +42,7 @@ extension Channel.ThreadMember {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encodeIfPresent(id, forKey: .id)
-        try container.encodeIfPresent(userID, forKey: .userID)
+        try container.encodeIfPresent(userId, forKey: .userId)
         
         let joinTimestampString = ISO8601DateFormatter().string(from: joinTimestamp)
         try container.encode(joinTimestampString, forKey: .joinTimestamp)
@@ -54,17 +51,5 @@ extension Channel.ThreadMember {
         try container.encodeIfPresent(member, forKey: .member)
         
         
-    }
-}
-
-extension Channel.ThreadMember: CustomStringConvertible {
-    public var description: String {
-        var result = [String]()
-        if let id = id { result.append("ID: \(id)") }
-        if let userID = userID { result.append("User ID: \(userID)") }
-        result.append("Join Timestamp: \(joinTimestamp)")
-        result.append("Flags: \(flags)")
-        if let member = member { result.append("Member: \(member)") }
-        return "[\(result.joined(separator: " || "))]"
     }
 }

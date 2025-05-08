@@ -5,18 +5,13 @@
 //  Created by Carson Rau on 2/6/25.
 //
 
+import NovaMacros
+
 extension ApplicationCommand {
-    public enum EntryPointHandlerType: Int, DiscordModel {
+    
+    @PrettyDescription
+    public enum EntryPointHandlerType: Int, Codable, Hashable, Sendable, CustomStringConvertible {
         case appHandler = 1
         case discordLaunchActivity = 2
-    }
-}
-
-extension ApplicationCommand.EntryPointHandlerType: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .appHandler:                   return "App Handler"
-        case .discordLaunchActivity:        return "Discord Launch Activity"
-        }
     }
 }

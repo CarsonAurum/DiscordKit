@@ -7,8 +7,20 @@
 
 
 import Foundation
+import NovaMacros
 
-public struct Guild: DiscordModel {
+@CodingKeys(.custom([
+    "isOwner": "owner",
+    "isWidgetEnabled": "widget_enabled",
+    "serverDescription": "description",
+    "boostTier": "premium_tier",
+    "boostCount": "premium_subscription_count",
+    "isBoostBarEnabled": "premium_progress_bar_enabled",
+    "isLarge": "large",
+    "isUnavailable": "unavailable"
+]))
+@PrettyDescription
+public struct Guild: Codable, Hashable, Sendable, CustomStringConvertible {
     public let id: Snowflake
     public let name: String?
     public let icon: String?
@@ -16,12 +28,12 @@ public struct Guild: DiscordModel {
     public let splash: String?
     public let discoverySplash: String?
     public let isOwner: Bool?
-    public let ownerID: Snowflake?
+    public let ownerId: Snowflake?
     public let permissions: Permissions?
-    public let afkChannelID: Snowflake?
+    public let afkChannelId: Snowflake?
     public let afkTimeout: Int?
     public let isWidgetEnabled: Bool?
-    public let widgetChannelID: Snowflake?
+    public let widgetChannelId: Snowflake?
     public let verificationLevel: VerificationLevel?
     public let defaultMessageNotifications: DefaultMessageNotificationLevel?
     public let explicitContentFilter: ExplicitContentFilter?
@@ -29,19 +41,19 @@ public struct Guild: DiscordModel {
     public let emojis: [Emoji]?
     public let features: [Feature]?
     public let mfaLevel: MFALevel?
-    public let applicationID: Snowflake?
-    public let systemChannelID: Snowflake?
+    public let applicationId: Snowflake?
+    public let systemChannelId: Snowflake?
     public let systemChannelFlags: SystemChannelFlags?
-    public let rulesChannelID: Snowflake?
+    public let rulesChannelId: Snowflake?
     public let maxPresences: Int?
     public let maxMembers: Int?
-    public let vanityURLCode: String?
+    public let vanityUrlCode: String?
     public let serverDescription: String?
     public let banner: String?
     public let boostTier: BoostTier?
     public let boostCount: Int?
     public let preferredLocale: Locale?
-    public let publicUpdatesChannelID: Snowflake?
+    public let publicUpdatesChannelId: Snowflake?
     public let maxVideoChannelUsers: Int?
     public let maxStageVideoChannelUsers: Int?
     public let approximateMemberCount: Int?
@@ -50,7 +62,7 @@ public struct Guild: DiscordModel {
     public let nsfwLevel: NSFWLevel?
     public let stickers: [Sticker]?
     public let isBoostBarEnabled: Bool?
-    public let safetyAlertsChannelID: Snowflake?
+    public let safetyAlertsChannelId: Snowflake?
     
     // MARK: - GuildCreate
     public let joinedAt: Date?
@@ -68,63 +80,6 @@ public struct Guild: DiscordModel {
 }
 
 extension Guild {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case icon
-        case iconHash = "icon_hash"
-        case splash
-        case discoverySplash = "discovery_splash"
-        case isOwner = "owner"
-        case ownerID = "owner_id"
-        case permissions
-        case afkChannelID = "afk_channel_id"
-        case afkTimeout = "afk_timeout"
-        case isWidgetEnabled = "widget_enabled"
-        case widgetChannelID = "widget_channel_id"
-        case verificationLevel = "verification_level"
-        case defaultMessageNotifications = "default_message_notifications"
-        case explicitContentFilter = "explicit_content_filter"
-        case roles
-        case emojis
-        case features
-        case mfaLevel = "mfa_level"
-        case applicationID = "application_id"
-        case systemChannelID = "system_channel_id"
-        case systemChannelFlags = "system_channel_flags"
-        case rulesChannelID = "rules_channel_id"
-        case maxPresences = "max_presences"
-        case maxMembers = "max_members"
-        case vanityURLCode = "vanity_url_code"
-        case serverDescription = "description"
-        case banner
-        case premiumTier = "premium_tier"
-        case premiumSubscriptionCount = "premium_subscription_count"
-        case preferredLocale = "preferred_locale"
-        case publicUpdatesChannelID = "public_updates_channel_id"
-        case maxVideoChannelUsers = "max_video_channel_users"
-        case maxStageVideoChannelUsers = "max_stage_video_channel_users"
-        case approximateMemberCount = "approximate_member_count"
-        case approximatePresenceCount = "approximate_presence_count"
-        case welcomeScreen = "welcome_screen"
-        case nsfwLevel = "nsfw_level"
-        case stickers
-        case premiumProgressBarEnabled = "premium_progress_bar_enabled"
-        case safetyAlertsChannelID = "safety_alerts_channel_id"
-        
-        case joinedAt = "joined_at"
-        case isLarge = "large"
-        case isUnavailable = "unavailable"
-        case memberCount = "member_count"
-        case voiceStates = "voice_states"
-        case members
-        case channels
-        case threads
-        case presences
-        case stageInstances = "stage_instances"
-        case guildScheduledEvents = "guild_scheduled_events"
-        case soundboardSounds = "soundboard_sounds"
-    }
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -135,12 +90,12 @@ extension Guild {
         self.splash = try container.decodeIfPresent(String.self, forKey: .splash)
         self.discoverySplash = try container.decodeIfPresent(String.self, forKey: .discoverySplash)
         self.isOwner = try container.decodeIfPresent(Bool.self, forKey: .isOwner)
-        self.ownerID = try container.decodeIfPresent(Snowflake.self, forKey: .ownerID)
+        self.ownerId = try container.decodeIfPresent(Snowflake.self, forKey: .ownerId)
         self.permissions = try container.decodeIfPresent(Permissions.self, forKey: .permissions)
-        self.afkChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .afkChannelID)
+        self.afkChannelId = try container.decodeIfPresent(Snowflake.self, forKey: .afkChannelId)
         self.afkTimeout = try container.decodeIfPresent(Int.self, forKey: .afkTimeout)
         self.isWidgetEnabled = try container.decodeIfPresent(Bool.self, forKey: .isWidgetEnabled)
-        self.widgetChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .widgetChannelID)
+        self.widgetChannelId = try container.decodeIfPresent(Snowflake.self, forKey: .widgetChannelId)
         self.verificationLevel = try container.decodeIfPresent(VerificationLevel.self, forKey: .verificationLevel)
         self.defaultMessageNotifications = try container.decodeIfPresent(DefaultMessageNotificationLevel.self, forKey: .defaultMessageNotifications)
         self.explicitContentFilter = try container.decodeIfPresent(ExplicitContentFilter.self, forKey: .explicitContentFilter)
@@ -148,19 +103,19 @@ extension Guild {
         self.emojis = try container.decodeIfPresent([Emoji].self, forKey: .emojis)
         self.features = try container.decodeIfPresent([Feature].self, forKey: .features)
         self.mfaLevel = try container.decodeIfPresent(MFALevel.self, forKey: .mfaLevel)
-        self.applicationID = try container.decodeIfPresent(Snowflake.self, forKey: .applicationID)
-        self.systemChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .systemChannelID)
+        self.applicationId = try container.decodeIfPresent(Snowflake.self, forKey: .applicationId)
+        self.systemChannelId = try container.decodeIfPresent(Snowflake.self, forKey: .systemChannelId)
         self.systemChannelFlags = try container.decodeIfPresent(SystemChannelFlags.self, forKey: .systemChannelFlags)
-        self.rulesChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .rulesChannelID)
+        self.rulesChannelId = try container.decodeIfPresent(Snowflake.self, forKey: .rulesChannelId)
         self.maxPresences = try container.decodeIfPresent(Int.self, forKey: .maxPresences)
         self.maxMembers = try container.decodeIfPresent(Int.self, forKey: .maxMembers)
-        self.vanityURLCode = try container.decodeIfPresent(String.self, forKey: .vanityURLCode)
+        self.vanityUrlCode = try container.decodeIfPresent(String.self, forKey: .vanityUrlCode)
         self.serverDescription = try container.decodeIfPresent(String.self, forKey: .serverDescription)
         self.banner = try container.decodeIfPresent(String.self, forKey: .banner)
-        self.boostTier = try container.decodeIfPresent(BoostTier.self, forKey: .premiumTier)
-        self.boostCount = try container.decodeIfPresent(Int.self, forKey: .premiumSubscriptionCount)
+        self.boostTier = try container.decodeIfPresent(BoostTier.self, forKey: .boostTier)
+        self.boostCount = try container.decodeIfPresent(Int.self, forKey: .boostCount)
         self.preferredLocale = try container.decodeIfPresent(Locale.self, forKey: .preferredLocale)
-        self.publicUpdatesChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .publicUpdatesChannelID)
+        self.publicUpdatesChannelId = try container.decodeIfPresent(Snowflake.self, forKey: .publicUpdatesChannelId)
         self.maxVideoChannelUsers = try container.decodeIfPresent(Int.self, forKey: .maxVideoChannelUsers)
         self.maxStageVideoChannelUsers = try container.decodeIfPresent(Int.self, forKey: .maxStageVideoChannelUsers)
         self.approximateMemberCount = try container.decodeIfPresent(Int.self, forKey: .approximateMemberCount)
@@ -168,8 +123,8 @@ extension Guild {
         self.welcomeScreen = try container.decodeIfPresent(WelcomeScreen.self, forKey: .welcomeScreen)
         self.nsfwLevel = try container.decodeIfPresent(NSFWLevel.self, forKey: .nsfwLevel)
         self.stickers = try container.decodeIfPresent([Sticker].self, forKey: .stickers)
-        self.isBoostBarEnabled = try container.decodeIfPresent(Bool.self, forKey: .premiumProgressBarEnabled)
-        self.safetyAlertsChannelID = try container.decodeIfPresent(Snowflake.self, forKey: .safetyAlertsChannelID)
+        self.isBoostBarEnabled = try container.decodeIfPresent(Bool.self, forKey: .isBoostBarEnabled)
+        self.safetyAlertsChannelId = try container.decodeIfPresent(Snowflake.self, forKey: .safetyAlertsChannelId)
         
         // Decode joinedAt using ISO8601
         if let joinedAtString = try container.decodeIfPresent(String.self, forKey: .joinedAt) {
@@ -192,6 +147,7 @@ extension Guild {
         self.guildScheduledEvents = try container.decodeIfPresent([ScheduledEvent].self, forKey: .guildScheduledEvents)
         self.soundboardSounds = try container.decodeIfPresent([SoundboardSound].self, forKey: .soundboardSounds)
     }
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
@@ -202,12 +158,12 @@ extension Guild {
         try container.encodeIfPresent(splash, forKey: .splash)
         try container.encodeIfPresent(discoverySplash, forKey: .discoverySplash)
         try container.encodeIfPresent(isOwner, forKey: .isOwner)
-        try container.encodeIfPresent(ownerID, forKey: .ownerID)
+        try container.encodeIfPresent(ownerId, forKey: .ownerId)
         try container.encodeIfPresent(permissions, forKey: .permissions)
-        try container.encodeIfPresent(afkChannelID, forKey: .afkChannelID)
+        try container.encodeIfPresent(afkChannelId, forKey: .afkChannelId)
         try container.encodeIfPresent(afkTimeout, forKey: .afkTimeout)
         try container.encodeIfPresent(isWidgetEnabled, forKey: .isWidgetEnabled)
-        try container.encodeIfPresent(widgetChannelID, forKey: .widgetChannelID)
+        try container.encodeIfPresent(widgetChannelId, forKey: .widgetChannelId)
         try container.encodeIfPresent(verificationLevel, forKey: .verificationLevel)
         try container.encodeIfPresent(defaultMessageNotifications, forKey: .defaultMessageNotifications)
         try container.encodeIfPresent(explicitContentFilter, forKey: .explicitContentFilter)
@@ -215,19 +171,19 @@ extension Guild {
         try container.encodeIfPresent(emojis, forKey: .emojis)
         try container.encodeIfPresent(features, forKey: .features)
         try container.encodeIfPresent(mfaLevel, forKey: .mfaLevel)
-        try container.encodeIfPresent(applicationID, forKey: .applicationID)
-        try container.encodeIfPresent(systemChannelID, forKey: .systemChannelID)
+        try container.encodeIfPresent(applicationId, forKey: .applicationId)
+        try container.encodeIfPresent(systemChannelId, forKey: .systemChannelId)
         try container.encodeIfPresent(systemChannelFlags, forKey: .systemChannelFlags)
-        try container.encodeIfPresent(rulesChannelID, forKey: .rulesChannelID)
+        try container.encodeIfPresent(rulesChannelId, forKey: .rulesChannelId)
         try container.encodeIfPresent(maxPresences, forKey: .maxPresences)
         try container.encodeIfPresent(maxMembers, forKey: .maxMembers)
-        try container.encodeIfPresent(vanityURLCode, forKey: .vanityURLCode)
+        try container.encodeIfPresent(vanityUrlCode, forKey: .vanityUrlCode)
         try container.encodeIfPresent(serverDescription, forKey: .serverDescription)
         try container.encodeIfPresent(banner, forKey: .banner)
-        try container.encodeIfPresent(boostTier, forKey: .premiumTier)
-        try container.encodeIfPresent(boostCount, forKey: .premiumSubscriptionCount)
+        try container.encodeIfPresent(boostTier, forKey: .boostTier)
+        try container.encodeIfPresent(boostCount, forKey: .boostCount)
         try container.encodeIfPresent(preferredLocale, forKey: .preferredLocale)
-        try container.encodeIfPresent(publicUpdatesChannelID, forKey: .publicUpdatesChannelID)
+        try container.encodeIfPresent(publicUpdatesChannelId, forKey: .publicUpdatesChannelId)
         try container.encodeIfPresent(maxVideoChannelUsers, forKey: .maxVideoChannelUsers)
         try container.encodeIfPresent(maxStageVideoChannelUsers, forKey: .maxStageVideoChannelUsers)
         try container.encodeIfPresent(approximateMemberCount, forKey: .approximateMemberCount)
@@ -235,8 +191,8 @@ extension Guild {
         try container.encodeIfPresent(welcomeScreen, forKey: .welcomeScreen)
         try container.encodeIfPresent(nsfwLevel, forKey: .nsfwLevel)
         try container.encodeIfPresent(stickers, forKey: .stickers)
-        try container.encodeIfPresent(isBoostBarEnabled, forKey: .premiumProgressBarEnabled)
-        try container.encodeIfPresent(safetyAlertsChannelID, forKey: .safetyAlertsChannelID)
+        try container.encodeIfPresent(isBoostBarEnabled, forKey: .isBoostBarEnabled)
+        try container.encodeIfPresent(safetyAlertsChannelId, forKey: .safetyAlertsChannelId)
         
         // Encode joinedAt as ISO8601 if present
         if let joinedAt = joinedAt {
@@ -257,89 +213,5 @@ extension Guild {
         try container.encodeIfPresent(stageInstances, forKey: .stageInstances)
         try container.encodeIfPresent(guildScheduledEvents, forKey: .guildScheduledEvents)
         try container.encodeIfPresent(soundboardSounds, forKey: .soundboardSounds)
-    }
-}
-
-extension Guild: CustomStringConvertible {
-    public var description: String {
-        var result = [String]()
-        result.append("ID: \(id)")
-        if let name = name { result.append("Name: \(name)") }
-        if let icon = icon { result.append("Icon: \(icon)") }
-        if let iconHash = iconHash { result.append("Icon (Template): \(iconHash)") }
-        if let splash = splash { result.append("Splash: \(splash)") }
-        if let discoverySplash = discoverySplash { result.append("Discovery Splash: \(discoverySplash)") }
-        if let isOwner = isOwner { result.append("Is Owner: \(isOwner)") }
-        if let ownerID = ownerID { result.append("Owner ID: \(ownerID)") }
-        if let permissions = permissions { result.append("Permissions: \(permissions)") }
-        if let afkChannelID = afkChannelID { result.append("AFK Channel ID: \(afkChannelID)") }
-        if let afkTimeout = afkTimeout { result.append("AFK Timeout: \(afkTimeout)") }
-        if let isWidgetEnabled = isWidgetEnabled { result.append("Is Widget Enabled: \(isWidgetEnabled)") }
-        if let widgetChannelID = widgetChannelID { result.append("Widget Channel ID: \(widgetChannelID)") }
-        if let verificationLevel = verificationLevel { result.append("Verification Level: \(verificationLevel)") }
-        if let defaultMessageNotifications = defaultMessageNotifications {
-            result.append("Default Message Notifications: \(defaultMessageNotifications)")
-        }
-        if let explicitContentFilter = explicitContentFilter {
-            result.append("Explicit Content Filter: \(explicitContentFilter)")
-        }
-        if let roles = roles { result.append("\(roles.count) Roles.") }
-        if let emojis = emojis { result.append("\(emojis.count) Emojis.") }
-        if let features = features { result.append("\(features.count) Features.") }
-        if let mfaLevel = mfaLevel { result.append("MFA Level: \(mfaLevel)") }
-        if let applicationID = applicationID { result.append("Application ID: \(applicationID)") }
-        if let systemChannelID = systemChannelID { result.append("System Channel ID: \(systemChannelID)") }
-        if let systemChannelFlags = systemChannelFlags { result.append("System Channel Flags: \(systemChannelFlags)") }
-        if let rulesChannelID = rulesChannelID { result.append("Rules Channel ID: \(rulesChannelID)") }
-        if let maxPresences = maxPresences { result.append("Max Presences: \(maxPresences)") }
-        if let maxMembers = maxMembers { result.append("Max Members: \(maxMembers)") }
-        if let vanityURLCode = vanityURLCode { result.append("Vanity URL Code: \(vanityURLCode)") }
-        if let serverDescription = serverDescription { result.append("Description: \(serverDescription)") }
-        if let banner = banner { result.append("Banner: \(banner)") }
-        if let boostTier = boostTier { result.append("Boost Tier: \(boostTier)") }
-        if let boostCount = boostCount { result.append("Boost Count: \(boostCount)") }
-        if let preferredLocale = preferredLocale { result.append("Preferred Locale: \(preferredLocale)") }
-        if let publicUpdatesChannelID = publicUpdatesChannelID {
-            result.append("Public Updates Channel ID: \(publicUpdatesChannelID)")
-        }
-        if let publicUpdatesChannelID = publicUpdatesChannelID {
-            result.append("Public Updates Channel ID: \(publicUpdatesChannelID)")
-        }
-        if let maxVideoChannelUsers = maxVideoChannelUsers {
-            result.append("Max Video Channel Users: \(maxVideoChannelUsers)")
-        }
-        if let maxStageVideoChannelUsers = maxStageVideoChannelUsers {
-            result.append("Max Stage Video Channel Users: \(maxStageVideoChannelUsers)")
-        }
-        if let approximateMemberCount = approximateMemberCount {
-            result.append("Approximate Member Count: \(approximateMemberCount)")
-        }
-        if let approximatePresenceCount = approximatePresenceCount {
-            result.append("Approximate Presence Count: \(approximatePresenceCount)")
-        }
-        if let welcomeScreen = welcomeScreen { result.append("Welcome Screen: \(welcomeScreen)") }
-        if let nsfwLevel = nsfwLevel { result.append("NSFW Level: \(nsfwLevel)") }
-        if let stickers = stickers { result.append("\(stickers.count) Stickers") }
-        if let isBoostBarEnabled = isBoostBarEnabled { result.append("Is Boost Bar Enabled: \(isBoostBarEnabled)") }
-        if let safetyAlertsChannelID = safetyAlertsChannelID {
-            result.append("Safety Alerts Channel ID: \(safetyAlertsChannelID)")
-        }
-        if let joinedAt = joinedAt {
-            result.append("Joined At: \(joinedAt)")
-        }
-        if let isLarge = isLarge { result.append("Is Large: \(isLarge)") }
-        if let isUnavailable = isUnavailable { result.append("Is Unavailable: \(isUnavailable)") }
-        if let memberCount = memberCount { result.append("Member Count: \(memberCount)") }
-        if let voiceStates = voiceStates { result.append("\(voiceStates.count) Voice States.") }
-        if let members = members { result.append("\(members.count) Members.") }
-        if let channels = channels { result.append("\(channels.count) Channels.")}
-        if let threads = threads { result.append("\(threads.count) Threads.")}
-        if let presences = presences { result.append("\(presences.count) Presences.") }
-        if let stageInstances = stageInstances { result.append("\(stageInstances.count) Stage Instances.") }
-        if let guildScheduledEvents = guildScheduledEvents {
-            result.append("\(guildScheduledEvents.count) Scheduled Events.")
-        }
-        if let soundboardSounds = soundboardSounds { result.append("\(soundboardSounds.count) Soundboard Sounds.") }
-        return "[\(result.joined(separator: " || "))]"
     }
 }
