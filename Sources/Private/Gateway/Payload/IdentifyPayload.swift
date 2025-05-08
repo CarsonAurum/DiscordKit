@@ -5,10 +5,13 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+import NovaMacros
+
 // MARK: - IdentifyPayload
 
 /// The payload to send with an identify gateway message.
-struct IdentifyPayload: DiscordModel {
+@CodingKeys(.custom(["isCompressed": "compressed"]))
+struct IdentifyPayload: Codable, Hashable, Sendable {
     
     /// The bot token.
     let token: String
@@ -32,20 +35,6 @@ struct IdentifyPayload: DiscordModel {
     
     /// The intents to use when connecting. 
     let intents: GatewayIntents
-}
-
-// MARK: Codable
-
-extension IdentifyPayload {
-    enum CodingKeys: String, CodingKey {
-        case token
-        case properties
-        case isCompressed = "compressed"
-        case largeThreshold = "large_threshold"
-        case shardInfo = "shard_info"
-        case presence
-        case intents
-    }
 }
 
 // MARK: CustomStringConvertible

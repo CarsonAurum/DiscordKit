@@ -5,10 +5,16 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+import NovaMacros
+
 // MARK: - ReadyPayload
 
 /// The payload included with a ready dispatch event
-struct ReadyPayload: DiscordModel {
+@CodingKeys(.custom([
+    "version": "v",
+    "resumeURL": "resume_gateway_url"
+]))
+struct ReadyPayload: Codable, Hashable, Sendable {
     
     /// The version of the API being used
     let version: Int
@@ -17,7 +23,7 @@ struct ReadyPayload: DiscordModel {
     let resumeURL: String
     
     /// The ID needed for resuming
-    let sessionID: String
+    let sessionId: String
     
     /// The list of unavailable guilds that this user is a part of
     let guilds: [Guild]
@@ -29,24 +35,11 @@ struct ReadyPayload: DiscordModel {
     let application: Application
 }
 
-// MARK: Codable
-
-extension ReadyPayload {
-    enum CodingKeys: String, CodingKey {
-        case version = "v"
-        case resumeURL = "resume_gateway_url"
-        case sessionID = "session_id"
-        case guilds
-        case user
-        case application
-    }
-}
-
 // MARK: CustomStringConvertible
 
 extension ReadyPayload: CustomStringConvertible {
     var description: String {
-        "[v\(version) || Reconnect At: \(resumeURL) with ID: \(sessionID) || \(guilds.count) Guilds || User: \(user) || "
+        "[v\(version) || Reconnect At: \(resumeURL) with ID: \(sessionId) || \(guilds.count) Guilds || User: \(user) || "
         + "App: \(application)]"
     }
 }

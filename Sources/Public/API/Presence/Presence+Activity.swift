@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NovaToolbox
 
 // MARK: - Presence.Activity
 

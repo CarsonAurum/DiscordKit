@@ -7,12 +7,19 @@
 
 import Foundation
 import AnyCodable
+import NovaMacros
 
 // MARK: - GatewayEvent
 
 /// An event received from/sent to Discord's gateway.
-struct GatewayEvent<EventPayload>: DiscordModel
-where EventPayload: DiscordModel {
+@CodingKeys(.custom([
+    "opcode": "op",
+    "data": "d",
+    "sequence": "s",
+    "name": "t"
+]))
+struct GatewayEvent<EventPayload>: Codable, Hashable, Sendable
+where EventPayload: Codable, EventPayload: Hashable, EventPayload: Sendable {
     
     /// The opcode of the event.
     let opcode: Opcode
@@ -46,17 +53,6 @@ extension GatewayEvent where EventPayload == AnyCodable {
     /// - Returns: The parsed JSON data.
     func getData() throws -> Data {
         try JSONEncoder().encode(data)
-    }
-}
-
-// MARK: Codable
-
-extension GatewayEvent {
-    enum CodingKeys: String, CodingKey {
-        case opcode = "op"
-        case data = "d"
-        case sequence = "s"
-        case name = "t"
     }
 }
 

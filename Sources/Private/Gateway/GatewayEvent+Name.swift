@@ -10,7 +10,7 @@
 extension GatewayEvent {
     
     /// A type-safe wrapper for the string name of dispatch events.
-    enum Name: DiscordModel {
+    enum Name: Codable, Hashable, Sendable {
         
         /// Application command permission was updated.
         case applicationCommandPermissionsUpdate

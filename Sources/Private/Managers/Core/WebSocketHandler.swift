@@ -240,7 +240,7 @@ extension WebSocketHandler {
                 logger.trace("Payload: \(payload)")
                 Task {
                     await self.reconnectManager?.setEndpoint(payload.resumeURL, .reconnect)
-                    await self.identifyManager?.setSessionID(payload.sessionID)
+                    await self.identifyManager?.setSessionID(payload.sessionId)
                     try await self.commandManager?.registerCommands(appID: payload.application.id)
                     await self.delegate?.discordBot(onReady: .init(
                         guilds: payload.guilds,

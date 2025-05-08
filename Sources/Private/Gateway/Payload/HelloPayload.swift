@@ -5,21 +5,16 @@
 //  Created by Carson Rau on 1/30/25.
 //
 
+import NovaMacros
+
 // MARK: - HelloPayload
 
 /// Data received on opcode HELLO.
-struct HelloPayload: DiscordModel {
+@CodingKeys(.custom(["interval": "heartbeat_interval"]))
+struct HelloPayload: Codable, Hashable, Sendable {
     
     /// Interval (in milliseconds) an app should heartbeat with
     public let interval: Int
-}
-
-// MARK: Codable
-
-extension HelloPayload {
-    enum CodingKeys: String, CodingKey {
-        case interval = "heartbeat_interval"
-    }
 }
 
 // MARK: CustomStringConvertible

@@ -81,7 +81,7 @@ actor IdentifyManager {
         shouldAttemptResume = false
         await self.socket?.send(opcode: .resume, data: ResumePayload(
             token: token,
-            sessionID: sessionID,
+            sessionId: sessionID,
             sequence: sequence
         ))
     }

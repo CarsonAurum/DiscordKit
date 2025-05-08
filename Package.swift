@@ -16,6 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-nio.git", branch: "main"),
         .package(url: "https://github.com/vapor/websocket-kit.git", branch: "main"),
         // UTILS
+        .package(url: "https://github.com/CarsonAurum/NovaToolbox.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-atomics.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-collections.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-crypto.git", branch: "main"),
@@ -33,6 +34,8 @@ let package = Package(
                 .product(name: "Crypto", package: "swift-crypto"),
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "NIO", package: "swift-nio"),
+                .product(name: "NovaMacros", package: "NovaToolbox"),
+                .product(name: "NovaToolbox", package: "NovaToolbox"),
                 .product(name: "WebSocketKit", package: "websocket-kit"),
             ],
             path: "Sources"
