@@ -9,6 +9,7 @@ import AsyncHTTPClient
 import Logging
 import NIOHTTP1
 import Foundation
+import NovaMacros
 
 // MARK: - GatewayBot
 
@@ -67,7 +68,9 @@ actor GatewayBot {
 extension GatewayBot {
     
     /// The data sent from the `/gateway/bot` endpoint.
-    struct Payload: DiscordModel {
+    @CodingKeys(.all)
+    @PrettyDescription
+    struct Payload: Codable, Hashable, Sendable, CustomStringConvertible {
         
         /// WSS URL that can be used for connecting to the gateway.
         let url: String
@@ -80,30 +83,13 @@ extension GatewayBot {
     }
 }
 
-// MARK: Codable
-    
-extension GatewayBot.Payload {
-    enum CodingKeys: String, CodingKey {
-        case url
-        case shards
-        case sessionStartLimit = "session_start_limit"
-    }
-}
-
-// MARK: CustomStringConvertible
-
-extension GatewayBot.Payload: CustomStringConvertible {
-    var description: String {
-        "[Connect to \(url) with \(shards) shards. \(sessionStartLimit)]"
-    }
-}
-
 // MARK: - SessionStartLimit
         
 extension GatewayBot.Payload {
     
     /// Information about starting a new session.
-    struct SessionStartLimit: DiscordModel {
+    @CodingKeys(.all)
+    struct SessionStartLimit: Codable, Hashable, Sendable, CustomStringConvertible {
         
         /// Total number of session starts the current user is allowed.
         let total: Int
@@ -119,20 +105,9 @@ extension GatewayBot.Payload {
     }
 }
 
-// MARK: Codable
-
-extension GatewayBot.Payload.SessionStartLimit {
-    enum CodingKeys: String, CodingKey {
-        case total
-        case remaining
-        case resetAfter = "reset_after"
-        case maxConcurrency = "max_concurrency"
-    }
-}
-
 // MARK: CustomStringConvertible
 
-extension GatewayBot.Payload.SessionStartLimit: CustomStringConvertible {
+extension GatewayBot.Payload.SessionStartLimit {
     var description: String {
         var resetTime = Double(resetAfter) / 1000
         var resetUnit = "seconds"

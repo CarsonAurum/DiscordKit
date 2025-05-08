@@ -5,6 +5,7 @@
 //  Created by Carson Rau on 2/4/25.
 //
 
+
 public struct Emoji: DiscordModel {
     public let id: Snowflake?
     public let name: String?

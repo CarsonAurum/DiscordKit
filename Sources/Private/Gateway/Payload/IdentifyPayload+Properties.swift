@@ -5,12 +5,15 @@
 //  Created by Carson Rau on 1/31/25.
 //
 
+import NovaMacros
+
 // MARK: - Properties
 
 extension IdentifyPayload {
     
     /// Information about the connecting client.
-    struct Properties: Codable, Hashable, Sendable {
+    @PrettyDescription
+    struct Properties: Codable, Hashable, Sendable, CustomStringConvertible {
         
         /// The operating system of the client.
         public let os: String
@@ -20,13 +23,5 @@ extension IdentifyPayload {
         
         /// The device of the client.
         public let device: String
-    }
-}
-
-// MARK: CustomStringConvertible
-
-extension IdentifyPayload.Properties: CustomStringConvertible {
-    var description: String {
-        "[\(browser)@\(device)-\(os)]"
     }
 }

@@ -9,7 +9,8 @@ import NovaMacros
 
 /// The payload to send on resuming a previous session.
 @CodingKeys(.custom(["sequence": "seq"]))
-struct ResumePayload: Codable, Hashable, Sendable {
+@PrettyDescription
+struct ResumePayload: Codable, Hashable, Sendable, CustomStringConvertible {
     
     /// The token associated with the session.
     let token: String
@@ -19,17 +20,4 @@ struct ResumePayload: Codable, Hashable, Sendable {
     
     /// The last received sequence number.
     let sequence: Int?
-}
-
-extension ResumePayload: CustomStringConvertible {
-    public var description: String {
-        var result = "[Token: \(token) || Session ID: \(sessionId) || Sequence: "
-        if let sequence = sequence {
-            result += "\(sequence)"
-        } else {
-            result += "<nil>"
-        }
-        result += "]"
-        return result
-    }
 }

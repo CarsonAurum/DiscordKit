@@ -5,6 +5,8 @@
 //  Created by Carson Rau on 2/4/25.
 //
 
+import NovaMacros
+
 // MARK: - EventWebhookStatus
 
 extension Application {

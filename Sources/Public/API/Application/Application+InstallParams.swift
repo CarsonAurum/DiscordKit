@@ -9,7 +9,7 @@
 
 extension Application {
     /// Settings for the app's default in-app authorization link.
-    public struct InstallParams: DiscordModel {
+    public struct InstallParams: Codable, Hashable, Sendable {
         /// Scopes to add the application to the server with.
         public let scopes: [String]
         /// Permissions to request for the bot role.

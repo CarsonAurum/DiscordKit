@@ -5,21 +5,18 @@
 //  Created by Carson Rau on 2/4/25.
 //
 
+import NovaMacros
+
 // MARK: - IntegrationTypeConfiguration
 
 extension Application {
     /// Configuration for a specific installation context.
-    public struct IntegrationTypeConfiguration: DiscordModel {
+    @CodingKeys(.custom([
+        "installParams": "oauth2_install_params"
+    ]))
+    public struct IntegrationTypeConfiguration: Codable, Hashable, Sendable {
         /// Install params for the specific in-app authorization context.
         public let installParams: InstallParams?
-    }
-}
-
-// MARK: Codable
-
-extension Application.IntegrationTypeConfiguration {
-    enum CodingKeys: String, CodingKey {
-        case installParams = "oauth2_install_params"
     }
 }
 

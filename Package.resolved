@@ -1,5 +1,5 @@
 {
-  "originHash" : "e2b9a4e44c85249b37ec61e1ae5ea3a30c70d9d808966569f67b89520171093b",
+  "originHash" : "05ff6378393f38ce6314e0f02d2aa7faea203c503a38bc1d35380cdb249232e0",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -25,7 +25,7 @@
       "location" : "https://github.com/CarsonAurum/NovaToolbox.git",
       "state" : {
         "branch" : "main",
-        "revision" : "7ebb1bf91168671cc27da4b5edd591faa6d31503"
+        "revision" : "a795017663359aa0dc1cb31251827fc93b60ef84"
       }
     },
     {

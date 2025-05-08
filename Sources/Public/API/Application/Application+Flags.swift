@@ -5,11 +5,14 @@
 //  Created by Carson Rau on 2/4/25.
 //
 
+import NovaMacros
+
 // MARK: - Flags
 
 extension Application {
     /// An app's public flags
-    public struct Flags: OptionSet, DiscordModel {
+    @PrettyDescription
+    public struct Flags: OptionSet, DiscordModel, CustomStringConvertible {
         /// Indicates if an app uses the automoderation API.
         public static let applicationAutoModerationRuleCreateBadge = Flags(rawValue: 1 << 6)
         /// Intent required for bots in 100 or more servers to receive presence update events.
@@ -35,24 +38,5 @@ extension Application {
         public init(rawValue: Int) {
             self.rawValue = rawValue
         }
-    }
-}
-
-extension Application.Flags: CustomStringConvertible {
-    public var description: String {
-        var result: [String] = []
-        if self.contains(.applicationAutoModerationRuleCreateBadge) {
-            result.append("App Auto Moderation Rule Create Bage")
-        }
-        if self.contains(.gatewayPresence) { result.append("Gateway Presence") }
-        if contains(.gatewayPresenceLimited) { result.append("Gateway Presence (Limited)") }
-        if contains(.gatewayGuildMembers) { result.append("Gateway Guild Members") }
-        if contains(.gatewayGuildMembersLimited) { result.append("Gateway Guild Members (Limited)") }
-        if contains(.verificationPendingGuildLimit) { result.append("Verification Pending Guild Limit") }
-        if contains(.embedded) { result.append("Embedded") }
-        if contains(.gatewayMessageContent) { result.append("Gateway Message Content") }
-        if contains(.gatewayMessageContentLimited) { result.append("Gateway Message Content (Limited)") }
-        if contains(.applicationCommandBadge) { result.append("Application Command Badge") }
-        return "[\(result.joined(separator: ", "))]"
     }
 }

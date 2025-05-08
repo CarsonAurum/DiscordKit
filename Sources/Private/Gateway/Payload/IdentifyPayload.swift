@@ -11,7 +11,8 @@ import NovaMacros
 
 /// The payload to send with an identify gateway message.
 @CodingKeys(.custom(["isCompressed": "compressed"]))
-struct IdentifyPayload: Codable, Hashable, Sendable {
+@PrettyDescription
+struct IdentifyPayload: Codable, Hashable, Sendable, CustomStringConvertible {
     
     /// The bot token.
     let token: String
@@ -35,26 +36,4 @@ struct IdentifyPayload: Codable, Hashable, Sendable {
     
     /// The intents to use when connecting. 
     let intents: GatewayIntents
-}
-
-// MARK: CustomStringConvertible
-
-extension IdentifyPayload: CustomStringConvertible {
-    var description: String {
-        var result = "[Token: \(token) || Intents: \(intents) || Properties: \(properties)"
-        if let isCompressed = isCompressed {
-            result += " || Compressed: \(isCompressed)"
-        }
-        if let largeThreshold = largeThreshold {
-            result += " || Large Threshold: \(largeThreshold)"
-        }
-        if let shardInfo = shardInfo {
-            result += " || Shard Info: ID-\(shardInfo[0]) COUNT-\(shardInfo[1])"
-        }
-        if let presence = presence {
-            result += " || Presence: \(presence)"
-        }
-        result += "]"
-        return result
-    }
 }

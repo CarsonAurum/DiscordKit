@@ -14,7 +14,8 @@ import NovaMacros
     "version": "v",
     "resumeURL": "resume_gateway_url"
 ]))
-struct ReadyPayload: Codable, Hashable, Sendable {
+@PrettyDescription
+struct ReadyPayload: Codable, Hashable, Sendable, CustomStringConvertible {
     
     /// The version of the API being used
     let version: Int
@@ -33,13 +34,4 @@ struct ReadyPayload: Codable, Hashable, Sendable {
     
     /// This application
     let application: Application
-}
-
-// MARK: CustomStringConvertible
-
-extension ReadyPayload: CustomStringConvertible {
-    var description: String {
-        "[v\(version) || Reconnect At: \(resumeURL) with ID: \(sessionId) || \(guilds.count) Guilds || User: \(user) || "
-        + "App: \(application)]"
-    }
 }
