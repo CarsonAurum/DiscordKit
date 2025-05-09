@@ -5,18 +5,17 @@
 //  Created by Carson Rau on 5/6/25.
 //
 
+import NovaMacros
+
 extension Component {
-    public struct Separator: DiscordModel {
+    
+    @CodingKeys(.custom([
+        "isDivider": "divider"
+    ]))
+    @PrettyDescription
+    public struct Separator: Codable, Hashable, Sendable, CustomStringConvertible {
         public let id: Int?
         public let isDivider: Bool?
         public let spacing: Spacing?
-    }
-}
-
-extension Component.Separator {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case isDivider = "divider"
-        case spacing
     }
 }

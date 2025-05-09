@@ -5,8 +5,12 @@
 //  Created by Carson Rau on 5/1/25.
 //
 
+import NovaMacros
+
 extension Component {
-    public struct ActionRow: DiscordModel {
+    
+    @PrettyDescription
+    public struct ActionRow: Codable, Hashable, Sendable, CustomStringConvertible {
         public let id: Int?
         public let components: [Component]
     }

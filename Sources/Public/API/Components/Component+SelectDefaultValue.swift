@@ -6,7 +6,7 @@
 //
 
 extension Component {
-    public enum SelectDefaultValue: DiscordModel {
+    public enum SelectDefaultValue: Codable, Hashable, Sendable {
         case user(Snowflake)
         case role(Snowflake)
         case channel(Snowflake)

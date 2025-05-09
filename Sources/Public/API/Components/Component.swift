@@ -5,6 +5,8 @@
 //  Created by Carson Rau on 2/11/25.
 //
 
+import NovaMacros
+
 public indirect enum Component: DiscordModel {
     case actionRow(Component.ActionRow)
     case button(Component.Button)
@@ -24,12 +26,10 @@ public indirect enum Component: DiscordModel {
 }
 
 extension Component {
-    internal struct RawComponent: DiscordModel {
+    
+    @CodingKeys(.all)
+    internal struct RawComponent: Codable, Hashable, Sendable {
         public let type: Int
-        
-        enum CodingKeys: String, CodingKey {
-            case type
-        }
     }
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: RawComponent.CodingKeys.self)

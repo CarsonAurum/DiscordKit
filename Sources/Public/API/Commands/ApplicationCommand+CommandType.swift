@@ -10,7 +10,7 @@ import NovaMacros
 extension ApplicationCommand {
     
     @PrettyDescription
-    public enum CommandType: Int, DiscordModel {
+    public enum CommandType: Int, Codable, Hashable, Sendable, CustomStringConvertible {
         case slashCommand = 1
         case user = 2
         case message = 3

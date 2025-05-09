@@ -5,8 +5,12 @@
 //  Created by Carson Rau on 5/6/25.
 //
 
+import NovaMacros
+
 extension Component.Separator {
-    public enum Spacing: Int, DiscordModel {
+    
+    @PrettyDescription
+    public enum Spacing: Int, Codable, Hashable, Sendable, CustomStringConvertible {
         case small = 1
         case large = 2
     }

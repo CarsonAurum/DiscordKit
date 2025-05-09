@@ -5,22 +5,17 @@
 //  Created by Carson Rau on 5/6/25.
 //
 
+import NovaMacros
+
 extension Component {
-    public struct UnfurledMediaItem: DiscordModel {
+    
+    @CodingKeys(.all)
+    @PrettyDescription
+    public struct UnfurledMediaItem: Codable, Hashable, Sendable, CustomStringConvertible {
         public let url: String
-        public let proxyURL: String?
+        public let proxyUrl: String?
         public let height: Int?
         public let width: Int?
         public let contentType: String?
-    }
-}
-
-extension Component.UnfurledMediaItem {
-    enum CodingKeys: String, CodingKey {
-        case url
-        case proxyURL = "proxy_url"
-        case height
-        case width
-        case contentType = "content_type"
     }
 }

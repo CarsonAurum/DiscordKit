@@ -5,8 +5,11 @@
 //  Created by Carson Rau on 2/4/25.
 //
 
+import NovaMacros
 
-public struct Emoji: DiscordModel {
+
+@PrettyDescription
+public struct Emoji: Codable, Hashable, Sendable, CustomStringConvertible {
     public let id: Snowflake?
     public let name: String?
     public let roles: [Snowflake]?
