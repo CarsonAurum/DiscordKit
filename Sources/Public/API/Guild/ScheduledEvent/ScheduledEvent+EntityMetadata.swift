@@ -5,8 +5,12 @@
 //  Created by Carson Rau on 2/5/25.
 //
 
+import NovaMacros
+
 extension Guild.ScheduledEvent {
-    public struct EntityMetadata: DiscordModel {
+    
+    @PrettyDescription
+    public struct EntityMetadata: Codable, Hashable, Sendable, CustomStringConvertible {
         public let location: String?
     }
 }

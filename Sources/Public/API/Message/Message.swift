@@ -7,6 +7,7 @@
 
 
 import Foundation
+import NovaToolbox
 
 public struct Message: DiscordModel {
     public let id: Snowflake

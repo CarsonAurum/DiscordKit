@@ -5,18 +5,15 @@
 //  Created by Carson Rau on 2/11/25.
 //
 
+import NovaMacros
+
 extension Interaction.CallbackResponse {
-    public struct Resource: DiscordModel {
+    
+    @CodingKeys(.all)
+    @PrettyDescription
+    public struct Resource: Codable, Hashable, Sendable, CustomStringConvertible {
         public let type: Interaction.Response.CallbackType
         public let activityInstance: ActivityInstance?
         public let message: Message?
-    }
-}
-
-extension Interaction.CallbackResponse.Resource {
-    enum CodingKeys: String, CodingKey {
-        case type
-        case activityInstance = "activity_instance"
-        case message
     }
 }

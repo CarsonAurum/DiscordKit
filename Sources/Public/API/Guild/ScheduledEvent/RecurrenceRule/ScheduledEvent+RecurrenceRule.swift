@@ -6,9 +6,13 @@
 //
 
 import Foundation
+import NovaMacros
 
 extension Guild.ScheduledEvent {
-    public struct RecurrenceRule: DiscordModel {
+    
+    @CodingKeys(.all)
+    @PrettyDescription
+    public struct RecurrenceRule: Codable, Hashable, Sendable, CustomStringConvertible {
         public let start: Date
         public let end: Date?
         public let frequency: Frequency
@@ -22,17 +26,4 @@ extension Guild.ScheduledEvent {
     }
 }
 
-extension Guild.ScheduledEvent.RecurrenceRule {
-    enum CodingKeys: String, CodingKey {
-        case start
-        case end
-        case frequency
-        case interval
-        case byWeekday = "by_weekday"
-        case byNWeekday = "by_n_weekday"
-        case byMonth = "by_month"
-        case byMonthDay = "by_month_day"
-        case byYearDay = "by_year_day"
-        case count
-    }
-}
+// TODO: Date encoding

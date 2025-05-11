@@ -6,48 +6,36 @@
 //
 
 import AnyCodable
+import NovaMacros
 
 extension Interaction.Data {
-    public struct ApplicationCommand: DiscordModel {
+    
+    @CodingKeys(.all)
+    @PrettyDescription
+    public struct ApplicationCommand: Codable, Hashable, Sendable, CustomStringConvertible {
         public let id: Snowflake
         public let name: String
         public let type: DiscordKit.ApplicationCommand.CommandType
         public let resolved: Interaction.ResolvedData?
         public let options: [Option<AnyCodable>]?
-        public let guildID: Snowflake?
-        public let targetID: Snowflake?
+        public let guildId: Snowflake?
+        public let targetId: Snowflake?
     }
 }
 
 extension Interaction.Data.ApplicationCommand {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case type
-        case resolved
-        case options
-        case guildID = "guild_id"
-        case targetID = "target_id"
-    }
-}
-
-extension Interaction.Data.ApplicationCommand {
-    public struct Option<T>: DiscordModel where T: Codable, T: Hashable, T: Sendable {
+    
+    @CodingKeys(.custom([
+        "_value": "value",
+        "isFocused": "focused"
+    ]))
+    @PrettyDescription
+    public struct Option<T>: Codable, Hashable, Sendable, CustomStringConvertible where T: Codable, T: Hashable, T: Sendable {
         public let name: String
         public let type: ApplicationCommand.Option<T>.OptionType
         public let _value: T?
         public let options: [Option<AnyCodable>]?
         public let isFocused: Bool?
-    }
-}
-
-extension Interaction.Data.ApplicationCommand.Option {
-    enum CodingKeys: String, CodingKey {
-        case name
-        case type
-        case _value = "value"
-        case options
-        case isFocused = "focused"
     }
 }
 

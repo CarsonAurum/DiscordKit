@@ -16,5 +16,6 @@ extension Guild {
         public let avatar: String?
         public let banner: String?
         public let roles: [Snowflake]
+        // TODO: Finish this
     }
 }

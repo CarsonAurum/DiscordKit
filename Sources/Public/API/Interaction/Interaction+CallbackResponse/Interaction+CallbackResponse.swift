@@ -5,8 +5,12 @@
 //  Created by Carson Rau on 2/11/25.
 //
 
+import NovaMacros
+
 extension Interaction {
-    public struct CallbackResponse: DiscordModel {
+    
+    @PrettyDescription
+    public struct CallbackResponse: Codable, Hashable, Sendable, CustomStringConvertible {
         public let interaction: Callback
         public let resource: Resource?
     }

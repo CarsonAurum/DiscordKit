@@ -5,8 +5,12 @@
 //  Created by Carson Rau on 2/5/25.
 //
 
+import NovaMacros
+
 extension Guild {
-    public struct SystemChannelFlags: OptionSet, DiscordModel {
+    
+    @PrettyDescription
+    public struct SystemChannelFlags: OptionSet, Codable, Hashable, Sendable, CustomStringConvertible {
         
         public static let suppressJoinNotifications = SystemChannelFlags(rawValue: 1 << 0)
         public static let suppressBoostSubscriptions = SystemChannelFlags(rawValue: 1 << 1)

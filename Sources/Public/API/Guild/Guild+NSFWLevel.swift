@@ -5,8 +5,12 @@
 //  Created by Carson Rau on 2/4/25.
 //
 
+import NovaMacros
+
 extension Guild {
-    public enum NSFWLevel: Int, DiscordModel {
+    
+    @PrettyDescription
+    public enum NSFWLevel: Int, Codable, Hashable, Sendable, CustomStringConvertible {
         case `default` = 0
         case explicit = 1
         case safe = 2
