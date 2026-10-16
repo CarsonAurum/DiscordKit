@@ -1,10 +1,12 @@
 # Concurrency and ownership
 
-Status: adopted implementation policy, updated 2026-10-15. Part 1 implements
+Status: adopted implementation policy, updated 2026-10-16. Part 1 implements
 Sendable values, pull-body ownership and deadline contexts with deterministic
 test support. Part 2 adds actor/event-loop-owned adapters and fenced shard leases;
-see [transport ownership](Transport.md). Protocol actors, scheduling queues and event broadcasts described
-below remain planned for their respective runtime phases.
+see [transport ownership](Transport.md). Part 3 adds partitioned rate authority,
+bounded scheduling/read reuse and supervised shard actors. Event broadcasts and
+entity projections remain planned; the current Gateway exposes bounded raw polling.
+See [HTTP](HTTP.md) and [Gateway](Gateway.md) for implemented ownership boundaries.
 
 ## Target settings and isolation
 

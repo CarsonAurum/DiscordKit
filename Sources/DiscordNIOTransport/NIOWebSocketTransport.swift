@@ -158,6 +158,8 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
     }
 
     /// Constructs HTTP upgrade handlers and transfers to message parsing on success.
+    /// The bodyless GET head and end are queued before the first flush: flushing the
+    /// head separately lets a fast peer begin protocol upgrade before the pending HTTP end.
     /// - Parameters:
     ///   - request: Validated application headers and GET method.
     ///   - target: SNI origin and origin-form path/query.
@@ -193,7 +195,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
                             _ = channel.pipeline.syncOperations.removeHandler(boundObserver.value)
                             let handler = WebSocketWireHandler(configuration: configuration)
                             try channel.pipeline.syncOperations.addHandler(handler)
-                            completion.succeed(WebSocketWire(channel: channel, handler: NIOLoopBound(handler, eventLoop: channel.eventLoop), attempt: attempt))
+                            completion.succeed(WebSocketWire(channel: channel, handler: NIOLoopBound(handler, eventLoop: channel.eventLoop), attempt: attempt, peerCode: handler.peerCode))
                         }
                     }
                     var limits = NIOHTTPDecoderLimitConfiguration()
@@ -211,7 +213,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
             var headers = HTTPHeaders(request.headers.map { ($0.name, $0.value) })
             headers.add(name: "Host", value: target.hostHeader)
             let head = HTTPRequestHead(version: .http1_1, method: .GET, uri: target.path, headers: headers)
-            try await channel.writeAndFlush(HTTPClientRequestPart.head(head)).get()
+            channel.write(HTTPClientRequestPart.head(head), promise: nil)
             try await channel.writeAndFlush(HTTPClientRequestPart.end(nil)).get()
             return try await promise.futureResult.get()
         } catch { completion.fail(NIOAdapterFailure.upgradeRejected); attempt.cancel(); throw error }
@@ -219,7 +221,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
 }
 
 /// One complete-message socket with bounded, ordered event-loop writes.
-private actor NIOWebSocketConnection: WebSocketConnection {
+private actor NIOWebSocketConnection: WebSocketSessionConnection {
     private let wire: WebSocketWire
     private let configuration: NIOWebSocketConfiguration
     private let attempt: NIOConnectionAttempt
@@ -296,6 +298,14 @@ private actor NIOWebSocketConnection: WebSocketConnection {
         }
     }
 
+    /// Aborts TCP without a normal/going-away close frame, preserving resumable protocol sessions.
+    /// Concurrent calls share ordinary close cleanup and release admission exactly once.
+    func closeForReconnect() async { await close() }
+
+    /// Reads only the numeric peer status, retained independently of event-loop shutdown.
+    /// - Returns: Last valid received close code, or `nil` for an empty/absent peer close.
+    func peerCloseCode() async -> Int? { wire.peerCode.withLockedValue { $0 } }
+
     /// Terminates the socket promptly and releases its budget slot exactly once.
     /// Local close is a transport shutdown, not an unbounded peer-handshake wait.
     /// Concurrent callers await the same closeFuture and parent release operation.
@@ -316,6 +326,7 @@ private struct WebSocketWire: Sendable {
     let channel: any Channel
     let handler: NIOLoopBound<WebSocketWireHandler>
     let attempt: NIOConnectionAttempt
+    let peerCode: NIOLockedValueBox<Int?>
     let discarded = NIOLockedValueBox(false)
     let cleanup = NIOLockedValueBox<Task<Void, Never>?>(nil)
 
@@ -474,6 +485,7 @@ private final class WebSocketWireHandler: ChannelInboundHandler {
     var ended = false
     var failure: (any Error)?
     var controlWrites = 0
+    let peerCode = NIOLockedValueBox<Int?>(nil)
 
     /// Retains validated budgets; no application payload is preallocated.
     /// - Parameter configuration: Complete-message and aggregate-buffer limits.
@@ -491,6 +503,7 @@ private final class WebSocketWireHandler: ChannelInboundHandler {
     }
 
     /// Validates and assembles incoming frames, handling ping/pong/close immediately.
+    /// Valid peer close codes survive local disposal; reasons are validated then discarded.
     /// - Parameters:
     ///   - context: Sole owner of frame state and ordered control responses.
     ///   - data: Decoded server frame. Masked server frames and reserved bits fail.
@@ -517,6 +530,9 @@ private final class WebSocketWireHandler: ChannelInboundHandler {
                     }
             } else if frame.opcode == .connectionClose {
                 guard validClose(payload) else { fail(NIOAdapterFailure.invalidFrame, channel: context.channel); return }
+                if let code: UInt16 = payload.getInteger(at: payload.readerIndex) {
+                    peerCode.withLockedValue { $0 = Int(code) }
+                }
                 ended = true; reader?.succeed(nil); reader = nil
                 let channel = context.channel
                 context.writeAndFlush(wrapOutboundOut(WebSocketFrame(fin: true, opcode: .connectionClose, maskKey: .random(), data: payload)))

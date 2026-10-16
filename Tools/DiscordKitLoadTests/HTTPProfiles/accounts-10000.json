@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "name": "accounts-10000",
+  "logicalAccounts": 10000,
+  "botIdentities": 4,
+  "requests": 10000,
+  "cohort": 16,
+  "maximumQueuedRequests": 32,
+  "maximumQueuedBytes": 65536,
+  "maximumConcurrentRequests": 16,
+  "maximumCacheEntries": 32,
+  "maximumCacheBytes": 65536,
+  "maximumMetadata": 512,
+  "maximumLatencySamples": 4096,
+  "targetP99Milliseconds": 100,
+  "maximumPeakRSSBytes": 134217728
+}

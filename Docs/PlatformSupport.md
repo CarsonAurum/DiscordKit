@@ -1,7 +1,7 @@
 # Platform support and qualification
 
-Updated **2026-10-15**. This is the capability baseline, not a claim that
-DiscordKit already implements REST, OAuth, Gateway, voice, ingress, or desktop RPC.
+Updated **2026-10-16**. The initial HTTP execution and minimal sharded Gateway
+slices are implemented; OAuth flows, voice and desktop RPC remain later work.
 The production library now includes portable values, transport contracts and
 owned Foundation/NIO/Unix adapters. The Part 0 table below remains historical
 feasibility evidence. Part 2 local adapter evidence is recorded separately below;
@@ -101,3 +101,13 @@ products represent them. Linux/Windows/Android, physical Apple devices, minimum-
 DNS/IPv6 beyond the local UDP case, network changes during live traffic, blocked
 HTTP/WS connect/write, expired TLS certificates and long soak qualification remain
 open. This is a tested macOS transport slice, not whole-platform Part 2 certification.
+
+## Part 3 local runtime evidence
+
+The HTTP pipeline and minimal JSON Gateway control use scripted/virtual-time suites,
+with real local Foundation/NIO WebSocket close-code/abort regression tests. Models
+retain partial typed coverage explicitly. See [HTTP](HTTP.md) and [Gateway](Gateway.md)
+for exact contracts and the separate load report for measured workload budgets.
+The graph builds on macOS arm64 with Swift 6.4. These checks do not qualify live
+Discord behavior, physical-device background execution, other OS hosts, minimum OS,
+a full dispatch/resource catalog, or a durable distributed coordinator.

@@ -10,19 +10,21 @@ enum LoadPaths {
 /// Validated small CLI surface; unimplemented runtime scenarios fail explicitly.
 struct LoadOptions: Equatable, Sendable {
     let profileName: String
+    let scenario: String
     let burst: Bool
     let portable: Bool
     let withoutDeadline: Bool
     let settleSeconds: Int
 
     /// Parses workload and allocation diagnostics without starting runtime work.
-    /// Profile defaults to accounts-100 and scenario to transport. `--burst` offers
+    /// Profile defaults to accounts-100 and scenario to transport; HTTP and Gateway
+    /// select separate offline policy scripts. `--burst` offers
     /// tenfold concurrency; `--portable` removes sockets; `--without-deadline`
     /// explicitly disables ten-second deadlines. `--settle-seconds` defaults to zero
     /// and accepts zero through thirty seconds solely for post-cleanup measurements.
     /// - Parameter arguments: Arguments after the executable name.
     /// - Throws: `invalidArguments` for unknown/missing/duplicate flags, or
-    ///   `unsupportedScenario` for HTTP/Gateway/cache/soak scenarios not yet qualified.
+    ///   `unsupportedScenario` for Gateway/cache/soak scenarios not yet implemented.
     init(arguments: [String]) throws {
         var profile = "accounts-100"
         var scenario = "transport"
@@ -52,9 +54,10 @@ struct LoadOptions: Equatable, Sendable {
             }
             index += 1
         }
-        guard scenario == "transport" else { throw LoadFailure.unsupportedScenario }
+        guard ["transport", "http", "gateway"].contains(scenario) else { throw LoadFailure.unsupportedScenario }
         guard !profile.isEmpty else { throw LoadFailure.invalidArguments }
         profileName = profile
+        self.scenario = scenario
         burst = isBurst
         portable = isPortable
         withoutDeadline = disablesDeadline
@@ -135,9 +138,30 @@ enum LoadCommand {
     /// Runs one supported local scenario and writes a credential-free JSON report.
     /// - Parameter arguments: Command-line flags, defaulting to `CommandLine.arguments` tail.
     /// - Throws: Argument/profile/startup, transport setup, encoding, or stdout errors.
-    ///   Runtime per-request failures are counted in the report; no request is retried.
+    ///   Runtime per-request failures are counted. Transport measurements never retry;
+    ///   the HTTP scenario exercises its explicit finite rejected-request retry contract.
     static func run(arguments: [String]) async throws {
         let options = try LoadOptions(arguments: arguments)
+        if options.scenario == "gateway" {
+            guard !options.portable, !options.withoutDeadline, options.settleSeconds == 0 else { throw LoadFailure.invalidArguments }
+            let report = try await GatewayLoadRunner().run(profileName: options.profileName, burst: options.burst)
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            var data = try encoder.encode(report); data.append(10)
+            try FileHandle.standardOutput.write(contentsOf: data)
+            return
+        }
+        if options.scenario == "http" {
+            guard !options.portable, !options.withoutDeadline, options.settleSeconds == 0 else { throw LoadFailure.invalidArguments }
+            let profile = try HTTPWorkloadProfile.load(name: options.profileName,
+                directory: LoadPaths.packageDirectory.appendingPathComponent("HTTPProfiles"))
+            let report = try await HTTPPolicyRunner().run(profile: profile, burst: options.burst)
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            var data = try encoder.encode(report); data.append(10)
+            try FileHandle.standardOutput.write(contentsOf: data)
+            return
+        }
         let profile = try WorkloadProfile.load(name: options.profileName,
                                                directory: LoadPaths.packageDirectory.appendingPathComponent("Profiles"))
         if options.portable {
@@ -206,7 +230,7 @@ enum LoadCommand {
                 "Logical accounts are served end users; one client process and a separate Python loopback peer for socket runs.",
                 "Pool-slot peaks are sampled; configured cap and real successful socket exchanges are distinct.",
                 "Live malloc block/byte gauges are not a cumulative allocation trace; CPU/RSS exclude the peer.",
-                "No Gateway/control/cache scenario or 30-minute soak qualification is claimed.",
+                "This transport measurement excludes HTTP/Gateway policy scenarios and 30-minute soak qualification.",
             ])
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
@@ -220,6 +244,6 @@ do {
     try await LoadCommand.run(arguments: Array(CommandLine.arguments.dropFirst()))
 } catch {
     let reason = (error as? LoadFailure).map { String(describing: $0) } ?? "localScenarioFailed"
-    FileHandle.standardError.write(Data("Transport load harness failed: \(reason)\n".utf8))
+    FileHandle.standardError.write(Data("Local load harness failed: \(reason)\n".utf8))
     exit(1)
 }

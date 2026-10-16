@@ -8,6 +8,24 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — HTTP execution and early sharded Gateway
+
+- Add independent Models/HTTP/Gateway products preserving Swift 6.4 concurrency settings.
+- Add fixed-origin API v10 typed/raw descriptors, bounded codecs/errors, replayable bodies,
+  pagination/polling, credential-free assets and a standalone REST-only example.
+- Add partitioned injectable rate authority, finite FIFO scheduling, mutation ordering,
+  deadlines and safe retry/indeterminate-outcome handling.
+- Add independently cancellable scoped read coalescing and opt-in bounded TTL/LRU caching
+  with local-write/visibility invalidation and stale-completion fences.
+- Retrieve current user/application snapshots and Gateway discovery; record their partial
+  typed projections separately from complete catalog parity.
+- Add supervised sharded Gateway JSON v10 lifecycle, heartbeat/ACK handling, Resume,
+  close-code classification, bounded event ingestion, fenced leases and atomic Identify budgets.
+- Preserve peer close codes and session-aware reconnect cleanup in Foundation/NIO adapters.
+- Batch NIO WebSocket upgrade writes so fast peers cannot upgrade before the request ends.
+- Extend deterministic regression and local load evidence; retain explicit host, full-catalog,
+  durable-store and sustained-capacity qualification gates.
+
 ### 2026-10-15 — owned transport adapters and local qualification
 
 - Add independent Foundation HTTP/WebSocket, NIO HTTP/TLS/WebSocket/UDP/ingress,

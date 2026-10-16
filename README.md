@@ -1,15 +1,16 @@
 # DiscordKit
 
 DiscordKit is the foundation of a modular, Swift-native Discord application and
-bot library. Parts 1–2 provide portable values, transport contracts and owned
-network adapters. REST, Gateway,
-interactions, OAuth2, voice, RPC, Activities, Social and commerce integrations are
-not implemented.
+bot library. Parts 1–3 provide portable values, owned network adapters, a bounded
+HTTP execution pipeline and a minimal sharded Gateway lifecycle. The initial typed
+REST slice retrieves the current user/application and Gateway discovery. Interactions,
+OAuth2 flows, voice, RPC, Activities, Social and commerce are not implemented.
 
 The architecture baseline records platform capabilities, dependency policy, a
 versioned parity inventory and explicit feasibility blockers. Portable values are
 usable today; HTTP/WebSocket/UDP/ingress/Unix adapters are available with explicit
-limits and macOS-local qualification. A working Discord client follows later. A planned
+limits and macOS-local qualification. REST and Gateway are independently adoptable;
+the full resource/event catalog and consumer facade follow later. A planned
 target or an unavailable-capability stub never counts as implemented support.
 
 ## Build and test
@@ -43,8 +44,14 @@ establish endpoint parity or qualify untested hosts. See the
 - `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
 - `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
 - `DiscordApplePlatform`: app-driven lifecycle resource ownership and capability checks.
+- `DiscordModels`: presence-aware partial User/Application projections and exact unknown fields.
+- `DiscordHTTP`: typed descriptors, codecs, coordinated admission, safe retries, pagination,
+  scoped coalescing and opt-in bounded response caching.
+- `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases and startup budgets.
 
-See [transport ownership, budgets and qualification limits](Docs/Transport.md).
+See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),
+[minimal Gateway lifecycle](Docs/Gateway.md), and
+[transport ownership, budgets and qualification limits](Docs/Transport.md).
 The independent [local load harness](Tools/DiscordKitLoadTests/README.md) records
 bounded cohort measurements; broad platform and Phase 2 qualification gates remain open.
 
@@ -64,7 +71,8 @@ other-platform runtime qualification remains recorded separately.
 - Optional voice APIs own the media protocol and expose join, frames and leave.
 - Platform and access restrictions produce explicit capability information.
 
-These consumer workflows describe future work. Feature products are introduced
+The HTTP execution and minimal raw Gateway lifecycle are implemented. The remaining
+consumer workflows describe future work. Feature products are introduced
 with implementations and tests as their roadmap phases are completed.
 
 Scalability is an early design requirement: deployments serving hundreds through
@@ -72,7 +80,8 @@ millions of accounts need coordinated rate admission, bounded caches, equivalent
 read coalescing, documented bulk operations and sharding in the first Gateway
 slice. Per-identity and aggregate budgets, load profiles and measured release
 gates are defined in the [scalability requirements](Docs/Scalability.md). These
-are planned capabilities, not a demonstrated capacity of the current foundations.
+include implemented admission, caching and sharding policies; the workload sizes
+do not establish deployment capacity.
 
 ## Scope and constraints
 
@@ -97,6 +106,8 @@ provisioning are not invented SDK endpoints. See Discord's
 - [Architecture and API conventions](Docs/Architecture.md)
 - [Portable foundation contracts](Docs/Foundation.md)
 - [Owned transport adapters](Docs/Transport.md)
+- [HTTP execution and request reuse](Docs/HTTP.md)
+- [Minimal sharded Gateway lifecycle](Docs/Gateway.md)
 - [Concurrency and ownership](Docs/Concurrency.md)
 - [Scalability and request efficiency](Docs/Scalability.md)
 - [Dependency policy and candidate releases](Docs/Dependencies.md)

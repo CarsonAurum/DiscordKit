@@ -86,6 +86,22 @@ actor FoundationLoopbackPeer {
         }
     }
 
+    /// Sends a numeric private/application close status after a completed upgrade.
+    /// - Parameter code: Valid RFC 6455 close code, including Discord's 4000-series statuses.
+    /// - Throws: Invalid code, absent accepted socket or native send failure.
+    func sendWebSocketClose(_ code: UInt16) async throws {
+        guard let connection = connections.first else { throw NWError.posix(.ENOTCONN) }
+        let metadata = NWProtocolWebSocket.Metadata(opcode: .close)
+        metadata.closeCode = try NWProtocolWebSocket.CloseCode(rawValue: code)
+        let context = NWConnection.ContentContext(identifier: "fixture-close", metadata: [metadata])
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+            connection.send(content: nil, contentContext: context, isComplete: true, completion: .contentProcessed { error in
+                if let error { continuation.resume(throwing: error) }
+                else { continuation.resume() }
+            })
+        }
+    }
+
     /// Cancels every accepted connection and the listener; safe to repeat.
     func close() {
         guard !closed else { return }

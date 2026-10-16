@@ -3,8 +3,9 @@
 Status: adopted design requirements, added 2026-10-15. These requirements extend
 the [architecture](Architecture.md), [concurrency policy](Concurrency.md) and
 [implementation roadmap](../.air/plans/discordkit-full-platform-roadmap.plan.md).
-Part 1 supplies values, transport contracts and deterministic test support;
-rate scheduling, caches, sharded sessions and fleet coordination remain planned.
+Parts 1–3 supply values, owned transports, deterministic test support, bounded
+HTTP rate scheduling/read caches and a minimal sharded Gateway lifecycle.
+Fleet coordination contracts are injectable; durable adapters remain consumer-owned.
 This document does not establish a tested account or connection capacity.
 
 ## Capacity model and responsibility
@@ -219,3 +220,15 @@ RSS are recorded separately, since allocators need not return freed pages at onc
 The load report includes before/after diagnostic evidence. No fixed-working-set
 30-minute soak, comprehensive allocation trace, cross-host scale result or
 millions-of-connections capacity is inferred from this initial baseline.
+
+## Part 3 HTTP and shard implementation
+
+[HTTP execution](HTTP.md) now implements finite rate/order admission and retry budgets,
+scoped single-flight reads, opt-in payload-bounded caches, lazy pagination and explicit
+invalidation. [Minimal Gateway shards](Gateway.md) deliver shared startup allowances,
+fenced ownership and supervised heartbeat/control with bounded raw event ingestion.
+All per-identity owners must share the documented authority; distributed atomic
+contracts are injectable without shipping a durable adapter. The independent load
+package extends local profiles, separating logical accounts from physical exchanges.
+No broad deployment capacity or 30-minute sustained-load qualification follows from
+short scripted/local measurements; the evidence requirements above remain in force.

@@ -1,0 +1,61 @@
+{
+  "afterShutdown": {
+    "cpuSeconds": 2.559092,
+    "liveAllocationBlocks": 24093,
+    "liveAllocationBytes": 1895744,
+    "peakRSSBytes": 11911168,
+    "residentBytes": 11911168
+  },
+  "before": {
+    "cpuSeconds": 0.005105,
+    "liveAllocationBlocks": 991,
+    "liveAllocationBytes": 108512,
+    "peakRSSBytes": 7159808,
+    "residentBytes": 7159808
+  },
+  "configuredMaximumQueuedBytes": 1048576,
+  "configuredMaximumQueuedEvents": 512,
+  "controlDelay": {
+    "p50Milliseconds": 0.222583,
+    "p95Milliseconds": 0.296333,
+    "p99Milliseconds": 0.321584,
+    "sampleCount": 4096
+  },
+  "cpuSeconds": 2.5539870000000002,
+  "deliveredDispatches": 100000,
+  "durationSeconds": 0.817898958,
+  "eventLag": {
+    "p50Milliseconds": 0.2365,
+    "p95Milliseconds": 0.422292,
+    "p99Milliseconds": 0.485542,
+    "sampleCount": 4096
+  },
+  "heartbeatACKs": 14304,
+  "heartbeats": 14304,
+  "identifies": 16,
+  "leasesAfterShutdown": 0,
+  "logicalAccounts": 1000000,
+  "meanCPUPercentOfOneCore": 312.2619212335517,
+  "notes": [
+    "Scripted local-only JSON Gateway; zero sockets and no real credential or Discord request.",
+    "Logical served users and configured bot identities are separate from selected measured sessions.",
+    "One reconnect per selected shard exercises Resume without additional Identify allowance.",
+    "An isolated synthetic identity measures startup contention without resetting runtime budgets.",
+    "Consumers yield between batches; producer credits bound source demand and pending timestamp metadata.",
+    "Queue peaks are per-shard sampled maxima; configured aggregate ceilings include every selected shard.",
+    "CPU/RSS are process measurements; allocator/parser overhead is outside wire-byte accounting.",
+    "This evidence does not qualify network throughput, real Discord quotas, fleet behavior or runtime capacity."
+  ],
+  "ownedConnectionsAfterShutdown": 0,
+  "peakOwnedConnections": 16,
+  "profile": "accounts-1000000",
+  "profileBotIdentities": 16,
+  "reconnects": 16,
+  "resumes": 16,
+  "sampledPeakQueuedEvents": 7,
+  "selectedBotIdentities": 4,
+  "selectedShards": 16,
+  "startupStormAdmitted": 16,
+  "startupStormOffered": 32,
+  "targetDispatches": 100000
+}

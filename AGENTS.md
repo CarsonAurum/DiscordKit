@@ -5,7 +5,9 @@
 DiscordKit is a Swift Package Manager library. Part 1 implements portable values,
 transport contracts and deterministic test support. Part 2 adds owned Foundation/NIO
 network adapters, Unix IPC, Apple lifecycle ownership and a separate local load harness.
-Discord network integration is not yet implemented. Part 0 records architecture/parity and separate probes.
+Part 3 adds HTTP execution, partial User/Application models and the required early
+sharded Gateway lifecycle. Full REST/event catalogs remain later work. Part 0 records
+architecture/parity and separate probes.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -15,6 +17,9 @@ Discord network integration is not yet implemented. Part 0 records architecture/
 - `Sources/DiscordFoundationTransport/`, `Sources/DiscordNIOTransport/`: concrete
   injectable backends; portable products must never depend on them.
 - `Sources/DiscordUnixPlatform/`, `Sources/DiscordApplePlatform/`: owned IPC/lifecycle.
+- `Sources/DiscordModels/`, `Sources/DiscordHTTP/`, `Sources/DiscordGateway/`:
+  presence-aware projections, bounded HTTP policy and independently adopted shard runtime.
+- `Examples/RESTOnly/`: independent REST consumer; build it without running authenticated calls.
 - `Tools/DiscordKitLoadTests/`: independent local-only transport measurements and profiles.
 - `Tests/DiscordTestSupport/`: internal development support target, never a product.
 - `Docs/`: architecture, dependency/platform policy, feasibility findings and parity history.
@@ -59,7 +64,9 @@ Root `swift test` does not include these independent packages. Keep their resolv
 graphs and results synchronized with the feasibility report.
 
 The root suites cover the implemented foundations, without live Discord requests.
-Source changes must meet the method documentation and unit testing requirements below.
+For HTTP/Gateway changes, also build `Examples/RESTOnly` and run affected local load
+scenarios. See `Docs/HTTP.md` and `Docs/Gateway.md` for authority sharing, ownership
+and qualification limits. Source changes must meet the method documentation and unit testing requirements below.
 For documentation-only changes, review the diff; a build is not required.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.

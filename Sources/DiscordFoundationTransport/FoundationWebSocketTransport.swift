@@ -1,6 +1,7 @@
 #if canImport(Darwin)
 import DiscordTransport
 import Foundation
+import os
 
 /// Apple WebSocket adapter with bounded messages, pending writes and live connections.
 ///
@@ -92,9 +93,10 @@ private actor FoundationWebSocketHandshake {
     }
 }
 
-/// Bridges only upgrade completion; native send/receive use Foundation's async APIs.
+/// Bridges upgrade completion and numeric peer closure; native send/receive use Foundation's async APIs.
 private final class FoundationWebSocketDelegate: NSObject, URLSessionWebSocketDelegate {
     let handshake: FoundationWebSocketHandshake
+    let peerCode = OSAllocatedUnfairLock<Int?>(initialState: nil)
 
     /// Stores isolated handshake state without retaining request metadata.
     /// - Parameter handshake: One-shot state owned by the connecting operation.
@@ -150,7 +152,8 @@ private final class FoundationWebSocketDelegate: NSObject, URLSessionWebSocketDe
         Task { await handshake.finish(.failure(failure)) }
     }
 
-    /// Resolves premature close before upgrade; established readers inspect closeCode.
+    /// Retains only numeric peer status and resolves a premature close before upgrade.
+    /// The synchronized status remains available after connection/session cleanup.
     /// - Parameters:
     ///   - session: Owning ephemeral session.
     ///   - webSocketTask: Closed task.
@@ -158,12 +161,13 @@ private final class FoundationWebSocketDelegate: NSObject, URLSessionWebSocketDe
     ///   - reason: Potentially sensitive peer data; deliberately discarded.
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask,
                     didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
+        peerCode.withLock { $0 = closeCode.rawValue }
         Task { await handshake.finish(.failure(TransportFailure.closed)) }
     }
 }
 
 /// Serializes bounded writes and permits one outstanding receive, with terminal cancellation.
-private actor FoundationWebSocketConnection: WebSocketConnection {
+private actor FoundationWebSocketConnection: WebSocketSessionConnection {
     private let task: URLSessionWebSocketTask
     private let delegate: FoundationWebSocketDelegate
     private let owner: FoundationSession
@@ -218,12 +222,13 @@ private actor FoundationWebSocketConnection: WebSocketConnection {
                     catch { await self.releaseWrite(); throw error }
                     await self.releaseWrite()
                 } onCancel: {
+                    task.cancel(with: .protocolError, reason: nil)
                     task.cancel()
-                    Task { await self.close() }
+                    Task { await self.closeForReconnect() }
                 }
             }
         } catch {
-            if error as? FoundationTransportFailure != .admissionRejected { await close() }
+            if error as? FoundationTransportFailure != .admissionRejected { await closeForReconnect() }
             throw foundationFailure(error)
         }
     }
@@ -248,6 +253,7 @@ private actor FoundationWebSocketConnection: WebSocketConnection {
     }
 
     /// Pulls one complete native message, rejecting simultaneous readers immediately.
+    /// Peer status is copied before local cleanup even when the delegate callback is pending.
     /// - Parameter context: Injected deadline and cancellation for this read only.
     /// - Returns: Ordered text/binary message, or `nil` after a normal/going-away peer close.
     /// - Throws: Concurrent read, cancellation, deadline, closure, size or native failure.
@@ -263,7 +269,10 @@ private actor FoundationWebSocketConnection: WebSocketConnection {
             let message = try await context.run {
                 try await withTaskCancellationHandler {
                     try await task.receive()
-                } onCancel: { task.cancel() }
+                } onCancel: {
+                    task.cancel(with: .protocolError, reason: nil)
+                    task.cancel()
+                }
             }
             guard !closed else { return nil }
             switch message {
@@ -281,11 +290,16 @@ private actor FoundationWebSocketConnection: WebSocketConnection {
             }
         } catch {
             let ownedFailure = error is CancellationError || error is TransportFailure || error is FoundationTransportFailure
+            let status = task.closeCode.rawValue
+            if !ownedFailure, !Task.isCancelled, !closed, (1_000...4_999).contains(status),
+               ![1_004, 1_005, 1_006, 1_015].contains(status) {
+                delegate.peerCode.withLock { if $0 == nil { $0 = status } }
+            }
             let orderly = !ownedFailure && !Task.isCancelled && (task.closeCode == .normalClosure || task.closeCode == .goingAway)
             let nativeError = error as NSError
             let oversized = task.closeCode == .messageTooBig || (error as? URLError)?.code == .dataLengthExceedsMaximum
                 || (nativeError.domain == NSPOSIXErrorDomain && nativeError.code == Int(EMSGSIZE))
-            await close()
+            await closeForReconnect()
             if orderly { return nil }
             if oversized { throw FoundationTransportFailure.messageLimitExceeded(limit: configuration.maximumWebSocketMessageBytes) }
             throw foundationFailure(error)
@@ -294,10 +308,22 @@ private actor FoundationWebSocketConnection: WebSocketConnection {
 
     /// Unblocks native I/O and all queued writers, then releases aggregate admission.
     /// Repeated callers are harmless; the session owner separately awaits invalidation.
-    func close() async {
+    func close() async { await finishClose(code: .goingAway) }
+
+    /// Ends I/O using protocol-error closure rather than session-invalidating 1000/1001.
+    /// Foundation owns the actual frame/abort; cleanup releases the admission slot once.
+    func closeForReconnect() async { await finishClose(code: .protocolError) }
+
+    /// Reports peer close status captured by the native delegate or receive failure path.
+    /// - Returns: Peer numeric code after a received close frame, or `nil` for abrupt/local abort.
+    func peerCloseCode() async -> Int? { delegate.peerCode.withLock { $0 } }
+
+    /// Serializes terminal cleanup and discards pending writers before releasing admission.
+    /// - Parameter code: Local going-away or protocol-error code, excluding close reasons.
+    private func finishClose(code: URLSessionWebSocketTask.CloseCode) async {
         if let closeTask { await closeTask.value; return }
         closed = true
-        task.cancel(with: .goingAway, reason: nil)
+        task.cancel(with: code, reason: nil)
         task.cancel()
         let pending = writers
         writers.removeAll()

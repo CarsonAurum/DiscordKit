@@ -175,3 +175,13 @@ in the managed workspace. Resolution reused the existing verified local reposito
 cache for a stalled transitive fetch; no checkout was vendored or substituted
 for the official lockfile revisions. The independent load package resolves the
 same approved graph and remains outside runtime products.
+
+## Part 3 products (2026-10-16)
+
+Models, HTTP and Gateway introduce no external package dependency. They use existing
+Core/Transport, Swift standard concurrency and Foundation JSON/date/URL facilities.
+Gateway depends on HTTP only for authenticated discovery; HTTP does not import
+Gateway or a concrete adapter. The RESTOnly example selects Foundation transport;
+the separate load harness adopts HTTP/Gateway explicitly. Existing approved NIO/TLS
+versions remain unchanged. Example resolution is pinned independently and build/test
+support is excluded from all runtime products.

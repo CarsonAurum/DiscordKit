@@ -1,0 +1,361 @@
+import DiscordCore
+import DiscordTransport
+import Foundation
+
+/// An injected REST execution pipeline; construction starts no tasks or network work.
+///
+/// Clients sharing a credential must share their opaque identity and rate authority.
+/// Use a new read scope/coalescer/cache after credential or scope changes, or explicitly
+/// invalidate before reuse. Transport, coordinator and reuse components are injected,
+/// separately owned resources: this client never closes shared dependencies implicitly.
+public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable where C.Duration == Duration {
+    private let credential: Credential
+    public let identity: RateLimitIdentity
+    private let transport: any HTTPTransport
+    private let coordinator: RateLimitCoordinator<C>
+    private let clock: C
+    private let cache: ReadCache<C>?
+    private let coalescer: RequestCoalescer?
+    private let retryPolicy: RetryPolicy
+    private let maximumResponseBytes: Int
+    private let maximumExchangeDuration: Duration
+    private let userAgent: String
+    private let egress: UUID?
+
+    /// Conceals credentials and injected owners from ordinary diagnostic formatting.
+    public var description: String { "RESTClient(redacted)" }
+    /// Uses the same safe marker for debug formatting.
+    public var debugDescription: String { description }
+    /// Prevents reflection from walking transport scripts, secrets or caches.
+    public var customMirror: Mirror { Mirror(self, children: ["redacted": true]) }
+
+    /// Binds one authentication scope to its shared admission and optional read reuse owners.
+    /// - Parameters:
+    ///   - credential: Accepted bot/bearer credential; never forwarded to arbitrary origins.
+    ///   - identity: Stable opaque credential/rate scope, shared across clients and workers.
+    ///   - transport: Single-send adapter; must not follow redirects or automatically retry.
+    ///   - coordinator: Shared fail-closed authority using the same clock domain.
+    ///   - clock: Monotonic clock shared with admission and cache.
+    ///   - cache: Optional bounded opt-in successful-byte cache; nil disables retention.
+    ///   - coalescer: Optional bounded eligible-read single-flight owner.
+    ///   - retryPolicy: Finite replay/backoff budget, default three attempts.
+    ///   - maximumResponseBytes: Positive total response/error byte bound, default 8 MiB.
+    ///   - maximumExchangeDuration: Positive shared-flight lifetime, default 30 seconds.
+    ///     One subscriber's deadline cannot shorten another subscriber's exchange.
+    ///   - egress: Shared opaque outbound-IP identity for aggregate invalid-response protection.
+    ///   - userAgent: DiscordBot library identification; validated before transmission.
+    /// - Precondition: Response byte and exchange-duration limits are positive.
+    public init(credential: Credential, identity: RateLimitIdentity, transport: any HTTPTransport,
+                coordinator: RateLimitCoordinator<C>, clock: C, cache: ReadCache<C>? = nil,
+                coalescer: RequestCoalescer? = nil, retryPolicy: RetryPolicy = .init(),
+                maximumResponseBytes: Int = 8 * 1_024 * 1_024,
+                maximumExchangeDuration: Duration = .seconds(30),
+                egress: UUID? = nil, userAgent: String = "DiscordBot (https://github.com/CarsonAurum/DiscordKit, 0.3.0-dev)") {
+        precondition(maximumResponseBytes > 0 && maximumExchangeDuration > .zero)
+        self.credential = credential; self.identity = identity; self.transport = transport
+        self.coordinator = coordinator; self.clock = clock; self.cache = cache; self.coalescer = coalescer
+        self.retryPolicy = retryPolicy; self.maximumResponseBytes = maximumResponseBytes
+        self.maximumExchangeDuration = maximumExchangeDuration; self.userAgent = userAgent; self.egress = egress
+    }
+
+    /// Executes a typed or raw descriptor through authentication, admission and bounded decoding.
+    /// - Parameters:
+    ///   - endpoint: Explicit success, retry, representation and optional read-reuse policy.
+    ///   - deadline: Optional inclusive deadline in this client's clock domain.
+    /// - Returns: Decoded result; empty/204 semantics follow the descriptor's decoder.
+    /// - Throws: Safe API/validation/admission/transport failures, cancellation, deadline expiry,
+    ///   or indeterminate mutation outcome when an unsafe send may already have succeeded.
+    ///   Decoder errors are replaced with a safe invalid-response category.
+    public func execute<Response: Sendable>(_ endpoint: Endpoint<Response>, deadline: C.Instant? = nil) async throws -> Response {
+        let context = TransportContext(clock: clock, deadline: deadline)
+        try context.check()
+        let evidence = HTTPSubmissionEvidence()
+        do {
+            let result = try await context.run {
+                let key = self.readKey(endpoint)
+                if endpoint.readPolicy?.timeToLive != nil, let data = await self.cache?.value(for: key) {
+                    try context.check()
+                    return try self.decode(endpoint, data: data)
+                }
+                let operation: @Sendable () async throws -> Data = {
+                    let generation = await self.cache?.generation()
+                    let maximumDeadline = self.clock.now.advanced(by: self.maximumExchangeDuration)
+                    let shared = endpoint.readPolicy?.coalescing == true && self.coalescer != nil
+                    let sharedDeadline = shared ? maximumDeadline : min(deadline ?? maximumDeadline, maximumDeadline)
+                    let started = self.clock.now
+                    let reply = try await self.perform(endpoint, deadline: sharedDeadline, evidence: evidence)
+                    let data = reply.data
+                    // Validate before retention so malformed successes never become cached data.
+                    _ = try self.decode(endpoint, data: data)
+                    if let requested = endpoint.readPolicy?.timeToLive, let generation,
+                       let ttl = self.cacheLifetime(requested: requested, headers: reply.headers + endpoint.headers,
+                                                    elapsed: started.duration(to: self.clock.now)) {
+                        await self.cache?.insert(data, for: key, timeToLive: ttl,
+                                                 tags: endpoint.readPolicy?.tags ?? [], generation: generation)
+                    }
+                    return data
+                }
+                let data: Data
+                if endpoint.readPolicy?.coalescing == true, let coalescer = self.coalescer {
+                    data = try await coalescer.run(key: key, operation: operation)
+                } else { data = try await operation() }
+                try context.check()
+                return try self.decode(endpoint, data: data)
+            }
+            try context.check()
+            return result
+        } catch {
+            if endpoint.retrySafety == .unsafe, await evidence.wasSubmitted(),
+               error is CancellationError || (error as? TransportFailure) == .deadlineExceeded {
+                throw self.submissionFailure(error, safety: .unsafe)
+            }
+            throw error
+        }
+    }
+
+    /// Invalidates observed permission, visibility or credential-scope changes and awaits old reads.
+    /// - Parameter tags: Matching cache tags, or empty to remove all snapshots for this scope.
+    /// TTL alone cannot detect unobserved external changes. Existing coalesced readers cancel.
+    public func invalidate(tags: Set<String> = []) async {
+        await cache?.invalidate(identity: identity, tags: tags)
+        await coalescer?.invalidate(identity: identity)
+    }
+
+    /// Performs finite attempts while holding mutation order through each admitted exchange.
+    /// - Parameters:
+    ///   - endpoint: Validated operation descriptor.
+    ///   - deadline: Bounded exchange deadline, separate from individual shared subscribers.
+    ///   - evidence: Operation-local conservative submission evidence for deadline races.
+    /// - Returns: Successful bounded response metadata/bytes after invalidating declared local-write tags.
+    /// - Throws: Safe failure categories; 429 replays only explicit server rejection, while
+    ///   ambiguous transport and 5xx retries require demonstrably safe operation semantics.
+    private func perform<Response: Sendable>(_ endpoint: Endpoint<Response>, deadline: C.Instant, evidence: HTTPSubmissionEvidence) async throws -> WireReply {
+        let context = TransportContext(clock: clock, deadline: deadline)
+        let operation: @Sendable () async throws -> WireReply = { try await context.run {
+            var attempt = 0
+            while true {
+                try context.check()
+                attempt += 1
+                let reply: WireReply
+                do { reply = try await self.send(endpoint, context: context, evidence: evidence) }
+                catch let error as DiscordError {
+                    if case .transport = error, endpoint.retrySafety == .safe,
+                       let delay = self.retryPolicy.delay(after: attempt) {
+                        try await self.clock.sleep(for: delay)
+                        continue
+                    }
+                    throw error
+                }
+                if endpoint.successStatuses.contains(reply.status) {
+                    if !endpoint.invalidates.isEmpty { await self.invalidate(tags: endpoint.invalidates) }
+                    return reply
+                }
+                let error = APIResponseError(status: reply.status, headers: reply.headers, body: reply.data)
+                if reply.status == 429, self.retryPolicy.delay(after: attempt) != nil {
+                    // A complete 429 establishes rejection; queued retry cancellation
+                    // must not be misreported as an indeterminate mutation.
+                    continue
+                }
+                if (500...599).contains(reply.status), endpoint.retrySafety == .safe,
+                   let delay = self.retryPolicy.delay(after: attempt) {
+                    try await self.clock.sleep(for: delay)
+                    continue
+                }
+                if (500...599).contains(reply.status), endpoint.retrySafety == .unsafe {
+                    throw DiscordError.unknownMutationOutcome(.serverErrorAfterSubmission)
+                }
+                throw error
+            }
+        } }
+        if endpoint.retrySafety == .unsafe {
+            return try await coordinator.withOrdering(request: rateRequest(endpoint), deadline: deadline, operation: operation)
+        }
+        return try await operation()
+    }
+
+    /// Owns one admission token and both body lifetimes; no hidden transport retries occur.
+    /// - Parameters:
+    ///   - endpoint: Operation providing a fresh replayable body for this attempt.
+    ///   - context: Clock/deadline/cancellation context used for admission and transport.
+    ///   - evidence: Records possible submission before awaiting the injected adapter.
+    /// - Returns: Complete bounded response metadata/bytes after authority observation.
+    /// - Throws: Safe transport/authority failures or conservative unsafe-send uncertainty.
+    private func send<Response: Sendable>(_ endpoint: Endpoint<Response>, context: TransportContext<C>, evidence: HTTPSubmissionEvidence) async throws -> WireReply {
+        try context.check()
+        let reservation = try await coordinator.acquire(rateRequest(endpoint), deadline: context.deadline)
+        let request: HTTPRequest
+        do { request = try endpoint.makeRequest(credential: credential, userAgent: userAgent) }
+        catch { try? await coordinator.release(reservation, outcome: .notSent); throw error }
+        do { try context.check() }
+        catch {
+            await request.body?.close()
+            try? await coordinator.release(reservation, outcome: .notSent)
+            throw error
+        }
+        let response: HTTPResponse
+        do {
+            await evidence.markSubmitted()
+            try context.check()
+            response = try await transport.execute(request, context: context)
+        }
+        catch {
+            await request.body?.close()
+            try? await coordinator.release(reservation, outcome: .uncertain)
+            throw submissionFailure(error, safety: endpoint.retrySafety)
+        }
+        await request.body?.close()
+        let data: Data
+        do { data = try await ResponseBody.collect(response.body, maximumBytes: maximumResponseBytes) }
+        catch {
+            try? await coordinator.complete(reservation, status: response.status, headers: response.headers)
+            throw submissionFailure(error, safety: endpoint.retrySafety)
+        }
+        var retryAfter: Duration?
+        var global = false
+        if response.status == 429,
+           case .object(let object) = try? JSONValue.parse(data) {
+            if case .number(let number) = object["retry_after"], let seconds = Double(number.rawValue),
+               seconds.isFinite, seconds >= 0, seconds <= 86_400 { retryAfter = .seconds(seconds) }
+            if case .bool(let value) = object["global"] { global = value }
+        }
+        do {
+            try await coordinator.complete(reservation, status: response.status, headers: response.headers,
+                                           retryAfter: retryAfter, global: global)
+        } catch {
+            if endpoint.retrySafety == .unsafe { throw submissionFailure(error, safety: .unsafe) }
+            throw error
+        }
+        if response.status == 429 { await evidence.markRejected() }
+        return WireReply(status: response.status, headers: response.headers, data: data)
+    }
+
+    /// Replaces untrusted adapter error descriptions with bounded public categories.
+    /// - Parameters:
+    ///   - error: Adapter, body or cancellation failure after possible submission.
+    ///   - safety: Explicit endpoint replay contract.
+    /// - Returns: Safe cancellation/transport or indeterminate-mutation error.
+    private func submissionFailure(_ error: any Error, safety: RetrySafety) -> any Error {
+        let cancelled = error is CancellationError || Task.isCancelled
+        let expired = (error as? TransportFailure) == .deadlineExceeded
+        if safety == .unsafe {
+            return DiscordError.unknownMutationOutcome(cancelled ? .cancelledAfterSubmission :
+                (expired ? .deadlineAfterSubmission : .connectionLostAfterSubmission))
+        }
+        if cancelled { return CancellationError() }
+        if expired { return TransportFailure.deadlineExceeded }
+        if let error = error as? DiscordError { return error }
+        return DiscordError.transport(.connectionFailed)
+    }
+
+    /// Builds the common rate/order partition, including declared global exemptions and egress.
+    /// - Parameter endpoint: Operation carrying normalized route and major-resource identity.
+    /// - Returns: Nonsecret bounded admission metadata with retained request byte accounting.
+    private func rateRequest<Response: Sendable>(_ endpoint: Endpoint<Response>) -> RateLimitRequest {
+        RateLimitRequest(identity: identity, route: endpoint.method + " " + endpoint.route,
+            majorResource: endpoint.majorParameter ?? "", egress: egress,
+            usesGlobalLimit: endpoint.usesGlobalLimit, queuedBytes: (endpoint.body?.accountedBytes ?? 0) + endpoint.accountedMetadataBytes)
+    }
+
+    /// Separates wire representations and client/endpoint acceptance and freshness contracts.
+    /// Length prefixes retain exact tag boundaries, and sorted tags make set order irrelevant.
+    /// - Parameter endpoint: Immutable descriptor carrying optional read policy.
+    /// - Returns: Scoped representation including user-agent, byte/lifetime/retry bounds, exact TTL,
+    ///   sorted tags and coalescing eligibility. Different client limits cannot be bypassed by reuse;
+    ///   the representation is empty when read reuse is disabled, avoiding unnecessary body encoding.
+    private func readKey<Response: Sendable>(_ endpoint: Endpoint<Response>) -> HTTPReadKey {
+        guard endpoint.readPolicy != nil else { return HTTPReadKey(identity: identity, representation: "") }
+        let ttl = endpoint.readPolicy?.timeToLive.map { duration in
+            "\(duration.components.seconds):\(duration.components.attoseconds)"
+        } ?? "none"
+        let tags = (endpoint.readPolicy?.tags ?? []).sorted()
+        let durations = [maximumExchangeDuration, retryPolicy.initialBackoff, retryPolicy.maximumBackoff].map {
+            "\($0.components.seconds):\($0.components.attoseconds)"
+        }
+        let policy = ["client-policy", userAgent, String(maximumResponseBytes),
+                      String(retryPolicy.maximumAttempts)] + durations +
+                     ["read-policy", ttl, String(endpoint.readPolicy?.coalescing ?? false), String(tags.count)] + tags
+        let suffix = policy.map { "\($0.utf8.count):\($0)" }.joined()
+        return HTTPReadKey(identity: identity, representation: endpoint.cacheIdentity + suffix)
+    }
+
+    /// Applies conservative private-response freshness before cache insertion.
+    /// Requests opt in separately; no-store/no-cache and Vary:* always refuse reuse.
+    /// max-age and Expires/Date can shorten the requested TTL, while Age and elapsed
+    /// exchange time reduce remaining freshness. Malformed explicit cache directives
+    /// refuse insertion. This cache performs no conditional revalidation.
+    /// - Parameters:
+    ///   - requested: Positive endpoint freshness bound.
+    ///   - headers: Successful response metadata, matched case-insensitively.
+    ///   - elapsed: Nonnegative complete exchange time in the injected clock domain.
+    /// - Returns: Positive remaining TTL, or nil when retention is forbidden/stale.
+    private func cacheLifetime(requested: Duration, headers: [HTTPHeader], elapsed: Duration) -> Duration? {
+        let directives = headers.filter { $0.name.lowercased() == "cache-control" }
+            .flatMap { $0.value.split(separator: ",") }
+            .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
+        let names = directives.map {
+            ($0.split(separator: "=", maxSplits: 1).first.map(String.init) ?? "").trimmingCharacters(in: .whitespaces)
+        }
+        guard !names.contains("no-store"), !names.contains("no-cache"),
+              !headers.filter({ $0.name.lowercased() == "vary" }).flatMap({ $0.value.split(separator: ",") })
+                .contains(where: { $0.trimmingCharacters(in: .whitespaces) == "*" }) else { return nil }
+        var lifetime = requested
+        var hasMaximumAge = false
+        for (index, directive) in directives.enumerated() where names[index] == "max-age" {
+            let fields = directive.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
+            guard fields.count == 2 else { return nil }
+            let raw = fields[1].trimmingCharacters(in: .whitespaces)
+            let number = raw.hasPrefix("\"") && raw.hasSuffix("\"") && raw.count >= 2
+                ? String(raw.dropFirst().dropLast()) : raw
+            guard let seconds = UInt64(number), seconds <= 2_592_000 else { return nil }
+            lifetime = min(lifetime, .seconds(Int64(seconds)))
+            hasMaximumAge = true
+        }
+        if !hasMaximumAge, let expires = headers.first(where: { $0.name.lowercased() == "expires" })?.value {
+            guard let date = headers.first(where: { $0.name.lowercased() == "date" })?.value else { return nil }
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+            guard let expiryDate = formatter.date(from: expires), let serverDate = formatter.date(from: date) else { return nil }
+            let seconds = expiryDate.timeIntervalSince(serverDate)
+            guard seconds.isFinite, seconds > 0, seconds <= 2_592_000 else { return nil }
+            lifetime = min(lifetime, .seconds(seconds))
+        }
+        for age in headers.filter({ $0.name.lowercased() == "age" }) {
+            guard let seconds = UInt64(age.value), seconds <= 2_592_000 else { return nil }
+            lifetime = max(.zero, lifetime - .seconds(Int64(seconds)))
+        }
+        lifetime = max(.zero, lifetime - max(.zero, elapsed))
+        return lifetime > .zero ? lifetime : nil
+    }
+
+    /// Normalizes decoder errors so server text, request paths and credentials cannot leak.
+    /// - Parameters:
+    ///   - endpoint: Synchronous deterministic descriptor decoder.
+    ///   - data: Complete response bytes within the configured bound.
+    /// - Returns: Typed successful value.
+    /// - Throws: `DiscordError.transport(.invalidResponse)` for every decoding failure.
+    private func decode<Response: Sendable>(_ endpoint: Endpoint<Response>, data: Data) throws -> Response {
+        do { return try endpoint.decode(data) }
+        catch { throw DiscordError.transport(.invalidResponse) }
+    }
+}
+
+/// Attempt-local bounded wire result, never exposed through default diagnostics.
+private struct WireReply: Sendable {
+    let status: Int
+    let headers: [HTTPHeader]
+    let data: Data
+}
+
+/// Retains only whether a send may have started, allowing deadline races to preserve uncertainty.
+private actor HTTPSubmissionEvidence {
+    private var submitted = false
+    /// Records conservative possible submission immediately before awaiting the adapter.
+    func markSubmitted() { submitted = true }
+    /// Clears possible submission after an explicit complete 429 rejection.
+    func markRejected() { submitted = false }
+    /// Returns whether an attempt may have reached the network without known rejection.
+    /// - Returns: True after submission until a complete known rejection is recorded.
+    func wasSubmitted() -> Bool { submitted }
+}

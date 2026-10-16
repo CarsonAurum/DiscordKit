@@ -34,6 +34,8 @@ public enum MutationUncertainty: String, Sendable, Codable {
     case connectionLostAfterSubmission
     /// A deadline expired after the operation may have reached the server.
     case deadlineAfterSubmission
+    /// The server returned a 5xx response after a mutation may already have taken effect.
+    case serverErrorAfterSubmission
 }
 
 /// Safe, typed failures shared by DiscordKit surfaces.

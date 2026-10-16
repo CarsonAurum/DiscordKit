@@ -80,3 +80,20 @@ network adapters and local macOS evidence. It does not change discovery inventor
 operation statuses, close the historical semantic-review gate, or qualify unavailable
 hosts. Current adapter behavior, limits and outstanding platform gates are recorded
 in [Transport](../Transport.md); the Part 0 results above remain historical.
+
+## Part 3 HTTP and early Gateway update (2026-10-16)
+
+The historical counts above describe the Part 0 baseline. Current inventory keeps
+all18,137 discovered IDs, with three reviewed written-reference endpoint records:
+one supported Gateway discovery and two partial User/Application projections.
+Duplicates from preview specifications remain unsupported pending their independent
+semantic review; these are not unique-operation or full-platform parity counts.
+
+The root HTTP, read-reuse, model, rate-coordination and Gateway suites cover the
+initial runtime slice with virtual time and scripted peers. WebSocket loopback suites
+exercise real Foundation/NIO session-aware reconnect and peer codes. The REST-only
+example is independently built without running authenticated operations. See
+[HTTP policies](../HTTP.md), [Gateway contracts](../Gateway.md), and the
+[local load harness](../../Tools/DiscordKitLoadTests/README.md) for numeric budgets
+and measured limits. Full event/resource models, durable external coordinators,
+other-host sessions and sustained-capacity certification remain open gates.

@@ -1,4 +1,4 @@
-# Local transport measurements
+# Local runtime measurements
 
 This development-only Swift package exercises the implemented NIO HTTP adapter
 against an owned Python HTTP/1.1 loopback peer. It is separate from runtime
@@ -17,8 +17,9 @@ python3 Tools/DiscordKitLoadTests/scripts/record_baseline.py
 
 Python 3 must be on PATH. The source checkout supplies profiles and the peer
 script. The harness creates/reaps its peer, consumes every successful body to
-EOF and closes the transport before reporting. HTTP/Gateway/cache/soak scenarios
-return an explicit unsupported-scenario error until their runtime slices exist.
+EOF and closes the transport before reporting. HTTP and Gateway policy scenarios
+use finite offline scripts with no sockets or credentials. Standalone cache and
+soak scenarios return an explicit unsupported-scenario error.
 
 ## Version 1 workloads
 
@@ -124,3 +125,88 @@ portable diagnostic, increasing work from 10,000 to 100,000 exchanges left
 decimal-byte figures and the original isolation runs are preserved in
 `Baselines/deadline-allocation-regression.json`; they are diagnostics, not socket
 capacity results. Allocator RSS can stay elevated after live blocks are freed.
+
+## Offline HTTP policy measurements
+
+The HTTP scenario exercises the phase-3 execution pipeline with an entirely local
+scripted HTTP adapter: zero credentials, zero network requests and zero sockets.
+It measures policy overhead separately from the existing loopback transport
+measurements. Run all three logical populations in normal and tenfold-burst modes:
+
+```sh
+swift test --package-path Tools/DiscordKitLoadTests
+swift build -c release --package-path Tools/DiscordKitLoadTests
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario http --profile accounts-100
+python3 Tools/DiscordKitLoadTests/scripts/record_baseline.py --scenario http
+```
+
+The numeric HTTPProfiles are separate from transport profiles. Logical accounts
+still mean served end users. They allocate only 2/4/16 actual opaque credential
+partitions, each with one client, inside one process. No population-sized user
+array, distributed worker or Discord connection is created.
+
+| Served-user dimension | Actual identities | Logical requests | Normal / burst task cohort | Queue / in-flight caps | Queued bytes | Cache entries / payload bytes | Rate metadata cap |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 100 | 2 | 2,000 | 8 / 80 | 16 / 8 | 32 KiB | 16 / 32 KiB | 256 |
+| 10,000 | 4 | 10,000 | 16 / 160 | 32 / 16 | 64 KiB | 32 / 64 KiB | 512 |
+| 1,000,000 | 16 | 20,000 | 32 / 320 | 64 / 32 | 128 KiB | 128 / 256 KiB | 2,048 |
+
+The mix is 40% explicit 60-second TTL reads, 30% eligible coalesced read storms,
+10% hot-bucket reads, 10% independent reads and 10% reads rejected once with a
+429 before succeeding. Returned successes contain exactly 256 bytes. Artificial
+wire latency is 1 ms; hot buckets announce a 2 ms reset and rejected retries a
+1 ms delay. The synthetic initial global allowance is 1,000,000/s solely to
+isolate policy overhead; it is never a Discord quota or recommended setting.
+
+All profiles require normal successful p99 at most 100 ms and peak process RSS
+at most 128 MiB. Burst runs retain the same resource caps; refusals are expected
+and have no latency service-level gate. Reports retain the first 4,096 successful
+latencies, request savings, retry responses, per-identity success extrema and
+sampled queue/cache/metadata/active peaks. Configured caps and deterministic root
+tests establish hard bounds; sampling may miss a transient peak. Every run closes
+coalesced work, the coordinator and cached entries before reporting cleanup.
+These local measurements do not qualify Discord quota throughput, distributed
+fairness, simultaneous user connections or a 30-minute soak.
+
+The recorders execute one process at a time. Final HTTP and Gateway captures run
+serially after release compilation and validation finish, with all six HTTP runs
+followed by all six Gateway runs. These finite scripts measure bounded local
+policy and lifecycle work; sustained deployment capacity remains unqualified.
+
+The final release measurements below were recorded serially on 2026-10-16 using
+Apple Swift 6.4 on an Apple M3 Max (38,654,705,664 bytes RAM). The checked-in
+[HTTP environment](Baselines/http-environment.json) records the source revision
+basis and the uncommitted phase-3 working tree used for this run. Each JSON report
+in [Baselines](Baselines) includes raw counts, CPU time, latency quantiles for successful requests,
+configured budgets and sampled resource peaks.
+
+| Served-user dimension | Mode | Successful / refused requests | Wire exchanges | Avoided exchanges | Sampled p99 (ms) | CPU (s) | Peak RSS (MiB) |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 100 | Normal | 2,000 / 0 | 1,053 | 1,147 (57.4%) | 10.939 | 0.482 | 9.97 |
+| 100 | Burst | 1,235 / 765 | 166 | 1,095 (88.7%) | 30.515 | 0.242 | 12.34 |
+| 10,000 | Normal | 10,000 / 0 | 5,089 | 5,911 (59.1%) | 10.080 | 1.276 | 11.50 |
+| 10,000 | Burst | 6,645 / 3,355 | 978 | 5,816 (87.5%) | 56.618 | 1.310 | 14.48 |
+| 1,000,000 | Normal | 20,000 / 0 | 10,020 | 11,980 (59.9%) | 4.616 | 2.202 | 13.61 |
+| 1,000,000 | Burst | 14,386 / 5,614 | 2,889 | 11,979 (83.3%) | 83.184 | 3.262 | 17.45 |
+
+Avoided exchanges equal successful logical requests minus non-retry wire
+exchanges; percentages use successful logical requests as their denominator.
+Normal runs exercised exactly 200/1,000/2,000 explicit retry responses, and every
+identity completed its equal request share. All twelve final HTTP/Gateway captures
+passed their recorder gates. The six HTTP runs had zero unexpected failures,
+zero cancellation and zero retained active requests, queued requests, coalesced
+flights or cache entries after shutdown. Burst refusals preserve the configured
+resource caps and change the successful request mix, so their savings percentages
+describe admitted work rather than the entire offered workload.
+
+The separate Gateway scenario exercises finite local session scripts and owned
+shard groups without opening sockets or reading credentials:
+
+```sh
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario gateway --profile accounts-100
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario gateway --profile accounts-1000000 --burst
+python3 Tools/DiscordKitLoadTests/scripts/record_gateway_baseline.py
+```
+
+HTTP and Gateway scenarios reject transport-only portable/deadline/settling flags;
+all recorded control traffic and responses are script-produced.

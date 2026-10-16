@@ -231,17 +231,42 @@ private final class WebSocketTestHandler: ChannelInboundHandler {
     @Test(arguments: [WebSocketMessage.text(""), .text("snowflake:18446744073709551615 🐕"), .binary(Data()), .binary(Data([0, 128, 255]))])
     func roundTrip(_ message: WebSocketMessage) async throws {
         let peer = try await WebSocketTestPeer.open()
-        let transport = try NIOWebSocketTransport(configuration: NIOWebSocketConfiguration())
+        let transport: NIOWebSocketTransport
+        do { transport = try NIOWebSocketTransport(configuration: NIOWebSocketConfiguration()) }
+        catch { await peer.close(); Issue.record("WebSocket transport initialization failed"); throw error }
+        var phase = "upgrade"
         do {
             let connection = try await transport.connectWebSocket(peer.request(), context: context())
+            phase = "send"
             try await connection.send(message, context: context())
+            phase = "receive"
             #expect(try await connection.receive(context: context()) == message)
             await connection.close(); await connection.close()
             #expect(await transport.connectionCount() == 0)
             #expect(try await connection.receive(context: context()) == nil)
             await #expect(throws: TransportFailure.closed) { try await connection.send(.text("closed"), context: context()) }
-        } catch { await transport.close(); await peer.close(); throw error }
+        } catch { await transport.close(); await peer.close(); Issue.record("WebSocket round-trip failed during \(phase)"); throw error }
         await transport.close(); await transport.close(); await peer.close()
+    }
+
+    /// A fast bodyless GET peer can begin its 101 response as soon as it parses the request head.
+    /// Repeated real upgrades verify that the client's end is queued before flushing the head,
+    /// preventing NIO's writing-during-upgrade race and returning the sole admission slot each time.
+    /// - Throws: Any setup, upgrade or round-trip failure; transient connect failures are not retried.
+    @Test func fastPeerUpgradeAndAdmissionReuse() async throws {
+        let peer = try await WebSocketTestPeer.open()
+        let transport = try NIOWebSocketTransport(configuration: NIOWebSocketConfiguration(maximumConnections: 1))
+        do {
+            for ordinal in 0..<64 {
+                let connection = try await transport.connectWebSocket(peer.request(), context: context())
+                let message = WebSocketMessage.text("upgrade-\(ordinal)")
+                try await connection.send(message, context: context())
+                #expect(try await connection.receive(context: context()) == message)
+                await connection.close()
+                #expect(await transport.connectionCount() == 0)
+            }
+        } catch { await transport.close(); await peer.close(); throw error }
+        await transport.close(); await peer.close()
     }
 
     /// Reassembles UTF-8 split across fragments while ping/pong bypasses user reads,
@@ -377,6 +402,58 @@ private final class WebSocketTestHandler: ChannelInboundHandler {
             #expect(try await connection.receive(context: context()) == nil)
             await connection.close()
             #expect(await transport.connectionCount() == 0)
+        } catch { await transport.close(); await peer.close(); throw error }
+        await transport.close(); await peer.close()
+    }
+
+    /// Session-aware status survives receive cleanup and parent event-loop shutdown.
+    /// - Parameter code: Current Gateway fatal/new-session/resumable codes, transported without policy.
+    /// - Throws: Loopback setup, upgrade or unexpected I/O failure.
+    @Test(arguments: [4000,4001,4002,4003,4004,4005,4007,4008,4009,4010,4011,4012,4013,4014])
+    func sessionPeerCloseCode(_ code: Int) async throws {
+        let bytes = Data([UInt8(code >> 8), UInt8(code & 255)])
+        let peer = try await WebSocketTestPeer.open(.closePayload(bytes))
+        let transport = try NIOWebSocketTransport(configuration: NIOWebSocketConfiguration())
+        do {
+            let connection = try await transport.connectWebSocket(peer.request(), context: context())
+            let session = try #require(connection as? any WebSocketSessionConnection)
+            #expect(await session.peerCloseCode() == nil)
+            try await session.send(.text("start"), context: context())
+            #expect(try await session.receive(context: context()) == nil)
+            #expect(await session.peerCloseCode() == code)
+            await session.closeForReconnect()
+            #expect(await transport.connectionCount() == 0)
+            await transport.close()
+            #expect(await session.peerCloseCode() == code)
+            await session.closeForReconnect()
+        } catch { await transport.close(); await peer.close(); throw error }
+        await transport.close(); await peer.close()
+    }
+
+    /// Reconnect abort unblocks a pending receive and releases admission without inventing a peer status.
+    /// Duplicate-reader rejection is the synchronization barrier proving a native read is pending.
+    /// - Throws: Loopback setup, unexpected native receive failure or protocol error.
+    @Test func sessionReconnectAbort() async throws {
+        let peer = try await WebSocketTestPeer.open()
+        let transport = try NIOWebSocketTransport(configuration: NIOWebSocketConfiguration())
+        do {
+            let connection = try await transport.connectWebSocket(peer.request(), context: context())
+            let session = try #require(connection as? any WebSocketSessionConnection)
+            try await withThrowingTaskGroup(of: Int.self) { group throws in
+                for _ in 0..<2 {
+                    group.addTask {
+                        do { return try await session.receive(context: TransportContext(clock: ContinuousClock())) == nil ? 0 : 2 }
+                        catch TransportFailure.concurrentRead { return 1 }
+                    }
+                }
+                #expect(try await group.next() == 1)
+                await session.closeForReconnect()
+                #expect(try await group.next() == 0)
+            }
+            await session.closeForReconnect()
+            #expect(await session.peerCloseCode() == nil)
+            #expect(await transport.connectionCount() == 0)
+            await #expect(throws: TransportFailure.closed) { try await session.send(.text("late"), context: context()) }
         } catch { await transport.close(); await peer.close(); throw error }
         await transport.close(); await peer.close()
     }

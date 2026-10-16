@@ -24,6 +24,9 @@ let package = Package(
         .library(name: "DiscordNIOTransport", targets: ["DiscordNIOTransport"]),
         .library(name: "DiscordUnixPlatform", targets: ["DiscordUnixPlatform"]),
         .library(name: "DiscordApplePlatform", targets: ["DiscordApplePlatform"]),
+        .library(name: "DiscordModels", targets: ["DiscordModels"]),
+        .library(name: "DiscordHTTP", targets: ["DiscordHTTP"]),
+        .library(name: "DiscordGateway", targets: ["DiscordGateway"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.104.0"),
@@ -38,6 +41,9 @@ let package = Package(
         .target(name: "DiscordBits", swiftSettings: concurrencySettings),
         .target(name: "DiscordCore", dependencies: ["DiscordBits"], swiftSettings: concurrencySettings),
         .target(name: "DiscordTransport", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordModels", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordHTTP", dependencies: ["DiscordModels", "DiscordTransport"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordGateway", dependencies: ["DiscordCore", "DiscordModels", "DiscordTransport", "DiscordHTTP"], swiftSettings: concurrencySettings),
         .target(name: "DiscordFoundationTransport", dependencies: ["DiscordTransport"], swiftSettings: concurrencySettings),
         .target(
             name: "DiscordNIOTransport",
@@ -76,6 +82,9 @@ let package = Package(
         ),
         .testTarget(name: "DiscordBitsTests", dependencies: ["DiscordBits"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordCoreTests", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordModelsTests", dependencies: ["DiscordModels", "DiscordCore"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordHTTPTests", dependencies: ["DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordGatewayTests", dependencies: ["DiscordGateway", "DiscordHTTP", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(
             name: "DiscordTransportTests",
             dependencies: ["DiscordTransport", "DiscordTestSupport"],

@@ -28,7 +28,7 @@ def capture(command):
     return output.strip()
 
 
-def environment():
+def environment(scenario="transport"):
     """Record actual toolchain/hardware and the dirty working-tree revision basis."""
     values = {
         "recordedAtUTC": datetime.now(timezone.utc).isoformat(),
@@ -45,7 +45,22 @@ def environment():
         values["hardwareModel"] = capture(["/usr/sbin/sysctl", "-n", "hw.model"])
         values["processor"] = capture(["/usr/sbin/sysctl", "-n", "machdep.cpu.brand_string"])
         values["physicalMemoryBytes"] = int(capture(["/usr/sbin/sysctl", "-n", "hw.memsize"]))
+    if scenario == "http":
+        values["peer"] = "offline finite HTTP policy script; zero credentials and sockets; artificial 1 ms exchange latency"
+        values["measurementScope"] = "HTTP policy owners in one process; sampled queue/cache/metadata caps, request savings and CPU/RSS; no Discord quota or fleet/soak qualification"
     return values
+
+
+def validate_http(report, burst):
+    """Enforce local HTTP policy gates without converting the results into Discord capacity claims."""
+    if (report["failedRequests"] or report["cancelledRequests"] or report["activeAfterShutdown"]
+            or report["queuedAfterShutdown"] or report["flightsAfterShutdown"] or report["cacheEntriesAfterShutdown"]
+            or not report["sampledResourceBudgetsMet"] or not report["rssBudgetMet"]):
+        raise RuntimeError("HTTP policy workload exceeded resource, failure or cleanup gates")
+    if report["avoidedExchanges"] <= 0 or report["retryResponses"] <= 0 or report["minimumIdentitySuccesses"] <= 0:
+        raise RuntimeError("HTTP policy workload did not exercise reuse, retries or every identity")
+    if not burst and (report["refusedRequests"] or not report["targetP99Met"]):
+        raise RuntimeError("HTTP normal-workload targets were not met")
 
 
 def main():
@@ -53,16 +68,27 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--executable", type=Path, default=PACKAGE / ".build/release/DiscordKitLoadTests")
     parser.add_argument("--output-dir", type=Path, default=PACKAGE / "Baselines")
+    parser.add_argument("--scenario", choices=("transport", "http"), default="transport")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    context = environment()
+    context = environment(args.scenario)
     for accounts in (100, 10000, 1000000):
         for burst in (False, True):
             profile = f"accounts-{accounts}"
-            command = [str(args.executable), "--profile", profile, "--scenario", "transport", "--settle-seconds", "1"]
+            command = [str(args.executable), "--profile", profile, "--scenario", args.scenario]
+            if args.scenario == "transport":
+                command.extend(["--settle-seconds", "1"])
             if burst:
                 command.append("--burst")
             report = json.loads(capture(command))
+            suffix = "burst" if burst else "normal"
+            if args.scenario == "http":
+                validate_http(report, burst)
+                destination = args.output_dir / f"http-{profile}-{suffix}.json"
+                destination.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+                print(f"HTTP {profile} {suffix}: {report['successfulRequests']} successes, "
+                      f"{report['refusedRequests']} refusals, {report['avoidedExchanges']} avoided exchanges", flush=True)
+                continue
             measurement = report["measurement"]
             if report["peerConnections"]["peakConnections"] > measurement["configuredMaximumConnections"]:
                 raise RuntimeError(f"{profile}: physical peer socket cap exceeded")
@@ -75,13 +101,13 @@ def main():
             if not burst and (measurement["capacityRefusals"] or not measurement["latencyTargetMet"]
                               or not measurement["throughputTargetMet"]):
                 raise RuntimeError(f"{profile}: normal-workload targets were not met")
-            suffix = "burst" if burst else "normal"
             destination = args.output_dir / f"{profile}-{suffix}.json"
             destination.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
             print(f"{profile} {suffix}: {measurement['admittedSuccesses']} successes, "
                   f"{measurement['capacityRefusals']} refusals, "
                   f"{measurement['successesPerSecond']:.1f} successful exchanges/s", flush=True)
-    (args.output_dir / "environment.json").write_text(json.dumps(context, indent=2, sort_keys=True) + "\n")
+    environment_name = "http-environment.json" if args.scenario == "http" else "environment.json"
+    (args.output_dir / environment_name).write_text(json.dumps(context, indent=2, sort_keys=True) + "\n")
 
 
 if __name__ == "__main__":

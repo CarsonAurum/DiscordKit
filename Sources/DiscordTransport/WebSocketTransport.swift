@@ -45,3 +45,18 @@ public protocol WebSocketTransport: Sendable {
     func connectWebSocket<C: Clock>(_ request: HTTPRequest, context: TransportContext<C>) async throws
         -> any WebSocketConnection where C.Duration == Duration
 }
+
+/// Optional session-aware socket operations for resumable higher-level protocols.
+///
+/// Ordinary `WebSocketConnection` remains usable; consumers must conservatively
+/// discard resumable state after locally closing a connection without this capability.
+/// Implementations must retain only the numeric peer code, never unbounded close reasons.
+public protocol WebSocketSessionConnection: WebSocketConnection {
+    /// Aborts or closes with a code other than 1000/1001, preserving server-side sessions.
+    /// Cleanup is idempotent, usable under cancellation, and unblocks pending I/O.
+    func closeForReconnect() async
+
+    /// Reports the last observed peer close code without waiting for a future close.
+    /// - Returns: Numeric protocol code, or `nil` when unavailable/abruptly disconnected.
+    func peerCloseCode() async -> Int?
+}

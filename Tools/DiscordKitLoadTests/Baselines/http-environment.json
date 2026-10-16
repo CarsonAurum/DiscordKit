@@ -1,0 +1,14 @@
+{
+  "architecture": "arm64",
+  "buildConfiguration": "release",
+  "dirtySource": true,
+  "hardwareModel": "Mac15,10",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "measurementScope": "HTTP policy owners in one process; sampled queue/cache/metadata caps, request savings and CPU/RSS; no Discord quota or fleet/soak qualification",
+  "peer": "offline finite HTTP policy script; zero credentials and sockets; artificial 1 ms exchange latency",
+  "physicalMemoryBytes": 38654705664,
+  "processor": "Apple M3 Max",
+  "recordedAtUTC": "2026-10-16T06:01:50.845535+00:00",
+  "sourceCommitBasis": "a600a19ae3ade2420f70b7505332a9d75bb19166",
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0"
+}

@@ -1,6 +1,9 @@
 # Parity inventory and chronological history
 
-Baseline date: **2026-10-15**. DiscordKit has **zero implemented Discord operations**.
+Baseline date: **2026-10-15**; implementation update **2026-10-16**. The initial
+HTTP/Gateway slice has three reviewed endpoint definitions: current-user and
+current-application are partial typed projections; Gateway bot discovery is supported
+with deterministic evidence. See the [HTTP/Gateway history](changes/2026-10-16-http-gateway.md).
 Part 1 adds local values and transport contracts, recorded in the
 [foundation history](changes/2026-10-15-foundations.md). Part 2 adds independently
 adoptable network adapters and local evidence in the
@@ -39,7 +42,8 @@ mixed RPC/OAuth reference source is cataloged as unversioned rather than REST v1
 `approval_required`, `portal_only`, `unavailable_upstream`, `undocumented_protocol`,
 `unavailable_host`, or `not_applicable` for documentation/local values.
 
-All baseline discovery records are `unsupported`. `review: discovered` means
+Historical baseline discovery records were all `unsupported`; current support is
+recorded individually with evidence and append-only history. `review: discovered` means
 extraction found a source definition; it does not certify its auth, availability,
 permissions, scope or full schema. Broad source defaults identify the public
 surface; exact per-operation prerequisites require semantic review before implementation.

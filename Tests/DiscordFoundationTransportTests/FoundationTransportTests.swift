@@ -345,6 +345,62 @@ struct FoundationTransportTests {
         await peer.close()
     }
 
+    /// Numeric Gateway peer codes survive Foundation receive failure and local cleanup.
+    /// Reopening within the single-slot budget proves terminal input returned admission.
+    /// - Parameter code: A private close status requiring distinct higher-level reconnect policy.
+    /// - Throws: Loopback startup, upgrade, peer close transmission or unexpected receive errors.
+    @Test(arguments: [UInt16(4004),4007,4009,4014])
+    func webSocketSessionPeerCode(_ code: UInt16) async throws {
+        let peer = try FoundationLoopbackPeer(behavior: .webSocketEcho)
+        let url = try await peer.start()
+        let adapter = FoundationWebSocketTransport(configuration: try FoundationTransportConfiguration(maximumConcurrentOperations: 1))
+        let context = TransportContext(clock: ContinuousClock(), deadline: ContinuousClock().now.advanced(by: .seconds(5)))
+        do {
+            let connection = try await adapter.connectWebSocket(HTTPRequest(method: "GET", url: url), context: context)
+            let session = try #require(connection as? any WebSocketSessionConnection)
+            #expect(await session.peerCloseCode() == nil)
+            try await peer.sendWebSocketClose(code)
+            do { _ = try await session.receive(context: context) }
+            catch { #expect(error is FoundationTransportFailure) }
+            #expect(await session.peerCloseCode() == Int(code))
+            await session.closeForReconnect()
+            await session.close()
+            let replacement = try await adapter.connectWebSocket(HTTPRequest(method: "GET", url: url), context: context)
+            await replacement.close()
+            await adapter.close()
+            #expect(await session.peerCloseCode() == Int(code))
+        } catch { await adapter.close(); await peer.close(); throw error }
+        await adapter.close(); await peer.close()
+    }
+
+    /// Session-preserving closure is idempotent, rejects writes and releases the connection slot.
+    /// A virtual timer gate establishes that a receive is active before aborting its native task.
+    /// - Throws: Loopback setup or unexpected post-abort resource/admission errors.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func webSocketSessionReconnectAbort() async throws {
+        let peer = try FoundationLoopbackPeer(behavior: .webSocketEcho)
+        let url = try await peer.start()
+        let adapter = FoundationWebSocketTransport(configuration: try FoundationTransportConfiguration(maximumConcurrentOperations: 1))
+        do {
+            let context = TransportContext(clock: ContinuousClock())
+            let connection = try await adapter.connectWebSocket(HTTPRequest(method: "GET", url: url), context: context)
+            let session = try #require(connection as? any WebSocketSessionConnection)
+            let entered = TestBarrier()
+            let clock = ManualClock(onSleepScheduled: { entered.open() })
+            let pending = Task { try await session.receive(context: TransportContext(clock: clock, deadline: clock.now.advanced(by: .seconds(10)))) }
+            try await entered.wait()
+            await session.closeForReconnect()
+            do { #expect(try await pending.value == nil) }
+            catch { #expect(error is FoundationTransportFailure) }
+            await session.closeForReconnect()
+            await #expect(throws: TransportFailure.closed) { try await session.send(.text("late"), context: context) }
+            let replacement = try await adapter.connectWebSocket(HTTPRequest(method: "GET", url: url), context: context)
+            await replacement.close()
+            #expect(clock.pendingSleepCount == 0)
+        } catch { await adapter.close(); await peer.close(); throw error }
+        await adapter.close(); await peer.close()
+    }
+
     /// A second reader fails while cancellation interrupts an already admitted receive.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test

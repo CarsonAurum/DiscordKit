@@ -1,9 +1,11 @@
 # Architecture and API conventions
 
-Status: adopted design, updated 2026-10-15. `DiscordBits`, `DiscordCore` and
+Status: adopted design, updated 2026-10-16. `DiscordBits`, `DiscordCore` and
 `DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
 Core aliases. Part 2 adds independently injected Foundation/NIO adapters, Unix IPC
-and Apple lifecycle ownership; see [transport contracts](Transport.md). The complete
+and Apple lifecycle ownership. Part 3 adds [HTTP execution](HTTP.md), partial Models
+and the required [minimal Gateway lifecycle](Gateway.md). Discovery in Gateway
+depends on HTTP while the HTTP product remains independent. See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
 and tests. See [foundation contracts](Foundation.md) for current scope and limits.
@@ -26,6 +28,7 @@ flowchart TD
     DiscordTransport --> DiscordCore
     DiscordHTTP --> DiscordModels
     DiscordHTTP --> DiscordTransport
+    DiscordGateway --> DiscordHTTP
     DiscordGateway --> DiscordModels
     DiscordGateway --> DiscordTransport
     DiscordFoundationTransport --> DiscordTransport

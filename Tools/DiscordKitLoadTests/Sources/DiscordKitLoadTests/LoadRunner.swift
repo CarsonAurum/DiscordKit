@@ -25,6 +25,15 @@ struct LatencySummary: Codable, Equatable, Sendable {
                     p99Milliseconds: percentile(sorted, fraction: 0.99))
     }
 
+    /// Converts monotonic durations to milliseconds before deriving bounded-sample quantiles.
+    /// - Parameter durations: End-to-end elapsed durations; negative values are excluded by `summarize`.
+    /// - Returns: Nearest-rank millisecond quantiles, preserving subsecond and submillisecond precision.
+    static func summarizeDurations(_ durations: [Duration]) -> Self {
+        summarize(durations.map {
+            Double($0.components.seconds) * 1_000 + Double($0.components.attoseconds) / 1e15
+        })
+    }
+
     /// Reads one nearest-rank percentile from an already sorted nonnegative sample.
     /// - Parameters:
     ///   - sorted: Increasing valid measurements; empty is permitted.

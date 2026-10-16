@@ -58,7 +58,9 @@ struct LoadRunnerTests {
         for arguments in [["--settle-seconds"], ["--settle-seconds", "31"], ["--settle-seconds", "-1"], ["--profile"], ["--unknown"], ["--burst", "--burst"], ["--profile", ""]] {
             #expect(throws: LoadFailure.invalidArguments) { try LoadOptions(arguments: arguments) }
         }
-        for scenario in ["http", "gateway", "cache", "soak"] {
+        #expect(try LoadOptions(arguments: ["--scenario", "http"]).scenario == "http")
+        #expect(try LoadOptions(arguments: ["--scenario", "gateway"]).scenario == "gateway")
+        for scenario in ["cache", "soak"] {
             #expect(throws: LoadFailure.unsupportedScenario) { try LoadOptions(arguments: ["--scenario", scenario]) }
         }
     }
@@ -73,6 +75,12 @@ struct LoadRunnerTests {
         #expect(many.p50Milliseconds == 50)
         #expect(many.p95Milliseconds == 95)
         #expect(many.p99Milliseconds == 99)
+        let durations = LatencySummary.summarizeDurations([.seconds(-1), .zero, .microseconds(500), .milliseconds(1), .seconds(2)])
+        #expect(durations.sampleCount == 4)
+        #expect(durations.p50Milliseconds == 0.5)
+        #expect(durations.p95Milliseconds == 2_000)
+        #expect(durations.p99Milliseconds == 2_000)
+        #expect(LatencySummary.summarizeDurations([]).p99Milliseconds == nil)
     }
 
     /// A million-account dimension retains only two tasks and three successful latency samples.

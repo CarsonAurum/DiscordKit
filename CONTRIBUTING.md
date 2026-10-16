@@ -98,3 +98,9 @@ tools. A cross-compile result must not be described as a runtime qualification.
 Keep build outputs, IDE metadata, credentials and local smoke-test secrets out of
 commits. Include reviewed deterministic generated source and fixture provenance
 when those become part of an implemented feature.
+
+For HTTP/Gateway changes also build `swift build --package-path Examples/RESTOnly`
+and run the affected local-only load scenarios. Never run an example with real
+credentials as a repository check. Keep fixed API/Gateway versions, exact partial
+support records, authority-sharing contracts and shutdown ownership synchronized
+with [HTTP](Docs/HTTP.md) and [Gateway](Docs/Gateway.md).
