@@ -593,18 +593,51 @@ struct InventoryTests {
         #expect(throws: DecodingError.self) { try fixture.validate() }
     }
 
-    /// Allows forward-compatible extra JSON fields without losing validated known fields.
+    /// Rejects unknown metadata keys that would otherwise silently escape semantic review.
     ///
-    /// Unknown keys are intentionally ignored by Decodable. This does not make unknown
-    /// classification values valid or establish coverage of their upstream definitions.
-    @Test
-    func ignoresUnknownJSONFields() throws {
+    /// The versioned interchange schema disallows additional properties at document,
+    /// source and entry boundaries. Every branch is isolated so no earlier error can
+    /// conceal an unexamined metadata location.
+    /// - Parameter location: An inventory, source catalog, entry or source metadata object.
+    @Test(arguments: ["inventory", "catalog", "entry", "source"])
+    func rejectsUnknownJSONFields(location: String) throws {
         var fixture = InventoryFixture.valid()
-        fixture.inventory["future"] = ["enabled": true]
-        fixture.catalog["future"] = ["enabled": true]
-        fixture.mutateEntries { $0[0]["future"] = ["enabled": true] }
-        fixture.mutateSources { $0[0]["future"] = ["enabled": true] }
+        switch location {
+        case "inventory": fixture.inventory["future"] = ["enabled": true]
+        case "catalog": fixture.catalog["future"] = ["enabled": true]
+        case "entry": fixture.mutateEntries { $0[0]["future"] = ["enabled": true] }
+        default: fixture.mutateSources { $0[0]["future"] = ["enabled": true] }
+        }
+        #expect(throws: InventoryFailure.self) { try fixture.validate() }
+    }
+
+    /// Retains extractor-specific metadata without interpreting it as reviewed support.
+    ///
+    /// Nested unknown keys and values are allowed solely within the schema's opaque
+    /// `definition` object; supported classification still requires independent evidence.
+    @Test
+    func acceptsOpaqueSourceDefinition() throws {
+        var fixture = InventoryFixture.valid()
+        fixture.mutateEntries { $0[0]["definition"] = ["future": ["nested": [1, 2, 3]]] }
         #expect(try fixture.validate().entries == 1)
+    }
+
+    /// Rejects malformed source metadata values despite the entry decoder ignoring them.
+    ///
+    /// - Parameter invalid: A JSON value other than the schema-required object, including
+    ///   explicit null; omission remains valid and is covered by the baseline fixture.
+    @Test(arguments: ["null", "string", "number", "array"])
+    func rejectsNonobjectSourceDefinition(invalid: String) throws {
+        var fixture = InventoryFixture.valid()
+        let value: Any
+        switch invalid {
+        case "null": value = NSNull()
+        case "string": value = "unreviewed"
+        case "number": value = 1
+        default: value = [1, 2, 3]
+        }
+        fixture.mutateEntries { $0[0]["definition"] = value }
+        #expect(throws: InventoryFailure.self) { try fixture.validate() }
     }
 }
 

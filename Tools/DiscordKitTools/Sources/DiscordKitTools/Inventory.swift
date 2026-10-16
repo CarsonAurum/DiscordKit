@@ -32,7 +32,8 @@ struct InventoryEntry: Decodable, Sendable {
     ///
     /// An omitted `protocolVersion` inherits the source's classification. An explicit
     /// null or nonstring value is malformed rather than an inheritance request, matching
-    /// the interchange schema. Unknown keys retain normal `Decodable` compatibility.
+    /// the interchange schema. The enclosing validator rejects unknown metadata keys;
+    /// source-specific `definition` objects remain opaque until semantic review.
     /// This synchronous operation performs no I/O, suspension or shared-state mutation.
     ///
     /// - Parameter decoder: Decoder positioned at one inventory-entry object. Required
@@ -126,6 +127,22 @@ enum InventoryValidator {
     static func validate(inventoryData: Data, sourcesData: Data) throws -> InventoryReport {
         let inventory = try JSONDecoder().decode(Inventory.self, from: inventoryData)
         let catalog = try JSONDecoder().decode(SourceCatalog.self, from: sourcesData)
+        try validateKeys(
+            inventoryData,
+            rootKeys: ["schemaVersion", "verifiedOn", "protocolVersions", "entries"],
+            collectionKey: "entries",
+            itemKeys: [
+                "id", "kind", "name", "sourceID", "locator", "context", "status", "condition", "review",
+                "evidence", "protocolVersion", "definition",
+            ]
+        )
+        try validateKeys(
+            sourcesData, rootKeys: ["schemaVersion", "verifiedOn", "sources"], collectionKey: "sources",
+            itemKeys: [
+                "id", "url", "revision", "sha256", "verifiedOn", "announcementDate", "effectiveDate",
+                "protocolVersion", "authority", "accessPrerequisites", "platformAvailability", "entryIDs",
+            ]
+        )
         guard inventory.schemaVersion == 1, catalog.schemaVersion == 1,
               isDate(inventory.verifiedOn), inventory.verifiedOn == catalog.verifiedOn,
               inventory.protocolVersions == ["rest": "10", "gateway": "10", "voice": "8"],
@@ -189,6 +206,42 @@ enum InventoryValidator {
             entries: seen.count, sources: sourcesByID.count, supported: supported,
             pendingReview: pendingReview
         )
+    }
+
+    /// Rejects metadata keys absent from schema v1 while retaining opaque source definitions.
+    ///
+    /// Typed decoding runs first, so this pass only examines objects and arrays whose
+    /// required shapes already passed the decoder. The additional JSON traversal is
+    /// linear in the input size, performs no I/O and does not modify caller data.
+    /// `definition` is intentionally source-specific: its contents are unrestricted,
+    /// but a present value must be a JSON object, matching the committed schema.
+    ///
+    /// - Parameters:
+    ///   - data: JSON already decoded into its inventory or source-catalog type.
+    ///   - rootKeys: Complete permitted keys for the containing schema-v1 document.
+    ///   - collectionKey: Required array of entry or source objects within the document.
+    ///   - itemKeys: Complete permitted metadata keys for each collection object.
+    /// - Throws: `InventoryFailure` for unknown document or metadata keys, or a nonobject
+    ///   source definition; JSON serialization errors propagate if input is malformed.
+    private static func validateKeys(
+        _ data: Data, rootKeys: Set<String>, collectionKey: String, itemKeys: Set<String>
+    ) throws {
+        guard let document = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw InventoryFailure(description: "Inventory document must be a JSON object")
+        }
+        let rootExtras = Set(document.keys).subtracting(rootKeys).sorted()
+        guard rootExtras.isEmpty else {
+            throw InventoryFailure(description: "Unknown inventory metadata keys: \(rootExtras.joined(separator: ", "))")
+        }
+        for item in document[collectionKey] as? [[String: Any]] ?? [] {
+            let extras = Set(item.keys).subtracting(itemKeys).sorted()
+            guard extras.isEmpty else {
+                throw InventoryFailure(description: "Unknown \(collectionKey) metadata keys: \(extras.joined(separator: ", "))")
+            }
+            if let definition = item["definition"], !(definition is [String: Any]) {
+                throw InventoryFailure(description: "Source-specific definition must be a JSON object")
+            }
+        }
     }
 
     /// Validates a Gregorian calendar date using exactly `YYYY-MM-DD`, without normalization.

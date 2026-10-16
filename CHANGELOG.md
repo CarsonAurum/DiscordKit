@@ -8,6 +8,17 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — reviewed inventory and schema generation
+
+- Add versioned reviewed contracts with per-field semantics, pinned provenance,
+  stable symbol/evidence links and separate upstream/local support dates.
+- Generate the existing partial model/endpoint slice, reviewed documentation and
+  fixture/parity indexes deterministically, offline and outside consumer builds.
+- Add nonwriting inventory, generation and parity checks, explicit regeneration,
+  freshness checks and negative regression tests for incomplete contracts/evidence.
+- Derive parity counts from validated records while preserving partial projections,
+  unsupported discovery records and handwritten runtime policy.
+
 ### 2026-10-16 — HTTP execution and early sharded Gateway
 
 - Add independent Models/HTTP/Gateway products preserving Swift 6.4 concurrency settings.

@@ -8,6 +8,8 @@ network adapters, Unix IPC, Apple lifecycle ownership and a separate local load 
 Part 3 adds HTTP execution, partial User/Application models and the required early
 sharded Gateway lifecycle. Full REST/event catalogs remain later work. Part 0 records
 architecture/parity and separate probes.
+Part 4 adds offline reviewed-definition validation and deterministic generation for
+the existing model/endpoint slice; see `Docs/Generation.md`.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -23,7 +25,9 @@ architecture/parity and separate probes.
 - `Tools/DiscordKitLoadTests/`: independent local-only transport measurements and profiles.
 - `Tests/DiscordTestSupport/`: internal development support target, never a product.
 - `Docs/`: architecture, dependency/platform policy, feasibility findings and parity history.
-- `Tools/DiscordKitTools/`: separate inventory validator, discovery script and their tests.
+- `Tools/DiscordKitTools/`: separate discovery/review validators, offline generator,
+  parity checks, discovery script and their tests. Generated outputs are committed;
+  consumer builds never fetch documentation or regenerate source.
 - `Tests/Fixtures/PlatformProbe/` and `Tests/Fixtures/VoiceProbe/`: independently
   resolved feasibility packages; their dependencies are not production dependencies.
 
@@ -54,8 +58,15 @@ For Part 0 tooling or inventory changes, also run:
 ```sh
 swift test --package-path Tools/DiscordKitTools
 swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository .
+swift run --package-path Tools/DiscordKitTools DiscordKitTools generate --check --repository .
+swift run --package-path Tools/DiscordKitTools DiscordKitTools parity check --repository .
 python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'
 ```
+
+For reviewed-definition or generator changes, explicitly regenerate with
+`generate --write --repository .`, review the output diff, and run the checks above
+plus the root build/tests. Checks are nonwriting; use `--as-of YYYY-MM-DD` only for
+historical reproducibility, never as a substitute for current source verification.
 
 For feasibility fixture changes, run the affected separate package's `swift test
 --package-path` command documented in `Docs/Feasibility/`. Runtime probes need local

@@ -82,7 +82,7 @@ let package = Package(
         ),
         .testTarget(name: "DiscordBitsTests", dependencies: ["DiscordBits"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordCoreTests", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
-        .testTarget(name: "DiscordModelsTests", dependencies: ["DiscordModels", "DiscordCore"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordModelsTests", dependencies: ["DiscordModels", "DiscordCore"], exclude: ["Fixtures"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordHTTPTests", dependencies: ["DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordGatewayTests", dependencies: ["DiscordGateway", "DiscordHTTP", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(

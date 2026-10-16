@@ -187,6 +187,34 @@
       ],
       "details": "changes/2026-10-16-http-gateway.md",
       "remainingGates": "../HTTP.md"
+    },
+    {
+      "id": "2026-10-16-part-4-reviewed-generation",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {"rest": "10", "gateway": "10", "voice": "8"},
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "reviewed_schema_and_generation",
+      "previousBehavior": "Broad discovery membership validation with file-name implementation evidence; partial User/Application projections and HTTP descriptors handwritten.",
+      "currentBehavior": "Versioned reviewed per-field contracts, stable provenance/symbol/evidence links, deterministic offline model/endpoint/documentation/fixture/parity generation, nonwriting drift and semantic parity checks. Runtime operation support is unchanged.",
+      "affectedSymbols": ["User", "Application", "PremiumType", "DiscordEndpoints", "InventoryValidator", "ReviewedInventoryValidator", "Generator", "ParityValidator", "ToolCommand"],
+      "affectedPayloads": "Existing partial API v10 User/Application responses and current-user/current-application descriptors; Gateway discovery is mapped as handwritten. No new operation or full-model parity claim.",
+      "breakingChanges": [],
+      "migration": "Consumer calls remain compatible. Maintainers edit reviewed definitions, explicitly generate --write, review output and run root/tooling checks. Unknown inventory metadata keys now fail validation; opaque upstream definition metadata remains permitted.",
+      "sources": [
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/resources/user",
+        "https://docs.discord.com/developers/resources/application",
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/blob/ed014089afa986f2b532ae081c456a85de074d0c/README.md"
+      ],
+      "details": "changes/2026-10-16-reviewed-generation.md",
+      "remainingGates": "../Generation.md"
     }
   ]
 }

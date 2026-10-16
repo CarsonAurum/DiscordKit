@@ -1,23 +1,14 @@
 import Foundation
 
-// Only inventory validation exists in Part 0. Future roadmap commands must fail explicitly.
-let arguments = Array(CommandLine.arguments.dropFirst())
-guard arguments.count == 4,
-      Array(arguments.prefix(3)) == ["inventory", "validate", "--repository"] else {
-    FileHandle.standardError.write(Data("Usage: DiscordKitTools inventory validate --repository <directory>\n".utf8))
-    exit(64)
-}
+// The executable dispatches only implemented offline operations. Usage failures remain
+// distinct from failed validation, and generated writes require explicit --write intent.
 do {
-    let root = URL(fileURLWithPath: arguments[3], isDirectory: true)
-    let parity = root.appending(path: "Docs/Parity", directoryHint: .isDirectory)
-    let report = try InventoryValidator.validate(
-        inventoryData: Data(contentsOf: parity.appending(path: "inventory-v1.json")),
-        sourcesData: Data(contentsOf: parity.appending(path: "sources-2026-10-15.json"))
-    )
-    print("Valid inventory: \(report.entries) entries, \(report.sources) sources, 0 unclassified discovery IDs")
-    print("Implemented support: \(report.supported); pending semantic review: \(report.pendingReview)")
-    print("Structural validation does not certify platform qualification or full API parity.")
+    let command = try ToolCommand.parse(arguments: Array(CommandLine.arguments.dropFirst()))
+    print(try command.execute(), terminator: "")
+} catch let error as ToolUsageFailure {
+    FileHandle.standardError.write(Data((error.description + "\n").utf8))
+    exit(64)
 } catch {
-    FileHandle.standardError.write(Data("Inventory validation failed: \(error)\n".utf8))
+    FileHandle.standardError.write(Data("DiscordKitTools failed: \(error)\n".utf8))
     exit(1)
 }

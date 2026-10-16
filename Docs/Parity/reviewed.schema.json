@@ -1,0 +1,1639 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://discordkit.invalid/parity/reviewed-v1.schema.json",
+  "title": "DiscordKit reviewed parity contracts, version 1",
+  "description": "Finite reviewed definitions used by offline generation. Semantic validation additionally verifies exact discovery membership, source revision/hash pins, explicit freshness dates, reciprocal graph ownership, exhaustive included/omitted model field groups, support classification, safe real repository declarations and executable test or structured JSON fixture evidence. Upstream dates and local support dates remain separate; this document does not claim full API parity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "verifiedOn",
+    "maxAgeDays",
+    "sources",
+    "definitions",
+    "symbols",
+    "evidence"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "verifiedOn": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "maxAgeDays": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 366
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "definitions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/definition"
+      }
+    },
+    "symbols": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/symbol"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    }
+  },
+  "$defs": {
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fieldIDs",
+        "omittedUpstreamIDs",
+        "unknownFields"
+      ],
+      "properties": {
+        "fieldIDs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "omittedUpstreamIDs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true
+        },
+        "unknownFields": {
+          "enum": [
+            "preserveExact",
+            "ignore",
+            "discard"
+          ]
+        },
+        "codec": {
+          "enum": [
+            "boundedJSON",
+            "codable"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "request",
+            "response"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "codec"
+            ],
+            "properties": {
+              "codec": {
+                "const": "codable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "unknownFields": {
+                "enum": [
+                  "ignore",
+                  "discard"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "unknownFields": {
+                "const": "preserveExact"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "modelID",
+        "wireName",
+        "swiftName",
+        "valueType",
+        "optional",
+        "nullable",
+        "defaultBehavior",
+        "constraints",
+        "access",
+        "unknownValueBehavior"
+      ],
+      "properties": {
+        "modelID": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "wireName": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "swiftName": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z_0-9]*$"
+        },
+        "valueType": {
+          "enum": [
+            "UserID",
+            "ApplicationID",
+            "GuildID",
+            "String",
+            "Bool",
+            "Int",
+            "UInt64",
+            "[String]",
+            "RawValue<PremiumType>",
+            "JSONValue"
+          ]
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "nullable": {
+          "type": "boolean"
+        },
+        "defaultBehavior": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true
+        },
+        "access": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "unknownValueBehavior": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "enum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "variantIDs",
+        "unknownValueBehavior"
+      ],
+      "properties": {
+        "variantIDs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "unknownValueBehavior": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enumID",
+        "swiftName",
+        "rawValue"
+      ],
+      "properties": {
+        "enumID": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "swiftName": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z_0-9]*$"
+        },
+        "rawValue": {
+          "type": "integer"
+        }
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "swiftName",
+        "method",
+        "path",
+        "authentication",
+        "requestModelID",
+        "responseModelID",
+        "successStatuses",
+        "errorStatuses",
+        "rateLimit",
+        "retry",
+        "pagination"
+      ],
+      "properties": {
+        "swiftName": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z_0-9]*$"
+        },
+        "method": {
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^/[^?]*$"
+        },
+        "authentication": {
+          "enum": [
+            "bot",
+            "bearer",
+            "botOrBearer",
+            "none"
+          ]
+        },
+        "requestModelID": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "responseModelID": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "successStatuses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 200,
+            "maximum": 299
+          }
+        },
+        "errorStatuses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          }
+        },
+        "rateLimit": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "retry": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "pagination": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "manual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "behavior"
+      ],
+      "properties": {
+        "behavior": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "definition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "name",
+            "sourceID",
+            "upstreamIDs",
+            "status",
+            "supportSince",
+            "announcementDate",
+            "effectiveDate",
+            "symbolIDs",
+            "evidenceIDs",
+            "notes",
+            "model"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "kind": {
+              "const": "model"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceID": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "upstreamIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "status": {
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "deprecated",
+                "removed"
+              ]
+            },
+            "supportSince": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "announcementDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "effectiveDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "symbolIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "evidenceIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "model": {
+              "$ref": "#/$defs/model"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "partial"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "supportSince": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "symbolIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  },
+                  "evidenceIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "name",
+            "sourceID",
+            "upstreamIDs",
+            "status",
+            "supportSince",
+            "announcementDate",
+            "effectiveDate",
+            "symbolIDs",
+            "evidenceIDs",
+            "notes",
+            "field"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "kind": {
+              "const": "field"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceID": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "upstreamIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "status": {
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "deprecated",
+                "removed"
+              ]
+            },
+            "supportSince": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "announcementDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "effectiveDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "symbolIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "evidenceIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "field": {
+              "$ref": "#/$defs/field"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "partial"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "supportSince": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "symbolIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  },
+                  "evidenceIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "name",
+            "sourceID",
+            "upstreamIDs",
+            "status",
+            "supportSince",
+            "announcementDate",
+            "effectiveDate",
+            "symbolIDs",
+            "evidenceIDs",
+            "notes",
+            "enum"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "kind": {
+              "const": "enum"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceID": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "upstreamIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "status": {
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "deprecated",
+                "removed"
+              ]
+            },
+            "supportSince": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "announcementDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "effectiveDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "symbolIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "evidenceIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "enum": {
+              "$ref": "#/$defs/enum"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "partial"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "supportSince": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "symbolIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  },
+                  "evidenceIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "name",
+            "sourceID",
+            "upstreamIDs",
+            "status",
+            "supportSince",
+            "announcementDate",
+            "effectiveDate",
+            "symbolIDs",
+            "evidenceIDs",
+            "notes",
+            "variant"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "kind": {
+              "const": "variant"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceID": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "upstreamIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "status": {
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "deprecated",
+                "removed"
+              ]
+            },
+            "supportSince": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "announcementDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "effectiveDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "symbolIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "evidenceIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "variant": {
+              "$ref": "#/$defs/variant"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "partial"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "supportSince": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "symbolIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  },
+                  "evidenceIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "name",
+            "sourceID",
+            "upstreamIDs",
+            "status",
+            "supportSince",
+            "announcementDate",
+            "effectiveDate",
+            "symbolIDs",
+            "evidenceIDs",
+            "notes",
+            "endpoint"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "kind": {
+              "const": "endpoint"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceID": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "upstreamIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "status": {
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "deprecated",
+                "removed"
+              ]
+            },
+            "supportSince": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "announcementDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "effectiveDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "symbolIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "evidenceIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "endpoint": {
+              "$ref": "#/$defs/endpoint"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "partial"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "supportSince": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "symbolIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  },
+                  "evidenceIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "name",
+            "sourceID",
+            "upstreamIDs",
+            "status",
+            "supportSince",
+            "announcementDate",
+            "effectiveDate",
+            "symbolIDs",
+            "evidenceIDs",
+            "notes",
+            "manual"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "kind": {
+              "const": "manual"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceID": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "upstreamIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "status": {
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "deprecated",
+                "removed"
+              ]
+            },
+            "supportSince": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "announcementDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "effectiveDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "symbolIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "evidenceIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "manual": {
+              "$ref": "#/$defs/manual"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "partial"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "supportSince": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "symbolIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  },
+                  "evidenceIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "kind",
+            "name",
+            "sourceID",
+            "upstreamIDs",
+            "status",
+            "supportSince",
+            "announcementDate",
+            "effectiveDate",
+            "symbolIDs",
+            "evidenceIDs",
+            "notes",
+            "event"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "kind": {
+              "const": "event"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "sourceID": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "upstreamIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true,
+              "minItems": 1
+            },
+            "status": {
+              "enum": [
+                "supported",
+                "partial",
+                "unsupported",
+                "deprecated",
+                "removed"
+              ]
+            },
+            "supportSince": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "announcementDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "effectiveDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                {
+                  "const": "unknown"
+                }
+              ]
+            },
+            "symbolIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "evidenceIDs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "event": {
+              "$ref": "#/$defs/event"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "partial"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "supportSince": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                  },
+                  "symbolIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  },
+                  "evidenceIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "symbol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "declaration"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^Sources/.+\\.swift$"
+        },
+        "declaration": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "anchor"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "anchor": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "payloadModelID",
+        "variantIDs",
+        "behavior"
+      ],
+      "properties": {
+        "payloadModelID": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "variantIDs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "behavior": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    }
+  }
+}

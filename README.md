@@ -6,6 +6,10 @@ HTTP execution pipeline and a minimal sharded Gateway lifecycle. The initial typ
 REST slice retrieves the current user/application and Gateway discovery. Interactions,
 OAuth2 flows, voice, RPC, Activities, Social and commerce are not implemented.
 
+Part 4 adds reviewed inventory contracts and deterministic offline generation for
+the existing model/endpoint slice. Consumer builds compile committed output; see
+[reviewed generation and parity checks](Docs/Generation.md).
+
 The architecture baseline records platform capabilities, dependency policy, a
 versioned parity inventory and explicit feasibility blockers. Portable values are
 usable today; HTTP/WebSocket/UDP/ingress/Unix adapters are available with explicit
@@ -113,6 +117,7 @@ provisioning are not invented SDK endpoints. See Discord's
 - [Dependency policy and candidate releases](Docs/Dependencies.md)
 - [Platform support and feasibility](Docs/PlatformSupport.md)
 - [Parity inventory and evidence](Docs/Parity/README.md)
+- [Reviewed definitions and offline generation](Docs/Generation.md)
 - [Contribution requirements](CONTRIBUTING.md)
 - [Change history](CHANGELOG.md)
 

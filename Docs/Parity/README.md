@@ -4,6 +4,11 @@ Baseline date: **2026-10-15**; implementation update **2026-10-16**. The initial
 HTTP/Gateway slice has three reviewed endpoint definitions: current-user and
 current-application are partial typed projections; Gateway bot discovery is supported
 with deterministic evidence. See the [HTTP/Gateway history](changes/2026-10-16-http-gateway.md).
+Part 4 links the existing implementation to [reviewed contracts](reviewed-v1.json),
+per-field semantics, real symbols and test/fixture evidence. See the
+[generation guide](../Generation.md), [generated reviewed report](generated-reviewed.md)
+and [tooling history](changes/2026-10-16-reviewed-generation.md). Support remains at
+the existing partial User/Application and handwritten Gateway discovery slice.
 Part 1 adds local values and transport contracts, recorded in the
 [foundation history](changes/2026-10-15-foundations.md). Part 2 adds independently
 adoptable network adapters and local evidence in the
@@ -20,6 +25,11 @@ measurable; discovery records and unavailable-capability stubs do not count as s
   date, authority, protocol version, prerequisites and exact discovered membership.
 - `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
 - `history.json` is append-only support history; `changes/` contains human-readable entries.
+- `reviewed-v1.json` and `reviewed.schema.json` describe the finite generation seed,
+  source pins, semantic overrides, stable references, symbols and evidence. The discovery
+  schema remains version 1; reviewed contracts are a separately versioned document.
+- `generated-reviewed.md` derives reviewed counts from generator inputs after validation.
+  `parity check` also reports discovery kind/status counts and checks support mappings.
 - `coverage.md` records actual tests and completion gates, including work that cannot
   be qualified on this host. `../Feasibility/method-contracts.json` maps SDK operations
   individually to public protocols, local work or named missing-contract blockers.
@@ -60,8 +70,9 @@ Before changing support, review the authoritative contract, classify exact acces
 requirements and platform availability, link symbols and deterministic test evidence,
 and append a history entry with previous/current behavior, official links, upstream
 announcement/effective dates, local support date/release/commit, limitations and migration.
-`supported`/`partial` require review and nonempty evidence. The validator checks their
-presence, not whether a test establishes behavior: semantic review remains necessary.
+`supported`/`partial` require review and nonempty evidence. The reviewed validator
+also checks real source declarations, named test functions and structured fixture cases.
+Existence does not establish that a test proves behavior: semantic review remains necessary.
 Absent a local release or commit, record `unknown` until it exists.
 
 ## Source precedence and reproducibility
@@ -114,14 +125,28 @@ property; it is not a full-parity or exhaustive semantic-discovery claim.
 swift test --package-path Tools/DiscordKitTools
 python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'
 swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository .
+swift run --package-path Tools/DiscordKitTools DiscordKitTools generate --check --repository .
+swift run --package-path Tools/DiscordKitTools DiscordKitTools parity check --repository .
 ```
 
-The offline validator checks schema version, protocol baseline, real Gregorian dates,
+The offline discovery validator checks schema version, protocol baseline, real Gregorian dates,
 provenance metadata, allowed classifications, unique IDs, source references, exact
 discovered membership and evidence/review requirements. Errors exit nonzero; the command
 does not modify files. The JSON Schema is an interchange contract; the dependency-free
 Swift validator implements the named semantic checks rather than a general JSON Schema
-engine. Unknown JSON keys are ignored by Swift decoding and must be reviewed via the schema.
+engine. Unknown metadata keys are rejected at inventory/catalog/entry/source boundaries;
+the intentionally opaque upstream `definition` object retains source-specific metadata.
+The separately versioned reviewed schema rejects unknown keys recursively. Reviewed
+checks add freshness, pinned revision/hash agreement, cross-record contracts, source
+symbols and executable/fixture evidence, including partial-model omissions. Generation
+checks compare committed output byte for byte without writing or accessing the network.
 
-Generation, full parity checks, documentation audits and dependency-audit CLI commands
-from later roadmap parts are not implemented. Unknown commands fail with usage status 64.
+Counts printed by `parity check` derive from validated records, with discovery and
+reviewed totals kept separate. These are not unique-operation counts or a full-parity
+claim. `--as-of YYYY-MM-DD` reproduces an explicitly dated audit; default validation
+uses the current UTC day and rejects stale verification. See the generation guide
+for explicit regeneration and source review requirements.
+
+Full-catalog implementation, documentation audits and dependency-audit CLI commands
+remain future work. Unknown commands fail with usage status 64; validation failures
+exit 1. `generate` requires an explicit `--check` or `--write` flag.

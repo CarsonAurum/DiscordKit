@@ -97,3 +97,32 @@ example is independently built without running authenticated operations. See
 [local load harness](../../Tools/DiscordKitLoadTests/README.md) for numeric budgets
 and measured limits. Full event/resource models, durable external coordinators,
 other-host sessions and sustained-capacity certification remain open gates.
+
+## Part 4 reviewed generation update (2026-10-16)
+
+The [reviewed inventory](reviewed-v1.json) adds a finite semantic generation seed
+without promoting unsupported discovery records. Current reviewed counts derive
+from the [generated report](generated-reviewed.md); the nonwriting `parity check`
+command derives both discovery and reviewed kind/status counts after validation.
+The Part 0 numbers above remain historical, not manually maintained current totals.
+
+The tooling suites cover source pinning, verification-age boundaries, per-field
+contracts, reciprocal references, missing/unclassified records, orphan declarations,
+real test/fixture evidence, symlink containment, deterministic rendering, output drift
+and explicit regeneration. Generated runtime projections retain bounded JSON and
+presence semantics and are tested through the root model/HTTP suites. Evidence-name
+existence and passing generation do not replace semantic assertion review.
+
+Consumer builds compile committed output without fetching or generating. Full
+catalog parity, unavailable-host qualification and sustained-capacity gates remain
+open. See the [dated tooling history](changes/2026-10-16-reviewed-generation.md) and
+[generation guide](../Generation.md) for contracts and reproducible commands.
+
+Local verification passed: root build and 300 Swift test methods; 87 tool test
+methods (including compiled Codable request/response templates); 10 discovery
+Python tests; REST-only example build; 18 load Swift tests and eight load Python
+tests. Offline HTTP normal/burst smoke runs met configured resource/latency/RSS
+checks and retained no owned work after shutdown. These checks did not use Discord
+credentials or live Discord requests. Inventory validation, byte-identical generation
+and parity checks passed for the committed records; JSON syntax, relative links and
+the complete diff were reviewed.
