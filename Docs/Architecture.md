@@ -7,7 +7,9 @@ and Apple lifecycle ownership. Part 3 adds [HTTP execution](HTTP.md), partial Mo
 and the required [minimal Gateway lifecycle](Gateway.md). Discovery in Gateway
 depends on HTTP while the HTTP product remains independent. Part 4 adds separate
 [reviewed generation tooling](Generation.md), with committed outputs and no consumer
-build-time generator or network access. See [transport contracts](Transport.md). The complete
+build-time generator or network access. Part 5A adds the independently adopted
+[message/poll REST catalog](RESTCatalog.md), handwritten semantic request/response
+contracts, uploads and bounded operation helpers within Models/HTTP. See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
 and tests. See [foundation contracts](Foundation.md) for current scope and limits.

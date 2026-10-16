@@ -152,27 +152,40 @@ import Testing
     }
 
     /// A complete rejected mutation carries no remaining send uncertainty while its retry is queued.
+    /// The transport-owned rejection barrier first proves that the initial admission reached its 429
+    /// response. Only the subsequent queued admission may trigger cancellation; observing a queue
+    /// alone could instead match initial admission and cancel before the first transport execution.
+    /// Virtual time stays fixed, preventing the queued retry from sending before cancellation.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func cancellationAfterExplicitRejectionIsOrdinaryCancellation() async throws {
         let clock = ManualClock()
         let coordinator = RateLimitCoordinator(clock: clock)
+        let rejected = TestBarrier()
         let transport = try ScriptedHTTPTransport(steps: [{ _ in
-            HTTPResponse(status: 429, headers: [.init(name: "Retry-After", value: "2")])
+            rejected.open()
+            return HTTPResponse(status: 429, headers: [.init(name: "Retry-After", value: "2")])
         }])
         let client = RESTClient(credential: .none, identity: .init(), transport: transport,
                                 coordinator: coordinator, clock: clock)
         let endpoint = try Endpoint(method: "POST", path: ["rejected"], authentication: .none, decode: { $0 })
         let task = Task { try await client.execute(endpoint) }
         defer { task.cancel() }
+        try await rejected.wait()
+        #expect(await transport.executionCount == 1)
         var queued = false
         for _ in 0..<10_000 {
-            if await coordinator.snapshot().queuedCount == 1 { queued = true; break }
+            let snapshot = await coordinator.snapshot()
+            if snapshot.queuedCount == 1 && snapshot.activeCount == 0 && snapshot.orderedOperationsCount == 1 {
+                queued = true; break
+            }
             await Task.yield()
         }
         try #require(queued)
         task.cancel()
         await #expect(throws: CancellationError.self) { _ = try await task.value }
         #expect(await transport.executionCount == 1)
+        #expect(await coordinator.snapshot().queuedCount == 0)
+        #expect(await coordinator.snapshot().queuedBytes == 0)
         #expect(await coordinator.snapshot().activeCount == 0)
         #expect(await coordinator.snapshot().orderedOperationsCount == 0)
         #expect(clock.pendingSleepCount == 0)

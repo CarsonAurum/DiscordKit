@@ -10,6 +10,9 @@ sharded Gateway lifecycle. Full REST/event catalogs remain later work. Part 0 re
 architecture/parity and separate probes.
 Part 4 adds offline reviewed-definition validation and deterministic generation for
 the existing model/endpoint slice; see `Docs/Generation.md`.
+Part 5A adds typed message/poll REST operations, components, validated payloads,
+bounded uploads and explicit continuation/bulk helpers; see `Docs/RESTCatalog.md`.
+Part 5B–5J and other resource-family completion remain pending.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

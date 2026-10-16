@@ -215,6 +215,49 @@
       ],
       "details": "changes/2026-10-16-reviewed-generation.md",
       "remainingGates": "../Generation.md"
+    },
+    {
+      "id": "2026-10-16-part-5a-messages-polls",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "message_poll_rest_implementation",
+      "previousBehavior": "Only partial current-user/current-application retrieval and Gateway discovery had typed descriptors.",
+      "currentBehavior": "Typed descriptors for all message/poll routes, request/response models, component validation, bounded streaming uploads, finite search/pagination and explicit bulk deletion. Related-family projections and batches5B-5J remain partial/pending.",
+      "affectedSymbols": [
+        "Message",
+        "Poll",
+        "MessageCreate",
+        "MessageEdit",
+        "MessageComponent",
+        "MessageEndpoints",
+        "PollEndpoints",
+        "MessageOperations",
+        "BulkMessageDeletePlan",
+        "MessageUpload",
+        "Endpoint"
+      ],
+      "affectedPayloads": "API v10 messages, polls, components, search indexing/results, pins, reactions and multipart attachments.",
+      "breakingChanges": [],
+      "migration": "New opt-in Models/HTTP APIs; migrate deprecated pin descriptors to current paginated routes. Retain immutable flags and all desired attachments on edits.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/message",
+        "https://docs.discord.com/developers/resources/poll",
+        "https://docs.discord.com/developers/components/reference",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-16-messages-polls.md",
+      "remainingGates": "../RESTCatalog.md"
     }
   ]
 }

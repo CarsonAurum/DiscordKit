@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "sources": [
+    {
+      "name": "message",
+      "url": "https://docs.discord.com/developers/resources/message.md",
+      "sha256": "d22addd4022d1e93f0e3c7d2fbf7d701a00b8f3dabfceec5a000f4e63ff30872",
+      "bytes": 77363,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification; independent of original discovery revision/hash. Full copyrighted source is not redistributed."
+    },
+    {
+      "name": "poll",
+      "url": "https://docs.discord.com/developers/resources/poll.md",
+      "sha256": "1cba2b39eb12ca9c665ecd7fdc63f52171395a8c5a4a6fc894e1feeaabb1fe60",
+      "bytes": 8208,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification; independent of original discovery revision/hash. Full copyrighted source is not redistributed."
+    },
+    {
+      "name": "components",
+      "url": "https://docs.discord.com/developers/components/reference.md",
+      "sha256": "5ef3c56131881ad3dab3cdae9e8b28f03362cdf6528ef1adc0b60b2e99293013",
+      "bytes": 111348,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification; independent of original discovery revision/hash. Full copyrighted source is not redistributed."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification; independent of original discovery revision/hash. Full copyrighted source is not redistributed."
+    },
+    {
+      "name": "changelog",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "db076efcb239c2cc70797f458bb315a32ad4e593904c7a5a157fe7d0825ae6cf",
+      "bytes": 307818,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification; independent of original discovery revision/hash. Full copyrighted source is not redistributed."
+    }
+  ]
+}

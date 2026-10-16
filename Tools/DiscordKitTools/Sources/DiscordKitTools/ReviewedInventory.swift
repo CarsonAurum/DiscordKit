@@ -113,6 +113,37 @@ struct ReviewedEndpoint: Codable, Equatable, Sendable {
 /// An intentionally handwritten implementation mapped to reviewed discovery and test evidence.
 struct ReviewedManual: Codable, Equatable, Sendable {
     let behavior: String
+    let fields: [ReviewedManualField]?
+
+    /// Records handwritten behavior and optional semantic field contracts without generating code.
+    /// - Parameters:
+    ///   - behavior: Nonempty implementation description, validated during the semantic audit.
+    ///   - fields: Explicit field contracts, or nil for existing behavior-only records. A present
+    ///     array must be nonempty and fully linked to its parent's source, symbols and upstream IDs.
+    /// No source rendering or declaration inference occurs; nil is omitted by synthesized encoding.
+    init(behavior: String, fields: [ReviewedManualField]? = nil) {
+        self.behavior = behavior; self.fields = fields
+    }
+}
+
+/// A non-generated handwritten field contract with explicit wire semantics and declaration provenance.
+///
+/// Unlike generated `ReviewedField` types, descriptive `valueType` metadata can name recursive,
+/// request-only or semantic Swift types. It is never interpolated into generated Swift source.
+/// Parent references constrain discovery and symbol membership; existing source audits still
+/// require every referenced declaration to exist in a safely contained production Swift file.
+struct ReviewedManualField: Codable, Equatable, Sendable {
+    let wireName: String
+    let swiftName: String
+    let valueType: String
+    let optional: Bool
+    let nullable: Bool
+    let defaultBehavior: String
+    let constraints: [String]
+    let access: String
+    let unknownValueBehavior: String
+    let upstreamIDs: [String]
+    let symbolID: String
 }
 
 /// An exact declaration line in a real repository Swift source file, addressed by stable ID.
@@ -154,7 +185,7 @@ enum ReviewedInventoryValidator {
     /// Decodes the closed reviewed schema without reading files or consulting a clock.
     ///
     /// Unknown keys are rejected at every object boundary, including kind-specific metadata;
-    /// recognized optional codec/direction keys may be omitted but may never be JSON null.
+    /// recognized optional codec/direction/manual-field keys may be omitted but may never be JSON null.
     /// This operation performs synchronous work proportional to input size, leaves input data
     /// unchanged and has no suspension points, cancellation checks or shared mutable state.
     /// - Parameter reviewedData: UTF-8 reviewed schema-v1 JSON. Empty data is invalid.
@@ -359,7 +390,31 @@ enum ReviewedInventoryValidator {
             try unique(endpoint.errorStatuses.map(String.init), label: "error statuses for \(value.id)")
             try require(nonempty(endpoint.rateLimit) && nonempty(endpoint.retry) && nonempty(endpoint.pagination), "Incomplete endpoint policy: \(value.id)")
         }
-        if let manual = value.manual { try require(nonempty(manual.behavior), "Missing handwritten behavior: \(value.id)") }
+        if let manual = value.manual {
+            try require(nonempty(manual.behavior), "Missing handwritten behavior: \(value.id)")
+            if let fields = manual.fields {
+                try require(!fields.isEmpty, "Empty handwritten field contracts: \(value.id)")
+                try unique(fields.map(\.wireName), label: "handwritten wire field names for \(value.id)")
+                try unique(fields.map(\.swiftName), label: "handwritten Swift field names for \(value.id)")
+                for field in fields {
+                    try require(identifier(field.swiftName) && safeMetadata(field.wireName)
+                                && safeMetadata(field.valueType) && safeMetadata(field.defaultBehavior)
+                                && safeMetadata(field.access) && safeMetadata(field.unknownValueBehavior)
+                                && field.constraints.allSatisfy(safeMetadata),
+                                "Incomplete or unsafe handwritten field contract: \(value.id)")
+                    try unique(field.constraints, label: "handwritten constraints for \(value.id):\(field.swiftName)")
+                    try require(value.symbolIDs.contains(field.symbolID),
+                                "Unlinked handwritten field symbol: \(value.id):\(field.swiftName)")
+                    try unique(field.upstreamIDs, label: "handwritten field upstream references for \(value.id):\(field.swiftName)")
+                    try require(!field.upstreamIDs.isEmpty, "Missing handwritten field upstream reference: \(value.id):\(field.swiftName)")
+                    for id in field.upstreamIDs {
+                        try require(value.upstreamIDs.contains(id) && upstream[id]?.kind == "field"
+                                    && upstream[id]?.sourceID == value.sourceID,
+                                    "Unresolved handwritten field upstream reference: \(value.id):\(field.swiftName)")
+                    }
+                }
+            }
+        }
         if value.event != nil { try ReviewedEventValidator.validate(value, definitions: definitions, upstream: upstream) }
     }
 
@@ -391,7 +446,14 @@ enum ReviewedInventoryValidator {
             guard let raw = definition as? [String: Any], let kind = raw["kind"] as? String,
                   let keys = contracts[kind] else { throw failure("Unclassified definition kind") }
             let item = try object(raw, required: common.union([kind]))
-            _ = try object(item[kind]!, required: keys, optional: kind == "model" ? ["codec", "direction"] : [])
+            let optional: Set<String> = kind == "model" ? ["codec", "direction"] : kind == "manual" ? ["fields"] : []
+            let metadata = try object(item[kind]!, required: keys, optional: optional)
+            if kind == "manual", let fields = metadata["fields"] {
+                for field in try array(fields) {
+                    _ = try object(field, required: ["wireName", "swiftName", "valueType", "optional", "nullable",
+                        "defaultBehavior", "constraints", "access", "unknownValueBehavior", "upstreamIDs", "symbolID"])
+                }
+            }
         }
     }
 
@@ -524,6 +586,17 @@ enum ReviewedInventoryValidator {
     /// - Returns: Whether at least one nonwhitespace character exists.
     private static func nonempty(_ text: String) -> Bool {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    /// Accepts nonempty single-line descriptive metadata without treating it as Swift source.
+    /// - Parameter text: A wire name, semantic type or field policy; generics, punctuation and spaces
+    ///   are permitted because these values are never emitted as executable declarations.
+    /// - Returns: False for blank text, control scalars or Unicode line/paragraph separators;
+    ///   true otherwise. No normalization, interpolation or file access occurs.
+    private static func safeMetadata(_ text: String) -> Bool {
+        nonempty(text) && !text.unicodeScalars.contains {
+            [.control, .lineSeparator, .paragraphSeparator].contains($0.properties.generalCategory)
+        }
     }
 
     /// Checks the deliberately narrow Swift identifier vocabulary used by generated names.

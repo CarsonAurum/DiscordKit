@@ -35,6 +35,654 @@ Status: supported. Support since: 2026-10-16. Source: developers/resources/user.
 
 Evidence: evidence.user-projection.
 
+## MessageEndpoints.bulkDelete
+
+API v10 POST /channels/{channel.id}/messages/bulk-delete; handwritten MessageEndpoints.bulkDelete, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.create
+
+API v10 POST /channels/{channel.id}/messages; handwritten MessageEndpoints.create, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.createReaction
+
+API v10 PUT /channels/{channel.id}/messages/{message.id}/reactions/{emoji.id}/@me; handwritten MessageEndpoints.createReaction, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.crosspost
+
+API v10 POST /channels/{channel.id}/messages/{message.id}/crosspost; handwritten MessageEndpoints.crosspost, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.delete
+
+API v10 DELETE /channels/{channel.id}/messages/{message.id}; handwritten MessageEndpoints.delete, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.deleteAllReactions
+
+API v10 DELETE /channels/{channel.id}/messages/{message.id}/reactions; handwritten MessageEndpoints.deleteAllReactions, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.deleteEmojiReactions
+
+API v10 DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji.id}; handwritten MessageEndpoints.deleteEmojiReactions, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.deleteOwnReaction
+
+API v10 DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji.id}/@me; handwritten MessageEndpoints.deleteOwnReaction, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.deleteUserReaction
+
+API v10 DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji.id}/{user.id}; handwritten MessageEndpoints.deleteUserReaction, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.edit
+
+API v10 PATCH /channels/{channel.id}/messages/{message.id}; handwritten MessageEndpoints.edit, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.get
+
+API v10 GET /channels/{channel.id}/messages/{message.id}; handwritten MessageEndpoints.get, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.history
+
+API v10 GET /channels/{channel.id}/messages; handwritten MessageEndpoints.history, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.legacyPin
+
+API v10 PUT /channels/{channel.id}/pins/{message.id}; handwritten MessageEndpoints.legacyPin, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Callable legacy implementation with deprecation annotation; migrate to current paginated pin routes. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: deprecated. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: 2025-06-25; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.legacyPins
+
+API v10 GET /channels/{channel.id}/pins; handwritten MessageEndpoints.legacyPins, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Callable legacy implementation with deprecation annotation; migrate to current paginated pin routes. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: deprecated. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: 2025-06-25; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.legacyUnpin
+
+API v10 DELETE /channels/{channel.id}/pins/{message.id}; handwritten MessageEndpoints.legacyUnpin, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Callable legacy implementation with deprecation annotation; migrate to current paginated pin routes. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: deprecated. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: 2025-06-25; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.pin
+
+API v10 PUT /channels/{channel.id}/messages/pins/{message.id}; handwritten MessageEndpoints.pin, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: 2025-06-25; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.pins
+
+API v10 GET /channels/{channel.id}/messages/pins; handwritten MessageEndpoints.pins, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: 2025-06-25; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.reactions
+
+API v10 GET /channels/{channel.id}/messages/{message.id}/reactions/{emoji.id}; handwritten MessageEndpoints.reactions, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.search
+
+API v10 GET /guilds/{guild.id}/messages/search; handwritten MessageEndpoints.search, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: 2026-03-19; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## MessageEndpoints.unpin
+
+API v10 DELETE /channels/{channel.id}/messages/pins/{message.id}; handwritten MessageEndpoints.unpin, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: 2025-06-25; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## PollEndpoints.end
+
+API v10 POST /channels/{channel.id}/polls/{message.id}/expire; handwritten PollEndpoints.end, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## PollEndpoints.voters
+
+API v10 GET /channels/{channel.id}/polls/{message.id}/answers/{answer_id}; handwritten PollEndpoints.voters, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. The operation and message-owned fields are typed; referenced User/Application/Channel/Sticker/interaction families retain explicit partial projections until their independent batches. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.catalog.cancelledBeforeSend, evidence.5a.catalog.failures, evidence.5a.catalog.success.
+
+## ComponentType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/components/reference. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.ComponentType.
+
+## MessageActivityType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageActivityType.
+
+## MessageAttachmentFlags
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown. IS_REMIX remains available as a deprecated compatibility bit; the API preserves its original value without recommending new use.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageAttachmentFlags.
+
+## MessageBaseTheme
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageBaseTheme.
+
+## MessageCreateFlags
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageCreateFlags.
+
+## MessageEditFlags
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageEditFlags.
+
+## MessageEmbedFlags
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageEmbedFlags.
+
+## MessageEmbedMediaFlags
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageEmbedMediaFlags.
+
+## MessageEmbedType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageEmbedType.
+
+## MessageFlags
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageFlags.
+
+## MessageMentionType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageMentionType.
+
+## MessageReferenceType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageReferenceType.
+
+## MessageStickerFormatType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/sticker. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageStickerFormatType.
+
+## MessageType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.MessageType.
+
+## PollLayoutType
+
+API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified and locally added 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.enum.PollLayoutType.
+
+## ComponentDefaultValue
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/components/reference. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.ComponentDefaultValue.1, evidence.5a.model.ComponentDefaultValue.2.
+
+## ComponentOption
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/components/reference. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.ComponentOption.1, evidence.5a.model.ComponentOption.2.
+
+## MediaGalleryItem
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/components/reference. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MediaGalleryItem.1, evidence.5a.model.MediaGalleryItem.2.
+
+## Message
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.Message.1, evidence.5a.model.Message.2.
+
+## MessageActivity
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageActivity.1, evidence.5a.model.MessageActivity.2.
+
+## MessageAllowedMentions
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageAllowedMentions.1, evidence.5a.model.MessageAllowedMentions.2.
+
+## MessageAttachment
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageAttachment.1, evidence.5a.model.MessageAttachment.2.
+
+## MessageAttachmentRequest
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageAttachmentRequest.1, evidence.5a.model.MessageAttachmentRequest.2.
+
+## MessageAuthor
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown. Fields verified in current implementation but absent from the corresponding pinned discovery table are not assigned synthetic discovery IDs. Their explicit nonlinked contracts follow in behavior; this limitation remains partial.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/user. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageAuthor.1, evidence.5a.model.MessageAuthor.2.
+
+## MessageCall
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageCall.1, evidence.5a.model.MessageCall.2.
+
+## MessageChannelMention
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageChannelMention.1, evidence.5a.model.MessageChannelMention.2.
+
+## MessageComponent
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/components/reference. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageComponent.1, evidence.5a.model.MessageComponent.2.
+
+## MessageCreate
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageCreate.1, evidence.5a.model.MessageCreate.2.
+
+## MessageEdit
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown. sticker_ids and poll contracts describe V2 migration resets only, using the actual creation-field discovery IDs; they do not claim arbitrary sticker/poll edit support. previousFlags is local validation evidence, not a wire field.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEdit.1, evidence.5a.model.MessageEdit.2.
+
+## MessageEmbed
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEmbed.1, evidence.5a.model.MessageEmbed.2.
+
+## MessageEmbedAuthor
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEmbedAuthor.1, evidence.5a.model.MessageEmbedAuthor.2.
+
+## MessageEmbedField
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEmbedField.1, evidence.5a.model.MessageEmbedField.2.
+
+## MessageEmbedFooter
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEmbedFooter.1, evidence.5a.model.MessageEmbedFooter.2.
+
+## MessageEmbedImage
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEmbedImage.1, evidence.5a.model.MessageEmbedImage.2.
+
+## MessageEmbedProvider
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEmbedProvider.1, evidence.5a.model.MessageEmbedProvider.2.
+
+## MessageEmbedVideo
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageEmbedVideo.1, evidence.5a.model.MessageEmbedVideo.2.
+
+## MessageInteractionMetadata
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageInteractionMetadata.1, evidence.5a.model.MessageInteractionMetadata.2.
+
+## MessageLegacyInteraction
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/interactions/receiving-and-responding. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageLegacyInteraction.1, evidence.5a.model.MessageLegacyInteraction.2.
+
+## MessagePin
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessagePin.1, evidence.5a.model.MessagePin.2.
+
+## MessagePins
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessagePins.1, evidence.5a.model.MessagePins.2.
+
+## MessageReaction
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageReaction.1, evidence.5a.model.MessageReaction.2.
+
+## MessageReactionCounts
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageReactionCounts.1, evidence.5a.model.MessageReactionCounts.2.
+
+## MessageReference
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageReference.1, evidence.5a.model.MessageReference.2.
+
+## MessageResolvedData
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/interactions/receiving-and-responding. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageResolvedData.1, evidence.5a.model.MessageResolvedData.2.
+
+## MessageRoleSubscriptionData
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageRoleSubscriptionData.1, evidence.5a.model.MessageRoleSubscriptionData.2.
+
+## MessageSearchIndexing
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown. Fields verified in current implementation but absent from the corresponding pinned discovery table are not assigned synthetic discovery IDs. Their explicit nonlinked contracts follow in behavior; this limitation remains partial.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageSearchIndexing.1, evidence.5a.model.MessageSearchIndexing.2.
+
+## MessageSearchResults
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown. Fields verified in current implementation but absent from the corresponding pinned discovery table are not assigned synthetic discovery IDs. Their explicit nonlinked contracts follow in behavior; this limitation remains partial.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageSearchResults.1, evidence.5a.model.MessageSearchResults.2.
+
+## MessageSharedClientTheme
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageSharedClientTheme.1, evidence.5a.model.MessageSharedClientTheme.2.
+
+## MessageSnapshot
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageSnapshot.1, evidence.5a.model.MessageSnapshot.2.
+
+## MessageSnapshotContent
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown. Snapshot fields intentionally reuse matching Message structure discovery fields: snapshots are a documented minimal subset, with no author identity.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/message. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageSnapshotContent.1, evidence.5a.model.MessageSnapshotContent.2.
+
+## MessageStickerItem
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/sticker. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.MessageStickerItem.1, evidence.5a.model.MessageStickerItem.2.
+
+## PartialEmoji
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/emoji. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.PartialEmoji.1, evidence.5a.model.PartialEmoji.2.
+
+## Poll
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown. expiry remains an exact nullable String rather than being normalized or claimed as a validated DiscordTimestamp.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.Poll.1, evidence.5a.model.Poll.2.
+
+## PollAnswer
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.PollAnswer.1, evidence.5a.model.PollAnswer.2.
+
+## PollAnswerCount
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.PollAnswerCount.1, evidence.5a.model.PollAnswerCount.2.
+
+## PollCreate
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.PollCreate.1, evidence.5a.model.PollCreate.2.
+
+## PollMedia
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.PollMedia.1, evidence.5a.model.PollMedia.2.
+
+## PollResults
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/poll. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.PollResults.1, evidence.5a.model.PollResults.2.
+
+## UnfurledMediaItem
+
+API v10 handwritten semantic model, locally added and verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.
+
+Status: partial. Support since: 2026-10-16. Source: developers/components/reference. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5a.model.UnfurledMediaItem.1, evidence.5a.model.UnfurledMediaItem.2.
+
 ## GatewayEndpoints.bot
 
 Handwritten GET /gateway/bot discovery remains mapped to reviewed API v10 provenance and executable evidence. Bot authentication, exact JSON parsing and in-flight-only coalescing preserve changing startup allowances. No generator owns Gateway lifecycle behavior.

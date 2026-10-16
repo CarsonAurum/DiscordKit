@@ -360,8 +360,55 @@
           "type": "string",
           "minLength": 1,
           "pattern": "\\S"
+        },
+        "fields": {
+          "description": "Optional non-generated semantic field contracts. Semantic validation checks unique wire/Swift names, actual parent-linked declarations and parent-linked same-source field discovery IDs. Omit for behavior-only implementations; null and empty arrays are invalid.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/manualField"
+          }
         }
       }
+    },
+    "manualField": {
+      "description": "Descriptive handwritten field metadata, never emitted as executable Swift. Scalar strings must be nonblank and contain no control or line/paragraph separator characters.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wireName", "swiftName", "valueType", "optional", "nullable", "defaultBehavior",
+        "constraints", "access", "unknownValueBehavior", "upstreamIDs", "symbolID"
+      ],
+      "properties": {
+        "wireName": { "$ref": "#/$defs/manualFieldText" },
+        "swiftName": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z_0-9]*$" },
+        "valueType": { "$ref": "#/$defs/manualFieldText" },
+        "optional": { "type": "boolean" },
+        "nullable": { "type": "boolean" },
+        "defaultBehavior": { "$ref": "#/$defs/manualFieldText" },
+        "constraints": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/manualFieldText" }
+        },
+        "access": { "$ref": "#/$defs/manualFieldText" },
+        "unknownValueBehavior": { "$ref": "#/$defs/manualFieldText" },
+        "upstreamIDs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "pattern": "\\S" }
+        },
+        "symbolID": { "type": "string", "minLength": 1, "pattern": "\\S" }
+      }
+    },
+    "manualFieldText": {
+      "type": "string",
+      "minLength": 1,
+      "allOf": [
+        { "pattern": "\\S" },
+        { "not": { "pattern": "[\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029]" } }
+      ]
     },
     "definition": {
       "oneOf": [

@@ -95,10 +95,16 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
     ///   - readPolicy: Optional eligible-read metadata. Positive TTL and `.safe` are required for read reuse.
     ///   - invalidates: Authentication-scoped tags invalidated by a successful mutation.
     ///   - bulk: Optional documented upstream bulk contract; no request merging is performed.
+    ///   - maximumQueryItems: Local descriptor query-field cap in `1...2,048`, default `256`.
+    ///     Larger documented search arrays may opt in; this does not change Discord's per-field limits.
+    ///   - maximumMetadataBytes: Local retained UTF-8 descriptor-text cap in `1...1,048,576`,
+    ///     default `65,536` bytes (64 KiB). Counted bytes remain included in aggregate and
+    ///     per-identity coordinator reservations; raising this cap never bypasses scheduling budgets.
     ///   - decode: Synchronous, sendable complete-body decoder. Empty/204 handling belongs to this closure.
     /// - Throws: `DiscordError.validation(.invalidValue)` for unsafe paths, metadata, headers or policies.
-    ///   Descriptor text is capped at 64 KiB, with at most 64 path segments, 256 query fields,
-    ///   128 headers and 128 tags of each kind. Read-reuse bodies are materialized and at most 16 KiB.
+    ///   Descriptor text defaults to 64 KiB and 256 query fields, with explicit bounded opt-ins
+    ///   above. There are at most 64 path segments, 128 headers and 128 tags of each kind.
+    ///   Read-reuse bodies are materialized and at most 16 KiB.
     ///   Excess aggregate text throws `.limitExceeded`; normalized rate routes are at most 1,024 bytes
     ///   and major-resource keys at most 256 bytes. Runtime/container/closure-capture overhead is not byte-accounted.
     public init(
@@ -107,11 +113,13 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
         majorParameter: String? = nil, usesGlobalLimit: Bool = true, auditReason: String? = nil, body: RequestBody? = nil,
         headers: [HTTPHeader] = [], retrySafety: RetrySafety = .unsafe, readPolicy: ReadPolicy? = nil,
         invalidates: Set<String> = [], bulk: BulkOperationMetadata? = nil,
+        maximumQueryItems: Int = 256, maximumMetadataBytes: Int = 65_536,
         decode: @escaping @Sendable (Data) throws -> Response
     ) throws {
         let token = Set("!#$%&'*+-.^_`|~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".utf8)
         let reserved: Set<String> = ["authorization", "proxy-authorization", "host", "content-length", "transfer-encoding", "user-agent", "content-type", "x-audit-log-reason"]
-        guard path.count <= 64, query.count <= 256, headers.count <= 128, invalidates.count <= 128,
+        guard (1...2_048).contains(maximumQueryItems), (1...1_048_576).contains(maximumMetadataBytes),
+              path.count <= 64, query.count <= maximumQueryItems, headers.count <= 128, invalidates.count <= 128,
               (readPolicy?.tags.count ?? 0) <= 128, method.utf8.count <= 32,
               (majorParameter?.utf8.count ?? 0) <= 256
         else { throw DiscordError.validation(.invalidValue) }
@@ -120,7 +128,7 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
             headers.flatMap { [$0.name, $0.value] } + Array(invalidates) + Array(readPolicy?.tags ?? [])
         var metadataBytes = 0
         for field in metadata {
-            guard field.utf8.count <= 65_536 - metadataBytes else { throw DiscordError.validation(.limitExceeded) }
+            guard field.utf8.count <= maximumMetadataBytes - metadataBytes else { throw DiscordError.validation(.limitExceeded) }
             metadataBytes += field.utf8.count
         }
         guard (body?.accountedBytes ?? 0) <= Int.max - metadataBytes else { throw DiscordError.validation(.limitExceeded) }

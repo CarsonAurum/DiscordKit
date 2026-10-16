@@ -8,6 +8,19 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — message and poll REST catalog (Phase 5A)
+
+- Add typed descriptors for all current message/poll routes, including indexing
+  search, burst reaction reads, current/deprecated pins and poll voters/expiry.
+- Add presence-aware message/poll and component projections, request validation,
+  forwards/snapshots, voice metadata, Components V2 and attachment retention.
+- Bound multipart uploads separately per file and per complete request; retain
+  producer cleanup, byte admission, credential isolation and conservative retry policy.
+- Add finite lazy pagination/search polling and explicit ordered bulk-delete plans
+  preserving completed, attempted and unattempted progress on failure.
+- Link current official contract verification and deterministic regression evidence
+  to parity/history records; keep batches 5B–5J and related-family gaps explicit.
+
 ### 2026-10-16 — reviewed inventory and schema generation
 
 - Add versioned reviewed contracts with per-field semantics, pinned provenance,
