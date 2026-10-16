@@ -2,13 +2,16 @@
 
 ## Project and layout
 
-DiscordKit is a Swift Package Manager library. Its runtime still contains a small
-`hello()` function and a placeholder test; Discord integration is not yet implemented.
-Part 0 adds an architecture/parity baseline and separate development tools/probes.
+DiscordKit is a Swift Package Manager library. Part 1 implements portable values,
+transport contracts and deterministic test support. Discord network integration
+is not yet implemented. Part 0 records architecture/parity and separate probes.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
-- `Tests/DiscordKitTests/`: tests for the library.
+- `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
+  independent foundations; preserve Bits <- Core <- Transport dependency direction.
+- `Tests/DiscordKitTests/` and matching foundational test suites: Swift Testing.
+- `Tests/DiscordTestSupport/`: internal development support target, never a product.
 - `Docs/`: architecture, dependency/platform policy, feasibility findings and parity history.
 - `Tools/DiscordKitTools/`: separate inventory validator, discovery script and their tests.
 - `Tests/Fixtures/PlatformProbe/` and `Tests/Fixtures/VoiceProbe/`: independently
@@ -45,8 +48,8 @@ loopback sockets; they never use Discord credentials or live Discord requests.
 Root `swift test` does not include these independent packages. Keep their resolved
 graphs and results synchronized with the feasibility report.
 
-The existing test is an empty scaffold and does not establish coverage. Source
-changes must meet the method documentation and unit testing requirements below.
+The root suites cover the implemented foundations, without live Discord requests.
+Source changes must meet the method documentation and unit testing requirements below.
 For documentation-only changes, review the diff; a build is not required.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.
@@ -58,6 +61,28 @@ For C# code on macOS, use `msbuild` rather than `dotnet`.
 - Keep library code in `DiscordKit` or the roadmap's implemented sublibrary targets;
   expose public APIs deliberately. Keep development tools and probes separate.
 - Keep changes focused; add package dependencies only when the task needs them.
+
+## Scalability and request efficiency
+
+- Treat bot deployments serving hundreds through millions of accounts, and many
+  independent bot identities, as an architectural requirement from the first
+  runtime slice. Follow `Docs/Scalability.md`; distinguish served users, bot
+  credentials, guilds, shards and actual concurrent connections in capacity claims.
+- Keep rate admission coordinated across clients/workers sharing a credential;
+  honor server/resource/egress scopes and bounded retry budgets. Define fairness,
+  cancellation and coordinator-failure behavior. Sharding does not raise REST quotas.
+- Reduce requests with authentication-scoped eligible-read coalescing, explicit
+  bounded cache/freshness policies, lazy pagination and documented bulk operations.
+  Preserve mutation ordering, partial results and indeterminate outcomes; do not
+  invent generic batching or silently merge mutations.
+- Plan sharding, startup budgets and ownership during architecture/transport work;
+  deliver a multi-shard lifecycle alongside the first HTTP slice. Keep distributed
+  coordination injectable and ordinary in-process adoption straightforward.
+- Bound both per-identity and total queues, bytes, tasks, connections, caches and
+  metadata. Keep heartbeat/control work independent of handlers and cache I/O.
+  Test overload/failover deterministically and measure throughput, tail latency,
+  memory and request reduction before each runtime capacity claim. Keep metrics
+  label cardinality bounded and never use credentials as diagnostic identifiers.
 
 ## Method documentation
 

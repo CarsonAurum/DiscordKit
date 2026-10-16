@@ -27,6 +27,61 @@
       ],
       "details": "changes/2026-10-15-baseline.md",
       "remainingGates": "coverage.md"
+    },
+    {
+      "id": "2026-10-15-part-1-foundations",
+      "recordedOn": "2026-10-15",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-15",
+      "localSupportDate": "2026-10-15",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "foundation_implementation",
+      "previousBehavior": "A hello() greeting and empty runtime test scaffold; only development tooling and feasibility probes had meaningful verification.",
+      "currentBehavior": "Independent Bits, Core and Transport products provide local portable values, safe diagnostics, bounded bodies and injectable I/O contracts with deterministic test support. No Discord operation or network adapter is implemented.",
+      "affectedSymbols": [
+        "UnsignedBitSet",
+        "Snowflake",
+        "ExternalIdentifier",
+        "JSONValue",
+        "JSONNumber",
+        "JSONLimits",
+        "Field",
+        "Nullable",
+        "RawValue",
+        "DiscordTimestamp",
+        "Secret",
+        "Credential",
+        "DiagnosticRedactor",
+        "DiscordError",
+        "CapabilityAvailability",
+        "TransportContext",
+        "BodyStream",
+        "HTTPTransport",
+        "WebSocketTransport",
+        "DatagramTransport",
+        "IPCTransport",
+        "HTTPIngress"
+      ],
+      "affectedPayloads": "Local primitive formats and field-presence representations only; discovery inventory operation statuses remain unsupported.",
+      "breakingChanges": [
+        "Remove hello() scaffold.",
+        "Declare documented Apple deployment minima in Package.swift."
+      ],
+      "migration": "Remove greeting calls and adopt the portable products as needed. Use JSONValue.parse/serialized for lossless numeric data; generic Codable numeric decoding is intentionally refused.",
+      "sources": [
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/topics/permissions",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-15-foundations.md",
+      "remainingGates": "../Foundation.md"
     }
   ]
 }

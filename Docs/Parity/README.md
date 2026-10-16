@@ -1,7 +1,8 @@
 # Parity inventory and chronological history
 
 Baseline date: **2026-10-15**. DiscordKit has **zero implemented Discord operations**.
-The runtime remains the original scaffold. This inventory makes future coverage
+Part 1 adds local values and transport contracts, recorded in the
+[foundation history](changes/2026-10-15-foundations.md). This inventory makes future coverage
 measurable; discovery records and unavailable-capability stubs do not count as support.
 
 ## Versioned records
@@ -42,6 +43,10 @@ permissions, scope or full schema. Broad source defaults identify the public
 surface; exact per-operation prerequisites require semantic review before implementation.
 SDK contract mappings retain more precise prerequisites and blockers. Section and
 unrecognized `table_row` records deliberately preserve material requiring review.
+Foundational snowflake/bitset/JSON support does not implement a resource model,
+named permission policy or endpoint; the baseline operation records therefore
+remain unsupported. Local foundation evidence is recorded separately without
+inflating protocol support counts.
 Duplicate representations across written docs, stable spec and preview spec remain
 distinct; their counts are **not unique operation counts**.
 

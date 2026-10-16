@@ -1,9 +1,10 @@
 # Architecture and API conventions
 
-Status: adopted design, baseline dated 2026-10-15. The runtime still contains only
-the `DiscordKit` scaffold. The graph below is the intended architecture, not the
-current manifest or an assertion that its modules exist. Introduce targets and
-public products incrementally with real implementations and tests.
+Status: adopted design, updated 2026-10-15. `DiscordBits`, `DiscordCore` and
+`DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
+Core aliases. The complete graph below remains the intended architecture, beyond
+the current manifest. Introduce further targets and products with implementations
+and tests. See [foundation contracts](Foundation.md) for current scope and limits.
 
 ## Product boundaries
 
@@ -82,6 +83,13 @@ capability separately from protocol implementation status.
 
 ## Consumer contract
 
+DiscordKit is designed for bot deployments serving hundreds through millions of
+accounts, including deployments with many bot identities. User count, credential
+count, guilds, shards and simultaneous connections are distinct capacity axes.
+The [scalability requirements](Scalability.md) define request efficiency, identity
+isolation, aggregate resource budgets and evidence required for capacity claims.
+These are design requirements; current foundations establish no runtime capacity.
+
 REST services use async request methods directly and require no Gateway session.
 Bot users configure credentials, intents, handlers and policy, then await a
 supervised run operation. The library owns discovery, heartbeats, reconnect/resume,
@@ -122,6 +130,14 @@ bodies, signed URLs, errors, descriptions, logs, metrics, traces and fixtures.
   scheduling and origin protections. Raw access does not count as typed parity.
 - Every explicitly declared method and test has accurate comprehensive Swift
   documentation and meaningful applicable tests at the time it is introduced.
+
+Rate/cache/coalescing policy belongs above send-once transports. HTTP response
+reuse must work without Gateway or the entity-cache product. Shared coordination
+is injectable with in-process defaults; shard ownership, Identify admission and
+rate reservations cannot silently become independent during coordinator failure.
+Start the sharded lifecycle alongside the first HTTP slice, before completing
+the endpoint catalog. Measure each runtime milestone against versioned load and
+resource budgets in the scalability requirements.
 
 The [concurrency policy](Concurrency.md) supplies execution/ownership rules; the
 [parity inventory](Parity/README.md) supplies operation-level evidence. Neither a

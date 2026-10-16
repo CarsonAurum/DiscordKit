@@ -2,11 +2,11 @@
 
 ## 1. Goal
 
-Build a modular, Swift-native Discord application and bot SDK with typed coverage of every available, documented operation across the requested Discord developer platform, automatic protocol management, and a versioned process for maintaining parity.
+Build a modular, Swift-native Discord application and bot SDK designed for deployments serving hundreds through millions of Discord accounts, with typed coverage of every available, documented operation across the requested Discord developer platform, efficient requests, early sharding, measured resource budgets, automatic protocol management and versioned parity maintenance.
 
 ## 2. Approach
 
-Use small Swift Package Manager targets with immutable Sendable models, actors for shared runtime state, structured task lifetimes, and bounded AsyncSequence subscriptions. Build one working vertical slice first, then expand through independently verifiable work packages; use a reviewed, versioned inventory to drive repetitive model/endpoint generation and measure completeness. Preserve a straightforward DiscordKit entry point while allowing REST, HTTP interactions, Gateway, OAuth2, and voice to be adopted independently.
+Use small Swift Package Manager targets with immutable Sendable models, partitioned actor-owned runtime state, structured task lifetimes, and bounded AsyncSequence subscriptions. Build working HTTP and sharded Gateway slices early with coordinated rate admission, request reduction, aggregate resource budgets and load evidence, then expand through independently verifiable work packages driven by the reviewed parity inventory. Preserve a straightforward DiscordKit entry point while allowing REST, HTTP interactions, Gateway, OAuth2, and voice to be adopted independently, with optional external coordination for fleets.
 
 ### Scope and verified baseline
 
@@ -20,6 +20,16 @@ Research date: **2026-10-15**. Protocol versions are separate: explicitly use RE
 - **Dependencies:** Apple-origin official Swift package families and their normal maintained transitive/bundled implementations are permitted. This includes the upstream code normally shipped by approved Apple packages; it does not authorize adding Discord's native SDK.
 - **Feature scope:** the entire developer platform, including backend APIs, bot/Gateway, voice/media, OAuth2, local RPC, certified devices, Activities/Embedded APIs, Social SDK capabilities and commerce.
 - **Deliverable:** one master roadmap with separately implementable parts and explicit dependencies/completion gates.
+- **Scale:** serve hundreds through millions of Discord accounts across a deployment, including services with many bot/application identities. Track end users, credentials, guilds, shards, active sessions and concurrent requests separately; no single-process or live-connection capacity is implied by the account target.
+
+### Scalability requirements added 2026-10-15
+
+The adopted [Scalability.md](../../Docs/Scalability.md) is the detailed capacity, request-efficiency, coordination and verification contract for every runtime part. This addition extends the roadmap; completed Part 1 foundations do not implement rate admission, caches or sharded sessions.
+
+- Partition ownership by identity/resource/shard; bound both per-partition and aggregate queues, bytes, tasks, connections, caches, in-flight reads and metadata. Share rate authorities across clients/workers using the same credential, preserve applicable shared-resource/egress limits, and define fairness and coordinator-outage behavior.
+- Reduce requests with eligible-read coalescing, explicit HTTP freshness policies, bounded entity projections, useful event payload data, lazy pagination and documented endpoint-specific bulk helpers. Keep identity/permission isolation, ordering, cancellation, partial results and ambiguous mutation outcomes intact.
+- Design shard routing/subsets, ownership and startup budgets during Parts 0–2. Start Part 6's minimal multi-shard lifecycle alongside Part 3; it does not wait for the full REST catalog, cache or consumer framework. Distributed adapters remain optional and pass common coordination contract tests.
+- Start a separate local load harness in Part 2, extend it at each runtime milestone, and record numeric budgets and baselines before claiming capacity. Simulate 100/10,000/1,000,000 logical accounts in bounded active cohorts; separately measure real local sockets/concurrency. Report throughput, tail latency, CPU/RSS, request reduction and failure recovery without load-testing Discord.
 
 **A real constraint on final completion:** some Social SDK and early-access commerce features have published product interfaces but no complete public wire contract. Implement all documented equivalents locally and retain those remaining capabilities as explicit blockers; do not omit them, invent their protocol, or call a stub parity. Under the approved dependency rule, a wrapper around Discord's distributed runtime is not an implementation option. [Native SDK setup](https://docs.discord.com/developers/discord-social-sdk/getting-started/using-c%2B%2B), [Commerce availability](https://docs.discord.com/developers/social-commerce/overview).
 
@@ -132,7 +142,9 @@ README.md
 CHANGELOG.md
 CONTRIBUTING.md
 Docs/Architecture.md
+Docs/Foundation.md
 Docs/Concurrency.md
+Docs/Scalability.md
 Docs/Dependencies.md
 Docs/PlatformSupport.md
 Docs/Parity/README.md
@@ -152,6 +164,7 @@ Sources/DiscordBits/UnsignedBitSet.swift
 Sources/DiscordCore/Snowflake.swift
 Sources/DiscordCore/JSONValue.swift
 Sources/DiscordCore/Field.swift
+Sources/DiscordCore/RawValue.swift
 Sources/DiscordCore/DiscordTimestamp.swift
 Sources/DiscordCore/Credentials.swift
 Sources/DiscordCore/DiscordError.swift
@@ -201,6 +214,10 @@ Sources/DiscordHTTP/RequestEncoder.swift
 Sources/DiscordHTTP/ResponseDecoder.swift
 Sources/DiscordHTTP/MultipartBody.swift
 Sources/DiscordHTTP/RateLimitCoordinator.swift
+Sources/DiscordHTTP/RateLimitStore.swift
+Sources/DiscordHTTP/SchedulingPolicy.swift
+Sources/DiscordHTTP/RequestCoalescer.swift
+Sources/DiscordHTTP/ReadCache.swift
 Sources/DiscordHTTP/RetryPolicy.swift
 Sources/DiscordHTTP/Pagination.swift
 Sources/DiscordHTTP/RawEndpoint.swift
@@ -276,6 +293,8 @@ Sources/DiscordGateway/GatewayStateMachine.swift
 Sources/DiscordGateway/GatewayShard.swift
 Sources/DiscordGateway/HeartbeatController.swift
 Sources/DiscordGateway/ShardCoordinator.swift
+Sources/DiscordGateway/ShardLeaseStore.swift
+Sources/DiscordGateway/SessionStartCoordinator.swift
 Sources/DiscordGateway/GatewayRequests.swift
 Sources/DiscordGateway/EventHub.swift
 Sources/DiscordCache/CachePolicy.swift
@@ -395,15 +414,29 @@ Tests/DiscordTestSupport/ManualClock.swift
 Tests/DiscordTestSupport/SeededRandom.swift
 Tests/DiscordTestSupport/ScriptedTransports.swift
 Tests/DiscordTestSupport/ResourceTracker.swift
+Tests/DiscordTestSupport/Barrier.swift
+Tests/DiscordTestSupport/ScriptedIngress.swift
 Tests/DiscordTestSupport/FixtureLoader.swift
 Tests/DiscordBitsTests/UnsignedBitSetTests.swift
 Tests/DiscordCoreTests/CoreValueTests.swift
+Tests/DiscordCoreTests/JSONValueTests.swift
+Tests/DiscordCoreTests/FieldTests.swift
+Tests/DiscordCoreTests/RawValueTests.swift
+Tests/DiscordCoreTests/DiscordTimestampTests.swift
+Tests/DiscordCoreTests/SnowflakeCredentialTests.swift
+Tests/DiscordCoreTests/RedactionCapabilityTests.swift
 Tests/DiscordTransportTests/TransportContractTests.swift
+Tests/DiscordTestSupportTests/TestSupportTests.swift
+Tests/DiscordTestSupportTests/ScriptedTransportTests.swift
+Tests/DiscordTestSupportTests/ScriptedIngressTests.swift
 Tests/DiscordHTTPTests/HTTPPipelineTests.swift
+Tests/DiscordHTTPTests/RateLimitCoordinationTests.swift
+Tests/DiscordHTTPTests/RequestEfficiencyTests.swift
 Tests/DiscordHTTPTests/ResourceParityTests.swift
 Tests/DiscordModelsTests/ModelParityTests.swift
 Tests/DiscordGatewayTests/GatewayLifecycleTests.swift
 Tests/DiscordGatewayTests/ShardingTests.swift
+Tests/DiscordGatewayTests/ShardOwnershipTests.swift
 Tests/DiscordGatewayTests/EventDeliveryTests.swift
 Tests/DiscordCacheTests/CacheTests.swift
 Tests/DiscordInteractionsTests/InteractionTests.swift
@@ -448,6 +481,14 @@ Tools/DiscordKitTools/Sources/DiscordKitTools/ParityValidator.swift
 Tools/DiscordKitTools/Sources/DiscordKitTools/DocumentationAudit.swift
 Tools/DiscordKitTools/Sources/DiscordKitTools/DependencyAudit.swift
 Tools/DiscordKitTools/Tests/DiscordKitToolsTests/ToolTests.swift
+Tools/DiscordKitLoadTests/Package.swift
+Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/main.swift
+Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/LoadRunner.swift
+Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/WorkloadProfile.swift
+Tools/DiscordKitLoadTests/Tests/DiscordKitLoadTestsTests/LoadRunnerTests.swift
+Tools/DiscordKitLoadTests/Profiles/accounts-100.json
+Tools/DiscordKitLoadTests/Profiles/accounts-10000.json
+Tools/DiscordKitLoadTests/Profiles/accounts-1000000.json
 Examples/RESTOnly/Package.swift
 Examples/RESTOnly/Sources/RESTOnly/main.swift
 Examples/GatewayBot/Package.swift
@@ -474,6 +515,13 @@ Sources/DiscordKit/DiscordKit.docc/Migration.md
 
 No existing file needs deletion. Individual future task plans may split large generated files by payload without changing the feature boundary; add new exact locations to the creation manifest when doing so.
 
+The load package is development-only, depends on the implemented local library
+products and approved dependencies when needed, and never enters runtime products.
+Its profiles version offered load, active populations, numeric resource/latency
+budgets and reference-hardware baselines. Add scenarios only as their runtime
+components exist. `Docs/Scalability.md` already exists as adopted policy; subsequent
+parts **Modify** it with measured evidence rather than recreating it.
+
 
 ## 4. Implementation steps
 
@@ -490,12 +538,20 @@ Each part is a separately implementable plan with its own result and completion 
 5. Qualify the exact Apple package graph on the requested platforms before freezing adapter choices. Exercise NIO HTTP/TLS/WebSocket/UDP on Windows/Android as well as macOS/Linux; compilation alone is insufficient. Use an owned platform fallback only for demonstrated gaps.
 6. Prove the voice primitive requirements using supported public Crypto/CryptoExtras APIs. Identify precisely which missing XChaCha/truncated-tag/MLS/codec components must be authored locally and isolate them in F09. Do not assume Swift Crypto alone supplies DAVE.
 7. Map every Social/Activity/Commerce method to public HTTP, Gateway, RPC, browser protocol, local computation, or a missing upstream contract. Write a concrete blocker with required official evidence for each gap. Do not add Discord's native runtime or copy a prohibited dependency into the project.
+8. Adopt F00 scalability requirements before runtime APIs: distinguish served users from bot identities and active connections; record partition ownership, per-identity/process/fleet budgets, request-efficiency policies, shard topology/startup coordination and consumer infrastructure responsibilities. Define the initial 100/10,000/1,000,000-account workload dimensions without claiming unmeasured capacity.
 
-**Completion gate:** Inventory validation reports zero unclassified discovered entries; every target platform has an explicit capability matrix; platform and voice feasibility findings are recorded; no unsupported private protocol is represented as implemented.
+**Completion gate:** Inventory validation reports zero unclassified discovered entries; every target platform has an explicit capability matrix; platform and voice feasibility findings are recorded; no unsupported private protocol is represented as implemented. Scalability policy names workload dimensions, ownership/budget boundaries and the early HTTP/sharding measurement gates; completed historical feasibility evidence is not retroactively treated as scale qualification.
 
 The official OpenAPI repository is preview material, and its README gives the written docs precedence. Use a pinned snapshot for development discovery/diffs, with reviewed overlays, rather than as a runtime dependency or unquestioned production generator input. [Official specification](https://github.com/discord/discord-api-spec).
 
 ### Part 1 — portable values, errors and deterministic test infrastructure
+
+**Implementation update, 2026-10-15:** Implemented in the Bits/Core/Transport
+products and internal deterministic test-support target. See
+[Foundation.md](../../Docs/Foundation.md) for current contracts, resource limits,
+Codable restrictions and remaining platform qualification. Network adapters are
+the next implementation phase (Part 2); existing Part 0 external qualification
+and upstream-contract gates remain visible in their historical reports.
 
 **Files:** F01; F10 Core/Bits/support suites; F11 separate tooling manifest; existing manifest.
 
@@ -512,7 +568,7 @@ Permissions are explicitly variable-length integers, so a fixed UInt64 OptionSet
 
 ### Part 2 — transport adapters and platform qualification
 
-**Files:** F02, F01 transport contracts, F10 transport/platform suites, F00 platform report; existing manifest.
+**Files:** F02, F01 transport contracts, F10 transport/platform suites, F00 platform/scalability reports, F11 separate load package/profiles; existing manifest.
 
 1. Implement Foundation HTTP and Apple-platform WebSocket adapters. Wrap cancellation so pending connect/read/write actually terminate; do not infer cancellation behavior from an async signature.
 2. Implement owned NIO HTTP pooling/TLS, WebSocket upgrade/framing, datagram and HTTP-ingress adapters. Use scoped async channel ownership and bounded writes. Qualify stable versions on each advertised host.
@@ -520,8 +576,10 @@ Permissions are explicitly variable-length integers, so a fixed UInt64 OptionSet
 4. Keep browser/auth/audio UI isolated from the runtime. OS frameworks remain adapter details. The same portable method can return a structured unsupported-host result instead of disappearing unpredictably behind platform conditionals.
 5. Enforce TLS certificate/hostname validation, safe redirect rules and credential stripping, explicit request/response/frame limits, connection cleanup and separate credential-free CDN operations.
 6. Run one reusable conformance suite against every advertised adapter. Unit tests use loopback/local scripted peers; Discord itself is not a unit-test dependency.
+7. Bound total/per-origin pool connections, in-flight exchanges, queued bytes and deadlines. Measure cancellation/cleanup, streaming allocations, CPU/RSS and throughput with the F11 local load harness. Version numeric budgets and the initial transport baseline in its profiles; extend existing deterministic support rather than using sleeps or creating a task/socket for every simulated account.
+8. Define ownership/shard assignment and coordination contracts with the early Part 6 lifecycle work. Deliver only implemented, tested runtime targets; do not add empty fleet/cache products to represent an architectural intention.
 
-**Completion gate:** Connect/read/write/close cancellation, bad certificates, failed upgrades, fragmented/multiple frames, ping/pong, half closes, backpressure, network replacement and repeated start/stop pass; resources return to baseline.
+**Completion gate:** Connect/read/write/close cancellation, bad certificates, failed upgrades, fragmented/multiple frames, ping/pong, half closes, backpressure, network replacement and repeated start/stop pass; resources return to baseline. Overload respects aggregate configured transport limits; a versioned local profile records the first measured baseline and saturation point before adapter capacity is advertised.
 
 Platform commitments are recorded per capability, not inferred from a compiler target:
 
@@ -545,16 +603,18 @@ watchOS restricts low-level networking, including URLSessionWebSocketTask, even 
 
 **Files:** F03; F04 User/Application models and endpoints; F10 HTTP/model fixtures and suites; F11 REST-only example.
 
-1. Define typed Endpoint<Response> descriptors: method, encoded route segments, query/body schema, authentication policy, success statuses, major rate-limit parameters, audit reason, body replayability, paging policy and retry safety.
+1. Define typed Endpoint<Response> descriptors: method, encoded route segments, query/body schema, authentication policy, success statuses, major rate-limit parameters, audit reason, body replayability, paging policy and retry safety. Include explicit eligible-read coalescing, freshness/invalidation and documented bulk-operation metadata; never infer cacheability or mutation equivalence from the HTTP method alone.
 2. Build request/response encoding for JSON, form URL encoding, repeated query keys, multipart attachments and empty/204 responses. Decode Discord's nested validation error tree while retaining status, headers, raw bounded error body and unknown codes.
-3. Implement an actor-owned rate authority scoped to credential/resource identity, shared by clients in-process. Learn buckets from headers with major resource identity, merge provisional buckets safely, handle user/shared/global limits and fractional reset delays, and isolate interaction/webhook scheduling from the bot global budget.
-4. Add injectable cross-process coordination contracts for shared tokens, session starts and resource limits; ship the in-process implementation. Durable database/Redis integrations are consumer adapters, not forbidden dependencies.
-5. Implement bounded cancellable FIFO queues within scheduling classes, request deadlines, retry budgets and backoff. Retry documented rejected requests or demonstrably safe operations; return an indeterminate-outcome error for ambiguous mutations. Stream retries require a replayable body factory.
+3. Implement partitioned actor-owned rate authority scoped to opaque credential/resource identity, shared by clients in-process. Learn buckets from headers with major resource identity, merge provisional buckets safely, handle user/shared/global limits and fractional reset delays, and preserve documented interaction/webhook distinctions. Compose applicable egress/invalid-request protection; metadata eviction cannot reset exhausted budgets. Avoid a global hot-path actor across unrelated accounts.
+4. Add injectable cross-process atomic rate-reservation contracts; ship the in-process implementation and common conformance suite. Coordinate Gateway session starts in F05 using the same ownership principles. Define expiry, uncertain-send accounting, credential rotation and coordinator-outage behavior; never fall back to independent budgets when shared authority fails. Durable storage integrations are consumer adapters subject to dependency policy, not required runtime dependencies.
+5. Implement bounded cancellable FIFO queues per identity/resource partition within scheduling classes, fairness across eligible identities, aggregate count/byte/concurrency budgets, request deadlines, retry budgets and backoff. Preserve required mutation ordering; blocked buckets cannot stall unrelated eligible work. Retry documented rejected requests or demonstrably safe operations; return an indeterminate-outcome error for ambiguous mutations. Stream retries require a replayable body factory.
 6. Build lazy operation-specific pagination and async-job polling, with cursor preservation, cancellation and deadlines. Do not universalize “short page means done.”
 7. Add relative-route raw access through the same pipeline. Prevent arbitrary authenticated origins, authorization override, escaping paths or unsafe redirects. Raw access is an escape hatch, not a parity claim.
 8. Implement current-user/current-application retrieval and a working RESTOnly example. Cover request construction through decoded result, errors, rate limits and cancellation.
+9. Implement bounded authentication-scoped RequestCoalescer and opt-in ReadCache in F03, independent of Gateway/entity-cache dependencies. Include relevant request/representation fields in keys, independent waiter cancellation, explicit TTL/invalidation and per-identity plus aggregate entry/byte/refresh budgets. Invalidate observed visibility/permission or credential/scope changes and local writes; document TTL/revalidation limits for unobserved external changes. Cached snapshots cannot establish current authorization. Do not cache auth/transient failures as absence or share private results across identities/scopes.
+10. Extend F11 load scenarios with mixed identities, hot buckets, cache hit/miss and read storms, retry pressure and overload/recovery. Commit numeric workload budgets and HTTP baselines; assert request savings and fairness with F10 virtual-time tests before the first REST release.
 
-**Completion gate:** Scripted successful/empty/malformed/401/403/404/429/5xx responses behave as documented; no request is sent before its permitted virtual time; canceled queued work disappears; repeated ambiguous POSTs are not silently replayed; API tokens never reach CDN or redirected foreign origins.
+**Completion gate:** Scripted successful/empty/malformed/401/403/404/429/5xx responses behave as documented; no request is sent before its permitted virtual time; canceled queued work disappears; repeated ambiguous POSTs are not silently replayed; API tokens never reach CDN or redirected foreign origins. With coalescing enabled, 100 equivalent eligible reads make one exchange; a fresh opted-in cache hit makes zero. Different identities cannot consume private results. Multiple workers sharing a credential respect injected limits, unrelated eligible work meets the configured fairness delay, and ten-times offered overload never exceeds configured queue/byte/in-flight/cache/metadata caps. HTTP load evidence satisfies the scalability gates before a capacity claim.
 
 Limits are server-derived rather than permanently hardcoded; bucket keys include major resources, emoji operations have exceptions, and interaction endpoints have distinct global treatment. [Rate limits](https://docs.discord.com/developers/topics/rate-limits).
 
@@ -593,22 +653,37 @@ Each row is its own work package. For **every currently available endpoint** in 
 
 **Per-batch completion gate:** Every available inventoried operation has a public typed symbol; every field and variant has a model/codec; success plus applicable auth/validation/limit/transport/API failure tests exist. Pagination, async jobs and partial results are verified through multiple calls. Each batch updates its parity and chronological record in the same change. An available operation with no fixture remains partial.
 
+For each batch, implement request-efficiency metadata and helpers alongside its
+documented operations. Bulk helpers validate count/byte/compatibility limits,
+split legal chunks and preserve ordering, correlation and partial outcomes;
+mutation packing requires explicit opt-in semantics. Test request counts,
+maximum legal chunks, early-stopped pagination and no-op reconciliation. Use
+complete-enough event/interaction data before fetching related resources; do not
+introduce automatic full-member hydration or unbounded per-item fetch tasks.
+
 For message uploads specifically, separate per-file limits from endpoint aggregate request limits, preserve attachment-edit retention semantics, stream within bounds and test exact boundaries. New Components V2 flags and field compatibility belong in the model/builder validation, not generic REST transport. [Uploading files](https://docs.discord.com/developers/reference#uploading-files), [Components](https://docs.discord.com/developers/components/reference).
 
 ### Part 6 — Gateway lifecycle, shards and every documented dispatch
 
-**Files:** F05 Gateway files, F04 GatewayEvent/related models, F10 Gateway suites/catalog, F00 protocol inventory.
+**Early execution requirement:** Design topology/coordination in Parts 0–2 and
+implement steps 1–5 as a minimal multi-shard vertical slice alongside Part 3.
+Depend only on qualified HTTP/WebSocket adapters, required models and discovery
+endpoints; the complete Part 5 REST catalog and Part 7 cache are not prerequisites.
+Add complete dispatch/request coverage in subsequent independently tested steps.
+
+**Files:** F05 Gateway/lease/session-start files, F04 GatewayEvent/related models, F10 Gateway/ownership suites/catalog, F00 protocol/scalability records, F11 load package/profiles.
 
 1. Implement a pure state transition core: disconnected, connecting, Hello/Identify or Resume, ready, reconnecting, draining and stopped. Enumerate transitions, actions, guards, timers and terminal errors explicitly.
 2. Add one actor per shard owning the active socket generation, session ID, dispatch sequence, resume URL and outbound queues. Supervise receive, heartbeat and send work under a scoped run operation.
 3. Implement jittered/requested heartbeat scheduling and ACK monitoring. Control processing never awaits user code, cache I/O or subscriber consumption. A stale timer/socket callback cannot mutate a replacement generation after await.
 4. Implement resumable reconnect, invalid-session handling, close-code classification, bounded jittered retries, session-start allowances and fatal authentication/configuration handling.
-5. Implement shard coordination: recommended count, shard routing, subsets, Identify concurrency buckets, daily session budget and shared coordination hooks for multiprocess deployments.
+5. Implement shard coordination from the first slice: discovery-recommended count, guild routing, shard-zero non-guild delivery, subsets, Identify concurrency buckets and server-reported remaining/reset session-start budget. Provide in-process ownership and injectable shard leases with generations, atomic startup reservations, loss-of-authority handling and drain/handoff. Test simultaneous workers, expired/stale owners, coordinator outages and restart storms. A topology change requires a controlled generation transition and resynchronization; it cannot silently reset shared budgets or promise exactly-once delivery.
 6. Generate/decode every inventoried dispatch, outgoing opcode, intent and capability. Preserve raw unknown dispatches/opcodes without crashing. Include current soundboard/channel-info requests, voice timing/status updates, rate-limited events and channel obfuscation.
 7. Correlate member/soundboard/channel-info requests with nonce/chunk completion, cancellation, rate limits and timeouts. Separate outgoing opcode budgets from REST scheduling.
 8. Start with documented JSON/uncompressed transport. Record compression/alternative encodings separately as protocol choices; persistent streaming decoder support requires dedicated split-frame/size-limit fixtures, not a parity shortcut or prerequisite for a valid basic session.
+9. Extend F11 profiles with controlled event bursts, slow consumers, multiple identities/shards and repeated failure/recovery. Record per-shard control delay, event lag, CPU/RSS and session-start use; bound aggregate active sessions, frames, queues and decompression output. Keep metric labels bounded. Qualify this slice before advertising sharded runtime capacity.
 
-**Completion gate:** Every transition and documented close code has a deterministic test; missed ACK causes one supervised reconnect; resume replays recorded dispatch order; stale socket work is ignored; shard starts never exceed configured allowances; cancellation leaves no owned task, queued continuation or open transport.
+**Completion gate:** Every transition and documented close code has a deterministic test; missed ACK causes one supervised reconnect; resume replays recorded dispatch order; stale socket work is ignored; shard starts never exceed configured allowances; cancellation leaves no owned task, queued continuation or open transport. Competing workers cannot obtain the same shard lease generation, stale owners cannot obtain new admission, and lost authority stops new sends while accounting for writes already in flight. Under handler/cache overload, control work meets injected deadlines and aggregate resources stay within profile budgets.
 
 Use current explicit Gateway versions and server-reported startup information rather than copying JDA's classes or hardcoded session assumptions. [Gateway](https://docs.discord.com/developers/events/gateway), [Event catalog](https://docs.discord.com/developers/events/gateway-events), [Status codes](https://docs.discord.com/developers/topics/opcodes-and-status-codes).
 
@@ -620,11 +695,16 @@ Use current explicit Gateway versions and server-reported startup information ra
 2. Expose readiness/session/shard diagnostics, explicit intent selection and service-based fetch/mutation APIs. Keep snapshot model values independent from clients; optional resource handles carry IDs plus Sendable service access.
 3. Define event subscriptions as **broadcast**, with a separate bounded queue per subscriber. Preserve per-shard ingestion order; do not promise global ordering, completeness or exactly-once delivery. Default overflow ends that subscription with a resynchronization requirement; lossy/coalescing modes are explicit.
 4. Separate event ingestion from user handlers. Provide bounded handler concurrency and documented ordering partitions. One slow callback must not block heartbeat or all other consumers; handler errors must not disappear.
-5. Implement no-cache/minimal/bounded policies and opt-in larger caches. Track provenance, completeness, redaction, availability and deletion. Sparse updates do not erase omitted fields; null clears only where valid. Guard against stale REST fetch completions overwriting newer event state.
+5. Implement no-cache/minimal/bounded policies and opt-in larger caches with per-identity and aggregate entry/byte/TTL/refresh limits. Keep entity projections separate from F03 HTTP response reuse; define visibility by identity/scope/intent, invalidation on local writes and observed permission/visibility changes, TTL/revalidation limits for unobserved changes, eviction and optional persistent-adapter contracts. Track provenance, completeness, redaction, availability and deletion. Sparse updates do not erase omitted fields; null clears only where valid. Guard against stale REST fetch completions overwriting newer event state; use sufficiently complete event/interaction data instead of redundant fetches. Cached snapshots cannot establish current authorization.
 6. Implement permission resolution for owner/admin/base roles/channel overwrites/thread rules/implicit denials/timeouts using arbitrary-width fields. Return an indeterminate result for insufficient state rather than treating a partial cache as authoritative.
 7. Provide a working bot example that starts, receives an event, calls a typed service and stops cleanly. Update module guidance and replace the hello/empty-test scaffolds.
 
 **Completion gate:** Two subscribers receive their own ordered events; canceling/overflowing one does not affect another; bounded capacities never exceed configuration. Cache tests cover duplicate events, unavailable guilds, removals, redaction, null/omission, stale fetch races and permission uncertainty. Reentrant handlers and MainActor consumers do not deadlock.
+
+Verify aggregate cache/subscription/handler budgets across many clients, isolation
+between credentials/intents, bounded refresh storms and request-count reductions.
+Run F11's fixed-working-set soak/recovery profile and record actual RSS alongside
+accounted cache bytes before extending capacity claims.
 
 ### Part 8 — signed HTTP ingress, interaction lifecycle and command ergonomics
 
@@ -768,6 +848,7 @@ The Social SDK's distributed native runtime is a Discord dependency; wrapping it
 6. Maintain append-only parity history. Every support addition/change/deprecation/removal records previous/current behavior, symbols/payloads, official sources/dates, local release/commit when known and migration advice.
 7. At least weekly, review official docs/changelog and pinned-spec diffs; before every release, refresh affected inventory rows and resolve new unclassified entries. Do not auto-apply upstream changes to generated production code.
 8. Add dated fixtures for current transitions, including upcoming channel-obfuscation HTTP behavior effective 2026-11-16. Treat future-effective changes separately from current behavior.
+9. Apply scalability gates from Part 2 onward. Publish workload/hardware-specific throughput, p50/p95/p99 latency, CPU/RSS, request savings, saturation and recovery evidence at each runtime release. Run local fixed-working-set 30-minute soak scenarios; investigate greater-than-10% baseline regressions reproduced in three matching-hardware runs. Never equate simulated logical accounts with qualified live connections.
 
 **Completion gate:** All required checks pass or are explicitly recorded as unverified and excluded from corresponding support claims; generated files are reproducible; public API/docs/examples agree; every release carries a machine-readable and human-readable parity report.
 
@@ -776,9 +857,9 @@ The Social SDK's distributed native runtime is a Discord dependency; wrapping it
 
 Use dependencies rather than treating the chapter numbers as one long serial queue.
 
-1. **Foundation:** Parts 0–2. Deliver portable values, deterministic test support and qualified transports.
-2. **REST release:** Part 3 plus the needed model slice from Part 4. Deliver authenticated typed REST access; expand Part 5 batches in parallel.
-3. **First bot release:** Parts 6–7 plus core message/user/guild/channel models. Deliver managed Gateway lifecycle, typed events, services and bounded state.
+1. **Foundation and capacity design:** Parts 0–2. Preserve completed portable foundations; add qualified transports, shard/coordination design, load profiles and measured aggregate transport budgets.
+2. **HTTP and early sharded slices:** Part 3 plus needed models and Part 6 steps 1–5 in parallel. Deliver request-efficient REST and a minimal coordinated multi-shard lifecycle before completing Part 5; run HTTP/shard correctness and load gates. Publish a REST-only product independently when ready.
+3. **First bot release:** Complete Parts 6–7 plus core message/user/guild/channel models. Deliver managed sharded lifecycle, typed events, services, bounded state, failure recovery and documented capacity evidence. Expand Part 5 batches in parallel.
 4. **Interaction release:** Part 8 can proceed alongside Gateway once HTTP/models exist. Deliver a complete HTTP-only app and command bot workflow.
 5. **Application/game release:** Part 9 builds on typed backend batches and interaction infrastructure.
 6. **Native/browser integrations:** Parts 10–11 proceed independently once transport/core/auth foundations exist.
@@ -811,10 +892,16 @@ The following define the final goal, not merely the first milestone.
 | A15 | Every explicitly declared function/method/initializer/accessor/subscript/operator/protocol requirement/test has accurate comprehensive documentation and meaningful applicable tests. Documentation audit and semantic review find no unreported gaps. | All source/test groups, F11 |
 | A16 | Generated source is reproducible; every support change updates chronological history; a release report states exact versions, source verification dates, platform results and remaining limitations. | F00/F11 |
 | A17 | Error/debug/log/metric/trace/fixture outputs never expose test sentinel secrets from headers, token-bearing paths, form bodies or signed URLs; foreign-origin requests contain no API credentials. | F01/F03/F06/F07, F10 |
+| A18 | Enabled coalescing turns 100 equivalent concurrent eligible reads into one exchange; a fresh opted-in cache hit sends zero. Keys/results remain isolated by auth/visibility; canceling one waiter leaves others intact. | F03, F10 request-efficiency suites |
+| A19 | Shared-credential workers obey injected rate/start limits; eligible unrelated identities meet the profile's maximum fairness delay. Coordinator loss never silently creates independent admission budgets. | F03/F05, F10 coordination/ownership suites |
+| A20 | Per-partition and aggregate queue/byte/task/connection/cache/refresh/metadata counters stay within numeric profile caps under ten-times offered admission capacity; shutdown leaves zero owned tasks/waiters/sockets. | F03/F05/F06, F10, F11 load profiles |
+| A21 | Bulk helpers enforce operation-specific item/byte constraints, preserve required ordering/correlation and expose partial/ambiguous outcomes; early pagination stop sends no unnecessary next page. | F03/F04/F06, F10 resource/command suites |
+| A22 | The first Gateway slice supports assigned shard subsets and coordinated starts; stale/expired lease generations cannot obtain new admission, and restart/overload tests preserve control deadlines and startup budgets. | F05, F10 Gateway/ownership suites |
+| A23 | Each runtime release publishes versioned load budgets and measured throughput/tail latency/CPU/RSS/request savings/recovery on named hardware, with a 30-minute local soak and regression review. 100/10,000/1,000,000 logical-account profiles identify active concurrency separately; unmeasured capacity remains unclaimed. | F00 scalability policy, F11 load package/profiles |
 
 ## 6. Verification steps
 
-These are **future implementation commands**. No build, test or modifying command has been run for this planning task.
+These are **future implementation commands** for the corresponding parts. The 2026-10-15 scalability amendment changes documentation and policy only; it does not implement or benchmark the planned runtime capabilities.
 
 ### Routine checks after each source/manifest increment
 
@@ -868,6 +955,26 @@ node --test Web/DiscordActivityBridge/bridge.test.js
 
 Generation/check/audit modes do not modify source. DocC checks extend to each separately public target; the declaration audit includes private and test declarations that public DocC analysis cannot cover. Node is development-only for the owned bridge tests, with no npm dependencies.
 
+### Capacity commands to implement with F11's load package
+
+Introduce the transport scenario in Part 2 and HTTP/Gateway/cache scenarios as
+their implementations land. These commands are planned interfaces, not commands
+available in the current Part 1 checkout:
+
+```sh
+swift test --package-path Tools/DiscordKitLoadTests
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --profile accounts-100 --scenario transport
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --profile accounts-10000 --scenario http
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --profile accounts-1000000 --scenario gateway
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --profile accounts-10000 --scenario soak --duration-seconds 1800
+```
+
+Profiles explicitly cap active cohorts and local sockets. Run all applicable
+scenario/profile combinations at their milestone; report unsupported scenarios,
+hardware limitations and offered/admitted load separately. Deterministic F10
+tests prove scheduling/ownership/cap invariants; wall-time load runs measure
+capacity without replacing correctness tests or making live Discord requests.
+
 ### Focused automated evidence
 
 - **Wire/model:** realistic fixtures plus empty/missing/null/unknown/malformed/extreme values, invalid Unicode/length rules, numeric precision and partial/redacted models.
@@ -878,6 +985,7 @@ Generation/check/audit modes do not modify source. DocC checks extend to each se
 - **RPC/Activity/Social:** byte/frame fragmentation, nonce routing, subscription counts, missing host, denied scope, cross-origin injection, teardown and provider capabilities.
 - **Media:** published vectors, malformed binary lengths, authentication failures, key/epoch/ratchet changes, packet reordering/loss, RTP wrap, codec headers, device interruption and backpressure.
 - **Robustness:** bounded randomized malformed-input/state-sequence tests and available sanitizers on supported CI hosts; no external fuzz package required.
+- **Scale/request efficiency:** cross-worker admission and lease conformance, fairness under hot-identity load, bounded metadata retention, cache visibility/fetch races, coalesced-waiter cancellation, exact request/bulk counts, aggregate overload, reconnect storms and baseline resource return. Apply the numeric workload/measurement gates in F00 scalability policy from the first runtime slice.
 
 ### Platform and manual conformance
 
@@ -900,5 +1008,8 @@ Generation/check/audit modes do not modify source. DocC checks extend to each se
 | Tokens embedded in paths/bodies can leak despite header redaction. | One shared redaction policy covers descriptions, errors, logs, metrics, tracing and fixtures; sentinel-secret tests verify all surfaces. |
 | Module sprawl can create dependency cycles or force networking/media into simple consumers. | Incremental acyclic targets, narrow protocols, independent products, consumer-package builds and import/manifest audits. Development tools remain a separate package. |
 | Discord changes between planning and implementation, including future-effective changes. | Reverify each part before coding; preserve chronological history; weekly drift review and pre-release parity refresh. Upstream additions become new versioned work without rewriting prior history. |
+| Bounded individual clients still allow aggregate memory/task growth, and one global actor can serialize the fleet. | Partition identity/resource/shard ownership; cap aggregate admission, buffers, metadata and connections; profile skewed workloads and publish saturation evidence from Part 2 onward. |
+| Caching/coalescing/bulk packing can leak visibility or change mutation semantics. | Opaque auth/scope keys, opt-in freshness and mutation packing, invalidation/provenance, item/byte limits and request-count/isolation/partial-failure tests alongside each operation. |
+| Lost coordination or duplicate shard owners can overspend rate/start budgets during failure. | Atomic shared reservations, lease generations, explicit loss-of-authority behavior, stale-owner rejection, controlled topology transitions and deterministic multi-worker failure tests. Acknowledge already-in-flight writes. |
 
 Final parity is determined by the validated inventory and conformance evidence. Release reports must distinguish completed public protocols, approval gates, OS restrictions, and unresolved upstream protocol blockers.

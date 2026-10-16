@@ -8,6 +8,31 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-15 — scalability design requirements
+
+- Adopt early capacity planning for deployments serving hundreds through millions
+  of accounts and multiple bot identities, with explicit workload dimensions.
+- Require coordinated rate admission, bounded caches, read coalescing, documented
+  bulk request helpers, aggregate budgets and fair scheduling in runtime slices.
+- Move sharding design into architecture/transport work and the minimal sharded
+  lifecycle alongside the first HTTP slice; add load, overload and failover gates.
+- These are roadmap and policy changes; no new runtime support or measured
+  account/connection capacity is claimed.
+
+### 2026-10-15 — portable values and transport foundations
+
+- Add independent DiscordBits, DiscordCore and DiscordTransport products with
+  arbitrary-width bits, exact identifiers/JSON, field presence and timestamps.
+- Add forward-compatible raw values, typed redacted credentials, diagnostic
+  redaction, safe errors and explicit capability reporting.
+- Define cancellable transport contracts, monotonic deadlines and bounded pull
+  bodies with idempotent ownership cleanup; add deterministic test infrastructure.
+- Replace `hello()` and the empty test with foundational umbrella APIs and
+  consumer tests. Removing `hello()` is a source-breaking scaffold cleanup;
+  clients should use the portable APIs or remove their greeting call.
+- Declare the existing documented Apple deployment baselines in the manifest.
+  No endpoint, network adapter or cross-platform runtime support is claimed.
+
 ### 2026-10-15 — architecture and parity foundation
 
 - Record the intended product dependency graph, public API conventions,

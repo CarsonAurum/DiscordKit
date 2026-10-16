@@ -1,0 +1,197 @@
+# Scalability and request efficiency
+
+Status: adopted design requirements, added 2026-10-15. These requirements extend
+the [architecture](Architecture.md), [concurrency policy](Concurrency.md) and
+[implementation roadmap](../.air/plans/discordkit-full-platform-roadmap.plan.md).
+Part 1 supplies values, transport contracts and deterministic test support;
+rate scheduling, caches, sharded sessions and fleet coordination remain planned.
+This document does not establish a tested account or connection capacity.
+
+## Capacity model and responsibility
+
+Design DiscordKit as a bot library from the first runtime slice. Support growth
+from hundreds to millions of Discord accounts served across a deployment, and
+services operating many independent bot/application identities. Track end-user
+accounts, bot credentials, guilds, shards, active sessions and concurrent requests
+as separate workload dimensions; one million users does not imply one million
+Gateway sessions. Application provisioning remains a Developer Portal concern.
+
+Scale through partitioned workers and optional shared coordination. Provide an
+in-process implementation for ordinary bots and injectable coordination/storage
+contracts for deployments spanning processes or hosts. Consumers own deployment,
+durable infrastructure and fleet placement. Do not require a particular database,
+distributed actor runtime or production dependency for a single-process bot.
+
+Partition hot mutable state by authentication identity, resource and shard rather
+than funneling unrelated work through one global actor. Bound both each partition
+and total process usage: queued count/bytes, active requests, connections, handler
+tasks, subscriptions, cache entries/bytes, in-flight reads and coordination
+metadata. Fleet adapters must enforce any shared admission budget they advertise.
+Reject or backpressure excess admission explicitly; an account count must not
+implicitly create an unbounded set of actors, sockets or timers.
+
+## Rate admission and fairness
+
+Keep rate policy in HTTP/Gateway, above the send-once transport contract. Derive
+REST admission from learned bucket and resource scopes, respect retry delays,
+and account for applicable credential, shared-resource and egress limits.
+Interaction operations retain their documented distinct global treatment.
+Monitor invalid-request pressure at shared egress and stop repeated invalid
+credentials or unusable webhooks. Official behavior was checked on 2026-10-15;
+reverify changing limits before implementation. [Discord rate limits](https://docs.discord.com/developers/topics/rate-limits).
+
+Use opaque authentication partitions; raw tokens must not become cache keys,
+coordination identifiers or diagnostic labels. Clients and workers using the same
+credential must share its admission authority. Credential rotation must not reset
+still-applicable resource or egress limits. Each reservation needs a documented
+atomicity, expiry, cancellation and uncertain-send contract. Releasing a waiter
+must not refund a request that may already have reached Discord.
+
+Provide bounded scheduling classes with FIFO within each identity/resource
+partition and a documented fairness policy across eligible identities. Preserve
+required mutation ordering. Reserve control/deadline capacity
+without letting priority traffic indefinitely starve ordinary work. A blocked
+bucket must not cause head-of-line blocking for unrelated eligible resources.
+Retries consume rate, concurrency and retry budgets; preserve unknown mutation
+outcomes and prevent unbounded retry work.
+
+Distributed coordination requires atomic reservations and ownership generations.
+On unavailable coordination or lost ownership, stop new shared admissions until
+authority is restored; do not silently fall back to independent local budgets.
+Evict inactive metadata only when doing so cannot forget live reservations or
+reset a depleted budget. A consumer storage adapter must pass the same contract
+suite as the in-process implementation before claiming coordinated operation.
+
+## Make each request useful
+
+Define freshness, deduplication, replayability and bulk semantics per operation.
+HTTP exposes these policies without depending on Gateway or the entity-cache
+product. Direct fetch and no-cache modes remain available.
+
+- Coalesce equivalent eligible in-flight reads into one exchange. Keys include
+  the opaque authentication/authorization partition, API version, method, route,
+  query, representation and relevant headers. Different identities or scopes
+  cannot share private results. Bound keys and waiters; canceling one waiter must
+  leave others intact, and the last waiter releases owned work.
+- Make HTTP response reuse opt-in with explicit freshness and invalidation;
+  do not infer that every GET is cacheable. Bound entry count and accounted bytes,
+  TTLs and in-flight refreshes. Honor relevant server cache controls. Do not cache
+  transient or authentication failures as resource absence. Observed permission
+  or visibility changes, credential/scope changes and local writes invalidate
+  affected partitions or entries. Document TTL/revalidation limits for unobserved
+  external changes; a cached snapshot cannot establish current authorization.
+- Use event or interaction payload data when its completeness and freshness meet
+  the caller's requirements; avoid fetching each related object separately.
+  Deduplicate missing IDs before bounded fetches. Minimal intent selection and
+  lazy member loading avoid automatic full-guild hydration.
+- Pack work only through documented bulk endpoints with explicit helper policy.
+  Validate item and encoded-byte limits, compatibility and endpoint constraints;
+  split legal chunks, retain item correlation and report partial or indeterminate
+  outcomes. Mutation merging or delaying requires caller opt-in and a documented
+  equivalence rule. Do not invent a generic Discord batch API.
+- Keep pagination lazy with operation-specific termination and bounded prefetch.
+  Choose page sizes within documented limits based on the caller's need. Stop
+  after cancellation or early iterator termination. Reconcile unchanged commands
+  without writes. Use conditional requests only where supported.
+- Reuse connection pools with bounded total/per-origin connections and in-flight
+  exchanges. Stream attachments and large bodies rather than duplicating buffers.
+  Measure bandwidth/CPU costs before selecting supported compression policies.
+
+The optional entity cache remains a model projection, separate from HTTP response
+reuse. Offer no-cache/minimal/bounded policies and explicit persistent-adapter
+contracts when implemented. Isolate visibility by identity, scope and intent;
+track provenance, partial data, deletion and availability. Apply sparse event
+updates without erasing omitted fields; prevent older fetches from replacing
+newer observations. TTL/eviction/invalidation and overload must be observable.
+Entry/byte accounting bounds retained payloads; also measure actual process RSS,
+including allocator, index and runtime overhead.
+
+## Sharding in the first Gateway slice
+
+Define shard identity, routing, assigned subsets and startup coordination during
+architecture/transport work. Implement a minimal multi-shard lifecycle alongside
+the first HTTP slice, using only the required models and discovery endpoints;
+do not wait for the full REST catalog, cache or command framework.
+
+Use Discord's guild routing and discovery-provided shard/session-start metadata.
+Coordinate Identify concurrency and remaining starts across workers for each bot;
+Resume, outbound Gateway messages and REST retain their separate rules. Keep
+discovery URL reuse separate from refreshing startup allowances. Sharding
+distributes events; it does not increase a bot's REST quota. [Gateway guidance](https://docs.discord.com/developers/events/gateway), checked 2026-10-15.
+
+Give every shard an owner and generation. Provide in-process ownership plus an
+injectable lease store for external coordination. Loss of a lease stops new
+sends and closes/drains the old session; revalidate ownership around suspension
+points and reject stale generations at coordination boundaries. Document that
+external fencing cannot recall a network write already in flight. Never claim
+exactly-once event or mutation delivery during failover.
+
+Test simultaneous worker startup, expired leases, lost workers, coordinator
+outages, stale completions and reconnect storms. Define drain, handoff and
+restart procedures, bounded jitter and session-budget exhaustion behavior.
+Changing total shard count requires a controlled topology generation and cache
+resynchronization; do not promise transparent live resharding. Preserve per-shard
+event ordering with explicit overflow/resync; handlers and cache I/O cannot delay
+heartbeat/control work. Optional compression must bound decompressed output.
+
+Large-bot REST guild-list partitions differ from Gateway shard IDs. Cover the
+required `shard` query independently when implementing that operation; do not
+reuse Gateway routing. The requirement was announced on 2026-09-15; a separate
+effective date is unknown. [Discord change log](https://docs.discord.com/developers/change-log#shard-param-required-for-get-current-user-guilds-with-large-bot-sharding).
+
+## Evidence before capacity claims
+
+Start a development-only load harness with the transport slice, extend it for
+the first HTTP and sharded Gateway milestones, and rerun it for affected runtime
+changes. Keep the harness separate from runtime products and deterministic Swift
+Testing suites. It uses scripted/loopback peers, never a Discord load test.
+
+Version workload profiles for 100, 10,000 and 1,000,000 logical accounts across
+simulated workers. Specify whether accounts mean end users or bot identities;
+also record guild distribution, active fraction, shards, request/event mix,
+payload sizes, bursts, cache working set and subscriber speed. Stream large
+logical populations through bounded active cohorts; separately qualify real
+concurrent local sockets and active identities on named hardware. A simulated
+million-account profile is not evidence of a million live connections.
+
+Before accepting each runtime milestone, commit numeric workload-specific budgets
+for admitted concurrency, queued count/bytes, cache count/bytes, metadata,
+connections and maximum queue age. Establish measured baseline throughput,
+p50/p95/p99 latency, control delay, CPU, allocations and peak/steady RSS. Select
+latency/throughput targets from those measurements and the workload requirement;
+do not defer budget selection to final release. Report toolchain, hardware,
+configuration, duration, offered versus admitted load and saturation point.
+
+Correctness gates use virtual time and controlled barriers:
+
+1. With coalescing enabled, 100 equivalent concurrent eligible reads produce one
+   exchange; another identity cannot consume that result. A fresh opted-in cache
+   hit produces zero exchanges; expiry/invalidation triggers the documented fetch.
+2. Multiple workers sharing one credential never admit beyond injected limits.
+   An unrelated eligible identity proceeds within the configured maximum
+   scheduling delay even when another identity saturates its queue.
+3. Queue, cache, task, connection, metadata and refresh counters never exceed
+   configured per-partition or aggregate caps under ten times offered admission
+   capacity. Cancellation/shutdown leaves zero owned tasks, waiters and sockets;
+   retained caches/metadata follow their explicit ownership/expiry policy.
+4. Bulk helpers never exceed endpoint item/byte limits, preserve required ordering
+   and item correlation, and expose partial failure and ambiguous send outcomes.
+5. Competing workers cannot reserve the same shard lease generation; expired
+   owners cannot obtain new admission. Restart storms respect startup budgets,
+   and control work meets injected deadlines during handler/cache overload.
+
+Performance runs additionally include a 30-minute fixed-working-set local soak
+with overload/recovery cycles. Owned resource counters must return to baseline
+after shutdown. Record RSS samples and explain retained allocator/pool memory;
+unexplained sustained growth blocks the corresponding capacity claim. Compare
+throughput, latency, CPU and RSS against the versioned baseline on matching
+hardware; investigate a regression greater than 10% reproduced in three runs
+before accepting it or explicitly revising the documented budget.
+
+Expose request/cache/coalescing/bulk counts, admission delay, retries, invalid
+responses, queue saturation, event lag, heartbeat delay, startup-budget use and
+ownership loss through consumer-configured diagnostics. Keep default metric
+labels bounded (operation family/status/worker class); never label every account,
+guild, request or secret. Attribute tenant details only through opt-in bounded
+diagnostic sampling. Publish tested profiles and remaining bottlenecks with each
+runtime release, separating design goals from measured deployment capacity.

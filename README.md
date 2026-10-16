@@ -1,13 +1,13 @@
 # DiscordKit
 
 DiscordKit is the foundation of a modular, Swift-native Discord application and
-bot library. The current runtime is a `hello()` scaffold. REST, Gateway,
+bot library. Part 1 provides portable values and transport contracts. REST, Gateway,
 interactions, OAuth2, voice, RPC, Activities, Social and commerce integrations are
 not implemented.
 
-The first roadmap milestone establishes architecture, platform capabilities,
-dependency policy, a versioned parity inventory and explicit feasibility blockers.
-It does not constitute a working Discord client. An available API, a planned
+The architecture baseline records platform capabilities, dependency policy, a
+versioned parity inventory and explicit feasibility blockers. Portable values are
+usable today; network adapters and a working Discord client follow later. A planned
 target or an unavailable-capability stub never counts as implemented support.
 
 ## Build and test
@@ -24,9 +24,24 @@ swift build
 swift test
 ```
 
-The runtime scaffold has no Discord behavior to exercise. Planning and inventory
-validation must report their own coverage; passing the package tests alone does
-not establish protocol parity or platform runtime qualification.
+The package tests exercise precision, field presence, timestamps, secret redaction,
+stream ownership, cancellation and virtual time. Passing these tests does not
+establish endpoint parity or platform network qualification. See the
+[foundation contracts](Docs/Foundation.md) for limits and examples.
+
+## Available foundations
+
+- `DiscordBits`: arbitrary-width unsigned bitsets with decimal-string encoding.
+- `DiscordCore`: tagged snowflakes, bounded lossless JSON, absent/null/value fields,
+  timestamps, open raw values, redacted credentials, errors and capability reporting.
+- `DiscordTransport`: injectable HTTP, WebSocket, datagram, IPC and HTTP-ingress
+  protocols, bounded pull bodies and monotonic deadline contexts.
+- `DiscordKit`: common foundational type aliases for convenient adoption.
+
+There are no production package dependencies. Development-only deterministic
+clocks, barriers, scripts and resource tracking are excluded from library products.
+Apple deployment baselines are macOS 13, iOS/tvOS 16, watchOS 9 and visionOS 1;
+other-platform runtime qualification remains recorded separately.
 
 ## Planned consumer experience
 
@@ -38,8 +53,15 @@ not establish protocol parity or platform runtime qualification.
 - Optional voice APIs own the media protocol and expose join, frames and leave.
 - Platform and access restrictions produce explicit capability information.
 
-These contracts describe future work. Only the current package product,
-`DiscordKit`, exists today; feature products are introduced with real code.
+These consumer workflows describe future work. Feature products are introduced
+with implementations and tests as their roadmap phases are completed.
+
+Scalability is an early design requirement: deployments serving hundreds through
+millions of accounts need coordinated rate admission, bounded caches, equivalent
+read coalescing, documented bulk operations and sharding in the first Gateway
+slice. Per-identity and aggregate budgets, load profiles and measured release
+gates are defined in the [scalability requirements](Docs/Scalability.md). These
+are planned capabilities, not a demonstrated capacity of the current foundations.
 
 ## Scope and constraints
 
@@ -62,7 +84,9 @@ provisioning are not invented SDK endpoints. See Discord's
 ## Project records
 
 - [Architecture and API conventions](Docs/Architecture.md)
+- [Portable foundation contracts](Docs/Foundation.md)
 - [Concurrency and ownership](Docs/Concurrency.md)
+- [Scalability and request efficiency](Docs/Scalability.md)
 - [Dependency policy and candidate releases](Docs/Dependencies.md)
 - [Platform support and feasibility](Docs/PlatformSupport.md)
 - [Parity inventory and evidence](Docs/Parity/README.md)

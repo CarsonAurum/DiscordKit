@@ -1,9 +1,11 @@
 # Platform support and qualification
 
-Verified **2026-10-15**. This is the Part 0 capability baseline, not a claim that
+Updated **2026-10-15**. This is the capability baseline, not a claim that
 DiscordKit already implements REST, OAuth, Gateway, voice, ingress, or desktop RPC.
-The production library still contains its original scaffold. Transport evidence
-comes from a separate development fixture, not a published adapter.
+The production library implements portable values and transport contracts.
+Network transport evidence comes from a separate development fixture, not a
+published adapter. Part 1 foundation tests execute on macOS arm64; the other
+platforms' qualification gaps below remain open.
 
 ## Meaning of the results
 

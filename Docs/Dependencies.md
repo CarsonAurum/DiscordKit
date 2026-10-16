@@ -1,10 +1,16 @@
 # Dependency policy and qualification
 
-Baseline verified: 2026-10-15. The production runtime package currently has **no
+Updated: 2026-10-15. The Part 1 production package has **no
 external package dependencies**. Separate development probes resolve exact NIO/TLS
 and Crypto graphs and have exercised their documented scenarios on macOS arm64.
 The candidate list does not establish production adapter support or freeze an
 adapter choice; other platforms and full adapter conformance remain unqualified.
+
+The portable targets use the Swift standard library and Foundation. The internal
+test-support clock uses the standard `Synchronization` module's `Mutex` with
+explicit newer Apple availability; it does not raise the runtime product minima
+or introduce a package dependency. Network adapter dependencies remain isolated
+to the existing feasibility packages until Part 2.
 
 ## Allowed graph
 

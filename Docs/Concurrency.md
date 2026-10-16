@@ -1,8 +1,9 @@
 # Concurrency and ownership
 
-Status: adopted implementation policy, baseline dated 2026-10-15. Protocol actors,
-queues and event streams described here are planned; the runtime scaffold does
-not implement them yet.
+Status: adopted implementation policy, updated 2026-10-15. Part 1 implements
+Sendable values, pull-body ownership and deadline contexts with deterministic
+test support. Protocol actors, scheduling queues and event broadcasts described
+below remain planned for their respective runtime phases.
 
 ## Target settings and isolation
 
@@ -65,7 +66,24 @@ Cache freshness, duplicate events and fetch/event races require explicit state
 rules. A value being `Sendable` does not make a snapshot authoritative. Runtime
 availability and background lifecycle restrictions remain platform capabilities.
 
+## Aggregate ownership and admission
+
+Partition runtime ownership by authentication identity, resource and shard.
+Avoid a global actor in unrelated request/event hot paths. Per-partition limits
+must compose with process-wide queue/byte/task/connection/cache/metadata budgets;
+bounded individual clients alone do not bound a multi-account deployment.
+Admission and retries use those same budgets and a documented fairness policy.
+Coalesced reads have bounded independent waiters; canceling one cannot cancel
+work still owned by another. Shared reservations and shard leases require atomic
+ownership generations and explicit coordinator-outage behavior. Recheck ownership
+after suspension and stop new sends when authority is lost.
+
 ## Verification
+
+The [scalability requirements](Scalability.md) define deterministic overload,
+cross-worker admission, lease-failover and request-reduction gates. Keep local
+performance/soak measurements separate from virtual-time correctness tests;
+qualify aggregate budgets and control latency from the first runtime milestones.
 
 Use deterministic Swift Testing suites with injected clocks and scripted
 transports. Cover success, errors, cancellation before and during work, deadlines,
