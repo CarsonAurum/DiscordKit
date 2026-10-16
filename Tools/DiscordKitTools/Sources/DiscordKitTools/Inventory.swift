@@ -20,6 +20,41 @@ struct InventoryEntry: Decodable, Sendable {
     let condition: String
     let review: String
     let evidence: [String]
+    let protocolVersion: String?
+
+    /// Recognized schema keys; absent protocol overrides inherit the source classification.
+    private enum CodingKeys: String, CodingKey {
+        case id, kind, name, sourceID, locator, context, status, condition, review, evidence
+        case protocolVersion
+    }
+
+    /// Decodes required metadata and an optional, nonnullable protocol override.
+    ///
+    /// An omitted `protocolVersion` inherits the source's classification. An explicit
+    /// null or nonstring value is malformed rather than an inheritance request, matching
+    /// the interchange schema. Unknown keys retain normal `Decodable` compatibility.
+    /// This synchronous operation performs no I/O, suspension or shared-state mutation.
+    ///
+    /// - Parameter decoder: Decoder positioned at one inventory-entry object. Required
+    ///   strings and string arrays must be present; classification values are checked by
+    ///   `InventoryValidator.validate(inventoryData:sourcesData:)` after decoding.
+    /// - Throws: `DecodingError` for a nonobject entry, missing required key, null value,
+    ///   or incompatible JSON type, including an explicitly null protocol override.
+    init(from decoder: any Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
+        kind = try values.decode(String.self, forKey: .kind)
+        name = try values.decode(String.self, forKey: .name)
+        sourceID = try values.decode(String.self, forKey: .sourceID)
+        locator = try values.decode(String.self, forKey: .locator)
+        context = try values.decode(String.self, forKey: .context)
+        status = try values.decode(String.self, forKey: .status)
+        condition = try values.decode(String.self, forKey: .condition)
+        review = try values.decode(String.self, forKey: .review)
+        evidence = try values.decode([String].self, forKey: .evidence)
+        protocolVersion = values.contains(.protocolVersion)
+            ? try values.decode(String.self, forKey: .protocolVersion) : nil
+    }
 }
 
 /// Pinned sources and their complete discovery membership, used to detect lost definitions.
@@ -60,6 +95,7 @@ struct InventoryFailure: Error, CustomStringConvertible {
 
 /// Checks the committed discovery inventory without accessing the network or changing files.
 enum InventoryValidator {
+    static let protocolVersions: Set<String> = ["10", "8", "unversioned", "not_applicable"]
     static let statuses: Set<String> = ["supported", "partial", "unsupported", "deprecated", "removed"]
     static let conditions: Set<String> = [
         "public_protocol", "approval_required", "portal_only", "unavailable_upstream",
@@ -76,6 +112,8 @@ enum InventoryValidator {
     /// performs linear scans with sets proportional to the inventory size. Discovery membership
     /// catches accidentally omitted definitions; it does not prove that an extractor understood
     /// every upstream contract. A passing result must never be labeled full API parity.
+    /// Source versions and any entry overrides use the schema-v1 vocabulary. An absent
+    /// override inherits its source version; an explicit null or nonstring is rejected.
     ///
     /// - Parameters:
     ///   - inventoryData: UTF-8 JSON matching inventory schema version 1. Empty or malformed
@@ -106,7 +144,7 @@ enum InventoryValidator {
                   source.verifiedOn == catalog.verifiedOn,
                   isDate(source.announcementDate, allowUnknown: true),
                   isDate(source.effectiveDate, allowUnknown: true),
-                  ["10", "8", "unversioned", "not_applicable"].contains(source.protocolVersion),
+                  protocolVersions.contains(source.protocolVersion),
                   ["written_docs", "preview_spec", "sdk_reference", "discovery_index"].contains(source.authority),
                   !source.accessPrerequisites.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                   !source.platformAvailability.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
@@ -127,6 +165,7 @@ enum InventoryValidator {
         for entry in inventory.entries {
             guard !entry.id.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, seen.insert(entry.id).inserted,
                   kinds.contains(entry.kind), statuses.contains(entry.status),
+                  entry.protocolVersion.map({ protocolVersions.contains($0) }) ?? true,
                   conditions.contains(entry.condition), ["discovered", "reviewed"].contains(entry.review),
                   !entry.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                   !entry.locator.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,

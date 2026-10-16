@@ -71,6 +71,38 @@ struct ScriptedTransportTests {
         #expect(await counter.snapshot().live == 0)
     }
 
+    /// Rejects a response when cancellation or expiration follows the last pre-transfer snapshot.
+    /// The clock hook changes state after that snapshot, so only a check after
+    /// taking response ownership can reclaim both bodies instead of returning success.
+    /// - Parameter cancel: True cancels the executing task; false reaches the inclusive deadline.
+    /// - Throws: Unexpected fixture construction or clock-advance errors.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test(arguments: [false, true])
+    func httpRechecksContextAfterTakingResponse(cancel: Bool) async throws {
+        let manual = ManualClock()
+        let clock = CompletionBoundaryClock(clock: manual, afterSnapshot: { count in
+            guard count == 3 else { return }
+            if cancel { withUnsafeCurrentTask { $0?.cancel() } }
+            else { try? manual.advance(by: .seconds(1)) }
+        })
+        let context = TransportContext(clock: clock, deadline: manual.now.advanced(by: .seconds(1)))
+        let counter = ResourceCounter()
+        let requestBody = try await trackedBody(counter)
+        let responseBody = try await trackedBody(counter)
+        let transport = try ScriptedHTTPTransport(steps: [{ _ in HTTPResponse(status: 200, body: responseBody) }])
+        let task = Task { try await transport.execute(request(body: requestBody), context: context) }
+        if cancel {
+            await #expect(throws: CancellationError.self) { try await task.value }
+        } else {
+            await #expect(throws: TransportFailure.deadlineExceeded) { try await task.value }
+        }
+        #expect(await transport.executionCount == 1)
+        #expect(await counter.snapshot().released == 2)
+        #expect(await counter.snapshot().live == 0)
+        #expect(manual.pendingSleepCount == 0)
+        await responseBody.close()
+    }
+
     /// A deadline cancels a suspended script; even a late produced response is reclaimed.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func httpDeadlineReclaimsLateResponse() async throws {

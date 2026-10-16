@@ -23,7 +23,7 @@ REST, HTTP interactions, Gateway, OAuth2 and optional voice adoption.
 
 ## Build and validation
 
-Use Swift 6.4 or newer, as required by the manifest. Both targets enable the
+Use Swift 6.4 or newer, as required by the manifest. All root package targets enable the
 `ApproachableConcurrency` upcoming feature and explicitly use nonisolated default
 isolation; preserve these settings unless the task requires changing them.
 

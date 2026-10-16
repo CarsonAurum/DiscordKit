@@ -49,6 +49,12 @@ numeric spellings; fractions, exponent forms and larger integers require the
 explicit lossless serializer. Nonnumeric trees can use the Codable bridge.
 Codable does not apply `JSONLimits`; bound the outer input separately. Future
 endpoint codecs must use the lossless path when retaining unknown numeric data.
+This applies to numeric discriminators as well: `RawValue<Known>` delegates
+decoding to its raw type, and a generic decoder may round a near-integer fraction
+before reporting an integer. It cannot establish original numeric-token validity.
+Validate exact discriminator grammar and range from the lossless tree before
+constructing numeric raw values; do not rely on a successful Codable integer
+decode as proof of an exact wire integer.
 
 `Field<Value>` represents `.absent`, `.null` and `.value`. Use keyed
 `encodeField(_:forKey:)` / `decodeField(_:forKey:)`; a standalone value encoder

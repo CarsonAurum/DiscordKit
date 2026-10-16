@@ -41,9 +41,11 @@ Discord changes within API versions. This roadmap fixes an explicit feature boun
 
 ### Existing repository and preservation requirements
 
-- [Package.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Package.swift?type=file&linesData=%7B%22range%22%3A%7B%22first%22%3A0%2C%22second%22%3A639%7D%2C%22lines%22%3A%7B%22first%22%3A0%2C%22second%22%3A27%7D%7D&root=%252F) currently requires Swift 6.4 and enables ApproachableConcurrency in the library and test targets. Preserve these settings and four-space indentation across new targets.
-- [DiscordKit.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Sources/DiscordKit/DiscordKit.swift?type=file&linesData=%7B%22range%22%3A%7B%22first%22%3A71%2C%22second%22%3A121%7D%2C%22lines%22%3A%7B%22first%22%3A2%2C%22second%22%3A4%7D%7D&root=%252F) contains only hello(); [DiscordKitTests.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Tests/DiscordKitTests/DiscordKitTests.swift?type=file&linesData=%7B%22range%22%3A%7B%22first%22%3A44%2C%22second%22%3A265%7D%2C%22lines%22%3A%7B%22first%22%3A3%2C%22second%22%3A7%7D%7D&root=%252F) is an empty scaffold. Replace the scaffold when the first consumer-facing slice exists.
-- The current [AGENTS.md](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/AGENTS.md?type=file&root=%252F) and manifest are the baseline to preserve. Final read-only inspection shows a clean working tree. The guidance's “keep library code in DiscordKit” convention must be updated to describe the explicitly requested sublibraries when modularization lands.
+Current state after Part 1, reviewed 2026-10-15:
+
+- [Package.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Package.swift?type=file&root=%252F) requires Swift 6.4, enables ApproachableConcurrency and explicitly selects nonisolated default isolation for every root target. Preserve these settings and four-space indentation across new targets.
+- [DiscordKit.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Sources/DiscordKit/DiscordKit.swift?type=file&root=%252F) exposes common Core aliases; [DiscordKitTests.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Tests/DiscordKitTests/DiscordKitTests.swift?type=file&root=%252F) exercises portable consumer behavior and MainActor adoption. Part 1 replaced the original hello() and empty test scaffold. Extend these foundations with composition when implemented runtime products exist.
+- [AGENTS.md](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/AGENTS.md?type=file&root=%252F) already describes the implemented sublibraries, deterministic test support and separate feasibility/tooling packages. Preserve their dependency boundaries and update guidance with each implemented phase. Inspect the working tree again before each change; a previous clean snapshot does not establish current state.
 - Keep generated outputs and local metadata consistent with [.gitignore](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/.gitignore?type=file&root=%252F); reviewed generated source belongs in version control, build products and credentials do not.
 
 ### Dependency policy
@@ -128,8 +130,8 @@ Existing files to modify:
 | Action | Existing file | Responsibility |
 |---|---|---|
 | Modify | [Package.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Package.swift?type=file&root=%252F) | Incremental target/product graph, platforms, approved dependencies, resources and uniform concurrency settings |
-| Modify | [DiscordKit.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Sources/DiscordKit/DiscordKit.swift?type=file&root=%252F) | Replace hello() with composition and deliberate public entry points |
-| Modify | [DiscordKitTests.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Tests/DiscordKitTests/DiscordKitTests.swift?type=file&root=%252F) | Replace placeholder with end-to-end consumer-contract tests |
+| Modify | [DiscordKit.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Sources/DiscordKit/DiscordKit.swift?type=file&root=%252F) | Extend the implemented foundational aliases with composition and deliberate public entry points |
+| Modify | [DiscordKitTests.swift](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/Tests/DiscordKitTests/DiscordKitTests.swift?type=file&root=%252F) | Extend the implemented portable consumer tests with runtime consumer-contract tests |
 | Modify | [AGENTS.md](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/AGENTS.md?type=file&root=%252F) | Describe the authorized modular layout and actual validation commands; preserve the existing method documentation/testing rules |
 | Modify as needed | [.gitignore](air-file://l5n6o8gm5adj032jrr52/Users/carsonrau/Developer/DiscordKit/.gitignore?type=file&root=%252F) | Ignore new tool caches and local integration credentials only |
 

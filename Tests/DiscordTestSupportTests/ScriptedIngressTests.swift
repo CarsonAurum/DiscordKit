@@ -150,6 +150,32 @@ import Testing
         #expect(gate.waitingCount == 0)
     }
 
+    /// Rechecks expiration after transmission cleanup and before recording successful completion.
+    /// The third clock sample changes time only after its old value was read, modeling
+    /// expiration while the responder awaits its completed transmission task.
+    /// - Throws: Unexpected fixture construction failures; the elapsed deadline is asserted.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func responderRechecksDeadlineBeforeCompletion() async throws {
+        let manual = ManualClock()
+        let clock = CompletionBoundaryClock(clock: manual, afterSnapshot: { count in
+            if count == 3 { try? manual.advance(by: .seconds(1)) }
+        })
+        let counter = ResourceCounter()
+        let lease = await counter.acquire()
+        let body = try await trackedBody(counter)
+        let responder = ScriptedHTTPResponder(lease: lease)
+        let context = TransportContext(clock: clock, deadline: manual.now.advanced(by: .seconds(1)))
+        await #expect(throws: TransportFailure.deadlineExceeded) {
+            try await responder.respond(HTTPResponse(status: 200, body: body), context: context)
+        }
+        #expect(await responder.reservationCount == 1)
+        #expect(await responder.completionCount == 0)
+        #expect(await counter.snapshot().released == 2)
+        #expect(await counter.snapshot().live == 0)
+        #expect(manual.pendingSleepCount == 0)
+        await responder.close()
+    }
+
     /// Closing an unused slot rejects later responses but still closes the rejected call's body.
     /// - Throws: Unexpected body fixture errors.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
@@ -307,6 +333,30 @@ import Testing
         #expect(clock.pendingSleepCount == 0)
         #expect(gate.waitingCount == 0)
         #expect(try await ingress.accept(context: TransportContext(clock: clock)) == nil)
+    }
+
+    /// Expiration while awaiting losing-timer cleanup prevents accepted ownership from transferring.
+    /// Work wins the structured race, then timer cancellation advances virtual time
+    /// to the deadline before the listener resumes. Both exchange resources must close.
+    /// - Throws: Unexpected fixture, EOF, or clock-construction errors.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func ingressRechecksDeadlineBeforeTransfer() async throws {
+        let manual = ManualClock()
+        let clock = CompletionBoundaryClock(clock: manual, afterCancelledSleep: {
+            try? manual.advance(by: .seconds(1))
+        })
+        let counter = ResourceCounter()
+        let exchange = try await trackedExchange(counter, path: "completion-deadline")
+        let ingress = try ScriptedHTTPIngress(incoming: [exchange])
+        let context = TransportContext(clock: clock, deadline: manual.now.advanced(by: .seconds(1)))
+        await #expect(throws: TransportFailure.deadlineExceeded) { try await ingress.accept(context: context) }
+        #expect(await ingress.acceptanceCount == 0)
+        #expect(await counter.snapshot().released == 2)
+        #expect(await counter.snapshot().live == 0)
+        #expect(manual.pendingSleepCount == 0)
+        await exchange.request.body?.close()
+        await exchange.responder.close()
+        #expect(try await ingress.accept(context: TransportContext(clock: manual)) == nil)
     }
 
     /// An injected acceptance error closes its untransferred exchange; empty listeners return repeatable EOF.

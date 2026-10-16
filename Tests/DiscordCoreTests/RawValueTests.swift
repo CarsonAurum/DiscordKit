@@ -40,12 +40,35 @@ import Testing
         #expect(RawValue<IntegerKind>(.negative).rawValue == -1)
     }
 
-    /// Null, fractions, and strings fail an integer-backed enum's raw-type decoding contract.
+    /// Null, an unambiguously nonintegral fraction, strings and overflow fail the raw-type decoder.
     /// - Parameter source: A JSON value that cannot decode as a native integer raw value.
     @Test(arguments: ["null", "1.5", "\"1\"", "18446744073709551616"])
     func invalidIntegerValues(source: String) {
         #expect(throws: DecodingError.self) {
             try JSONDecoder().decode(RawValue<IntegerKind>.self, from: Data(source.utf8))
         }
+    }
+
+    /// Exact numeric discriminator validation starts from the lossless parser, before a typed raw value exists.
+    ///
+    /// Near-integer fractions, exponent spellings and out-of-range integers retain
+    /// their original tokens. This does not assume a particular Foundation decoder's
+    /// rounding behavior; the typed initializer receives only explicitly validated integers.
+    /// - Parameter source: A valid JSON number that must not silently become a known integer discriminator.
+    /// - Throws: Unexpected parser, serialization or required-number failures.
+    @Test(arguments: ["1.000000000000000000001", "1e0", "18446744073709551616"])
+    func exactNumericDiscriminators(source: String) throws {
+        let tree = try JSONValue.parse(source)
+        guard case .number(let number) = tree else {
+            Issue.record("Expected an exact numeric discriminator.")
+            return
+        }
+        #expect(number.rawValue == source)
+        #expect(String(decoding: try tree.serialized(), as: UTF8.self) == source)
+        #expect(Int(number.rawValue) == nil)
+        let validated = try #require(Int("1"))
+        let known = RawValue<IntegerKind>(rawValue: validated)
+        #expect(known.rawValue == validated)
+        #expect(known.knownValue == .known)
     }
 }

@@ -76,6 +76,55 @@ struct InventoryTests {
         #expect(try fixture.validate().sources == 1)
     }
 
+    /// Accepts every schema-v1 per-entry protocol override independently of its source.
+    ///
+    /// The source remains REST version 10, so voice and unversioned overrides exercise
+    /// mixed-source definitions. Existing fixtures without an override continue to
+    /// exercise inheritance. These classifications do not certify protocol support.
+    /// - Parameter version: Each permitted wire version or explicit nonversioned category.
+    /// - Throws: Unexpected JSON encoding, decoding or validation errors fail the test.
+    @Test(arguments: ["10", "8", "unversioned", "not_applicable"])
+    func acceptsEveryEntryProtocolVersion(version: String) throws {
+        var fixture = InventoryFixture.valid()
+        fixture.mutateEntries { $0[0]["protocolVersion"] = version }
+        #expect(try fixture.validate() == InventoryReport(
+            entries: 1, sources: 1, supported: 1, pendingReview: 0
+        ))
+    }
+
+    /// Rejects unknown or blank overrides rather than silently inheriting the source.
+    ///
+    /// This regresses the decoder previously ignoring the recognized `protocolVersion`
+    /// key. A valid source version cannot make a malformed entry classification valid.
+    /// - Parameter version: Blank, out-of-baseline, prefixed or incorrectly cased text.
+    /// - Throws: Unexpected fixture encoding errors fail the test; expected validation
+    ///   failures are asserted locally.
+    @Test(arguments: ["", " ", "\n\t", "9", "11", "v10", "UNVERSIONED"])
+    func rejectsUnknownEntryProtocolVersions(version: String) throws {
+        var fixture = InventoryFixture.valid()
+        fixture.mutateEntries { $0[0]["protocolVersion"] = version }
+        #expect(throws: InventoryFailure.self) { try fixture.validate() }
+    }
+
+    /// Enforces the optional-but-nonnullable string type of per-entry overrides.
+    ///
+    /// An absent key is valid in the shared fixture, while each explicitly supplied
+    /// incompatible value must fail decoding. The object case reproduces a malformed
+    /// override that the command previously accepted without inspection.
+    /// - Parameter shape: Selects JSON null, number, Boolean, array or object input.
+    /// - Throws: Unexpected fixture encoding errors fail the test; expected decoding
+    ///   failures are asserted locally.
+    @Test(arguments: ["null", "number", "boolean", "array", "object"])
+    func rejectsMalformedEntryProtocolVersions(shape: String) throws {
+        let values: [String: Any] = [
+            "null": NSNull(), "number": 10, "boolean": true,
+            "array": ["10"], "object": ["invalid": "not a protocol version"],
+        ]
+        var fixture = InventoryFixture.valid()
+        fixture.mutateEntries { $0[0]["protocolVersion"] = values[shape] }
+        #expect(throws: DecodingError.self) { try fixture.validate() }
+    }
+
     /// Verifies supported, partial and pending-review counts remain separate.
     ///
     /// The additional definition is discovered and unsupported with no test evidence;

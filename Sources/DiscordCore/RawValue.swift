@@ -4,9 +4,16 @@
 /// decoding fail when Discord adds a case. Equality and hashing use the raw value;
 /// known-case lookup is computed each time and never rewrites an unknown value.
 /// This type does not confer API support on an unrecognized value.
+///
+/// Codable preserves the value produced by `Known.RawValue`'s decoder, not the
+/// original numeric token. Some decoders, including Foundation's `JSONDecoder`,
+/// can round a sufficiently precise fraction when decoding an integer raw type,
+/// potentially resolving that result to a known case. Use `JSONValue.parse`
+/// and validate its exact number lexeme before constructing a numeric raw value
+/// when the protocol requires exact discriminator validation or unknown-number retention.
 public struct RawValue<Known: RawRepresentable & Sendable>: Sendable, Hashable
 where Known.RawValue: Codable & Hashable & Sendable {
-    /// The original raw payload, including a value unknown to `Known`.
+    /// The supplied or decoded raw value, including a value unknown to `Known`.
     public let rawValue: Known.RawValue
 
     /// Resolves a typed case when the current enum recognizes this raw value.
@@ -30,6 +37,11 @@ where Known.RawValue: Codable & Hashable & Sendable {
 
 extension RawValue: Codable {
     /// Decodes the raw payload without rejecting unknown enum cases.
+    ///
+    /// Numeric precision, accepted token spellings and range validation follow
+    /// `Known.RawValue` and the supplied decoder. This method cannot inspect
+    /// original JSON number lexemes or prevent the decoder from rounding them;
+    /// use `JSONValue.parse` when those distinctions must survive decoding.
     /// - Parameter decoder: A decoder positioned at a raw scalar or its type's own representation.
     /// - Throws: Errors from decoding `Known.RawValue`; unknown enum cases are not errors.
     public init(from decoder: any Decoder) throws {
