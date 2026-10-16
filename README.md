@@ -4,7 +4,8 @@ DiscordKit is the foundation of a modular, Swift-native Discord application and
 bot library. Parts 1–3 provide portable values, owned network adapters, a bounded
 HTTP execution pipeline and a minimal sharded Gateway lifecycle. The typed REST
 slice retrieves the current user/application and Gateway discovery, and adds
-[message and poll operations](Docs/RESTCatalog.md) in Phase 5A. Interactions,
+[message and poll operations](Docs/RESTCatalog.md) in Phase 5A and
+[channels and threads](Docs/Channels.md) in Phase 5B. Interactions,
 OAuth2 flows, voice, RPC, Activities, Social and commerce are not implemented.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for

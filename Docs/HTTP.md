@@ -31,7 +31,8 @@ The first typed descriptors are `DiscordEndpoints.currentUser()` and
 `currentApplication()` plus `GatewayEndpoints.bot()` in the optional Gateway product.
 User/Application models are **partial typed projections**, retaining exact unknown
 JSON fields, large string snowflakes and absent/null/value states. Full resource
-catalog expansion begins with Part 5A [messages and polls](RESTCatalog.md);
+catalog expansion includes Part 5A [messages and polls](RESTCatalog.md) and Part 5B
+[channels and threads](Channels.md);
 these initial descriptors do not imply full resource-family parity.
 
 `AssetClient` accepts HTTPS destinations without credential/header customization.

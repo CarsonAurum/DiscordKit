@@ -12,7 +12,9 @@ Part 4 adds offline reviewed-definition validation and deterministic generation 
 the existing model/endpoint slice; see `Docs/Generation.md`.
 Part 5A adds typed message/poll REST operations, components, validated payloads,
 bounded uploads and explicit continuation/bulk helpers; see `Docs/RESTCatalog.md`.
-Part 5B–5J and other resource-family completion remain pending.
+Part 5B adds channels/threads, type-specific settings, invite/recipient operations,
+forum/media uploads and bounded membership/archive workflows; see `Docs/Channels.md`.
+Part 5C–5J and other resource-family completion remain pending.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

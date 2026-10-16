@@ -7,8 +7,11 @@ with deterministic evidence. See the [HTTP/Gateway history](changes/2026-10-16-h
 Part 4 links the existing implementation to [reviewed contracts](reviewed-v1.json),
 per-field semantics, real symbols and test/fixture evidence. See the
 [generation guide](../Generation.md), [generated reviewed report](generated-reviewed.md)
-and [tooling history](changes/2026-10-16-reviewed-generation.md). Support remains at
-the existing partial User/Application and handwritten Gateway discovery slice.
+and [tooling history](changes/2026-10-16-reviewed-generation.md). Phase 5A adds the
+[message/poll catalog](../RESTCatalog.md); Phase 5B adds the
+[channel/thread catalog](../Channels.md), including all 24 Channel operations and
+active guild threads. These handwritten contracts retain explicit partial related
+resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
 [foundation history](changes/2026-10-15-foundations.md). Part 2 adds independently
 adoptable network adapters and local evidence in the

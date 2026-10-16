@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "verifiedAt": "2026-10-15",
+  "verifiedAt": "2026-10-16",
   "entries": [
     {
       "id": "identity-profile-success-response",
@@ -204,6 +204,60 @@
       "interimPolicy": "Store document revision and negotiated DAVE integer separately; require current Gateway/change-log evidence for supported versions and eligible surfaces.",
       "requiredResolution": "Official version mapping/current negotiation examples and supported/deprecated-version policy; no guessed mapping from the prose heading.",
       "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "channel-preview-invite-typing-success-variants",
+      "status": "open",
+      "surface": "REST v10 / Channel invite creation and typing indicator",
+      "description": "The written Channel reference returns an Invite object for Create Channel Invite and explicitly specifies empty 204 for Trigger Typing Indicator. The official preview specification additionally permits an empty 204 for invite creation and a 200 TypingIndicatorResponse JSON object with no declared properties for typing. It does not explain the conditions or authorization contexts selecting those alternatives.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/channel",
+          "section": "Create Channel Invite and Trigger Typing Indicator success responses",
+          "revision": "unknown",
+          "sha256": "bd0779405b2d5f2df96986b1d4e2768ca1c9b368424ea3bf9c678a5ab3dae02c"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "paths /channels/{channel_id}/invites POST and /channels/{channel_id}/typing POST responses",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Treating every preview alternative as a documented bot contract would broaden the typed success shapes without establishing their conditions; blindly narrowing a future valid alternative could reject it.",
+      "interimPolicy": "Follow the written reference for the implemented bot descriptors: invite creation accepts 200 Invite JSON and typing accepts empty 204. Preserve preview alternatives as an unresolved source discrepancy; do not infer user-session support or invent typing response fields.",
+      "requiredResolution": "Official written documentation of the alternative status/body conditions and authentication contexts, or approved conformance evidence covering each alternative before expanding the typed contracts.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "channel-invite-preview-nullable-optional-fields",
+      "status": "open",
+      "surface": "REST v10 / Channel invite response optional nullability",
+      "description": "The written Invite table marks approximate_presence_count, approximate_member_count and roles optional without nullable types. The pinned official preview GuildInviteResponse permits null for each, and GroupDMInviteResponse permits null approximate_member_count.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/invite",
+          "section": "Invite Structure optional approximate counts and roles",
+          "revision": "unknown",
+          "sha256": "bf8e5d5cf299e5eb502fd085af07b585a4c52deef0d2c97c23dd623c6fed5d12"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "components.schemas.GuildInviteResponse approximate_presence_count/approximate_member_count/roles and GroupDMInviteResponse approximate_member_count",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Rejecting explicit null would discard an officially described preview response; mapping null to omission would lose presence information.",
+      "interimPolicy": "Accept and preserve absent/null/value states for the three fields in ChannelInvite, retaining exact raw JSON and recording the broader response compatibility. No request nullability is inferred. Referenced role/guild/application/event projections remain explicitly partial.",
+      "requiredResolution": "Official written nullability clarification or corrected specification, with realistic fixtures for the documented invite variants.",
+      "verifiedAt": "2026-10-16",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"

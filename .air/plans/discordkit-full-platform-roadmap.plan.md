@@ -649,6 +649,14 @@ Limits are server-derived rather than permanently hardcoded; bucket keys include
 
 Each row is its own work package. For **every currently available endpoint** in that family's official reference, implement the complete request/response schema, typed authentication, documented permissions/intents/scopes, pagination/async jobs, multipart behavior, special status codes and failure fixtures. Use the inventory discovered in Part 0 rather than relying only on the representative details below.
 
+**5B implementation update, 2026-10-16:** All 24 current Channel operations and
+active guild threads have typed Models/HTTP APIs and deterministic fixtures, with
+channel-owned fields, type-aware requests, bounded uploads, recipient success
+variants, explicit pagination and snapshot no-op reconciliation. See
+[Channel contracts](../../Docs/Channels.md) and [execution evidence](phase-5b-execution.plan.md).
+Referenced resource families retain their documented partial projections; batches
+5C–5J and platform/live/soak qualification remain separate.
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |

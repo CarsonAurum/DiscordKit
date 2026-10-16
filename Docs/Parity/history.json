@@ -258,6 +258,49 @@
       ],
       "details": "changes/2026-10-16-messages-polls.md",
       "remainingGates": "../RESTCatalog.md"
+    },
+    {
+      "id": "2026-10-16-part-5b-channels",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "channel_thread_rest_implementation",
+      "previousBehavior": "Channel/thread endpoints and fields were unsupported; related message-family payloads retained partial raw projections.",
+      "currentBehavior": "Typed descriptors for all 24 documented Channel operations and active guild threads, complete channel-owned response fields and variants, validated type-specific settings and forum messages, bounded uploads and invite CSV, correct recipient auth and lazy member/archive workflows. Referenced resource families and batches 5C-5J remain partial or pending.",
+      "affectedSymbols": [
+        "Channel",
+        "ChannelModify",
+        "ThreadMember",
+        "ThreadMetadata",
+        "ForumThreadStart",
+        "ChannelInvite",
+        "ChannelInviteCreate",
+        "GroupDMRecipientAdd",
+        "VoiceChannelStatus",
+        "ChannelEndpoints",
+        "ChannelOperations"
+      ],
+      "affectedPayloads": "API v10 channels, overwrites, threads, forum/media initial messages, member/archive envelopes, channel invites and recipient tokens.",
+      "breakingChanges": [],
+      "migration": "New opt-in Models/HTTP APIs. Use explicit channel-type edit context, separate recipient gdm.join token, withMember true for v10 member pagination and operation-specific archive timestamp or ID cursors. No source-incompatible change to existing symbols.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/channel",
+        "https://docs.discord.com/developers/resources/guild",
+        "https://docs.discord.com/developers/resources/invite",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-16-channels.md",
+      "remainingGates": "../Channels.md"
     }
   ]
 }

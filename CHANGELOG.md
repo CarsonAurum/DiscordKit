@@ -8,6 +8,20 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — channel and thread REST catalog (Phase 5B)
+
+- Add every documented channel descriptor plus active guild threads: settings,
+  overwrites, invites, announcement follows, typing, group-DM recipients, voice
+  status, thread/forum/media creation and membership/archive enumeration.
+- Preserve the complete Channel field surface, unknown variants/bits, exact
+  permission strings, nullable application IDs and flagged obfuscated state.
+- Validate type-specific requests and forum initial-message/upload compatibility;
+  bound invite CSVs, reuse shared upload ownership and invalidate visibility snapshots.
+- Add lazy member/archive workflows with correct v10 pagination, distinct
+  timestamp/ID cursors, member correlation and explicit no-op settings reconciliation.
+- Record current contract verification, upstream chronology and deterministic
+  regression evidence. Related resource families and batches 5C–5J remain pending.
+
 ### 2026-10-16 — message and poll REST catalog (Phase 5A)
 
 - Add typed descriptors for all current message/poll routes, including indexing

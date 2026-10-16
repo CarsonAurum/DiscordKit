@@ -683,6 +683,526 @@ Status: partial. Support since: 2026-10-16. Source: developers/components/refere
 
 Evidence: evidence.5a.model.UnfurledMediaItem.1, evidence.5a.model.UnfurledMediaItem.2.
 
+## ActiveThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## ArchivedThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## Channel
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## ChannelDefaultReactionRequest
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## ChannelEndpoints.activeGuildThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.addRecipient
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.addThreadMember
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.createInvite
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.delete
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.deletePermission
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.editPermissions
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.follow
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.get
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.invites
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.joinThread
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.joinedPrivateArchivedThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.leaveThread
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.modify
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.privateArchivedThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.publicArchivedThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.removeRecipient
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.removeThreadMember
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.setVoiceStatus
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.startForumThread
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.startThread
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.startThreadFromMessage
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.threadMember
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.threadMembers
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelEndpoints.typing
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+
+## ChannelFlags
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.documentedVariantsAndFlags.
+
+## ChannelForumLayout
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.documentedVariantsAndFlags.
+
+## ChannelForumTagRequest
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## ChannelInvite
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeResponseAndRedaction, evidence.5b.creationFieldsAndTargets, evidence.5b.invalidCreation, evidence.5b.nullableSchemaCompatibility, evidence.5b.presenceAndMetadata, evidence.5b.targetApplicationBoundsAndRoots, evidence.5b.targetApplicationNullableTypeAndUnknownData.
+
+## ChannelInviteApplication
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/application. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeResponseAndRedaction, evidence.5b.creationFieldsAndTargets, evidence.5b.invalidCreation, evidence.5b.nullableSchemaCompatibility, evidence.5b.presenceAndMetadata, evidence.5b.targetApplicationBoundsAndRoots, evidence.5b.targetApplicationNullableTypeAndUnknownData.
+
+## ChannelInviteCreate
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeResponseAndRedaction, evidence.5b.creationFieldsAndTargets, evidence.5b.invalidCreation, evidence.5b.nullableSchemaCompatibility, evidence.5b.presenceAndMetadata, evidence.5b.targetApplicationBoundsAndRoots, evidence.5b.targetApplicationNullableTypeAndUnknownData.
+
+## ChannelInviteFlags
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeResponseAndRedaction.
+
+## ChannelInviteTargetType
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeResponseAndRedaction.
+
+## ChannelInviteType
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeResponseAndRedaction.
+
+## ChannelModify
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## ChannelOperations.archivedThreadPages
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.activeCancellationAndDeadline, evidence.5b.archivesPreserveEnvelope, evidence.5b.malformedArchives.
+
+## ChannelOperations.joinedPrivateArchivedThreadPages
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.activeCancellationAndDeadline, evidence.5b.joinedArchivesUseIDs, evidence.5b.malformedArchives.
+
+## ChannelOperations.modifyIfChanged
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.noOpReconciliation.
+
+## ChannelOperations.threadMemberPages
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.activeCancellationAndDeadline, evidence.5b.malformedMembers, evidence.5b.memberPages.
+
+## ChannelOverwrite
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## ChannelPermissionEdit
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## ChannelPermissionOverwrite
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## ChannelSortOrder
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.documentedVariantsAndFlags.
+
+## ChannelType
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.documentedVariantsAndFlags.
+
+## ChannelVideoQualityMode
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.documentedVariantsAndFlags.
+
+## DefaultReaction
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## FollowedChannel
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## ForumTag
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## ForumThreadStart
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## GroupDMRecipientAdd
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## ThreadMember
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## ThreadMetadata
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.archivedAndActiveEnvelopes, evidence.5b.completeChannelTypedValues, evidence.5b.documentedVariantsAndFlags, evidence.5b.emojiAlternativesAndFutureMetadata, evidence.5b.explicitObfuscationState, evidence.5b.malformedChannelArrayElements, evidence.5b.malformedPermissionBits, evidence.5b.nestedUnknownDataAndBounds, evidence.5b.optionalAndNullableTypedStates, evidence.5b.relatedResourcesAndMembershipStates, evidence.5b.schemaContractsAndUnknownRetention.
+
+## ThreadStartFromMessage
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## ThreadStartWithoutMessage
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## VoiceChannelStatus
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwriteCombinations, evidence.5b.forumReactionsAndTags, evidence.5b.forumRejectsOtherMessageFields, evidence.5b.forumThreadMessagesAndUploads, evidence.5b.malformedPermissionDecimals, evidence.5b.otherCompleteModifications, evidence.5b.permissionDecimalAndPresence, evidence.5b.threadStarts, evidence.5b.voiceStatusAndRecipientSecrets.
+
+## channelInviteBody
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.conflictsAndBounds, evidence.5b.invalidCSV, evidence.5b.jsonAndCSVWire.
+
+## query.joinedPrivateArchivedThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.invalidPagination, evidence.5b.paginationQueries.
+
+## query.privateArchivedThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.invalidPagination, evidence.5b.paginationQueries.
+
+## query.publicArchivedThreads
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.invalidPagination, evidence.5b.paginationQueries.
+
+## query.threadMember
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.invalidPagination, evidence.5b.paginationQueries.
+
+## query.threadMembers
+
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5b.invalidPagination, evidence.5b.paginationQueries.
+
 ## GatewayEndpoints.bot
 
 Handwritten GET /gateway/bot discovery remains mapped to reviewed API v10 provenance and executable evidence. Bot authentication, exact JSON parsing and in-flight-only coalescing preserve changing startup allowances. No generator owns Gateway lifecycle behavior.
