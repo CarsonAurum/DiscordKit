@@ -82,6 +82,52 @@
       ],
       "details": "changes/2026-10-15-foundations.md",
       "remainingGates": "../Foundation.md"
+    },
+    {
+      "id": "2026-10-15-part-2-transports",
+      "recordedOn": "2026-10-15",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-15",
+      "localSupportDate": "2026-10-15",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "transport_implementation",
+      "previousBehavior": "Portable values and injectable I/O protocols with deterministic scripted implementations; no production network adapters.",
+      "currentBehavior": "Independent Foundation and NIO network adapters, Unix IPC, app-reported Apple lifecycle ownership and injectable fenced shard leases. Local macOS conformance and bounded HTTP load evidence; no Discord endpoint or Gateway session implemented.",
+      "affectedSymbols": [
+        "FoundationHTTPTransport",
+        "FoundationWebSocketTransport",
+        "NIOHTTPTransport",
+        "NIOWebSocketTransport",
+        "NIODatagramTransport",
+        "NIOHTTPIngress",
+        "TLSPolicy",
+        "UnixIPCTransport",
+        "AppleLifecycle",
+        "ShardIdentity",
+        "ShardLeaseStore",
+        "InProcessShardLeaseStore",
+        "TransportContext.run"
+      ],
+      "affectedPayloads": "Generic HTTP/1.1, RFC 6455 frames, datagrams and Unix byte streams only; no Discord operation statuses or payload schemas change.",
+      "breakingChanges": [],
+      "migration": "Adopt a concrete adapter product explicitly and inject through DiscordTransport. Consume or close bodies and close owned adapters. No automatic redirects, replay or retry; prior protocol consumers need no source migration.",
+      "sources": [
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/events/gateway#sharding",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/apple/swift-nio/releases/tag/2.104.0",
+        "https://github.com/apple/swift-nio-ssl/releases/tag/2.37.5",
+        "https://developer.apple.com/documentation/technotes/tn3135-low-level-networking-on-watchos"
+      ],
+      "details": "changes/2026-10-15-transports.md",
+      "remainingGates": "../Transport.md"
     }
   ]
 }

@@ -570,6 +570,15 @@ Permissions are explicitly variable-length integers, so a fixed UInt64 OptionSet
 
 ### Part 2 — transport adapters and platform qualification
 
+**Implementation update, 2026-10-15:** Added independently injected Foundation
+HTTP/WebSocket, owned NIO HTTP/TLS/WebSocket/UDP/ingress, Unix IPC, app-driven Apple
+lifecycle/capabilities, fenced shard leases and a separate local load package.
+See [transport evidence and precise limits](../../Docs/Transport.md). The macOS
+slice has local runtime tests and measured bounded-cohort profiles; the complete
+Part 2 gate remains open for Windows pipes, Android integration, other-host/device
+qualification and extended connect/write/TLS/network/soak scenarios. UI/media/auth
+products remain with their real feature implementations rather than empty stubs.
+
 **Files:** F02, F01 transport contracts, F10 transport/platform suites, F00 platform/scalability reports, F11 separate load package/profiles; existing manifest.
 
 1. Implement Foundation HTTP and Apple-platform WebSocket adapters. Wrap cancellation so pending connect/read/write actually terminate; do not infer cancellation behavior from an async signature.

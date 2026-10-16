@@ -42,6 +42,56 @@ import Testing
         #expect(!output.contains("a b"))
     }
 
+    /// Decodes exactly 32 nested layers and suppresses the complete diagnostic above that bound.
+    ///
+    /// The malformed suffix remains visible at the supported boundary, while
+    /// unresolved valid escapes never return partially decoded secret fragments.
+    /// - Parameter depth: Percent-decoding passes needed to reveal the sentinel.
+    @Test(arguments: [1, 31, 32, 33, 1_000])
+    func percentNestingIsBounded(depth: Int) {
+        let encoded = "%" + String(repeating: "25", count: depth - 1) + "53ENTINEL"
+        let text = "prefix/" + encoded + "/suffix%zz"
+        let redactor = DiagnosticRedactor(secrets: ["SENTINEL"])
+        if depth <= 32 {
+            #expect(DiagnosticRedactor().redact(text) == "prefix/SENTINEL/suffix%zz")
+            #expect(redactor.redact(text) == "prefix/[REDACTED]/suffix%zz")
+            #expect(redactor.path("/channels/" + encoded) == "/channels/[REDACTED]")
+        } else {
+            #expect(DiagnosticRedactor().redact(text) == "[REDACTED]")
+            #expect(redactor.redact(text) == "[REDACTED]")
+            #expect(redactor.path("/channels/" + encoded + "/suffix") == "[REDACTED]")
+            #expect(redactor.headers(["Accept": text]) == ["Accept": "[REDACTED]"])
+        }
+    }
+
+    /// An unresolved secret registration suppresses all nonempty diagnostic text to avoid incomplete matching.
+    ///
+    /// Supported registrations match their fully decoded spelling. Unsupported
+    /// registrations suppress names, values and paths as well as the raw secret,
+    /// while empty diagnostics and body suppression retain their ordinary behavior.
+    /// - Parameter depth: Secret-registration encoding depth at and above the supported boundary.
+    @Test(arguments: [32, 33, 1_000])
+    func nestedSecretRegistrationFailsClosed(depth: Int) {
+        let encoded = "%" + String(repeating: "25", count: depth - 1) + "53ENTINEL"
+        let redactor = DiagnosticRedactor(secrets: [encoded])
+        if depth == 32 {
+            #expect(redactor.redact("prefix SENTINEL suffix") == "prefix [REDACTED] suffix")
+            #expect(redactor.path("/channels/SENTINEL") == "/channels/[REDACTED]")
+            #expect(redactor.headers(["Accept": "SENTINEL"]) == ["Accept": "[REDACTED]"])
+        } else {
+            #expect(redactor.redact("prefix SENTINEL suffix") == "[REDACTED]")
+            #expect(redactor.redact("benign") == "[REDACTED]")
+            #expect(redactor.path("/channels/SENTINEL") == "[REDACTED]")
+            #expect(redactor.path("/channels/SENTINEL?token=other") == "[REDACTED]")
+            #expect(redactor.headers(["Accept": "SENTINEL"]) == ["[REDACTED]": "[REDACTED]"])
+        }
+        #expect(redactor.redact(encoded) == "[REDACTED]")
+        #expect(redactor.redact("") == "")
+        #expect(redactor.path("") == "")
+        #expect(redactor.headers([:]).isEmpty)
+        #expect(redactor.body("SENTINEL") == "[REDACTED BODY]")
+    }
+
     /// Checks case-insensitive sensitive headers, registered secrets in arbitrary
     /// values/names, redacted-name collisions and preservation of benign metadata.
     @Test func structuredHeadersConcealSecrets() {

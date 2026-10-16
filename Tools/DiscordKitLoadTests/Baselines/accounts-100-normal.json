@@ -1,0 +1,85 @@
+{
+  "afterShutdown": {
+    "cpuSeconds": 1.66928,
+    "liveAllocationBlocks": 30674,
+    "liveAllocationBytes": 3829792,
+    "peakRSSBytes": 15876096,
+    "residentBytes": 15859712
+  },
+  "measurement": {
+    "activeLogicalAccounts": 100,
+    "admittedSuccesses": 10000,
+    "before": {
+      "cpuSeconds": 0.005848,
+      "liveAllocationBlocks": 1290,
+      "liveAllocationBytes": 362496,
+      "peakRSSBytes": 8667136,
+      "residentBytes": 8667136
+    },
+    "botIdentities": 1,
+    "cancelledRequests": 0,
+    "capacityRefusals": 0,
+    "configuredMaximumConnections": 8,
+    "configuredRequests": 10000,
+    "cpuSeconds": 1.6616859999999998,
+    "deadlineEnabled": true,
+    "durationSeconds": 0.603880208,
+    "endHeapBudgetMet": true,
+    "failedRequests": 0,
+    "latency": {
+      "p50Milliseconds": 0.391125,
+      "p95Milliseconds": 0.918458,
+      "p99Milliseconds": 1.386459,
+      "sampleCount": 4096
+    },
+    "latencyTargetMet": true,
+    "logicalAccounts": 100,
+    "maximumEndHeapBytes": 33554432,
+    "maximumHarnessTasks": 8,
+    "maximumPeakRSSBytes": 67108864,
+    "meanCPUPercentOfOneCore": 275.1681505680345,
+    "minimumSuccessesPerSecond": 5000,
+    "offeredConcurrency": 8,
+    "offeredRequests": 10000,
+    "peakRSSBudgetMet": true,
+    "profile": "accounts-100",
+    "profileVersion": 1,
+    "receivedBytes": 10240000,
+    "requestDeadlineMilliseconds": 10000,
+    "sampledPeakPoolSlots": 8,
+    "simulatedWorkers": 1,
+    "steady": {
+      "cpuSeconds": 1.6675339999999998,
+      "liveAllocationBlocks": 33377,
+      "liveAllocationBytes": 4171360,
+      "peakRSSBytes": 15663104,
+      "residentBytes": 15663104
+    },
+    "successesPerSecond": 16559.575670014343,
+    "targetP99Milliseconds": 25,
+    "throughputTargetMet": true
+  },
+  "notes": [
+    "Logical accounts are served end users; one client process and a separate Python loopback peer for socket runs.",
+    "Pool-slot peaks are sampled; configured cap and real successful socket exchanges are distinct.",
+    "Live malloc block/byte gauges are not a cumulative allocation trace; CPU/RSS exclude the peer.",
+    "No Gateway/control/cache scenario or 30-minute soak qualification is claimed."
+  ],
+  "operatingSystem": "Version 27.0.1 (Build 26A434)",
+  "peerConnections": {
+    "acceptedConnections": 8,
+    "activeConnections": 0,
+    "peakConnections": 8
+  },
+  "poolActiveAfterShutdown": 0,
+  "poolIdleAfterShutdown": 0,
+  "processorCount": 14,
+  "settleSeconds": 1,
+  "settledAfterShutdown": {
+    "cpuSeconds": 1.679319,
+    "liveAllocationBlocks": 7481,
+    "liveAllocationBytes": 799552,
+    "peakRSSBytes": 15908864,
+    "residentBytes": 15908864
+  }
+}

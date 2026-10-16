@@ -8,6 +8,22 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-15 — owned transport adapters and local qualification
+
+- Add independent Foundation HTTP/WebSocket, NIO HTTP/TLS/WebSocket/UDP/ingress,
+  Unix IPC and Apple lifecycle products with explicit cancellation/close ownership.
+- Bound connection admission, messages, bodies and queues; preserve send-once
+  behavior, reject unsafe wire input and return redirects without credential forwarding.
+- Add full-verification TLS policy, shared HTTP conformance and local malformed-peer,
+  cancellation, overload and cleanup regression tests.
+- Recheck scripted HTTP cancellation and deadlines after suspension before
+  transferring request/response ownership or recording successful completion.
+- Add shard-routing/fenced lease coordination contracts and a bounded in-process store.
+- Add a separate local load harness with versioned account/cohort budgets and measured
+  transport baselines. No Discord operation, untested-host or million-connection claim.
+- Record Foundation buffering/header limitations and remaining cross-platform,
+  Windows IPC, Android, device, media/UI and extended conformance gates.
+
 ### 2026-10-15 — scalability design requirements
 
 - Adopt early capacity planning for deployments serving hundreds through millions

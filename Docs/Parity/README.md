@@ -2,7 +2,9 @@
 
 Baseline date: **2026-10-15**. DiscordKit has **zero implemented Discord operations**.
 Part 1 adds local values and transport contracts, recorded in the
-[foundation history](changes/2026-10-15-foundations.md). This inventory makes future coverage
+[foundation history](changes/2026-10-15-foundations.md). Part 2 adds independently
+adoptable network adapters and local evidence in the
+[transport history](changes/2026-10-15-transports.md). This inventory makes future coverage
 measurable; discovery records and unavailable-capability stubs do not count as support.
 
 ## Versioned records

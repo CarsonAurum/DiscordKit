@@ -195,3 +195,27 @@ labels bounded (operation family/status/worker class); never label every account
 guild, request or secret. Attribute tenant details only through opt-in bounded
 diagnostic sampling. Publish tested profiles and remaining bottlenecks with each
 runtime release, separating design goals from measured deployment capacity.
+
+## Part 2 transport evidence
+
+[Owned adapters](Transport.md) now implement fail-fast bounded transport admission,
+explicit body/frame/queue limits and cleanup. The optional in-process shard lease
+store bounds metadata and rejects stale fences, but is not distributed storage or
+a running Gateway lifecycle. Rate/cache/coalescing policies remain above transport.
+
+The independent [local load package](../Tools/DiscordKitLoadTests/README.md) versions
+100/10,000/1,000,000 logical-account profiles with finite active cohorts, operation
+counts, byte/concurrency budgets and reference-host results. It measures actual
+local HTTP exchanges and sampled owned slots, separately from simulated accounts.
+Tenfold offered concurrency exercises refusal and subsequent recovery. No metric
+uses a credential or per-account label, and no request goes to Discord.
+
+Load diagnostics exposed native cancelled ContinuousClock sleepers retained until
+their original deadline. `TransportContext.run` now uses 100 ms continuous-clock
+checkpoints, preserving suspension-aware time while limiting that runtime's stale
+timer history to a short interval. Generic/injected clocks are unchanged. Active
+long deadlines incur up to ten checkpoint wakeups/second; settled live heap and
+RSS are recorded separately, since allocators need not return freed pages at once.
+The load report includes before/after diagnostic evidence. No fixed-working-set
+30-minute soak, comprehensive allocation trace, cross-host scale result or
+millions-of-connections capacity is inferred from this initial baseline.

@@ -1,13 +1,15 @@
 # DiscordKit
 
 DiscordKit is the foundation of a modular, Swift-native Discord application and
-bot library. Part 1 provides portable values and transport contracts. REST, Gateway,
+bot library. Parts 1–2 provide portable values, transport contracts and owned
+network adapters. REST, Gateway,
 interactions, OAuth2, voice, RPC, Activities, Social and commerce integrations are
 not implemented.
 
 The architecture baseline records platform capabilities, dependency policy, a
 versioned parity inventory and explicit feasibility blockers. Portable values are
-usable today; network adapters and a working Discord client follow later. A planned
+usable today; HTTP/WebSocket/UDP/ingress/Unix adapters are available with explicit
+limits and macOS-local qualification. A working Discord client follows later. A planned
 target or an unavailable-capability stub never counts as implemented support.
 
 ## Build and test
@@ -26,7 +28,7 @@ swift test
 
 The package tests exercise precision, field presence, timestamps, secret redaction,
 stream ownership, cancellation and virtual time. Passing these tests does not
-establish endpoint parity or platform network qualification. See the
+establish endpoint parity or qualify untested hosts. See the
 [foundation contracts](Docs/Foundation.md) for limits and examples.
 
 ## Available foundations
@@ -37,8 +39,17 @@ establish endpoint parity or platform network qualification. See the
 - `DiscordTransport`: injectable HTTP, WebSocket, datagram, IPC and HTTP-ingress
   protocols, bounded pull bodies and monotonic deadline contexts.
 - `DiscordKit`: common foundational type aliases for convenient adoption.
+- `DiscordFoundationTransport`: Apple Foundation HTTP and WebSocket adapters.
+- `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
+- `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
+- `DiscordApplePlatform`: app-driven lifecycle resource ownership and capability checks.
 
-There are no production package dependencies. Development-only deterministic
+See [transport ownership, budgets and qualification limits](Docs/Transport.md).
+The independent [local load harness](Tools/DiscordKitLoadTests/README.md) records
+bounded cohort measurements; broad platform and Phase 2 qualification gates remain open.
+
+Concrete NIO/Unix adapters use approved Apple NIO/TLS dependencies; portable and
+Foundation products do not link those packages. Development-only deterministic
 clocks, barriers, scripts and resource tracking are excluded from library products.
 Apple deployment baselines are macOS 13, iOS/tvOS 16, watchOS 9 and visionOS 1;
 other-platform runtime qualification remains recorded separately.
@@ -85,6 +96,7 @@ provisioning are not invented SDK endpoints. See Discord's
 
 - [Architecture and API conventions](Docs/Architecture.md)
 - [Portable foundation contracts](Docs/Foundation.md)
+- [Owned transport adapters](Docs/Transport.md)
 - [Concurrency and ownership](Docs/Concurrency.md)
 - [Scalability and request efficiency](Docs/Scalability.md)
 - [Dependency policy and candidate releases](Docs/Dependencies.md)

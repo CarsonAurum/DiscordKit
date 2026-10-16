@@ -1,0 +1,189 @@
+{
+  "dirtySource": true,
+  "environmentBasis": "environment.json",
+  "notes": [
+    "Diagnostic runs captured during implementation on the same local hardware/toolchain; sourceVariant identifies uncommitted before/after deadline-helper implementations.",
+    "The original native sleep used the full ten-second deadline; canceled timer records remained until that deadline. Deadline-free controls isolated this from sockets and portable response bodies.",
+    "The final helper preserves ContinuousClock semantics and checkpoints sleeps no farther than 100 ms ahead; generic injected clocks are unchanged.",
+    "Portable 100,000-operation EOF and one-second settled heap did not scale tenfold relative to 10,000 operations. Short diagnostics do not establish a steady-state or thirty-minute soak result.",
+    "Live malloc gauges are process-wide live blocks/bytes, not cumulative allocation tracing. Process RSS can retain allocator pages after those blocks are freed."
+  ],
+  "runs": [
+    {
+      "admittedSuccesses": 10000,
+      "afterShutdown": {
+        "cpuSeconds": 0.443106,
+        "liveAllocationBlocks": 179094,
+        "liveAllocationBytes": 21084000,
+        "peakRSSBytes": 29376512,
+        "residentBytes": 29376512
+      },
+      "configuredRequests": 10000,
+      "deadlineEnabled": true,
+      "durationSeconds": 0.098181,
+      "endOfWorkload": {
+        "cpuSeconds": 0.442669,
+        "liveAllocationBlocks": 179097,
+        "liveAllocationBytes": 21133488,
+        "peakRSSBytes": 29196288,
+        "residentBytes": 29196288
+      },
+      "failedRequests": 0,
+      "portable": true,
+      "requestDeadlineSeconds": 10,
+      "settleSeconds": 0,
+      "settledAfterShutdown": null,
+      "sourceVariant": "before: whole-deadline native sleep"
+    },
+    {
+      "admittedSuccesses": 10000,
+      "afterShutdown": {
+        "cpuSeconds": 0.133452,
+        "liveAllocationBlocks": 1045,
+        "liveAllocationBytes": 144816,
+        "peakRSSBytes": 8142848,
+        "residentBytes": 8142848
+      },
+      "configuredRequests": 10000,
+      "deadlineEnabled": false,
+      "durationSeconds": 0.039358834,
+      "endOfWorkload": {
+        "cpuSeconds": 0.133051,
+        "liveAllocationBlocks": 1048,
+        "liveAllocationBytes": 194304,
+        "peakRSSBytes": 7946240,
+        "residentBytes": 7946240
+      },
+      "failedRequests": 0,
+      "portable": true,
+      "requestDeadlineSeconds": null,
+      "settleSeconds": 0,
+      "settledAfterShutdown": null,
+      "sourceVariant": "before: portable deadline-disabled control"
+    },
+    {
+      "admittedSuccesses": 10000,
+      "afterShutdown": {
+        "cpuSeconds": 1.102306,
+        "liveAllocationBlocks": 1863,
+        "liveAllocationBytes": 419008,
+        "peakRSSBytes": 11911168,
+        "residentBytes": 11894784
+      },
+      "configuredRequests": 10000,
+      "deadlineEnabled": false,
+      "durationSeconds": 0.58314325,
+      "endOfWorkload": {
+        "cpuSeconds": 1.10149,
+        "liveAllocationBlocks": 2836,
+        "liveAllocationBytes": 563904,
+        "peakRSSBytes": 11698176,
+        "residentBytes": 11698176
+      },
+      "failedRequests": 0,
+      "portable": false,
+      "requestDeadlineSeconds": null,
+      "settleSeconds": 0,
+      "settledAfterShutdown": null,
+      "sourceVariant": "before: socket deadline-disabled control"
+    },
+    {
+      "admittedSuccesses": 10000,
+      "afterShutdown": {
+        "cpuSeconds": 0.428342,
+        "liveAllocationBlocks": 180338,
+        "liveAllocationBytes": 21223936,
+        "peakRSSBytes": 29736960,
+        "residentBytes": 29736960
+      },
+      "configuredRequests": 10000,
+      "deadlineEnabled": true,
+      "durationSeconds": 0.099732,
+      "endOfWorkload": {
+        "cpuSeconds": 0.427937,
+        "liveAllocationBlocks": 180341,
+        "liveAllocationBytes": 21273424,
+        "peakRSSBytes": 29540352,
+        "residentBytes": 29540352
+      },
+      "failedRequests": 0,
+      "portable": true,
+      "requestDeadlineSeconds": 10,
+      "settleSeconds": 12,
+      "settledAfterShutdown": {
+        "cpuSeconds": 0.463924,
+        "liveAllocationBlocks": 6308,
+        "liveAllocationBytes": 474304,
+        "peakRSSBytes": 29736960,
+        "residentBytes": 29556736
+      },
+      "sourceVariant": "before: whole-deadline native sleep, twelve-second settle"
+    },
+    {
+      "admittedSuccesses": 10000,
+      "afterShutdown": {
+        "cpuSeconds": 0.436969,
+        "liveAllocationBlocks": 180402,
+        "liveAllocationBytes": 21238368,
+        "peakRSSBytes": 29573120,
+        "residentBytes": 29573120
+      },
+      "configuredRequests": 10000,
+      "deadlineEnabled": true,
+      "durationSeconds": 0.089063875,
+      "endOfWorkload": {
+        "cpuSeconds": 0.43654,
+        "liveAllocationBlocks": 180405,
+        "liveAllocationBytes": 21287856,
+        "peakRSSBytes": 29409280,
+        "residentBytes": 29409280
+      },
+      "failedRequests": 0,
+      "portable": true,
+      "requestDeadlineSeconds": 10,
+      "settleSeconds": 1,
+      "settledAfterShutdown": {
+        "cpuSeconds": 0.485573,
+        "liveAllocationBlocks": 10787,
+        "liveAllocationBytes": 789984,
+        "peakRSSBytes": 29589504,
+        "residentBytes": 29556736
+      },
+      "sourceVariant": "after: continuous sleep checkpoint <=100 ms"
+    },
+    {
+      "admittedSuccesses": 100000,
+      "afterShutdown": {
+        "cpuSeconds": 4.575724,
+        "liveAllocationBlocks": 209059,
+        "liveAllocationBytes": 23846592,
+        "peakRSSBytes": 48119808,
+        "residentBytes": 48119808
+      },
+      "configuredRequests": 100000,
+      "deadlineEnabled": true,
+      "durationSeconds": 0.91976775,
+      "endOfWorkload": {
+        "cpuSeconds": 4.575042,
+        "liveAllocationBlocks": 209889,
+        "liveAllocationBytes": 24000368,
+        "peakRSSBytes": 48037888,
+        "residentBytes": 48037888
+      },
+      "failedRequests": 0,
+      "portable": true,
+      "requestDeadlineSeconds": 10,
+      "settleSeconds": 1,
+      "settledAfterShutdown": {
+        "cpuSeconds": 4.624272,
+        "liveAllocationBlocks": 22176,
+        "liveAllocationBytes": 1433680,
+        "peakRSSBytes": 48136192,
+        "residentBytes": 48136192
+      },
+      "sourceVariant": "after: continuous sleep checkpoint <=100 ms"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceCommitBasis": "197a919e00c0a4baa0024b20b11e6b399a5d01e8"
+}

@@ -3,14 +3,19 @@
 ## Project and layout
 
 DiscordKit is a Swift Package Manager library. Part 1 implements portable values,
-transport contracts and deterministic test support. Discord network integration
-is not yet implemented. Part 0 records architecture/parity and separate probes.
+transport contracts and deterministic test support. Part 2 adds owned Foundation/NIO
+network adapters, Unix IPC, Apple lifecycle ownership and a separate local load harness.
+Discord network integration is not yet implemented. Part 0 records architecture/parity and separate probes.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
   independent foundations; preserve Bits <- Core <- Transport dependency direction.
 - `Tests/DiscordKitTests/` and matching foundational test suites: Swift Testing.
+- `Sources/DiscordFoundationTransport/`, `Sources/DiscordNIOTransport/`: concrete
+  injectable backends; portable products must never depend on them.
+- `Sources/DiscordUnixPlatform/`, `Sources/DiscordApplePlatform/`: owned IPC/lifecycle.
+- `Tools/DiscordKitLoadTests/`: independent local-only transport measurements and profiles.
 - `Tests/DiscordTestSupport/`: internal development support target, never a product.
 - `Docs/`: architecture, dependency/platform policy, feasibility findings and parity history.
 - `Tools/DiscordKitTools/`: separate inventory validator, discovery script and their tests.
@@ -33,6 +38,11 @@ Run these commands from the repository root for source or manifest changes:
 swift build
 swift test
 ```
+
+For load-harness changes, also run `swift test --package-path Tools/DiscordKitLoadTests`
+and its Python peer tests; see its README for local measurement commands. Root adapter
+tests require loopback sockets but never Discord credentials. See `Docs/Transport.md`
+for exact current behavior, ownership and open platform qualification gates.
 
 For Part 0 tooling or inventory changes, also run:
 

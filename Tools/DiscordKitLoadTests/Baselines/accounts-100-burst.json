@@ -1,0 +1,85 @@
+{
+  "afterShutdown": {
+    "cpuSeconds": 0.114404,
+    "liveAllocationBlocks": 3471,
+    "liveAllocationBytes": 657856,
+    "peakRSSBytes": 12124160,
+    "residentBytes": 12124160
+  },
+  "measurement": {
+    "activeLogicalAccounts": 100,
+    "admittedSuccesses": 112,
+    "before": {
+      "cpuSeconds": 0.0058,
+      "liveAllocationBlocks": 1290,
+      "liveAllocationBytes": 362528,
+      "peakRSSBytes": 8683520,
+      "residentBytes": 8683520
+    },
+    "botIdentities": 1,
+    "cancelledRequests": 0,
+    "capacityRefusals": 9888,
+    "configuredMaximumConnections": 8,
+    "configuredRequests": 10000,
+    "cpuSeconds": 0.107963,
+    "deadlineEnabled": true,
+    "durationSeconds": 0.048140834,
+    "endHeapBudgetMet": true,
+    "failedRequests": 0,
+    "latency": {
+      "p50Milliseconds": 3.428875,
+      "p95Milliseconds": 6.116041,
+      "p99Milliseconds": 6.332083,
+      "sampleCount": 112
+    },
+    "latencyTargetMet": true,
+    "logicalAccounts": 100,
+    "maximumEndHeapBytes": 33554432,
+    "maximumHarnessTasks": 80,
+    "maximumPeakRSSBytes": 67108864,
+    "meanCPUPercentOfOneCore": 224.2649140644302,
+    "minimumSuccessesPerSecond": 5000,
+    "offeredConcurrency": 80,
+    "offeredRequests": 10000,
+    "peakRSSBudgetMet": true,
+    "profile": "accounts-100",
+    "profileVersion": 1,
+    "receivedBytes": 114688,
+    "requestDeadlineMilliseconds": 10000,
+    "sampledPeakPoolSlots": 8,
+    "simulatedWorkers": 1,
+    "steady": {
+      "cpuSeconds": 0.113763,
+      "liveAllocationBlocks": 3706,
+      "liveAllocationBytes": 736448,
+      "peakRSSBytes": 12107776,
+      "residentBytes": 12107776
+    },
+    "successesPerSecond": 2326.507264082712,
+    "targetP99Milliseconds": 25,
+    "throughputTargetMet": false
+  },
+  "notes": [
+    "Logical accounts are served end users; one client process and a separate Python loopback peer for socket runs.",
+    "Pool-slot peaks are sampled; configured cap and real successful socket exchanges are distinct.",
+    "Live malloc block/byte gauges are not a cumulative allocation trace; CPU/RSS exclude the peer.",
+    "No Gateway/control/cache scenario or 30-minute soak qualification is claimed."
+  ],
+  "operatingSystem": "Version 27.0.1 (Build 26A434)",
+  "peerConnections": {
+    "acceptedConnections": 8,
+    "activeConnections": 0,
+    "peakConnections": 8
+  },
+  "poolActiveAfterShutdown": 0,
+  "poolIdleAfterShutdown": 0,
+  "processorCount": 14,
+  "settleSeconds": 1,
+  "settledAfterShutdown": {
+    "cpuSeconds": 0.11523,
+    "liveAllocationBlocks": 1781,
+    "liveAllocationBytes": 423584,
+    "peakRSSBytes": 12124160,
+    "residentBytes": 12124160
+  }
+}

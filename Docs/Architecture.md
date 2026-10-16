@@ -2,7 +2,9 @@
 
 Status: adopted design, updated 2026-10-15. `DiscordBits`, `DiscordCore` and
 `DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
-Core aliases. The complete graph below remains the intended architecture, beyond
+Core aliases. Part 2 adds independently injected Foundation/NIO adapters, Unix IPC
+and Apple lifecycle ownership; see [transport contracts](Transport.md). The complete
+graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
 and tests. See [foundation contracts](Foundation.md) for current scope and limits.
 

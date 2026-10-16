@@ -38,6 +38,10 @@ public struct TransportContext<C: Clock>: Sendable where C.Duration == Duration 
     /// The losing child is cancelled and awaited before returning. The operation
     /// must cooperate with cancellation; this cannot forcibly interrupt blocking
     /// code. Simultaneous operation/deadline completion has no ordering guarantee.
+    /// ContinuousClock deadlines use at most 100 ms sleep checkpoints, bounding
+    /// cancelled native timer retention on affected runtimes while preserving
+    /// continuous time across suspension. Long waits incur up to ten wakeups per
+    /// second. Injected clocks retain their own sleep/cancellation semantics.
     /// - Parameter operation: Work owned by this call; must clean up before exiting.
     /// - Returns: The operation result when it completes before expiration.
     /// - Throws: Cancellation, expiration, or the operation's original error.
@@ -53,7 +57,7 @@ public struct TransportContext<C: Clock>: Sendable where C.Duration == Duration 
         return try await withThrowingTaskGroup(of: Value.self) { group in
             group.addTask { try await operation() }
             group.addTask {
-                try await clock.sleep(until: deadline, tolerance: nil)
+                try await sleepForTransportDeadline(clock: clock, until: deadline)
                 throw TransportFailure.deadlineExceeded
             }
             defer { group.cancelAll() }

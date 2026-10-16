@@ -338,7 +338,7 @@ import Testing
     /// Expiration while awaiting losing-timer cleanup prevents accepted ownership from transferring.
     /// Work wins the structured race, then timer cancellation advances virtual time
     /// to the deadline before the listener resumes. Both exchange resources must close.
-    /// - Throws: Unexpected fixture, EOF, or clock-construction errors.
+    /// - Throws: Unexpected fixture construction or subsequent EOF acceptance errors.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func ingressRechecksDeadlineBeforeTransfer() async throws {
         let manual = ManualClock()

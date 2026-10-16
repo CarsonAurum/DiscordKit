@@ -2,10 +2,10 @@
 
 Updated **2026-10-15**. This is the capability baseline, not a claim that
 DiscordKit already implements REST, OAuth, Gateway, voice, ingress, or desktop RPC.
-The production library implements portable values and transport contracts.
-Network transport evidence comes from a separate development fixture, not a
-published adapter. Part 1 foundation tests execute on macOS arm64; the other
-platforms' qualification gaps below remain open.
+The production library now includes portable values, transport contracts and
+owned Foundation/NIO/Unix adapters. The Part 0 table below remains historical
+feasibility evidence. Part 2 local adapter evidence is recorded separately below;
+other platforms' qualification gaps remain open.
 
 ## Meaning of the results
 
@@ -57,9 +57,9 @@ for the language subset.
 
 ## Adapter decisions
 
-Keep portable contracts separate from OS adapters. Foundation HTTP and Apple
-WebSocket adapters remain candidates; SwiftNIO is the shared native transport
-candidate. Only a reproduced unresolved platform gap justifies an owned networking
+Keep portable contracts separate from OS adapters. Part 0 identified Foundation
+HTTP/Apple WebSocket and shared SwiftNIO transport candidates; Part 2 now implements
+them with macOS-local evidence below. Other-host selection remains provisional. Only a reproduced unresolved platform gap justifies an owned networking
 fallback. No such gap has been established on Windows or Android because those
 runtime checks have not run.
 
@@ -72,4 +72,32 @@ browser application to compensate for an unavailable backend.
 The exact tested graph, commands, results and incomplete gates are recorded in
 [the transport feasibility report](Feasibility/PlatformTransports.md). Part 0 has
 recorded every requested platform; broad runtime qualification remains an explicit
-open gate. Part 2 must rerun the conformance suite against real owned adapters.
+open gate. Part 2 runs conformance against real owned adapters only on the host
+recorded below.
+
+## Part 2 owned adapter qualification
+
+On macOS arm64 / Swift 6.4, `swift build` and all 193 root test methods in 25
+suites pass, including a full `SWIFTNIO_STRICT=1` run that rejects work scheduled
+after event-loop shutdown. Root suites execute real Foundation HTTP/WebSocket,
+NIO HTTP/TLS/WebSocket/UDP/ingress and Unix IPC peers, including shared HTTP
+conformance, invalid wire data, TLS trust/hostname rejection, fragmented messages,
+control frames, cancellation/deadlines, body ownership, overload and repeated close.
+Local IPv6 UDP is tested separately from the initial IPv4 fixture. See
+[adapter semantics and remaining gates](Transport.md) for precise limitations.
+The app-driven Apple lifecycle owner and fenced shard lease store use deterministic
+capability/virtual-clock tests; they do not grant physical-device or fleet support.
+
+The separate [load report](../Tools/DiscordKitLoadTests/README.md) records exact
+hardware/workload budgets, request throughput, tail latency, CPU/RSS/live-heap
+snapshots and saturation refusals. Served-account counts select bounded active
+cohorts and are distinct from real socket counts. No live Discord load is used.
+Foundation's internal buffers/pool are platform-owned and have no advertised exact
+memory/socket ceiling. No ordinary watchOS WebSocket support is claimed.
+
+Windows named pipes and Android JNI/platform integration remain unimplemented.
+Native browser/auth/media adapters are deferred to their feature phases; no empty
+products represent them. Linux/Windows/Android, physical Apple devices, minimum-OS,
+DNS/IPv6 beyond the local UDP case, network changes during live traffic, blocked
+HTTP/WS connect/write, expired TLS certificates and long soak qualification remain
+open. This is a tested macOS transport slice, not whole-platform Part 2 certification.

@@ -19,15 +19,23 @@ public actor ScriptedHTTPTransport: HTTPTransport {
     }
 
     /// Executes a single reserved step under the supplied monotonic deadline.
+    ///
     /// Request bodies close on every path; failed or late response bodies close too.
+    /// Cancellation and expiration are rechecked after response-slot suspension,
+    /// before successful ownership transfer. Pre-cancellation/expiration do not
+    /// consume a script; admitted steps are never replayed after any failure.
     /// - Parameters:
     ///   - request: Request exposed to one script step; body ownership transfers here.
     ///   - context: Clock/deadline; suspended steps must cooperate with cancellation.
     /// - Returns: Scripted response whose body ownership transfers to the caller.
-    /// - Throws: Exhausted script, cancellation, expiration or the scripted failure.
+    /// - Throws: `TransportFailure.scriptExhausted` when no step remains,
+    ///   `CancellationError` when cancellation is observed before transfer,
+    ///   `TransportFailure.deadlineExceeded` at inclusive expiration, or the
+    ///   script's original error. Owned bodies finish cleanup before throwing.
     public func execute<C: Clock>(_ request: HTTPRequest, context: TransportContext<C>) async throws -> HTTPResponse
         where C.Duration == Duration {
         let slot = ResponseSlot()
+        var pendingResponse: HTTPResponse?
         do {
             try context.check()
             guard index < steps.count else { throw TransportFailure.scriptExhausted }
@@ -41,10 +49,13 @@ public actor ScriptedHTTPTransport: HTTPTransport {
             }
             await request.body?.close()
             try context.check()
-            guard let response = await slot.take() else { throw TransportFailure.scriptExhausted }
+            pendingResponse = await slot.take()
+            try context.check()
+            guard let response = pendingResponse else { throw TransportFailure.scriptExhausted }
             return response
         } catch {
             await request.body?.close()
+            await pendingResponse?.body?.close()
             await slot.take()?.body?.close()
             throw error
         }

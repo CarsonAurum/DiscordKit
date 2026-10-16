@@ -72,3 +72,11 @@ access. Those initial environment failures are not compatibility or test failure
 The next implementation part may build portable values independently. Full Part 0
 qualification remains tracked here; passing this repository's tests cannot close
 unavailable-host or missing-upstream-contract gates.
+
+## Subsequent transport implementation
+
+Part 2's 2026-10-15 [transport record](changes/2026-10-15-transports.md) adds owned
+network adapters and local macOS evidence. It does not change discovery inventory
+operation statuses, close the historical semantic-review gate, or qualify unavailable
+hosts. Current adapter behavior, limits and outstanding platform gates are recorded
+in [Transport](../Transport.md); the Part 0 results above remain historical.

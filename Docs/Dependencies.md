@@ -1,16 +1,16 @@
 # Dependency policy and qualification
 
-Updated: 2026-10-15. The Part 1 production package has **no
-external package dependencies**. Separate development probes resolve exact NIO/TLS
-and Crypto graphs and have exercised their documented scenarios on macOS arm64.
-The candidate list does not establish production adapter support or freeze an
-adapter choice; other platforms and full adapter conformance remain unqualified.
+Updated: 2026-10-15. Part 2 adds approved Apple SwiftNIO/TLS dependencies only
+to the concrete NIO/Unix adapters. Bits, Core, Transport, DiscordKit and Foundation
+products do not import or link NIO. Separate development probes retain their
+independent exact graphs. Runtime qualification remains capability/host-specific;
+see [owned adapters](Transport.md) and [platform evidence](PlatformSupport.md).
 
 The portable targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
 explicit newer Apple availability; it does not raise the runtime product minima
-or introduce a package dependency. Network adapter dependencies remain isolated
-to the existing feasibility packages until Part 2.
+or introduce a package dependency. The runtime adapter graph is now independently
+resolved and committed in the root lockfile.
 
 ## Allowed graph
 
@@ -140,3 +140,38 @@ host, belong in [platform support](PlatformSupport.md) and the
 [parity evidence](Parity/README.md). The baseline includes the macOS development
 probe evidence above; it makes no cross-platform adapter, production dependency
 qualification or voice interoperability claim.
+
+## Part 2 production adapter addition
+
+Verified official latest stable tags on **2026-10-15**:
+[NIO 2.104.0](https://github.com/apple/swift-nio/releases/tag/2.104.0)
+(released 2026-10-06) and
+[NIOSSL 2.37.5](https://github.com/apple/swift-nio-ssl/releases/tag/2.37.5)
+(released 2026-09-17). Root requirements use `from: "2.104.0"` and
+`from: "2.37.5"` (next-major upper bounds), preserving consumer resolution.
+The lockfile records the exact graph tested, with these revisions:
+
+| Package | Version | Git revision |
+| --- | --- | --- |
+| swift-nio | 2.104.0 | 6db9d9abd92ad7399b8a564cafbb87d3507245fa |
+| swift-nio-ssl | 2.37.5 | 322f3c2a4a21df31c84ca416bf65ee5e9059e440 |
+| swift-atomics | 1.3.1 | 0442cb5a3f98ab802acb777929fdb446bda11a34 |
+| swift-collections | 1.7.3 | 35a1edcb8ebd2bfe251d587f0b69e62af28f508c |
+| swift-system | 1.8.1 | 869129b7bf4ecc57b97d0193ad29690ca2134750 |
+
+`DiscordNIOTransport` imports NIOCore/Posix/HTTP1/WebSocket/ConcurrencyHelpers and
+NIOSSL. `DiscordUnixPlatform` imports Core/Posix/ConcurrencyHelpers. Test-only
+NIOEmbedded is excluded from runtime products. The graph, license files and
+bundled BoringSSL revision match the reviewed feasibility graph above; production
+TLS uses full verification with no insecure toggle. NIO and SSL require Swift 6.1,
+compatible with root 6.4. Root Apple deployment minima remain unchanged; other
+hosts have no inferred qualification. No newer stable tag was shown by the
+verified latest-release links. The existing Apache-2.0, Swift Runtime Library
+Exception, NIO NOTICE and BoringSSL attribution obligations apply to distribution.
+There are no dependency migrations for consumers of the portable products.
+
+Native compiler cache/temp files and loopback tests required approved host access
+in the managed workspace. Resolution reused the existing verified local repository
+cache for a stalled transitive fetch; no checkout was vendored or substituted
+for the official lockfile revisions. The independent load package resolves the
+same approved graph and remains outside runtime products.

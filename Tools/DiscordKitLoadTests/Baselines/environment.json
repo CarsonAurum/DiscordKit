@@ -1,0 +1,14 @@
+{
+  "architecture": "arm64",
+  "buildConfiguration": "release",
+  "dirtySource": true,
+  "hardwareModel": "Mac15,10",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "measurementScope": "client process only; immediate and one-second settled heap/RSS, sampled pool slots, live malloc gauges; no fleet or soak qualification",
+  "peer": "Python standard-library ThreadingHTTPServer, IPv4 loopback, HTTP/1.1, fixed1024-byte payload",
+  "physicalMemoryBytes": 38654705664,
+  "processor": "Apple M3 Max",
+  "recordedAtUTC": "2026-10-16T04:48:42.798042+00:00",
+  "sourceCommitBasis": "197a919e00c0a4baa0024b20b11e6b399a5d01e8",
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0"
+}

@@ -2,7 +2,8 @@
 
 Status: adopted implementation policy, updated 2026-10-15. Part 1 implements
 Sendable values, pull-body ownership and deadline contexts with deterministic
-test support. Protocol actors, scheduling queues and event broadcasts described
+test support. Part 2 adds actor/event-loop-owned adapters and fenced shard leases;
+see [transport ownership](Transport.md). Protocol actors, scheduling queues and event broadcasts described
 below remain planned for their respective runtime phases.
 
 ## Target settings and isolation

@@ -8,20 +8,34 @@ import Foundation
 /// This is a best-effort filter, not a guarantee against every possible encoding,
 /// partial secret, unregistered token, base64 payload or malicious transformation.
 /// Prefer structured errors and suppressed bodies over free-form diagnostics.
+/// Percent decoding allows at most 32 nested encoding layers. Diagnostics that
+/// exceed that bound are suppressed completely; an excessively encoded registered
+/// secret causes all nonempty text diagnostics to be suppressed, because its full
+/// set of recognized decoded forms could not be established safely.
 public struct DiagnosticRedactor: Sendable, CustomStringConvertible,
     CustomDebugStringConvertible, CustomReflectable
 {
     private let patterns: [String]
+    private let suppressText: Bool
 
     /// Registers secrets without retaining empty matching patterns.
     /// Longer overlapping secrets are matched first. The redactor has value
     /// semantics and no global registry; create a new instance when secrets change.
+    /// If a secret requires more than 32 percent-decoding passes, nonempty text,
+    /// paths and header fields are suppressed completely rather than using an
+    /// incomplete registry of its decoded variants. Registration count and total
+    /// bytes remain the caller's resource responsibility.
     /// - Parameter secrets: Exact secrets to conceal; empty entries are ignored.
     public init(secrets: [String] = []) {
         var variants = Set<String>()
+        var unresolvedEncoding = false
         for secret in secrets where !secret.isEmpty {
             variants.insert(secret)
-            variants.insert(Self.decodePercentEscapes(secret))
+            if let decoded = Self.decodePercentEscapes(secret) {
+                variants.insert(decoded)
+            } else {
+                unresolvedEncoding = true
+            }
             let escaped = secret
                 .replacingOccurrences(of: "\\", with: "\\\\")
                 .replacingOccurrences(of: "\"", with: "\\\"")
@@ -35,16 +49,22 @@ public struct DiagnosticRedactor: Sendable, CustomStringConvertible,
         patterns = variants.filter { !$0.isEmpty }.sorted {
             $0.utf8.count == $1.utf8.count ? $0 < $1 : $0.utf8.count > $1.utf8.count
         }
+        suppressText = unresolvedEncoding
     }
 
     /// Conceals registered patterns after decoding valid percent escapes.
     /// Malformed percent text is preserved; valid escapes alongside it are still
-    /// decoded. Each pass strictly consumes escapes; nested forms terminate.
-    /// Runtime scales with input length, nesting depth and registered pattern count.
+    /// decoded, up to 32 passes. Excessive nesting suppresses the complete text.
+    /// Percent decoding performs at most 32 transformations and one terminal scan;
+    /// subsequent matching scales with input length and registered pattern count.
     /// - Parameter text: Diagnostic text, never a wire payload to send onward.
-    /// - Returns: Canonicalized diagnostic text with recognized secrets replaced.
+    /// - Returns: Empty for empty input, otherwise canonicalized diagnostic text
+    ///   with recognized secrets replaced, or a fixed marker when safe decoding
+    ///   would exceed the nesting bound or registration was excessively encoded.
     public func redact(_ text: String) -> String {
-        replaceRegisteredPatterns(in: Self.decodePercentEscapes(text))
+        guard !text.isEmpty else { return "" }
+        guard !suppressText, let decoded = Self.decodePercentEscapes(text) else { return "[REDACTED]" }
+        return replaceRegisteredPatterns(in: decoded)
     }
 
     /// Conceals sensitive header values and registered secrets in all other fields.
@@ -76,12 +96,16 @@ public struct DiagnosticRedactor: Sendable, CustomStringConvertible,
     /// Percent escapes are decoded after route-token removal, so an encoded slash
     /// inside a token cannot accidentally split it into diagnostic path segments.
     /// - Returns: A canonicalized string with recognized path credentials removed.
+    ///   Excessive percent nesting in any retained component or registered secret
+    ///   suppresses the complete path. Empty input remains empty.
     public func path(_ path: String) -> String {
+        guard !path.isEmpty else { return "" }
+        guard !suppressText else { return "[REDACTED]" }
         let filtered = replaceRegisteredPatterns(in: path)
         let boundary = filtered.firstIndex(where: { $0 == "?" || $0 == "#" }) ?? filtered.endIndex
         var components = filtered[..<boundary].split(separator: "/", omittingEmptySubsequences: false).map(String.init)
         for index in components.indices {
-            let component = Self.decodePercentEscapes(components[index])
+            guard let component = Self.decodePercentEscapes(components[index]) else { return "[REDACTED]" }
             if component == "webhooks" || component == "interactions", index + 2 < components.count {
                 components[index + 2] = "[REDACTED]"
             }
@@ -122,13 +146,16 @@ public struct DiagnosticRedactor: Sendable, CustomStringConvertible,
 
     /// Decodes valid UTF-8 percent triplets, including nested encodings.
     /// Invalid UTF-8 is replaced for diagnostics; malformed triplets remain literal.
-    /// Each successful pass reduces encoded bytes, bounding the number of passes
-    /// by the original byte count. It does not interpret form `+` as whitespace.
+    /// Performs at most 32 transformations and one terminal scan, bounding work
+    /// linearly in input bytes with a fixed nesting factor. It does not interpret
+    /// form `+` as whitespace. The caller suppresses diagnostics when further
+    /// valid escapes remain rather than exposing an incompletely decoded secret.
     /// - Parameter text: Arbitrary diagnostic text.
-    /// - Returns: Percent-decoded text suitable only for diagnostic filtering.
-    private static func decodePercentEscapes(_ text: String) -> String {
+    /// - Returns: Percent-decoded text suitable only for diagnostic filtering,
+    ///   or nil when more than 32 decoding passes would be needed.
+    private static func decodePercentEscapes(_ text: String) -> String? {
         var bytes = Array(text.utf8)
-        while true {
+        for _ in 0..<32 {
             var decoded: [UInt8] = []
             decoded.reserveCapacity(bytes.count)
             var index = 0
@@ -148,6 +175,10 @@ public struct DiagnosticRedactor: Sendable, CustomStringConvertible,
             if !changed { return String(decoding: bytes, as: UTF8.self) }
             bytes = decoded
         }
+        for index in bytes.indices where bytes[index] == 37 && index + 2 < bytes.count {
+            if hexValue(bytes[index + 1]) != nil, hexValue(bytes[index + 2]) != nil { return nil }
+        }
+        return String(decoding: bytes, as: UTF8.self)
     }
 
     /// Converts one ASCII hexadecimal character without locale-sensitive parsing.

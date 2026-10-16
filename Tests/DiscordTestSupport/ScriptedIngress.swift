@@ -41,6 +41,8 @@ public actor ScriptedHTTPResponder: HTTPResponder {
     /// Every supplied body is closed before this method returns or throws. A stored,
     /// awaited task lets explicit close cancel pending work; caller cancellation is
     /// forwarded to that task. Transmission steps must honor cooperative cancellation.
+    /// Cancellation and the inclusive deadline are rechecked after awaiting that
+    /// task, before recording completion; a response already sent cannot be retracted.
     /// - Parameters:
     ///   - response: Metadata and optional single-use body, whose cleanup ownership transfers on every call.
     ///   - context: Monotonic clock and inclusive deadline for the transmission.
@@ -83,7 +85,7 @@ public actor ScriptedHTTPResponder: HTTPResponder {
             } onCancel: {
                 task.cancel()
             }
-            try Task.checkCancellation()
+            try context.check()
             guard !closed else { throw TransportFailure.closed }
             completionCount += 1
             await finish()
@@ -160,7 +162,9 @@ public actor ScriptedHTTPIngress: HTTPIngress {
     ///
     /// Pre-cancellation/expiration do not consume queued input. Failure after reservation
     /// discards and closes that one exchange; no request is replayed. Concurrent calls
-    /// fail rather than queue. EOF closes the listener lease and returns nil.
+    /// fail rather than queue. Cancellation and expiration are checked again after
+    /// awaiting acceptance work, including losing-timer cleanup, before ownership
+    /// transfers. EOF closes the listener lease and returns nil.
     /// - Parameter context: Clock and optional deadline for acceptance, including injected suspension.
     /// - Returns: The next caller-owned exchange, or nil after orderly EOF/closure.
     /// - Throws: `TransportFailure.concurrentRead` for another active accept, cancellation,
@@ -190,7 +194,7 @@ public actor ScriptedHTTPIngress: HTTPIngress {
             } onCancel: {
                 task.cancel()
             }
-            try Task.checkCancellation()
+            try context.check()
             guard !closed else { throw TransportFailure.closed }
             acceptanceCount += 1
             return exchange

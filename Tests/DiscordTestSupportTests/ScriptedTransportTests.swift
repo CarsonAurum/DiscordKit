@@ -75,7 +75,7 @@ struct ScriptedTransportTests {
     /// The clock hook changes state after that snapshot, so only a check after
     /// taking response ownership can reclaim both bodies instead of returning success.
     /// - Parameter cancel: True cancels the executing task; false reaches the inclusive deadline.
-    /// - Throws: Unexpected fixture construction or clock-advance errors.
+    /// - Throws: Unexpected fixture construction or URL assertion failures.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test(arguments: [false, true])
     func httpRechecksContextAfterTakingResponse(cancel: Bool) async throws {
