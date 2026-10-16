@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://discordkit.invalid/parity/inventory-v1.schema.json",
+  "title": "DiscordKit version 1 discovery inventory and source catalog",
+  "description": "Inventory status describes local implementation, independently of upstream access. Source dates and prerequisites are inherited by entries; missing upstream dates are explicitly unknown. Runtime support changes require history and linked test evidence.",
+  "oneOf": [{"$ref": "#/$defs/inventory"}, {"$ref": "#/$defs/catalog"}],
+  "$defs": {
+    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "upstreamDate": {"oneOf": [{"$ref": "#/$defs/date"}, {"const": "unknown"}]},
+    "nonempty": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "protocol": {"enum": ["10", "8", "unversioned", "not_applicable"]},
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "name", "sourceID", "locator", "context", "status", "condition", "review", "evidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/nonempty"},
+        "kind": {"enum": ["page", "section", "endpoint", "model", "field", "enum_value", "permission", "intent", "opcode", "close_code", "event", "sdk_method", "protocol_state", "table_row"]},
+        "name": {"$ref": "#/$defs/nonempty"},
+        "sourceID": {"$ref": "#/$defs/nonempty"},
+        "locator": {"$ref": "#/$defs/nonempty"},
+        "context": {"$ref": "#/$defs/nonempty"},
+        "status": {"enum": ["supported", "partial", "unsupported", "deprecated", "removed"]},
+        "condition": {"enum": ["public_protocol", "approval_required", "portal_only", "unavailable_upstream", "undocumented_protocol", "unavailable_host", "not_applicable"]},
+        "review": {"enum": ["discovered", "reviewed"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}},
+        "protocolVersion": {"$ref": "#/$defs/protocol"},
+        "definition": {"type": "object", "description": "Source-specific type/value/ref or method-contract metadata. Never interpreted as a production schema without review."}
+      },
+      "allOf": [{
+        "if": {"properties": {"status": {"enum": ["supported", "partial"]}}},
+        "then": {"properties": {"review": {"const": "reviewed"}, "evidence": {"minItems": 1}}}
+      }]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url", "revision", "sha256", "verifiedOn", "announcementDate", "effectiveDate", "protocolVersion", "authority", "accessPrerequisites", "platformAvailability", "entryIDs"],
+      "properties": {
+        "id": {"$ref": "#/$defs/nonempty"},
+        "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "revision": {"$ref": "#/$defs/nonempty"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "verifiedOn": {"$ref": "#/$defs/date"},
+        "announcementDate": {"$ref": "#/$defs/upstreamDate"},
+        "effectiveDate": {"$ref": "#/$defs/upstreamDate"},
+        "protocolVersion": {"$ref": "#/$defs/protocol"},
+        "authority": {"enum": ["written_docs", "preview_spec", "sdk_reference", "discovery_index"]},
+        "accessPrerequisites": {"$ref": "#/$defs/nonempty"},
+        "platformAvailability": {"$ref": "#/$defs/nonempty"},
+        "entryIDs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}}
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "verifiedOn", "protocolVersions", "entries"],
+      "properties": {
+        "schemaVersion": {"const": 1},
+        "verifiedOn": {"$ref": "#/$defs/date"},
+        "protocolVersions": {"const": {"rest": "10", "gateway": "10", "voice": "8"}},
+        "entries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/entry"}}
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "verifiedOn", "sources"],
+      "properties": {
+        "schemaVersion": {"const": 1},
+        "verifiedOn": {"$ref": "#/$defs/date"},
+        "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}}
+      }
+    }
+  }
+}

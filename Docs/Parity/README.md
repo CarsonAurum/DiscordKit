@@ -1,0 +1,116 @@
+# Parity inventory and chronological history
+
+Baseline date: **2026-10-15**. DiscordKit has **zero implemented Discord operations**.
+The runtime remains the original scaffold. This inventory makes future coverage
+measurable; discovery records and unavailable-capability stubs do not count as support.
+
+## Versioned records
+
+- `inventory-v1.json` contains individually classified discovery records for written
+  reference/guide pages, sections, routes, fields, enum values, permissions, intents,
+  opcodes, close codes, events, SDK methods and protocol-state sections.
+- `inventory.schema.json` describes the inventory and its separate source catalog.
+- `sources-2026-10-15.json` pins source revisions, SHA-256 content hashes, verification
+  date, authority, protocol version, prerequisites and exact discovered membership.
+- `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
+- `history.json` is append-only support history; `changes/` contains human-readable entries.
+- `coverage.md` records actual tests and completion gates, including work that cannot
+  be qualified on this host. `../Feasibility/method-contracts.json` maps SDK operations
+  individually to public protocols, local work or named missing-contract blockers.
+
+Source metadata is inherited by its entries. Announcement/effective dates are
+`unknown` until official evidence establishes them; the local baseline date is
+never used as an upstream introduction date. Protocol versions are explicitly REST
+**10**, Gateway **10**, Voice Gateway **8**. An entry may override a mixed source's
+protocol version (for example, Voice opcodes in the common opcode reference).
+OAuth/RPC/Activity/Social protocols with no such version are documented separately;
+REST versioning does not assign a version to a native SDK or iframe protocol.
+RPC IPC's documented handshake `v: 1` is a payload-level protocol choice; its
+mixed RPC/OAuth reference source is cataloged as unversioned rather than REST v10.
+
+## Status, conditions and evidence
+
+`status` describes **DiscordKit implementation**: `supported`, `partial`,
+`unsupported`, `deprecated`, `removed`. Upstream availability is independent.
+`condition` describes an access/protocol boundary: `public_protocol`,
+`approval_required`, `portal_only`, `unavailable_upstream`, `undocumented_protocol`,
+`unavailable_host`, or `not_applicable` for documentation/local values.
+
+All baseline discovery records are `unsupported`. `review: discovered` means
+extraction found a source definition; it does not certify its auth, availability,
+permissions, scope or full schema. Broad source defaults identify the public
+surface; exact per-operation prerequisites require semantic review before implementation.
+SDK contract mappings retain more precise prerequisites and blockers. Section and
+unrecognized `table_row` records deliberately preserve material requiring review.
+Duplicate representations across written docs, stable spec and preview spec remain
+distinct; their counts are **not unique operation counts**.
+
+Before changing support, review the authoritative contract, classify exact access
+requirements and platform availability, link symbols and deterministic test evidence,
+and append a history entry with previous/current behavior, official links, upstream
+announcement/effective dates, local support date/release/commit, limitations and migration.
+`supported`/`partial` require review and nonempty evidence. The validator checks their
+presence, not whether a test establishes behavior: semantic review remains necessary.
+Absent a local release or commit, record `unknown` until it exists.
+
+## Source precedence and reproducibility
+
+The baseline uses all **204 MDX files** (189 developer pages plus 15 imported snippets)
+from official documentation revision `37148620d2324292b76047541d5f8331f81ea77a`.
+Every downloaded MDX blob was checked against that revision's nontruncated recursive
+Git tree using Git's blob hash before extraction. The public documentation index is
+retained in `snapshots/llms-2026-10-15.txt` with its content hash; it is a discovery
+boundary, not proof that all future documents are covered. SDK reference content is
+unversioned, so its full source SHA-256, signature hashes and definition anchors are retained
+in the contract map. Re-fetching an unversioned SDK page may differ from this baseline.
+
+Both `openapi.json` and `openapi_preview.json` are pinned at official specification
+revision `ed014089afa986f2b532ae081c456a85de074d0c`. The
+[specification README](https://github.com/discord/discord-api-spec/blob/ed014089afa986f2b532ae081c456a85de074d0c/README.md)
+states that these are preview material and written docs take precedence. Do not use
+them as a runtime dependency, infer unsupported fields are stable, or resolve a
+contradiction by silently preferring the generated schema. Preserve the ambiguity
+and require official resolution or reviewed compatibility policy.
+
+Acquire checkouts at those **exact revisions**, verify them, then run from the repository:
+
+```sh
+python3 Tools/DiscordKitTools/scripts/harvest_inventory.py \
+    --docs /path/to/discord-api-docs \
+    --spec /path/to/discord-api-spec \
+    --index Docs/Parity/snapshots/llms-2026-10-15.txt \
+    --methods Docs/Feasibility/method-contracts.json \
+    --output /tmp/discordkit-inventory
+diff -u Docs/Parity/inventory-v1.json /tmp/discordkit-inventory/inventory-v1.json
+diff -u Docs/Parity/sources-2026-10-15.json /tmp/discordkit-inventory/sources-2026-10-15.json
+```
+
+Python 3 uses only its standard library; no runtime or development package dependency
+is installed. The extractor is deliberately offline. It records the specified revision
+and source hashes; **it does not authenticate a checkout's revision**. Verify acquisition
+before using its results. It retains source locations and identifying labels, rather
+than vendoring full reference documents. Never run harvesting during consumer builds.
+
+The current extractor retains headings/tables, normative intent code blocks, Route
+elements and known guide URL/template forms. Arbitrary prose or a new markup style can
+introduce definitions it does not recognize. The pending-review count and retained
+sections keep that limitation visible. Zero unclassified discovered IDs is a structural
+property; it is not a full-parity or exhaustive semantic-discovery claim.
+
+## Validation
+
+```sh
+swift test --package-path Tools/DiscordKitTools
+python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'
+swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository .
+```
+
+The offline validator checks schema version, protocol baseline, real Gregorian dates,
+provenance metadata, allowed classifications, unique IDs, source references, exact
+discovered membership and evidence/review requirements. Errors exit nonzero; the command
+does not modify files. The JSON Schema is an interchange contract; the dependency-free
+Swift validator implements the named semantic checks rather than a general JSON Schema
+engine. Unknown JSON keys are ignored by Swift decoding and must be reviewed via the schema.
+
+Generation, full parity checks, documentation audits and dependency-audit CLI commands
+from later roadmap parts are not implemented. Unknown commands fail with usage status 64.

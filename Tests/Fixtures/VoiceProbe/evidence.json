@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-10-15",
+  "status": "passed",
+  "command": "swift test --package-path Tests/Fixtures/VoiceProbe",
+  "toolchain": "Apple Swift 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "host": {
+    "os": "macOS",
+    "version": "27.0.1",
+    "build": "26A434",
+    "architecture": "arm64"
+  },
+  "testDeclarations": 5,
+  "testInvocations": 10,
+  "dependencyPins": [
+    {
+      "identity": "swift-asn1",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/apple/swift-asn1.git",
+      "state": {
+        "revision": "3b6410f7dee09eb33cdd26260c5fd47fda19b0e2",
+        "version": "1.7.3"
+      }
+    },
+    {
+      "identity": "swift-crypto",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/apple/swift-crypto.git",
+      "state": {
+        "revision": "1c80d3aff53fedc445b60692980cb4f19a618657",
+        "version": "5.0.1"
+      }
+    }
+  ],
+  "testSourceSHA256": "f7a1c54723ec6f24d410ed84087ab0e38aa2a344ccd669307df00d0661cf8550",
+  "limitations": [
+    "macOS public-API feasibility only",
+    "No owned XChaCha, truncated-tag GCM, MLS, DAVE or codec implementation",
+    "No Discord host or remote protocol conformance tests",
+    "No performance or other-platform runtime certification"
+  ],
+  "fixtureProvenance": [
+    {
+      "id": "aes128-fips197",
+      "source": "https://doi.org/10.6028/NIST.FIPS.197-upd1",
+      "description": "AES-128 example with key000102030405060708090a0b0c0d0e0f, plaintext00112233445566778899aabbccddeeff, ciphertext69c4e0d86a7b0430d8cdb78070b4c55a",
+      "license": "US government publication; numerical algorithm test vector",
+      "copiedImplementation": false
+    },
+    {
+      "id": "public-api-parameter-probes",
+      "source": "https://github.com/apple/swift-crypto/tree/1c80d3aff53fedc445b60692980cb4f19a618657",
+      "description": "Locally authored API construction/roundtrip/rejection checks; no upstream implementation copied",
+      "license": "Repository-authored tests; upstream package Apache-2.0 with its own third-party notices",
+      "copiedImplementation": false
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "2026-10-15-part-0-baseline",
+      "recordedOn": "2026-10-15",
+      "upstreamVersions": {"rest": "10", "gateway": "10", "voice": "8"},
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-15",
+      "localSupportDate": "unknown",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "discovery_baseline",
+      "previousBehavior": "Only hello() and an empty test scaffold; no inventory or implemented Discord integration.",
+      "currentBehavior": "Versioned discovery inventory, structural validator, capability matrix, local feasibility probes and named upstream blockers. No Discord operation has been implemented.",
+      "affectedSymbols": [],
+      "affectedPayloads": "All discovered upstream surfaces are inventoried as unsupported; this baseline introduces no runtime payload behavior.",
+      "breakingChanges": [],
+      "migration": "No consumer migration required; the original runtime scaffold remains. Future support entries must link symbols and tests.",
+      "sources": [
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/topics/voice-connections",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/blob/ed014089afa986f2b532ae081c456a85de074d0c/README.md"
+      ],
+      "details": "changes/2026-10-15-baseline.md",
+      "remainingGates": "coverage.md"
+    }
+  ]
+}

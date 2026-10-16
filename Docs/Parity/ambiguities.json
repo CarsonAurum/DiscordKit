@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-10-15",
+  "entries": [
+    {
+      "id": "identity-profile-success-response",
+      "status": "open",
+      "surface": "REST v10 / Application Identity Profile",
+      "description": "The update endpoint introductory text promises an Application Identity Profile object, while its response section specifies 201 on first write and 204 on later writes. Whether a first-write body is guaranteed remains unspecified.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/application-identity-profile",
+          "section": "Update Application Identity Profile introduction and Response",
+          "revision": "unknown",
+          "sha256": "e49fc4ab7fb193db299bd8ee30e95d95cb26b39bf514183838d35b20f4c530df"
+        }
+      ],
+      "impact": "A generated always-decode-object response would fail on valid empty 204 updates.",
+      "interimPolicy": "Do not implement or mark support based on an invented mandatory success body. Preserve first-write and update variants in the inventory; require no body for a 204.",
+      "requiredResolution": "Official corrected response schema/examples, or approved conformance evidence for both first-write 201 and subsequent-update 204 including content type and body.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "rpc-certified-device-websocket-ports",
+      "status": "open",
+      "surface": "RPC v1 / Certified Devices",
+      "description": "The RPC reference gives local discovery range [6463,6472], ten ports. The Certified Devices reference gives 6463 through 6473. The inclusive upper bound differs.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/topics/rpc",
+          "section": "Connecting / local RPC server port range",
+          "revision": "unknown",
+          "sha256": "bcabc6931b969f2b8a21ec52cdbf1bf0b4f39062537228c26d2bc279b0999d8d"
+        },
+        {
+          "url": "https://docs.discord.com/developers/topics/certified-devices",
+          "section": "Connecting / PORT range",
+          "revision": "unknown",
+          "sha256": "f3f0b5c274c6d64d32b845c82b1ea291d074014d47fc420c32f65a5157e6ece0"
+        }
+      ],
+      "impact": "One default range cannot be represented as an upstream-confirmed common contract.",
+      "interimPolicy": "Retain the two surface-specific ranges separately; no live port scan or host qualification has run. Do not silently normalize 6473 away or claim a shared resolved range.",
+      "requiredResolution": "Official Discord clarification/correction or approved desktop-host conformance evidence covering range endpoints and distinct HTTP/WebSocket/IPC surface semantics.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "openapi-preview-precedence",
+      "status": "policy_resolved",
+      "surface": "REST v10 / preview OpenAPI",
+      "description": "The official repository publishes stable and preview specifications and warns that the public preview can diverge from written documentation. Experimental preview entries are not proof of available supported API.",
+      "evidence": [
+        {
+          "url": "https://github.com/discord/discord-api-spec",
+          "section": "README / Spec conventions and preview warning",
+          "revision": "unknown",
+          "sha256": "3d4ed9454f8e979fae32f9e72ab99d1ecf081829a7ca27d50f3403415dc8b70c"
+        }
+      ],
+      "impact": "Automatic generation from either spec alone can encode obsolete, experimental or conflicting contracts.",
+      "interimPolicy": "Follow written official documentation where it disagrees with the preview specification. Pin stable and preview snapshots separately, inventory differences, and require a reviewed overlay; the policy is resolved, individual schema differences remain open until reviewed.",
+      "requiredResolution": "Keep every concrete discrepancy linked to a source and reviewed disposition. A future upstream correction may close that difference; policy resolution does not establish endpoint parity.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "social-sdk-missing-wire-contracts",
+      "status": "open",
+      "surface": "Social SDK / remote session, user DMs, relationships, calls and local UI",
+      "description": "Published SDK class signatures and guides expose client behavior without a complete public user-session protocol for all methods. Documented bot REST/Gateway routes and confidential backend flows are not universal substitutes for SDK user authorization.",
+      "evidence": [
+        {
+          "url": "https://discord.com/developers/docs/social-sdk/classdiscordpp_1_1Client.html",
+          "section": "Client public method reference",
+          "revision": "unknown",
+          "sha256": "fb1ad3c1d4d077eeefbfef43bbceb9b0d8dcd54ef1d1af24722306b7a5e85e7d"
+        },
+        {
+          "url": "https://docs.discord.com/developers/discord-social-sdk/getting-started/using-c%2B%2B",
+          "section": "Native runtime setup",
+          "revision": "unknown"
+        }
+      ],
+      "impact": "Entire-platform parity cannot be achieved by wrapping the prohibited native runtime or guessing private routes.",
+      "interimPolicy": "Every discovered method has a separate method-contracts record. Implement public providers/local computation only when their contract is established; retain named blockers with required evidence for each gap. Stubs and mocks stay unsupported.",
+      "requiredResolution": "Official public or approved routes/frames, credentials/scopes, full request/response/event/error schemas, rate limits and lifecycle/reconnect rules, plus owned conformance tests for each blocked method.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "public-client-backend-equivalence",
+      "status": "open",
+      "surface": "Social SDK authentication / provisional accounts and publisher child tokens",
+      "description": "Server guides specify secret-bearing token/unmerge/child-token contracts; corresponding public SDK methods lack a client_secret argument. A confidential backend route does not establish a safe equivalent public-client wire request.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/public-client",
+          "section": "Public Client Integration",
+          "revision": "unknown"
+        },
+        {
+          "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/external-credentials-exchange",
+          "section": "Server external credentials exchange",
+          "revision": "unknown"
+        },
+        {
+          "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/publisher-level-account-linking",
+          "section": "Exchange for Child Token",
+          "revision": "unknown",
+          "sha256": "c414b6e7ee54c2a7d39042bcec29a73b2b2306a6d3dff55ea0afbdd8337c242f"
+        }
+      ],
+      "impact": "Inferring client equivalence could expose secrets or promise an unavailable flow.",
+      "interimPolicy": "Map the documented server equivalent as partial; keep public-client request/authentication semantics blocked. Never embed a confidential application secret in the public Swift client.",
+      "requiredResolution": "Official public-client request schema, token audience/lineage/refresh semantics and authorization/error contract, or a documented owned backend mediation contract.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "activity-source-only-exports",
+      "status": "open",
+      "surface": "Activities / Embedded App SDK",
+      "description": "The official pinned source exports commands/events beyond the written reference, including Quest-related commands and ACTIVITY_JOIN. Source schemas establish discovery but do not prove host rollout, approval/scopes or compatibility.",
+      "evidence": [
+        {
+          "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/index.ts",
+          "section": "Exported command catalog",
+          "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+          "sha256": "2a02b3b27c6577bb54dc6d5aee5acda3c22a8f96649de54972757b1de3a91a08"
+        },
+        {
+          "url": "https://docs.discord.com/developers/developer-tools/embedded-app-sdk",
+          "section": "Written command and event reference",
+          "revision": "unknown",
+          "sha256": "f1986bb4faa78db0e559d5d62cc94d13207cc9b330c4968c26148ed58d33913e"
+        }
+      ],
+      "impact": "Source-only methods cannot be represented as uniformly available on web/iOS/Android.",
+      "interimPolicy": "Retain source-only records with named availability blockers; use the documented iframe bridge as the provider and qualify actual hosts before support claims.",
+      "requiredResolution": "Official scope/platform/approval and rollout documentation, or approved conformance evidence, for each source-only export.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "rpc-clear-presence-schema",
+      "status": "open",
+      "surface": "Social / RPC SET_ACTIVITY",
+      "description": "The Social SDK offers ClearRichPresence, but the written RPC SET_ACTIVITY argument table specifies an activity object without establishing null/omission clear semantics.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/topics/rpc",
+          "section": "SET_ACTIVITY argument structure",
+          "revision": "unknown",
+          "sha256": "bcabc6931b969f2b8a21ec52cdbf1bf0b4f39062537228c26d2bc279b0999d8d"
+        },
+        {
+          "url": "https://discord.com/developers/docs/social-sdk/classdiscordpp_1_1Client.html",
+          "section": "ClearRichPresence",
+          "revision": "unknown"
+        }
+      ],
+      "impact": "Public presence update support alone does not prove the clearing operation.",
+      "interimPolicy": "Record a partial desktop RPC candidate and an explicit clearing-schema blocker. Do not invent nullable activity support from common client-library behavior.",
+      "requiredResolution": "Official clear-presence argument schema or approved host conformance covering null/omitted activity and effect on current application presence.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "dave-document-wire-version",
+      "status": "open",
+      "surface": "DAVE / voice version negotiation",
+      "description": "The whitepaper introduction identifies text version 1.1 while parameter sections refer to protocol 1/1.0; Voice Gateway negotiates a separate integer version. Historical downgrade text is not current availability evidence.",
+      "evidence": [
+        {
+          "url": "https://daveprotocol.com/",
+          "section": "Introduction, MLS Parameters, Media Ciphersuite and negotiation",
+          "revision": "unknown",
+          "sha256": "bb1d5eb46b6b63589cf5f03bf6fd0aca9fbef1730d2ae833fecfd264c27ed09c"
+        },
+        {
+          "url": "https://docs.discord.com/developers/topics/voice-connections",
+          "section": "Voice protocol negotiation",
+          "revision": "unknown",
+          "sha256": "7daad5ac1df7dac9f46328fbd37c8bcf1aa9804f8bffc1bf768004d05ceabbba"
+        }
+      ],
+      "impact": "Using a prose revision as the wire version or assuming transport-only voice could break negotiation.",
+      "interimPolicy": "Store document revision and negotiated DAVE integer separately; require current Gateway/change-log evidence for supported versions and eligible surfaces.",
+      "requiredResolution": "Official version mapping/current negotiation examples and supported/deprecated-version policy; no guessed mapping from the prose heading.",
+      "verifiedAt": "2026-10-15",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    }
+  ]
+}

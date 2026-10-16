@@ -2,18 +2,27 @@
 
 ## Project and layout
 
-DiscordKit is a Swift Package Manager library. It currently contains a small
+DiscordKit is a Swift Package Manager library. Its runtime still contains a small
 `hello()` function and a placeholder test; Discord integration is not yet implemented.
+Part 0 adds an architecture/parity baseline and separate development tools/probes.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Tests/DiscordKitTests/`: tests for the library.
+- `Docs/`: architecture, dependency/platform policy, feasibility findings and parity history.
+- `Tools/DiscordKitTools/`: separate inventory validator, discovery script and their tests.
+- `Tests/Fixtures/PlatformProbe/` and `Tests/Fixtures/VoiceProbe/`: independently
+  resolved feasibility packages; their dependencies are not production dependencies.
+
+Introduce the roadmap's runtime sublibraries only with real implementations and tests.
+Follow the adopted dependency directions in `Docs/Architecture.md`; preserve independent
+REST, HTTP interactions, Gateway, OAuth2 and optional voice adoption.
 
 ## Build and validation
 
 Use Swift 6.4 or newer, as required by the manifest. Both targets enable the
-`ApproachableConcurrency` upcoming feature; preserve this setting unless the task
-requires changing it.
+`ApproachableConcurrency` upcoming feature and explicitly use nonisolated default
+isolation; preserve these settings unless the task requires changing them.
 
 Run these commands from the repository root for source or manifest changes:
 
@@ -21,6 +30,20 @@ Run these commands from the repository root for source or manifest changes:
 swift build
 swift test
 ```
+
+For Part 0 tooling or inventory changes, also run:
+
+```sh
+swift test --package-path Tools/DiscordKitTools
+swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository .
+python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'
+```
+
+For feasibility fixture changes, run the affected separate package's `swift test
+--package-path` command documented in `Docs/Feasibility/`. Runtime probes need local
+loopback sockets; they never use Discord credentials or live Discord requests.
+Root `swift test` does not include these independent packages. Keep their resolved
+graphs and results synchronized with the feasibility report.
 
 The existing test is an empty scaffold and does not establish coverage. Source
 changes must meet the method documentation and unit testing requirements below.
@@ -32,7 +55,8 @@ For C# code on macOS, use `msbuild` rather than `dotnet`.
 
 - Follow the existing four-space indentation and Swift naming conventions:
   `UpperCamelCase` for types and `lowerCamelCase` for functions and properties.
-- Keep library code in the `DiscordKit` target and expose public APIs deliberately.
+- Keep library code in `DiscordKit` or the roadmap's implemented sublibrary targets;
+  expose public APIs deliberately. Keep development tools and probes separate.
 - Keep changes focused; add package dependencies only when the task needs them.
 
 ## Method documentation

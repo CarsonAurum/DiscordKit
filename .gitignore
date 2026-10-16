@@ -1,5 +1,9 @@
 .DS_Store
 /.build
+**/.build/
+**/.swiftpm/
+__pycache__/
+*.pyc
 /Packages
 xcuserdata/
 DerivedData/

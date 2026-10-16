@@ -15,6 +15,7 @@ let package = Package(
             name: "DiscordKit",
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
+                .defaultIsolation(nil),
             ],
         ),
         .testTarget(
@@ -22,6 +23,7 @@ let package = Package(
             dependencies: ["DiscordKit"],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
+                .defaultIsolation(nil),
             ],
         ),
     ]
