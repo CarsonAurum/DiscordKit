@@ -137,3 +137,23 @@ and the independent generator seed preserves positive template coverage. Current
 source hashes, field/variant declarations, executable test anchors and chronology
 are linked in the reviewed records. This does not change historical Part 0 counts
 or establish event, live API, fleet, unavailable-platform or capacity qualification.
+
+## Part 5H webhook, interaction-response and voice update (2026-10-16)
+
+The [webhook, interaction-response and voice catalog](../WebhooksInteractionsVoice.md)
+adds all 28 current written REST operations: 15 webhook, eight interaction-response
+and five voice operations. Reviewed evidence covers owned fields, unknown variants,
+validated payloads, explicit callback/compatibility response shapes, exact typed
+path-token binding, shared IP-global webhook admission and interaction exemptions.
+The legacy premium-required callback remains deprecated. Current source fingerprints
+and explicit written/preview ambiguity decisions accompany the chronological record;
+historical discovery pins and prior support records remain unchanged.
+
+Deterministic tests cover descriptors, decoding, validation, credential/reuse
+boundaries, uploads, retries, cancellation, permission/authentication errors and
+global admission/cleanup. Related resource projections remain explicitly partial.
+The [execution record](../../.air/plans/phase-5h-execution.plan.md) records complete
+validation and local HTTP measurements. These short synthetic macOS measurements
+do not establish served-user, live Discord, fleet, device or sustained capacity.
+Interaction ingress/signatures/routing and voice media/device ownership remain
+separate roadmap work; batches 5I–5J remain pending.

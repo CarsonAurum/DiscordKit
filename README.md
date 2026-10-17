@@ -10,8 +10,9 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [audit logs and Auto Moderation](Docs/Moderation.md) in Phase 5D,
 [emoji, stickers and soundboard](Docs/Expressions.md) in Phase 5E,
 [invites, templates, scheduled events and stages](Docs/DiscoveryEvents.md) in Phase 5F, and
-[applications, users, linked roles and commands](Docs/ApplicationsUsers.md) in Phase 5G. Interaction handling,
-OAuth2 flows, voice, RPC, Activities, Social and commerce are not implemented.
+[applications, users, linked roles and commands](Docs/ApplicationsUsers.md) in Phase 5G, and
+[webhooks, interaction responses and voice control](Docs/WebhooksInteractionsVoice.md) in Phase 5H. Interaction ingress/routing,
+OAuth2 flows, voice media, RPC, Activities, Social and commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see

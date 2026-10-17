@@ -11,7 +11,7 @@ active threads through the existing Channel implementation. Contracts were verif
 are separate from original discovery pins. No dependencies or products were added;
 Part 5D adds [audit logs and Auto Moderation](Moderation.md), and Part 5E adds
 [emoji, stickers and soundboard](Expressions.md), and Part 5F adds
-[invites, templates, scheduled events and stages](DiscoveryEvents.md); 5H–5J remain pending.
+[invites, templates, scheduled events and stages](DiscoveryEvents.md); 5I–5J remain pending.
 Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordModels` and `DiscordHTTP`, inject a transport and the credential-sharing
@@ -168,3 +168,5 @@ clocks, with no Discord credentials or live requests. The independent REST examp
 tooling/generation/parity and local HTTP load scenarios are validated separately.
 Cross-platform/device, live API, durable coordination and long-soak gates remain
 separate in [platform support](PlatformSupport.md).
+
+Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

@@ -31,7 +31,9 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
 
     /// Binds one authentication scope to its shared admission and optional read reuse owners.
     /// - Parameters:
-    ///   - credential: Accepted bot/bearer credential; never forwarded to arbitrary origins.
+    ///   - credential: Accepted bot/bearer header credential or webhook/interaction path credential.
+    ///     Path-token endpoints require an exact match; tokens never become Authorization headers.
+    ///     Use a separate client and stable identity for each token, shared across its workers.
     ///   - identity: Stable opaque credential/rate scope, shared across clients and workers.
     ///   - transport: Single-send adapter; must not follow redirects or automatically retry.
     ///   - coordinator: Shared fail-closed authority using the same clock domain.
@@ -42,7 +44,9 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     ///   - maximumResponseBytes: Positive total response/error byte bound, default 8 MiB.
     ///   - maximumExchangeDuration: Positive shared-flight lifetime, default 30 seconds.
     ///     One subscriber's deadline cannot shorten another subscriber's exchange.
-    ///   - egress: Shared opaque outbound-IP identity for aggregate invalid-response protection.
+    ///   - egress: Shared opaque outbound-IP identity for aggregate invalid-response protection
+    ///     and header-free IP-global admission. Required for globally limited webhook-token operations;
+    ///     every client sharing the outbound IP must supply the same value, independently of token identity.
     ///   - userAgent: DiscordBot library identification; validated before transmission.
     /// - Precondition: Response byte and exchange-duration limits are positive.
     public init(credential: Credential, identity: RateLimitIdentity, transport: any HTTPTransport,
@@ -69,6 +73,10 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     public func execute<Response: Sendable>(_ endpoint: Endpoint<Response>, deadline: C.Instant? = nil) async throws -> Response {
         let context = TransportContext(clock: clock, deadline: deadline)
         try context.check()
+        try endpoint.validateCredential(credential)
+        if case .webhook = endpoint.pathCredential, endpoint.usesGlobalLimit, egress == nil {
+            throw DiscordError.validation(.missingValue)
+        }
         let evidence = HTTPSubmissionEvidence()
         do {
             let result = try await context.run {
@@ -253,7 +261,9 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     private func rateRequest<Response: Sendable>(_ endpoint: Endpoint<Response>) -> RateLimitRequest {
         RateLimitRequest(identity: identity, route: endpoint.method + " " + endpoint.route,
             majorResource: endpoint.majorParameter ?? "", egress: egress,
-            usesGlobalLimit: endpoint.usesGlobalLimit, queuedBytes: (endpoint.body?.accountedBytes ?? 0) + endpoint.accountedMetadataBytes)
+            usesGlobalLimit: endpoint.usesGlobalLimit,
+            usesEgressGlobalLimit: endpoint.authentication == .none && endpoint.usesGlobalLimit && egress != nil,
+            queuedBytes: (endpoint.body?.accountedBytes ?? 0) + endpoint.accountedMetadataBytes)
     }
 
     /// Separates wire representations and client/endpoint acceptance and freshness contracts.

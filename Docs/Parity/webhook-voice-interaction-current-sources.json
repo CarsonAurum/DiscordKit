@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "sources": [
+    {
+      "name": "webhook",
+      "url": "https://docs.discord.com/developers/resources/webhook.md",
+      "sha256": "6a3738c57292558f08b7fb408a14db8e20a96ba8cdb9949733ab598677b6cc7a",
+      "bytes": 21598,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "voice",
+      "url": "https://docs.discord.com/developers/resources/voice.md",
+      "sha256": "0373c8c8b5d1eee48d9289b9fa6c9720bd0b30f8b0f76adf4c859a885a7e8ee5",
+      "bytes": 6071,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "interactions",
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+      "sha256": "1dd54be770724955aec33c96cf763be5a9774e62b590b2c5ff82d670c6eccae0",
+      "bytes": 35721,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "interaction-overview",
+      "url": "https://docs.discord.com/developers/interactions/overview.md",
+      "sha256": "f64706f749365e695870ec85af29ac15df7ab07d7dad6012338a2338f604e6b4",
+      "bytes": 12556,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "rate-limits",
+      "url": "https://docs.discord.com/developers/topics/rate-limits.md",
+      "sha256": "2dc2df4cc03734b8904dd2f5ec33a5a0f139d742b40be5544ba4f338f258c622",
+      "bytes": 8815,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "message",
+      "url": "https://docs.discord.com/developers/resources/message.md",
+      "sha256": "d22addd4022d1e93f0e3c7d2fbf7d701a00b8f3dabfceec5a000f4e63ff30872",
+      "bytes": 77363,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "components",
+      "url": "https://docs.discord.com/developers/components/reference.md",
+      "sha256": "5ef3c56131881ad3dab3cdae9e8b28f03362cdf6528ef1adc0b60b2e99293013",
+      "bytes": 111348,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "guild",
+      "url": "https://docs.discord.com/developers/resources/guild.md",
+      "sha256": "c2c035e40d1ba2aa05902a74c5899604209e8e4a5451b3a2bfb2488cb0e643b0",
+      "bytes": 78638,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "official-openapi-preview",
+      "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi_preview.json",
+      "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9",
+      "bytes": 1193721,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Explicit compatibility overlays and finite request bounds; written references control conflicts. Full source not redistributed."
+    }
+  ]
+}

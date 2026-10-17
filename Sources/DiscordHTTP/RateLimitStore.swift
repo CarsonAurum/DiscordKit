@@ -19,6 +19,9 @@ public struct RateLimitRequest: Sendable, Hashable, CustomStringConvertible, Cus
     public let majorResource: String
     public let egress: UUID?
     public let usesGlobalLimit: Bool
+    /// Uses the outbound-IP global budget for requests without Authorization instead of a credential budget.
+    /// A nonnil egress is required; `usesGlobalLimit == false` bypasses both global budgets.
+    public let usesEgressGlobalLimit: Bool
     public let queuedBytes: Int
     public let schedulingClass: SchedulingClass
 
@@ -35,18 +38,23 @@ public struct RateLimitRequest: Sendable, Hashable, CustomStringConvertible, Cus
     ///   - route: Canonical method/route template; never include webhook tokens or query secrets.
     ///   - majorResource: Stable non-secret major resource identifier; empty for no major resource.
     ///   - egress: Shared outbound-IP partition, or nil when the caller cannot identify it.
-    ///     Fleet clients sharing an egress must supply the same value to coordinate invalid responses.
+    ///     Fleet clients sharing an egress must supply the same value to coordinate invalid responses
+    ///     and the unauthenticated IP-global window when `usesEgressGlobalLimit` is true.
     ///   - usesGlobalLimit: False for documented globally exempt interaction operations only.
+    ///   - usesEgressGlobalLimit: True for unauthenticated webhook-token operations sharing an outbound-IP
+    ///     global limit; defaults to false. Requires a nonnil egress and replaces credential-global admission.
+    ///     The `usesGlobalLimit == false` interaction exemption skips both global budgets entirely.
     ///   - queuedBytes: Nonnegative retained request byte estimate, default zero.
     ///   - schedulingClass: FIFO scheduling class, ordinary by default.
     public init(identity: RateLimitIdentity, route: String, majorResource: String = "",
-                egress: UUID? = nil, usesGlobalLimit: Bool = true, queuedBytes: Int = 0,
+                egress: UUID? = nil, usesGlobalLimit: Bool = true, usesEgressGlobalLimit: Bool = false, queuedBytes: Int = 0,
                 schedulingClass: SchedulingClass = .ordinary) {
         self.identity = identity
         self.route = route
         self.majorResource = majorResource
         self.egress = egress
         self.usesGlobalLimit = usesGlobalLimit
+        self.usesEgressGlobalLimit = usesEgressGlobalLimit
         self.queuedBytes = queuedBytes
         self.schedulingClass = schedulingClass
     }
@@ -135,9 +143,10 @@ public protocol RateLimitStore<Instant>: Sendable {
     func snapshot() async -> SchedulingSnapshot
 }
 
-/// Bounded in-process authority with up to eight fixed rate-state partitions. Unrelated
-/// identities do not share a rate-state actor; only finite aggregate ownership
-/// accounting uses a common small gate. Share this instance across local clients.
+/// Bounded in-process authority with up to eight fixed rate-state partitions. Credential
+/// route/global and outbound-IP global state select their own bounded partition; only finite
+/// aggregate ownership accounting uses a common small gate. Share this instance across local
+/// clients using the same credentials or outbound IP, including independently rotated tokens.
 ///
 /// Bucket aliases are retained rather than unsafely forgetting a learned grouping.
 /// Each partition has a fixed share of the aggregate metadata cap; a skewed
@@ -164,17 +173,22 @@ public final class InProcessRateLimitStore<Instant: InstantProtocol>: RateLimitS
     /// Atomically reserves bounded ownership and all applicable rate scopes.
     /// Staged scope refusal conservatively retains any already consumed quota.
     /// - Parameters:
-    ///   - request: Request scopes; byte counts and route length are validated.
+    ///   - request: Request scopes; bytes/route length and required egress-global identity are validated.
+    ///     Egress-global requests debit the shared IP window before their credential-scoped route;
+    ///     route refusal/cancellation clears concurrency while conservatively retaining any earlier debit.
     ///   - now: Monotonic current instant.
     /// - Returns: A single-use token or finite retry instant.
     /// - Throws: Cancellation, invalid request or metadata exhaustion; never fails open.
     public func reserve(_ request: RateLimitRequest, now: Instant) async throws -> RateLimitAdmission<Instant> {
         try Task.checkCancellation()
         guard request.queuedBytes >= 0, !request.route.isEmpty, request.route.utf8.count <= 1_024,
-              request.majorResource.utf8.count <= 256 else { throw RateLimitFailure.invalidRequest }
+              request.majorResource.utf8.count <= 256,
+              !request.usesEgressGlobalLimit || request.egress != nil else { throw RateLimitFailure.invalidRequest }
         guard let token = try await ownership.reserve(request, now: now) else {
             return .retry(at: now.advanced(by: policy.fairnessInterval))
         }
+        var egressReserved = false
+        var routeReserved = false
         do {
             if !request.majorResource.isEmpty,
                let wait = await partition(for: request.majorResource).scopeDelay(.shared(request.majorResource), now: now) {
@@ -186,30 +200,41 @@ public final class InProcessRateLimitStore<Instant: InstantProtocol>: RateLimitS
                 _ = try await ownership.remove(token, now: now)
                 return .retry(at: wait)
             }
+            if request.usesGlobalLimit, request.usesEgressGlobalLimit, let egress = request.egress {
+                if let wait = try await partition(for: egress).reserveEgressGlobal(egress, now: now) {
+                    _ = try await ownership.remove(token, now: now)
+                    return .retry(at: wait)
+                }
+                egressReserved = true
+            }
             if let wait = try await partition(for: request.identity).reserve(request, now: now) {
+                if egressReserved, let egress = request.egress {
+                    await partition(for: egress).releaseEgressGlobal(egress)
+                    egressReserved = false
+                }
                 _ = try await ownership.remove(token, now: now)
                 return .retry(at: wait)
             }
+            routeReserved = true
             // Cancellation after debit consumes quota; release removes only ownership.
-            if Task.isCancelled {
-                await partition(for: request.identity).release(request)
-                _ = try await ownership.remove(token, now: now)
-                throw CancellationError()
-            }
+            try Task.checkCancellation()
             return .admitted(token)
         } catch {
+            if routeReserved { await partition(for: request.identity).release(request) }
+            if egressReserved, let egress = request.egress { await partition(for: egress).releaseEgressGlobal(egress) }
             _ = try? await ownership.remove(token, now: now)
             throw error
         }
     }
 
-    /// Learns headers, preserves outstanding debits and updates shared/egress protection.
+    /// Learns headers, preserves outstanding debits and updates resource/IP-global/invalid-response protection.
     /// - Parameters:
     ///   - reservation: Owned token, consumed even if later metadata learning fails.
     ///   - status: HTTP status; 401/403/nonshared 429 count toward egress protection.
     ///   - headers: Wire rate metadata, parsed case-insensitively.
     ///   - retryAfter: Optional decoded relative 429 delay, nonnegative and finite.
-    ///   - global: Optional decoded global 429 flag.
+    ///   - global: Optional decoded global 429 flag. Credential requests update their credential budget;
+    ///     egress-global requests update the shared outbound-IP budget and globally exempt requests update neither.
     ///   - now: Observation instant in this store's clock domain.
     /// - Throws: Ownership/expiry or metadata errors; original debits are never refunded.
     public func complete(_ reservation: RateLimitReservation<Instant>, status: Int, headers: [HTTPHeader],
@@ -217,12 +242,24 @@ public final class InProcessRateLimitStore<Instant: InstantProtocol>: RateLimitS
         let owned: RateLimitReservation<Instant>
         do { owned = try await ownership.remove(reservation, now: now) }
         catch RateLimitFailure.reservationExpired {
-            await partition(for: reservation.request.identity).release(reservation.request)
+            await releaseConcurrency(reservation.request)
             throw RateLimitFailure.reservationExpired
         }
         let observation = RateLimitObservation(status: status, headers: headers, retryAfter: retryAfter, global: global)
         do {
             try await partition(for: owned.request.identity).complete(owned.request, observation: observation, now: now)
+        } catch {
+            // Route completion always releases its own concurrency, including metadata-learning failures.
+            if owned.request.usesGlobalLimit, owned.request.usesEgressGlobalLimit, let egress = owned.request.egress {
+                await partition(for: egress).releaseEgressGlobal(egress)
+            }
+            await ownership.failClosed()
+            throw error
+        }
+        do {
+            if owned.request.usesGlobalLimit, owned.request.usesEgressGlobalLimit, let egress = owned.request.egress {
+                try await partition(for: egress).completeEgressGlobal(egress, observation: observation, now: now)
+            }
             if observation.shared, status == 429, !owned.request.majorResource.isEmpty {
                 try await partition(for: owned.request.majorResource).block(.shared(owned.request.majorResource),
                     delay: observation.retryAfter ?? policy.provisionalWindow, now: now)
@@ -236,7 +273,7 @@ public final class InProcessRateLimitStore<Instant: InstantProtocol>: RateLimitS
         }
     }
 
-    /// Releases concurrency without refunding route, credential or uncertainty budgets.
+    /// Releases concurrency without refunding route, credential, IP-global or uncertainty budgets.
     /// - Parameters:
     ///   - reservation: Owned single-use token.
     ///   - outcome: Cancellation certainty; both cases retain the conservative debit.
@@ -246,10 +283,10 @@ public final class InProcessRateLimitStore<Instant: InstantProtocol>: RateLimitS
         let owned: RateLimitReservation<Instant>
         do { owned = try await ownership.remove(reservation, now: now) }
         catch RateLimitFailure.reservationExpired {
-            await partition(for: reservation.request.identity).release(reservation.request)
+            await releaseConcurrency(reservation.request)
             throw RateLimitFailure.reservationExpired
         }
-        await partition(for: owned.request.identity).release(owned.request)
+        await releaseConcurrency(owned.request)
     }
 
     /// Captures finite ownership and metadata counts across the fixed partition set.
@@ -266,6 +303,16 @@ public final class InProcessRateLimitStore<Instant: InstantProtocol>: RateLimitS
     /// - Returns: One of the fixed bounded rate-state actors.
     private func partition<Key: Hashable>(for key: Key) -> RateLimitPartition<Instant> {
         partitions[Int(UInt(bitPattern: key.hashValue) % UInt(partitions.count))]
+    }
+
+    /// Clears all concurrency retained by a successfully admitted request, including inclusive lease expiry.
+    /// - Parameter request: Exact originally owned request; only ownership-verified callers invoke this helper.
+    /// No rate debit is refunded. The two fixed actors may suspend independently without granting new quota.
+    private func releaseConcurrency(_ request: RateLimitRequest) async {
+        await partition(for: request.identity).release(request)
+        if request.usesGlobalLimit, request.usesEgressGlobalLimit, let egress = request.egress {
+            await partition(for: egress).releaseEgressGlobal(egress)
+        }
     }
 }
 
@@ -330,6 +377,7 @@ private enum RateLimitKey: Hashable, Sendable {
     case global(RateLimitIdentity)
     case shared(String)
     case egress(UUID)
+    case egressGlobal(UUID)
 }
 
 /// Parsed relative server metadata. Malformed values are ignored conservatively.
@@ -421,13 +469,14 @@ private actor RateLimitPartition<Instant: InstantProtocol> where Instant.Duratio
         let route = RateLimitKey.route(request.identity, request.route, request.majorResource)
         let key = aliases[route] ?? route
         let global = RateLimitKey.global(request.identity)
-        let required = [key] + (request.usesGlobalLimit ? [global] : [])
+        let credentialGlobal = request.usesGlobalLimit && !request.usesEgressGlobalLimit
+        let required = [key] + (credentialGlobal ? [global] : [])
         try makeRoom(for: required.filter { budgets[$0] == nil }.count, now: now, preserving: Set(required))
         if budgets[key] == nil {
             budgets[key] = Budget(limit: 1, remaining: 1, reset: now.advanced(by: policy.provisionalWindow),
                                   window: policy.provisionalWindow)
         }
-        if request.usesGlobalLimit, budgets[global] == nil {
+        if credentialGlobal, budgets[global] == nil {
             budgets[global] = Budget(limit: policy.initialGlobalRequestsPerSecond,
                 remaining: policy.initialGlobalRequestsPerSecond, reset: now.advanced(by: .seconds(1)), window: .seconds(1))
         }
@@ -444,6 +493,55 @@ private actor RateLimitPartition<Instant: InstantProtocol> where Instant.Duratio
             budgets[budgetKey]?.inFlight += 1
         }
         return nil
+    }
+
+    /// Reserves the unauthenticated outbound-IP startup window before an independently partitioned route.
+    /// - Parameters:
+    ///   - egress: Shared non-secret IP identity, independent of rotating webhook-token credentials.
+    ///   - now: Common monotonic admission instant.
+    /// - Returns: Required retry instant or nil after debiting one allowance and retaining one concurrency slot.
+    /// - Throws: Bounded metadata exhaustion before permission is issued; callers never bypass this failure.
+    /// The fixed one-second startup allowance uses the existing global-rate policy. Later route refusal
+    /// clears concurrency but cannot refund this debit, preserving conservative composite admission.
+    func reserveEgressGlobal(_ egress: UUID, now: Instant) throws -> Instant? {
+        let key = RateLimitKey.egressGlobal(egress)
+        try makeRoom(for: budgets[key] == nil ? 1 : 0, now: now, preserving: [key])
+        if budgets[key] == nil {
+            budgets[key] = Budget(limit: policy.initialGlobalRequestsPerSecond,
+                remaining: policy.initialGlobalRequestsPerSecond, reset: now.advanced(by: .seconds(1)), window: .seconds(1))
+        }
+        refresh(key, now: now)
+        if let budget = budgets[key], budget.remaining <= 0 {
+            return max(budget.reset, now.advanced(by: policy.fairnessInterval))
+        }
+        budgets[key]?.remaining -= 1
+        budgets[key]?.inFlight += 1
+        return nil
+    }
+
+    /// Learns a global 429 for the exact outbound IP and always releases its retained concurrency.
+    /// - Parameters:
+    ///   - egress: Originally reserved IP-global identity; no credential identity participates in this key.
+    ///   - observation: Complete parsed response metadata; only global 429 observations extend this scope.
+    ///   - now: Response observation instant in the shared monotonic domain.
+    /// - Throws: Metadata exhaustion while learning the restriction; the owning store then fails closed.
+    /// Completion never refunds startup debits or changes limits from route-specific response headers.
+    func completeEgressGlobal(_ egress: UUID, observation: RateLimitObservation, now: Instant) throws {
+        defer { releaseEgressGlobal(egress) }
+        if observation.status == 429, observation.global {
+            try block(.egressGlobal(egress), delay: observation.retryAfter ?? policy.provisionalWindow, now: now)
+        }
+    }
+
+    /// Releases exactly one owned IP-global concurrency slot without refunding its consumed request allowance.
+    /// - Parameter egress: Original admitted IP identity; ownership validation prevents repeated invocation.
+    /// Missing state is tolerated defensively; live owned budgets are never reclaimed by metadata eviction.
+    func releaseEgressGlobal(_ egress: UUID) {
+        let key = RateLimitKey.egressGlobal(egress)
+        if var budget = budgets[key] {
+            budget.inFlight = max(0, budget.inFlight - 1)
+            budgets[key] = budget
+        }
     }
 
     /// Merges provisional routes into learned bucket identities while retaining
@@ -496,7 +594,7 @@ private actor RateLimitPartition<Instant: InstantProtocol> where Instant.Duratio
             }
             budgets[key] = budget
         }
-        if observation.status == 429, observation.global {
+        if request.usesGlobalLimit, !request.usesEgressGlobalLimit, observation.status == 429, observation.global {
             try block(.global(request.identity), delay: observation.retryAfter ?? policy.provisionalWindow, now: now)
         }
     }
@@ -511,7 +609,7 @@ private actor RateLimitPartition<Instant: InstantProtocol> where Instant.Duratio
             budgets[key] = budget
         }
         let global = RateLimitKey.global(request.identity)
-        if request.usesGlobalLimit, var budget = budgets[global] {
+        if request.usesGlobalLimit, !request.usesEgressGlobalLimit, var budget = budgets[global] {
             budget.inFlight = max(0, budget.inFlight - 1)
             budgets[global] = budget
         }

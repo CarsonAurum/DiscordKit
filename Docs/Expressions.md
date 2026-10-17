@@ -12,7 +12,7 @@ ten Emoji, eight Sticker and seven Soundboard operations. Contracts were verifie
 [change log](https://docs.discord.com/developers/change-log). Current hashes are
 recorded separately from original discovery pins. No product or dependency was added.
 Phase 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md).
-Batches 5H–5J and expression Gateway event catalogs remain pending.
+Batches 5I–5J and expression Gateway event catalogs remain pending.
 Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordModels` and `DiscordHTTP` and inject the existing bounded HTTP
@@ -150,3 +150,5 @@ Other hosts/devices, live API conformance, durable coordination and long-soak
 qualification remain separate [platform gates](PlatformSupport.md). Upstream dates
 and local support history remain distinct in the
 [Phase 5E change record](Parity/changes/2026-10-16-expressions.md).
+
+Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

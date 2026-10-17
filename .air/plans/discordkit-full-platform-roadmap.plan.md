@@ -697,6 +697,14 @@ coverage. Disabled batch permission editing remains removed. See
 [execution evidence](phase-5g-execution.plan.md). Interaction handlers/routers,
 5H–5J and platform/live/soak qualification remain separate.
 
+**5H implementation update, 2026-10-16:** All 28 current written Webhook, Interaction
+response/message and Voice REST operations are implemented with typed path-token
+bindings, bounded uploads, explicit response variants and separate IP-global
+webhook admission. Complete owned fields retain unknown JSON and partial related
+resources. See [contracts](../../Docs/WebhooksInteractionsVoice.md) and
+[execution evidence](phase-5h-execution.plan.md). Interaction ingress/routing, voice
+media, 5I–5J and platform/live/distributed/soak qualification remain separate.
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |

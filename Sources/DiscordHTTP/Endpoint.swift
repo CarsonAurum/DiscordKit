@@ -2,7 +2,8 @@ import DiscordCore
 import DiscordTransport
 import Foundation
 
-/// Authentication accepted by a descriptor; path-carried tokens need dedicated future endpoints.
+/// Authorization-header authentication accepted by a descriptor. Typed path-carried
+/// tokens bind separately through `Endpoint.pathCredential` and never become headers.
 public enum AuthenticationPolicy: String, Sendable, Hashable {
     case none, bot, bearer, botOrBearer
 }
@@ -62,9 +63,14 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
     public let route: String
     public let query: [QueryItem]
     public let authentication: AuthenticationPolicy
+    /// Optional exact webhook/interaction credential binding. Ordinary diagnostics redact it.
+    /// Execute with a client bound to the same credential and a shared opaque rate identity.
+    public let pathCredential: Credential?
     public let successStatuses: Set<Int>
     public let majorParameter: String?
-    /// Whether Discord's credential-global budget applies; interaction callbacks explicitly opt out.
+    /// Whether Discord's applicable credential-global or outbound-IP-global budget applies;
+    /// interaction response operations explicitly opt out. Header-free execution with an egress
+    /// identity selects the IP-global scope rather than the credential-global scope.
     public let usesGlobalLimit: Bool
     public let auditReason: String?
     public let body: RequestBody?
@@ -84,9 +90,16 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
     ///   - route: Stable normalized rate-limit route template; defaults to the literal path.
     ///   - query: Ordered raw fields; repeated keys and bare fields are retained.
     ///   - authentication: Accepted credential category, default `.botOrBearer`.
+    ///   - pathCredential: Exact typed webhook or interaction path credential, default nil.
+    ///     Requires `.none` header authentication, an explicit normalized route, and a matching
+    ///     versioned token path. The executing client's credential must match before reuse/admission.
+    ///     Share its opaque client identity across every worker using that token; rotation requires
+    ///     a new read scope. This binding neither checks token expiry nor grants permissions.
     ///   - successStatuses: Explicit HTTP success statuses, default `[200]`; values must be in `200...299`.
     ///   - majorParameter: Opaque major-resource partition key, or `nil` when none applies. Never include a token.
-    ///   - usesGlobalLimit: Whether the ordinary credential-global budget applies, default `true`.
+    ///   - usesGlobalLimit: Whether the applicable credential-global or outbound-IP-global budget
+    ///     applies, default `true`. Header-free requests with an egress identity select IP-global;
+    ///     interaction response operations explicitly opt out.
     ///     Set `false` only for an officially documented exempt operation, such as an interaction callback.
     ///   - auditReason: Optional reason, at most 512 Unicode scalars, encoded once for the audit header.
     ///   - body: Optional replayable, already bounded body.
@@ -109,7 +122,7 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
     ///   and major-resource keys at most 256 bytes. Runtime/container/closure-capture overhead is not byte-accounted.
     public init(
         method: String, path: [String], route: String? = nil, query: [QueryItem] = [],
-        authentication: AuthenticationPolicy = .botOrBearer, successStatuses: Set<Int> = [200],
+        authentication: AuthenticationPolicy = .botOrBearer, pathCredential: Credential? = nil, successStatuses: Set<Int> = [200],
         majorParameter: String? = nil, usesGlobalLimit: Bool = true, auditReason: String? = nil, body: RequestBody? = nil,
         headers: [HTTPHeader] = [], retrySafety: RetrySafety = .unsafe, readPolicy: ReadPolicy? = nil,
         invalidates: Set<String> = [], bulk: BulkOperationMetadata? = nil,
@@ -149,6 +162,31 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
               readPolicy?.timeToLive.map({ $0 > .zero }) ?? true,
               bulk.map({ $0.maximumItems > 0 }) ?? true
         else { throw DiscordError.validation(.invalidValue) }
+        if let pathCredential {
+            guard authentication == .none, route != nil else { throw DiscordError.validation(.invalidValue) }
+            let normalized = resolvedRoute.split(separator: "/", omittingEmptySubsequences: false).map(String.init)
+            guard normalized.count == path.count + 1, normalized.first == "", normalized[1] == path[0],
+                  zip(path.dropFirst(3), normalized.dropFirst(4)).allSatisfy({ actual, template in
+                      if ["messages", "slack", "github", "callback", "@original"].contains(actual) { return template == actual }
+                      return WebhookID(actual) != nil && template == "{message.id}"
+                  })
+            else { throw DiscordError.validation(.invalidValue) }
+            switch pathCredential {
+            case .webhook(let id, let token):
+                guard path.count >= 3, path[0] == "webhooks", path[1] == id.description,
+                      token.withUnsafeValue({ path[2] == $0 }),
+                      normalized[2] == "{webhook.id}", normalized[3] == "{webhook.token}"
+                else { throw DiscordError.validation(.invalidValue) }
+            case .interaction(let token):
+                guard path.count >= 3, ["interactions", "webhooks"].contains(path[0]),
+                      WebhookID(path[1]) != nil, token.withUnsafeValue({ path[2] == $0 }),
+                      normalized[2] == (path[0] == "interactions" ? "{interaction.id}" : "{application.id}"),
+                      normalized[3] == "{interaction.token}"
+                else { throw DiscordError.validation(.invalidValue) }
+            default: throw DiscordError.validation(.invalidValue)
+            }
+        }
+        self.pathCredential = pathCredential
         self.method = method; self.path = path; self.route = resolvedRoute
         self.query = query; self.authentication = authentication; self.successStatuses = successStatuses
         self.majorParameter = majorParameter; self.usesGlobalLimit = usesGlobalLimit
@@ -159,11 +197,13 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
 
     /// Creates a request for one attempt and attaches credentials only to Discord's fixed origin.
     /// - Parameters:
-    ///   - credential: Bot or bearer credential accepted by this operation; `.none` policies omit it entirely.
+    ///   - credential: Accepted bot/bearer header credential or exact typed path credential.
+    ///     `.none` header policies omit Authorization; path bindings still require a matching secret.
     ///   - userAgent: Nonempty control-free DiscordBot library identification supplied by the client.
     /// - Returns: A version-10 request with newly owned replayable-body stream.
     /// - Throws: Safe validation errors for credential-policy mismatch or invalid user-agent text.
     public func makeRequest(credential: Credential, userAgent: String) throws -> HTTPRequest {
+        try validateCredential(credential)
         guard !userAgent.isEmpty, !userAgent.unicodeScalars.contains(where: { $0.properties.generalCategory == .control })
         else { throw DiscordError.validation(.invalidValue) }
         var wireHeaders = [HTTPHeader(name: "User-Agent", value: userAgent)] + headers
@@ -182,6 +222,29 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
         guard let url = URL(string: "https://discord.com/api/v10/" + pathText + (query.isEmpty ? "" : "?" + queryText))
         else { throw DiscordError.validation(.invalidValue) }
         return HTTPRequest(method: method, url: url, headers: wireHeaders, body: try body?.makeStream())
+    }
+
+    /// Checks credential category and exact token binding before cache lookup or rate admission.
+    /// This synchronous comparison neither exposes a token in errors nor checks expiry/permissions.
+    /// Header-free unbound operations continue to accept any client credential without sending it.
+    /// - Parameter credential: Immutable client credential associated with its opaque rate/read scope.
+    /// - Throws: `DiscordError.validation(.missingValue)` on category, webhook-ID or token mismatch.
+    package func validateCredential(_ credential: Credential) throws {
+        if let pathCredential {
+            let matches: Bool
+            switch (pathCredential, credential) {
+            case (.webhook(let expectedID, let expected), .webhook(let actualID, let actual)):
+                matches = expectedID == actualID && expected.withUnsafeValue { lhs in actual.withUnsafeValue { lhs == $0 } }
+            case (.interaction(let expected), .interaction(let actual)):
+                matches = expected.withUnsafeValue { lhs in actual.withUnsafeValue { lhs == $0 } }
+            default: matches = false
+            }
+            guard matches else { throw DiscordError.validation(.missingValue) }
+        }
+        switch (authentication, credential) {
+        case (.none, _), (.bot, .bot), (.bearer, .bearer), (.botOrBearer, .bot), (.botOrBearer, .bearer): break
+        default: throw DiscordError.validation(.missingValue)
+        }
     }
 
     /// Builds a raw escape-hatch descriptor while rejecting origin changes and encoded traversal.
@@ -220,13 +283,15 @@ public struct Endpoint<Response: Sendable>: Sendable, CustomStringConvertible, C
     /// An unambiguous request/response-contract identity for authentication-scoped byte reuse.
     /// Contains sensitive path/query/body data and must never be emitted as diagnostics or metric labels.
     /// Expected success statuses are included because reuse stores response bytes after status validation.
+    /// Typed path-credential categories are included so unbound raw operations cannot reuse bound results.
     /// The client must separately partition by credential identity and scope generation, then invoke
     /// each caller's decoder on the reused bytes; decoder closures are deliberately not compared.
     /// Descriptors sharing this identity must use equivalent decoder validation: the initiating
     /// decoder validates a shared exchange before its bytes become reusable. Disable reuse or use
     /// distinct response wrapper types when custom decoders accept incompatible payloads.
     public var cacheIdentity: String {
-        let fields = [method, String(reflecting: Response.self), authentication.rawValue, String(path.count)] + path + ["?", String(query.count)] +
+        let fields = [method, String(reflecting: Response.self), authentication.rawValue,
+                      pathCredential?.description ?? "unbound", String(path.count)] + path + ["?", String(query.count)] +
             query.flatMap { [$0.name, $0.value == nil ? "nil" : "value", $0.value ?? ""] } +
             ["success", String(successStatuses.count)] + successStatuses.sorted().map(String.init) +
             ["headers", String(headers.count)] + headers.flatMap { [$0.name.lowercased(), $0.value] } +

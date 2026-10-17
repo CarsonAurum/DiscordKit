@@ -584,6 +584,60 @@
       ],
       "details": "changes/2026-10-16-applications-users.md",
       "remainingGates": "../ApplicationsUsers.md"
+    },
+    {
+      "id": "2026-10-16-webhooks-interactions-voice",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "REST": "10"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "All 28 written Webhook, Interaction response/message and Voice REST operations were unsupported; guild-specific voice-region retrieval already existed.",
+      "currentBehavior": "Typed bounded models and validated request descriptors implement 15 webhook, eight interaction-response/message and five voice operations. Path-token binding precedes cache/admission, webhook IP-global scopes remain separate from token identities, interactions retain global exemption, uploads and response variants are explicit and bounded.",
+      "affectedSymbols": [
+        "Webhook",
+        "WebhookEndpoints",
+        "WebhookCreate",
+        "WebhookModify",
+        "WebhookExecute",
+        "WebhookMessageEdit",
+        "Interaction",
+        "InteractionResponse",
+        "InteractionEndpoints",
+        "InteractionMessageCreate",
+        "InteractionMessageEdit",
+        "InteractionModal",
+        "InteractionCallbackResponse",
+        "VoiceState",
+        "VoiceRegion",
+        "VoiceEndpoints",
+        "CurrentUserVoiceStateModify",
+        "UserVoiceStateModify",
+        "Endpoint.pathCredential",
+        "RateLimitRequest.usesEgressGlobalLimit"
+      ],
+      "affectedPayloads": "Webhook and follower sources; native and compatibility execution; interaction command/component/modal/resolved/context and callback-result structures; all current voice state/region fields and Stage edits. Related resource projections remain explicit partial coverage.",
+      "breakingChanges": [
+        "Token-webhook execution requires explicit shared outbound-IP egress identity.",
+        "External rate stores must implement the usesEgressGlobalLimit scope for token-webhook requests."
+      ],
+      "migration": "Use dedicated matching typed token clients; share RateLimitIdentity by token and egress UUID by outbound IP. Header-authenticated APIs remain source compatible; credential validation occurs before reuse. Preserve response variants, finite upload caps and caller-owned receipt/token deadlines. See dated support record for known upstream dates.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/webhook",
+        "https://docs.discord.com/developers/resources/voice",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/blob/main/specs/openapi_preview.json"
+      ],
+      "details": "changes/2026-10-16-webhooks-interactions-voice.md",
+      "remainingGates": "../WebhooksInteractionsVoice.md"
     }
   ]
 }

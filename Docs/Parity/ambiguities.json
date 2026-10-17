@@ -828,6 +828,87 @@
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "webhook-compatible-acknowledgements",
+      "status": "adopted",
+      "surface": "REST v10 / Webhook compatibility execution acknowledgements",
+      "description": "Written Slack/GitHub routes describe wait=true defaults but omit response bodies; the current official preview explicitly specifies Slack 200 nullable JSON string and GitHub 204 without a body.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/webhook",
+          "section": "Execute Slack-Compatible Webhook / Execute GitHub-Compatible Webhook",
+          "revision": "unknown",
+          "sha256": "6a3738c57292558f08b7fb408a14db8e20a96ba8cdb9949733ab598677b6cc7a"
+        },
+        {
+          "url": "https://github.com/discord/discord-api-spec/blob/main/specs/openapi_preview.json",
+          "section": "Current official preview schemas",
+          "revision": "unknown",
+          "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9"
+        }
+      ],
+      "impact": "Blind generation from either source would reject valid responses or claim undocumented outgoing support.",
+      "interimPolicy": "Use distinct typed compatibility acknowledgement results, preserve documented wait queries, and never decode these responses as native Message objects.",
+      "requiredResolution": "Recheck current official sources when these schemas change; retain explicit precedence and regression fixtures.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "interaction-current-written-preview-overlays",
+      "status": "adopted",
+      "surface": "REST v10 / Interaction callback and modal compatibility",
+      "description": "Preview includes incoming interaction type 6 and callback type 13 absent from current written type tables, nullable callback activity_instance_id and extra callback location fields, and modal component-count limits different from written 1...5.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+          "section": "Interaction Structure / Interaction Callback / Modal",
+          "revision": "unknown",
+          "sha256": "1dd54be770724955aec33c96cf763be5a9774e62b590b2c5ff82d670c6eccae0"
+        },
+        {
+          "url": "https://github.com/discord/discord-api-spec/blob/main/specs/openapi_preview.json",
+          "section": "Current official preview schemas",
+          "revision": "unknown",
+          "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9"
+        }
+      ],
+      "impact": "Blind generation from either source would reject valid responses or claim undocumented outgoing support.",
+      "interimPolicy": "Support written outgoing callback types 1, 4, 5, 6, 7, 8, 9, deprecated 10, and 12; preserve preview-only codes as unknown responses. Accept explicit preview nullable callback activity metadata/location fields. Require written 1...5 modal roots. Known non-PING common context fields remain required; minimal PING/future kinds preserve omission.",
+      "requiredResolution": "Recheck current official sources when these schemas change; retain explicit precedence and regression fixtures.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "voice-state-example-required-video",
+      "status": "adopted",
+      "surface": "REST v10 / Voice state self_video presence",
+      "description": "The short written voice-state example omits self_video although the current voice-state structure requires it.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/voice",
+          "section": "Voice State Structure / Example Voice State",
+          "revision": "unknown",
+          "sha256": "0373c8c8b5d1eee48d9289b9fa6c9720bd0b30f8b0f76adf4c859a885a7e8ee5"
+        },
+        {
+          "url": "https://github.com/discord/discord-api-spec/blob/main/specs/openapi_preview.json",
+          "section": "Current official preview schemas",
+          "revision": "unknown",
+          "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9"
+        }
+      ],
+      "impact": "Blind generation from either source would reject valid responses or claim undocumented outgoing support.",
+      "interimPolicy": "Follow the required structure. Require self_video in complete VoiceState decoding; short examples are not full conformance fixtures. Guild/stream/member optionality and nullable channel/request timestamps remain independent.",
+      "requiredResolution": "Recheck current official sources when these schemas change; retain explicit precedence and regression fixtures.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
     }
   ]
 }

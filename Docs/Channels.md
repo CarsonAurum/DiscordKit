@@ -9,7 +9,7 @@ The two thread-start variants sharing a route remain separate typed operations.
 No dependencies or product targets were added. Part 5C adds [guild administration](Guilds.md),
 Part 5D adds [audit logs and Auto Moderation](Moderation.md), and Part 5E adds
 [emoji, stickers and soundboard](Expressions.md), and Part 5F adds
-[invites, templates, scheduled events and stages](DiscoveryEvents.md); batches 5H–5J remain pending.
+[invites, templates, scheduled events and stages](DiscoveryEvents.md); batches 5I–5J remain pending.
 Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordHTTP` and `DiscordModels`, inject a transport and credential-sharing
@@ -159,3 +159,5 @@ invalidation, pagination request counts and no-op reconciliation. Tests use fini
 local scripts and injected clocks, with no credentials or live Discord traffic.
 Full resource-family parity, cross-platform/device qualification, live API and
 long-soak gates remain separate in [platform support](PlatformSupport.md).
+
+Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).
