@@ -12,7 +12,8 @@ verified **2026-10-16** against REST **v10**, the
 are recorded separately from discovery membership pins. No dependency or product
 target was added. Phase 5E adds [emoji, stickers and soundboard](Expressions.md);
 Phase 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md).
-Phases 5G–5J and corresponding Gateway event catalogs remain pending.
+Phases 5H–5J and corresponding Gateway event catalogs remain pending.
+Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordModels` and `DiscordHTTP`, inject a transport and shared
 credential-scoped rate/reuse authorities, then execute the descriptors. REST

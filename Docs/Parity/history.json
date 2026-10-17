@@ -4,7 +4,11 @@
     {
       "id": "2026-10-15-part-0-baseline",
       "recordedOn": "2026-10-15",
-      "upstreamVersions": {"rest": "10", "gateway": "10", "voice": "8"},
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
       "upstreamAnnouncementDate": "unknown",
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-15",
@@ -191,7 +195,11 @@
     {
       "id": "2026-10-16-part-4-reviewed-generation",
       "recordedOn": "2026-10-16",
-      "upstreamVersions": {"rest": "10", "gateway": "10", "voice": "8"},
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
       "upstreamAnnouncementDate": "unknown",
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-16",
@@ -201,7 +209,17 @@
       "changeType": "reviewed_schema_and_generation",
       "previousBehavior": "Broad discovery membership validation with file-name implementation evidence; partial User/Application projections and HTTP descriptors handwritten.",
       "currentBehavior": "Versioned reviewed per-field contracts, stable provenance/symbol/evidence links, deterministic offline model/endpoint/documentation/fixture/parity generation, nonwriting drift and semantic parity checks. Runtime operation support is unchanged.",
-      "affectedSymbols": ["User", "Application", "PremiumType", "DiscordEndpoints", "InventoryValidator", "ReviewedInventoryValidator", "Generator", "ParityValidator", "ToolCommand"],
+      "affectedSymbols": [
+        "User",
+        "Application",
+        "PremiumType",
+        "DiscordEndpoints",
+        "InventoryValidator",
+        "ReviewedInventoryValidator",
+        "Generator",
+        "ParityValidator",
+        "ToolCommand"
+      ],
       "affectedPayloads": "Existing partial API v10 User/Application responses and current-user/current-application descriptors; Gateway discovery is mapped as handwritten. No new operation or full-model parity claim.",
       "breakingChanges": [],
       "migration": "Consumer calls remain compatible. Maintainers edit reviewed definitions, explicitly generate --write, review output and run root/tooling checks. Unknown inventory metadata keys now fail validation; opaque upstream definition metadata remains permitted.",
@@ -511,6 +529,61 @@
       ],
       "details": "changes/2026-10-16-discovery-events.md",
       "remainingGates": "../DiscoveryEvents.md"
+    },
+    {
+      "id": "2026-10-16-part-5g-applications-users",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "rest_catalog_implementation",
+      "previousBehavior": "Current User/Application had generated partial scalar projections and two read descriptors. Application configuration/activity instances, user/linked-role and command catalogs were unsupported.",
+      "currentBehavior": "Typed bounded handwritten models and descriptors implement all 32 currently available written operations: three Application, twelve User, two linked-role metadata and fifteen Application Command operations. Includes exact flags_new, profile/configuration/install/team fields, activity instances, consented DM/connection/membership APIs, finite large-bot guild traversal, linked roles, all command types/options/localizations/contexts and explicit destructive registration/no-op helpers. Disabled batch permission editing remains removed. Original scalar/generator regression coverage is preserved.",
+      "affectedSymbols": [
+        "Application",
+        "ApplicationEndpoints",
+        "ApplicationOperations",
+        "User",
+        "UserEndpoints",
+        "UserOperations",
+        "UserGuildListShard",
+        "UserGuildsQuery",
+        "ApplicationRoleConnectionMetadata",
+        "ApplicationRoleConnectionMetadataEndpoints",
+        "ApplicationCommand",
+        "ApplicationCommandEndpoints",
+        "ApplicationCommandOperations",
+        "BulkApplicationCommands",
+        "DiscordEndpoints.currentUser",
+        "DiscordEndpoints.currentApplication"
+      ],
+      "affectedPayloads": "Application/User owned fields, team/install/activity children, user connections/linked roles and complete application command/option/choice/permissions requests/responses. Unknown fields, open variants and exact numeric lexemes survive bounded decoding; partial referenced families remain explicit.",
+      "breakingChanges": [
+        "Application now validates the complete known Team shape when a nonnull team object is present; team raw value remains available with typed teamDetails.",
+        "Application.flagsNew rejects malformed nondecimal strings rather than accepting arbitrary text.",
+        "Generated User/Application declarations and current-profile descriptors migrate to handwritten source while retaining their original public scalar and descriptor entry points."
+      ],
+      "migration": "Use resource namespaces for new operations; existing current-profile aliases remain. Supply valid complete Team objects in fixtures. Preserve explicit Nullable/Field states and use nullable list responses when the documented preview overlay permits null. Supply REST guild-list shard from max_concurrency for large bots. Use explicit per-command bearer permission writes instead of the disabled batch operation. Review destructive bulk replacement and snapshot completeness before using no-op helpers.",
+      "sources": [
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/resources/application",
+        "https://docs.discord.com/developers/topics/teams",
+        "https://docs.discord.com/developers/resources/user",
+        "https://docs.discord.com/developers/resources/application-role-connection-metadata",
+        "https://docs.discord.com/developers/interactions/application-commands",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/blob/main/specs/openapi.json"
+      ],
+      "details": "changes/2026-10-16-applications-users.md",
+      "remainingGates": "../ApplicationsUsers.md"
     }
   ]
 }

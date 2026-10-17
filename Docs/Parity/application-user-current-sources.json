@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "sources": [
+    {
+      "name": "application",
+      "url": "https://docs.discord.com/developers/resources/application.md",
+      "sha256": "1b01015822aaa46181b1f72f9dd24aeef64085783ca046e8913a001961c3c399",
+      "bytes": 22555,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    },
+    {
+      "name": "teams",
+      "url": "https://docs.discord.com/developers/topics/teams.md",
+      "sha256": "b994385a4d9edb36e9f70586375420c0e208a51aeec6be703b3c095c99fbd15a",
+      "bytes": 5782,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    },
+    {
+      "name": "user",
+      "url": "https://docs.discord.com/developers/resources/user.md",
+      "sha256": "c2afb7bcaa849f280716395d40a66c0d78f5422dc77fef01cedb288590e80001",
+      "bytes": 18837,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    },
+    {
+      "name": "application-role-connection-metadata",
+      "url": "https://docs.discord.com/developers/resources/application-role-connection-metadata.md",
+      "sha256": "ee52965c2c122d9a04c332c1beb0ae03bc11d7de35dd63f8f9d0b26f6cb86761",
+      "bytes": 5036,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    },
+    {
+      "name": "application-commands",
+      "url": "https://docs.discord.com/developers/interactions/application-commands.md",
+      "sha256": "55c50c6b38feae40728a40c16480af889d086760913e19735894b7963736e473",
+      "bytes": 85981,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    },
+    {
+      "name": "openapi",
+      "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+      "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a",
+      "bytes": 1193084,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Written references control conflicts; official preview supplements explicitly documented compatibility and bounds. Full upstream content is not redistributed."
+    }
+  ]
+}

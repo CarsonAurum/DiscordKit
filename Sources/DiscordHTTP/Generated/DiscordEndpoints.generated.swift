@@ -5,30 +5,4 @@ import DiscordModels
 import Foundation
 
 extension DiscordEndpoints {
-    /// Describes GET /applications/@me on Discord API v10. Requires the application bot token. No Gateway intents, guild permissions or pagination are required. The response remains a partial typed projection. Verified 2026-10-16 against https://docs.discord.com/developers/resources/application#get-current-application.
-    /// - Parameter readPolicy: Eligible-read reuse; defaults to in-flight coalescing without a completed-result cache.
-    ///   A caller-selected positive TTL may serve stale authorization-scoped data until expiry.
-    /// - Returns: An immutable API v10 descriptor; no request starts during construction.
-    /// - Throws: Descriptor validation errors, including nonpositive freshness TTLs.
-    ///
-    /// Rate limits: The shared handwritten HTTP pipeline coordinates learned credential-global and route/resource limits, cancellation, deadlines and bounded retry budgets; sharding does not raise REST quotas.
-    /// Retry safety: safe. Pagination: none.
-    public static func currentApplication(readPolicy: ReadPolicy? = ReadPolicy()) throws -> Endpoint<Application> {
-        try Endpoint(method: "GET", path: ["applications", "@me"], authentication: .bot,
-                     successStatuses: [200], retrySafety: .safe, readPolicy: readPolicy, decode: { try Application(data: $0) })
-    }
-
-    /// Describes GET /users/@me on Discord API v10. Accepts bot or OAuth2 bearer authentication. OAuth2 requires identify; email controls email visibility and identify.premium controls premium type. No Gateway intents, guild permissions or pagination are required. The response remains a partial typed projection. Verified 2026-10-16 against https://docs.discord.com/developers/resources/user#get-current-user.
-    /// - Parameter readPolicy: Eligible-read reuse; defaults to in-flight coalescing without a completed-result cache.
-    ///   A caller-selected positive TTL may serve stale authorization-scoped data until expiry.
-    /// - Returns: An immutable API v10 descriptor; no request starts during construction.
-    /// - Throws: Descriptor validation errors, including nonpositive freshness TTLs.
-    ///
-    /// Rate limits: The shared handwritten HTTP pipeline coordinates learned credential-global and route/resource limits, cancellation, deadlines and bounded retry budgets; sharding does not raise REST quotas.
-    /// Retry safety: safe. Pagination: none.
-    public static func currentUser(readPolicy: ReadPolicy? = ReadPolicy()) throws -> Endpoint<User> {
-        try Endpoint(method: "GET", path: ["users", "@me"], authentication: .botOrBearer,
-                     successStatuses: [200], retrySafety: .safe, readPolicy: readPolicy, decode: { try User(data: $0) })
-    }
-
 }

@@ -9,7 +9,8 @@ The two thread-start variants sharing a route remain separate typed operations.
 No dependencies or product targets were added. Part 5C adds [guild administration](Guilds.md),
 Part 5D adds [audit logs and Auto Moderation](Moderation.md), and Part 5E adds
 [emoji, stickers and soundboard](Expressions.md), and Part 5F adds
-[invites, templates, scheduled events and stages](DiscoveryEvents.md); batches 5G–5J remain pending.
+[invites, templates, scheduled events and stages](DiscoveryEvents.md); batches 5H–5J remain pending.
+Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordHTTP` and `DiscordModels`, inject a transport and credential-sharing
 rate/reuse authority, then execute `ChannelEndpoints` descriptors. REST adoption

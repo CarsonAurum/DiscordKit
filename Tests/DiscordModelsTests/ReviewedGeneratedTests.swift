@@ -3,20 +3,21 @@ import Foundation
 import Testing
 @testable import DiscordModels
 
-/// Executes the generated field-case index against both real response projections.
+/// Executes the preserved generated seed contracts against the expanded handwritten projections.
 ///
+/// The Phase 5G migration freezes these scalar regression cases; current nested fields have separate tests.
 /// Every case supplies independent complete JSON bytes. Fixtures and metadata are local,
 /// deterministic and credential-free; each generated field contract receives meaningful
 /// value, omission, null and wrong-type assertions through the public bounded initializer.
 @Suite struct ReviewedGeneratedTests {
-    /// Exercises all generated per-field scenarios and requires a complete, nonduplicate index.
+    /// Exercises every original generated scalar scenario using a fixed nonduplicate regression index.
     ///
     /// The index drives actual decoding rather than acting as a declaration-only support claim.
     /// Existing projection tests additionally assert concrete typed values, redaction and unknown enums.
     /// - Throws: Fixture read/decode errors or safe parser errors when test setup is malformed.
     @Test func reviewedFieldContracts() throws {
         let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-            .appendingPathComponent("Fixtures/reviewed-cases.json")
+            .appendingPathComponent("Fixtures/projection-regressions.json")
         let index = try JSONDecoder().decode(ReviewedCaseIndex.self, from: Data(contentsOf: fixture))
         #expect(index.schemaVersion == 1)
         #expect(index.verifiedOn == "2026-10-16")
@@ -27,7 +28,7 @@ import Testing
             var fields = try minimalFields(model: item.modelName)
             let accepts: Bool
             switch item.scenario {
-            case "value": fields[item.wireName] = try validValue(item.valueType); accepts = true
+            case "value": fields[item.wireName] = item.wireName == "flags_new" ? .string("184467440737095516160") : try validValue(item.valueType); accepts = true
             case "absent": fields.removeValue(forKey: item.wireName); accepts = true; #expect(item.optional)
             case "missingRejected": fields.removeValue(forKey: item.wireName); accepts = false; #expect(!item.optional)
             case "null": fields[item.wireName] = .null; accepts = true; #expect(item.nullable)
@@ -64,14 +65,14 @@ import Testing
         #expect(premium.knownValue == [PremiumType.none, .nitroClassic, .nitro, .nitroBasic].first { $0.rawValue == raw })
     }
 
-    /// Preserves arbitrary-width and exponent numeric lexemes inside the untyped nullable team.
+    /// Preserves arbitrary-width and exponent numeric lexemes inside the nullable raw and typed team.
     ///
-    /// This regression protects the handwritten object helper used by the generated Application
+    /// This regression protects the handwritten subtree helper used by the expanded Application
     /// initializer from accidentally crossing the intentionally restricted JSONValue Codable bridge.
     /// - Throws: Safe JSON/model errors if a valid bounded nested object cannot be projected.
     @Test func nestedTeamRetainsExactNumbers() throws {
         var fields = try minimalFields(model: "Application")
-        let team = try JSONValue.parse(#"{"id":"18446744073709551615","future":123456789012345678901234567890,"exponent":1e1000,"fraction":1.2300}"#)
+        let team = try JSONValue.parse(#"{"id":"18446744073709551615","name":"team","icon":null,"owner_user_id":"2","members":[],"future":123456789012345678901234567890,"exponent":1e1000,"fraction":1.2300}"#)
         fields["team"] = team
         let application = try Application(data: JSONValue.object(fields).serialized())
         #expect(application.team == .value(team))
@@ -100,7 +101,7 @@ import Testing
         return fields
     }
 
-    /// Projects one independent fixture through the public generated response initializer.
+    /// Projects one independent fixture through the public handwritten response initializer.
     /// - Parameters:
     ///   - data: Complete untrusted response bytes for exactly one model.
     ///   - model: User or Application; all other names are setup errors.
@@ -127,7 +128,7 @@ import Testing
         case "UInt64": return .number(try JSONNumber(rawValue: String(UInt64.max)))
         case "RawValue<PremiumType>": return .number(try JSONNumber(rawValue: "99"))
         case "[String]": return .array([.string("first"), .string("second")])
-        case "JSONValue": return .object(["future": .number(try JSONNumber(rawValue: "1e1000"))])
+        case "JSONValue": return try JSONValue.parse(#"{"id":"1","name":"team","icon":null,"owner_user_id":"2","members":[],"future":1e1000}"#)
         default: throw DiscordError.validation(.invalidValue)
         }
     }

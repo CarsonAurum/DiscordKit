@@ -11,7 +11,8 @@ active threads through the existing Channel implementation. Contracts were verif
 are separate from original discovery pins. No dependencies or products were added;
 Part 5D adds [audit logs and Auto Moderation](Moderation.md), and Part 5E adds
 [emoji, stickers and soundboard](Expressions.md), and Part 5F adds
-[invites, templates, scheduled events and stages](DiscoveryEvents.md); 5G–5J remain pending.
+[invites, templates, scheduled events and stages](DiscoveryEvents.md); 5H–5J remain pending.
+Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordModels` and `DiscordHTTP`, inject a transport and the credential-sharing
 rate/reuse authority, then execute `GuildEndpoints` descriptors. REST adoption

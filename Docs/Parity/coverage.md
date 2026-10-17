@@ -126,3 +126,14 @@ checks and retained no owned work after shutdown. These checks did not use Disco
 credentials or live Discord requests. Inventory validation, byte-identical generation
 and parity checks passed for the committed records; JSON syntax, relative links and
 the complete diff were reviewed.
+
+## Part 5G application/user update (2026-10-16)
+
+The [application/user catalog](../ApplicationsUsers.md) adds all 32 available
+written-reference operations and explicitly classifies disabled batch command
+permission editing as removed. Existing partial generated User/Application seeds
+move to handwritten bounded models; their scalar regression fixtures remain active
+and the independent generator seed preserves positive template coverage. Current
+source hashes, field/variant declarations, executable test anchors and chronology
+are linked in the reviewed records. This does not change historical Part 0 counts
+or establish event, live API, fleet, unavailable-platform or capacity qualification.

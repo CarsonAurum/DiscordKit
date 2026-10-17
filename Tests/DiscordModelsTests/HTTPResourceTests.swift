@@ -108,14 +108,14 @@ import Testing
         #expect(app == (try Application(data: data)))
     }
 
-    /// Covers absent optional application fields and a non-null team without imposing an incomplete nested schema.
+    /// Covers absent optional application fields and a complete non-null typed team while preserving its legacy raw view.
     @Test func applicationAlternateNullability() throws {
         var fields = try applicationFields()
-        fields["team"] = .object(["members": .array([]), "id": .string("1")])
+        fields["team"] = .object(["members": .array([]), "id": .string("1"), "icon": .null, "name": .string("team"), "owner_user_id": .string("1")])
         fields["icon"] = .string("icon-hash")
         fields["interactions_endpoint_url"] = .string("https://example.test/interactions")
         let app = try Application(data: JSONValue.object(fields).serialized())
-        #expect(app.team == .value(.object(["members": .array([]), "id": .string("1")])))
+        #expect(app.team == .value(.object(["members": .array([]), "id": .string("1"), "icon": .null, "name": .string("team"), "owner_user_id": .string("1")])))
         #expect(app.icon == .value("icon-hash"))
         #expect(app.interactionsEndpointURL == .value("https://example.test/interactions"))
         #expect(app.flags == .absent)

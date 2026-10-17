@@ -22,7 +22,9 @@ Part 5E adds guild/application emoji, stickers/packs and default/guild soundboar
 operations, validated media and bounded uploads; see `Docs/Expressions.md`.
 Part 5F adds invites/target-user jobs, guild templates, recurring scheduled events and
 Stage instances with bounded workflows; see `Docs/DiscoveryEvents.md`.
-Part 5G–5J and other resource-family completion remain pending.
+Part 5G adds applications/users, linked-role metadata and application commands,
+validated configuration/registration and bounded guild traversal; see `Docs/ApplicationsUsers.md`.
+Part 5H–5J and other resource-family completion remain pending.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

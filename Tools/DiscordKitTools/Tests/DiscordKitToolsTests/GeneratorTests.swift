@@ -207,19 +207,21 @@ import Testing
             .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
     }
 
-    /// Reads the committed seed as an editable dictionary for independent mutations.
+    /// Reads the frozen generation seed as an editable dictionary for independent mutations.
+    /// The fixture retains positive model/endpoint generation coverage after Phase 5G migrates runtime models to handwritten codecs.
     /// - Returns: The root reviewed JSON object.
     /// - Throws: File, JSON or setup-container failures.
     private func seedObject() throws -> [String: Any] {
-        let data = try Data(contentsOf: repository().appendingPathComponent("Docs/Parity/reviewed-v1.json"))
+        let data = try Data(contentsOf: repository().appendingPathComponent("Tools/DiscordKitTools/Tests/DiscordKitToolsTests/Fixtures/generation-seed.json"))
         return try #require(JSONSerialization.jsonObject(with: data) as? [String: Any])
     }
 
-    /// Loads the committed reviewed seed without semantic filesystem validation.
+    /// Loads the frozen generation seed without semantic filesystem validation.
+    /// Keeping this input independent of the runtime inventory preserves positive template coverage as models evolve.
     /// - Returns: Closed-schema reviewed data for pure generation tests.
     /// - Throws: File-read, JSON or schema errors.
     private func seed() throws -> ReviewedInventory {
-        try ReviewedInventoryValidator.load(reviewedData: Data(contentsOf: repository().appendingPathComponent("Docs/Parity/reviewed-v1.json")))
+        try ReviewedInventoryValidator.load(reviewedData: Data(contentsOf: repository().appendingPathComponent("Tools/DiscordKitTools/Tests/DiscordKitToolsTests/Fixtures/generation-seed.json")))
     }
 
     /// Allocates an isolated, empty temporary root for one filesystem/compiler test.

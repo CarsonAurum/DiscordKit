@@ -25,18 +25,19 @@ fields. Partial projections stay partial even when all generated declarations
 compile. Endpoint records classify authentication, request and response models,
 success and error statuses, rate policy, retry semantics and pagination.
 
-Phases 5A–5F also record handwritten semantic models through optional `manual.fields`
+Phases 5A–5G also record handwritten semantic models through optional `manual.fields`
 contracts. They carry the same field-level presence, nullability, default, constraint,
 access and unknown-value decisions, each linked to an actual discovery field and Swift
 declaration. The validator rejects empty or duplicate field lists, unsafe metadata,
 and links outside the parent's source, upstream IDs or symbols. These contracts audit
-the recursive Message/Poll/component, Channel/Invite, Guild, moderation, expression
-and discovery/event payloads
+the recursive Message/Poll/component, Channel/Invite, Guild, moderation, expression,
+discovery/event and application/user/command payloads
 without asking the finite seed generator to emit unsupported Swift shapes. Adding
 them changes the reviewed reports; it never generates or replaces their handwritten
 runtime declarations. See [REST catalog](RESTCatalog.md),
 [Channel catalog](Channels.md), [Guild catalog](Guilds.md), [moderation catalog](Moderation.md),
-[expression catalog](Expressions.md) and [discovery/event catalog](DiscoveryEvents.md)
+[expression catalog](Expressions.md), [discovery/event catalog](DiscoveryEvents.md)
+and [application/user catalog](ApplicationsUsers.md)
 for the implemented operations and explicitly partial related-resource projections.
 
 Source pins refer to exact revision/hash pairs in the existing official source
@@ -104,3 +105,14 @@ representations from written references and preview specifications remain distin
 their counts are not unique operations or an API parity percentage. See the
 [generated reviewed report](Parity/generated-reviewed.md) and
 [reviewed API documentation](Generated/ReviewedAPI.md).
+
+## Phase 5G seed migration
+
+The original partial User/Application projections and current-profile descriptors
+now have handwritten bounded implementations, recorded through manual contracts.
+The committed generated Swift retains the PremiumType enum. The current generated
+field-case index is empty; the original 128 scalar cases remain a fixed projection
+regression fixture and still execute against both expanded runtime models. The
+tooling tests use a separate frozen generation seed to continue testing positive
+model, endpoint and fixture rendering independently of runtime catalog evolution.
+No consumer build regenerates these files.

@@ -29,13 +29,15 @@ explicit unsafe evidence inspectors transfer the logging responsibility to calle
 
 The first typed descriptors are `DiscordEndpoints.currentUser()` and
 `currentApplication()` plus `GatewayEndpoints.bot()` in the optional Gateway product.
-User/Application models are **partial typed projections**, retaining exact unknown
-JSON fields, large string snowflakes and absent/null/value states. Full resource
+Phase 5G completes User/Application owned projections while retaining explicit
+partial referenced resources, exact unknown JSON, large string snowflakes and
+absent/null/value states. Resource
 catalog expansion includes Part 5A [messages and polls](RESTCatalog.md) and Part 5B
 [channels and threads](Channels.md), Part 5C [guild administration](Guilds.md), and
 Part 5D [audit logs and Auto Moderation](Moderation.md), and Part 5E
 [emoji, stickers and soundboard](Expressions.md), and Part 5F
-[invites, templates, scheduled events and stages](DiscoveryEvents.md);
+[invites, templates, scheduled events and stages](DiscoveryEvents.md), and Part 5G
+[applications, users, linked roles and commands](ApplicationsUsers.md);
 these initial descriptors do not imply full resource-family parity.
 
 `AssetClient` accepts HTTPS destinations without credential/header customization.

@@ -17,6 +17,7 @@ let package = Package(
         .testTarget(
             name: "DiscordKitToolsTests",
             dependencies: ["DiscordKitTools"],
+            exclude: ["Fixtures"],
             swiftSettings: [
                 .enableUpcomingFeature("ApproachableConcurrency"),
                 .defaultIsolation(nil),

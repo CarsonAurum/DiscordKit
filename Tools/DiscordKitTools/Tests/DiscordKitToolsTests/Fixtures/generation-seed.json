@@ -1,0 +1,1773 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "maxAgeDays": 30,
+  "sources": [
+    {
+      "id": "developers/events/gateway",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "6f54f5a3ddfdeb44c9ac32498ccfd9db904652f35b05c7d9f6a36b2802e18592"
+    },
+    {
+      "id": "developers/resources/application",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "f1a815e6372f723578c8ce6e83c9c8c0da5effb9a97dbb8bacc9050fbbbb6fa7"
+    },
+    {
+      "id": "developers/resources/user",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "665ca2b14af4a94fcec2b44424a4bb0ab68951e72ea22d360f76e83ebb63eb36"
+    },
+    {
+      "id": "spec/openapi.json",
+      "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+      "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+    },
+    {
+      "id": "developers/resources/message",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "c296fe9263b887f0f3cf840927466826cd4e5c9182aebe6613decc28e5d80611"
+    },
+    {
+      "id": "developers/resources/poll",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "d39eb2ecf11fc5f781f417bdd59f32e3dc800f7c8f570c41383e68039725e308"
+    },
+    {
+      "id": "developers/components/reference",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "ae1dfe6095de9c7ab00e9e04cf46d4e42dad5e02280dcdbea375f63a3fa91a66"
+    },
+    {
+      "id": "developers/interactions/receiving-and-responding",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "f9c9efe2d882830ae14649f22ee1e33a156ac789eeba5174ca9fb72d34c99a13"
+    },
+    {
+      "id": "developers/resources/emoji",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "2f4bea385a19b7095a880dde0c4dd37a412c2559d3ea652ad8e5077924f57aab"
+    },
+    {
+      "id": "developers/resources/sticker",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "56c931725100d28f085a36a0f66d32ebfb4e939ae9048daf993c1daeae2b1b18"
+    },
+    {
+      "id": "developers/resources/channel",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "13adf0e407678d5bdc76d4c9dc7e28bde382021d07f1bd3cfef5cbe74a7abfb1"
+    },
+    {
+      "id": "developers/resources/guild",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "717f014c15333e6d73d763abc665393b20cc77572fd8161475cda916acf5396f"
+    },
+    {
+      "id": "developers/resources/invite",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "23008ab3a65b4df2ca3f255491efe2e9d0bf8e400b818ebdfa6e607b7afac535"
+    },
+    {
+      "id": "developers/topics/permissions",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "43341f3622ce5e163f29c59235400efa666884132cced689a2adbd654c0fa0dd"
+    },
+    {
+      "id": "developers/resources/voice",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "8f24cd1d7ae7d1bd0b035bc3a15165810b260fc884e27174b477a8da36e55645"
+    },
+    {
+      "id": "developers/resources/audit-log",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "ee3cae1712ca09878e302a29141862f84a263b1b87072ec8cbebc609172a6609"
+    },
+    {
+      "id": "developers/resources/auto-moderation",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "45d434e45dcf78260eb085ba64a5ac1e1e49f09f44707d5048effd1aeb9e8d18"
+    },
+    {
+      "id": "developers/resources/soundboard",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "bed639533a7f24e4051e4e5a234e04cde61e7aee78128c2840c42e74a4608b41"
+    },
+    {
+      "id": "developers/resources/guild-template",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "3dffc11132091982fe41ed521681b63dbe092e3dce504b2e7251a2c9ef76a8f0"
+    },
+    {
+      "id": "developers/resources/guild-scheduled-event",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "3a19869d184d1b41b0a7728ea7cc536fb74ab9f28abe6431b76d2b74277694df"
+    },
+    {
+      "id": "developers/resources/stage-instance",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "2a7d5bdc80fd5718ab6643bc08a077d82a6ada12475b7d2a816273b0a148d67f"
+    }
+  ],
+  "definitions": [
+    {
+      "id": "endpoint.currentApplication",
+      "kind": "endpoint",
+      "name": "currentApplication",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-32d5a1f4fb8607dd5073311c"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.DiscordEndpoints.currentApplication"
+      ],
+      "evidenceIDs": [
+        "evidence.http-generated-descriptors",
+        "evidence.http-errors"
+      ],
+      "notes": "Describes GET /applications/@me on Discord API v10. Requires the application bot token. No Gateway intents, guild permissions or pagination are required. The response remains a partial typed projection. Verified 2026-10-16 against https://docs.discord.com/developers/resources/application#get-current-application.",
+      "endpoint": {
+        "swiftName": "currentApplication",
+        "method": "GET",
+        "path": "/applications/@me",
+        "authentication": "bot",
+        "requestModelID": "none",
+        "responseModelID": "model.Application",
+        "successStatuses": [
+          200
+        ],
+        "errorStatuses": [
+          401,
+          403,
+          429,
+          500,
+          503
+        ],
+        "rateLimit": "The shared handwritten HTTP pipeline coordinates learned credential-global and route/resource limits, cancellation, deadlines and bounded retry budgets; sharding does not raise REST quotas.",
+        "retry": "safe",
+        "pagination": "none"
+      }
+    },
+    {
+      "id": "endpoint.currentUser",
+      "kind": "endpoint",
+      "name": "currentUser",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-823e9e607ac82136218016aa"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.DiscordEndpoints.currentUser"
+      ],
+      "evidenceIDs": [
+        "evidence.http-generated-descriptors",
+        "evidence.http-errors"
+      ],
+      "notes": "Describes GET /users/@me on Discord API v10. Accepts bot or OAuth2 bearer authentication. OAuth2 requires identify; email controls email visibility and identify.premium controls premium type. No Gateway intents, guild permissions or pagination are required. The response remains a partial typed projection. Verified 2026-10-16 against https://docs.discord.com/developers/resources/user#get-current-user.",
+      "endpoint": {
+        "swiftName": "currentUser",
+        "method": "GET",
+        "path": "/users/@me",
+        "authentication": "botOrBearer",
+        "requestModelID": "none",
+        "responseModelID": "model.User",
+        "successStatuses": [
+          200
+        ],
+        "errorStatuses": [
+          401,
+          403,
+          429,
+          500,
+          503
+        ],
+        "rateLimit": "The shared handwritten HTTP pipeline coordinates learned credential-global and route/resource limits, cancellation, deadlines and bounded retry budgets; sharding does not raise REST quotas.",
+        "retry": "safe",
+        "pagination": "none"
+      }
+    },
+    {
+      "id": "enum.PremiumType",
+      "kind": "enum",
+      "name": "PremiumType",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-9ae20bacc9f5928b00b7930e"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.PremiumType"
+      ],
+      "evidenceIDs": [
+        "evidence.user-projection"
+      ],
+      "notes": "Known Nitro subscription codes. Use RawValue<PremiumType> to retain future integral values without inventing a recognized case.",
+      "enum": {
+        "variantIDs": [
+          "variant.PremiumType.none",
+          "variant.PremiumType.nitroClassic",
+          "variant.PremiumType.nitro",
+          "variant.PremiumType.nitroBasic"
+        ],
+        "unknownValueBehavior": "preserveRaw"
+      }
+    },
+    {
+      "id": "field.Application.approximate_guild_count",
+      "kind": "field",
+      "name": "approximateGuildCount",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-65afbce904be690d377e29fd"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.approximateGuildCount"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Approximate guild count as a native exact integer; no capacity claim follows.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "approximate_guild_count",
+        "swiftName": "approximateGuildCount",
+        "valueType": "Int",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "integerLexemeNativeRange"
+        ],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.approximate_user_install_count",
+      "kind": "field",
+      "name": "approximateUserInstallCount",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-d8c578772b593ca182d2f7de"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.approximateUserInstallCount"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Approximate user-install count as a native exact integer.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "approximate_user_install_count",
+        "swiftName": "approximateUserInstallCount",
+        "valueType": "Int",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "integerLexemeNativeRange"
+        ],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.bot_public",
+      "kind": "field",
+      "name": "botPublic",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-9aeacef40e54084d1e958e71"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.botPublic"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Whether users other than the owner may add the bot.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "bot_public",
+        "swiftName": "botPublic",
+        "valueType": "Bool",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.bot_require_code_grant",
+      "kind": "field",
+      "name": "botRequireCodeGrant",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-470d1224417b18f107839fe2"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.botRequireCodeGrant"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Whether bot authorization requires an OAuth2 code grant.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "bot_require_code_grant",
+        "swiftName": "botRequireCodeGrant",
+        "valueType": "Bool",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.description",
+      "kind": "field",
+      "name": "applicationDescription",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-903ab0283ac9e8bc13cd010c"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.applicationDescription"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Application description text; no local content rules are imposed.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "description",
+        "swiftName": "applicationDescription",
+        "valueType": "String",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.flags",
+      "kind": "field",
+      "name": "flags",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-f012d7176352f660fd90acd3"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.flags"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Legacy response flag bitset; unknown bits are retained and full future bits belong to flags_new.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "flags",
+        "swiftName": "flags",
+        "valueType": "UInt64",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "integerLexemeNativeRange"
+        ],
+        "access": "bot",
+        "unknownValueBehavior": "preserveBits"
+      }
+    },
+    {
+      "id": "field.Application.flags_new",
+      "kind": "field",
+      "name": "flagsNew",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-ed4f75bee7e6d840ba58fb1c"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.flagsNew"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Response-only complete bitset string, preserving integers wider than native types.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "flags_new",
+        "swiftName": "flagsNew",
+        "valueType": "String",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.guild_id",
+      "kind": "field",
+      "name": "guildID",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-f71cda7f5ccbeb6988f026f6"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.guildID"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Associated guild snowflake, retained as an exact decimal-string identifier.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "guild_id",
+        "swiftName": "guildID",
+        "valueType": "GuildID",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "decimalStringUInt64"
+        ],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.icon",
+      "kind": "field",
+      "name": "icon",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-ed6258ee9db81dcb48117671"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.icon"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Application icon hash, explicitly null when unset.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "icon",
+        "swiftName": "icon",
+        "valueType": "String",
+        "optional": false,
+        "nullable": true,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.id",
+      "kind": "field",
+      "name": "id",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-b4afffa4508cd58070d7016e"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.id"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Application snowflake as an exact unsigned 64-bit decimal string.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "id",
+        "swiftName": "id",
+        "valueType": "ApplicationID",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [
+          "decimalStringUInt64"
+        ],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.interactions_endpoint_url",
+      "kind": "field",
+      "name": "interactionsEndpointURL",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-e7791db138963c35fa257d73"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.interactionsEndpointURL"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Configured interactions URL or explicit null; decoding does not authorize an outbound destination.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "interactions_endpoint_url",
+        "swiftName": "interactionsEndpointURL",
+        "valueType": "String",
+        "optional": true,
+        "nullable": true,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.name",
+      "kind": "field",
+      "name": "name",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-90d934ee9caee1888399cbec"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.name"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Application display name; diagnostics redact configuration values.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "name",
+        "swiftName": "name",
+        "valueType": "String",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.rpc_origins",
+      "kind": "field",
+      "name": "rpcOrigins",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-d8d6be6a29707b025fa896b7"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.rpcOrigins"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "RPC origin strings; these are retained without authorizing connections.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "rpc_origins",
+        "swiftName": "rpcOrigins",
+        "valueType": "[String]",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.tags",
+      "kind": "field",
+      "name": "tags",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-799f0b41558c98fbf47d6643"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.tags"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Application tags retained in server order; upstream editing limits are not enforced on responses.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "tags",
+        "swiftName": "tags",
+        "valueType": "[String]",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.Application.team",
+      "kind": "field",
+      "name": "team",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-6deff7f6e448ca6d37fdcb81"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.team"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection",
+        "evidence.application-team-numbers"
+      ],
+      "notes": "Required nullable team object; nested fields remain untyped and exact JSON numbers survive.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "team",
+        "swiftName": "team",
+        "valueType": "JSONValue",
+        "optional": false,
+        "nullable": true,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [
+          "objectOnly"
+        ],
+        "access": "bot",
+        "unknownValueBehavior": "preserveExact"
+      }
+    },
+    {
+      "id": "field.Application.verify_key",
+      "kind": "field",
+      "name": "verifyKey",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-3cb5017e985e6d0931e9f59f"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application.verifyKey"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.application-projection"
+      ],
+      "notes": "Public interactions verification key; decoding does not validate or use it.",
+      "field": {
+        "modelID": "model.Application",
+        "wireName": "verify_key",
+        "swiftName": "verifyKey",
+        "valueType": "String",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "bot",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.accent_color",
+      "kind": "field",
+      "name": "accentColor",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-a8849aea401bd66651b3fc6d"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.accentColor"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Banner accent color integer; fractional and exponent lexemes are rejected.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "accent_color",
+        "swiftName": "accentColor",
+        "valueType": "Int",
+        "optional": true,
+        "nullable": true,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "integerLexemeNativeRange"
+        ],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.avatar",
+      "kind": "field",
+      "name": "avatar",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-6720ca3dca9866c4a7230aa7"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.avatar"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Avatar hash, explicitly null when unset; no URL is fetched.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "avatar",
+        "swiftName": "avatar",
+        "valueType": "String",
+        "optional": false,
+        "nullable": true,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.banner",
+      "kind": "field",
+      "name": "banner",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-bb4e69e4d6ec34e820683d65"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.banner"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Optional banner hash; absent and explicit null remain distinct.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "banner",
+        "swiftName": "banner",
+        "valueType": "String",
+        "optional": true,
+        "nullable": true,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.bot",
+      "kind": "field",
+      "name": "bot",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-1ff9090ac273678a10f4a41f"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.bot"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Whether the account belongs to an OAuth2 application.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "bot",
+        "swiftName": "bot",
+        "valueType": "Bool",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.discriminator",
+      "kind": "field",
+      "name": "discriminator",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-c4dbed0d69ea0749113d5b5c"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.discriminator"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Discord discriminator text, including the migrated-account value 0.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "discriminator",
+        "swiftName": "discriminator",
+        "valueType": "String",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.email",
+      "kind": "field",
+      "name": "email",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-3c8aa416055dc5dc1d0b4935"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.email"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Email address when visible under the email scope; diagnostics redact this value.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "email",
+        "swiftName": "email",
+        "valueType": "String",
+        "optional": true,
+        "nullable": true,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "email",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.flags",
+      "kind": "field",
+      "name": "flags",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-1e764b45d800d15ab5d04be8"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.flags"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Exact user flag bitset; unknown bits remain available.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "flags",
+        "swiftName": "flags",
+        "valueType": "UInt64",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "integerLexemeNativeRange"
+        ],
+        "access": "identify",
+        "unknownValueBehavior": "preserveBits"
+      }
+    },
+    {
+      "id": "field.User.global_name",
+      "kind": "field",
+      "name": "globalName",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-fb895001bf5fa53b352b1768"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.globalName"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Display name, explicitly null when unset.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "global_name",
+        "swiftName": "globalName",
+        "valueType": "String",
+        "optional": false,
+        "nullable": true,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.id",
+      "kind": "field",
+      "name": "id",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-5e249808d0d55681e4c0f3cb"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.id"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "User snowflake as an exact unsigned 64-bit decimal string.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "id",
+        "swiftName": "id",
+        "valueType": "UserID",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [
+          "decimalStringUInt64"
+        ],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.locale",
+      "kind": "field",
+      "name": "locale",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-54a5fd9701c78bf3c0a079a7"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.locale"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Selected locale string; future locale spellings remain unchanged.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "locale",
+        "swiftName": "locale",
+        "valueType": "String",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.mfa_enabled",
+      "kind": "field",
+      "name": "mfaEnabled",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-53b27f2804b10ba52c25e155"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.mfaEnabled"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Whether multi-factor authentication is enabled.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "mfa_enabled",
+        "swiftName": "mfaEnabled",
+        "valueType": "Bool",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.premium_type",
+      "kind": "field",
+      "name": "premiumType",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-a85a87ea7e13927dac0484dc"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.premiumType"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Nitro subscription value; future integral values survive through RawValue.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "premium_type",
+        "swiftName": "premiumType",
+        "valueType": "RawValue<PremiumType>",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "integerLexemeNativeRange"
+        ],
+        "access": "identify.premium",
+        "unknownValueBehavior": "preserveRaw"
+      }
+    },
+    {
+      "id": "field.User.public_flags",
+      "kind": "field",
+      "name": "publicFlags",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-7644e74bc7b4aa1c52455dc3"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.publicFlags"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Exact public user flag bitset; unknown bits remain available.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "public_flags",
+        "swiftName": "publicFlags",
+        "valueType": "UInt64",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [
+          "integerLexemeNativeRange"
+        ],
+        "access": "identify",
+        "unknownValueBehavior": "preserveBits"
+      }
+    },
+    {
+      "id": "field.User.system",
+      "kind": "field",
+      "name": "system",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-b0b8e0e04d4aef61a8eea2bf"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.system"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Whether Discord identifies this as an official system account.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "system",
+        "swiftName": "system",
+        "valueType": "Bool",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.username",
+      "kind": "field",
+      "name": "username",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-d83b2efd163040ff8b7b20d4"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.username"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Account username; no local normalization or authorization inference is performed.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "username",
+        "swiftName": "username",
+        "valueType": "String",
+        "optional": false,
+        "nullable": false,
+        "defaultBehavior": "rejectMissing",
+        "constraints": [],
+        "access": "identify",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "field.User.verified",
+      "kind": "field",
+      "name": "verified",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-bd5d13dfc18d8b06d4813d40"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User.verified"
+      ],
+      "evidenceIDs": [
+        "evidence.reviewed-field-contracts",
+        "evidence.user-projection"
+      ],
+      "notes": "Email verification status when visible under the email scope.",
+      "field": {
+        "modelID": "model.User",
+        "wireName": "verified",
+        "swiftName": "verified",
+        "valueType": "Bool",
+        "optional": true,
+        "nullable": false,
+        "defaultBehavior": "absent",
+        "constraints": [],
+        "access": "email",
+        "unknownValueBehavior": "rejectTypeMismatch"
+      }
+    },
+    {
+      "id": "model.Application",
+      "kind": "model",
+      "name": "Application",
+      "sourceID": "developers/resources/application",
+      "upstreamIDs": [
+        "d-2c4cb7b4b764cf5812a74732"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.Application"
+      ],
+      "evidenceIDs": [
+        "evidence.application-projection",
+        "evidence.reviewed-field-contracts",
+        "evidence.application-required"
+      ],
+      "notes": "A partial API v10 Application response projection, verified 2026-10-16 against https://docs.discord.com/developers/resources/application. Required nullability differs from optional presence. Complete raw fields preserve future keys and numeric lexemes; diagnostics redact payloads. No general Codable round trip is promised. Owner, bot, team members, guild and installation configuration remain untyped.",
+      "model": {
+        "fieldIDs": [
+          "field.Application.id",
+          "field.Application.name",
+          "field.Application.icon",
+          "field.Application.description",
+          "field.Application.bot_public",
+          "field.Application.bot_require_code_grant",
+          "field.Application.verify_key",
+          "field.Application.team",
+          "field.Application.rpc_origins",
+          "field.Application.guild_id",
+          "field.Application.flags",
+          "field.Application.flags_new",
+          "field.Application.approximate_guild_count",
+          "field.Application.approximate_user_install_count",
+          "field.Application.interactions_endpoint_url",
+          "field.Application.tags"
+        ],
+        "omittedUpstreamIDs": [
+          "d-059d52f17ffc1efa457053b9",
+          "d-28f5150d668cabf98b0ebb48",
+          "d-32806c95027a0015287fa302",
+          "d-38b82eba5f2178d4c41ee5cd",
+          "d-4d58e15903e23816ac08b245",
+          "d-6a232b375907bcbb8c86929f",
+          "d-741a200bc3f6bd7db65bc6dc",
+          "d-74aeb1713d48f1d1bdcbfa99",
+          "d-850c4d9ff435d142bfa57555",
+          "d-8b15ad29db00fb935e963270",
+          "d-8db606f472c8abee6989b65a",
+          "d-8fe64e3e9b02c033afcd3598",
+          "d-b543abeb9e3c855a03a0d911",
+          "d-b563761cbbeb691b8d55950e",
+          "d-ce61bf9ef515df7940d198a1",
+          "d-d086a9bab467bf06319004f1",
+          "d-eb55ad5e081b4a7ce3fe8cc7"
+        ],
+        "unknownFields": "preserveExact",
+        "codec": "boundedJSON",
+        "direction": "response"
+      }
+    },
+    {
+      "id": "model.User",
+      "kind": "model",
+      "name": "User",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-eab807e245fbfcdf533fdeb5"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.User"
+      ],
+      "evidenceIDs": [
+        "evidence.user-projection",
+        "evidence.reviewed-field-contracts",
+        "evidence.user-required"
+      ],
+      "notes": "A partial API v10 User response projection, verified 2026-10-16 against https://docs.discord.com/developers/resources/user. Required nullability differs from optional presence. Complete raw fields preserve future keys and numeric lexemes; diagnostics redact payloads. No general Codable round trip is promised. Avatar decorations, collectibles and primary guild remain untyped.",
+      "model": {
+        "fieldIDs": [
+          "field.User.id",
+          "field.User.username",
+          "field.User.discriminator",
+          "field.User.global_name",
+          "field.User.avatar",
+          "field.User.bot",
+          "field.User.system",
+          "field.User.mfa_enabled",
+          "field.User.banner",
+          "field.User.accent_color",
+          "field.User.locale",
+          "field.User.verified",
+          "field.User.email",
+          "field.User.flags",
+          "field.User.public_flags",
+          "field.User.premium_type"
+        ],
+        "omittedUpstreamIDs": [
+          "d-5f8005b93d1eb5b5c7540ddf",
+          "d-77a91d146a0e091ff00c1d99",
+          "d-a0312803cc9f2cdbb8a97a5f"
+        ],
+        "unknownFields": "preserveExact",
+        "codec": "boundedJSON",
+        "direction": "response"
+      }
+    },
+    {
+      "id": "variant.PremiumType.nitro",
+      "kind": "variant",
+      "name": "nitro",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-dc367bfa63a63fe75e80e428"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.PremiumType.nitro"
+      ],
+      "evidenceIDs": [
+        "evidence.user-projection",
+        "evidence.reviewed-field-contracts"
+      ],
+      "notes": "Nitro subscription.",
+      "variant": {
+        "enumID": "enum.PremiumType",
+        "swiftName": "nitro",
+        "rawValue": 2
+      }
+    },
+    {
+      "id": "variant.PremiumType.nitroBasic",
+      "kind": "variant",
+      "name": "nitroBasic",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-06b5dd504b222b11c8ff5e4a"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.PremiumType.nitroBasic"
+      ],
+      "evidenceIDs": [
+        "evidence.user-projection",
+        "evidence.reviewed-field-contracts"
+      ],
+      "notes": "Nitro Basic subscription.",
+      "variant": {
+        "enumID": "enum.PremiumType",
+        "swiftName": "nitroBasic",
+        "rawValue": 3
+      }
+    },
+    {
+      "id": "variant.PremiumType.nitroClassic",
+      "kind": "variant",
+      "name": "nitroClassic",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-b3b0e9dd2736ed7af46efd6e"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.PremiumType.nitroClassic"
+      ],
+      "evidenceIDs": [
+        "evidence.user-projection",
+        "evidence.reviewed-field-contracts"
+      ],
+      "notes": "Nitro Classic subscription.",
+      "variant": {
+        "enumID": "enum.PremiumType",
+        "swiftName": "nitroClassic",
+        "rawValue": 1
+      }
+    },
+    {
+      "id": "variant.PremiumType.none",
+      "kind": "variant",
+      "name": "none",
+      "sourceID": "developers/resources/user",
+      "upstreamIDs": [
+        "d-3156ee3b53152b4a42c3bda4"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.PremiumType.none"
+      ],
+      "evidenceIDs": [
+        "evidence.user-projection",
+        "evidence.reviewed-field-contracts"
+      ],
+      "notes": "No Nitro subscription.",
+      "variant": {
+        "enumID": "enum.PremiumType",
+        "swiftName": "none",
+        "rawValue": 0
+      }
+    }
+  ],
+  "symbols": [
+    {
+      "id": "symbol.Application",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public struct Application: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.Application.applicationDescription",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let applicationDescription: String"
+    },
+    {
+      "id": "symbol.Application.approximateGuildCount",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let approximateGuildCount: Field<Int>"
+    },
+    {
+      "id": "symbol.Application.approximateUserInstallCount",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let approximateUserInstallCount: Field<Int>"
+    },
+    {
+      "id": "symbol.Application.botPublic",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let botPublic: Bool"
+    },
+    {
+      "id": "symbol.Application.botRequireCodeGrant",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let botRequireCodeGrant: Bool"
+    },
+    {
+      "id": "symbol.Application.flags",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let flags: Field<UInt64>"
+    },
+    {
+      "id": "symbol.Application.flagsNew",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let flagsNew: Field<String>"
+    },
+    {
+      "id": "symbol.Application.guildID",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let guildID: Field<GuildID>"
+    },
+    {
+      "id": "symbol.Application.icon",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let icon: Nullable<String>"
+    },
+    {
+      "id": "symbol.Application.id",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let id: ApplicationID"
+    },
+    {
+      "id": "symbol.Application.interactionsEndpointURL",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let interactionsEndpointURL: Field<String>"
+    },
+    {
+      "id": "symbol.Application.name",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let name: String"
+    },
+    {
+      "id": "symbol.Application.rpcOrigins",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let rpcOrigins: Field<[String]>"
+    },
+    {
+      "id": "symbol.Application.tags",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let tags: Field<[String]>"
+    },
+    {
+      "id": "symbol.Application.team",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let team: Nullable<JSONValue>"
+    },
+    {
+      "id": "symbol.Application.verifyKey",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let verifyKey: String"
+    },
+    {
+      "id": "symbol.DiscordEndpoints.currentApplication",
+      "path": "Sources/DiscordHTTP/Generated/DiscordEndpoints.generated.swift",
+      "declaration": "public static func currentApplication(readPolicy: ReadPolicy? = ReadPolicy()) throws -> Endpoint<Application> {"
+    },
+    {
+      "id": "symbol.DiscordEndpoints.currentUser",
+      "path": "Sources/DiscordHTTP/Generated/DiscordEndpoints.generated.swift",
+      "declaration": "public static func currentUser(readPolicy: ReadPolicy? = ReadPolicy()) throws -> Endpoint<User> {"
+    },
+    {
+      "id": "symbol.PremiumType",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public enum PremiumType: Int, Sendable {"
+    },
+    {
+      "id": "symbol.PremiumType.nitro",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "case nitro = 2"
+    },
+    {
+      "id": "symbol.PremiumType.nitroBasic",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "case nitroBasic = 3"
+    },
+    {
+      "id": "symbol.PremiumType.nitroClassic",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "case nitroClassic = 1"
+    },
+    {
+      "id": "symbol.PremiumType.none",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "case none = 0"
+    },
+    {
+      "id": "symbol.User",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public struct User: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.User.accentColor",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let accentColor: Field<Int>"
+    },
+    {
+      "id": "symbol.User.avatar",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let avatar: Nullable<String>"
+    },
+    {
+      "id": "symbol.User.banner",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let banner: Field<String>"
+    },
+    {
+      "id": "symbol.User.bot",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let bot: Field<Bool>"
+    },
+    {
+      "id": "symbol.User.discriminator",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let discriminator: String"
+    },
+    {
+      "id": "symbol.User.email",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let email: Field<String>"
+    },
+    {
+      "id": "symbol.User.flags",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let flags: Field<UInt64>"
+    },
+    {
+      "id": "symbol.User.globalName",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let globalName: Nullable<String>"
+    },
+    {
+      "id": "symbol.User.id",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let id: UserID"
+    },
+    {
+      "id": "symbol.User.locale",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let locale: Field<String>"
+    },
+    {
+      "id": "symbol.User.mfaEnabled",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let mfaEnabled: Field<Bool>"
+    },
+    {
+      "id": "symbol.User.premiumType",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let premiumType: Field<RawValue<PremiumType>>"
+    },
+    {
+      "id": "symbol.User.publicFlags",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let publicFlags: Field<UInt64>"
+    },
+    {
+      "id": "symbol.User.system",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let system: Field<Bool>"
+    },
+    {
+      "id": "symbol.User.username",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let username: String"
+    },
+    {
+      "id": "symbol.User.verified",
+      "path": "Sources/DiscordModels/Generated/HTTPResources.generated.swift",
+      "declaration": "public let verified: Field<Bool>"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence.application-projection",
+      "path": "Tests/DiscordModelsTests/HTTPResourceTests.swift",
+      "anchor": "applicationProjectionAndUnknownFields"
+    },
+    {
+      "id": "evidence.application-required",
+      "path": "Tests/DiscordModelsTests/HTTPResourceTests.swift",
+      "anchor": "requiredApplicationFields"
+    },
+    {
+      "id": "evidence.application-team-numbers",
+      "path": "Tests/DiscordModelsTests/ReviewedGeneratedTests.swift",
+      "anchor": "nestedTeamRetainsExactNumbers"
+    },
+    {
+      "id": "evidence.http-errors",
+      "path": "Tests/DiscordHTTPTests/RESTClientTests.swift",
+      "anchor": "apiFailures"
+    },
+    {
+      "id": "evidence.http-generated-descriptors",
+      "path": "Tests/DiscordHTTPTests/RESTClientTests.swift",
+      "anchor": "typedUserAndApplication"
+    },
+    {
+      "id": "evidence.reviewed-field-contracts",
+      "path": "Tests/DiscordModelsTests/ReviewedGeneratedTests.swift",
+      "anchor": "reviewedFieldContracts"
+    },
+    {
+      "id": "evidence.user-projection",
+      "path": "Tests/DiscordModelsTests/HTTPResourceTests.swift",
+      "anchor": "userPresenceAndUnknownValues"
+    },
+    {
+      "id": "evidence.user-required",
+      "path": "Tests/DiscordModelsTests/HTTPResourceTests.swift",
+      "anchor": "requiredUserFields"
+    }
+  ]
+}

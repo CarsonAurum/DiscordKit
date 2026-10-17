@@ -8,8 +8,9 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [channels and threads](Docs/Channels.md) in Phase 5B,
 [guild administration](Docs/Guilds.md) in Phase 5C,
 [audit logs and Auto Moderation](Docs/Moderation.md) in Phase 5D,
-[emoji, stickers and soundboard](Docs/Expressions.md) in Phase 5E, and
-[invites, templates, scheduled events and stages](Docs/DiscoveryEvents.md) in Phase 5F. Interactions,
+[emoji, stickers and soundboard](Docs/Expressions.md) in Phase 5E,
+[invites, templates, scheduled events and stages](Docs/DiscoveryEvents.md) in Phase 5F, and
+[applications, users, linked roles and commands](Docs/ApplicationsUsers.md) in Phase 5G. Interaction handling,
 OAuth2 flows, voice, RPC, Activities, Social and commerce are not implemented.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -54,10 +55,10 @@ establish endpoint parity or qualify untested hosts. See the
 - `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
 - `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
 - `DiscordApplePlatform`: app-driven lifecycle resource ownership and capability checks.
-- `DiscordModels`: presence-aware Message/Poll/Channel/Guild/Audit Log/Auto Moderation/Emoji/Sticker/Soundboard/Invite/Template/Event/Stage payloads, components, partial related-resource
+- `DiscordModels`: presence-aware Message/Poll/Channel/Guild/Audit Log/Auto Moderation/Emoji/Sticker/Soundboard/Invite/Template/Event/Stage/Application/User/Command payloads, components, partial related-resource
   projections and exact unknown fields.
 - `DiscordHTTP`: typed descriptors, codecs, coordinated admission, safe retries, pagination,
-  scoped coalescing, opt-in bounded response caching and message/poll, channel/thread, guild, moderation, expression and discovery/event REST catalogs.
+  scoped coalescing, opt-in bounded response caching and message/poll, channel/thread, guild, moderation, expression, discovery/event and application/user/command REST catalogs.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases and startup budgets.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),

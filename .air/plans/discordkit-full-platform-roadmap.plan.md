@@ -687,6 +687,16 @@ See [Discovery/event contracts](../../Docs/DiscoveryEvents.md) and
 [execution evidence](phase-5f-execution.plan.md). Related User/Application projections,
 Gateway events, 5G–5J and platform/live/soak qualification remain separate.
 
+**5G implementation update, 2026-10-16:** All 32 currently available Application,
+User, linked-role metadata and Application Command operations have typed Models/HTTP
+APIs. Complete owned profiles/configuration/install/team/activity values, flags_new,
+consented user operations, finite storage-shard guild traversal, every command kind,
+localized option trees and conservative snapshot registration have deterministic
+coverage. Disabled batch permission editing remains removed. See
+[Application/user contracts](../../Docs/ApplicationsUsers.md) and
+[execution evidence](phase-5g-execution.plan.md). Interaction handlers/routers,
+5H–5J and platform/live/soak qualification remain separate.
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |

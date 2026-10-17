@@ -720,6 +720,114 @@
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"
+    },
+    {
+      "id": "5g-application-description-permission-wire",
+      "status": "policy_resolved",
+      "surface": "REST v10 / Application updates",
+      "description": "Written PATCH description and install permissions are strings; preview describes localized description object and integer permissions.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/application",
+          "section": "Written reference compared with official current API preview",
+          "revision": "unknown",
+          "sha256": "1b01015822aaa46181b1f72f9dd24aeef64085783ca046e8913a001961c3c399"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+          "section": "Explicit current preview overlay; written reference controls conflicts",
+          "revision": "unknown",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Unreviewed generation could send incompatible payloads or erase meaningful presence states.",
+      "interimPolicy": "String fields follow the written contract. A separate mutually exclusive localizedDescription explicitly supports the preview form; outgoing permission digits remain strings.",
+      "requiredResolution": "Preserve explicit overlay and regression evidence; reassess when upstream contracts change.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "5g-command-permission-auth-and-bulk-count",
+      "status": "policy_resolved",
+      "surface": "REST v10 / Application Commands",
+      "description": "Preview permits BotToken for permission writes and caps bulk arrays at 130; written reference requires user bearer and allows 131 total global commands including one entry point.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/interactions/application-commands",
+          "section": "Written reference compared with official current API preview",
+          "revision": "unknown",
+          "sha256": "55c50c6b38feae40728a40c16480af889d086760913e19735894b7963736e473"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+          "section": "Explicit current preview overlay; written reference controls conflicts",
+          "revision": "unknown",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Unreviewed generation could send incompatible payloads or erase meaningful presence states.",
+      "interimPolicy": "Permission replacement is bearer-only with applications.commands.permissions.update. Global bulk permits 100 slash,15 user,15 message,1 entry point; guild forbids entry points. Permission digit strings follow prose rather than preview integers.",
+      "requiredResolution": "Preserve explicit overlay and regression evidence; reassess when upstream contracts change.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "5g-user-nullable-preview-overlay",
+      "status": "policy_resolved",
+      "surface": "REST v10 / User and linked roles",
+      "description": "Written lists/scalars are sometimes nonnull or required while preview permits top-level null lists and nullable/optional nested connection fields.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/user",
+          "section": "Written reference compared with official current API preview",
+          "revision": "unknown",
+          "sha256": "c2afb7bcaa849f280716395d40a66c0d78f5422dc77fef01cedb288590e80001"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+          "section": "Explicit current preview overlay; written reference controls conflicts",
+          "revision": "unknown",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Unreviewed generation could send incompatible payloads or erase meaningful presence states.",
+      "interimPolicy": "Nullable list return types preserve null separately from empty arrays. Additional optional/null nested states are explicit compatibility overlays and tested; no unrelated preview-only routes are promoted.",
+      "requiredResolution": "Preserve explicit overlay and regression evidence; reassess when upstream contracts change.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "5g-command-guild-bulk-contexts",
+      "status": "policy_resolved",
+      "surface": "REST v10 / Application Commands",
+      "description": "Guild bulk request table lists contexts/integration_types/dm_permission while ordinary command structure marks them global-only.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/interactions/application-commands",
+          "section": "Written reference compared with official current API preview",
+          "revision": "unknown",
+          "sha256": "55c50c6b38feae40728a40c16480af889d086760913e19735894b7963736e473"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+          "section": "Explicit current preview overlay; written reference controls conflicts",
+          "revision": "unknown",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Unreviewed generation could send incompatible payloads or erase meaningful presence states.",
+      "interimPolicy": "Ordinary guild create/modify reject global-only settings; explicit guild bulk honors the documented table. Entry points remain global-only; no-op comparison conservatively requires complete localization/context information.",
+      "requiredResolution": "Preserve explicit overlay and regression evidence; reassess when upstream contracts change.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
     }
   ]
 }
