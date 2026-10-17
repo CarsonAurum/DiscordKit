@@ -6,6 +6,19 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Part 11 Activity client and owned browser bridge
+
+- Added an independent Activities product and dependency-free browser bridge with
+  explicit lifecycle, trusted message admission and bounded request/event ownership.
+- Added typed documented/exported command and event values, scope/platform metadata,
+  source-only access gates and participant/orientation compatibility names.
+- Added shared subscriptions, cancellation/deadlines, unknown-value preservation
+  and explicit Activity proxy URL helpers.
+- Added Swift protocol and Node simulated-host suites, an independent ActivityHost
+  composition example, current official source fingerprints and parity/history.
+- Kept backend OAuth secrets and authoritative entitlement decisions outside the
+  iframe. Approved Discord Web/iOS/Android and purchase smoke tests remain open.
+
 ## 2026-10-17 — Part 10 local RPC and Certified Devices
 
 - Added independent RPC and CertifiedDevices products with task-free construction,

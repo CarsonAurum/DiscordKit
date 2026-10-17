@@ -56,6 +56,12 @@ Transport adapters and device identifiers are injected. Windows named-pipe I/O,
 real desktop/hardware smoke tests, ambiguous WebSocket port bounds and presence
 clearing semantics remain explicit gates; no remote Gateway substitutes for RPC.
 
+Part 11 adds independently adopted Activities and an owned dependency-free browser
+postMessage bridge for typed host commands/events, bounded correlation and shared
+subscriptions; see `Docs/Activities.md`. Construction starts no I/O. Swift/browser
+bindings and approved Discord Web/iOS/Android smoke qualification remain separate;
+no standalone browser/native container creates a Discord Activity host.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -72,6 +78,9 @@ clearing semantics remain explicit gates; no remote Gateway substitutes for RPC.
   independently adopted authentication, public game/backend and server entitlement workflows.
 - `Sources/DiscordRPC/`, `Sources/DiscordCertifiedDevices/`: independent local RPC v1
   protocol/session ownership and certified-device publication; no HTTP/Gateway/OAuth dependency.
+- `Sources/DiscordActivities/`: independent Activity protocol/client/catalog over Core/Transport.
+- `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
+- `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
 - `Examples/RPCApp/`: independent portable RPC/device consumer; build without connecting to Discord.
 - `Examples/OAuthApp/`: independent OAuth consumer; build without running authenticated calls.
 - `Examples/RESTOnly/`: independent REST consumer; build it without running authenticated calls.
@@ -150,6 +159,12 @@ HTTP, Gateway, Client, Cache, OAuth, Commands or Interactions. Use deterministic
 local peers for framing, correlation, cancellation and device replacement tests.
 Real Discord desktop/hardware tests and Windows named-pipe host qualification are
 separate gates; preserve the documented port-range and presence-clear blockers.
+For Activity changes, also build `Examples/ActivityHost` and run the browser bridge
+with Node's built-in test runner (`node --test Browser/DiscordActivityBridge/*.test.mjs`).
+Keep Activities independent of HTTP/Gateway/RPC/OAuth/Client/Cache. Use synthetic
+Swift frames and simulated message hosts; approved Discord browser/mobile auth,
+participant and purchase smoke tests remain separate gates. Keep client secrets
+out of iframe/mobile code and verify entitlements through server-authoritative APIs.
 For documentation-only changes, review the diff; a build is not required.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.

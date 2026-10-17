@@ -148,9 +148,9 @@
         }
       ],
       "impact": "Source-only methods cannot be represented as uniformly available on web/iOS/Android.",
-      "interimPolicy": "Retain source-only records with named availability blockers; use the documented iframe bridge as the provider and qualify actual hosts before support claims.",
+      "interimPolicy": "Phase 11 implements published source codecs over the owned iframe bridge, while retaining named availability blockers and unspecified platform/scope metadata. Codec implementation is independent from approved host availability. Qualify actual Discord hosts before access/support claims.",
       "requiredResolution": "Official scope/platform/approval and rollout documentation, or approved conformance evidence, for each source-only export.",
-      "verifiedAt": "2026-10-15",
+      "verifiedAt": "2026-10-17",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"
@@ -1043,6 +1043,33 @@
       "verifiedAt": "2026-10-17",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-17"
+    },
+    {
+      "id": "activity-relationships-scope-approval",
+      "status": "policy_resolved",
+      "surface": "Activities / relationships.read",
+      "description": "The Embedded App SDK reference retains submit-for-access language, while the dated change log removes separate Discord approval for Activity relationships.read and requires accepted Social SDK terms.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/developer-tools/embedded-app-sdk",
+          "section": "getRelationships / required scopes",
+          "revision": "unknown",
+          "sha256": "f1986bb4faa78db0e559d5d62cc94d13207cc9b330c4968c26148ed58d33913e"
+        },
+        {
+          "url": "https://docs.discord.com/developers/change-log",
+          "section": "2026-01-21 Relationships.read scope",
+          "revision": "unknown",
+          "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4"
+        }
+      ],
+      "impact": "Generic approval metadata would falsely classify an Activity scope as requiring a separate approval request.",
+      "interimPolicy": "Follow the dated2026-01-21 clarification: accepted Social SDK terms and granted user scope are required; a separate Discord approval request is no longer necessary for Activities. Do not generalize this Activity clarification to other OAuth/Social surfaces.",
+      "requiredResolution": "Keep metadata synchronized with future official scope/terms changes; real host scope enforcement remains separately qualified.",
+      "verifiedAt": "2026-10-17",
+      "announcementDate": "2026-01-21",
+      "effectiveDate": "2026-01-21",
       "resolvedAt": "2026-10-17"
     }
   ]

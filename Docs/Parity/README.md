@@ -43,6 +43,11 @@ Phase 9 adds [OAuth/installation and token ownership](../OAuth.md),
 [public game account and entitlement workflows](../Phase9ServiceContracts.md),
 and current verification hashes with explicit native/Commerce blockers; see
 [Phase 9 history](changes/2026-10-17-oauth-game-commerce.md).
+Phase 10 adds [RPC and Certified Devices](../RPC.md) with explicit desktop/platform
+gates. Phase 11 adds [Activities](../Activities.md), the owned browser bridge and
+a [per-command/event catalog](activity-catalog.json) with current source evidence;
+see [Phase 11 history](changes/2026-10-17-activities.md). Approved Discord Web/iOS/Android
+host qualification remains open.
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
@@ -63,7 +68,8 @@ measurable; discovery records and unavailable-capability stubs do not count as s
   `expression-current-sources.json`, `discovery-event-current-sources.json`,
   `application-user-current-sources.json`, `webhook-voice-interaction-current-sources.json`
   `monetization-current-sources.json` and `social-game-current-sources.json`,
-  retain current official verification hashes separately from original discovery pins.
+  `activities-current-sources.json` also pins current Activity docs and official SDK
+  source evidence. These records retain current official verification hashes separately from original discovery pins.
 - `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
 - `history.json` is append-only support history; `changes/` contains human-readable entries.
 - `reviewed-v1.json` and `reviewed.schema.json` describe the finite generation seed,

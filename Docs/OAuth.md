@@ -92,6 +92,16 @@ Token bodies, codes, refresh credentials and optional webhook data redact ordina
 formatting and reflection. Unsafe accessors and raw URL properties can intentionally
 expose sensitive values; consumers must keep them out of logs and metrics.
 
+Phase 11 adds `OAuthEndpoints.activityAuthorizationCode` for the confidential
+backend exchange of a code returned by an Activity iframe AUTHORIZE command.
+The [official Activity tutorial](https://docs.discord.com/developers/activities/building-an-activity)
+uses a form grant with client authentication and no redirect URI. This separate API
+accepts an optional verifier when the Activity requested PKCE, rejects public-client
+authentication and preserves the ordinary redirect-bound flow API. Keep secrets on
+the backend; authenticate the caller/session before accepting its code and never
+grant entitlements from client-supplied purchase data. See [Activities](Activities.md)
+and its [current source fingerprints](Parity/activities-current-sources.json).
+
 ## Refresh coordination and storage
 
 `OAuthTokenCoordinator` owns one local refresh flight per application/audience and

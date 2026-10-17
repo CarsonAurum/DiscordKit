@@ -1351,6 +1351,54 @@ Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstr
 
 Evidence: evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions, evidence.10.RPCCatalogTests.voiceControlsValidateExactRangesAndReadOnlyFields.
 
+## ActivityBackendCodeExchange
+
+Confidential server exchange for iframe Activity AUTHORIZE codes, using application/x-www-form-urlencoded code/grant_type/client authentication and optional requested PKCE verifier, without inventing a redirect_uri. Public client authentication, invalid application identity, malformed verifier and oversized codes fail before transport. Header-free REST token execution retains no-cache/coalescing and no ambiguous replay policy. Backend sessions/authentication and server entitlement checks remain caller-owned. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.
+
+Status: partial. Support since: 2026-10-17. Source: developers/activities/building-an-activity. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.11.confidentialExchange, evidence.11.invalidBackendInput.
+
+## CommandCatalog
+
+All 21 reference commands and seven additional official-source exports have explicit factories and typed response validation. SUBSCRIBE/UNSUBSCRIBE controls and the participant migration alias are separate catalog rows. Source-only host/scopes remain unspecified; nested child resources retain explicit partial coverage. Diagnostics redact raw arguments and credentials. The 2026-01-21 Activity relationships policy requires accepted Social SDK terms without separate approval. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.
+
+Status: partial. Support since: 2026-10-17. Source: developers/developer-tools/embedded-app-sdk. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.11.allExportedCommandsHaveTypedFactories, evidence.11.typedResponsesRejectMalformedValues.
+
+## EventCatalog
+
+All 13 reference event names including ERROR and two additional source-only events have explicit payload projections with exact unknown-value handling. ERROR is a correlated failure; READY is lifecycle. The reference marks ENTITLEMENT_CREATE unavailable during Developer Preview. Event section platform matrices and source-only access remain unspecified. Lossless raw nested child data is not complete typed child-schema parity. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.
+
+Status: partial. Support since: 2026-10-17. Source: developers/developer-tools/embedded-app-sdk. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.11.allExportedEventsHaveTypedProjections, evidence.11.typedResponsesRejectMalformedValues.
+
+## HostParametersAndTransport
+
+Injected authenticated transport and bounded duplicate-free host parameter parsing. Context never grants authorization or creates a Discord Activity host. Construction starts no tasks or I/O. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.
+
+Status: partial. Support since: 2026-10-17. Source: developers/developer-tools/embedded-app-sdk. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.11.configurationAndHostContext, evidence.11.handshakeCommandsAndEvents.
+
+## LifecycleAndCorrelation
+
+Explicit handshake/READY, finite pending/events/bytes, strict command-plus-nonce correlation, independent cancellation/deadlines and awaited idempotent cleanup. Queued dispatches are drained in order; unknown names/data remain explicit. Already transmitted mutations are not replayed. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.
+
+Status: partial. Support since: 2026-10-17. Source: developers/developer-tools/embedded-app-sdk. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.11.capacityAndClose, evidence.11.concurrentCorrelationAndCancellation, evidence.11.deadlineAndStartupCancellation, evidence.11.handshakeCommandsAndEvents, evidence.11.mismatchAndHostError, evidence.11.writerFailureAndCloseBeforeReady.
+
+## SharedSubscriptions
+
+Session-owned subscription tokens share one upstream subscription for matching event/canonical arguments and unsubscribe on final release. READY is local lifecycle. Ambiguous admission/final release fails the session to prevent hidden listener ownership; cancellation of one duplicate does not cancel remaining owners. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.
+
+Status: partial. Support since: 2026-10-17. Source: developers/developer-tools/embedded-app-sdk. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.11.subscriptionReferenceCounting.
+
 ## MessageEndpoints.bulkDelete
 
 API v10 POST /channels/{channel.id}/messages/bulk-delete; handwritten MessageEndpoints.bulkDelete, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.

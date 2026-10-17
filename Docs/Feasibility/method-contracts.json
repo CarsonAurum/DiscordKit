@@ -15068,10 +15068,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe and permitted origin; event-specific scopes for subscriptions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Host conformance remains unverified; Swift object alone does not create an Activity host.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15089,10 +15089,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe and permitted origin; event-specific scopes for subscriptions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Host conformance remains unverified; Swift object alone does not create an Activity host.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15110,10 +15110,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe and permitted origin; event-specific scopes for subscriptions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Host conformance remains unverified; Swift object alone does not create an Activity host.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15131,10 +15131,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe and permitted origin; event-specific scopes for subscriptions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Host conformance remains unverified; Swift object alone does not create an Activity host.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15152,10 +15152,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15173,10 +15173,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15194,10 +15194,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15215,10 +15215,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15236,10 +15236,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15257,10 +15257,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15278,10 +15278,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15299,10 +15299,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15320,10 +15320,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15341,10 +15341,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15362,10 +15362,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15383,10 +15383,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15404,10 +15404,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted Activity iframe; required event scopes"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Subscription/nonce/origin validation required before implementation claim.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15425,10 +15425,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15446,10 +15446,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15467,10 +15467,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15488,10 +15488,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15509,10 +15509,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15530,10 +15530,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15551,10 +15551,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15572,10 +15572,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15593,10 +15593,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15614,13 +15614,13 @@
         "completeness": "partial",
         "prerequisites": "Discord-hosted iframe; source-only export; official host availability, allowed scopes and stability need confirmation"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.getQuest",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15638,13 +15638,13 @@
         "completeness": "partial",
         "prerequisites": "Discord-hosted iframe; source-only export; official host availability, allowed scopes and stability need confirmation"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.getQuestEnrollmentStatus",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15662,10 +15662,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15683,10 +15683,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15704,13 +15704,13 @@
         "completeness": "partial",
         "prerequisites": "Discord-hosted iframe; source-only export; official host availability, allowed scopes and stability need confirmation"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.getUser",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15728,10 +15728,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15749,13 +15749,13 @@
         "completeness": "partial",
         "prerequisites": "Discord-hosted iframe; source-only export; official host availability, allowed scopes and stability need confirmation"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.inviteUserEmbedded",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15773,10 +15773,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15794,10 +15794,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15815,10 +15815,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15836,13 +15836,13 @@
         "completeness": "partial",
         "prerequisites": "Discord-hosted iframe; source-only export; official host availability, allowed scopes and stability need confirmation"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.questStartTimer",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15860,13 +15860,13 @@
         "completeness": "partial",
         "prerequisites": "Discord-hosted iframe; source-only export; official host availability, allowed scopes and stability need confirmation"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.requestProxyTicketRefresh",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15884,10 +15884,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15905,10 +15905,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15926,10 +15926,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15947,13 +15947,13 @@
         "completeness": "partial",
         "prerequisites": "Discord-hosted iframe; source-only export; official host availability, allowed scopes and stability need confirmation"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.shareInteraction",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15971,10 +15971,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15992,10 +15992,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -16013,10 +16013,10 @@
         "completeness": "full",
         "prerequisites": "Discord-hosted iframe; see written command-specific scope/platform restrictions"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Command payload schemas are public source evidence; no npm runtime dependency is added.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -16034,10 +16034,10 @@
         "completeness": "full",
         "prerequisites": "Same Activity host as canonical method"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Compatibility alias; no separate backend operation.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17007,10 +17007,10 @@
         "completeness": "local",
         "prerequisites": "Qualified owned local/platform/browser implementation; no native SDK or npm runtime dependency"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17028,10 +17028,10 @@
         "completeness": "local",
         "prerequisites": "Qualified owned local/platform/browser implementation; no native SDK or npm runtime dependency"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17052,7 +17052,7 @@
       "implementationStatus": "unsupported",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Historical source utility remains unimplemented by Phase 11. Core bitset operations are available, but no SDK-compatible permission/locale-price utility parity is claimed. See Docs/Activities.md.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17073,7 +17073,7 @@
       "implementationStatus": "unsupported",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Historical source utility remains unimplemented by Phase 11. Core bitset operations are available, but no SDK-compatible permission/locale-price utility parity is claimed. See Docs/Activities.md.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17094,7 +17094,7 @@
       "implementationStatus": "unsupported",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Phase 11 adds explicit ActivityURLMapper/createActivityFetch/createActivityWebSocket helpers, not SDK-compatible global fetch/WebSocket/XHR monkey patching. This method remains unimplemented; see Docs/Activities.md. Historical source/signature pins are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17112,10 +17112,10 @@
         "completeness": "local",
         "prerequisites": "Qualified owned local/platform/browser implementation; no native SDK or npm runtime dependency"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17133,13 +17133,13 @@
         "completeness": "partial",
         "prerequisites": "Qualified owned local/platform/browser implementation; no native SDK or npm runtime dependency"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.ACTIVITY_JOIN",
         "requiredEvidence": "Official written host/platform/scope and rollout contract for this source-only event; source schema alone does not certify availability."
       },
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17157,13 +17157,13 @@
         "completeness": "partial",
         "prerequisites": "Qualified owned local/platform/browser implementation; no native SDK or npm runtime dependency"
       },
-      "implementationStatus": "unsupported",
+      "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": {
         "id": "activity-source-only.QUEST_ENROLLMENT_STATUS_UPDATE",
         "requiredEvidence": "Official written host/platform/scope and rollout contract for this source-only event; source schema alone does not certify availability."
       },
-      "notes": "Source-level discovery; no implementation or host-conformance support is claimed.",
+      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]

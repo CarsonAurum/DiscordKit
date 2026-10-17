@@ -18,6 +18,14 @@ access and an allowed origin. Certified HTTP/WebSocket's documented upper port
 approved desktop conformance has resolved that discrepancy. Mobile, browser and
 WASI compilation cannot establish a local Discord desktop host.
 
+Phase 11 adds [Activities](Activities.md) with a portable Swift protocol client
+and owned browser postMessage bridge. Local Swift and simulated JavaScript-host
+results do not qualify Discord Web/iOS/Android embedding, Swift Wasm, WebKit/JNI
+bindings, browser policy or real purchases. Approved Discord host tests for
+handshake/auth/participants and purchase/entitlement workflows remain open. The
+catalog records Web-only commands, mobile-only orientation and source-only access
+unknowns independently of successful portable compilation.
+
 Part 7 adds portable consumer/cache/event-delivery code with macOS-local deterministic
 tests and separate offline load/soak evidence; see [Client](Client.md). New product
 compilation on this host does not qualify another OS, device, minimum deployment
@@ -56,7 +64,7 @@ requirements may raise these baselines when those products are implemented.
 | visionOS | 1.0 | SDK installed; graph not cross-built | Not run | Qualify foreground HTTP/Gateway, lifecycle recovery, permitted native media and applicable browser/auth APIs. SDK availability does not prove device policy, audio routing, or background behavior. |
 | Android | Android 9 / API 28 | Not run; no Swift SDK bundle installed | Not run | Requires an exactly matching open-source Swift toolchain/Android Swift SDK plus the Android NDK. Qualify NIO HTTP/TLS/WebSocket/UDP on device/emulator, trust-store handling, app lifecycle, JNI ownership and media/browser adapters. Xcode Swift alone is insufficient. |
 | WASI | Matching Swift Wasm SDK and runtime, version to qualify | Not run; no Swift SDK bundle installed | Not run | Pure-value modules are a future qualification target. The fixture's NIOPosix socket bootstrap is excluded on WASI; this native socket graph is not a WASI networking implementation. Host imports and runtime grants need separate adapters. |
-| Browser WebAssembly | Matching Swift Wasm SDK plus browser bridge | Not run | Not run | HTTP/WebSocket use browser APIs and their origin/security rules; raw UDP, arbitrary TCP, desktop IPC and native audio-device ownership are unavailable through this native graph. Activities require an authorized Discord host and an owned browser bridge. Browser operation is distinct from a WASI command-line runtime. |
+| Browser WebAssembly | Matching Swift Wasm SDK plus browser bridge | Not run | Not run | HTTP/WebSocket use browser APIs and their origin/security rules; raw UDP, arbitrary TCP, desktop IPC and native audio-device ownership are unavailable through this native graph. Activities require an authorized Discord host and the owned browser bridge; Swift/browser binding and real Discord smoke qualification remain open. Browser operation is distinct from a WASI command-line runtime. |
 | Embedded Swift | Target-specific Embedded Swift toolchain/runtime | Not run | Not run | Experimental language subset and target facilities determine which future pure-value modules can compile. Foundation, Swift Testing, NIO and the ordinary Swift concurrency runtime are not assumed available. No generic network/media/Discord-host claim. |
 | Other experimental ports | Target-specific | Not run | Not run | For example, NIO documents experimental OpenBSD support with file-system exclusions. Qualify the actual selected graph and runtime separately before advertising support. |
 

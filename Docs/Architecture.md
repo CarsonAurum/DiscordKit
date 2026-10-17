@@ -55,6 +55,10 @@ Neither product selects HTTP, Gateway, OAuth, Client, Cache or a concrete adapte
 Local authorization is explicit and separate from bot credentials. Desktop-host
 access, deprecated WebSocket availability and platform adapters remain qualified
 separately from portable protocol code.
+Part 11 adds [Activities](Activities.md) over Core/Transport contracts and an owned
+minimal browser bridge. Applications inject a Swift/browser binding and an authorized
+Discord Activity host. The portable product selects no HTTP, Gateway, RPC, OAuth,
+Client or Cache. Backend auth and entitlement verification are composed explicitly.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
@@ -112,6 +116,7 @@ flowchart TD
     DiscordCertifiedDevices --> DiscordTransport
     DiscordCertifiedDevices --> DiscordCore
     DiscordActivities --> DiscordTransport
+    DiscordActivities --> DiscordCore
     DiscordSocial --> DiscordOAuth
     DiscordSocial --> DiscordRPC
     DiscordSocial --> DiscordVoice
@@ -143,7 +148,8 @@ normalize trusted interaction dispatches into the same context and response acto
 | CertifiedDevices | Prioritized full-array device publication through injected local HTTP or RPC, with native device identifiers supplied by the host. No native audio-device discovery or media capture. |
 | Client/Kit | Supervised discovery/shard/ingestion composition, configuration, optional cache bridge, event access, diagnostics and typed services. |
 | Voice | Optional voice/media protocols; narrow Gateway control contracts rather than dependence on the facade. Crypto, MLS and codec work stays isolated. |
-| Activities/Social | Distinct host, authentication and access contracts; missing wire definitions remain explicit blockers. |
+| Activities | Bounded host messaging, typed command/event catalog and reference-counted subscriptions over an injected Activity binding. Owned browser bridge validates source/origin; no iframe host is manufactured. |
+| Social | Distinct host, authentication and access contracts; missing wire definitions remain explicit blockers. |
 
 Put a shared protocol in the lowest module that already knows its parameter types.
 Do not create an upward dependency just to access a facade convenience. The voice

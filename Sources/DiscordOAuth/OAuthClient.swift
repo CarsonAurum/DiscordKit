@@ -175,6 +175,31 @@ public struct OAuthAuthorizationInformation: Sendable, CustomStringConvertible, 
 /// Explicit API v10 OAuth descriptors. All grants/revocations use bounded form bodies, header-free client authentication,
 /// no read reuse and unsafe submission semantics. Discord's server/resource/global admission remains in the injected REST pipeline.
 public enum OAuthEndpoints {
+    /// Exchanges one Activity AUTHORIZE code exclusively on a confidential backend, independently of redirect flows.
+    /// The [official Activity tutorial](https://docs.discord.com/developers/activities/building-an-activity#step-5-authorizing--authenticating-users)
+    /// uses code/client_id/client_secret/grant_type without a redirect URI; the Discord host owns iframe authorization.
+    /// - Parameters:
+    ///   - code: Single-use code from an authenticated Activity host and an application-authenticated backend session.
+    ///     The backend must bind this request to its expected application/user session and enforce replay/CSRF policy.
+    ///   - authentication: Confidential application credentials stored only on the backend. Public PKCE clients fail.
+    ///   - pkceVerifier: Matching S256 verifier only if code_challenge was sent to AUTHORIZE; nil matches the tutorial.
+    ///     Present values must satisfy RFC 7636's 43...128 unreserved ASCII characters; entropy is caller-owned.
+    /// - Returns: Unsafe POST /api/v10/oauth2/token descriptor with form-only client authentication and bounded response.
+    ///   It is never read-coalesced or automatically replayed after ambiguous submission. No I/O or storage occurs here.
+    /// - Throws: `OAuthError.unsupportedClient` for public clients, `OAuthError.invalidRequest` for malformed proof/size,
+    ///   or bounded descriptor/body errors. Execution may reject expired/reused/foreign codes; obtain fresh host consent.
+    public static func activityAuthorizationCode(_ code: OAuthCode, authentication: OAuthClientAuthentication,
+                                                 pkceVerifier: OAuthPKCEVerifier? = nil) throws -> Endpoint<OAuthTokenResponse> {
+        guard case .confidential = authentication else { throw OAuthError.unsupportedClient }
+        var fields = [QueryItem(name: "grant_type", value: "authorization_code"),
+                      QueryItem(name: "code", value: code.withUnsafeValue { $0 })]
+        if let pkceVerifier {
+            let proof = try OAuthPKCE(verifier: pkceVerifier.withUnsafeValue { $0 })
+            fields.append(QueryItem(name: "code_verifier", value: proof.verifier.withUnsafeValue { $0 }))
+        }
+        return try token(fields: fields, authentication: authentication)
+    }
+
     /// Exchanges a redirect-validated authorization code, preserving its exact redirect and S256 verifier.
     /// - Parameters:
     ///   - authorization: One redirect-validated code result. The caller must avoid redeeming copied values repeatedly.

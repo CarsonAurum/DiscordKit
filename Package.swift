@@ -36,6 +36,7 @@ let package = Package(
         .library(name: "DiscordCommerce", targets: ["DiscordCommerce"]),
         .library(name: "DiscordRPC", targets: ["DiscordRPC"]),
         .library(name: "DiscordCertifiedDevices", targets: ["DiscordCertifiedDevices"]),
+        .library(name: "DiscordActivities", targets: ["DiscordActivities"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.104.0"),
@@ -63,6 +64,7 @@ let package = Package(
         .target(name: "DiscordCommerce", dependencies: ["DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordRPC", dependencies: ["DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordCertifiedDevices", dependencies: ["DiscordRPC", "DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordActivities", dependencies: ["DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordFoundationTransport", dependencies: ["DiscordTransport"], swiftSettings: concurrencySettings),
         .target(
             name: "DiscordNIOTransport",
@@ -113,6 +115,7 @@ let package = Package(
         .testTarget(name: "DiscordCommerceTests", dependencies: ["DiscordCommerce", "DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordRPCTests", dependencies: ["DiscordRPC", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordCertifiedDevicesTests", dependencies: ["DiscordCertifiedDevices", "DiscordRPC", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordActivitiesTests", dependencies: ["DiscordActivities", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(
             name: "DiscordTransportTests",
             dependencies: ["DiscordTransport", "DiscordTestSupport"],

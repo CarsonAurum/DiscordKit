@@ -25,6 +25,13 @@ Foundation networking, OAuth, Gateway or the umbrella facade. The independent
 RPCApp consumer verifies the portable graph. Native Windows named-pipe I/O,
 audio-device enumeration and Discord's distributed SDK remain outside this graph.
 
+Part 11 adds no package or npm runtime dependency. Activities selects only Core
+and Transport. The owned browser bridge uses browser APIs and JavaScript built-ins;
+Node's built-in runner is development-only. Official Embedded App SDK source is
+pinned as protocol/schema evidence, without importing or vendoring its runtime or
+transitive packages. Native/WebAssembly Swift-to-browser bindings are injected and
+qualified separately. ActivityHost composes backend OAuth/Commerce explicitly.
+
 The foundational targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
 explicit newer Apple availability; it does not raise the runtime product minima

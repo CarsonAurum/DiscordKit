@@ -1007,6 +1007,46 @@
       ],
       "details": "changes/2026-10-17-rpc-devices.md",
       "remainingGates": "../RPC.md"
+    },
+    {
+      "id": "2026-10-17-part-11-activities",
+      "recordedOn": "2026-10-17",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "activityBridge": "1",
+        "embeddedAppSDKEvidence": "2.5.0"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-17",
+      "localSupportDate": "2026-10-17",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "activity_protocol_implementation",
+      "previousBehavior": "Backend OAuth/token ownership, signed launch interactions and injected Activity purchase verification existed without an owned Activity iframe messaging implementation.",
+      "currentBehavior": "Independent transport-neutral Swift Activities product and owned dependency-free browser bridge implement bounded handshake/READY, nonce-command correlation, cancellation/deadlines, shared subscriptions, typed documented/exported catalogs and explicit URL mapping. Approved Discord host qualification remains open.",
+      "affectedSymbols": [
+        "ActivityClient",
+        "ActivityTransport",
+        "ActivityHostParameters",
+        "ActivityRequests",
+        "ActivityEventPayload",
+        "ActivityBridge"
+      ],
+      "affectedPayloads": "Activity v1 JSON tuples, HANDSHAKE/FRAME/CLOSE/HELLO; all 28 SDK-exported commands plus subscription controls,14 dispatch names and ERROR, host parameters, URL mappings. Source-only access and nested raw projections remain explicit partial coverage.",
+      "breakingChanges": [],
+      "migration": "Additively adopt Activities, inject the authorized host binding and explicitly start/close. Exchange authorization codes server-side through OAuth and verify entitlements through authoritative Commerce/backend data. Prefer getActivityInstanceConnectedParticipants; retain the old participant alias for compatibility.",
+      "sources": [
+        "https://docs.discord.com/developers/activities/how-activities-work",
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk",
+        "https://docs.discord.com/developers/activities/development-guides/networking",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/embedded-app-sdk/tree/14264eccbf9e68d5d58c1aadbc7579e003e0dce6"
+      ],
+      "details": "changes/2026-10-17-activities.md",
+      "remainingGates": "coverage.md"
     }
   ]
 }

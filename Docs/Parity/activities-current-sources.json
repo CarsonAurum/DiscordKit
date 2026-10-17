@@ -1,0 +1,456 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-17",
+  "sources": [
+    {
+      "name": "activities/building-an-activity",
+      "url": "https://docs.discord.com/developers/activities/building-an-activity.md",
+      "sha256": "9b1f50c7f71890ce26580a21122706df13c6c6afed308a194392deab6a06dfa5",
+      "bytes": 36783,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Official server-side Activity iframe authorization-code exchange without invented redirect_uri; no secret belongs in iframe code."
+    },
+    {
+      "name": "activities/development-guides/networking",
+      "url": "https://docs.discord.com/developers/activities/development-guides/networking.md",
+      "sha256": "eefb1596044967e99cdb4dfa8bee9d693cbb81361a4900c872001c45d392b904",
+      "bytes": 5161,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "activities/how-activities-work",
+      "url": "https://docs.discord.com/developers/activities/how-activities-work.md",
+      "sha256": "25aa4e05f27912367d54562516995cc201426154b0e4432f26978030d1d9312b",
+      "bytes": 6290,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "developer-tools/embedded-app-sdk",
+      "url": "https://docs.discord.com/developers/developer-tools/embedded-app-sdk.md",
+      "sha256": "f1986bb4faa78db0e559d5d62cc94d13207cc9b330c4968c26148ed58d33913e",
+      "bytes": 43160,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "resources/entitlement",
+      "url": "https://docs.discord.com/developers/resources/entitlement.md",
+      "sha256": "fd0b326159147c5ffdd70f56b38d52e30224c1052c4a611296fe5da9c5ee9f44",
+      "bytes": 7483,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "topics/oauth2",
+      "url": "https://docs.discord.com/developers/topics/oauth2.md",
+      "sha256": "d2eb4d4f3e04bd2ee2ce1dfe5a720a021c934347cb5e03a77f8074b5c6901c81",
+      "bytes": 32494,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "embedded-app-sdk/src/Discord.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/Discord.ts",
+      "sha256": "a1cd24cd0dc8406e8236ef897bced88a8b8b3d0ada5b6a4c3569a5871af3b470",
+      "bytes": 11023,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/Constants.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/Constants.ts",
+      "sha256": "4aee9674c79165f4090b1337dde6c8f2508a175f12ffd6582d0cfae5b0261a4c",
+      "bytes": 3320,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/index.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/index.ts",
+      "sha256": "2a02b3b27c6577bb54dc6d5aee5acda3c22a8f96649de54972757b1de3a91a08",
+      "bytes": 4116,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/schema/common.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/common.ts",
+      "sha256": "522137a603579a5cca9a7472ed50aa248c3531d1e0a890dc02df366e79850231",
+      "bytes": 17658,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/schema/events.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts",
+      "sha256": "dc83a36c58c9d5c84d5510a4f9320c4f30aca98107ff4148e6f114b41c37259e",
+      "bytes": 7967,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/generated/schemas.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/generated/schemas.ts",
+      "sha256": "5911ed5e72cd23258d776ab07d19b09ff5da1fb987492e5f652a0a4c42700761",
+      "bytes": 15746,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/utils/patchUrlMappings.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/utils/patchUrlMappings.ts",
+      "sha256": "bcf97c22be127963a9d4087ac9da5c2cf4e2c0cfa01d5864ee354fa99fa5a484",
+      "bytes": 5970,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/utils/commandFactory.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/utils/commandFactory.ts",
+      "sha256": "66e1f8028270f4bd72b05a6b06318868d966a38eeba48744b12b7216cd3721dc",
+      "bytes": 1666,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/package.json",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/package.json",
+      "sha256": "83d5e93797323e338e6e1e7b919443c22f4ae4fb62b18c39cda6a0a26b1fadf2",
+      "bytes": 2659,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Official SDK source protocol/schema evidence pinned by revision; no npm runtime dependency is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/authenticate.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/authenticate.ts",
+      "sha256": "b6f6eef10f8a85d272a13088ca2a3fa8eeb213da97d1b95e53b872bfb0aa0167",
+      "bytes": 214,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/authorize.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/authorize.ts",
+      "sha256": "09a48ab1a68676ef972c93bba01dd563c0822c8a5af413eff3209f59f34a7cbe",
+      "bytes": 980,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/captureLog.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/captureLog.ts",
+      "sha256": "e5339bd0a5c191c6215bd262f2df85f5580d10d970b4898eabf935f2f40ede60",
+      "bytes": 499,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/encourageHardwareAcceleration.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/encourageHardwareAcceleration.ts",
+      "sha256": "e649231b0d0a4488adf6e19ed9de543ea8b740e956d8342362bf817706cd6d96",
+      "bytes": 483,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getActivityInstanceConnectedParticipants.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getActivityInstanceConnectedParticipants.ts",
+      "sha256": "7eb9919940cec32656d6a7e9d9fc32d91007e573d36133331bbb89372f73fb06",
+      "bytes": 246,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getChannel.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getChannel.ts",
+      "sha256": "e79c506f0c0643b93dff25c91cb98896c44c8b80a1942220d1cde17faefcc46e",
+      "bytes": 1003,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getChannelPermissions.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getChannelPermissions.ts",
+      "sha256": "5364b1f80fb81e9f25398a7d088a5541bc7338b0234a98079f04e4ae92046a6c",
+      "bytes": 746,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getEntitlements.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getEntitlements.ts",
+      "sha256": "953777961acc4d04aad7f00cd703ada6ef4921859eed09556ca13e907fcab37a",
+      "bytes": 427,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getPlatformBehaviors.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getPlatformBehaviors.ts",
+      "sha256": "7233cec82f0a094b068c472639e63b329c0ce2b707285579acbe4c0560d08804",
+      "bytes": 799,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getQuest.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getQuest.ts",
+      "sha256": "ae3bfda2b525d439b883caed7fd96357556d2fbfc775be25180e3252d4624a7e",
+      "bytes": 174,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getQuestEnrollmentStatus.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getQuestEnrollmentStatus.ts",
+      "sha256": "08a34e295f41d6908ab8df6f2c716ceae8f1be267cf51703bd0f35cd7d5d8c97",
+      "bytes": 208,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getRelationships.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getRelationships.ts",
+      "sha256": "6f3e3e36f4081c3fa9be12d7a3328ccd4be358fa4e8a0ca729808fddfe41b87d",
+      "bytes": 190,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getSkus.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getSkus.ts",
+      "sha256": "419a92f63ebba70447da45f6f4d7a4fd861d878eac01a0890cb7badcd7c4f896",
+      "bytes": 369,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/getUser.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getUser.ts",
+      "sha256": "6c1cff6bf2adc01a332c816b5bdcb77da9a85fea0e077109b314d9ee5698b125",
+      "bytes": 172,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/initiateImageUpload.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/initiateImageUpload.ts",
+      "sha256": "05af8e993cfa1e2b832d5225a490513c32d8dfcc96f50c9b4a48d3a0db8596ea",
+      "bytes": 572,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/inviteUserEmbedded.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/inviteUserEmbedded.ts",
+      "sha256": "020c0c3888cb14ac433b543e41583803ec8a2c0a120e86d46a26b7460b02c561",
+      "bytes": 195,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/openExternalLink.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/openExternalLink.ts",
+      "sha256": "57e123eb76dca5f17fe00963dbf530776746d5378aca63ae52ec45565c1eb312",
+      "bytes": 500,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/openInviteDialog.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/openInviteDialog.ts",
+      "sha256": "72c81e90b2c740e7b74604bbdf27ab74fd6502f55ad36cf96a98188cd8163194",
+      "bytes": 807,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/openShareMomentDialog.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/openShareMomentDialog.ts",
+      "sha256": "12ecc15a1ba1632ab40feb1f9ff3ca8509b362e1f94c805223a26795e4b6690e",
+      "bytes": 440,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/questStartTimer.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/questStartTimer.ts",
+      "sha256": "895b3d899bae725b5c1bf8a7214a81f3404e2a9748b6900a25567e65cd2165e0",
+      "bytes": 189,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/requestProxyTicketRefresh.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/requestProxyTicketRefresh.ts",
+      "sha256": "9411415936d7cd44e9f735186e4a3a760e91c69eb530d6cc17805dd82ed1ab5c",
+      "bytes": 210,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/setActivity.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/setActivity.ts",
+      "sha256": "5f676d32b1031840080dcc536ca767d10aed55ac7779f750ef06fa9519046a8b",
+      "bytes": 1378,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/setConfig.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/setConfig.ts",
+      "sha256": "c02cc0e4ba469605e2f479b8b711e5ef387f79122712a024b6790c99f18fe5bf",
+      "bytes": 450,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/setOrientationLockState.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/setOrientationLockState.ts",
+      "sha256": "b6bab75e1da6d193c6f638868faae8b67fb1a98da80648c4170c2c34b67970a1",
+      "bytes": 1112,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/shareInteraction.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/shareInteraction.ts",
+      "sha256": "59b9730ab533ca346e7b63726ae8bac969c0124f3c35c5df2ef6ae2e21b1bb17",
+      "bytes": 190,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/shareLink.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/shareLink.ts",
+      "sha256": "b2353e1f5639ece527c6955def8e12eac94c607aa9d8d4df0671fb86a57175a0",
+      "bytes": 475,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/startPurchase.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/startPurchase.ts",
+      "sha256": "5c399ff33813700790dd8feded7bd19878b30775a2d473ccde8386d35c8580c4",
+      "bytes": 497,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/commands/userSettingsGetLocale.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/userSettingsGetLocale.ts",
+      "sha256": "646f5d80172c5521d0019ce8c9c3c73ccd050782fc1d5b5eabacd935fc348109",
+      "bytes": 450,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official exported command codec evidence; platform/scope/access are unspecified when absent from the reference."
+    },
+    {
+      "name": "embedded-app-sdk/src/utils/compatCommandFactory.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/utils/compatCommandFactory.ts",
+      "sha256": "db5045797041af02bb2bb6a674cba7d4ffbeaedabd0ae023b99018301dfa8a24",
+      "bytes": 1599,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official protocol/schema and bounded orientation compatibility evidence; no upstream runtime is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/schema/responses.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/responses.ts",
+      "sha256": "c4752013b664335014a84ace5a059c118ba7498c6934485a198c17d87d3abd94",
+      "bytes": 6563,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official protocol/schema and bounded orientation compatibility evidence; no upstream runtime is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/schema/index.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/index.ts",
+      "sha256": "9dd3ce72b86ca4162c5405003c764c038ee6e6fdc088e2e71aba0ed37d1fcd00",
+      "bytes": 1494,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official protocol/schema and bounded orientation compatibility evidence; no upstream runtime is imported."
+    },
+    {
+      "name": "embedded-app-sdk/src/schema/types.ts",
+      "url": "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/types.ts",
+      "sha256": "f6fd68486c0da8b1692411a609323f1fa03afcb040ccfeaaaf9b51335a809000",
+      "bytes": 4308,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Pinned official protocol/schema and bounded orientation compatibility evidence; no upstream runtime is imported."
+    },
+    {
+      "name": "embedded-app-sdk/current-main-revision",
+      "url": "https://api.github.com/repos/discord/embedded-app-sdk/commits/main",
+      "sha256": "14ead47b2bbcefdad439c1cfb241196b1dc94f9427f34036ff1671a4d9aa7307",
+      "bytes": 8671,
+      "verifiedOn": "2026-10-17",
+      "revision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6",
+      "purpose": "Current official main HEAD observed2026-10-17; commit timestamp2026-05-05T17:26:46Z. This source revision date is not the wire-protocol introduction date."
+    }
+  ]
+}

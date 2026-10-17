@@ -5,6 +5,10 @@ Current Phase 7 consumer/cache/event delivery is recorded in the
 Current Phase 10 local RPC/device support and remaining host/schema gates are
 recorded in [RPC](../RPC.md), [Certified Devices](../CertifiedDevices.md) and the
 [dated parity record](changes/2026-10-17-rpc-devices.md).
+Current Phase 11 Activity implementation and source-only/host restrictions are
+recorded in [Activities](../Activities.md), the [catalog](activity-catalog.json) and
+[dated parity record](changes/2026-10-17-activities.md). Approved Discord Web/iOS/Android
+handshake/auth/participants and purchase smoke tests remain unrun.
 The historical counts and qualification gates below retain their original scope;
 local composition/permission calculation adds no new endpoint/dispatch-name records.
 

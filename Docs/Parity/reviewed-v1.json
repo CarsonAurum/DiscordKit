@@ -222,6 +222,16 @@
       "id": "developers/topics/certified-devices",
       "revision": "37148620d2324292b76047541d5f8331f81ea77a",
       "sha256": "021d66d2dfbb1fc9dc8f4d6d3fc6606a9f8b41d6b3831d5e15377f8a949b644c"
+    },
+    {
+      "id": "developers/developer-tools/embedded-app-sdk",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "1e3976682703260539653e363c0c511b3e8d3dd9d10212d69c2ac8655499a2b7"
+    },
+    {
+      "id": "developers/activities/building-an-activity",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "11b4110d1544dcecfd3a57aac1f1ba4ff0c41c2a9441a3c92ae2cfcbdbfb739f"
     }
   ],
   "definitions": [
@@ -69678,6 +69688,230 @@
       "manual": {
         "behavior": "Shared validated full-priority device arrays submitted through caller-owned RPCClient with correlated null acknowledgement. Unknown/denied/invalid responses remain explicit; wrapper does not close borrowed session, enumerate hardware, merge prior arrays or restore state after reconnect. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
       }
+    },
+    {
+      "id": "manual.11.HostParametersAndTransport",
+      "kind": "manual",
+      "name": "HostParametersAndTransport",
+      "sourceID": "developers/developer-tools/embedded-app-sdk",
+      "upstreamIDs": [
+        "d-4284b668440ed64bd516d842",
+        "d-f3889cc2c63d47611e03472c"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.11.ActivityHostParameters",
+        "symbol.11.ActivityTransport"
+      ],
+      "evidenceIDs": [
+        "evidence.11.configurationAndHostContext",
+        "evidence.11.handshakeCommandsAndEvents"
+      ],
+      "notes": "Injected authenticated transport and bounded duplicate-free host parameter parsing. Context never grants authorization or creates a Discord Activity host. Construction starts no tasks or I/O. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.",
+      "manual": {
+        "behavior": "Injected authenticated transport and bounded duplicate-free host parameter parsing. Context never grants authorization or creates a Discord Activity host. Construction starts no tasks or I/O. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates."
+      }
+    },
+    {
+      "id": "manual.11.LifecycleAndCorrelation",
+      "kind": "manual",
+      "name": "LifecycleAndCorrelation",
+      "sourceID": "developers/developer-tools/embedded-app-sdk",
+      "upstreamIDs": [
+        "d-5f7992eee2ca1e13b458e28c",
+        "d-5fa49f4314297213a9b5370f"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.11.ActivityClient",
+        "symbol.11.ActivityClientLimits"
+      ],
+      "evidenceIDs": [
+        "evidence.11.handshakeCommandsAndEvents",
+        "evidence.11.concurrentCorrelationAndCancellation",
+        "evidence.11.mismatchAndHostError",
+        "evidence.11.deadlineAndStartupCancellation",
+        "evidence.11.capacityAndClose",
+        "evidence.11.writerFailureAndCloseBeforeReady"
+      ],
+      "notes": "Explicit handshake/READY, finite pending/events/bytes, strict command-plus-nonce correlation, independent cancellation/deadlines and awaited idempotent cleanup. Queued dispatches are drained in order; unknown names/data remain explicit. Already transmitted mutations are not replayed. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.",
+      "manual": {
+        "behavior": "Explicit handshake/READY, finite pending/events/bytes, strict command-plus-nonce correlation, independent cancellation/deadlines and awaited idempotent cleanup. Queued dispatches are drained in order; unknown names/data remain explicit. Already transmitted mutations are not replayed. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates."
+      }
+    },
+    {
+      "id": "manual.11.SharedSubscriptions",
+      "kind": "manual",
+      "name": "SharedSubscriptions",
+      "sourceID": "developers/developer-tools/embedded-app-sdk",
+      "upstreamIDs": [
+        "d-5f9044871386d9955d495a31",
+        "d-4e92a7738aac74d923052a01",
+        "d-87e232372b37428873fddbcd",
+        "d-36ab2f872989fffd77ccd992"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.11.ActivitySubscription"
+      ],
+      "evidenceIDs": [
+        "evidence.11.subscriptionReferenceCounting"
+      ],
+      "notes": "Session-owned subscription tokens share one upstream subscription for matching event/canonical arguments and unsubscribe on final release. READY is local lifecycle. Ambiguous admission/final release fails the session to prevent hidden listener ownership; cancellation of one duplicate does not cancel remaining owners. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.",
+      "manual": {
+        "behavior": "Session-owned subscription tokens share one upstream subscription for matching event/canonical arguments and unsubscribe on final release. READY is local lifecycle. Ambiguous admission/final release fails the session to prevent hidden listener ownership; cancellation of one duplicate does not cancel remaining owners. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates."
+      }
+    },
+    {
+      "id": "manual.11.CommandCatalog",
+      "kind": "manual",
+      "name": "CommandCatalog",
+      "sourceID": "developers/developer-tools/embedded-app-sdk",
+      "upstreamIDs": [
+        "d-5104c22beac1717623fbfa1a",
+        "d-df40a9a7933f56d82c09efb3",
+        "d-ac201d49bf58242724c86c76",
+        "d-5e544ab4eea9210aef4d5856",
+        "d-6f3110d1cdd6d2fa526e4a1b",
+        "d-db40afe951399cfd062f4aa5",
+        "d-f143738034a6efb3c163400e",
+        "d-fcd4c082c5f4504f827d0c25",
+        "d-e25547a02cf923da810cd938",
+        "d-330b85b2085478c4cd49603b",
+        "d-1d6e52f3e331802f72ecce04",
+        "d-532ed736152d32613841b712",
+        "d-ca50695a302341eaa6533676",
+        "d-313ee1389f965a2d6d72a932",
+        "d-d8327b89286551967aa792c9",
+        "d-a8615e677f4611bac15d66a3",
+        "d-74eb5857ae8bf7d324d1cdbe",
+        "d-bb0fe28c4d53d288c46372d6",
+        "d-1da1fa8208c31b7b830819c7",
+        "d-6212be426e684ce68d15fa78",
+        "d-a85650b00abe75ff032011e0",
+        "d-95dac1625058db42413495a6",
+        "d-867741b1f39012670b7ab5f6",
+        "d-e3097fd40237ff93c242d0ef",
+        "d-fcb56bfa6bbd2d133f2c81ae",
+        "d-7d3ce8575317d69fb8edd789",
+        "d-e292757912157abb6b8adf5e",
+        "d-e768f72861fd4f3293be0f23",
+        "d-075d4af9442092417184928b",
+        "d-9746397b9817b09a1e8219e2",
+        "d-f55143e6694396254ee02436",
+        "d-e0c32298e2ee16ef6d254a8f",
+        "d-a30c83e0088305d5dc57418e",
+        "d-775fdfeee6e9122427f75778",
+        "d-58e3aec603a48d0aad1ced6c",
+        "d-eb2a56d7633c06c008b06670",
+        "d-0da496e1be9f4816a8c392d2",
+        "d-86194dd7673b6d2f3b673fb2",
+        "d-30190ef93072d35417bb5745",
+        "d-5bb8a6c9fafe21f664fdcd36",
+        "d-cc2fc8354c48c7e193bf6d15",
+        "d-e52a21a5e17634307f4b5c37"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.11.ActivityCommand",
+        "symbol.11.ActivityRequest",
+        "symbol.11.ActivityRequests"
+      ],
+      "evidenceIDs": [
+        "evidence.11.allExportedCommandsHaveTypedFactories",
+        "evidence.11.typedResponsesRejectMalformedValues"
+      ],
+      "notes": "All 21 reference commands and seven additional official-source exports have explicit factories and typed response validation. SUBSCRIBE/UNSUBSCRIBE controls and the participant migration alias are separate catalog rows. Source-only host/scopes remain unspecified; nested child resources retain explicit partial coverage. Diagnostics redact raw arguments and credentials. The 2026-01-21 Activity relationships policy requires accepted Social SDK terms without separate approval. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.",
+      "manual": {
+        "behavior": "All 21 reference commands and seven additional official-source exports have explicit factories and typed response validation. SUBSCRIBE/UNSUBSCRIBE controls and the participant migration alias are separate catalog rows. Source-only host/scopes remain unspecified; nested child resources retain explicit partial coverage. Diagnostics redact raw arguments and credentials. The 2026-01-21 Activity relationships policy requires accepted Social SDK terms without separate approval. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates."
+      }
+    },
+    {
+      "id": "manual.11.EventCatalog",
+      "kind": "manual",
+      "name": "EventCatalog",
+      "sourceID": "developers/developer-tools/embedded-app-sdk",
+      "upstreamIDs": [
+        "d-d592e9f319aee1a152aedcde",
+        "d-5c2870fac1db8ca4c64f5f7f",
+        "d-52d56411dbdd57805f090b54",
+        "d-7e90f5f955744a6691defff6",
+        "d-89239be0d69801124db85a09",
+        "d-90f94f16655ea76b2fd09cb0",
+        "d-5c0ea29b7db0ce3c7ad5268c",
+        "d-baaf4eea47c0c9817a21fae0",
+        "d-d72f1365febee99fed3afcb9",
+        "d-4cc1d391cc0516521386b832",
+        "d-cd2bb57101f73bd4e68d9842",
+        "d-9505cb86876d60328c5b3a42",
+        "d-929dec5b7faace7b1cd45aa1",
+        "d-a6b13ac416b2722c0e240ac3",
+        "d-d6b67d41c019192ba184163f",
+        "d-4e07fb4b24e55a3acaf8bec3",
+        "d-23e938aff86dd28f77d1ea1f",
+        "d-634154b8518840be7d48b8ea",
+        "d-f739f69cd43eafc9ad9b8692",
+        "d-37bf2d72b3688a3a0bac85ae",
+        "d-c10fae36211e13d8109b7f2a",
+        "d-b8a1dd967e1dd0b76bd2755b",
+        "d-c7f93240439256aa6bfeb827",
+        "d-65609806769f250e6370f1c2",
+        "d-017b581de539287718f8a948",
+        "d-f4f959c6306cf66249c81301"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.11.ActivityEventName",
+        "symbol.11.ActivityEventPayload",
+        "symbol.11.ActivityPayload"
+      ],
+      "evidenceIDs": [
+        "evidence.11.allExportedEventsHaveTypedProjections",
+        "evidence.11.typedResponsesRejectMalformedValues"
+      ],
+      "notes": "All 13 reference event names including ERROR and two additional source-only events have explicit payload projections with exact unknown-value handling. ERROR is a correlated failure; READY is lifecycle. The reference marks ENTITLEMENT_CREATE unavailable during Developer Preview. Event section platform matrices and source-only access remain unspecified. Lossless raw nested child data is not complete typed child-schema parity. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.",
+      "manual": {
+        "behavior": "All 13 reference event names including ERROR and two additional source-only events have explicit payload projections with exact unknown-value handling. ERROR is a correlated failure; READY is lifecycle. The reference marks ENTITLEMENT_CREATE unavailable during Developer Preview. Event section platform matrices and source-only access remain unspecified. Lossless raw nested child data is not complete typed child-schema parity. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates."
+      }
+    },
+    {
+      "id": "manual.11.ActivityBackendCodeExchange",
+      "kind": "manual",
+      "name": "ActivityBackendCodeExchange",
+      "sourceID": "developers/activities/building-an-activity",
+      "upstreamIDs": [
+        "d-15e8d789b5c349f6549c9698"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.11.activityAuthorizationCode"
+      ],
+      "evidenceIDs": [
+        "evidence.11.confidentialExchange",
+        "evidence.11.invalidBackendInput"
+      ],
+      "notes": "Confidential server exchange for iframe Activity AUTHORIZE codes, using application/x-www-form-urlencoded code/grant_type/client authentication and optional requested PKCE verifier, without inventing a redirect_uri. Public client authentication, invalid application identity, malformed verifier and oversized codes fail before transport. Header-free REST token execution retains no-cache/coalescing and no ambiguous replay policy. Backend sessions/authentication and server entitlement checks remain caller-owned. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates.",
+      "manual": {
+        "behavior": "Confidential server exchange for iframe Activity AUTHORIZE codes, using application/x-www-form-urlencoded code/grant_type/client authentication and optional requested PKCE verifier, without inventing a redirect_uri. Public client authentication, invalid application identity, malformed verifier and oversized codes fail before transport. Header-free REST token execution retains no-cache/coalescing and no ambiguous replay policy. Backend sessions/authentication and server entitlement checks remain caller-owned. Verified and locally added 2026-10-17 against Activity v1 and official SDK 2.5.0 revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6. Current source fingerprints and per-row platform/scopes: Docs/Parity/activities-current-sources.json and Docs/Parity/activity-catalog.json. Discovery pins are preserved. Approved Discord Web/iOS/Android auth/participants/purchase smoke, browser-Wasm/native UI bindings and minimum-host qualification remain unrun; local codecs and synthetic peers do not close those gates."
+      }
     }
   ],
   "symbols": [
@@ -89180,6 +89414,66 @@
       "id": "symbol.10.CertifiedDeviceRPCPublisher",
       "path": "Sources/DiscordCertifiedDevices/CertifiedDeviceRPCPublisher.swift",
       "declaration": "public struct CertifiedDeviceRPCPublisher<C: Clock>: Sendable where C.Duration == Duration {"
+    },
+    {
+      "id": "symbol.11.ActivityHostParameters",
+      "path": "Sources/DiscordActivities/ActivityTransport.swift",
+      "declaration": "public struct ActivityHostParameters: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.11.ActivityTransport",
+      "path": "Sources/DiscordActivities/ActivityTransport.swift",
+      "declaration": "public protocol ActivityTransport: TransportResource {"
+    },
+    {
+      "id": "symbol.11.ActivityClient",
+      "path": "Sources/DiscordActivities/ActivityClient.swift",
+      "declaration": "public actor ActivityClient<C: Clock> where C.Duration == Duration {"
+    },
+    {
+      "id": "symbol.11.ActivityClientLimits",
+      "path": "Sources/DiscordActivities/ActivityTransport.swift",
+      "declaration": "public struct ActivityClientLimits: Sendable {"
+    },
+    {
+      "id": "symbol.11.ActivitySubscription",
+      "path": "Sources/DiscordActivities/ActivityTransport.swift",
+      "declaration": "public struct ActivitySubscription: Sendable, Hashable {"
+    },
+    {
+      "id": "symbol.11.ActivityCommand",
+      "path": "Sources/DiscordActivities/ActivityCatalog.swift",
+      "declaration": "public enum ActivityCommand: String, Sendable, CaseIterable {"
+    },
+    {
+      "id": "symbol.11.ActivityRequest",
+      "path": "Sources/DiscordActivities/ActivityCatalog.swift",
+      "declaration": "public struct ActivityRequest<Response: Sendable>: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.11.ActivityRequests",
+      "path": "Sources/DiscordActivities/ActivityRequests.swift",
+      "declaration": "public enum ActivityRequests {"
+    },
+    {
+      "id": "symbol.11.ActivityEventName",
+      "path": "Sources/DiscordActivities/ActivityCatalog.swift",
+      "declaration": "public struct ActivityEventName: RawRepresentable, Sendable, Hashable {"
+    },
+    {
+      "id": "symbol.11.ActivityEventPayload",
+      "path": "Sources/DiscordActivities/ActivityPayload.swift",
+      "declaration": "public enum ActivityEventPayload: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.11.ActivityPayload",
+      "path": "Sources/DiscordActivities/ActivityPayload.swift",
+      "declaration": "public protocol ActivityPayload: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.11.activityAuthorizationCode",
+      "path": "Sources/DiscordOAuth/OAuthClient.swift",
+      "declaration": "public static func activityAuthorizationCode(_ code: OAuthCode, authentication: OAuthClientAuthentication,"
     }
   ],
   "evidence": [
@@ -93797,6 +94091,71 @@
       "id": "evidence.10.RPCClientTests.budgetValidation",
       "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
       "anchor": "budgetValidation"
+    },
+    {
+      "id": "evidence.11.configurationAndHostContext",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "configurationAndHostContext"
+    },
+    {
+      "id": "evidence.11.handshakeCommandsAndEvents",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "handshakeCommandsAndEvents"
+    },
+    {
+      "id": "evidence.11.concurrentCorrelationAndCancellation",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "concurrentCorrelationAndCancellation"
+    },
+    {
+      "id": "evidence.11.mismatchAndHostError",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "mismatchAndHostError"
+    },
+    {
+      "id": "evidence.11.deadlineAndStartupCancellation",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "deadlineAndStartupCancellation"
+    },
+    {
+      "id": "evidence.11.capacityAndClose",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "capacityAndClose"
+    },
+    {
+      "id": "evidence.11.writerFailureAndCloseBeforeReady",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "writerFailureAndCloseBeforeReady"
+    },
+    {
+      "id": "evidence.11.subscriptionReferenceCounting",
+      "path": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "anchor": "subscriptionReferenceCounting"
+    },
+    {
+      "id": "evidence.11.allExportedCommandsHaveTypedFactories",
+      "path": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "anchor": "allExportedCommandsHaveTypedFactories"
+    },
+    {
+      "id": "evidence.11.typedResponsesRejectMalformedValues",
+      "path": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "anchor": "typedResponsesRejectMalformedValues"
+    },
+    {
+      "id": "evidence.11.allExportedEventsHaveTypedProjections",
+      "path": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "anchor": "allExportedEventsHaveTypedProjections"
+    },
+    {
+      "id": "evidence.11.confidentialExchange",
+      "path": "Tests/DiscordOAuthTests/ActivityOAuthExchangeTests.swift",
+      "anchor": "confidentialExchange"
+    },
+    {
+      "id": "evidence.11.invalidBackendInput",
+      "path": "Tests/DiscordOAuthTests/ActivityOAuthExchangeTests.swift",
+      "anchor": "invalidBackendInput"
     }
   ]
 }

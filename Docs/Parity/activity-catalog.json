@@ -1,0 +1,1768 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-17",
+  "protocol": {
+    "handshake": "1",
+    "encoding": "json",
+    "sdkEvidenceVersion": "2.5.0",
+    "sdkEvidenceRevision": "14264eccbf9e68d5d58c1aadbc7579e003e0dce6"
+  },
+  "scope": "All documented and source-exported commands, events, lifecycle controls and participant alias. Partial marks local codecs/protocol with open nested projection and approved Discord host gates.",
+  "entries": [
+    {
+      "id": "command.authorize",
+      "kind": "command",
+      "method": "authorize",
+      "wireName": "AUTHORIZE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#authorize",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/authorize.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.authorize",
+        "response": "ActivityAuthorization",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.captureLog",
+      "kind": "command",
+      "method": "captureLog",
+      "wireName": "CAPTURE_LOG",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#capturelog",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/captureLog.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.captureLog",
+        "response": "ActivityEmptyResponse",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.encourageHardwareAcceleration",
+      "kind": "command",
+      "method": "encourageHardwareAcceleration",
+      "wireName": "ENCOURAGE_HW_ACCELERATION",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#encouragehardwareacceleration",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/encourageHardwareAcceleration.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_unsupported",
+        "android": "documented_unsupported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.encourageHardwareAcceleration",
+        "response": "ActivityHardwareAcceleration",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getChannel",
+      "kind": "command",
+      "method": "getChannel",
+      "wireName": "GET_CHANNEL",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#getchannel",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getChannel.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [
+        "guilds"
+      ],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.getChannel",
+        "response": "ActivityChannel",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "scopeConditions": {
+        "guild_channel": [
+          "guilds"
+        ],
+        "group_dm": [
+          "guilds",
+          "dm_channels.read"
+        ],
+        "dm_channels.read": "Discord approval required"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getChannelPermissions",
+      "kind": "command",
+      "method": "getChannelPermissions",
+      "wireName": "GET_CHANNEL_PERMISSIONS",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#getchannelpermissions",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getChannelPermissions.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [
+        "guilds.members.read"
+      ],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.getChannelPermissions",
+        "response": "ActivityPermissions",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getEntitlements",
+      "kind": "command",
+      "method": "getEntitlements",
+      "wireName": "GET_ENTITLEMENTS_EMBEDDED",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#getentitlements",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getEntitlements.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.getEntitlements",
+        "response": "ActivityEntitlements",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getPlatformBehaviors",
+      "kind": "command",
+      "method": "getPlatformBehaviors",
+      "wireName": "GET_PLATFORM_BEHAVIORS",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#getplatformbehaviors",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getPlatformBehaviors.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.getPlatformBehaviors",
+        "response": "ActivityPlatformBehaviors",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getSkus",
+      "kind": "command",
+      "method": "getSkus",
+      "wireName": "GET_SKUS_EMBEDDED",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#getskus",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getSkus.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.getSkus",
+        "response": "ActivitySKUs",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.openExternalLink",
+      "kind": "command",
+      "method": "openExternalLink",
+      "wireName": "OPEN_EXTERNAL_LINK",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#openexternallink",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/openExternalLink.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.openExternalLink",
+        "response": "ActivityExternalLink",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "compatibility": "opened:null for Discord hosts before December 2024.",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.openInviteDialog",
+      "kind": "command",
+      "method": "openInviteDialog",
+      "wireName": "OPEN_INVITE_DIALOG",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#openinvitedialog",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/openInviteDialog.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.openInviteDialog",
+        "response": "ActivityEmptyResponse",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.setActivity",
+      "kind": "command",
+      "method": "setActivity",
+      "wireName": "SET_ACTIVITY",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#setactivity",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/setActivity.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [
+        "rpc.activities.write"
+      ],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.setActivity",
+        "response": "ActivityRichPresence",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.setConfig",
+      "kind": "command",
+      "method": "setConfig",
+      "wireName": "SET_CONFIG",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#setconfig",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/setConfig.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_unsupported",
+        "android": "documented_unsupported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.setConfig",
+        "response": "ActivityConfig",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.setOrientationLockState",
+      "kind": "command",
+      "method": "setOrientationLockState",
+      "wireName": "SET_ORIENTATION_LOCK_STATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#setorientationlockstate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/setOrientationLockState.ts"
+      ],
+      "platforms": {
+        "web": "documented_unsupported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.setOrientationLockState",
+        "response": "ActivityEmptyResponse",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "compatibility": "On exact invalid-payload error, retry once without grid_lock_state; no generic mutation retry.",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.startPurchase",
+      "kind": "command",
+      "method": "startPurchase",
+      "wireName": "START_PURCHASE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#startpurchase",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/startPurchase.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_unsupported",
+        "android": "documented_unsupported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.startPurchase",
+        "response": "ActivityPurchaseResponse",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.userSettingsGetLocale",
+      "kind": "command",
+      "method": "userSettingsGetLocale",
+      "wireName": "USER_SETTINGS_GET_LOCALE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#usersettingsgetlocale",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/userSettingsGetLocale.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [
+        "identify"
+      ],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.userSettingsGetLocale",
+        "response": "ActivityLocale",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.authenticate",
+      "kind": "command",
+      "method": "authenticate",
+      "wireName": "AUTHENTICATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#authenticate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/authenticate.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.authenticate",
+        "response": "ActivityAuthentication",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getActivityInstanceConnectedParticipants",
+      "kind": "command",
+      "method": "getActivityInstanceConnectedParticipants",
+      "wireName": "GET_ACTIVITY_INSTANCE_CONNECTED_PARTICIPANTS",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#getactivityinstanceconnectedparticipants",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getActivityInstanceConnectedParticipants.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.getActivityInstanceConnectedParticipants",
+        "response": "ActivityParticipants",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getQuest",
+      "kind": "command",
+      "method": "getQuest",
+      "wireName": "GET_QUEST",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getQuest.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "request": "ActivityRequests.getQuest",
+        "response": "ActivityQuest",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getQuestEnrollmentStatus",
+      "kind": "command",
+      "method": "getQuestEnrollmentStatus",
+      "wireName": "GET_QUEST_ENROLLMENT_STATUS",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getQuestEnrollmentStatus.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "request": "ActivityRequests.getQuestEnrollmentStatus",
+        "response": "ActivityQuestEnrollment",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.getRelationships",
+      "kind": "command",
+      "method": "getRelationships",
+      "wireName": "GET_RELATIONSHIPS",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#getrelationships",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getRelationships.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [
+        "relationships.read"
+      ],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.getRelationships",
+        "response": "ActivityRelationships",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "scopeConditions": {
+        "relationships.read": "Accepted Social SDK terms required; separate Discord approval removed 2026-01-21"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "scopePolicyAnnouncementDate": "2026-01-21"
+    },
+    {
+      "id": "command.getUser",
+      "kind": "command",
+      "method": "getUser",
+      "wireName": "GET_USER",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/getUser.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "request": "ActivityRequests.getUser",
+        "response": "ActivityUserResponse",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.initiateImageUpload",
+      "kind": "command",
+      "method": "initiateImageUpload",
+      "wireName": "INITIATE_IMAGE_UPLOAD",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#initiateimageupload",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/initiateImageUpload.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.initiateImageUpload",
+        "response": "ActivityImageUpload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.inviteUserEmbedded",
+      "kind": "command",
+      "method": "inviteUserEmbedded",
+      "wireName": "INVITE_USER_EMBEDDED",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/inviteUserEmbedded.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "request": "ActivityRequests.inviteUserEmbedded",
+        "response": "ActivityEmptyResponse",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.openShareMomentDialog",
+      "kind": "command",
+      "method": "openShareMomentDialog",
+      "wireName": "OPEN_SHARE_MOMENT_DIALOG",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#opensharemomentdialog",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/openShareMomentDialog.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_unsupported",
+        "android": "documented_unsupported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.openShareMomentDialog",
+        "response": "ActivityEmptyResponse",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.questStartTimer",
+      "kind": "command",
+      "method": "questStartTimer",
+      "wireName": "QUEST_START_TIMER",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/questStartTimer.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "request": "ActivityRequests.questStartTimer",
+        "response": "ActivitySuccess",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.requestProxyTicketRefresh",
+      "kind": "command",
+      "method": "requestProxyTicketRefresh",
+      "wireName": "REQUEST_PROXY_TICKET_REFRESH",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/requestProxyTicketRefresh.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "request": "ActivityRequests.requestProxyTicketRefresh",
+        "response": "ActivityProxyTicket",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.shareInteraction",
+      "kind": "command",
+      "method": "shareInteraction",
+      "wireName": "SHARE_INTERACTION",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/shareInteraction.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "request": "ActivityRequests.shareInteraction",
+        "response": "ActivitySuccess",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "command.shareLink",
+      "kind": "command",
+      "method": "shareLink",
+      "wireName": "SHARE_LINK",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#sharelink",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/shareLink.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "documented_host_and_granted_scopes",
+      "codec": {
+        "request": "ActivityRequests.shareLink",
+        "response": "ActivityShareLink",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift",
+          "Sources/DiscordActivities/ActivityPayload.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_command_response_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "lifecycle.ready",
+      "kind": "lifecycle",
+      "method": "ready",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#ready"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "codec": {
+        "symbol": "ActivityClient.start",
+        "paths": [
+          "Sources/DiscordActivities/ActivityClient.swift",
+          "Browser/DiscordActivityBridge/ActivityBridge.mjs"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "lifecycle.subscribe",
+      "kind": "lifecycle",
+      "method": "subscribe",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#subscribe"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": "event_specific",
+      "codec": {
+        "symbol": "ActivityClient.subscribe",
+        "paths": [
+          "Sources/DiscordActivities/ActivityClient.swift",
+          "Browser/DiscordActivityBridge/ActivityBridge.mjs"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "lifecycle.unsubscribe",
+      "kind": "lifecycle",
+      "method": "unsubscribe",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#unsubscribe"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "codec": {
+        "symbol": "ActivityClient.unsubscribe",
+        "paths": [
+          "Sources/DiscordActivities/ActivityClient.swift",
+          "Browser/DiscordActivityBridge/ActivityBridge.mjs"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "lifecycle.close",
+      "kind": "lifecycle",
+      "method": "close",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#close"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "codec": {
+        "symbol": "ActivityClient.close",
+        "paths": [
+          "Sources/DiscordActivities/ActivityClient.swift",
+          "Browser/DiscordActivityBridge/ActivityBridge.mjs"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "control.subscribe",
+      "kind": "control",
+      "method": "subscribe",
+      "wireName": "SUBSCRIBE",
+      "status": "partial",
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/Discord.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": "event_specific",
+      "codec": {
+        "symbol": "ActivityClient.subscribe",
+        "paths": [
+          "Sources/DiscordActivities/ActivityClient.swift",
+          "Sources/DiscordActivities/ActivityRequests.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "control.unsubscribe",
+      "kind": "control",
+      "method": "unsubscribe",
+      "wireName": "UNSUBSCRIBE",
+      "status": "partial",
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/Discord.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "codec": {
+        "symbol": "ActivityClient.unsubscribe",
+        "paths": [
+          "Sources/DiscordActivities/ActivityClient.swift",
+          "Sources/DiscordActivities/ActivityRequests.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityClientTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "alias.getInstanceConnectedParticipants",
+      "kind": "alias",
+      "method": "getInstanceConnectedParticipants",
+      "aliasOf": "command.getActivityInstanceConnectedParticipants",
+      "wireName": "GET_ACTIVITY_INSTANCE_CONNECTED_PARTICIPANTS",
+      "status": "partial",
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/commands/index.ts",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "announcementDate": "2026-10-06",
+      "effectiveRemovalDate": "unknown_future_major",
+      "codec": {
+        "symbol": "ActivityRequests.getInstanceConnectedParticipants",
+        "paths": [
+          "Sources/DiscordActivities/ActivityRequests.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "2026-10-06",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.READY",
+      "kind": "event",
+      "wireName": "READY",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#ready",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "documented_supported",
+        "iOS": "documented_supported",
+        "android": "documented_supported"
+      },
+      "requiredScopes": [],
+      "access": "session_lifecycle",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.VOICE_STATE_UPDATE",
+      "kind": "event",
+      "wireName": "VOICE_STATE_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#voicestateupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [
+        "rpc.voice.read"
+      ],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.SPEAKING_START",
+      "kind": "event",
+      "wireName": "SPEAKING_START",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#speakingstart",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [
+        "rpc.voice.read"
+      ],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.SPEAKING_STOP",
+      "kind": "event",
+      "wireName": "SPEAKING_STOP",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#speakingstop",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [
+        "rpc.voice.read"
+      ],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.ACTIVITY_LAYOUT_MODE_UPDATE",
+      "kind": "event",
+      "wireName": "ACTIVITY_LAYOUT_MODE_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#activitylayoutmodeupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.ORIENTATION_UPDATE",
+      "kind": "event",
+      "wireName": "ORIENTATION_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#orientationupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.CURRENT_USER_UPDATE",
+      "kind": "event",
+      "wireName": "CURRENT_USER_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#currentuserupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [
+        "identify"
+      ],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.CURRENT_GUILD_MEMBER_UPDATE",
+      "kind": "event",
+      "wireName": "CURRENT_GUILD_MEMBER_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#currentguildmemberupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [
+        "identify",
+        "guilds.members.read"
+      ],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.ENTITLEMENT_CREATE",
+      "kind": "event",
+      "wireName": "ENTITLEMENT_CREATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#entitlementcreate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "developer_preview_unavailable",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.THERMAL_STATE_UPDATE",
+      "kind": "event",
+      "wireName": "THERMAL_STATE_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#thermalstateupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE",
+      "kind": "event",
+      "wireName": "ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#activityinstanceparticipantsupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.RELATIONSHIP_UPDATE",
+      "kind": "event",
+      "wireName": "RELATIONSHIP_UPDATE",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#relationshipupdate",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [
+        "relationships.read"
+      ],
+      "access": "documented_scopes",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.ACTIVITY_JOIN",
+      "kind": "event",
+      "wireName": "ACTIVITY_JOIN",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.QUEST_ENROLLMENT_STATUS_UPDATE",
+      "kind": "event",
+      "wireName": "QUEST_ENROLLMENT_STATUS_UPDATE",
+      "status": "partial",
+      "referenceDocumented": false,
+      "upstreamSources": [
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": null,
+      "access": "unspecified_source_export",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "event.ERROR",
+      "kind": "error",
+      "wireName": "ERROR",
+      "status": "partial",
+      "referenceDocumented": true,
+      "upstreamSources": [
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk#error",
+        "https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/schema/events.ts"
+      ],
+      "platforms": {
+        "web": "unspecified",
+        "iOS": "unspecified",
+        "android": "unspecified"
+      },
+      "requiredScopes": [],
+      "access": "session_lifecycle",
+      "codec": {
+        "symbol": "ActivityEventPayload",
+        "paths": [
+          "Sources/DiscordActivities/ActivityPayload.swift",
+          "Sources/DiscordActivities/ActivityPayloadModels.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordActivitiesTests/ActivityCatalogTests.swift",
+      "projection": "typed_event_with_explicit_partial_nested_resources",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "network.ActivityURLMapper",
+      "kind": "network_helper",
+      "method": "ActivityURLMapper",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/activities/development-guides/networking"
+      ],
+      "platforms": {
+        "web": "browser_api_availability_required",
+        "iOS": "browser_api_availability_required",
+        "android": "browser_api_availability_required"
+      },
+      "requiredScopes": [],
+      "codec": {
+        "symbol": "ActivityURLMapper",
+        "paths": [
+          "Browser/DiscordActivityBridge/ActivityNetwork.mjs"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Browser/DiscordActivityBridge/ActivityNetwork.test.mjs",
+      "projection": "Explicit bounded portal URL mapping",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "network.createActivityFetch",
+      "kind": "network_helper",
+      "method": "createActivityFetch",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/activities/development-guides/networking"
+      ],
+      "platforms": {
+        "web": "browser_api_availability_required",
+        "iOS": "browser_api_availability_required",
+        "android": "browser_api_availability_required"
+      },
+      "requiredScopes": [],
+      "codec": {
+        "symbol": "createActivityFetch",
+        "paths": [
+          "Browser/DiscordActivityBridge/ActivityNetwork.mjs"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Browser/DiscordActivityBridge/ActivityNetwork.test.mjs",
+      "projection": "Injected mapped fetch preserving Request ownership",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "network.createActivityWebSocket",
+      "kind": "network_helper",
+      "method": "createActivityWebSocket",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/activities/development-guides/networking"
+      ],
+      "platforms": {
+        "web": "browser_api_availability_required",
+        "iOS": "browser_api_availability_required",
+        "android": "browser_api_availability_required"
+      },
+      "requiredScopes": [],
+      "codec": {
+        "symbol": "createActivityWebSocket",
+        "paths": [
+          "Browser/DiscordActivityBridge/ActivityNetwork.mjs"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Browser/DiscordActivityBridge/ActivityNetwork.test.mjs",
+      "projection": "Injected mapped WS/WSS factory",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    },
+    {
+      "id": "backend.activityAuthorizationCode",
+      "kind": "backend_oauth_exchange",
+      "method": "activityAuthorizationCode",
+      "wireName": "POST /oauth2/token",
+      "status": "partial",
+      "upstreamSources": [
+        "https://docs.discord.com/developers/activities/building-an-activity",
+        "https://docs.discord.com/developers/topics/oauth2"
+      ],
+      "platforms": {
+        "web": "server_only",
+        "iOS": "server_only",
+        "android": "server_only"
+      },
+      "requiredScopes": "original_authorize_grant",
+      "access": "Confidential application backend only; code returned by Activity AUTHORIZE, optional verifier for requested PKCE; no redirect_uri invented.",
+      "codec": {
+        "symbol": "OAuthEndpoints.activityAuthorizationCode",
+        "paths": [
+          "Sources/DiscordOAuth/OAuthClient.swift"
+        ]
+      },
+      "documentation": "Docs/Activities.md",
+      "test": "Tests/DiscordOAuthTests/ActivityOAuthExchangeTests.swift",
+      "hostQualification": "not_run",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown"
+    }
+  ],
+  "localSupportDate": "2026-10-17",
+  "localRelease": "unknown",
+  "localCommit": "unknown"
+}
