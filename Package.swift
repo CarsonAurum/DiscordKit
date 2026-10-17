@@ -97,7 +97,7 @@ let package = Package(
             ],
             swiftSettings: concurrencySettings
         ),
-        .target(name: "DiscordApplePlatform", dependencies: ["DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordApplePlatform", dependencies: ["DiscordCore", "DiscordTransport", "DiscordMedia"], swiftSettings: concurrencySettings),
         .target(
             name: "DiscordTestSupport",
             dependencies: ["DiscordCore", "DiscordTransport"],
@@ -161,6 +161,6 @@ let package = Package(
                 .product(name: "NIOPosix", package: "swift-nio")],
             swiftSettings: concurrencySettings
         ),
-        .testTarget(name: "DiscordApplePlatformTests", dependencies: ["DiscordApplePlatform", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordApplePlatformTests", dependencies: ["DiscordApplePlatform", "DiscordCore", "DiscordTransport", "DiscordMedia", "DiscordTestSupport"], swiftSettings: concurrencySettings),
     ]
 )

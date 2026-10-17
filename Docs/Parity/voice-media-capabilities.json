@@ -19,7 +19,9 @@
         "Sources/DiscordMedia/PCMFrameStream.swift",
         "Sources/DiscordMedia/PCMStreamingResampler.swift",
         "Sources/DiscordMedia/PCMFramePacer.swift",
-        "Sources/DiscordMedia/MediaDescriptors.swift"
+        "Sources/DiscordMedia/MediaDescriptors.swift",
+        "Sources/DiscordMedia/PCMBandlimitedResampler.swift",
+        "Sources/DiscordMedia/PCMSpeechActivityDetector.swift"
       ],
       "evidence": [
         "Tests/DiscordMediaTests/MediaTests.swift",
@@ -27,9 +29,11 @@
         "Tests/DiscordMediaTests/PCMFrameStreamTests.swift",
         "Tests/DiscordMediaTests/PCMStreamingResamplerTests.swift",
         "Tests/DiscordMediaTests/PCMFramePacerTests.swift",
-        "Tests/DiscordMediaTests/MediaDescriptorTests.swift"
+        "Tests/DiscordMediaTests/MediaDescriptorTests.swift",
+        "Tests/DiscordMediaTests/PCMBandlimitedResamplerTests.swift",
+        "Tests/DiscordMediaTests/PCMSpeechActivityDetectorTests.swift"
       ],
-      "remainingGates": "Bounded values/processing/polling and terminal-aware AsyncSequence, exact sample clocks, caller-owned pacing and continuous linear resampling implemented. No antialias filter/bandlimited qualification, speech classifier, AEC/noise/AGC or native device adapters."
+      "remainingGates": "Bounded values/queues/clocks/pacing, continuous linear/windowed-sinc conversion and statistical speech VAD implemented. Spectral and speech fixtures are synthetic; no corpus accuracy, universal quality or realtime qualification. No AEC/noise/AGC. Complete native routing and platform qualification remain open."
     },
     {
       "id": "opus-packet-framing",
@@ -53,6 +57,17 @@
         "Tests/DiscordVoiceCodecsTests/OpusRangeOracleFixtures.swift"
       ],
       "remainingGates": "Owned bounded range coding only, compared with pinned official libopus entropy outputs. No SILK/CELT/hybrid syntax or PCM reconstruction/encoding; full RFC8251 conformance remains open."
+    },
+    {
+      "id": "celt-pulse-codebook",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/CELTPulseCodebookTests.swift"
+      ],
+      "remainingGates": "Exact bounded RFC6716 signed pulse enumeration and entropy composition, forty independent libopus fixtures. No band splitting/allocation, shape search, spreading, MDCT, encoder/decoder PCM or PLC/FEC."
     },
     {
       "id": "opus-encoder-decoder",
@@ -137,10 +152,14 @@
     },
     {
       "id": "native-audio-devices",
-      "status": "unsupported",
-      "implementation": [],
-      "evidence": [],
-      "remainingGates": "Apple/Windows/Android/Linux device adapters, permissions, interruptions, routing and hot-unplug are unimplemented."
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordApplePlatform/AppleAudio.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordApplePlatformTests/AppleAudioTests.swift"
+      ],
+      "remainingGates": "Apple AVAudioEngine/AVAudioPlayerNode system-route capture/playback, explicit permissions/session policy, bounded callback admission and observed route/configuration/interruption cleanup implemented. Deterministic injected backend and native-buffer conversion only; no microphone/playback/device runtime qualification. Explicit arbitrary device UID selection and Windows/Android adapters unimplemented. Linux PCM remains injected."
     },
     {
       "id": "video-codecs-transforms",

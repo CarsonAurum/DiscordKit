@@ -3,10 +3,20 @@
 Updated **2026-10-17**. The initial HTTP execution and minimal sharded Gateway
 slices and portable OAuth flows are implemented. Phase 12 adds locally tested
 [media/voice protocol components](Voice.md); full voice remains unimplemented.
-There are no native capture/playback adapters, owned Opus encoder/decoder, MLS/DAVE
-backend, supervised live voice session or authorized Discord media smoke results.
+The Apple adapter implements system-route capture/playback with explicit permission,
+session and bounded queue ownership. Its native device runtime remains unqualified;
+Windows/Android audio and explicit device selection are unimplemented. There is no
+owned Opus encoder/decoder, MLS/DAVE backend, supervised live voice session or
+authorized Discord media smoke result.
 Crypto vector tests and synthetic packet round trips do not qualify devices,
 codec interoperability, other hosts, minimum OS versions or ten-minute duplex stability.
+
+The 12A continuation compiled Bits/Core/Transport/Media/ApplePlatform with Swift 6.4
+and installed Xcode 27 SDKs for arm64 macOS 13, iOS 16, tvOS 16, arm64_32 watchOS 9
+and arm64 visionOS 1. These 25 module emissions include the actual Apple audio
+source at the package deployment minima. This is selected-module compile evidence;
+it does not qualify native device I/O or the complete package graph on those hosts.
+See the [compile evidence](Parity/phase12a-apple-compile-validation.json).
 Phase 9 [OAuth](OAuth.md) and [public game/entitlement helpers](Phase9ServiceContracts.md)
 have local deterministic coverage. The injected browser adapter does not qualify OS
 authentication UI; secure distributed storage, approval-gated publisher access and

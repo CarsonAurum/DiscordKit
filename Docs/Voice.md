@@ -4,19 +4,22 @@ Verified and locally added **2026-10-17**. This is the first release of the
 multi-release [Part 12 plan](../.air/plans/phase-12-execution.plan.md), with four
 independently adopted products. **Complete Discord voice is not implemented.**
 No `VoiceSession`/`VoiceManager`, owned Opus encoder/decoder, MLS group, DAVE
-backend or native device adapter is shipped yet.
+backend is shipped yet. Apple system-route capture/playback is independently
+available through `DiscordApplePlatform`; device qualification remains open.
 
 The subsequent [12A execution](../.air/plans/phase-12a-execution.plan.md) adds
-streaming media and owned Opus entropy coding. **The full 12A milestone remains
-incomplete**: the range coder cannot encode or reconstruct SILK/CELT audio.
+streaming media, owned Opus entropy/pulse coding, bandlimited resampling,
+statistical speech detection and native Apple audio ownership. **The full 12A
+milestone remains incomplete**: the range coder cannot encode or reconstruct SILK/CELT audio.
 
 ## Products and ownership
 
 | Product | Implemented behavior | Dependency boundary |
 | --- | --- | --- |
-| DiscordMedia | Rational/sample clocks, caller-driven pacing, bounded PCM/audio/video values, PCM16 conversion, gain/mixing, block/continuous linear resampling, RMS gate, polling and terminal-aware async queues | Foundation; no codecs/network/platform capture |
-| DiscordVoiceCodecs | Owned RFC 6716 ordinary Opus framing and bounded entropy encoder/decoder with exact accounting and independent oracle fixtures | Media; no native Opus library or SILK/CELT audio encoder/decoder |
+| DiscordMedia | Rational/sample clocks, caller-driven pacing, bounded PCM/audio/video values, PCM16 conversion, gain/mixing, linear/windowed-sinc resampling, RMS/statistical speech detection, polling and terminal-aware async queues | Foundation; no codecs/network/platform capture |
+| DiscordVoiceCodecs | Owned RFC 6716 ordinary Opus framing and bounded entropy encoder/decoder and exact CELT pulse codebooks with independent oracle fixtures | Media; no native Opus library or SILK/CELT audio encoder/decoder |
 | DiscordVoiceCrypto | XChaCha20-Poly1305, owned HChaCha20, public AES256-GCM, experimental truncated AES128-GCM adapter and actor-owned RTP-size packet protection | Existing Swift Crypto and its public CryptoExtras product |
+| DiscordApplePlatform | Explicit Apple engine capture/playback, bounded callback queues, permission/session ownership and observed-route invalidation | Media/Core/Transport; native AVFoundation/CoreAudio only in this adapter |
 | DiscordVoice | Bounded Voice v8 JSON/binary frames/opcodes, pure handshake/heartbeat/resume reducer, main-Gateway join rendezvous, discovery, RTP framing, Opus packetization and reorder window | Core/Models/Transport and the three media products; no Client/Gateway/facade ownership |
 
 Constructors start no I/O or tasks. A caller drives each reducer, clock, transport
@@ -47,6 +50,21 @@ frame and at most one deferred output frame. Final counts equal the floor of
 aggregate input duration at the destination rate. Finish holds only the remaining
 tail; output blocks stay within 120ms. It also lacks an antialias filter.
 
+`PCMBandlimitedResampler` adds a finite Blackman-windowed sinc filter with a cutoff
+at 90% of the lower Nyquist frequency. It retains at most twice its filter radius,
+waits for future samples and flushes endpoint support only at finish. Rational
+phase/counts are independent of chunking. Equal rates preserve samples without
+filtering. Explicit processingDelay reports lookahead without shifting timestamps;
+sinc overshoot clips to normalized PCM. Deterministic spectral tests cover selected
+48k/44.1k/192k conversions, not universal perceptual or realtime qualification.
+
+`PCMSpeechActivityDetector` combines approximately 20ms frames, adaptive SNR,
+periodicity, spectral shape/bands, temporal change and bounded hangover. Channels
+are classified independently, avoiding antiphase cancellation. Evidence is synthetic,
+with no corpus accuracy claim. Whisper/unvoiced-only speech can be missed, music
+and machinery can be accepted, and stationary long vowels can be suppressed.
+It provides no AEC/denoising and is independently adopted from the RMS gate.
+
 `MediaTime.converted` and `compare` use full-width integers; equality remains
 representation-based. `PCMSampleClock` reserves exact sample timestamps and rejects
 rollover. `PCMFramePacer` uses an injected monotonic clock, carries fractional
@@ -70,11 +88,45 @@ libopus 1.6.1 fixtures compare bytes and per-operation range/bit state. This sup
 no SILK/CELT/hybrid syntax or PCM processing. Frame failures are terminal. See the
 [dated media/entropy record](Parity/changes/2026-10-17-phase12a-media-entropy.md).
 
+`CELTPulseCodebook` implements RFC 6716 section 4.3.4.2 signed integer pulse
+ranking/unranking and uniform entropy composition. Bounds are 1...176 dimensions,
+0...128 pulses and at most UInt32.max codewords; oversized codebooks require
+future recursive band splitting. Forty official libopus codeword fixtures and an
+opt-in seeded oracle compare integer vectors, indices, counts and entropy output.
+This supplies no band allocation, quantizer search, transform or decoded audio.
+See the [continuation record](Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md).
+
 Encoded video values retain opaque H.264/H.265/VP8/VP9/AV1, keyframe, dimension and
 optional spatial/temporal-layer metadata. Layer bounds are local storage policy,
 not inferred wire fields or negotiated capabilities. No
 video codec, RTP video packetization, fragmentation, Go Live or camera signaling
 is implemented.
+
+## Apple audio ownership
+
+`AppleAudioDevice` is a MainActor owner with an injected `AppleAudioBackend` and an
+owned AVAudioEngine/AVAudioPlayerNode backend. Construction opens no devices and
+starts no tasks. Capture requires an explicit permission query/request and start;
+apps supply microphone usage descriptions and sandbox entitlements. Playback-only
+adoption never prompts. Select host-managed shared session ownership or explicitly
+exclusive foreground session configuration. This supplies no background entitlement.
+Capture uses the hardware rate and first one/two channels; portable resampling is
+explicit. Playback uses the configured format and system output route.
+
+Input taps synchronously offer owned at-most-120ms PCM blocks to block/byte-bounded
+storage. Overflow drops new capture and saturates a drop counter. Playback reserves
+bounded capacity before scheduling; completion releases only its generation's
+reservation. No audio callback starts a Swift task. Callback locks/allocations mean
+this adapter makes no hard realtime guarantee. Stop revokes callback admission,
+stops the engine and discards media. Always stop before abandoning the owner.
+
+Observed route/configuration/interruption/reset events stop/discard and require an
+explicit restart. Native notifications defer teardown outside the notification
+stack with a bounded coalesced invalidation. macOS also observes default-device
+changes. OS delivery is not a guaranteed privacy barrier against every route race;
+real hot-unplug/interruption/device qualification has not run. Arbitrary device UID
+selection and Windows/Android capture/playback remain unimplemented. Linux accepts
+injected PCM. No test requests permission, opens a microphone or plays audio.
 
 ## Transport encryption and RTP
 
@@ -157,8 +209,8 @@ cancellation, byte/stream limits, counter exhaustion, generation fencing and
 heartbeat/resume/E2EE suspension. They establish local component behavior only.
 
 MLS/DAVE/Opus interoperability, an owned supervised network/media pipeline,
-microphone/playback adapters, all non-macOS platforms, minimum-OS testing, authorized
-Discord voice smoke, a ten-minute lossless duplex run and per-frame p99 budgets
+complete device routing/adapters and their qualification, non-macOS runtime and
+minimum-OS testing, authorized Discord voice smoke, a ten-minute lossless duplex run and per-frame p99 budgets
 remain open. No production voice, video, cross-platform or fleet-capacity claim
 follows from this release. See [source fingerprints](Parity/voice-media-current-sources.json),
 [chronological parity](Parity/changes/2026-10-17-voice-media.md) and

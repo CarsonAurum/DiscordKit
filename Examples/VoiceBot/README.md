@@ -15,9 +15,10 @@ There are no Discord requests, joins, permissions or background production tasks
 Root Swift Testing suites exercise the same components and failure paths.
 
 Before that transport example, it drains synthetic PCM through the bounded
-AsyncSequence/resampler and checks exactly 1,920 output frames with a sample clock.
-It separately round-trips synthetic entropy symbols. Those symbols contain no
-SILK/CELT audio syntax and are never sent as Opus.
+AsyncSequence/windowed-sinc resampler and checks exactly 1,920 output frames with a
+sample clock, then checks silence rejection by statistical VAD. It separately
+round-trips synthetic entropy and CELT pulse-codebook symbols. Those symbols do not
+form a complete SILK/CELT frame and are never sent as Opus.
 
 The selected product graph excludes HTTP, Gateway, Client, Cache, OAuth,
 Interactions, Commands, NIO and concrete network/device adapters. It includes

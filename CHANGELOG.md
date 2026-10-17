@@ -6,6 +6,19 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Phase 12A DSP, Apple audio and CELT pulse prerequisites
+
+- Added bounded streaming windowed-sinc resampling with exact phase/counts and
+  synthetic anti-alias/image tests, plus adaptive multi-feature speech detection.
+- Added exact CELT signed pulse-codebook ranking/unranking and entropy composition,
+  independent official libopus fixtures and reproducible development verification.
+- Added Apple system-route capture/playback with explicit permissions/session policy,
+  bounded callback queues, generation fencing and observed-lifecycle cleanup.
+- Full 12A remains incomplete: owned SILK/CELT/hybrid codecs, PLC/FEC, decoded-PCM
+  conformance, full device selection and Windows/Android audio remain open. Native
+  hardware, corpus speech accuracy and realtime qualification have not run; 12B
+  remains pending.
+
 ## 2026-10-17 — Phase 12A streaming media and entropy prerequisites
 
 - Added bounded terminal-aware PCM AsyncSequence/sink ownership, cancellation,

@@ -39850,7 +39850,7 @@
       ],
       "notes": "API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
       "manual": {
-        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group \u2192 subcommand \u2192 leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in \u00b1(2^53-1), numbers in \u00b12^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
+        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group → subcommand → leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in ±(2^53-1), numbers in ±2^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
         "fields": [
           {
             "wireName": "type",
@@ -70028,7 +70028,11 @@
         "symbol.12A.PCMStreamingResampler",
         "symbol.12A.PCMSampleClock",
         "symbol.12A.PCMFramePacer",
-        "symbol.12A.VideoFrameLayer"
+        "symbol.12A.VideoFrameLayer",
+        "symbol.12A.PCMBandlimitedResampler",
+        "symbol.12A.PCMSpeechActivityDetector",
+        "symbol.12A.CELTPulseCodebook",
+        "symbol.12A.AppleAudioDevice"
       ],
       "evidenceIDs": [
         "evidence.12A.tocConfigurations",
@@ -70047,11 +70051,19 @@
         "evidence.12A.longStreamHasExactCountAndNoBoundaryDrift",
         "evidence.12A.conversionOverflowAndInvalidScale",
         "evidence.12A.fractionalNanosecondCarry",
-        "evidence.12A.h265LabelIsVideoMetadataOnly"
+        "evidence.12A.h265LabelIsVideoMetadataOnly",
+        "evidence.12A.upsamplingSuppressesImages",
+        "evidence.12A.longStreamKeepsBoundedHistoryAndExactCounts",
+        "evidence.12A.supportedRatesAndDiagnostics",
+        "evidence.12A.hangoverExpiresExactly",
+        "evidence.12A.officialCodewordFixtures",
+        "evidence.12A.exhaustiveBijectionAndLargeBoundaries",
+        "evidence.12A.captureBudgetsFormatAndFIFO",
+        "evidence.12A.lifecycleStopsAndExplicitRestart"
       ],
-      "notes": "Owned RFC6716 section3 ordinary Opus packet framing and sections4.1/5.1 bounded entropy primitives, including verified erratum4853: exact probability contexts, range symbols/bits/uniform integers/raw tails, termination, zero extension and exact range/bit accounting. Six independent official libopus1.6.1 entropy fixtures verify every operation; they are not decoded-PCM codec conformance. Portable PCM blocks/PCM16/gain/mixing/RMS, bounded terminal-aware AsyncSequence and polling queues, continuous linear resampling with exact aggregate floor counts, checked media/sample clocks and injected monotonic frame pacing are implemented without device I/O. Linear resampling lacks an antialias filter; speech VAD, bandlimited quality, SILK/CELT/hybrid audio processing/encoding/decoding, PLC/FEC, full codec conformance, native capture/playback and complete media sessions remain unimplemented. H265 and spatial/temporal layer labels are opaque metadata, not video codec/transform/signaling support. Added2026-10-17; current source/chronology and remaining full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-media-entropy.md. Upstream announcement/effective dates unknown. Existing Voicev8/RTP48000Hz primitives are unchanged. No complete Phase12A or production/cross-platform voice claim.",
+      "notes": "Owned RFC6716 ordinary Opus framing, bounded entropy operations and exact CELT signed pulse-codebook ranking/unranking with independent libopus1.6.1 fixtures and seeded verification. Portable PCM processing/queues/clocks/pacing, continuous linear and finite Blackman-windowed-sinc resampling and adaptive multi-feature speech VAD are implemented. VAD accuracy evidence is synthetic; no corpus or realtime qualification. ApplePlatform separately implements system-route AVAudioEngine capture/playback, explicit permission/session ownership, bounded callback queues and observed route/interruption/configuration cleanup. Native device runtime, full routing/UID selection and Windows/Android adapters remain unqualified or unimplemented. SILK/CELT/hybrid full audio encoder/decoder, band splitting/allocation/transforms, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; chronological continuation and full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md. Existing Voicev8/RTP48000Hz are unchanged; upstream announcement/effective dates unknown. No complete Phase12A, live voice, production or cross-platform support claim.",
       "manual": {
-        "behavior": "Owned RFC6716 section3 ordinary Opus packet framing and sections4.1/5.1 bounded entropy primitives, including verified erratum4853: exact probability contexts, range symbols/bits/uniform integers/raw tails, termination, zero extension and exact range/bit accounting. Six independent official libopus1.6.1 entropy fixtures verify every operation; they are not decoded-PCM codec conformance. Portable PCM blocks/PCM16/gain/mixing/RMS, bounded terminal-aware AsyncSequence and polling queues, continuous linear resampling with exact aggregate floor counts, checked media/sample clocks and injected monotonic frame pacing are implemented without device I/O. Linear resampling lacks an antialias filter; speech VAD, bandlimited quality, SILK/CELT/hybrid audio processing/encoding/decoding, PLC/FEC, full codec conformance, native capture/playback and complete media sessions remain unimplemented. H265 and spatial/temporal layer labels are opaque metadata, not video codec/transform/signaling support. Added2026-10-17; current source/chronology and remaining full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-media-entropy.md. Upstream announcement/effective dates unknown. Existing Voicev8/RTP48000Hz primitives are unchanged. No complete Phase12A or production/cross-platform voice claim."
+        "behavior": "Owned RFC6716 ordinary Opus framing, bounded entropy operations and exact CELT signed pulse-codebook ranking/unranking with independent libopus1.6.1 fixtures and seeded verification. Portable PCM processing/queues/clocks/pacing, continuous linear and finite Blackman-windowed-sinc resampling and adaptive multi-feature speech VAD are implemented. VAD accuracy evidence is synthetic; no corpus or realtime qualification. ApplePlatform separately implements system-route AVAudioEngine capture/playback, explicit permission/session ownership, bounded callback queues and observed route/interruption/configuration cleanup. Native device runtime, full routing/UID selection and Windows/Android adapters remain unqualified or unimplemented. SILK/CELT/hybrid full audio encoder/decoder, band splitting/allocation/transforms, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; chronological continuation and full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md. Existing Voicev8/RTP48000Hz are unchanged; upstream announcement/effective dates unknown. No complete Phase12A, live voice, production or cross-platform support claim."
       }
     }
   ],
@@ -89710,6 +89722,26 @@
       "id": "symbol.12A.VideoFrameLayer",
       "path": "Sources/DiscordMedia/MediaDescriptors.swift",
       "declaration": "public struct VideoFrameLayer: Sendable, Equatable, Hashable {"
+    },
+    {
+      "id": "symbol.12A.PCMBandlimitedResampler",
+      "path": "Sources/DiscordMedia/PCMBandlimitedResampler.swift",
+      "declaration": "public struct PCMBandlimitedResampler: Sendable {"
+    },
+    {
+      "id": "symbol.12A.PCMSpeechActivityDetector",
+      "path": "Sources/DiscordMedia/PCMSpeechActivityDetector.swift",
+      "declaration": "public struct PCMSpeechActivityDetector: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTPulseCodebook",
+      "path": "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift",
+      "declaration": "public struct CELTPulseCodebook: Sendable {"
+    },
+    {
+      "id": "symbol.12A.AppleAudioDevice",
+      "path": "Sources/DiscordApplePlatform/AppleAudio.swift",
+      "declaration": "public final class AppleAudioDevice: PCMSource, PCMSink {"
     }
   ],
   "evidence": [
@@ -94527,6 +94559,46 @@
       "id": "evidence.12A.h265LabelIsVideoMetadataOnly",
       "path": "Tests/DiscordMediaTests/MediaDescriptorTests.swift",
       "anchor": "h265LabelIsVideoMetadataOnly"
+    },
+    {
+      "id": "evidence.12A.upsamplingSuppressesImages",
+      "path": "Tests/DiscordMediaTests/PCMBandlimitedResamplerTests.swift",
+      "anchor": "upsamplingSuppressesImages"
+    },
+    {
+      "id": "evidence.12A.longStreamKeepsBoundedHistoryAndExactCounts",
+      "path": "Tests/DiscordMediaTests/PCMBandlimitedResamplerTests.swift",
+      "anchor": "longStreamKeepsBoundedHistoryAndExactCounts"
+    },
+    {
+      "id": "evidence.12A.supportedRatesAndDiagnostics",
+      "path": "Tests/DiscordMediaTests/PCMSpeechActivityDetectorTests.swift",
+      "anchor": "supportedRatesAndDiagnostics"
+    },
+    {
+      "id": "evidence.12A.hangoverExpiresExactly",
+      "path": "Tests/DiscordMediaTests/PCMSpeechActivityDetectorTests.swift",
+      "anchor": "hangoverExpiresExactly"
+    },
+    {
+      "id": "evidence.12A.officialCodewordFixtures",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPulseCodebookTests.swift",
+      "anchor": "officialCodewordFixtures"
+    },
+    {
+      "id": "evidence.12A.exhaustiveBijectionAndLargeBoundaries",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPulseCodebookTests.swift",
+      "anchor": "exhaustiveBijectionAndLargeBoundaries"
+    },
+    {
+      "id": "evidence.12A.captureBudgetsFormatAndFIFO",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
+      "anchor": "captureBudgetsFormatAndFIFO"
+    },
+    {
+      "id": "evidence.12A.lifecycleStopsAndExplicitRestart",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
+      "anchor": "lifecycleStopsAndExplicitRestart"
     }
   ]
 }

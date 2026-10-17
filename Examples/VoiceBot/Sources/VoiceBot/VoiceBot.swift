@@ -7,7 +7,8 @@ import DiscordVoiceCrypto
 /// Offline integration example for Phase 12 media/protocol components, without a Discord session.
 @main struct VoiceBot {
     /// Round-trips synthetic Opus silence through RTP-size protection and a bounded reorder queue.
-    /// First checks a bounded PCM/resampling timeline and independent synthetic entropy symbols;
+    /// First checks a bounded bandlimited PCM/resampling timeline, silence activity decisions,
+    /// and independent synthetic entropy/pulse-codebook symbols;
     /// these checks neither encode nor decode SILK/CELT audio.
     /// Uses a fixed, public test-only key that must never be used for real media. No network,
     /// device, authentication, DAVE context or background task is created. The two cipher
@@ -48,7 +49,7 @@ import DiscordVoiceCrypto
         }
     }
 
-    /// Drains a bounded synthetic PCM sequence through continuous 24kHz-to-48kHz resampling.
+    /// Drains a bounded synthetic PCM sequence through bandlimited 24kHz-to-48kHz resampling.
     /// No input/output device or producer task is created. The sample clock checks exact
     /// cumulative duration across chunk boundaries and the resampler's final lookahead.
     /// - Throws: Media validation/admission errors, cancellation or an invariant failure.
@@ -58,7 +59,7 @@ import DiscordVoiceCrypto
         try await stream.write(PCMBuffer(format: format, samples: Array(repeating: 0.25, count: 480)))
         try await stream.write(PCMBuffer(format: format, samples: Array(repeating: -0.25, count: 480)))
         await stream.finish()
-        var resampler = try PCMStreamingResampler(inputFormat: format, outputSampleRate: 48_000)
+        var resampler = try PCMBandlimitedResampler(inputFormat: format, outputSampleRate: 48_000)
         var clock = try PCMSampleClock(sampleRate: 48_000)
         for try await buffer in stream {
             for output in try resampler.process(buffer) { _ = try clock.advance(by: output.frameCount) }
@@ -69,22 +70,32 @@ import DiscordVoiceCrypto
               snapshot.bufferedBlocks == 0, snapshot.isFinished else {
             throw ExampleFailure.invalidInvariant
         }
-        print("Bounded PCM stream resampled to exactly 1,920 frames at 48 kHz.")
+        var activity = try PCMSpeechActivityDetector(format: format)
+        let decisions = try activity.process(PCMBuffer(format: format, samples: Array(repeating: 0, count: 480)))
+        guard decisions.count == 1, decisions.allSatisfy({ !$0.isSpeech }) else {
+            throw ExampleFailure.invalidInvariant
+        }
+        print("Bounded PCM stream filtered to exactly 1,920 frames at 48 kHz; silence rejected by VAD.")
     }
 
     /// Round-trips synthetic entropy symbols independently of the encoded-Opus RTP example.
-    /// These symbols contain no SILK/CELT audio syntax and are never published as audio.
+    /// Also checks CELT's signed pulse-codebook ordering in isolation. These symbols do not
+    /// form a complete SILK/CELT audio frame and are never published as audio.
     /// - Throws: Entropy validation/budget errors or a round-trip invariant failure.
     private static func demonstrateEntropyCoding() throws {
-        var encoder = try OpusRangeEncoder(frameByteCount: 4)
+        var encoder = try OpusRangeEncoder(frameByteCount: 8)
+        let codebook = try CELTPulseCodebook(dimensions: 4, pulseCount: 3)
+        let pulses = [1, -1, 0, 1]
         try encoder.encodeUniform(7, total: 11)
         try encoder.encodeBit(true, logProbability: 2)
         try encoder.encodeRawBits(21, count: 5)
+        try codebook.encode(pulses, into: &encoder)
         let bytes = try encoder.finalize()
         var decoder = try OpusRangeDecoder(frame: bytes)
         guard try decoder.decodeUniform(total: 11) == 7,
               try decoder.decodeBit(logProbability: 2),
               try decoder.decodeRawBits(count: 5) == 21,
+              try codebook.decode(from: &decoder) == pulses,
               decoder.finalRange == encoder.finalRange else { throw ExampleFailure.invalidInvariant }
         print("Synthetic entropy symbols match their final arithmetic range; no audio codec is implied.")
     }

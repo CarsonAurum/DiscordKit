@@ -27,7 +27,9 @@ Phase 11 adds the independent [Activity client and owned browser bridge](Docs/Ac
 with typed catalogs, bounded correlation/subscriptions and injected host integration.
 Approved Discord browser/mobile smoke qualification remains open. Phase 12 starts
 with independent [portable media and voice protocol components](Docs/Voice.md):
-PCM processing, Opus framing, transport AEAD, RTP and pure voice control reducers.
+bounded PCM/DSP, Opus framing/entropy/pulse codebooks, transport AEAD, RTP and pure
+voice control reducers. The Apple adapter owns explicit system-route audio I/O;
+native device qualification and Windows/Android implementations remain open.
 Complete Opus codecs, MLS/DAVE and running voice sessions remain unimplemented;
 native Social SDK and schema-blocked Social Commerce remain later work.
 
@@ -72,7 +74,8 @@ establish endpoint parity or qualify untested hosts. See the
 - `DiscordFoundationTransport`: Apple Foundation HTTP and WebSocket adapters.
 - `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
 - `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
-- `DiscordApplePlatform`: app-driven lifecycle resource ownership and capability checks.
+- `DiscordApplePlatform`: app-driven lifecycle/capability checks and explicit bounded
+  native Apple audio capture/playback ownership.
 - `DiscordModels`: presence-aware resource and request values for the implemented catalogs,
   typed components and premium interaction data, partial related-resource projections and exact unknown fields.
 - `DiscordHTTP`: typed descriptors, codecs, coordinated admission, safe retries, pagination,

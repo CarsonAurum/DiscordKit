@@ -50,7 +50,9 @@ The existing Apache-2.0/NOTICE and bundled BoringSSL ISC/OpenSSL attribution ter
 apply to this newly selected native graph; preserve upstream component notices.
 Full binary redistribution audit and other-host qualification remain open.
 Current source/manifest hashes are in [voice sources](Parity/voice-media-current-sources.json).
-Phase 12A adds no runtime dependency: its entropy implementation is owned Swift.
+Phase 12A adds no package dependency: entropy, pulse codebooks and DSP are owned
+Swift. ApplePlatform selects Media plus system AVFoundation/CoreAudio for the
+explicit Apple audio adapter. Portable products never select that adapter.
 An opt-in development verifier compiles separately supplied official libopus source
 in temporary storage; no product or normal test build downloads, vendors or links it.
 Published AEAD/AES vector tests establish local primitive behavior, not an external
