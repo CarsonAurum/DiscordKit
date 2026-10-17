@@ -10,7 +10,9 @@ per-field semantics, real symbols and test/fixture evidence. See the
 and [tooling history](changes/2026-10-16-reviewed-generation.md). Phase 5A adds the
 [message/poll catalog](../RESTCatalog.md); Phase 5B adds the
 [channel/thread catalog](../Channels.md), including all 24 Channel operations and
-active guild threads. These handwritten contracts retain explicit partial related
+active guild threads. Phase 5C adds all 45 current [Guild operations](../Guilds.md),
+reusing active threads, with typed member/ban/role/settings models and bounded workflows.
+These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
 [foundation history](changes/2026-10-15-foundations.md). Part 2 adds independently

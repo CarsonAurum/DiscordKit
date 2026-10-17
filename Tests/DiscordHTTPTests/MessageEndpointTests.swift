@@ -46,11 +46,14 @@ import Testing
     }
 
     /// Current message/poll reads and mutations retain typed status policy and exact IDs.
+    /// Read tags include the shared message-catalog visibility scope so guild membership/role
+    /// changes can invalidate cached reads, while caller TTL/custom tags remain intact.
+    /// - Throws: Unexpected descriptor, codec, request or fixture construction failures fail the test.
     @Test func typedDescriptorCatalog() throws {
         let get = try MessageEndpoints.get(channelID: channel, messageID: message,
                                           readPolicy: .init(timeToLive: .seconds(2), tags: ["custom"]))
         #expect(try wire(get).url.path == "/api/v10/channels/\(channel)/messages/\(message)")
-        #expect(get.readPolicy?.tags == ["custom", "message-search", "messages:\(channel)"])
+        #expect(get.readPolicy?.tags == ["custom", "message-search", "message-catalog", "messages:\(channel)"])
         #expect(get.readPolicy?.timeToLive == .seconds(2))
         #expect(try get.decode(Self.messageData()).id == message)
         #expect(throws: (any Error).self) { try get.decode(Data("{}".utf8)) }

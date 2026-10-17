@@ -8,6 +8,19 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — guild administration REST catalog (Phase 5C)
+
+- Add all 45 current Guild operations, reusing active threads, with typed guild,
+  member, ban, role, integration, widget, welcome, onboarding and incident contracts.
+- Validate settings, token consent payloads, role colors and fixed-clock moderation
+  windows; preserve exact IDs, unknown values and screening pending state.
+- Add finite lazy member/ban continuation, explicit snapshot no-op reconciliation
+  and sequential bulk-ban plans retaining partial failures and uncertain progress.
+- Invalidate authentication-scoped guild/channel/message visibility after guild
+  mutations; keep public widgets credential-free and retained payload diagnostics redacted.
+- Record current official contracts, preview compatibility, removed guild-creation
+  history and deterministic regression evidence; batches 5D–5J remain pending.
+
 ### 2026-10-16 — channel and thread REST catalog (Phase 5B)
 
 - Add every documented channel descriptor plus active guild threads: settings,

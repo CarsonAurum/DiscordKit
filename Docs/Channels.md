@@ -6,7 +6,7 @@ Contracts were verified **2026-10-16** against API **v10**, the
 [API reference](https://docs.discord.com/developers/reference), official specification
 and [change log](https://docs.discord.com/developers/change-log).
 The two thread-start variants sharing a route remain separate typed operations.
-No dependencies or product targets were added. Batches 5C–5J remain pending.
+No dependencies or product targets were added. Part 5C adds [guild administration](Guilds.md); batches 5D–5J remain pending.
 
 Import `DiscordHTTP` and `DiscordModels`, inject a transport and credential-sharing
 rate/reuse authority, then execute `ChannelEndpoints` descriptors. REST adoption

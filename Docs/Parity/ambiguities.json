@@ -261,6 +261,87 @@
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"
+    },
+    {
+      "id": "guild-member-patch-preview-empty-success",
+      "status": "open",
+      "surface": "REST v10 / Modify Guild Member status",
+      "description": "Written reference explicitly returns 200 Guild Member; preview update_guild_member additionally lists empty 204.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/guild.md",
+          "section": "Modify Guild Member",
+          "revision": "unknown",
+          "sha256": "c2c035e40d1ba2aa05902a74c5899604209e8e4a5451b3a2bfb2488cb0e643b0"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "components.schemas and paths for the affected Guild operations",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Unqualified source precedence can reject a current shape, lose presence, narrow external IDs or accept an undocumented operation success.",
+      "interimPolicy": "Require written HTTP200/member for typed modifyMember. Do not infer conditions for preview204. New member addition separately accepts documented201/member or empty204.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "guild-preview-response-supplements",
+      "status": "open",
+      "surface": "REST v10 / Guild-related response schema compatibility",
+      "description": "The preview adds Guild home_header/nsfw/progress timestamp, preview home_header, integration application metadata, widget member activity and vanity error; external integrations permit arbitrary string IDs and nullable name/role_id while prose uses snowflake and nonnull fields.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/guild.md",
+          "section": "Guild, Preview, Integration, Widget and Vanity structures",
+          "revision": "unknown",
+          "sha256": "c2c035e40d1ba2aa05902a74c5899604209e8e4a5451b3a2bfb2488cb0e643b0"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "components.schemas and paths for the affected Guild operations",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Unqualified source precedence can reject a current shape, lose presence, narrow external IDs or accept an undocumented operation success.",
+      "interimPolicy": "Preserve supplemental fields as optional typed projections and exact raw JSON. Accept external integration IDs as strings and nullable name/role IDs. Deletion remains a snowflake descriptor; arbitrary provider IDs do not establish delete eligibility. Related User/Application/Emoji/Sticker models remain partial.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "guild-request-preview-supplements",
+      "status": "open",
+      "surface": "REST v10 / Guild request limits and nullability",
+      "description": "Preview adds home_header and default_tag_setting, publishes request bounds missing in prose, and allows nullable optional onboarding request fields. Preview omits current media creation and has contradictory permission wire types.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/guild.md",
+          "section": "Guild/Channel/Member/Role/Prune/Welcome/Onboarding JSON parameters",
+          "revision": "unknown",
+          "sha256": "c2c035e40d1ba2aa05902a74c5899604209e8e4a5451b3a2bfb2488cb0e643b0"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "components.schemas and paths for the affected Guild operations",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Unqualified source precedence can reject a current shape, lose presence, narrow external IDs or accept an undocumented operation success.",
+      "interimPolicy": "Use typed optional nullable home_header and forum/media default_tag_setting. Adopt official preview bounds and explicitly nullable onboarding optional parameters. Other request nullability follows written reference. Written media channel support and decimal permission strings control contradictions; server eligibility/hierarchy remain server checks.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
     }
   ]
 }

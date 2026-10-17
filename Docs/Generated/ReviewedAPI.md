@@ -721,7 +721,7 @@ API v10, verified and locally added 2026-10-16. Current official hashes are in D
 
 Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
 
-Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success.
+Evidence: evidence.5b.cancelledBeforeSend, evidence.5b.failures, evidence.5b.success, evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
 
 ## ChannelEndpoints.addRecipient
 
@@ -1202,6 +1202,918 @@ API v10, verified and locally added 2026-10-16. Current official hashes are in D
 Status: partial. Support since: 2026-10-16. Source: developers/resources/channel. Upstream announcement: unknown; effective: unknown.
 
 Evidence: evidence.5b.invalidPagination, evidence.5b.paginationQueries.
+
+## BulkGuildBanFailure
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildOperationsTests.banContinuation, evidence.5c.GuildOperationsTests.bulkCancellationAndDeadline, evidence.5c.GuildOperationsTests.bulkFailureProgress, evidence.5c.GuildOperationsTests.bulkPartialSuccess, evidence.5c.GuildOperationsTests.bulkPlanning, evidence.5c.GuildOperationsTests.invalidBounds, evidence.5c.GuildOperationsTests.malformedPages, evidence.5c.GuildOperationsTests.memberContinuation, evidence.5c.GuildOperationsTests.noOpReconciliation, evidence.5c.GuildOperationsTests.pageFailures, evidence.5c.GuildOperationsTests.suspendedBulkTermination, evidence.5c.GuildOperationsTests.suspendedPageTermination.
+
+## BulkGuildBanOutcome
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildOperationsTests.banContinuation, evidence.5c.GuildOperationsTests.bulkCancellationAndDeadline, evidence.5c.GuildOperationsTests.bulkFailureProgress, evidence.5c.GuildOperationsTests.bulkPartialSuccess, evidence.5c.GuildOperationsTests.bulkPlanning, evidence.5c.GuildOperationsTests.invalidBounds, evidence.5c.GuildOperationsTests.malformedPages, evidence.5c.GuildOperationsTests.memberContinuation, evidence.5c.GuildOperationsTests.noOpReconciliation, evidence.5c.GuildOperationsTests.pageFailures, evidence.5c.GuildOperationsTests.suspendedBulkTermination, evidence.5c.GuildOperationsTests.suspendedPageTermination.
+
+## BulkGuildBanPlan
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildOperationsTests.banContinuation, evidence.5c.GuildOperationsTests.bulkCancellationAndDeadline, evidence.5c.GuildOperationsTests.bulkFailureProgress, evidence.5c.GuildOperationsTests.bulkPartialSuccess, evidence.5c.GuildOperationsTests.bulkPlanning, evidence.5c.GuildOperationsTests.invalidBounds, evidence.5c.GuildOperationsTests.malformedPages, evidence.5c.GuildOperationsTests.memberContinuation, evidence.5c.GuildOperationsTests.noOpReconciliation, evidence.5c.GuildOperationsTests.pageFailures, evidence.5c.GuildOperationsTests.suspendedBulkTermination, evidence.5c.GuildOperationsTests.suspendedPageTermination.
+
+## Guild
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildBan
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildBanCreate
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildBulkBan
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildBulkBanResult
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildChannelCreate
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildChannelPosition
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildCurrentMemberModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildCurrentUserNickModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildDefaultMessageNotificationLevel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildDefaultTagSetting
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildEndpoints.addMember
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.addMemberRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.ban
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.bans
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.beginPrune
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata, evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildEndpoints.bulkBan
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.channels
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.createBan
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.createChannel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.createRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.deleteIntegration
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.deleteRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.get
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.integrations
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.invites
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.member
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.members
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyChannelPositions
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyCurrentMember
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyCurrentUserNick
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyIncidentActions
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyMember
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyOnboarding
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyRolePositions
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyWelcomeScreen
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.modifyWidget
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.onboarding
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.preview
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.pruneCount
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata, evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildEndpoints.removeBan
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.removeMember
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.removeMemberRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.role
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.roleMemberCounts
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata, evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildEndpoints.roles
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.searchMembers
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.vanityURL
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata, evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildEndpoints.voiceRegions
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.welcomeScreen
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.widget
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.widgetImage
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildEndpoints.widgetSettings
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildCatalogIntegrationTests.authenticationMismatch, evidence.5c.GuildCatalogIntegrationTests.cancellationDuringExchange, evidence.5c.GuildCatalogIntegrationTests.cancelledBeforeSend, evidence.5c.GuildCatalogIntegrationTests.failures, evidence.5c.GuildCatalogIntegrationTests.memberJoinSuccessShapes, evidence.5c.GuildCatalogIntegrationTests.membersCoalesce, evidence.5c.GuildCatalogIntegrationTests.success, evidence.5c.GuildCatalogIntegrationTests.transportFailure, evidence.5c.GuildCatalogIntegrationTests.visibilityInvalidation, evidence.5c.GuildEndpointTests.collectionShapeRejection, evidence.5c.GuildEndpointTests.completeCatalog, evidence.5c.GuildEndpointTests.invalidPagination, evidence.5c.GuildEndpointTests.memberJoinAndPayloads, evidence.5c.GuildEndpointTests.positionArrayRules, evidence.5c.GuildEndpointTests.pruneBoundaries, evidence.5c.GuildEndpointTests.publicWidget, evidence.5c.GuildEndpointTests.queryContracts, evidence.5c.GuildEndpointTests.scopedPolicyAndBulkMetadata.
+
+## GuildExplicitContentFilterLevel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildFeature
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildIncidentActionsModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildIncidentsData
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildIntegration
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildIntegrationAccount
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildIntegrationApplication
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildIntegrationApplicationType
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildIntegrationExpireBehavior
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildIntegrationType
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildMFALevel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildMember
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildMemberAdd
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildMemberFlags
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildMemberModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildNSFWLevel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildNickname
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildOnboarding
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildOnboardingMode
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildOnboardingModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildOnboardingOption
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildOnboardingOptionRequest
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildOnboardingPrompt
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildOnboardingPromptRequest
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildOnboardingPromptType
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildOperations.banPages
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildOperationsTests.banContinuation, evidence.5c.GuildOperationsTests.bulkCancellationAndDeadline, evidence.5c.GuildOperationsTests.bulkFailureProgress, evidence.5c.GuildOperationsTests.bulkPartialSuccess, evidence.5c.GuildOperationsTests.bulkPlanning, evidence.5c.GuildOperationsTests.invalidBounds, evidence.5c.GuildOperationsTests.malformedPages, evidence.5c.GuildOperationsTests.memberContinuation, evidence.5c.GuildOperationsTests.noOpReconciliation, evidence.5c.GuildOperationsTests.pageFailures, evidence.5c.GuildOperationsTests.suspendedBulkTermination, evidence.5c.GuildOperationsTests.suspendedPageTermination.
+
+## GuildOperations.memberPages
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildOperationsTests.banContinuation, evidence.5c.GuildOperationsTests.bulkCancellationAndDeadline, evidence.5c.GuildOperationsTests.bulkFailureProgress, evidence.5c.GuildOperationsTests.bulkPartialSuccess, evidence.5c.GuildOperationsTests.bulkPlanning, evidence.5c.GuildOperationsTests.invalidBounds, evidence.5c.GuildOperationsTests.malformedPages, evidence.5c.GuildOperationsTests.memberContinuation, evidence.5c.GuildOperationsTests.noOpReconciliation, evidence.5c.GuildOperationsTests.pageFailures, evidence.5c.GuildOperationsTests.suspendedBulkTermination, evidence.5c.GuildOperationsTests.suspendedPageTermination.
+
+## GuildOperations.modifyIfChanged
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildOperationsTests.banContinuation, evidence.5c.GuildOperationsTests.bulkCancellationAndDeadline, evidence.5c.GuildOperationsTests.bulkFailureProgress, evidence.5c.GuildOperationsTests.bulkPartialSuccess, evidence.5c.GuildOperationsTests.bulkPlanning, evidence.5c.GuildOperationsTests.invalidBounds, evidence.5c.GuildOperationsTests.malformedPages, evidence.5c.GuildOperationsTests.memberContinuation, evidence.5c.GuildOperationsTests.noOpReconciliation, evidence.5c.GuildOperationsTests.pageFailures, evidence.5c.GuildOperationsTests.suspendedBulkTermination, evidence.5c.GuildOperationsTests.suspendedPageTermination.
+
+## GuildOperations.modifyRoleIfChanged
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildOperationsTests.banContinuation, evidence.5c.GuildOperationsTests.bulkCancellationAndDeadline, evidence.5c.GuildOperationsTests.bulkFailureProgress, evidence.5c.GuildOperationsTests.bulkPartialSuccess, evidence.5c.GuildOperationsTests.bulkPlanning, evidence.5c.GuildOperationsTests.invalidBounds, evidence.5c.GuildOperationsTests.malformedPages, evidence.5c.GuildOperationsTests.memberContinuation, evidence.5c.GuildOperationsTests.noOpReconciliation, evidence.5c.GuildOperationsTests.pageFailures, evidence.5c.GuildOperationsTests.suspendedBulkTermination, evidence.5c.GuildOperationsTests.suspendedPageTermination.
+
+## GuildPremiumTier
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildPreview
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildPrune
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/topics/permissions. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildRoleColors
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/topics/permissions. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildRoleColorsRequest
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/topics/permissions. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildRoleCreate
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildRoleFlags
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/topics/permissions. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildRoleModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildRolePosition
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildRoleTags
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/topics/permissions. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildSystemChannelFlags
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildUnavailable
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildVerificationLevel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildVoiceRegion
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/voice. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWelcomeChannel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWelcomeChannelRequest
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildWelcomeScreen
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWelcomeScreenModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildWidget
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWidgetActivity
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWidgetChannel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWidgetImageStyle
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWidgetMember
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
+
+## GuildWidgetModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildRequestTests.afkTimeoutChoices, evidence.5c.GuildRequestTests.banPayloads, evidence.5c.GuildRequestTests.completeForumCreation, evidence.5c.GuildRequestTests.completeGuildModify, evidence.5c.GuildRequestTests.contentRedactionAcrossRequests, evidence.5c.GuildRequestTests.deadlineBoundsAndIncidentActions, evidence.5c.GuildRequestTests.emptyRequestsAndDiagnostics, evidence.5c.GuildRequestTests.invalidCreateChannelKinds, evidence.5c.GuildRequestTests.invalidCreateChannelSettings, evidence.5c.GuildRequestTests.invalidGuildNames, evidence.5c.GuildRequestTests.invalidGuildSettings, evidence.5c.GuildRequestTests.invalidImages, evidence.5c.GuildRequestTests.malformedRolePermissions, evidence.5c.GuildRequestTests.memberAddCredentialAndFields, evidence.5c.GuildRequestTests.memberModifyAndCurrentProfile, evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields, evidence.5c.GuildRequestTests.onboardingBoundsAndDuplicates, evidence.5c.GuildRequestTests.onboardingPayloads, evidence.5c.GuildRequestTests.orderingEntries, evidence.5c.GuildRequestTests.pruneAndWidgetPayloads, evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds, evidence.5c.GuildRequestTests.roleColors, evidence.5c.GuildRequestTests.rolePayloads, evidence.5c.GuildRequestTests.voiceAndMediaCreation, evidence.5c.GuildRequestTests.welcomePayloads.
+
+## GuildWidgetSettings
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5c.GuildModelTests.absentNullAndEmptyTypedProjections, evidence.5c.GuildModelTests.dynamicCountsAndPruneNull, evidence.5c.GuildModelTests.exactTreesAndDiagnostics, evidence.5c.GuildModelTests.fieldPresenceAndMalformedValues, evidence.5c.GuildModelTests.knownEnumsAndFlags, evidence.5c.GuildModelTests.rootsSyntaxAndBounds, evidence.5c.GuildModelTests.screeningTagsAndPermissionBoundaries, evidence.5c.GuildModelTests.typedPropertiesAndFutureValues.
 
 ## GatewayEndpoints.bot
 

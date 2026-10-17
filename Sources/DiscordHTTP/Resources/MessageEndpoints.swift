@@ -352,10 +352,13 @@ func messageTags(_ channelID: ChannelID) -> Set<String> { ["messages:" + channel
 /// - Parameters:
 ///   - policy: Optional caller policy; nil keeps reuse disabled.
 ///   - channelID: Read channel.
-/// - Returns: The same eligibility/TTL with channel tags added, or nil. Unobserved external changes
-///   can remain stale until TTL expiry; snapshots never establish current permission.
+/// - Returns: The same eligibility/TTL with channel tags and a shared message-catalog visibility
+///   tag added, or nil. Guild membership/role/permission mutations invalidate that shared tag within
+///   the authentication identity. Unobserved external changes can remain stale until TTL expiry;
+///   snapshots never establish current permission. No caching is enabled by adding tags.
 func messageReadPolicy(_ policy: ReadPolicy?, channelID: ChannelID) -> ReadPolicy? {
-    policy.map { ReadPolicy(coalescing: $0.coalescing, timeToLive: $0.timeToLive, tags: $0.tags.union(messageTags(channelID))) }
+    policy.map { ReadPolicy(coalescing: $0.coalescing, timeToLive: $0.timeToLive,
+        tags: $0.tags.union(messageTags(channelID)).union(["message-catalog"])) }
 }
 
 /// Constructs conservative empty-result channel mutations through the common HTTP pipeline.

@@ -11,7 +11,9 @@ build-time generator or network access. Part 5A adds the independently adopted
 [message/poll REST catalog](RESTCatalog.md), handwritten semantic request/response
 contracts, uploads and bounded operation helpers within Models/HTTP. Part 5B adds
 [channel/thread contracts](Channels.md) in the same independent products, including
-type-aware edits, membership/archive workflows and forum/media creation.
+type-aware edits, membership/archive workflows and forum/media creation. Part 5C adds
+[guild administration](Guilds.md), typed member/role/ban/settings contracts, explicit
+partial bulk outcomes and finite lazy traversal in those same independent products.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations

@@ -301,6 +301,54 @@
       ],
       "details": "changes/2026-10-16-channels.md",
       "remainingGates": "../Channels.md"
+    },
+    {
+      "id": "2026-10-16-part-5c-guilds",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "guild_administration_rest_implementation",
+      "previousBehavior": "Guild operations unsupported except active threads from 5B and referenced partial raw projections.",
+      "currentBehavior": "Typed descriptors for all 45 current Guild operations, reusing active threads; guild-owned response fields/variants and request validation, roles/counts, members/bans, integrations/widgets, onboarding/welcome/incidents, explicit screening pending state, lazy traversal and correlated partial bulk-ban plans. Related families and 5D-5J remain partial/pending.",
+      "affectedSymbols": [
+        "Guild",
+        "GuildMember",
+        "GuildRole",
+        "GuildIntegration",
+        "GuildWidget",
+        "GuildOnboarding",
+        "GuildIncidentsData",
+        "GuildEndpoints",
+        "GuildOperations",
+        "BulkGuildBanPlan",
+        "GuildModify",
+        "GuildChannelCreate",
+        "GuildMemberAdd",
+        "GuildBulkBan",
+        "messageReadPolicy"
+      ],
+      "affectedPayloads": "REST v10 Guild, preview, member, role/colors/tags/counts, bans/bulk partial outcomes, prune, regions, integrations, public widget JSON/PNG, vanity, welcome/onboarding and incidents.",
+      "breakingChanges": [],
+      "migration": "Opt into Models/HTTP APIs, use separate guilds.join user consent for member adds, prefer current-member nickname and role colors, share rate/reuse authorities; guild mutations invalidate message visibility snapshots within the authentication identity.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/guild",
+        "https://docs.discord.com/developers/topics/permissions",
+        "https://docs.discord.com/developers/resources/voice",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/tree/ed014089afa986f2b532ae081c456a85de074d0c"
+      ],
+      "details": "changes/2026-10-16-guilds.md",
+      "remainingGates": "../Guilds.md"
     }
   ]
 }

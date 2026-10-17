@@ -6,7 +6,7 @@ Verified 2026-10-16 against the official [message](https://docs.discord.com/deve
 [API reference](https://docs.discord.com/developers/reference) and
 [change log](https://docs.discord.com/developers/change-log). All descriptors explicitly
 use API v10. This is Phase 5A, the first independent REST catalog work package;
-5B adds [channels and threads](Channels.md); 5C–5J remain pending.
+5B adds [channels and threads](Channels.md), and 5C adds [guild administration](Guilds.md); 5D–5J remain pending.
 Models and descriptors are committed handwritten semantic
 contracts linked through the reviewed inventory. Consumer builds fetch nothing.
 

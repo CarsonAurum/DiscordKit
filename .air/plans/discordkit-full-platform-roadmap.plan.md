@@ -657,6 +657,14 @@ variants, explicit pagination and snapshot no-op reconciliation. See
 Referenced resource families retain their documented partial projections; batches
 5C–5J and platform/live/soak qualification remain separate.
 
+**5C implementation update, 2026-10-16:** All 45 current Guild reference operations
+have typed APIs, reusing the existing active-thread implementation. Complete written
+guild-owned contracts and explicit preview supplements cover members, partial bulk
+bans, roles/counts, integrations, widgets, welcome/onboarding and incidents. Bounded
+member/ban continuation, explicit bulk correlation and snapshot no-op reconciliation
+have deterministic evidence; related resource families and 5D–5J remain separate.
+See [Guild contracts](../../Docs/Guilds.md) and [execution evidence](phase-5c-execution.plan.md).
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |
