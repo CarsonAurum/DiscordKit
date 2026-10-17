@@ -342,6 +342,153 @@
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"
+    },
+    {
+      "id": "audit-log-written-preview-shapes",
+      "status": "open",
+      "surface": "REST v10 / Audit Log response presence and nullability",
+      "description": "Written change.key is string but preview permits null; written auto_moderation_rules arrays have object elements but preview permits null elements; partial Integration.name is nullable in preview. Written target_id accepts nullable string, while preview narrows it to nullable snowflake.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/audit-log.md",
+          "section": "Audit Log Structure; Audit Log Entry Structure; Audit Log Change Structure; Example Partial Integration",
+          "revision": "unknown",
+          "sha256": "a73ccedc38db0f4a4f5b17ebfc5ed8dd1d69e0eaace6a98043ea29012dc11b70"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "GuildAuditLogResponse, AuditLogEntryResponse, AuditLogObjectChangeResponse and integration response schemas",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Treating either source as exhaustive can reject a published response or narrow valid target IDs.",
+      "interimPolicy": "Accept required nullable change.key, nullable Auto Moderation rule elements and nullable partial integration names from preview. Retain required nullable String target_id under the broader written contract; missing required keys and malformed nonnull known fields are rejected. Old/new change values remain independent absent/null/value exact JSON. These compatibility supplements do not promote partial referenced resource families to full support.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "audit-log-action-name-and-preview-values",
+      "status": "open",
+      "surface": "REST v10 / Audit Log action code recognition",
+      "description": "Written audit reference names code 145 AUTO_MODERATION_USER_COMMUNICATION_DISABLED, while preview abbreviates USER_COMM_DISABLED. Reference/spec name code 192 VOICE_CHANNEL_STATUS_CREATE but the 2026-04-20 changelog calls it VOICE_CHANNEL_STATUS_UPDATE. Seven action codes appear only in the official preview.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/audit-log.md",
+          "section": "Audit Log Events",
+          "revision": "unknown",
+          "sha256": "a73ccedc38db0f4a4f5b17ebfc5ed8dd1d69e0eaace6a98043ea29012dc11b70"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "AuditLogActionTypes",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        },
+        {
+          "url": "https://docs.discord.com/developers/change-log.md",
+          "section": "2026-04-20 Voice Channel Status and Start Time Documentation",
+          "revision": "unknown",
+          "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4"
+        }
+      ],
+      "impact": "Names and schema source membership differ without changing the stable numeric action identities; preview-only recognition cannot establish endpoint/event availability.",
+      "interimPolicy": "Recognize exact numeric union: 69 written codes plus preview-only 171,172,180,200,201,202,211. Use written Swift names for 145 and 192, preserve future integral codes as RawValue, and state that recognizing a code does not implement its affected resource or Gateway event. Keep preview-only action records separate from written discovery membership.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "audit-log-partial-integration-application-id",
+      "status": "open",
+      "surface": "REST v10 / audit partial integration provider projection",
+      "description": "Written partial-integration example includes application_id on twitch; official preview provider variants require it for discord and omit it for twitch/YouTube.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/audit-log.md",
+          "section": "Example Partial Integration Object",
+          "revision": "unknown",
+          "sha256": "a73ccedc38db0f4a4f5b17ebfc5ed8dd1d69e0eaace6a98043ea29012dc11b70"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "PartialDiscordIntegrationResponse, PartialExternalConnectionIntegrationResponse",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Requiring application_id globally rejects supported providers; discarding it for non-discord loses published data.",
+      "interimPolicy": "Expose optional nonnull applicationID for all providers with exact raw-field preservation, nullable preview name, required id/type/account, and explicit partial Integration status. Do not infer a full integration response or provider execution rights.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "auto-moderation-written-preview-request-contracts",
+      "status": "open",
+      "surface": "REST v10 / Auto Moderation outgoing metadata and partial updates",
+      "description": "Written and official preview disagree on block explanation maximum (150 versus 300), immutable trigger_type on modification, required create actions, and timeout/alert metadata nullability. The 2024-05-31 changelog additionally limits member-interaction blocking to member-profile rules. Preview additionally publishes nullable optional request values and finite name/action bounds.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/auto-moderation.md",
+          "section": "Auto Moderation Rule/Action Structures; Trigger Metadata; Create/Modify Auto Moderation Rule",
+          "revision": "unknown",
+          "sha256": "2583b9c2ca9e3e37cb33a737c1067cce59e2d763079375b6d33cdc89a0a6b63b"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Auto Moderation UpsertRequest/UpsertRequestPartial and action/trigger metadata request schemas",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        },
+        {
+          "url": "https://docs.discord.com/developers/change-log.md",
+          "section": "2024-05-31 Auto Moderation Member Profile Rule",
+          "revision": "unknown",
+          "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4"
+        }
+      ],
+      "impact": "Unqualified preview acceptance can send undocumented trigger changes or invalid action metadata; ignoring preview supplements loses supported absent/null distinctions.",
+      "interimPolicy": "Follow written immutable PATCH trigger kind, required create actions, 150-character explanation maximum, required nonnull alert channel and timeout duration, timeout limited to keyword/mention-spam rules, and member-interaction blocking limited to member-profile rules under the 2024-05-31 changelog. Adopt preview name maximum 100 and action count 1...5, nullable enabled/exemption fields and PATCH actions, nullable trigger subfields, and trigger-metadata null/omission compatibility only for keyword/spam/mention-spam (preset/profile create require a value). Validation uses Unicode scalar counts; Rust regex syntax, server rule capacity, permissions and channel existence remain server checks. No undocumented event/trigger pairing is inferred.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "auto-moderation-list-nullability-and-variant-names",
+      "status": "open",
+      "surface": "REST v10 / Auto Moderation list response and numeric variant names",
+      "description": "Written list returns an array of rule objects while preview permits a null array and null elements. Preview enum names also differ from written SPAM, KEYWORD_PRESET, MEMBER_PROFILE, MEMBER_UPDATE and action labels despite identical numeric values.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/auto-moderation.md",
+          "section": "List Auto Moderation Rules for Guild; Event Types; Trigger Types; Action Types",
+          "revision": "unknown",
+          "sha256": "2583b9c2ca9e3e37cb33a737c1067cce59e2d763079375b6d33cdc89a0a6b63b"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "list_auto_moderation_rules; AutomodActionType; AutomodEventType; AutomodTriggerType",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Adopting preview nullable collections would weaken the written list response contract and promote unpublished semantics from names alone.",
+      "interimPolicy": "Require a nonnull list of nonnull complete rules, including an empty array, under the written endpoint contract. Audit envelope nullable referenced-rule elements are a separately documented preview compatibility choice. Use written variant names and exact numeric codes; preserve unknown response variants without assigning preview-only semantics.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before revising this explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
     }
   ]
 }

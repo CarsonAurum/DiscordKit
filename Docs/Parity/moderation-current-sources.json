@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "sources": [
+    {
+      "name": "audit-log",
+      "url": "https://docs.discord.com/developers/resources/audit-log.md",
+      "sha256": "a73ccedc38db0f4a4f5b17ebfc5ed8dd1d69e0eaace6a98043ea29012dc11b70",
+      "bytes": 21609,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Official preview supplements published bounds and preserves explicit source discrepancies; written references control conflicts. Full upstream content is not redistributed."
+    },
+    {
+      "name": "auto-moderation",
+      "url": "https://docs.discord.com/developers/resources/auto-moderation.md",
+      "sha256": "2583b9c2ca9e3e37cb33a737c1067cce59e2d763079375b6d33cdc89a0a6b63b",
+      "bytes": 16882,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Official preview supplements published bounds and preserves explicit source discrepancies; written references control conflicts. Full upstream content is not redistributed."
+    },
+    {
+      "name": "permissions",
+      "url": "https://docs.discord.com/developers/topics/permissions.md",
+      "sha256": "77ccb043156a8159448ca9d08cf1ce3edec3945cd421dbbbaed11654f4e95c14",
+      "bytes": 22582,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Official preview supplements published bounds and preserves explicit source discrepancies; written references control conflicts. Full upstream content is not redistributed."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Official preview supplements published bounds and preserves explicit source discrepancies; written references control conflicts. Full upstream content is not redistributed."
+    },
+    {
+      "name": "changelog",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Official preview supplements published bounds and preserves explicit source discrepancies; written references control conflicts. Full upstream content is not redistributed."
+    },
+    {
+      "name": "openapi",
+      "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+      "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a",
+      "bytes": 1193084,
+      "verifiedOn": "2026-10-16",
+      "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+      "purpose": "Current semantic verification separate from original discovery membership pins. Official preview supplements published bounds and preserves explicit source discrepancies; written references control conflicts. Full upstream content is not redistributed."
+    }
+  ]
+}

@@ -16,7 +16,9 @@ Part 5B adds channels/threads, type-specific settings, invite/recipient operatio
 forum/media uploads and bounded membership/archive workflows; see `Docs/Channels.md`.
 Part 5C adds guild administration, members/bans/roles, widgets/integrations,
 onboarding/incidents and bounded workflows; see `Docs/Guilds.md`.
-Part 5D–5J and other resource-family completion remain pending.
+Part 5D adds audit logs, Auto Moderation rules, validated moderation payloads and
+bounded audit traversal; see `Docs/Moderation.md`.
+Part 5E–5J and other resource-family completion remain pending.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

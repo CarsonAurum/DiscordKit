@@ -9,7 +9,7 @@ active threads through the existing Channel implementation. Contracts were verif
 [OpenAPI specification](https://github.com/discord/discord-api-spec) and
 [change log](https://docs.discord.com/developers/change-log). Current source hashes
 are separate from original discovery pins. No dependencies or products were added;
-5D–5J remain pending.
+Part 5D adds [audit logs and Auto Moderation](Moderation.md); 5E–5J remain pending.
 
 Import `DiscordModels` and `DiscordHTTP`, inject a transport and the credential-sharing
 rate/reuse authority, then execute `GuildEndpoints` descriptors. REST adoption

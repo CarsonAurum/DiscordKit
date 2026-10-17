@@ -349,6 +349,54 @@
       ],
       "details": "changes/2026-10-16-guilds.md",
       "remainingGates": "../Guilds.md"
+    },
+    {
+      "id": "2026-10-16-part-5d-moderation",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "moderation_rest_implementation",
+      "previousBehavior": "Audit Log and Auto Moderation resource operations unsupported.",
+      "currentBehavior": "Typed descriptors expose all six current written-reference operations: Audit Log retrieval with own-field contracts and partial referenced families; full Auto Moderation list/get/create/modify/delete schemas and validated payloads. Bounded directional audit continuation and explicit snapshot no-op rule reconciliation preserve shared rate/reuse ownership. Gateway catalogs, referenced family completion and 5E-5J remain separate.",
+      "affectedSymbols": [
+        "AuditLog",
+        "AuditLogEntry",
+        "AuditLogChange",
+        "AuditLogEntryOptions",
+        "AuditLogEvent",
+        "AuditLogIntegration",
+        "AuditLogEndpoints",
+        "AuditLogOperations",
+        "AuditLogPosition",
+        "AutoModerationRule",
+        "AutoModerationTriggerMetadata",
+        "AutoModerationAction",
+        "AutoModerationActionMetadata",
+        "AutoModerationEndpoints",
+        "AutoModerationOperations"
+      ],
+      "affectedPayloads": "REST v10 audit envelope, heterogeneous changes, optional string-valued options, exact action codes, Auto Moderation rule/trigger/action snapshots and validated create/modify request metadata.",
+      "breakingChanges": [],
+      "migration": "Opt into Models/HTTP resource APIs, keep shared identity-scoped rate/reuse authorities, select explicit audit cursor direction and treat snapshot reconciliation as advisory. MANAGE_GUILD is required for Auto Moderation; timeout additionally needs MODERATE_MEMBERS.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/audit-log",
+        "https://docs.discord.com/developers/resources/auto-moderation",
+        "https://docs.discord.com/developers/topics/permissions",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/tree/ed014089afa986f2b532ae081c456a85de074d0c"
+      ],
+      "details": "changes/2026-10-16-moderation.md",
+      "remainingGates": "../Moderation.md"
     }
   ]
 }

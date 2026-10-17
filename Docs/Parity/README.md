@@ -12,6 +12,12 @@ and [tooling history](changes/2026-10-16-reviewed-generation.md). Phase 5A adds 
 [channel/thread catalog](../Channels.md), including all 24 Channel operations and
 active guild threads. Phase 5C adds all 45 current [Guild operations](../Guilds.md),
 reusing active threads, with typed member/ban/role/settings models and bounded workflows.
+Phase 5D adds the [Audit Log and Auto Moderation catalog](../Moderation.md): one
+Audit Log retrieval operation, five Auto Moderation operations, directional audit
+continuation and opt-in rule reconciliation. Audit-owned fields and moderation rules
+are typed; referenced User, application-command, scheduled-event and webhook families
+retain partial projections. Numeric audit action recognition does not implement their
+related Gateway events or resource operations.
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
@@ -28,6 +34,8 @@ measurable; discovery records and unavailable-capability stubs do not count as s
 - `inventory.schema.json` describes the inventory and its separate source catalog.
 - `sources-2026-10-15.json` pins source revisions, SHA-256 content hashes, verification
   date, authority, protocol version, prerequisites and exact discovered membership.
+- Resource-specific current-source records, including `moderation-current-sources.json`,
+  retain current official verification hashes separately from original discovery pins.
 - `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
 - `history.json` is append-only support history; `changes/` contains human-readable entries.
 - `reviewed-v1.json` and `reviewed.schema.json` describe the finite generation seed,

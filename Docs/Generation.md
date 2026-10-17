@@ -25,16 +25,17 @@ fields. Partial projections stay partial even when all generated declarations
 compile. Endpoint records classify authentication, request and response models,
 success and error statuses, rate policy, retry semantics and pagination.
 
-Phases 5A–5C also record handwritten semantic models through optional `manual.fields`
+Phases 5A–5D also record handwritten semantic models through optional `manual.fields`
 contracts. They carry the same field-level presence, nullability, default, constraint,
 access and unknown-value decisions, each linked to an actual discovery field and Swift
 declaration. The validator rejects empty or duplicate field lists, unsafe metadata,
 and links outside the parent's source, upstream IDs or symbols. These contracts audit
-the recursive Message/Poll/component, Channel/Invite and Guild payloads without asking the
-finite seed generator to emit unsupported Swift shapes. Adding them changes the reviewed reports; it never
-generates or replaces their handwritten runtime declarations. See [REST catalog](RESTCatalog.md)
-[Channel catalog](Channels.md) and [Guild catalog](Guilds.md) for the implemented operations and explicitly
-partial related-resource projections.
+the recursive Message/Poll/component, Channel/Invite, Guild and moderation payloads
+without asking the finite seed generator to emit unsupported Swift shapes. Adding
+them changes the reviewed reports; it never generates or replaces their handwritten
+runtime declarations. See [REST catalog](RESTCatalog.md),
+[Channel catalog](Channels.md), [Guild catalog](Guilds.md) and [moderation catalog](Moderation.md)
+for the implemented operations and explicitly partial related-resource projections.
 
 Source pins refer to exact revision/hash pairs in the existing official source
 catalog. Written Discord documentation takes precedence over the pinned preview

@@ -8,6 +8,20 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — audit logs and Auto Moderation REST catalog (Phase 5D)
+
+- Add all six current audit-log and Auto Moderation operations with typed entries,
+  changes, options, rules, actions and trigger metadata; keep related-resource
+  projections and Gateway coverage explicitly partial or pending.
+- Preserve exact heterogeneous change values, nullable targets, unknown action codes
+  and nested fields; validate outgoing trigger/action metadata and bounded exemptions.
+- Add finite lazy audit traversal in either exclusive cursor direction, retaining
+  referenced objects, and explicit snapshot-based rule reconciliation without hidden reads.
+- Share credential-scoped admission, coalescing and opt-in freshness; invalidate rule,
+  audit and affected guild snapshots after successful moderation mutations.
+- Record current official contracts, written/preview discrepancies, upstream chronology
+  and deterministic regression evidence; batches 5E–5J remain pending.
+
 ### 2026-10-16 — guild administration REST catalog (Phase 5C)
 
 - Add all 45 current Guild operations, reusing active threads, with typed guild,

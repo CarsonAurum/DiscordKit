@@ -14,6 +14,8 @@ contracts, uploads and bounded operation helpers within Models/HTTP. Part 5B add
 type-aware edits, membership/archive workflows and forum/media creation. Part 5C adds
 [guild administration](Guilds.md), typed member/role/ban/settings contracts, explicit
 partial bulk outcomes and finite lazy traversal in those same independent products.
+Part 5D adds [audit logs and Auto Moderation](Moderation.md), typed audit changes,
+validated rule requests and bounded directional audit traversal without adding targets.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
