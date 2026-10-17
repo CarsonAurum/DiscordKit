@@ -17,7 +17,10 @@ Audit Log retrieval operation, five Auto Moderation operations, directional audi
 continuation and opt-in rule reconciliation. Audit-owned fields and moderation rules
 are typed; referenced User, application-command, scheduled-event and webhook families
 retain partial projections. Numeric audit action recognition does not implement their
-related Gateway events or resource operations.
+related Gateway events or resource operations. Phase 5E adds all 25 current
+[Emoji, Sticker and Soundboard operations](../Expressions.md), including guild/app
+emoji, sticker packs and direct multipart creation, default/guild soundboard reads,
+writes and play, and explicit snapshot reconciliation.
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
@@ -34,7 +37,8 @@ measurable; discovery records and unavailable-capability stubs do not count as s
 - `inventory.schema.json` describes the inventory and its separate source catalog.
 - `sources-2026-10-15.json` pins source revisions, SHA-256 content hashes, verification
   date, authority, protocol version, prerequisites and exact discovered membership.
-- Resource-specific current-source records, including `moderation-current-sources.json`,
+- Resource-specific current-source records, including `moderation-current-sources.json` and
+  `expression-current-sources.json`,
   retain current official verification hashes separately from original discovery pins.
 - `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
 - `history.json` is append-only support history; `changes/` contains human-readable entries.

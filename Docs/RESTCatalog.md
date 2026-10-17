@@ -7,7 +7,8 @@ Verified 2026-10-16 against the official [message](https://docs.discord.com/deve
 [change log](https://docs.discord.com/developers/change-log). All descriptors explicitly
 use API v10. This is Phase 5A, the first independent REST catalog work package;
 5B adds [channels and threads](Channels.md), 5C adds [guild administration](Guilds.md),
-and 5D adds [audit logs and Auto Moderation](Moderation.md); 5E–5J remain pending.
+5D adds [audit logs and Auto Moderation](Moderation.md), and 5E adds
+[emoji, stickers and soundboard](Expressions.md); 5F–5J remain pending.
 Models and descriptors are committed handwritten semantic
 contracts linked through the reviewed inventory. Consumer builds fetch nothing.
 
@@ -85,9 +86,10 @@ Unknown integral variants and flag bits survive decoding. References distinguish
 an unfetched referenced message, an explicitly deleted one and a present one;
 forwarded snapshots remain immutable copies. Content redaction is retained as
 returned and never treated as permission proof. Other-family projections (User,
-Application, Channel, Sticker and interaction-resolved resources) keep their named
-partial coverage until the corresponding REST batches. Raw nested fields do not
-count as full typed parity for those families.
+Application and interaction-resolved resources) keep their named partial coverage.
+Channel and expression resource APIs now expose their own complete written contracts;
+message-specific small projections retain their documented scope. Raw nested fields
+do not count as full typed parity for a related family.
 
 `MessageCreate` covers every current create field. `MessageEdit` preserves
 absent/null/value fields, includes retained/new attachment metadata and validates

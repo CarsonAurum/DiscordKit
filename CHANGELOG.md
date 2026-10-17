@@ -8,6 +8,19 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — emoji, stickers and soundboard REST catalog (Phase 5E)
+
+- Add all 25 current Emoji, Sticker and Soundboard operations with complete written
+  resource-owned models, validated requests and explicitly partial User projections.
+- Preserve Unicode/deleted/animated emoji, application/guild ownership, sticker packs,
+  unknown formats, default sound IDs and required nullable sound emoji fields.
+- Add bounded data-URI media and direct sticker multipart creation; document caller/
+  server responsibility for dimensions, duration, premium eligibility and voice state.
+- Share authentication-scoped read reuse and invalidation; add opt-in snapshot no-op
+  reconciliation without hidden reads, bulk mutations or invented pagination.
+- Record current official hashes, written/preview conflicts, upstream chronology and
+  deterministic fixture evidence; batches 5F–5J and Gateway event catalogs remain pending.
+
 ### 2026-10-16 — audit logs and Auto Moderation REST catalog (Phase 5D)
 
 - Add all six current audit-log and Auto Moderation operations with typed entries,

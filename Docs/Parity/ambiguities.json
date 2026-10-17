@@ -489,6 +489,123 @@
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"
+    },
+    {
+      "id": "expression-written-preview-response-presence",
+      "status": "open",
+      "surface": "REST v10 / Emoji, Sticker and pack response presence",
+      "description": "Written Emoji permits required nullable id/name and optional roles/flags; the preview REST Emoji requires nonnull id/name/roles/flags and permits a null guild list. Preview Sticker format_type and pack description permit null, unlike the written required nonnull contracts.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/emoji.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "daaa936e7e6ce80a68a6ffd40aff542459fc9058279715dc271dfe1d77e9f3ac"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/sticker.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "892d32593dba8a1cf9f0fcda5bb36616e0db4a6db1dd1adfcb556ec1ca40b67f"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/soundboard.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "ddc96590f510e52b44d06ba5e37760b8398689dbaeb3284de2dc8fd3d482e119"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "A silent schema preference would either discard Unicode/deleted emoji shapes or weaken the written sticker contract.",
+      "interimPolicy": "Use written Emoji nullable id/name and optional roles/flags, retaining deleted/animated forms. Require nonnull emoji lists, Sticker format_type and pack description. Preserve unknown integral variants and raw unknown fields; do not infer authorization or boost availability from a snapshot.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before changing the explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "expression-create-and-edit-request-presence",
+      "status": "open",
+      "surface": "REST v10 / Emoji, Sticker and Soundboard request fields",
+      "description": "Preview guild Emoji create makes roles optional/nullable and permits null role elements; written create lists a required nonnull snowflake array. Preview Sticker creation makes description optional/nullable and accepts one-character descriptions; written create requires empty or 2-100 characters and modify says 2-100 or null. Preview tags require at least one character, while written tags publish only a maximum. Preview Soundboard send accepts null source_guild_id although written marks it optional nonnull. Preview Application Emoji PATCH makes name optional, while the written parameter table lists name without an optional marker or an all-optional note.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/emoji.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "daaa936e7e6ce80a68a6ffd40aff542459fc9058279715dc271dfe1d77e9f3ac"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/sticker.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "892d32593dba8a1cf9f0fcda5bb36616e0db4a6db1dd1adfcb556ec1ca40b67f"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/soundboard.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "ddc96590f510e52b44d06ba5e37760b8398689dbaeb3284de2dc8fd3d482e119"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Outgoing validation and absent/null behavior need an explicit decision; generated preview constraints cannot silently replace written contracts.",
+      "interimPolicy": "Guild emoji creation sends a nonnull roles array, including empty, and rejects null elements. Sticker creation sends name/description/tags as ordinary form fields, description empty or 2-100, tags up to 200 including empty; sticker modify description is null or 2-100. Preserve nullable Soundboard source_guild_id as explicit preview compatibility without claiming it satisfies the written cross-guild requirement; callers provide the actual source guild when required. Preview supplements emoji names 2-32 and distinct role arrays up to 1521, and sound emoji names 1-32. Application emoji rename accepts omitted name as explicit preview compatibility, rejects null and validates present names; the String convenience initializer remains available. Empty selected edits may be skipped by caller-snapshot reconciliation.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before changing the explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "soundboard-upload-size-units",
+      "status": "open",
+      "surface": "REST v10 / Soundboard create upload limits",
+      "description": "Written Soundboard prose publishes a maximum file size of 512kb without an exact byte unit, unlike the explicit 512 KiB Sticker and 256 KiB Emoji limits. It also imposes a 5.2-second audio-duration limit without defining a client-side codec validation algorithm.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/emoji.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "daaa936e7e6ce80a68a6ffd40aff542459fc9058279715dc271dfe1d77e9f3ac"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/sticker.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "892d32593dba8a1cf9f0fcda5bb36616e0db4a6db1dd1adfcb556ec1ca40b67f"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/soundboard.md",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "unknown",
+          "sha256": "ddc96590f510e52b44d06ba5e37760b8398689dbaeb3284de2dc8fd3d482e119"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Relevant resource structure and endpoint contracts",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Interpreting kb as KiB could accept a larger payload than the literal decimal bound; byte validation cannot establish media duration.",
+      "interimPolicy": "Conservatively cap decoded sound bytes at 512000 until clarified; support MP3/Ogg data URIs. Caller/server validation remains responsible for 5.2-second duration and media correctness. Sticker dimensions/duration/Lottie guild-feature eligibility and emoji 128x128 dimensions are likewise documented server/caller checks; byte bounds do not claim transcoding or codec validation.",
+      "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before changing the explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
     }
   ]
 }

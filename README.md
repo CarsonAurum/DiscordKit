@@ -6,8 +6,9 @@ HTTP execution pipeline and a minimal sharded Gateway lifecycle. The typed REST
 slice retrieves the current user/application and Gateway discovery, and adds
 [message and poll operations](Docs/RESTCatalog.md) in Phase 5A,
 [channels and threads](Docs/Channels.md) in Phase 5B,
-[guild administration](Docs/Guilds.md) in Phase 5C, and
-[audit logs and Auto Moderation](Docs/Moderation.md) in Phase 5D. Interactions,
+[guild administration](Docs/Guilds.md) in Phase 5C,
+[audit logs and Auto Moderation](Docs/Moderation.md) in Phase 5D, and
+[emoji, stickers and soundboard](Docs/Expressions.md) in Phase 5E. Interactions,
 OAuth2 flows, voice, RPC, Activities, Social and commerce are not implemented.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -52,10 +53,10 @@ establish endpoint parity or qualify untested hosts. See the
 - `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
 - `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
 - `DiscordApplePlatform`: app-driven lifecycle resource ownership and capability checks.
-- `DiscordModels`: presence-aware Message/Poll/Channel/Guild/Audit Log/Auto Moderation payloads, components, partial related-resource
+- `DiscordModels`: presence-aware Message/Poll/Channel/Guild/Audit Log/Auto Moderation/Emoji/Sticker/Soundboard payloads, components, partial related-resource
   projections and exact unknown fields.
 - `DiscordHTTP`: typed descriptors, codecs, coordinated admission, safe retries, pagination,
-  scoped coalescing, opt-in bounded response caching and message/poll, channel/thread, guild and moderation REST catalogs.
+  scoped coalescing, opt-in bounded response caching and message/poll, channel/thread, guild, moderation and expression REST catalogs.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases and startup budgets.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),

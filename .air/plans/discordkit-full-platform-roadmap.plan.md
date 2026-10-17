@@ -665,6 +665,19 @@ member/ban continuation, explicit bulk correlation and snapshot no-op reconcilia
 have deterministic evidence; related resource families and 5D–5J remain separate.
 See [Guild contracts](../../Docs/Guilds.md) and [execution evidence](phase-5c-execution.plan.md).
 
+**5D implementation update, 2026-10-16:** All six current Audit Log and Auto
+Moderation reference operations have typed APIs, bounded directional audit traversal
+and snapshot rule reconciliation. Referenced resource families and event catalogs
+retain their explicit scope; see [Moderation contracts](../../Docs/Moderation.md).
+
+**5E implementation update, 2026-10-16:** All 25 current Emoji, Sticker and Soundboard
+reference operations have typed Models/HTTP APIs, validated media, direct sticker
+multipart creation and snapshot reconciliation. Unicode/deleted emoji, application
+ownership, sticker packs, default sounds and play preconditions remain explicit.
+See [Expression contracts](../../Docs/Expressions.md) and
+[execution evidence](phase-5e-execution.plan.md). Batches 5F–5J, Gateway catalogs
+and platform/live/soak qualification remain separate.
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |

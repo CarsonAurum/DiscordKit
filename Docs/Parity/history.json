@@ -397,6 +397,51 @@
       ],
       "details": "changes/2026-10-16-moderation.md",
       "remainingGates": "../Moderation.md"
+    },
+    {
+      "id": "2026-10-16-part-5e-expressions",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "expression_rest_implementation",
+      "previousBehavior": "Emoji, Sticker and Soundboard operations unsupported; messages/polls/guilds retained explicitly partial related projections.",
+      "currentBehavior": "Typed descriptors expose all 25 current written-reference operations: ten Emoji, eight Sticker and seven Soundboard, including guild/application ownership, sticker packs, direct multipart creation, default/guild sounds and play. Complete written resource-owned fields, bounded media, scoped reuse/invalidation and explicit snapshot reconciliation retain independent HTTP adoption. Referenced User projections and Gateway events remain partial or pending; 5F-5J remain separate.",
+      "affectedSymbols": [
+        "Emoji",
+        "Sticker",
+        "MessageStickerItem",
+        "StickerPack",
+        "SoundboardSound",
+        "EmojiEndpoints",
+        "StickerEndpoints",
+        "SoundboardEndpoints",
+        "EmojiOperations",
+        "StickerOperations",
+        "SoundboardOperations"
+      ],
+      "affectedPayloads": "REST v10 Unicode/deleted/animated Emoji and application items envelope; Sticker types/formats/packs and direct multipart create; Soundboard default/guild assets, items envelope, JSON data-URI creates and voice-channel play requests.",
+      "breakingChanges": [],
+      "migration": "Opt into Models/HTTP expression endpoints and explicit snapshot reconciliation; preserve shared identity-scoped authorities, current expression permissions and actual voice eligibility for play. File-size validation does not establish codec, dimensions/duration, premium access or role classification. Application emoji rename accepts omitted name per explicit preview compatibility, rejects null and retains the String convenience initializer.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/emoji",
+        "https://docs.discord.com/developers/resources/sticker",
+        "https://docs.discord.com/developers/resources/soundboard",
+        "https://docs.discord.com/developers/topics/permissions",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/tree/ed014089afa986f2b532ae081c456a85de074d0c"
+      ],
+      "details": "changes/2026-10-16-expressions.md",
+      "remainingGates": "../Expressions.md"
     }
   ]
 }

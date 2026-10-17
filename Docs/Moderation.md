@@ -10,7 +10,8 @@ verified **2026-10-16** against REST **v10**, the
 [official OpenAPI](https://github.com/discord/discord-api-spec) and
 [change log](https://docs.discord.com/developers/change-log). Current source hashes
 are recorded separately from discovery membership pins. No dependency or product
-target was added. Phases 5E–5J and corresponding Gateway event catalogs remain pending.
+target was added. Phase 5E adds [emoji, stickers and soundboard](Expressions.md);
+phases 5F–5J and corresponding Gateway event catalogs remain pending.
 
 Import `DiscordModels` and `DiscordHTTP`, inject a transport and shared
 credential-scoped rate/reuse authorities, then execute the descriptors. REST
