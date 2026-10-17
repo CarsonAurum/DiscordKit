@@ -64,6 +64,13 @@ graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
 and tests. See [foundation contracts](Foundation.md) for current scope and limits.
 
+Part 12's initial [media/voice release](Voice.md) adds Media, VoiceCodecs,
+VoiceCrypto and pure Voice protocol components. Voice uses Core/Models/Transport
+plus those media products; existing Gateway dispatch models supply narrow join
+inputs without a Gateway runtime dependency. VoiceCrypto uses Crypto/CryptoExtras.
+The MLS/DAVE and supervised Voice→Gateway edges below remain planned; no empty
+targets represent them. HTTP/Gateway/Client/Kit remain independent of voice.
+
 ## Product boundaries
 
 Expose a convenient `DiscordKit` composition root while allowing REST, HTTP

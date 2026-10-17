@@ -1,5 +1,11 @@
 # Parity inventory and chronological history
 
+Phase 12 starts with [media/voice protocol foundations](../Voice.md), three partial
+reviewed groups and a separate [capability inventory](voice-media-capabilities.json).
+Primitive/framing tests do not establish codec, MLS/DAVE or live voice support.
+See the [dated record](changes/2026-10-17-voice-media.md) and
+[current source fingerprints](voice-media-current-sources.json).
+
 Baseline date: **2026-10-15**; implementation update **2026-10-16**. The initial
 HTTP/Gateway slice has three reviewed endpoint definitions: current-user and
 current-application are partial typed projections; Gateway bot discovery is supported

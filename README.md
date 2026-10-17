@@ -25,7 +25,10 @@ verification and explicit Activity purchase orchestration. Phase 10 adds
 with bounded injected IPC/WebSocket sessions and prioritized device publication.
 Phase 11 adds the independent [Activity client and owned browser bridge](Docs/Activities.md)
 with typed catalogs, bounded correlation/subscriptions and injected host integration.
-Approved Discord browser/mobile smoke qualification remains open. Voice media,
+Approved Discord browser/mobile smoke qualification remains open. Phase 12 starts
+with independent [portable media and voice protocol components](Docs/Voice.md):
+PCM processing, Opus framing, transport AEAD, RTP and pure voice control reducers.
+Complete Opus codecs, MLS/DAVE and running voice sessions remain unimplemented;
 native Social SDK and schema-blocked Social Commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -129,7 +132,8 @@ other-platform runtime qualification remains recorded separately.
 - Activities require an authorized Discord iframe/mobile host and an injected Swift/browser
   binding; backend OAuth and entitlement verification retain independent ownership.
 - Commands and routers provide conveniences over complete typed requests.
-- Planned optional voice APIs will own the media protocol and expose join, frames and leave.
+- Optional voice products expose media/framing/crypto primitives and pure control
+  reducers; supervised join/frame/leave sessions remain subsequent Phase 12 work.
 - Platform and access restrictions produce explicit capability information.
 
 HTTP execution, the consumer client, sharded Gateway lifecycle, HTTP interactions and

@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-17",
+  "protocolVersions": {
+    "voice": "8",
+    "rtp": "2",
+    "opus": "RFC6716 with RFC8251 updates",
+    "dave": "not implemented"
+  },
+  "phaseComplete": false,
+  "capabilities": [
+    {
+      "id": "portable-media",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordMedia/PCM.swift",
+        "Sources/DiscordMedia/MediaFrames.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordMediaTests/MediaTests.swift"
+      ],
+      "remainingGates": "Bounded values, processing and immediate-pull queue. No paced AsyncSequence, device, streaming resampler, AEC/noise/AGC or speech classifier."
+    },
+    {
+      "id": "opus-packet-framing",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/OpusPacket.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/OpusPacketTests.swift"
+      ],
+      "remainingGates": "Ordinary RFC6716 framing/TOC/ranges only; no entropy validation, multistream or self-delimiting framing."
+    },
+    {
+      "id": "opus-encoder-decoder",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "Owned range coder, SILK/CELT/hybrid, official conformance vectors and PLC/FEC remain required."
+    },
+    {
+      "id": "transport-aead",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCrypto/VoiceCrypto.swift",
+        "Sources/DiscordVoiceCrypto/VoiceTransportCipher.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCryptoTests/VoiceCryptoTests.swift",
+        "Tests/DiscordVoiceCryptoTests/VoiceTransportCipherTests.swift"
+      ],
+      "remainingGates": "Published XChaCha vectors, public AES256-GCM, bounded actor counters/replay. External crypto review and live interoperability remain open."
+    },
+    {
+      "id": "truncated-media-aead",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCrypto/TruncatedAESGCM.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCryptoTests/VoiceCryptoTests.swift"
+      ],
+      "remainingGates": "Eight-byte AES128-GCM tag adapter with NIST vectors. No ratchet/replay/nonce ownership or production audit."
+    },
+    {
+      "id": "mls",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "MLS1.0/ciphersuite2 binary structures, TreeKEM, key schedule, signatures, proposals/commits/Welcome, membership/authentication and recovery are unimplemented."
+    },
+    {
+      "id": "dave",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "Opaque opcode framing does not implement MLS coordination, sender ratchets, frame transforms, identity verification or epoch/transition interoperability."
+    },
+    {
+      "id": "voice-control",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoice/VoiceGateway.swift",
+        "Sources/DiscordVoice/VoiceRendezvous.swift",
+        "Sources/DiscordVoice/VoiceStateMachine.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceTests/VoiceGatewayTests.swift",
+        "Tests/DiscordVoiceTests/VoiceRendezvousTests.swift",
+        "Tests/DiscordVoiceTests/VoiceStateMachineTests.swift"
+      ],
+      "remainingGates": "Pure Voicev8 reducers and local generation fence. No timers, sockets, session manager or production E2EE backend."
+    },
+    {
+      "id": "rtp-discovery-jitter",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoice/RTPPacket.swift",
+        "Sources/DiscordVoice/VoiceDiscovery.swift",
+        "Sources/DiscordVoice/JitterBuffer.swift",
+        "Sources/DiscordVoice/OpusRTPPacketizer.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceTests/VoicePacketTests.swift"
+      ],
+      "remainingGates": "Bounded RTPv2/extensions/padding,74-byte discovery, Opus counters/silence and caller-paced reorder. No socket ownership or PLC."
+    },
+    {
+      "id": "supervised-session-pipeline",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "Per-guild network ownership, deadlines/cancellation/retry, SSRC/user mapping, DAVE pipelines and playback/recording are unimplemented."
+    },
+    {
+      "id": "native-audio-devices",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "Apple/Windows/Android/Linux device adapters, permissions, interruptions, routing and hot-unplug are unimplemented."
+    },
+    {
+      "id": "video-codecs-transforms",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "Opaque metadata only; negotiated video requirements, H265/layers, real codecs, DAVE parsing, RTP fragmentation/feedback and camera/GoLive are unimplemented."
+    },
+    {
+      "id": "social-audio-controls",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "Public provider protocol evidence and actual multi-call media/device/global controls remain required; no native runtime wrapper."
+    },
+    {
+      "id": "release-qualification",
+      "status": "unsupported",
+      "implementation": [],
+      "evidence": [],
+      "remainingGates": "External crypto audit, Opus/MLS/DAVE conformance, per-platform tests, authorized Discord smoke, ten-minute lossless duplex and frame-budget/RSS evidence have not run."
+    }
+  ]
+}

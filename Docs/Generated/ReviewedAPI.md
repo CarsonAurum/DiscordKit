@@ -1399,6 +1399,30 @@ Status: partial. Support since: 2026-10-17. Source: developers/developer-tools/e
 
 Evidence: evidence.11.subscriptionReferenceCounting.
 
+## OpusMediaFraming
+
+Owned RFC6716 section3 Opus packet framing only: all TOC configurations and packing codes, VBR lengths, DTX/loss frames, RFC8251 checked padding, 1275-byte frames, at most120ms and a local65536-byte packet cap. Portable normalized PCM blocks, exact rational media time, PCM16LE conversion, gain/clipping/mixing, explicitly basic block-local linear interpolation, stateless RMS gating and bounded pull/source queues are implemented without device I/O. Opus RTP timing uses48000Hz sample durations; silence and bounded jitter outputs are local protocol primitives. SILK/CELT entropy encoder/decoder, PLC/FEC, speech VAD, streaming resampler quality, codec conformance vectors, capture/playback devices, video codecs and complete media-session execution remain unimplemented. Opaque video metadata does not establish codec support. Verified and locally added 2026-10-17. Current official-source verification is recorded in Docs/Parity/voice-media-current-sources.json; historical discovery revision/hash pins are retained. Upstream announcement/effective dates are unknown for these grouped protocol surfaces; documented dated requirements and unresolved gates are recorded separately. Synthetic local fixtures establish neither production voice readiness nor complete Phase12 parity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/voice-connections. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.12A.jitterWindow, evidence.12A.opusClockAndSilence, evidence.12A.packingCodes, evidence.12A.paddingAndSlicedData, evidence.12A.pcm16ExhaustiveRoundTrip, evidence.12A.queueLifecycleAndBudgets, evidence.12A.tocConfigurations.
+
+## VoiceGatewayControlPlane
+
+Initial Voice Gateway v8 JSON/binary envelope framing, unknown-opcode retention, redacted diagnostics, scoped generation-fenced Gateway rendezvous and deterministic control-state effects. These are independently adopted local primitives; construction starts no tasks or I/O. A complete supervised WebSocket/UDP connection runtime, distributed ownership and live voice-session qualification remain open. DAVE binary framing and an injected readiness gate do not implement MLS, key exchange or media E2EE; required DAVE sessions must fail closed without a caller-provided qualified implementation. Verified and locally added 2026-10-17. Current official-source verification is recorded in Docs/Parity/voice-media-current-sources.json; historical discovery revision/hash pins are retained. Upstream announcement/effective dates are unknown for these grouped protocol surfaces; documented dated requirements and unresolved gates are recorded separately. Synthetic local fixtures establish neither production voice readiness nor complete Phase12 parity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/voice-connections. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.12A.catalog, evidence.12A.eitherOrderAndDuplicates, evidence.12A.exactJSONAndFutureOpcodes, evidence.12A.replacementAndStaleGeneration.
+
+## VoiceTransportPrimitives
+
+Bounded RTP v2 header/extension/padding parsing and serialization, Discord UDP discovery messages and independently owned AES-256-GCM/XChaCha20-Poly1305 rtpsize transport encryption. Nonce counters, replay admission and resource budgets are local deterministic state; transport authentication is not DAVE media E2EE. Deprecated XSalsa and non-rtpsize modes are not implemented. UDP sockets, supervised connection integration, live Discord interoperability, external security audit and broad platform qualification remain separate gates. Verified and locally added 2026-10-17. Current official-source verification is recorded in Docs/Parity/voice-media-current-sources.json; historical discovery revision/hash pins are retained. Upstream announcement/effective dates are unknown for these grouped protocol surfaces; documented dated requirements and unresolved gates are recorded separately. Synthetic local fixtures establish neither production voice readiness nor complete Phase12 parity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/voice-connections. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.12A.discovery, evidence.12A.encryptedRTP, evidence.12A.malformedPackets, evidence.12A.packetRoundTrip, evidence.12A.transportTamperDoesNotCommitReplay, evidence.12A.transportWireAndRoundTrip.
+
 ## MessageEndpoints.bulkDelete
 
 API v10 POST /channels/{channel.id}/messages/bulk-delete; handwritten MessageEndpoints.bulkDelete, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.

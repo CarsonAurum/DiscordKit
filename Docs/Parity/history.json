@@ -1047,6 +1047,52 @@
       ],
       "details": "changes/2026-10-17-activities.md",
       "remainingGates": "coverage.md"
+    },
+    {
+      "id": "2026-10-17-part-12-voice-media-foundations",
+      "recordedOn": "2026-10-17",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "2025-09-02",
+      "upstreamEffectiveDate": "2026-03-01",
+      "verifiedOn": "2026-10-17",
+      "localSupportDate": "2026-10-17",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "No owned media, Opus framing, voice crypto or voice session protocol components; Part0 primitive probes only.",
+      "currentBehavior": "Initial multi-release Phase12 foundations: bounded portable media/Opus framing, XChaCha/AES transport primitives, experimental truncated AES128-GCM, pure Voicev8 control/rendezvous and RTP/discovery/reorder components. Complete codecs, MLS/DAVE, sessions/devices and qualification remain unimplemented.",
+      "affectedSymbols": [
+        "PCMBuffer",
+        "OpusPacket",
+        "VoiceTransportCipher",
+        "TruncatedAESGCM",
+        "VoiceGatewayFrame",
+        "VoiceJoinRendezvous",
+        "VoiceGatewaySessionState",
+        "RTPPacket",
+        "OpusRTPPacketizer",
+        "VoiceDiscovery",
+        "VoiceJitterBuffer",
+        "VoiceConnectionIdentity",
+        "VoiceE2EEReadiness"
+      ],
+      "affectedPayloads": "Voicev8 JSON/binary envelopes, RTPv2 audio and Opus packet framing. Announcement/effective dates above refer specifically to non-E2EE call deprecation; original protocol introduction dates unknown.",
+      "breakingChanges": [],
+      "migration": "Additive independent products. Adopt low-level components explicitly; no runnable Discord voice or DAVE backend is provided. Share each key nonce owner, authenticate before parsing media, and retain all codec/MLS/device/audit gates.",
+      "sources": [
+        "https://docs.discord.com/developers/topics/voice-connections",
+        "https://docs.discord.com/developers/change-log",
+        "https://www.rfc-editor.org/rfc/rfc6716",
+        "https://www.rfc-editor.org/rfc/rfc8251",
+        "https://www.rfc-editor.org/rfc/rfc3550",
+        "https://daveprotocol.com/"
+      ],
+      "details": "changes/2026-10-17-voice-media.md",
+      "remainingGates": "../Voice.md"
     }
   ]
 }

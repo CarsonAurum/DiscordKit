@@ -1,7 +1,12 @@
 # Platform support and qualification
 
 Updated **2026-10-17**. The initial HTTP execution and minimal sharded Gateway
-slices and portable OAuth flows are implemented; voice remains later work.
+slices and portable OAuth flows are implemented. Phase 12 adds locally tested
+[media/voice protocol components](Voice.md); full voice remains unimplemented.
+There are no native capture/playback adapters, owned Opus encoder/decoder, MLS/DAVE
+backend, supervised live voice session or authorized Discord media smoke results.
+Crypto vector tests and synthetic packet round trips do not qualify devices,
+codec interoperability, other hosts, minimum OS versions or ten-minute duplex stability.
 Phase 9 [OAuth](OAuth.md) and [public game/entitlement helpers](Phase9ServiceContracts.md)
 have local deterministic coverage. The injected browser adapter does not qualify OS
 authentication UI; secure distributed storage, approval-gated publisher access and

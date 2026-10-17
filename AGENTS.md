@@ -62,6 +62,13 @@ subscriptions; see `Docs/Activities.md`. Construction starts no I/O. Swift/brows
 bindings and approved Discord Web/iOS/Android smoke qualification remain separate;
 no standalone browser/native container creates a Discord Activity host.
 
+Part 12 starts with independent Media, VoiceCodecs, VoiceCrypto and Voice products;
+see `Docs/Voice.md`. They implement bounded PCM processing, ordinary Opus framing,
+transport AEAD and pure Voice v8/RTP/discovery/control components. They do not yet
+provide complete Opus codecs, MLS/DAVE, supervised network sessions or devices.
+Construction starts no I/O. External crypto review, codec/MLS interoperability,
+per-platform device qualification and ten-minute duplex evidence remain open.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -79,6 +86,10 @@ no standalone browser/native container creates a Discord Activity host.
 - `Sources/DiscordRPC/`, `Sources/DiscordCertifiedDevices/`: independent local RPC v1
   protocol/session ownership and certified-device publication; no HTTP/Gateway/OAuth dependency.
 - `Sources/DiscordActivities/`: independent Activity protocol/client/catalog over Core/Transport.
+- `Sources/DiscordMedia/`, `Sources/DiscordVoiceCodecs/`, `Sources/DiscordVoiceCrypto/`:
+  bounded portable media, Opus packet structure and experimental voice crypto primitives.
+- `Sources/DiscordVoice/`: deterministic voice framing/control/RTP components; no client ownership.
+- `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
 - `Examples/RPCApp/`: independent portable RPC/device consumer; build without connecting to Discord.
@@ -166,6 +177,12 @@ Swift frames and simulated message hosts; approved Discord browser/mobile auth,
 participant and purchase smoke tests remain separate gates. Keep client secrets
 out of iframe/mobile code and verify entitlements through server-authoritative APIs.
 For documentation-only changes, review the diff; a build is not required.
+
+For media/voice changes, also build and run the offline `Examples/VoiceBot` package.
+Preserve its graph without HTTP/Gateway/Client/Cache/OAuth or concrete adapters.
+Run published primitive vectors and malformed/tamper/replay/counter/queue tests.
+The local encoded-packet round trip does not satisfy the full codec/MLS/DAVE,
+device, authorized Discord or ten-minute duplex gates in `Docs/Voice.md`.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.
 

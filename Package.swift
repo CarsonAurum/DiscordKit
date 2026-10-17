@@ -37,6 +37,10 @@ let package = Package(
         .library(name: "DiscordRPC", targets: ["DiscordRPC"]),
         .library(name: "DiscordCertifiedDevices", targets: ["DiscordCertifiedDevices"]),
         .library(name: "DiscordActivities", targets: ["DiscordActivities"]),
+        .library(name: "DiscordMedia", targets: ["DiscordMedia"]),
+        .library(name: "DiscordVoiceCodecs", targets: ["DiscordVoiceCodecs"]),
+        .library(name: "DiscordVoiceCrypto", targets: ["DiscordVoiceCrypto"]),
+        .library(name: "DiscordVoice", targets: ["DiscordVoice"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.104.0"),
@@ -65,6 +69,10 @@ let package = Package(
         .target(name: "DiscordRPC", dependencies: ["DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordCertifiedDevices", dependencies: ["DiscordRPC", "DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordActivities", dependencies: ["DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordMedia", swiftSettings: concurrencySettings),
+        .target(name: "DiscordVoiceCodecs", dependencies: ["DiscordMedia"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordVoiceCrypto", dependencies: [.product(name: "Crypto", package: "swift-crypto"), .product(name: "CryptoExtras", package: "swift-crypto")], swiftSettings: concurrencySettings),
+        .target(name: "DiscordVoice", dependencies: ["DiscordCore", "DiscordModels", "DiscordTransport", "DiscordMedia", "DiscordVoiceCodecs", "DiscordVoiceCrypto"], swiftSettings: concurrencySettings),
         .target(name: "DiscordFoundationTransport", dependencies: ["DiscordTransport"], swiftSettings: concurrencySettings),
         .target(
             name: "DiscordNIOTransport",
@@ -116,6 +124,10 @@ let package = Package(
         .testTarget(name: "DiscordRPCTests", dependencies: ["DiscordRPC", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordCertifiedDevicesTests", dependencies: ["DiscordCertifiedDevices", "DiscordRPC", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordActivitiesTests", dependencies: ["DiscordActivities", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordMediaTests", dependencies: ["DiscordMedia"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordVoiceCodecsTests", dependencies: ["DiscordVoiceCodecs", "DiscordMedia"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordVoiceCryptoTests", dependencies: ["DiscordVoiceCrypto", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordVoiceTests", dependencies: ["DiscordVoice", "DiscordVoiceCodecs", "DiscordVoiceCrypto", "DiscordCore", "DiscordModels", "DiscordTransport"], swiftSettings: concurrencySettings),
         .testTarget(
             name: "DiscordTransportTests",
             dependencies: ["DiscordTransport", "DiscordTestSupport"],

@@ -32,6 +32,27 @@ pinned as protocol/schema evidence, without importing or vendoring its runtime o
 transitive packages. Native/WebAssembly Swift-to-browser bindings are injected and
 qualified separately. ActivityHost composes backend OAuth/Commerce explicitly.
 
+Part 12 additionally selects the existing **CryptoExtras** product for public
+AES block permutation in the experimental truncated-tag adapter. Media is
+Foundation-only; VoiceCodecs depends on Media; Voice selects Core/Models/Transport
+and those media/crypto products. Existing REST/Gateway/Client/Kit do not select
+voice. This is a real native-graph expansion on Apple hosts: CryptoExtras imports
+CCryptoBoringSSL, CryptoBoringWrapper, Crypto and SwiftASN1 even where Crypto alone
+uses platform CryptoKit. No BoringSSL internal API is called from DiscordKit.
+No package version or root resolved pin changes. The official latest release
+remains [Crypto 5.0.1](https://github.com/apple/swift-crypto/releases/tag/5.0.1),
+published 2026-10-12 and reverified 2026-10-17; its Swift tools 6.2 manifest is
+compatible with this package's Swift 6.4 baseline and preserves lower deployment
+minima. The `from: "5.0.1"` requirement retains a next-major upper bound.
+Resolved Crypto revision is `1c80d3aff53fedc445b60692980cb4f19a618657`; ASN.1
+1.7.3 remains `3b6410f7dee09eb33cdd26260c5fd47fda19b0e2`.
+The existing Apache-2.0/NOTICE and bundled BoringSSL ISC/OpenSSL attribution terms
+apply to this newly selected native graph; preserve upstream component notices.
+Full binary redistribution audit and other-host qualification remain open.
+Current source/manifest hashes are in [voice sources](Parity/voice-media-current-sources.json).
+Published AEAD/AES vector tests establish local primitive behavior, not an external
+crypto audit or MLS/DAVE interoperability. See [Voice](Voice.md).
+
 The foundational targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
 explicit newer Apple availability; it does not raise the runtime product minima

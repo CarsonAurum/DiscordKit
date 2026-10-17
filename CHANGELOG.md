@@ -6,6 +6,21 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Part 12 initial media and voice protocol release
+
+- Added independent Media, VoiceCodecs, VoiceCrypto and Voice products without
+  introducing voice dependencies into REST, Gateway, Client or the umbrella.
+- Added bounded PCM/time/frame values, PCM16 conversion/processing and finite
+  queues, plus complete ordinary Opus packet framing and duration validation.
+- Added XChaCha/HChaCha and AES256-GCM transport protection, actor-owned nonce
+  allocation, bounded authenticated replay state and a truncated AES128-GCM adapter.
+- Added pure Voice v8 framing/control/rendezvous, UDP discovery, RTP/Opus packet
+  construction, rollover/silence and bounded deterministic reorder windows.
+- Added published-vector/negative/concurrency tests, an offline VoiceBot example,
+  current-source fingerprints and partial parity records. Full codecs, MLS/DAVE,
+  supervised sessions, device adapters, independent crypto audit and duplex/live
+  qualification remain open; this release does not complete Phase 12.
+
 ## 2026-10-17 — Part 11 Activity client and owned browser bridge
 
 - Added an independent Activities product and dependency-free browser bridge with

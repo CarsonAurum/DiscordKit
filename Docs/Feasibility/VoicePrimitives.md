@@ -1,6 +1,11 @@
 # Voice primitive feasibility
 
-Verified on 2026-10-15. This is a feasibility baseline for roadmap Part 0 and work breakdown for Part 12. DiscordKit implements no voice transport, codecs, MLS or DAVE yet. Passing these small public-API probes does not establish cryptographic interoperability or production readiness.
+Verified on 2026-10-15. This is a historical feasibility baseline for roadmap Part 0
+and work breakdown for Part 12. The subsequent 2026-10-17 [initial media/voice release](../Voice.md)
+implements some owned primitives and protocol components; it does not implement
+full codecs, MLS/DAVE or a runnable voice session. The statements below describe
+the original probe, not the later component inventory. Passing these small
+public-API probes does not establish cryptographic interoperability or production readiness.
 
 ## Evidence and executed probe
 

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-17",
+  "sources": [
+    {
+      "name": "voice-connections",
+      "url": "https://docs.discord.com/developers/topics/voice-connections.md",
+      "sha256": "7daad5ac1df7dac9f46328fbd37c8bcf1aa9804f8bffc1bf768004d05ceabbba",
+      "bytes": 35065,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "voice-opcodes",
+      "url": "https://docs.discord.com/developers/topics/opcodes-and-status-codes.md",
+      "sha256": "8c541ff7c62a5688a4348713f77ad9e0d25b2a07ae9ac5caf741c151824f4da7",
+      "bytes": 26845,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "dave",
+      "url": "https://daveprotocol.com/",
+      "sha256": "bb1d5eb46b6b63589cf5f03bf6fd0aca9fbef1730d2ae833fecfd264c27ed09c",
+      "bytes": 124412,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "opus",
+      "url": "https://www.rfc-editor.org/rfc/rfc6716.txt",
+      "sha256": "41caac5240a4a22661efd0031d5b7aee48f3c0bde3b2cdcee8165932e485f98c",
+      "bytes": 977743,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "opus-updates",
+      "url": "https://www.rfc-editor.org/rfc/rfc8251.txt",
+      "sha256": "86abdb8c0fa1b0b6e1b9c1f324163ca152a8d2d9debd10461da3d56438489ecd",
+      "bytes": 23578,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "rtp",
+      "url": "https://www.rfc-editor.org/rfc/rfc3550.txt",
+      "sha256": "4c210e9434b5b4c029e8536ad8991f3709bc3cbfa0999e951bcb4c2143c539e8",
+      "bytes": 259985,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "xchacha",
+      "url": "https://www.ietf.org/archive/id/draft-irtf-cfrg-xchacha-03.txt",
+      "sha256": "fa796b50265eeee383d40e82fed880267c7835e1b3d64c50c4f06162adaa1cfd",
+      "bytes": 36930,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+    },
+    {
+      "name": "swift-crypto/Package.swift",
+      "url": "https://github.com/apple/swift-crypto/blob/1c80d3aff53fedc445b60692980cb4f19a618657/Package.swift",
+      "sha256": "a91c1abd15e76764503e675e099a1f8369b9e25f7d9708b7f472ab7a8de73329",
+      "bytes": 9971,
+      "verifiedOn": "2026-10-17",
+      "revision": "1c80d3aff53fedc445b60692980cb4f19a618657",
+      "purpose": "Existing Swift Crypto 5.0.1 public CryptoExtras AES permutation and selected product graph verified from resolved checkout."
+    },
+    {
+      "name": "swift-crypto/Sources/CryptoExtras/AES/Block Function.swift",
+      "url": "https://github.com/apple/swift-crypto/blob/1c80d3aff53fedc445b60692980cb4f19a618657/Sources/CryptoExtras/AES/Block%20Function.swift",
+      "sha256": "2e5609a7aeaa4c619ee731dfbae15ee9fb237dc0eb78acc6749abd8fdf4121ee",
+      "bytes": 5899,
+      "verifiedOn": "2026-10-17",
+      "revision": "1c80d3aff53fedc445b60692980cb4f19a618657",
+      "purpose": "Existing Swift Crypto 5.0.1 public CryptoExtras AES permutation and selected product graph verified from resolved checkout."
+    }
+  ]
+}
