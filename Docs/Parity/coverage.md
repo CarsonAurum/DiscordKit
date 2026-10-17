@@ -1,5 +1,10 @@
 # Part 0 coverage and completion gates
 
+Current Phase 7 consumer/cache/event delivery is recorded in the
+[client guide](../Client.md) and [execution record](../../.air/plans/phase-7-execution.plan.md).
+The historical counts and qualification gates below retain their original scope;
+local composition/permission calculation adds no new endpoint/dispatch-name records.
+
 Verified **2026-10-15**, on macOS arm64 with Swift **6.4**. This is a discovery and
 feasibility baseline. **The complete Part 0 gate is still open**: other-host runtime
 qualification, full semantic inventory review and missing upstream contracts cannot

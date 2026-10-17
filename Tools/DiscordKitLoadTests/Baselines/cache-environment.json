@@ -1,0 +1,49 @@
+{
+  "architecture": "arm64",
+  "buildConfiguration": "release",
+  "cacheRounds": 8,
+  "dirtySource": true,
+  "excludedFromMeasuredWorkload": [
+    "Sources/DiscordCache/EventReducer.swift",
+    "Sources/DiscordCache/PermissionResolver.swift",
+    "Sources/DiscordGateway/EventHandlers.swift",
+    "Sources/DiscordClient/DiscordClient.swift",
+    "Sources/DiscordGateway/GatewayShard.swift"
+  ],
+  "executableSHA256": "28b5d67966f1ba2c7340f893abc78c9b5d07005697ba8a9cf2abbee837878507",
+  "finalSourceComparisonCapturedAtUTC": "2026-10-17T05:16:26.580500+00:00",
+  "finalSourceSHA256": {
+    "Sources/DiscordCache/CacheValues.swift": "aad23c15ca2decce7b72d02391c1e4f22a4187b9363aa1cbf3d56d149a8dab6c",
+    "Sources/DiscordCache/EntityCache.swift": "0dad36484aa3663f9ab5dce99c194dc5bacb0618df0974e6d762024acda64658",
+    "Sources/DiscordCache/EventReducer.swift": "eeda1685642c2a4fd57a10f9c3ab3c92a3d9d75cd2586b2168f4902217490aa8",
+    "Sources/DiscordGateway/EventHandlers.swift": "3feb0dd719b48c737030a6a16d48e183464238f8a6ba596f3f715335acdef475",
+    "Sources/DiscordGateway/EventHub.swift": "b2310b764554a6453d61f1a1684fdfe7c4f8af201916879ad42b17841911df59",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08"
+  },
+  "hardwareModel": "Mac15,10",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "measurementScope": "one shared cache; 1/2/4 scopes and 20 fixed keys per scope; exact finite refresh, eviction, TTL, invalidation and subscriber recovery rounds; separate accounted bytes and actual process RSS; no fleet or 30-minute qualification inferred",
+  "peer": "offline fixed-key cache/broadcast scripts; no credentials or sockets",
+  "physicalMemoryBytes": 38654705664,
+  "processor": "Apple M3 Max",
+  "provenanceNotes": "Original sourceSHA256 and executableSHA256 identify the measurement build; finalSourceSHA256 records final review comparison without rewriting that history. Source drift is explicitly classified below. Permissions, reducer, handlers, Client facade and real shard/network execution are outside this cache/broadcast workload. No final-binary or fleet capacity claim is inferred.",
+  "recordedAtUTC": "2026-10-17T04:46:05.954663+00:00",
+  "soakRounds": 512,
+  "sourceCommitBasis": "cd2ac730e251b85c13794aa7ae6e9666867d216e",
+  "sourceDriftNotes": {
+    "Sources/DiscordCache/CacheValues.swift": "Only invalidNullField error representation changed from associated String to a closed payload-free case; exercised non-null valid snapshots are unaffected.",
+    "Sources/DiscordCache/EntityCache.swift": "Only the corresponding invalid-null validation throw was sanitized; the valid apply/refresh/TTL/invalidation success paths exercised here are unchanged.",
+    "Sources/DiscordCache/EventReducer.swift": "READY, unavailable/destructive guild/channel/member handling, null validation, context and obfuscation corrections occurred after measurement build; this adapter is not called by CacheLoadRunner.",
+    "Sources/DiscordGateway/EventHub.swift": "Private subscribe Throws documentation changed after measurement build; executable hub behavior is unchanged."
+  },
+  "sourceHashCaptureUTC": "2026-10-17T04:47:11.364305+00:00",
+  "sourceSHA256": {
+    "Sources/DiscordCache/CacheValues.swift": "83e16cc831f4a3ec841ce8d2d2a0d96bc18d8483ccf8aa3673af1f2c9c4eba1d",
+    "Sources/DiscordCache/EntityCache.swift": "cbcc5106dd4bf2137a18ac55e821a583b2bda429fbe76e96b85b3d0e770483ae",
+    "Sources/DiscordCache/EventReducer.swift": "6ec61c82c997d80f779b2b51dc354ca9c3726038da739e4ab2402297776e05c5",
+    "Sources/DiscordGateway/EventHandlers.swift": "3feb0dd719b48c737030a6a16d48e183464238f8a6ba596f3f715335acdef475",
+    "Sources/DiscordGateway/EventHub.swift": "d04b5bc1a2d35c5de91d583f2568ca17f80a436c01bcd6d1466fe759dc33f63d",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08"
+  },
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0"
+}

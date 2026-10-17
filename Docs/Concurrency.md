@@ -4,8 +4,12 @@ Status: adopted implementation policy, updated 2026-10-16. Part 1 implements
 Sendable values, pull-body ownership and deadline contexts with deterministic
 test support. Part 2 adds actor/event-loop-owned adapters and fenced shard leases;
 see [transport ownership](Transport.md). Part 3 adds partitioned rate authority,
-bounded scheduling/read reuse and supervised shard actors. Event broadcasts and
-entity projections remain planned; the current Gateway exposes bounded raw polling.
+bounded scheduling/read reuse and supervised shard actors. Part 7 adds independent
+bounded broadcast queues, structured per-shard ordered handlers, optional scoped
+entity projections and the supervised consumer client. Raw shard polling remains
+available; the client uses a single bounded wake-up stream for ingestion. See
+[client ownership and bounds](Client.md) for cancellation, aggregate authority and
+stale-fetch guarantees.
 See [HTTP](HTTP.md) and [Gateway](Gateway.md) for implemented ownership boundaries.
 
 ## Target settings and isolation

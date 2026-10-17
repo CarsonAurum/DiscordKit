@@ -15,6 +15,8 @@ struct LoadOptions: Equatable, Sendable {
     let portable: Bool
     let withoutDeadline: Bool
     let settleSeconds: Int
+    let rounds: Int?
+    let durationSeconds: Int?
 
     /// Parses workload and allocation diagnostics without starting runtime work.
     /// Profile defaults to accounts-100 and scenario to transport; HTTP and Gateway
@@ -24,7 +26,9 @@ struct LoadOptions: Equatable, Sendable {
     /// and accepts zero through thirty seconds solely for post-cleanup measurements.
     /// - Parameter arguments: Arguments after the executable name.
     /// - Throws: `invalidArguments` for unknown/missing/duplicate flags, or
-    ///   `unsupportedScenario` for Gateway/cache/soak scenarios not yet implemented.
+    ///   `unsupportedScenario` for unknown scenarios. Cache/soak accepts exact
+    ///   `--rounds` in 1...1,000,000; other scenarios reject that option. Soak alone
+    ///   accepts `--duration-seconds` in 1...3,600; rounds then set minimum work.
     init(arguments: [String]) throws {
         var profile = "accounts-100"
         var scenario = "transport"
@@ -32,17 +36,27 @@ struct LoadOptions: Equatable, Sendable {
         var isPortable = false
         var disablesDeadline = false
         var settling = 0
+        var rounds: Int?
+        var duration: Int?
         var seen: Set<String> = []
         var index = 0
         while index < arguments.count {
             let flag = arguments[index]
             guard seen.insert(flag).inserted else { throw LoadFailure.invalidArguments }
             switch flag {
-            case "--profile", "--scenario", "--settle-seconds":
+            case "--profile", "--scenario", "--settle-seconds", "--rounds", "--duration-seconds":
                 guard index + 1 < arguments.count else { throw LoadFailure.invalidArguments }
                 index += 1
                 if flag == "--profile" { profile = arguments[index] }
                 else if flag == "--scenario" { scenario = arguments[index] }
+                else if flag == "--rounds" {
+                    guard let count = Int(arguments[index]), (1...1_000_000).contains(count) else { throw LoadFailure.invalidArguments }
+                    rounds = count
+                }
+                else if flag == "--duration-seconds" {
+                    guard let seconds = Int(arguments[index]), (1...3_600).contains(seconds) else { throw LoadFailure.invalidArguments }
+                    duration = seconds
+                }
                 else {
                     guard let value = Int(arguments[index]), (0...30).contains(value) else { throw LoadFailure.invalidArguments }
                     settling = value
@@ -54,14 +68,18 @@ struct LoadOptions: Equatable, Sendable {
             }
             index += 1
         }
-        guard ["transport", "http", "gateway"].contains(scenario) else { throw LoadFailure.unsupportedScenario }
+        guard ["transport", "http", "gateway", "cache", "soak"].contains(scenario) else { throw LoadFailure.unsupportedScenario }
         guard !profile.isEmpty else { throw LoadFailure.invalidArguments }
+        guard rounds == nil || scenario == "cache" || scenario == "soak" else { throw LoadFailure.invalidArguments }
+        guard duration == nil || scenario == "soak" else { throw LoadFailure.invalidArguments }
         profileName = profile
         self.scenario = scenario
         burst = isBurst
         portable = isPortable
         withoutDeadline = disablesDeadline
         settleSeconds = settling
+        self.rounds = rounds
+        durationSeconds = duration
     }
 }
 
@@ -142,6 +160,18 @@ enum LoadCommand {
     ///   the HTTP scenario exercises its explicit finite rejected-request retry contract.
     static func run(arguments: [String]) async throws {
         let options = try LoadOptions(arguments: arguments)
+        if options.scenario == "cache" || options.scenario == "soak" {
+            guard !options.portable, !options.withoutDeadline, options.settleSeconds == 0 else { throw LoadFailure.invalidArguments }
+            guard #available(macOS 15, *) else { throw LoadFailure.unsupportedHost }
+            let report = try await CacheLoadRunner().run(profileName: options.profileName, burst: options.burst,
+                rounds: options.rounds ?? (options.scenario == "soak" ? 512 : 8), scenario: options.scenario,
+                durationSeconds: options.durationSeconds)
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            var data = try encoder.encode(report); data.append(10)
+            try FileHandle.standardOutput.write(contentsOf: data)
+            return
+        }
         if options.scenario == "gateway" {
             guard !options.portable, !options.withoutDeadline, options.settleSeconds == 0 else { throw LoadFailure.invalidArguments }
             let report = try await GatewayLoadRunner().run(profileName: options.profileName, burst: options.burst)

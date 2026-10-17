@@ -33,7 +33,11 @@ decisions; broader Commerce products remain planned. Part 5J adds
 workflows and full-replacement profile statistics in the same products. Part 6 adds
 [typed Gateway dispatches and commands](Gateway.md), bounded request correlation
 and independent opcode admission in Models/Gateway. Gateway continues to depend on
-HTTP only for discovery and never imports cache, handlers or concrete transports.
+HTTP only for discovery and never imports cache, user handler implementations or concrete transports.
+Part 7 adds [consumer composition and optional state](Client.md): independent Cache
+and Client products, bounded broadcast/ordered handler infrastructure in Gateway,
+explicit scoped cache bridging and typed service access. The umbrella now composes
+Client; REST-only consumers retain the independent HTTP graph.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
@@ -102,10 +106,10 @@ test support are separate from public runtime products.
 | Models | Immutable, `Sendable` Discord payloads and forward-compatible variants. No client, socket or transport references. |
 | Transport | Narrow HTTP, WebSocket, datagram, IPC, ingress, stream and lifecycle contracts. Own no Discord endpoint policy. |
 | HTTP | Typed service descriptors, authentication policy, codecs, bounded bodies, rate limits, retries and pagination. No Gateway requirement. |
-| Gateway | Protocol state, discovery, shards, heartbeats, typed dispatch/command catalog, bounded request correlation and opcode admission. Does not import cache. |
-| Cache | Optional projections of model/event data with explicit freshness, partial state and uncertainty. |
+| Gateway | Protocol state, discovery, shards, heartbeats, typed catalog, bounded requests/admission, independent bounded broadcast and handler execution. Does not import cache or user handlers. |
+| Cache | Optional scoped projections, explicit coalesced refresh/freshness, sparse state, uncertainty and pure arbitrary-width permission resolution. Imports no Gateway/HTTP/Client. |
 | Interactions/Commands | HTTP-only signature/response lifecycle and complete typed command construction/routing. Commands does not import Client. |
-| Client/Kit | Supervised composition, consumer-facing configuration, handlers and service access. |
+| Client/Kit | Supervised discovery/shard/ingestion composition, configuration, optional cache bridge, event access, diagnostics and typed services. |
 | Voice | Optional voice/media protocols; narrow Gateway control contracts rather than dependence on the facade. Crypto, MLS and codec work stays isolated. |
 | RPC/Activities/Social/Commerce | Distinct local, host, authentication and access contracts; missing wire definitions remain explicit blockers. |
 

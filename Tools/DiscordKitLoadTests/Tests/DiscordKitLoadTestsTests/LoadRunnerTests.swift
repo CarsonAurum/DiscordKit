@@ -61,8 +61,9 @@ struct LoadRunnerTests {
         #expect(try LoadOptions(arguments: ["--scenario", "http"]).scenario == "http")
         #expect(try LoadOptions(arguments: ["--scenario", "gateway"]).scenario == "gateway")
         for scenario in ["cache", "soak"] {
-            #expect(throws: LoadFailure.unsupportedScenario) { try LoadOptions(arguments: ["--scenario", scenario]) }
+            #expect(try LoadOptions(arguments: ["--scenario", scenario]).scenario == scenario)
         }
+        #expect(throws: LoadFailure.unsupportedScenario) { try LoadOptions(arguments: ["--scenario", "unknown"]) }
     }
 
     /// Quantiles use nearest rank and filter nonfinite/negative values without inventing samples.

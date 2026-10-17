@@ -8,6 +8,21 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — consumer runtime, state and event delivery (Phase 7)
+
+- Add independent Client/Cache products and umbrella bot aliases with task-free
+  construction, explicit intents, supervised discovery/shards, service access,
+  readiness diagnostics and idempotent cancellation-safe awaited shutdown.
+- Add independent bounded broadcast subscriptions with explicit overflow/loss policies,
+  shared aggregate limits and ordered bounded handler execution with observable errors.
+- Add identity/intent/visibility-scoped entity projections, sparse/null/redaction
+  semantics, unavailable/deleted state, finite TTL/LRU retention, bounded coalesced
+  refresh, stale-fetch fencing and conservative local-write/visibility invalidation.
+- Resolve arbitrary-width permissions from explicit complete facts, preserving
+  indeterminate results for insufficient/redacted state and thread/timeout constraints.
+- Preserve late lease-release errors through cancellation and multi-shard cleanup;
+  add consumer regressions, a standalone bot example and offline cache/soak evidence.
+
 ### 2026-10-16 — Gateway dispatches and bounded requests (Phase 6)
 
 - Add typed recognition of all 79 documented opcode-zero dispatch names, preserving

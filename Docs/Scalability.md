@@ -247,3 +247,33 @@ unsolicited-response ambiguity because Discord supplies no correlation nonce.
 Timeout, cancellation and disconnect preserve bounded partial results and never
 imply that a submitted command was withdrawn from Discord. These finite policies
 and synthetic load observations do not establish production sharded capacity.
+
+## Part 7 consumer bounds and measured scope
+
+[Consumer composition](Client.md) adds independently bounded broadcast queues,
+per-shard ordered handler execution and shared client/session reservation ceilings.
+Optional cache retention and refresh admission are scoped by credential, intents
+and visibility generation, with both per-identity and aggregate limits. Local
+mutations and observed visibility changes fence old refreshes; cached data and
+permission calculations never establish current authorization.
+
+The [load harness](../Tools/DiscordKitLoadTests/README.md) adds fixed sets of 20
+entity keys per scope, at most four actual opaque scopes and 64 offered refresh
+callers per scope. These are bounded process-local cohorts. The logical million
+served-user profile does not create a million identities, tasks or connections.
+Finite normal/burst cache and recovery runs retain actual process RSS separately
+from accounted projection bytes, and repeated Gateway scripts remain a separate
+lifecycle measurement. Handler/reducer/network throughput and distributed fairness
+require their own measurements; no whole-client capacity follows from the cache
+and broadcast subset. Exact validation and sustained-run evidence are recorded in
+the [Phase 7 execution record](../.air/plans/phase-7-execution.plan.md).
+
+The [thirty-minute cache/broadcast run](../Tools/DiscordKitLoadTests/Baselines/soak-accounts-1000000-1800s-burst.json)
+completed 238,427 rounds in 1,800.004 seconds, with 64 peak retained entries,
+72,512 accounted bytes and zero owned cache/refresh/subscription/queue resources
+after shutdown. All 20 RSS samples in the final five minutes were 8,781,824 bytes;
+process peak RSS was 9,715,712 bytes. Completed refresh reads used 87.5% fewer
+loaders through coalescing, with overload refusals reported separately. The
+[environment record](../Tools/DiscordKitLoadTests/Baselines/soak-1800s-environment.json)
+states source drift and unmeasured paths. This qualifies the recorded local subset
+and working set; broader runtime and deployment gates above remain independent.

@@ -14,7 +14,9 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [webhooks, interaction responses and voice control](Docs/WebhooksInteractionsVoice.md) in Phase 5H, and
 [SKUs, entitlements and subscriptions](Docs/Monetization.md) in Phase 5I, and
 [lobbies and application identity profiles](Docs/SocialGame.md) in Phase 5J. Phase 6 adds
-[typed Gateway dispatches, commands and bounded requests](Docs/Gateway.md). Interaction ingress/routing,
+[typed Gateway dispatches, commands and bounded requests](Docs/Gateway.md). Phase 7 adds
+[the consumer client, bounded broadcast/handlers, entity state and permission resolution](Docs/Client.md).
+Interaction ingress/routing,
 OAuth2 flows, voice media, RPC, Activities, native Social SDK and broader commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -25,7 +27,7 @@ The architecture baseline records platform capabilities, dependency policy, a
 versioned parity inventory and explicit feasibility blockers. Portable values are
 usable today; HTTP/WebSocket/UDP/ingress/Unix adapters are available with explicit
 limits and macOS-local qualification. REST and Gateway are independently adoptable;
-broader resource projections and the consumer facade follow later. A planned
+broader resource projections retain explicit partial coverage. A planned
 target or an unavailable-capability stub never counts as implemented support.
 
 ## Build and test
@@ -54,7 +56,7 @@ establish endpoint parity or qualify untested hosts. See the
   timestamps, open raw values, redacted credentials, errors and capability reporting.
 - `DiscordTransport`: injectable HTTP, WebSocket, datagram, IPC and HTTP-ingress
   protocols, bounded pull bodies and monotonic deadline contexts.
-- `DiscordKit`: common foundational type aliases for convenient adoption.
+- `DiscordKit`: foundational aliases plus `BotClient`, `BotConfiguration` and `EventHub`.
 - `DiscordFoundationTransport`: Apple Foundation HTTP and WebSocket adapters.
 - `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
 - `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
@@ -66,10 +68,16 @@ establish endpoint parity or qualify untested hosts. See the
   moderation, expression, discovery/event, application/user/command, webhook/interaction/voice
   monetization and social/game backend REST catalogs.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases,
-  startup/opcode budgets, typed dispatch decoding and bounded correlated requests.
+  startup/opcode budgets, typed dispatch decoding, correlated requests, bounded broadcast
+  subscriptions and independently supervised ordered handlers.
+- `DiscordCache`: optional scoped bounded entity projections, explicit refresh coalescing,
+  sparse merging, stale-fetch fences and arbitrary-width permission resolution.
+- `DiscordClient`: task-free configuration, supervised discovery/shards/ingestion, typed
+  service access, diagnostics and idempotent awaited shutdown.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),
-[Gateway lifecycle and event catalog](Docs/Gateway.md), and
+[Gateway lifecycle and event catalog](Docs/Gateway.md),
+[the bot consumer example](Examples/GatewayBot/README.md), and
 [transport ownership, budgets and qualification limits](Docs/Transport.md).
 The independent [local load harness](Tools/DiscordKitLoadTests/README.md) records
 bounded cohort measurements; broad platform and Phase 2 qualification gates remain open.
@@ -90,8 +98,8 @@ other-platform runtime qualification remains recorded separately.
 - Optional voice APIs own the media protocol and expose join, frames and leave.
 - Platform and access restrictions produce explicit capability information.
 
-The HTTP execution, sharded Gateway lifecycle and documented dispatch names are
-implemented with explicit partial child-resource projections. The remaining
+HTTP execution, the consumer client, sharded Gateway lifecycle and documented dispatch
+names are implemented with explicit partial child-resource projections. The remaining
 consumer workflows describe future work. Feature products are introduced
 with implementations and tests as their roadmap phases are completed.
 

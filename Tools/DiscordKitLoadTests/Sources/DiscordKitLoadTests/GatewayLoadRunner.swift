@@ -207,7 +207,7 @@ struct GatewayLoadRunner: Sendable {
     /// - Throws: Admission, correlation, typed decoding or script invariant failures; no request is replayed.
     private static func exerciseCommands(_ shard: GatewayShard<ContinuousClock, InProcessShardLeaseStore<ContinuousClock>>,
                                          generation: UInt64, metrics: GatewayLoadMetrics) async throws {
-        let identity = await shard.identity
+        let identity = shard.identity
         let guild = GuildID(rawValue: UInt64(identity.index) << 22)
         try await shard.send(GatewayCommand.updatePresence(GatewayPresence(status: .online)))
         try await shard.send(GatewayCommand.updateVoiceState(guildID: guild, channelID: nil))

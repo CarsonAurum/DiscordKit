@@ -75,10 +75,11 @@ public struct GatewayShardSnapshot: Sendable {
 /// children. Control handling never calls user code. Consumers synchronously poll batches;
 /// overflow terminates the run and requires resynchronization rather than silently dropping.
 /// Gateway v10 JSON/uncompressed commands and bounded request correlation are supported.
-/// Typed dispatch decoding is opt-in after ingestion; compression and broadcast subscriptions
-/// remain separate work. No request is automatically replayed across socket replacement.
+/// Typed dispatch decoding is opt-in after ingestion. `GatewayEventHub` separately provides
+/// bounded broadcast subscriptions; compression remains separate work. No request is
+/// automatically replayed across socket replacement.
 public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration == Duration, Leases.LeaseClock == C {
-    public let identity: ShardIdentity
+    public nonisolated let identity: ShardIdentity
     private let token: BotToken
     private let intents: UInt64
     private let initialURL: URL
@@ -100,6 +101,8 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     private var heartbeatPending = false
     private var events: [GatewayEvent] = []
     private var bufferedBytes = 0
+    private let eventSignal = AsyncStream<Void>.makeStream(bufferingPolicy: .bufferingNewest(1))
+    private var waitingForEvents = false
     private let identifyConfiguration: GatewayIdentifyConfiguration
     private var commandCoordinator: (any GatewayCommandCoordinator)?
     private var requests: GatewayRequestRegistry
@@ -177,6 +180,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     public func stop() async {
         let neverStarted = !running && state.phase == .disconnected
         running = false
+        eventSignal.continuation.finish()
         requests.reset()
         if state.phase != .stopped, state.phase != .draining { _ = try? state.apply(.drain) }
         await connection?.close()
@@ -202,6 +206,32 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         events.removeFirst(count)
         bufferedBytes -= result.reduce(0) { $0 + $1.byteCount }
         return result
+    }
+
+    /// Waits for and removes one bounded batch without polling or running consumer code.
+    /// Exactly one ingestion consumer may call this method, and it must not also use
+    /// `drainEvents`. The wake-up stream retains at most one signal; payloads remain in
+    /// the existing count/byte bounded queue. Cancellation terminates this single-consumer
+    /// wake-up stream; create a new shard for a later run. Control work never awaits it.
+    /// - Parameter maximum: Positive batch limit, default 64.
+    /// - Returns: Ordered events, or nil after stop/cleanup with no queued events.
+    /// - Throws: Cancellation, `alreadyRunning` for an overlapping consumer, or
+    ///   `invalidConfiguration` for a nonpositive batch limit.
+    public func nextEvents(maximum: Int = 64) async throws -> [GatewayEvent]? {
+        guard maximum > 0 else { throw GatewayFailure.invalidConfiguration }
+        guard !waitingForEvents else { throw GatewayFailure.alreadyRunning }
+        waitingForEvents = true
+        defer { waitingForEvents = false }
+        var iterator = eventSignal.stream.makeAsyncIterator()
+        while events.isEmpty {
+            try Task.checkCancellation()
+            guard await iterator.next() != nil else {
+                try Task.checkCancellation()
+                return events.isEmpty ? nil : drainEvents(maximum: maximum)
+            }
+        }
+        try Task.checkCancellation()
+        return drainEvents(maximum: maximum)
     }
 
     /// Sends one typed command through the current fenced ready session, without REST scheduling.
@@ -456,7 +486,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
                 } else if name == "RESUMED" { _ = try state.apply(.ready) }
                 sequence = next
                 try append(envelope)
-                requests.ingest(GatewayEvent(shard: identity, envelope: envelope))
+                requests.ingest(GatewayEvent(shard: identity, envelope: envelope, socketGeneration: active))
                 if name == "RATE_LIMITED" { try await recordRateLimit(envelope.data, generation: active) }
             case 1: try await sendHeartbeat(generation: active, scheduled: false)
             case 7: throw GatewayFailure.reconnectRequested
@@ -594,7 +624,8 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
               envelope.byteCount <= configuration.maximumBufferedBytes - bufferedBytes else {
             throw GatewayFailure.eventCapacityExceeded
         }
-        events.append(GatewayEvent(shard: identity, envelope: envelope)); bufferedBytes += envelope.byteCount
+        events.append(GatewayEvent(shard: identity, envelope: envelope, socketGeneration: generation)); bufferedBytes += envelope.byteCount
+        eventSignal.continuation.yield(())
     }
 
     /// Discards invalid or unsupported resumable state without changing queued event history.
@@ -614,6 +645,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     ///   expiry or repair coordination before assuming handoff authority became available.
     private func finish() async throws {
         running = false
+        eventSignal.continuation.finish()
         requests.reset()
         let socket = connection; connection = nil
         await socket?.close()
@@ -650,13 +682,24 @@ public struct GatewayBot<C: Clock, Leases: ShardLeaseStore>: Sendable where C.Du
     }
 
     /// Supervises all selected shards; one failure cancels and awaits every sibling's cleanup.
-    /// - Throws: First observed shard failure or cancellation after owned resources are released.
+    /// - Throws: First observed noncancellation shard failure, or cancellation after owned resources
+    ///   are released. All child results are drained so a cancellation cannot hide a later lease-release
+    ///   failure and incorrectly certify a completed handoff.
     public func run() async throws {
         try Task.checkCancellation()
         try await withThrowingTaskGroup(of: Void.self) { group in
             for shard in shards { group.addTask { try await shard.run() } }
             defer { group.cancelAll() }
-            for try await _ in group {}
+            do { for try await _ in group {} }
+            catch {
+                var terminal = error
+                group.cancelAll()
+                while !group.isEmpty {
+                    do { _ = try await group.next() }
+                    catch { if terminal is CancellationError { terminal = error } }
+                }
+                throw terminal
+            }
         }
     }
 

@@ -813,6 +813,56 @@
       ],
       "details": "changes/2026-10-16-gateway-catalog.md",
       "remainingGates": "../Gateway.md"
+    },
+    {
+      "id": "2026-10-16-consumer-runtime",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "REST": "10",
+        "Gateway": "10"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "Independently adopted HTTP/Gateway exposed bounded raw polling without a consumer client, broadcast, entity projections or permission calculation.",
+      "currentBehavior": "Independent Client and Cache products compose supervised discovery/shards and service access, bounded independent broadcast and ordered handlers, optional scoped entity projections/refresh and arbitrary-width permission resolution with explicit uncertainty. Awaited cleanup preserves late lease-release errors through cancellation.",
+      "affectedSymbols": [
+        "DiscordClient",
+        "ClientConfiguration",
+        "ClientAuthority",
+        "ClientResourceBudget",
+        "ServiceContext",
+        "ClientCacheProjection",
+        "GatewayEventHub",
+        "GatewayEventSubscription",
+        "GatewayEventHandlerDispatcher",
+        "GatewayHandlerAuthority",
+        "GatewayShard.nextEvents",
+        "GatewayEvent.socketGeneration",
+        "GatewayBot.run",
+        "EntityCache",
+        "CachePolicy",
+        "EntityCachePersistence",
+        "PermissionResolver",
+        "BotClient"
+      ],
+      "affectedPayloads": "Local consumer projection of existing v10 guild/channel/thread/member/role/user/message/interaction observations; no new endpoint or dispatch-name support. Sparse/null/redacted/unavailable/deleted state remains explicit and partial.",
+      "breakingChanges": [],
+      "migration": "Additive opt-in consumer APIs. Subscribe before run; raw nextEvents is single-consumer and must not be mixed with drainEvents. Share credential and aggregate authorities, rotate visibility for fresh sequence domains, await run to inspect cleanup failures, and explicitly own shared adapter cleanup. Cached projections and resolved permission bits never establish current Discord authorization. Existing typed child-resource and platform qualification gaps remain open.",
+      "sources": [
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/events/gateway-events",
+        "https://docs.discord.com/developers/topics/permissions",
+        "https://docs.discord.com/developers/topics/threads",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-16-consumer-runtime.md",
+      "remainingGates": "../Client.md"
     }
   ]
 }

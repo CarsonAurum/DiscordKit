@@ -101,16 +101,47 @@ public struct GatewayEvent: Sendable, CustomStringConvertible, CustomReflectable
     public let opcode: Int
     public let name: String?
     public let sequence: Int64?
+    public let socketGeneration: UInt64
     public let data: JSONValue
     let byteCount: Int
+
+    /// Accounted UTF-8 envelope bytes retained by bounded ingestion and broadcast queues.
+    public var retainedByteCount: Int { byteCount }
+
+    /// Creates a bounded event for owned replay, bridges and deterministic offline consumers.
+    /// Construction validates envelope shape and JSON limits without decoding a resource or
+    /// performing I/O. It establishes no authenticity, delivery or authorization guarantee.
+    /// - Parameters:
+    ///   - shard: Validated fixed-topology source, including its public bot identity.
+    ///   - opcode: Nonnegative protocol opcode; unknown future values are preserved.
+    ///   - name: Optional dispatch name; opcode zero requires a nonempty name.
+    ///   - sequence: Nonnegative dispatch sequence; opcode zero requires a value.
+    ///   - socketGeneration: Local connection generation, default zero for offline events.
+    ///   - data: Exact lossless payload, including null and unknown fields.
+    ///   - limits: Bounded complete-envelope serialization limits, default 1 MiB.
+    /// - Throws: `invalidPayload` for an invalid opcode/name/sequence or JSON limit errors.
+    public init(shard: ShardIdentity, opcode: Int = 0, name: String?, sequence: Int64?,
+                data: JSONValue, socketGeneration: UInt64 = 0, limits: JSONLimits = .default) throws {
+        guard opcode >= 0, sequence.map({ $0 >= 0 }) ?? true,
+              opcode != 0 || (name?.isEmpty == false && sequence != nil) else {
+            throw GatewayFailure.invalidPayload
+        }
+        self.shard = shard; self.opcode = opcode; self.name = name
+        self.sequence = sequence; self.data = data
+        self.socketGeneration = socketGeneration
+        byteCount = try JSONValue.object(["op": gatewayNumber(opcode), "t": name.map(JSONValue.string) ?? .null,
+            "s": sequence.map(gatewayNumber) ?? .null, "d": data]).serialized(limits: limits).count
+    }
 
     /// Constructs a received event after frame bounds and protocol fields were validated.
     /// - Parameters:
     ///   - shard: Fixed topology source; nonguild events are delivered by Discord to shard zero.
     ///   - envelope: Parsed complete envelope, including unknown opcodes and fields in `data`.
-    init(shard: ShardIdentity, envelope: GatewayEnvelope) {
+    ///   - socketGeneration: Local socket fence for cache/replay provenance, default zero.
+    init(shard: ShardIdentity, envelope: GatewayEnvelope, socketGeneration: UInt64 = 0) {
         self.shard = shard; opcode = envelope.opcode; name = envelope.name
         sequence = envelope.sequence; data = envelope.data; byteCount = envelope.byteCount
+        self.socketGeneration = socketGeneration
     }
 
     /// Decodes a dispatch on demand, preserving raw future names and unknown payload fields.

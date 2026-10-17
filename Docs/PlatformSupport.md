@@ -2,6 +2,12 @@
 
 Updated **2026-10-16**. The initial HTTP execution and minimal sharded Gateway
 slices are implemented; OAuth flows, voice and desktop RPC remain later work.
+
+Part 7 adds portable consumer/cache/event-delivery code with macOS-local deterministic
+tests and separate offline load/soak evidence; see [Client](Client.md). New product
+compilation on this host does not qualify another OS, device, minimum deployment
+version or persistent background execution. Cache/per-subscriber byte counters and
+process RSS measure distinct quantities; no fleet capacity follows from logical users.
 The production library now includes portable values, transport contracts and
 owned Foundation/NIO/Unix adapters. The Part 0 table below remains historical
 feasibility evidence. Part 2 local adapter evidence is recorded separately below;

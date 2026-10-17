@@ -1,4 +1,15 @@
 import DiscordCore
+import DiscordClient
+import DiscordGateway
+import DiscordTransport
+
+/// Supervised consumer bot client; import `DiscordClient` for the independent runtime product.
+public typealias BotClient<C: Clock, Leases: ShardLeaseStore> = DiscordClient<C, Leases>
+    where C.Duration == Duration, Leases.LeaseClock == C
+/// Explicit intent/topology and ingestion configuration for the consumer bot runtime.
+public typealias BotConfiguration = ClientConfiguration
+/// Independent bounded broadcast event hub used by the consumer runtime.
+public typealias EventHub = GatewayEventHub
 
 /// A typed Discord identifier, available from the umbrella product.
 /// Import `DiscordCore` directly when only portable values are needed.

@@ -35,6 +35,10 @@ Phase 6 adds all 79 documented [Gateway dispatch names](../Gateway.md), typed
 commands/intents/capabilities and bounded correlated requests. Event-name coverage
 is separate from full typed child-resource parity; reviewed events retain explicit
 partial classifications where relevant. See [Gateway history](changes/2026-10-16-gateway-catalog.md).
+Phase 7 adds the [consumer client and optional scoped state](../Client.md), bounded
+broadcast/handlers and permission resolution. This local composition adds no new
+Discord endpoints or dispatch names and does not inflate discovery support counts;
+see [consumer runtime history](changes/2026-10-16-consumer-runtime.md).
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the

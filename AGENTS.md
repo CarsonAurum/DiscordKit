@@ -34,6 +34,10 @@ Part 6 adds all documented Gateway dispatch names, typed outgoing requests and
 bounded correlated request execution with independent opcode admission; see
 `Docs/Gateway.md`. Full child-resource projections, native Social SDK and other
 resource-family completion remain separate.
+Part 7 adds the independently adopted consumer client, bounded broadcast subscriptions
+and ordered handlers, optional scoped entity cache/refresh and permission resolution;
+see `Docs/Client.md`. Client construction starts no tasks or network I/O. Reuse shared
+credential and aggregate resource authorities across client instances.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -46,6 +50,9 @@ resource-family completion remain separate.
 - `Sources/DiscordModels/`, `Sources/DiscordHTTP/`, `Sources/DiscordGateway/`:
   presence-aware projections, bounded HTTP policy and independently adopted shard runtime.
 - `Examples/RESTOnly/`: independent REST consumer; build it without running authenticated calls.
+- `Sources/DiscordCache/`, `Sources/DiscordClient/`: optional bounded entity state and
+  supervised consumer composition; Cache must never import Gateway, HTTP or Client.
+- `Examples/GatewayBot/`: independent bot consumer; build without authenticated calls.
 - `Tools/DiscordKitLoadTests/`: independent local-only transport measurements and profiles.
 - `Tests/DiscordTestSupport/`: internal development support target, never a product.
 - `Docs/`: architecture, dependency/platform policy, feasibility findings and parity history.
@@ -102,6 +109,9 @@ The root suites cover the implemented foundations, without live Discord requests
 For HTTP/Gateway changes, also build `Examples/RESTOnly` and run affected local load
 scenarios. See `Docs/HTTP.md` and `Docs/Gateway.md` for authority sharing, ownership
 and qualification limits. Source changes must meet the method documentation and unit testing requirements below.
+For consumer/cache/event changes, also build `Examples/GatewayBot` and run the load
+package's cache/soak scenarios, including the fixed-working-set 30-minute local soak
+and actual RSS/accounted-byte evidence described in `Docs/Client.md` and the load README.
 For documentation-only changes, review the diff; a build is not required.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.

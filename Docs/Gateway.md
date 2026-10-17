@@ -28,6 +28,13 @@ operation supervises socket receive, authentication, heartbeat and lease renewal
 `GatewayBot.run` supervises the finite selected subset in a task group; failure
 cancels and awaits sibling cleanup. Construction launches no tasks or socket work.
 
+Part 7 adds [consumer composition, broadcast and handlers](Client.md). Existing raw
+consumers can keep `drainEvents`; the client instead owns `nextEvents`, a bounded
+single-consumer wake-up API. Public `GatewayEvent` construction supports bounded
+offline replay and exposes local socket-generation provenance. It authenticates
+neither supplied data nor the caller. Multi-shard cancellation drains every child
+result so late ownership-release failures remain observable.
+
 Heartbeats use injected jitter and monotonic time, respond to requested beats and
 reconnect after a missed scheduled ACK. Control processing never invokes handlers
 or awaits a cache/subscriber. Consumers call `drainEvents` for bounded ordered batches;
@@ -84,7 +91,7 @@ Deterministic suites cover transition guards, every documented close-code class,
 Identify contention, reset/bucket boundaries, reconnect/resume/invalid sessions,
 heartbeat ACKs, event order/duplicates/overflow, lease loss and cancellation cleanup.
 Real local WebSocket adapter tests verify numeric close codes and abort ownership.
-No live Discord connection, complete typed child-resource parity, handler framework,
+No live Discord connection, complete typed child-resource parity,
 cross-platform session qualification or sharded runtime capacity is established by
 these tests.
 

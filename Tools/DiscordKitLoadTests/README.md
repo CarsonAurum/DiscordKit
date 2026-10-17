@@ -18,10 +18,63 @@ python3 Tools/DiscordKitLoadTests/scripts/record_baseline.py
 Python 3 must be on PATH. The source checkout supplies profiles and the peer
 script. The harness creates/reaps its peer, consumes every successful body to
 EOF and closes the transport before reporting. HTTP and Gateway policy scenarios
-use finite offline scripts with no sockets or credentials. Standalone cache and
-soak scenarios return an explicit unsupported-scenario error.
+use finite offline scripts with no sockets or credentials. Cache and soak scenarios
+exercise fixed-size cache and broadcast recovery workloads locally on macOS 15 or newer.
 
 ## Version 1 workloads
+
+The `cache` and `soak` scenarios use these profiles only for their logical population
+and bounded payload size. They select 1/2/4 opaque credential scopes for the
+100/10,000/1,000,000 logical populations, sharing one process-local authority.
+Each scope uses the same 20 entity keys across every round, with at most 16 retained
+entries and 64 KiB of accounted bytes. A gated refresh storm admits eight callers
+to one loader; 16 offered callers normally, or 64 with `--burst`, expose explicit
+fail-fast refusal and coalescing counts. Every round also checks eviction, exact
+TTL expiry, local-write invalidation/recovery and one slow broadcast subscriber's
+overflow while a healthy subscriber receives all three publications.
+
+```sh
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario cache --profile accounts-100
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario cache --profile accounts-1000000 --burst
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario soak --profile accounts-10000 --rounds 512
+swift run -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario soak --profile accounts-1000000 --burst --duration-seconds 1800
+python3 Tools/DiscordKitLoadTests/scripts/record_cache_baseline.py
+```
+
+`cache` defaults to eight exact rounds and `soak` to 512; `--rounds` accepts
+1 through 1,000,000 for either scenario. The report records configured/completed
+rounds and actual wall duration. TTL advances use a deterministic clock without
+real-time sleeps. Soak also accepts `--duration-seconds` in 1...3,600 and continues
+until both minimum rounds and actual duration have elapsed. At most 121 checkpoints
+record actual process RSS/live heap and accounted cache bytes (about every 15 seconds
+for a 30-minute run), with initial and final observations retained. A short run
+labeled `soak` does not establish 30-minute soak qualification. Accounted cache bytes exclude allocator/task/index overhead; actual
+process RSS and live malloc gauges appear separately in `ProcessSample`. These
+local scenarios allocate no account population, create at most 64 storm tasks,
+use no sockets/credentials and establish no distributed or fleet capacity claim.
+
+Part 7 cache/soak measurements and their source/executable checksums are retained
+in `Baselines/cache-*.json`, `Baselines/soak-*.json` and the cache/soak environment
+records. Part 7's repeated finite Gateway lifecycle checks are retained separately
+under `Baselines/Part7Gateway`; the original Gateway baseline files and scenario
+description below document the historical Part 6 run. Reproduce new Gateway evidence with
+`python3 Tools/DiscordKitLoadTests/scripts/record_gateway_baseline.py --output-dir Tools/DiscordKitLoadTests/Baselines/Part7Gateway`.
+
+The Part 7 four-scope burst soak completed 238,427 rounds over 1,800.004 seconds:
+953,708 loaders served 7,629,664 admitted reads, while 53,407,648 excess offers
+were explicitly refused. Peak retained state was 64 entries, 72,512 accounted
+bytes, one refresh, eight waiters and two broadcast events; all owned counters
+returned to zero. Across 121 checkpoints, process RSS peaked at 9.27 MiB and
+remained exactly 8.375 MiB throughout the final five minutes. Live malloc bytes
+in that window ranged from 326,784 to 360,960. This measured interval showed no
+sustained growth. RSS includes runtime/allocator pools, loaded code and bounded
+checkpoint metadata, separately from cache accounting; retention remained above
+cold start after owned resources were released. The
+[report](Baselines/soak-accounts-1000000-1800s-burst.json) and
+[environment](Baselines/soak-1800s-environment.json) preserve executable/source
+checksums, final source-drift classification and measurement limits. This run
+exercises cache and broadcast recovery; reducers, permissions, handlers, the
+Client facade, real shard/network execution and fleet capacity remain outside it.
 
 Accounts mean **served end users**. Bot identities, workers, guilds and shards
 are workload dimensions simulated arithmetically inside one client process;
@@ -35,9 +88,9 @@ response. No full account population is allocated.
 | 10,000 | 4 | 4 | 1,000 / 4 | 1,000 | 100,000 | 16 / 16 |
 | 1,000,000 | 16 | 4 | 10,000 / 16 | 1,000 | 100,000 | 32 / 32 |
 
-All profiles use one origin, no upload, a 1,024-byte response cap, a 4,096-byte
+For transport measurements, all profiles use one origin, no upload, a 1,024-byte response cap, a 4,096-byte
 header budget and 1,024-byte read chunks. The response consumer immediately
-pulls to EOF; slow subscribers are not simulated in this milestone. Admission
+pulls to EOF; the separate cache/broadcast workload above exercises slow subscribers. Transport admission
 is fail-fast: queued count/bytes/age are zero, cache count/bytes are zero, and
 pool ownership records are bounded by the configured connection cap. The
 `maximumMetadataEntries` budget counts those ownership slots, not every runtime
@@ -101,7 +154,8 @@ time and source-commit basis. The working tree was dirty because these are
 measurements of the change being prepared. A short local baseline does not
 qualify a distributed fleet, a million simultaneous identities/connections,
 Gateway control delay, request reduction, minimum-OS behavior or a 30-minute
-fixed-working-set soak. Those remain separate qualification gates.
+fixed-working-set soak. Later scenario sections and Part 7 cache/soak records
+provide evidence for their independently measured subsets.
 
 Allocation diagnostics preserve the same workload and allow isolation without
 network sockets or deadline races:

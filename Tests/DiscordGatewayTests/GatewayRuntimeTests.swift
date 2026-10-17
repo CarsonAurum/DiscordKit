@@ -338,11 +338,11 @@ private let helloPayload = #"{"op":10,"d":{"heartbeat_interval":10000}}"#
 private let readyPayload = #"{"op":0,"s":1,"t":"READY","d":{"session_id":"session","resume_gateway_url":"wss://resume.discord.gg/"}}"#
 
 @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-private typealias RuntimeShard = GatewayShard<ManualClock, InProcessShardLeaseStore<ManualClock>>
+typealias RuntimeShard = GatewayShard<ManualClock, InProcessShardLeaseStore<ManualClock>>
 
 /// All injected dependencies for one runtime test, with no live network or real credential.
 @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-private struct RuntimeFixture {
+struct RuntimeFixture {
     let shard: RuntimeShard
     let clock: ManualClock
     let leases: InProcessShardLeaseStore<ManualClock>
@@ -366,7 +366,7 @@ private struct RuntimeFixture {
 /// - Returns: Runtime and dependencies for observable assertions.
 /// - Throws: Invalid test configuration or fixture construction errors.
 @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-private func makeRuntime(sockets: [GatewayTestSocket], retries: Int = 2, maximumEvents: Int = 8,
+func makeRuntime(sockets: [GatewayTestSocket], retries: Int = 2, maximumEvents: Int = 8,
                          onSleep: @escaping @Sendable () -> Void = {}, jitter: Double = 1,
                          connectGate: TestBarrier? = nil, connectEntered: TestBarrier? = nil,
                          intents: UInt64 = 1, configuration: GatewayShardConfiguration? = nil,
@@ -387,7 +387,7 @@ private func makeRuntime(sockets: [GatewayTestSocket], retries: Int = 2, maximum
 
 /// Finite test-only transport recording reconnect URL choice without opening sockets.
 @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-private actor GatewayTestTransport: WebSocketTransport {
+actor GatewayTestTransport: WebSocketTransport {
     let sockets: [GatewayTestSocket]
     let connectGate: TestBarrier?
     let connectEntered: TestBarrier?
@@ -422,7 +422,7 @@ private actor GatewayTestTransport: WebSocketTransport {
 
 /// Session-capable deterministic socket with cancellation-aware receive/close races.
 @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-private actor GatewayTestSocket: WebSocketSessionConnection {
+actor GatewayTestSocket: WebSocketSessionConnection {
     typealias Step = @Sendable () async throws -> WebSocketMessage?
     let steps: [Step]
     let onSend: @Sendable (GatewayEnvelope) -> Void

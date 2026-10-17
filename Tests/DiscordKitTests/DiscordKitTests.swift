@@ -32,6 +32,20 @@ import Testing
         let number = try JSONNumber(rawValue: "9007199254740993")
         #expect(JSONValue.number(number) == (try JSONValue.parse(Data(number.rawValue.utf8), limits: JSONLimits())))
     }
+
+    /// The umbrella's consumer aliases construct explicit runtime configuration and an idle
+    /// broadcast hub from MainActor without an adapter, token, network operation or hidden task.
+    @MainActor @Test func runtimeConsumerAliases() async throws {
+        let configuration = try BotConfiguration(intents: [])
+        #expect(configuration.intents.isEmpty)
+        let hub = EventHub(configuration: try .init(maximumSubscriptions: 1))
+        let subscription = try await hub.subscribe()
+        #expect(await hub.snapshot().subscriptions == 1)
+        await hub.finish()
+        var iterator = subscription.makeAsyncIterator()
+        #expect(try await iterator.next() == nil)
+        #expect(await hub.snapshot().subscriptions == 0)
+    }
 }
 
 /// A consumer-defined marker proving the umbrella preserves generic identifier tags.

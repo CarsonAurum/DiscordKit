@@ -1,0 +1,1630 @@
+{
+  "actualLoaderCalls": 2048,
+  "afterShutdown": {
+    "cpuSeconds": 3.1601850000000002,
+    "liveAllocationBlocks": 2876,
+    "liveAllocationBytes": 296848,
+    "peakRSSBytes": 9486336,
+    "residentBytes": 9486336
+  },
+  "before": {
+    "cpuSeconds": 0.005957,
+    "liveAllocationBlocks": 994,
+    "liveAllocationBytes": 108768,
+    "peakRSSBytes": 7569408,
+    "residentBytes": 7569408
+  },
+  "bufferedEventsAfterShutdown": 0,
+  "capacityRefusals": 16384,
+  "checkpoints": [
+    {
+      "accountedBytes": 0,
+      "completedRounds": 0,
+      "elapsedSeconds": 0,
+      "entries": 0,
+      "process": {
+        "cpuSeconds": 0.005957,
+        "liveAllocationBlocks": 994,
+        "liveAllocationBytes": 108768,
+        "peakRSSBytes": 7569408,
+        "residentBytes": 7569408
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 1,
+      "elapsedSeconds": 0.006877917,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.013357,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168208,
+        "peakRSSBytes": 8978432,
+        "residentBytes": 8978432
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 2,
+      "elapsedSeconds": 0.012565875,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.019448,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168304,
+        "peakRSSBytes": 9011200,
+        "residentBytes": 9011200
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 3,
+      "elapsedSeconds": 0.019082792,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.026332,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168528,
+        "peakRSSBytes": 9060352,
+        "residentBytes": 9060352
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 4,
+      "elapsedSeconds": 0.025292333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.032904,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168528,
+        "peakRSSBytes": 9076736,
+        "residentBytes": 9076736
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 5,
+      "elapsedSeconds": 0.031649958,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.03962,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168976,
+        "peakRSSBytes": 9093120,
+        "residentBytes": 9093120
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 6,
+      "elapsedSeconds": 0.038135208,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.046479,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168976,
+        "peakRSSBytes": 9125888,
+        "residentBytes": 9125888
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 7,
+      "elapsedSeconds": 0.043898208,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.052573,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168976,
+        "peakRSSBytes": 9158656,
+        "residentBytes": 9158656
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 8,
+      "elapsedSeconds": 0.049124708,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.058202,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168976,
+        "peakRSSBytes": 9158656,
+        "residentBytes": 9158656
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 9,
+      "elapsedSeconds": 0.05544025,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.064908,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 168976,
+        "peakRSSBytes": 9158656,
+        "residentBytes": 9158656
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 10,
+      "elapsedSeconds": 0.061871333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.071682,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9158656,
+        "residentBytes": 9158656
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 11,
+      "elapsedSeconds": 0.069064833,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.079008,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9158656,
+        "residentBytes": 9158656
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 12,
+      "elapsedSeconds": 0.075105333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.085349,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9158656,
+        "residentBytes": 9158656
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 13,
+      "elapsedSeconds": 0.0811045,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.091693,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9191424,
+        "residentBytes": 9191424
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 14,
+      "elapsedSeconds": 0.086343167,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.097283,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9191424,
+        "residentBytes": 9191424
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 15,
+      "elapsedSeconds": 0.092038125,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.103312,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9191424,
+        "residentBytes": 9191424
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 16,
+      "elapsedSeconds": 0.098098792,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.109685,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9207808,
+        "residentBytes": 9207808
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 17,
+      "elapsedSeconds": 0.10409325,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.115991,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9207808,
+        "residentBytes": 9207808
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 18,
+      "elapsedSeconds": 0.110054708,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.122242,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 169872,
+        "peakRSSBytes": 9207808,
+        "residentBytes": 9207808
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 19,
+      "elapsedSeconds": 0.115351625,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.127913,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9207808,
+        "residentBytes": 9207808
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 20,
+      "elapsedSeconds": 0.120780917,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.133767,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9207808,
+        "residentBytes": 9207808
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 21,
+      "elapsedSeconds": 0.126504333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.139774,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 22,
+      "elapsedSeconds": 0.131957833,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.145568,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 23,
+      "elapsedSeconds": 0.137314333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.151286,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 24,
+      "elapsedSeconds": 0.142520833,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.156871,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 25,
+      "elapsedSeconds": 0.147696125,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.162437,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 26,
+      "elapsedSeconds": 0.15285575,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.167964,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 27,
+      "elapsedSeconds": 0.157925042,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.173405,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 28,
+      "elapsedSeconds": 0.163012375,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.178886,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 29,
+      "elapsedSeconds": 0.168375792,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.184611,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 30,
+      "elapsedSeconds": 0.173487917,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.190136,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 31,
+      "elapsedSeconds": 0.178640333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.195638,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 32,
+      "elapsedSeconds": 0.18353525,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.200894,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 33,
+      "elapsedSeconds": 0.188692708,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.206418,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 34,
+      "elapsedSeconds": 0.193703667,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.211833,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 35,
+      "elapsedSeconds": 0.198746708,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.217279,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 36,
+      "elapsedSeconds": 0.203820625,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.222716,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 37,
+      "elapsedSeconds": 0.208903208,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.228155,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 171664,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 38,
+      "elapsedSeconds": 0.21396475,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.233584,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 39,
+      "elapsedSeconds": 0.219130083,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.239159,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 40,
+      "elapsedSeconds": 0.224165042,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.244565,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 41,
+      "elapsedSeconds": 0.229693583,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.250544,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 42,
+      "elapsedSeconds": 0.235026083,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.256231,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 43,
+      "elapsedSeconds": 0.240221458,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.261801,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 44,
+      "elapsedSeconds": 0.24564625,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.267565,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 45,
+      "elapsedSeconds": 0.251125,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.273411,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 46,
+      "elapsedSeconds": 0.256611458,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.279311,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 47,
+      "elapsedSeconds": 0.262171083,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.285296,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 48,
+      "elapsedSeconds": 0.267495833,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.290985,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 49,
+      "elapsedSeconds": 0.272901208,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.296785,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 50,
+      "elapsedSeconds": 0.278086125,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.302324,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 51,
+      "elapsedSeconds": 0.283221042,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.307886,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 52,
+      "elapsedSeconds": 0.288454958,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.313509,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 53,
+      "elapsedSeconds": 0.293956333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.31942,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 54,
+      "elapsedSeconds": 0.299994625,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.325789,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 55,
+      "elapsedSeconds": 0.306135375,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.332269,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 56,
+      "elapsedSeconds": 0.312297917,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.338775,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 57,
+      "elapsedSeconds": 0.318536,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.345313,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 58,
+      "elapsedSeconds": 0.32466,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.351738,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 59,
+      "elapsedSeconds": 0.330829292,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.358262,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 60,
+      "elapsedSeconds": 0.336035583,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.363871,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 61,
+      "elapsedSeconds": 0.341656917,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.369863,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 62,
+      "elapsedSeconds": 0.347843625,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.376394,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 63,
+      "elapsedSeconds": 0.353952083,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.382779,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 64,
+      "elapsedSeconds": 0.3600065,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.38912,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 65,
+      "elapsedSeconds": 0.365286833,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.394774,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 66,
+      "elapsedSeconds": 0.370863708,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.400728,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 67,
+      "elapsedSeconds": 0.376894458,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.407085,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 68,
+      "elapsedSeconds": 0.383072167,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.413583,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 69,
+      "elapsedSeconds": 0.389213958,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.420045,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 70,
+      "elapsedSeconds": 0.395484208,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.426597,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 71,
+      "elapsedSeconds": 0.401561583,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.432976,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 72,
+      "elapsedSeconds": 0.407375708,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.439187,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 73,
+      "elapsedSeconds": 0.412485292,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.444714,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 74,
+      "elapsedSeconds": 0.41853275,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.451093,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 175248,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 75,
+      "elapsedSeconds": 0.4246015,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.457452,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 76,
+      "elapsedSeconds": 0.430606708,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.463758,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 77,
+      "elapsedSeconds": 0.436675875,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.470113,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 78,
+      "elapsedSeconds": 0.442548042,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.476295,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 79,
+      "elapsedSeconds": 0.448394875,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.482437,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 80,
+      "elapsedSeconds": 0.454356375,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.488707,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 81,
+      "elapsedSeconds": 0.460641042,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.49528,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 82,
+      "elapsedSeconds": 0.466753458,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.501713,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 83,
+      "elapsedSeconds": 0.472716958,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.508022,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 84,
+      "elapsedSeconds": 0.478603042,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.514186,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 85,
+      "elapsedSeconds": 0.484777458,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.52066,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 86,
+      "elapsedSeconds": 0.490635042,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.526844,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 87,
+      "elapsedSeconds": 0.49665675,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.533159,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 88,
+      "elapsedSeconds": 0.502621792,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.539429,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 89,
+      "elapsedSeconds": 0.508753417,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.545906,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 90,
+      "elapsedSeconds": 0.514827375,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.5523,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 91,
+      "elapsedSeconds": 0.521076875,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.558874,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 92,
+      "elapsedSeconds": 0.527076667,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.565177,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 93,
+      "elapsedSeconds": 0.532912458,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.571333,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 94,
+      "elapsedSeconds": 0.53885925,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.577572,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 95,
+      "elapsedSeconds": 0.544480292,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.583573,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 96,
+      "elapsedSeconds": 0.549904,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.589322,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 97,
+      "elapsedSeconds": 0.555966333,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.595694,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 98,
+      "elapsedSeconds": 0.562122208,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.60215,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 99,
+      "elapsedSeconds": 0.568278625,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.608564,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 100,
+      "elapsedSeconds": 0.5745925,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.61504,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 101,
+      "elapsedSeconds": 0.580607125,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.621418,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 102,
+      "elapsedSeconds": 0.585805167,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.627049,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 103,
+      "elapsedSeconds": 0.591584167,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.633233,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 104,
+      "elapsedSeconds": 0.59770975,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.639668,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 105,
+      "elapsedSeconds": 0.60402875,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.646364,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 106,
+      "elapsedSeconds": 0.610292,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.652937,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 107,
+      "elapsedSeconds": 0.616388542,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.65935,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 108,
+      "elapsedSeconds": 0.622460375,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.665738,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 109,
+      "elapsedSeconds": 0.628649875,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.672249,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 110,
+      "elapsedSeconds": 0.634915583,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.678822,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 111,
+      "elapsedSeconds": 0.641229583,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.685479,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 112,
+      "elapsedSeconds": 0.647031375,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.691698,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 113,
+      "elapsedSeconds": 0.653404292,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.698407,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 114,
+      "elapsedSeconds": 0.658784,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.704225,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 115,
+      "elapsedSeconds": 0.663876875,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.709722,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 116,
+      "elapsedSeconds": 0.669440125,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.715715,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 117,
+      "elapsedSeconds": 0.674776,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.721416,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 118,
+      "elapsedSeconds": 0.680043542,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.726986,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 119,
+      "elapsedSeconds": 0.686035208,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.733296,
+        "liveAllocationBlocks": 1117,
+        "liveAllocationBytes": 182416,
+        "peakRSSBytes": 9240576,
+        "residentBytes": 9240576
+      }
+    },
+    {
+      "accountedBytes": 0,
+      "completedRounds": 512,
+      "elapsedSeconds": 3.040303958,
+      "entries": 0,
+      "process": {
+        "cpuSeconds": 3.1601850000000002,
+        "liveAllocationBlocks": 2876,
+        "liveAllocationBytes": 296848,
+        "peakRSSBytes": 9486336,
+        "residentBytes": 9486336
+      }
+    }
+  ],
+  "coalescedReads": 14336,
+  "completedRefreshCalls": 16384,
+  "completedRounds": 512,
+  "configuredRounds": 512,
+  "cpuSeconds": 3.1542280000000003,
+  "durationSeconds": 3.040303958,
+  "entriesAfterShutdown": 0,
+  "evictions": 8192,
+  "expirations": 32768,
+  "healthyBroadcastDeliveries": 1536,
+  "logicalAccounts": 1000000,
+  "maximumAccountedBytes": 262144,
+  "maximumEntries": 64,
+  "notes": [
+    "Logical accounts are served end users; 1/2/4 selected opaque scopes share one local cache authority.",
+    "Fixed 20 keys per scope, at most 64 offered child tasks, zero sockets, credentials or distributed workers.",
+    "Accounted cache bytes exclude allocator/index/task overhead; ProcessSample reports actual process RSS separately.",
+    "Exact finite rounds exercise eviction, refresh overload, TTL, invalidation, recovery and isolated slow-subscriber overflow.",
+    "TTL uses explicitly advanced test time; measured wall duration alone describes soak length. No fleet or 30-minute qualification is inferred.",
+    "At most 121 process/accounted-cache checkpoints expose actual RSS and live heap history; duration mode runs minimum rounds and minimum actual wall time."
+  ],
+  "offeredRefreshCalls": 32768,
+  "peakAccountedBytes": 72512,
+  "peakBufferedEvents": 2,
+  "peakEntries": 64,
+  "peakRefreshes": 1,
+  "peakWaiters": 8,
+  "profile": "accounts-1000000",
+  "recoveryReads": 2048,
+  "refreshesAfterShutdown": 0,
+  "scenario": "soak",
+  "selectedScopes": 4,
+  "slowSubscriberResynchronizations": 512,
+  "subscriptionsAfterShutdown": 0,
+  "waitersAfterShutdown": 0,
+  "workingSetKeysPerScope": 20
+}

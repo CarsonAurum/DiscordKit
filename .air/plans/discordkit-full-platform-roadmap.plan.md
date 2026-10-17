@@ -781,6 +781,14 @@ Use current explicit Gateway versions and server-reported startup information ra
 
 ### Part 7 — consumer runtime, state and event delivery
 
+**2026-10-16 execution:** Independent Client/Cache products now compose task-free
+construction, supervised discovery/shards/ingestion, typed services and diagnostics,
+bounded broadcast/ordered handlers, scoped optional JSON projections/refresh and
+arbitrary-width permission resolution with explicit uncertainty. Cancellation and
+handoff preserve late lease-release failures. See [Phase 7 execution](phase-7-execution.plan.md)
+and [client contracts](../../Docs/Client.md) for validation, local soak evidence and
+remaining platform/live/distributed qualification gates.
+
 **Files:** F05 Cache/EventHub, F06 Client, existing facade/test scaffold, F10 cache/client/event tests, F11 GatewayBot example.
 
 1. Implement DiscordClient configuration and a supervised run lifecycle. Construction performs no network I/O or hidden task launch. run owns child tasks; cancellation/shutdown is idempotent, closes transports, releases queued work, terminates subscriptions and awaits cleanup.
