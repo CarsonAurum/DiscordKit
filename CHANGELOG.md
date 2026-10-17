@@ -6,6 +6,17 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Phase 12A streaming media and entropy prerequisites
+
+- Added bounded terminal-aware PCM AsyncSequence/sink ownership, cancellation,
+  continuous linear resampling, exact media/sample clocks and injected frame pacing.
+- Added owned bounded Opus range coding, exact contexts/bit accounting, independent
+  official-oracle fixtures and reproducible differential verification.
+- Added opaque H.265/layer metadata, deterministic tests, offline consumer coverage
+  and synchronized partial parity records.
+- Full 12A remains incomplete: SILK/CELT/hybrid audio codecs, PLC/FEC, official
+  decoded-PCM conformance and native device adapters remain open.
+
 ## 2026-10-17 — Part 12 initial media and voice protocol release
 
 - Added independent Media, VoiceCodecs, VoiceCrypto and Voice products without

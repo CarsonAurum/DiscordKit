@@ -14,12 +14,22 @@
       "status": "partial",
       "implementation": [
         "Sources/DiscordMedia/PCM.swift",
-        "Sources/DiscordMedia/MediaFrames.swift"
+        "Sources/DiscordMedia/MediaFrames.swift",
+        "Sources/DiscordMedia/MediaClock.swift",
+        "Sources/DiscordMedia/PCMFrameStream.swift",
+        "Sources/DiscordMedia/PCMStreamingResampler.swift",
+        "Sources/DiscordMedia/PCMFramePacer.swift",
+        "Sources/DiscordMedia/MediaDescriptors.swift"
       ],
       "evidence": [
-        "Tests/DiscordMediaTests/MediaTests.swift"
+        "Tests/DiscordMediaTests/MediaTests.swift",
+        "Tests/DiscordMediaTests/MediaClockTests.swift",
+        "Tests/DiscordMediaTests/PCMFrameStreamTests.swift",
+        "Tests/DiscordMediaTests/PCMStreamingResamplerTests.swift",
+        "Tests/DiscordMediaTests/PCMFramePacerTests.swift",
+        "Tests/DiscordMediaTests/MediaDescriptorTests.swift"
       ],
-      "remainingGates": "Bounded values, processing and immediate-pull queue. No paced AsyncSequence, device, streaming resampler, AEC/noise/AGC or speech classifier."
+      "remainingGates": "Bounded values/processing/polling and terminal-aware AsyncSequence, exact sample clocks, caller-owned pacing and continuous linear resampling implemented. No antialias filter/bandlimited qualification, speech classifier, AEC/noise/AGC or native device adapters."
     },
     {
       "id": "opus-packet-framing",
@@ -33,11 +43,23 @@
       "remainingGates": "Ordinary RFC6716 framing/TOC/ranges only; no entropy validation, multistream or self-delimiting framing."
     },
     {
+      "id": "opus-entropy",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/OpusRangeCodingTests.swift",
+        "Tests/DiscordVoiceCodecsTests/OpusRangeOracleFixtures.swift"
+      ],
+      "remainingGates": "Owned bounded range coding only, compared with pinned official libopus entropy outputs. No SILK/CELT/hybrid syntax or PCM reconstruction/encoding; full RFC8251 conformance remains open."
+    },
+    {
       "id": "opus-encoder-decoder",
       "status": "unsupported",
       "implementation": [],
       "evidence": [],
-      "remainingGates": "Owned range coder, SILK/CELT/hybrid, official conformance vectors and PLC/FEC remain required."
+      "remainingGates": "Range coder prerequisite implemented separately. SILK/CELT/hybrid, official decoded-PCM conformance and PLC/FEC remain unimplemented."
     },
     {
       "id": "transport-aead",
@@ -125,7 +147,7 @@
       "status": "unsupported",
       "implementation": [],
       "evidence": [],
-      "remainingGates": "Opaque metadata only; negotiated video requirements, H265/layers, real codecs, DAVE parsing, RTP fragmentation/feedback and camera/GoLive are unimplemented."
+      "remainingGates": "Opaque H264/H265/VP8/VP9/AV1 and layer metadata only; negotiated video requirements, real codecs, DAVE parsing, RTP fragmentation/feedback and camera/GoLive remain unimplemented."
     },
     {
       "id": "social-audio-controls",

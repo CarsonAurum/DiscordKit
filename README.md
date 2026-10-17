@@ -132,8 +132,9 @@ other-platform runtime qualification remains recorded separately.
 - Activities require an authorized Discord iframe/mobile host and an injected Swift/browser
   binding; backend OAuth and entitlement verification retain independent ownership.
 - Commands and routers provide conveniences over complete typed requests.
-- Optional voice products expose media/framing/crypto primitives and pure control
-  reducers; supervised join/frame/leave sessions remain subsequent Phase 12 work.
+- Optional voice products expose bounded streaming media, framing/entropy/crypto
+  primitives and pure control reducers; supervised join/frame/leave sessions remain
+  subsequent Phase 12 work.
 - Platform and access restrictions produce explicit capability information.
 
 HTTP execution, the consumer client, sharded Gateway lifecycle, HTTP interactions and

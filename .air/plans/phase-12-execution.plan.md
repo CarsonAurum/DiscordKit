@@ -29,6 +29,10 @@ stays in scope for subsequent releases.
 
 ## Release boundary and next work
 
+This table records the initial release boundary. The subsequent
+[12A execution record](phase-12a-execution.plan.md) tracks streaming media and
+entropy-coder additions; the complete owned codec/device milestone remains open.
+
 | Roadmap package | This release | Remaining implementation and required evidence |
 | --- | --- | --- |
 | 12A media | Bounded portable values, PCM queue/processing, complete ordinary Opus packet framing | Owned range coder, SILK/CELT/hybrid encoder/decoder, official codec conformance vectors, PLC/FEC, streaming resampler, AEC/noise/AGC, paced AsyncSequence sources/sinks, device adapters and permissions/interruption/hot-unplug behavior |

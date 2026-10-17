@@ -70020,7 +70020,15 @@
         "symbol.12A.PCMBuffer",
         "symbol.12A.PCMFrameQueue",
         "symbol.12A.OpusRTPPacketizer",
-        "symbol.12A.VoiceJitterBuffer"
+        "symbol.12A.VoiceJitterBuffer",
+        "symbol.12A.OpusProbabilityModel",
+        "symbol.12A.OpusRangeEncoder",
+        "symbol.12A.OpusRangeDecoder",
+        "symbol.12A.PCMFrameStream",
+        "symbol.12A.PCMStreamingResampler",
+        "symbol.12A.PCMSampleClock",
+        "symbol.12A.PCMFramePacer",
+        "symbol.12A.VideoFrameLayer"
       ],
       "evidenceIDs": [
         "evidence.12A.tocConfigurations",
@@ -70029,11 +70037,21 @@
         "evidence.12A.pcm16ExhaustiveRoundTrip",
         "evidence.12A.queueLifecycleAndBudgets",
         "evidence.12A.opusClockAndSilence",
-        "evidence.12A.jitterWindow"
+        "evidence.12A.jitterWindow",
+        "evidence.12A.officialOracle",
+        "evidence.12A.probabilityModels",
+        "evidence.12A.maximumFrameAndValueOwnership",
+        "evidence.12A.cancellationDuringWaiting",
+        "evidence.12A.concurrentProducerAdmission",
+        "evidence.12A.interpolationCrossesBlockBoundaries",
+        "evidence.12A.longStreamHasExactCountAndNoBoundaryDrift",
+        "evidence.12A.conversionOverflowAndInvalidScale",
+        "evidence.12A.fractionalNanosecondCarry",
+        "evidence.12A.h265LabelIsVideoMetadataOnly"
       ],
-      "notes": "Owned RFC6716 section3 Opus packet framing only: all TOC configurations and packing codes, VBR lengths, DTX/loss frames, RFC8251 checked padding, 1275-byte frames, at most120ms and a local65536-byte packet cap. Portable normalized PCM blocks, exact rational media time, PCM16LE conversion, gain/clipping/mixing, explicitly basic block-local linear interpolation, stateless RMS gating and bounded pull/source queues are implemented without device I/O. Opus RTP timing uses48000Hz sample durations; silence and bounded jitter outputs are local protocol primitives. SILK/CELT entropy encoder/decoder, PLC/FEC, speech VAD, streaming resampler quality, codec conformance vectors, capture/playback devices, video codecs and complete media-session execution remain unimplemented. Opaque video metadata does not establish codec support. Verified and locally added 2026-10-17. Current official-source verification is recorded in Docs/Parity/voice-media-current-sources.json; historical discovery revision/hash pins are retained. Upstream announcement/effective dates are unknown for these grouped protocol surfaces; documented dated requirements and unresolved gates are recorded separately. Synthetic local fixtures establish neither production voice readiness nor complete Phase12 parity.",
+      "notes": "Owned RFC6716 section3 ordinary Opus packet framing and sections4.1/5.1 bounded entropy primitives, including verified erratum4853: exact probability contexts, range symbols/bits/uniform integers/raw tails, termination, zero extension and exact range/bit accounting. Six independent official libopus1.6.1 entropy fixtures verify every operation; they are not decoded-PCM codec conformance. Portable PCM blocks/PCM16/gain/mixing/RMS, bounded terminal-aware AsyncSequence and polling queues, continuous linear resampling with exact aggregate floor counts, checked media/sample clocks and injected monotonic frame pacing are implemented without device I/O. Linear resampling lacks an antialias filter; speech VAD, bandlimited quality, SILK/CELT/hybrid audio processing/encoding/decoding, PLC/FEC, full codec conformance, native capture/playback and complete media sessions remain unimplemented. H265 and spatial/temporal layer labels are opaque metadata, not video codec/transform/signaling support. Added2026-10-17; current source/chronology and remaining full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-media-entropy.md. Upstream announcement/effective dates unknown. Existing Voicev8/RTP48000Hz primitives are unchanged. No complete Phase12A or production/cross-platform voice claim.",
       "manual": {
-        "behavior": "Owned RFC6716 section3 Opus packet framing only: all TOC configurations and packing codes, VBR lengths, DTX/loss frames, RFC8251 checked padding, 1275-byte frames, at most120ms and a local65536-byte packet cap. Portable normalized PCM blocks, exact rational media time, PCM16LE conversion, gain/clipping/mixing, explicitly basic block-local linear interpolation, stateless RMS gating and bounded pull/source queues are implemented without device I/O. Opus RTP timing uses48000Hz sample durations; silence and bounded jitter outputs are local protocol primitives. SILK/CELT entropy encoder/decoder, PLC/FEC, speech VAD, streaming resampler quality, codec conformance vectors, capture/playback devices, video codecs and complete media-session execution remain unimplemented. Opaque video metadata does not establish codec support. Verified and locally added 2026-10-17. Current official-source verification is recorded in Docs/Parity/voice-media-current-sources.json; historical discovery revision/hash pins are retained. Upstream announcement/effective dates are unknown for these grouped protocol surfaces; documented dated requirements and unresolved gates are recorded separately. Synthetic local fixtures establish neither production voice readiness nor complete Phase12 parity."
+        "behavior": "Owned RFC6716 section3 ordinary Opus packet framing and sections4.1/5.1 bounded entropy primitives, including verified erratum4853: exact probability contexts, range symbols/bits/uniform integers/raw tails, termination, zero extension and exact range/bit accounting. Six independent official libopus1.6.1 entropy fixtures verify every operation; they are not decoded-PCM codec conformance. Portable PCM blocks/PCM16/gain/mixing/RMS, bounded terminal-aware AsyncSequence and polling queues, continuous linear resampling with exact aggregate floor counts, checked media/sample clocks and injected monotonic frame pacing are implemented without device I/O. Linear resampling lacks an antialias filter; speech VAD, bandlimited quality, SILK/CELT/hybrid audio processing/encoding/decoding, PLC/FEC, full codec conformance, native capture/playback and complete media sessions remain unimplemented. H265 and spatial/temporal layer labels are opaque metadata, not video codec/transform/signaling support. Added2026-10-17; current source/chronology and remaining full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-media-entropy.md. Upstream announcement/effective dates unknown. Existing Voicev8/RTP48000Hz primitives are unchanged. No complete Phase12A or production/cross-platform voice claim."
       }
     }
   ],
@@ -89652,6 +89670,46 @@
       "id": "symbol.12A.VoiceJitterBuffer",
       "path": "Sources/DiscordVoice/JitterBuffer.swift",
       "declaration": "public struct VoiceJitterBuffer: Sendable {"
+    },
+    {
+      "id": "symbol.12A.OpusProbabilityModel",
+      "path": "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift",
+      "declaration": "public struct OpusProbabilityModel: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusRangeEncoder",
+      "path": "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift",
+      "declaration": "public struct OpusRangeEncoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.OpusRangeDecoder",
+      "path": "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift",
+      "declaration": "public struct OpusRangeDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.PCMFrameStream",
+      "path": "Sources/DiscordMedia/PCMFrameStream.swift",
+      "declaration": "public struct PCMFrameStream: AsyncSequence, PCMSink, Sendable {"
+    },
+    {
+      "id": "symbol.12A.PCMStreamingResampler",
+      "path": "Sources/DiscordMedia/PCMStreamingResampler.swift",
+      "declaration": "public struct PCMStreamingResampler: Sendable {"
+    },
+    {
+      "id": "symbol.12A.PCMSampleClock",
+      "path": "Sources/DiscordMedia/MediaClock.swift",
+      "declaration": "public struct PCMSampleClock: Sendable {"
+    },
+    {
+      "id": "symbol.12A.PCMFramePacer",
+      "path": "Sources/DiscordMedia/PCMFramePacer.swift",
+      "declaration": "public actor PCMFramePacer<C: Clock> where C.Duration == Duration {"
+    },
+    {
+      "id": "symbol.12A.VideoFrameLayer",
+      "path": "Sources/DiscordMedia/MediaDescriptors.swift",
+      "declaration": "public struct VideoFrameLayer: Sendable, Equatable, Hashable {"
     }
   ],
   "evidence": [
@@ -94419,6 +94477,56 @@
       "id": "evidence.12A.jitterWindow",
       "path": "Tests/DiscordVoiceTests/VoicePacketTests.swift",
       "anchor": "jitterWindow"
+    },
+    {
+      "id": "evidence.12A.officialOracle",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusRangeCodingTests.swift",
+      "anchor": "officialOracle"
+    },
+    {
+      "id": "evidence.12A.probabilityModels",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusRangeCodingTests.swift",
+      "anchor": "probabilityModels"
+    },
+    {
+      "id": "evidence.12A.maximumFrameAndValueOwnership",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusRangeCodingTests.swift",
+      "anchor": "maximumFrameAndValueOwnership"
+    },
+    {
+      "id": "evidence.12A.cancellationDuringWaiting",
+      "path": "Tests/DiscordMediaTests/PCMFrameStreamTests.swift",
+      "anchor": "cancellationDuringWaiting"
+    },
+    {
+      "id": "evidence.12A.concurrentProducerAdmission",
+      "path": "Tests/DiscordMediaTests/PCMFrameStreamTests.swift",
+      "anchor": "concurrentProducerAdmission"
+    },
+    {
+      "id": "evidence.12A.interpolationCrossesBlockBoundaries",
+      "path": "Tests/DiscordMediaTests/PCMStreamingResamplerTests.swift",
+      "anchor": "interpolationCrossesBlockBoundaries"
+    },
+    {
+      "id": "evidence.12A.longStreamHasExactCountAndNoBoundaryDrift",
+      "path": "Tests/DiscordMediaTests/PCMStreamingResamplerTests.swift",
+      "anchor": "longStreamHasExactCountAndNoBoundaryDrift"
+    },
+    {
+      "id": "evidence.12A.conversionOverflowAndInvalidScale",
+      "path": "Tests/DiscordMediaTests/MediaClockTests.swift",
+      "anchor": "conversionOverflowAndInvalidScale"
+    },
+    {
+      "id": "evidence.12A.fractionalNanosecondCarry",
+      "path": "Tests/DiscordMediaTests/PCMFramePacerTests.swift",
+      "anchor": "fractionalNanosecondCarry"
+    },
+    {
+      "id": "evidence.12A.h265LabelIsVideoMetadataOnly",
+      "path": "Tests/DiscordMediaTests/MediaDescriptorTests.swift",
+      "anchor": "h265LabelIsVideoMetadataOnly"
     }
   ]
 }

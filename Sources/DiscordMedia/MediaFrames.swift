@@ -4,6 +4,7 @@ import Foundation
 public enum MediaCodec: String, Sendable, Equatable, Hashable {
     case opus
     case h264
+    case h265
     case vp8
     case vp9
     case av1
@@ -57,20 +58,25 @@ public struct EncodedVideoFrame: Sendable, Equatable {
     public let width: Int
     public let height: Int
     public let isKeyFrame: Bool
+    public let layer: VideoFrameLayer?
 
     /// Validates bounded encoded-video metadata without inspecting codec syntax.
     /// A bounded owned byte copy avoids retaining excess caller capacity or slice backing storage.
     /// - Parameters:
-    ///   - codec: H.264, VP8, VP9 or AV1; `.opus` is rejected.
+    ///   - codec: H.264, H.265/HEVC, VP8, VP9 or AV1; `.opus` is rejected. A label
+    ///     does not promise parsing, encoding, decoding, RTP mapping or Discord negotiation.
     ///   - bytes: Nonempty opaque access unit, at most 4,194,304 bytes.
     ///   - timestamp: Nonnegative caller-owned presentation time.
     ///   - width: Positive coded width no greater than 8,192 pixels.
     ///   - height: Positive coded height no greater than 8,192 pixels.
     ///   - isKeyFrame: Caller-asserted random-access metadata; not verified against the payload.
+    ///   - layer: Optional caller-asserted spatial and temporal layer identity; defaults to
+    ///     nil when unknown or inapplicable. Its local bounds do not establish codec validity,
+    ///     decode dependencies, stream identity or negotiated scalability support.
     /// - Throws: `MediaError.invalidEncodedFrame` for an audio codec, empty/oversize payload,
     ///   or invalid dimensions. No capture, codec, task or network resources are acquired.
     public init(codec: MediaCodec, bytes: Data, timestamp: MediaTime,
-                width: Int, height: Int, isKeyFrame: Bool) throws {
+                width: Int, height: Int, isKeyFrame: Bool, layer: VideoFrameLayer? = nil) throws {
         guard codec != .opus, !bytes.isEmpty, bytes.count <= 4_194_304,
               (1...8_192).contains(width), (1...8_192).contains(height) else {
             throw MediaError.invalidEncodedFrame
@@ -81,6 +87,7 @@ public struct EncodedVideoFrame: Sendable, Equatable {
         self.width = width
         self.height = height
         self.isKeyFrame = isKeyFrame
+        self.layer = layer
     }
 }
 

@@ -1,0 +1,37 @@
+{
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "compared": [
+    "final frame bytes",
+    "every-operation rng/ec_tell/ec_tell_frac",
+    "owned decoded input values"
+  ],
+  "fixtureCount": 6,
+  "frameSizing": "max(1, ceil(final official ec_tell / 8))",
+  "generator": "Python random.Random MT19937",
+  "officialEntropySourceSHA256": {
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208",
+    "celt/entdec.c": "f2d74695ceeb927210dcf76d653241ebdfd465a1c23128604640d218cdd93c38",
+    "celt/entenc.c": "56e0843479ae5db15696125ba6ac3d0a0c26fa8b677d4d6bd457686865408572"
+  },
+  "officialReleaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "officialUnitTestPassed": true,
+  "officialVersion": "1.6.1",
+  "operationCountBounds": [
+    1,
+    79
+  ],
+  "ownedSwiftSHA256": "7de89e9cd4f7a1e940305d89e70145f59672252a720addc67d72c4b2f0ccf9ed",
+  "pythonImplementation": "CPython",
+  "pythonVersion": "3.14.0",
+  "scope": "Entropy primitives only; no decoded PCM, SILK/CELT/hybrid, PLC/FEC or complete codec conformance",
+  "seed": 67168251,
+  "sourceArchiveByteCount": 10472813,
+  "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "sourceArchiveURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "sourceLicense": "Unmodified upstream COPYING retained during temporary reference compilation",
+  "sourceLicenseSHA256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551",
+  "stressCases": 2000,
+  "swiftFixtureSHA256": "e45e062aff4480c004c1f10fc8869a30cf8e8961f6e49baaa6c00ff9aec4aebb",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "verifiedOn": "2026-10-17"
+}

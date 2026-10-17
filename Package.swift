@@ -124,7 +124,7 @@ let package = Package(
         .testTarget(name: "DiscordRPCTests", dependencies: ["DiscordRPC", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordCertifiedDevicesTests", dependencies: ["DiscordCertifiedDevices", "DiscordRPC", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordActivitiesTests", dependencies: ["DiscordActivities", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
-        .testTarget(name: "DiscordMediaTests", dependencies: ["DiscordMedia"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordMediaTests", dependencies: ["DiscordMedia", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordVoiceCodecsTests", dependencies: ["DiscordVoiceCodecs", "DiscordMedia"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordVoiceCryptoTests", dependencies: ["DiscordVoiceCrypto", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordVoiceTests", dependencies: ["DiscordVoice", "DiscordVoiceCodecs", "DiscordVoiceCrypto", "DiscordCore", "DiscordModels", "DiscordTransport"], swiftSettings: concurrencySettings),

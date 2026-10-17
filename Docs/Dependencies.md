@@ -50,6 +50,9 @@ The existing Apache-2.0/NOTICE and bundled BoringSSL ISC/OpenSSL attribution ter
 apply to this newly selected native graph; preserve upstream component notices.
 Full binary redistribution audit and other-host qualification remain open.
 Current source/manifest hashes are in [voice sources](Parity/voice-media-current-sources.json).
+Phase 12A adds no runtime dependency: its entropy implementation is owned Swift.
+An opt-in development verifier compiles separately supplied official libopus source
+in temporary storage; no product or normal test build downloads, vendors or links it.
 Published AEAD/AES vector tests establish local primitive behavior, not an external
 crypto audit or MLS/DAVE interoperability. See [Voice](Voice.md).
 

@@ -91,6 +91,15 @@
       "verifiedOn": "2026-10-17",
       "revision": "1c80d3aff53fedc445b60692980cb4f19a618657",
       "purpose": "Existing Swift Crypto 5.0.1 public CryptoExtras AES permutation and selected product graph verified from resolved checkout."
+    },
+    {
+      "name": "libopus-entropy-oracle-1.6.1",
+      "url": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+      "sha256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+      "bytes": 10472813,
+      "verifiedOn": "2026-10-17",
+      "revision": "1.6.1",
+      "purpose": "Development-only independent entropy oracle; six committed fixtures and opt-in differential verification. No runtime linkage, vendoring or full decoded-PCM codec conformance."
     }
   ]
 }

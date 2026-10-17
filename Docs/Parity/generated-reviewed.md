@@ -140,7 +140,7 @@ Verified 2026-10-17. These 931 reviewed records are a selected subset of discove
 | manual.11.HostParametersAndTransport | manual | partial | 2 | 2 | 2 |
 | manual.11.LifecycleAndCorrelation | manual | partial | 2 | 2 | 6 |
 | manual.11.SharedSubscriptions | manual | partial | 4 | 1 | 1 |
-| manual.12A.OpusMediaFraming | manual | partial | 2 | 5 | 7 |
+| manual.12A.OpusMediaFraming | manual | partial | 2 | 13 | 17 |
 | manual.12A.VoiceGatewayControlPlane | manual | partial | 11 | 3 | 4 |
 | manual.12A.VoiceTransportPrimitives | manual | partial | 17 | 3 | 6 |
 | manual.5a.MessageEndpoints.bulkDelete | manual | supported | 1 | 1 | 3 |

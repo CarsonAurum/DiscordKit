@@ -6,12 +6,16 @@ independently adopted products. **Complete Discord voice is not implemented.**
 No `VoiceSession`/`VoiceManager`, owned Opus encoder/decoder, MLS group, DAVE
 backend or native device adapter is shipped yet.
 
+The subsequent [12A execution](../.air/plans/phase-12a-execution.plan.md) adds
+streaming media and owned Opus entropy coding. **The full 12A milestone remains
+incomplete**: the range coder cannot encode or reconstruct SILK/CELT audio.
+
 ## Products and ownership
 
 | Product | Implemented behavior | Dependency boundary |
 | --- | --- | --- |
-| DiscordMedia | Rational nonnegative time, bounded PCM/audio/video values, PCM16 conversion, gain/mixing, basic per-block linear resampling, RMS gate and finite immediate-pull queue | Foundation; no codecs/network/platform capture |
-| DiscordVoiceCodecs | Owned RFC 6716 ordinary Opus packet parser: all four packing codes, CBR/VBR sizes, padding, TOC mode/bandwidth/stereo/duration and frame ranges | Media; no native Opus library, entropy decoder or encoder |
+| DiscordMedia | Rational/sample clocks, caller-driven pacing, bounded PCM/audio/video values, PCM16 conversion, gain/mixing, block/continuous linear resampling, RMS gate, polling and terminal-aware async queues | Foundation; no codecs/network/platform capture |
+| DiscordVoiceCodecs | Owned RFC 6716 ordinary Opus framing and bounded entropy encoder/decoder with exact accounting and independent oracle fixtures | Media; no native Opus library or SILK/CELT audio encoder/decoder |
 | DiscordVoiceCrypto | XChaCha20-Poly1305, owned HChaCha20, public AES256-GCM, experimental truncated AES128-GCM adapter and actor-owned RTP-size packet protection | Existing Swift Crypto and its public CryptoExtras product |
 | DiscordVoice | Bounded Voice v8 JSON/binary frames/opcodes, pure handshake/heartbeat/resume reducer, main-Gateway join rendezvous, discovery, RTP framing, Opus packetization and reorder window | Core/Models/Transport and the three media products; no Client/Gateway/facade ownership |
 
@@ -32,6 +36,24 @@ The RMS gate is an energy threshold, not speech classification, AEC or denoising
 Queue writes reject overflow without partial retention; immediate reads return
 nil for an empty queue, with caller-owned scheduling and completion observation.
 
+`PCMFrameStream` instead waits when idle and returns nil only after finish/drain.
+Writes reject overflow immediately, including oversized direct delivery to a
+waiting reader. All iterators share consumption, with at most one parked read.
+Cancelling iteration finishes/discards the stream. Explicitly finish when abandoning
+iteration without cancellation. Accounting excludes blocks transferred to consumers.
+
+`PCMStreamingResampler` carries rational phase across chunks, retaining one input
+frame and at most one deferred output frame. Final counts equal the floor of
+aggregate input duration at the destination rate. Finish holds only the remaining
+tail; output blocks stay within 120ms. It also lacks an antialias filter.
+
+`MediaTime.converted` and `compare` use full-width integers; equality remains
+representation-based. `PCMSampleClock` reserves exact sample timestamps and rejects
+rollover. `PCMFramePacer` uses an injected monotonic clock, carries fractional
+nanoseconds and rejects concurrent waits. Failed/cancelled waits reserve no interval.
+It reports lateness; consumers own skip/PLC decisions and reset after discontinuities.
+It supplies no realtime/device scheduling guarantee.
+
 The Opus parser applies the [RFC 6716 framing rules](https://www.rfc-editor.org/rfc/rfc6716#section-3),
 the [RFC 8251 padding correction](https://www.rfc-editor.org/rfc/rfc8251#section-4)
 and the [inline errata](https://www.rfc-editor.org/rfc/inline-errata/rfc6716.html).
@@ -40,9 +62,19 @@ Packets are capped at 65,536 bytes, frames at 1,275 bytes, and total duration at
 ranges exclude packing headers/padding. Structural acceptance cannot validate
 compressed SILK/CELT data, produce PCM, qualify FEC/PLC or imply codec conformance.
 
-Encoded video values retain opaque codec/keyframe/dimension metadata only. No
+`OpusRangeEncoder`/`OpusRangeDecoder` implement sections 4.1/5.1 entropy operations
+and verified erratum 4853 with exact contexts, fixed frames up to 1,275 bytes and
+finite coding-call budgets. Operations include uniform/raw splits, carry/termination,
+specified zero extension and legal raw/read-ahead overlap. Six independent official
+libopus 1.6.1 fixtures compare bytes and per-operation range/bit state. This supplies
+no SILK/CELT/hybrid syntax or PCM processing. Frame failures are terminal. See the
+[dated media/entropy record](Parity/changes/2026-10-17-phase12a-media-entropy.md).
+
+Encoded video values retain opaque H.264/H.265/VP8/VP9/AV1, keyframe, dimension and
+optional spatial/temporal-layer metadata. Layer bounds are local storage policy,
+not inferred wire fields or negotiated capabilities. No
 video codec, RTP video packetization, fragmentation, Go Live or camera signaling
-is implemented. H.265 and further layer metadata remain subsequent work.
+is implemented.
 
 ## Transport encryption and RTP
 

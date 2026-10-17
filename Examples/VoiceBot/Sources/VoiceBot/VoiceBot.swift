@@ -1,16 +1,21 @@
 import Foundation
+import DiscordMedia
 import DiscordVoice
 import DiscordVoiceCodecs
 import DiscordVoiceCrypto
 
-/// Offline integration example for the initial Phase 12 release, without a Discord session.
+/// Offline integration example for Phase 12 media/protocol components, without a Discord session.
 @main struct VoiceBot {
     /// Round-trips synthetic Opus silence through RTP-size protection and a bounded reorder queue.
+    /// First checks a bounded PCM/resampling timeline and independent synthetic entropy symbols;
+    /// these checks neither encode nor decode SILK/CELT audio.
     /// Uses a fixed, public test-only key that must never be used for real media. No network,
     /// device, authentication, DAVE context or background task is created. The two cipher
     /// instances model one sender and one receive-only peer, never two sending nonce owners.
     /// - Throws: Validation/authentication errors, including any round-trip invariant failure.
     static func main() async throws {
+        try await demonstratePortableMedia()
+        try demonstrateEntropyCoding()
         let key = Data(0..<32)
         let sender = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
         let receiver = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
@@ -42,4 +47,48 @@ import DiscordVoiceCrypto
             throw error
         }
     }
+
+    /// Drains a bounded synthetic PCM sequence through continuous 24kHz-to-48kHz resampling.
+    /// No input/output device or producer task is created. The sample clock checks exact
+    /// cumulative duration across chunk boundaries and the resampler's final lookahead.
+    /// - Throws: Media validation/admission errors, cancellation or an invariant failure.
+    private static func demonstratePortableMedia() async throws {
+        let format = try PCMFormat(sampleRate: 24_000, channelCount: 1)
+        let stream = try PCMFrameStream(maximumBlocks: 2, maximumBytes: 3_840)
+        try await stream.write(PCMBuffer(format: format, samples: Array(repeating: 0.25, count: 480)))
+        try await stream.write(PCMBuffer(format: format, samples: Array(repeating: -0.25, count: 480)))
+        await stream.finish()
+        var resampler = try PCMStreamingResampler(inputFormat: format, outputSampleRate: 48_000)
+        var clock = try PCMSampleClock(sampleRate: 48_000)
+        for try await buffer in stream {
+            for output in try resampler.process(buffer) { _ = try clock.advance(by: output.frameCount) }
+        }
+        for output in try resampler.finish() { _ = try clock.advance(by: output.frameCount) }
+        let snapshot = await stream.snapshot()
+        guard clock.samplePosition == 1_920, snapshot.accountedBytes == 0,
+              snapshot.bufferedBlocks == 0, snapshot.isFinished else {
+            throw ExampleFailure.invalidInvariant
+        }
+        print("Bounded PCM stream resampled to exactly 1,920 frames at 48 kHz.")
+    }
+
+    /// Round-trips synthetic entropy symbols independently of the encoded-Opus RTP example.
+    /// These symbols contain no SILK/CELT audio syntax and are never published as audio.
+    /// - Throws: Entropy validation/budget errors or a round-trip invariant failure.
+    private static func demonstrateEntropyCoding() throws {
+        var encoder = try OpusRangeEncoder(frameByteCount: 4)
+        try encoder.encodeUniform(7, total: 11)
+        try encoder.encodeBit(true, logProbability: 2)
+        try encoder.encodeRawBits(21, count: 5)
+        let bytes = try encoder.finalize()
+        var decoder = try OpusRangeDecoder(frame: bytes)
+        guard try decoder.decodeUniform(total: 11) == 7,
+              try decoder.decodeBit(logProbability: 2),
+              try decoder.decodeRawBits(count: 5) == 21,
+              decoder.finalRange == encoder.finalRange else { throw ExampleFailure.invalidInvariant }
+        print("Synthetic entropy symbols match their final arithmetic range; no audio codec is implied.")
+    }
+
+    /// Example-local invariant failures, without treating an entropy round trip as voice support.
+    private enum ExampleFailure: Error { case invalidInvariant }
 }

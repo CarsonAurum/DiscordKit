@@ -63,8 +63,9 @@ bindings and approved Discord Web/iOS/Android smoke qualification remain separat
 no standalone browser/native container creates a Discord Activity host.
 
 Part 12 starts with independent Media, VoiceCodecs, VoiceCrypto and Voice products;
-see `Docs/Voice.md`. They implement bounded PCM processing, ordinary Opus framing,
-transport AEAD and pure Voice v8/RTP/discovery/control components. They do not yet
+see `Docs/Voice.md`. They implement bounded PCM processing/streaming/clocks/pacing,
+continuous linear resampling, ordinary Opus framing and entropy coding, transport
+AEAD and pure Voice v8/RTP/discovery/control components. They do not yet
 provide complete Opus codecs, MLS/DAVE, supervised network sessions or devices.
 Construction starts no I/O. External crypto review, codec/MLS interoperability,
 per-platform device qualification and ten-minute duplex evidence remain open.
@@ -87,7 +88,7 @@ per-platform device qualification and ten-minute duplex evidence remain open.
   protocol/session ownership and certified-device publication; no HTTP/Gateway/OAuth dependency.
 - `Sources/DiscordActivities/`: independent Activity protocol/client/catalog over Core/Transport.
 - `Sources/DiscordMedia/`, `Sources/DiscordVoiceCodecs/`, `Sources/DiscordVoiceCrypto/`:
-  bounded portable media, Opus packet structure and experimental voice crypto primitives.
+  bounded portable media, Opus packet/entropy structure and experimental voice crypto primitives.
 - `Sources/DiscordVoice/`: deterministic voice framing/control/RTP components; no client ownership.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
