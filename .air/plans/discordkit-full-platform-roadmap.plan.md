@@ -705,6 +705,15 @@ resources. See [contracts](../../Docs/WebhooksInteractionsVoice.md) and
 [execution evidence](phase-5h-execution.plan.md). Interaction ingress/routing, voice
 media, 5I–5J and platform/live/distributed/soak qualification remain separate.
 
+**5I implementation update, 2026-10-16:** All eight current written SKU,
+Entitlement and Subscription REST operations have typed Models/HTTP APIs. Complete
+owned fields and premium interaction entitlements preserve perpetual test responses,
+unknown variants and current lifecycle statuses. Finite lazy traversal retains filters
+and exclusive boundaries without prefetch; subscription status never grants access.
+See [monetization contracts](../../Docs/Monetization.md) and
+[execution evidence](phase-5i-execution.plan.md). Broader Commerce, Gateway event
+catalogs, 5J and platform/live/distributed/soak qualification remain separate.
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |

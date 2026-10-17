@@ -26,7 +26,9 @@ Part 5G adds applications/users, linked-role metadata and application commands,
 validated configuration/registration and bounded guild traversal; see `Docs/ApplicationsUsers.md`.
 Part 5H adds webhooks, interaction callbacks/original/follow-up REST and voice state/region
 operations with typed path-token scopes; see `Docs/WebhooksInteractionsVoice.md`.
-Part 5I–5J and other resource-family completion remain pending.
+Part 5I adds SKUs, entitlements, subscriptions, premium interaction data and bounded
+monetization traversal; see `Docs/Monetization.md`.
+Part 5J and other resource-family completion remain pending.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

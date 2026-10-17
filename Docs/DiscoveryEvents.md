@@ -18,7 +18,7 @@ Import `DiscordModels` and `DiscordHTTP`, inject a transport and shared credenti
 rate/reuse authorities, then execute resource descriptors. This slice adds no
 products or dependencies and requires no Gateway connection. Related User and
 Application projections remain partial; event dispatch catalogs, voice connections,
-5I–5J and platform/live/soak qualification remain separate.
+5J and platform/live/soak qualification remain separate.
 Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 ## Operations and authority

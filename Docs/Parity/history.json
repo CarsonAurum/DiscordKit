@@ -638,6 +638,63 @@
       ],
       "details": "changes/2026-10-16-webhooks-interactions-voice.md",
       "remainingGates": "../WebhooksInteractionsVoice.md"
+    },
+    {
+      "id": "2026-10-16-monetization",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "REST": "10"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "All eight current written SKU, Entitlement and Subscription REST operations were unsupported; premium interaction entitlements were partial related-resource projections.",
+      "currentBehavior": "One SKU, five Entitlement and two Subscription operations use typed bounded owned models, validated typed test owners and explicit bot/OAuth category policies. Premium interaction entitlements use Entitlement. Finite lazy ascending/descending traversals preserve filters, exact cursors and wire order, reject invalid pages and retain cancellation/deadline/page-budget boundaries.",
+      "affectedSymbols": [
+        "SKU",
+        "SKUType",
+        "SKUFlags",
+        "SKUEndpoints",
+        "Entitlement",
+        "EntitlementID",
+        "EntitlementType",
+        "EntitlementEndpoints",
+        "EntitlementPosition",
+        "EntitlementOperations",
+        "CreateTestEntitlementRequest",
+        "TestEntitlementOwner",
+        "Subscription",
+        "SubscriptionID",
+        "SubscriptionStatus",
+        "SubscriptionEndpoints",
+        "SubscriptionPosition",
+        "SubscriptionOperations",
+        "MonetizationTraversal",
+        "Interaction.entitlements"
+      ],
+      "affectedPayloads": "All current written SKU/Entitlement/Subscription fields and variants, typed premium interaction entitlements, list filters and cursors, explicit consume/create/delete test mutations and partial perpetual test-create responses. Exact unknown JSON, open numeric variants and unknown flag bits are preserved. Private-scope country is decoded without claiming scope availability.",
+      "breakingChanges": [
+        "Interaction.entitlements changes from Field<[MessageRelatedResource]> to Field<[Entitlement]> and validates documented core entitlement fields instead of accepting ID-only related-resource fixtures."
+      ],
+      "migration": "Use typed entitlement fields and supply complete documented core data in fixtures; preserve absent vs nullable test-create timestamps. Use entitlements for access, subscription state for billing, INACTIVE=1 and ENDING=2. Ongoing subscription entitlements can have null ends_at and purchase type 1. SKU list and create test require bot; unfiltered subscription list requires bearer. Current source fingerprints and explicit written/specification overlays remain separate from original discovery pins; known upstream dates are in the dated record.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/sku",
+        "https://docs.discord.com/developers/resources/entitlement",
+        "https://docs.discord.com/developers/resources/subscription",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/monetization/implementing-app-subscriptions",
+        "https://docs.discord.com/developers/social-commerce/overview",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/blob/main/specs/openapi.json",
+        "https://github.com/discord/discord-api-spec/blob/main/specs/openapi_preview.json"
+      ],
+      "details": "changes/2026-10-16-monetization.md",
+      "remainingGates": "../Monetization.md"
     }
   ]
 }

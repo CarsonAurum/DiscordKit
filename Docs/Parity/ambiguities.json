@@ -909,6 +909,45 @@
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "monetization-written-specification-boundaries",
+      "status": "policy_resolved",
+      "surface": "REST v10 / Premium Apps SKU, Entitlement and Subscription",
+      "description": "Written Entitlement ownership fields are optional and nonnullable, while the official specification requires user_id and permits null guild_id. Written create test explicitly omits starts_at/ends_at/subscription_id despite the general response schema requiring nullable timestamps. Written country is optional nonnullable while the spec permits null. Specifications also expose only_active, a current-user entitlement route and Commerce fields without corresponding complete written contracts in this batch.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/entitlement.md",
+          "section": "Entitlement Structure, examples and Create Test Entitlement",
+          "revision": "unknown",
+          "sha256": "fd0b326159147c5ffdd70f56b38d52e30224c1052c4a611296fe5da9c5ee9f44"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/subscription.md",
+          "section": "Subscription Object and List SKU Subscriptions",
+          "revision": "unknown",
+          "sha256": "ff969776250923cdf9c15c9c96988f5485e5bcd4fb3b1b40b2205a1ec07a3f72"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+          "section": "EntitlementResponse, SubscriptionResponse, authentication and SKU filter bounds",
+          "revision": "unknown",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi_preview.json",
+          "section": "EntitlementResponse and additional monetization routes/fields",
+          "revision": "unknown",
+          "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9"
+        }
+      ],
+      "impact": "Blind specification generation rejects valid guild/test responses, widens typed surfaces without reviewed public contracts or changes written field presence semantics.",
+      "interimPolicy": "Preserve optional written ownership, nullable guild_id compatibility from the official specification and absent test timestamps using Field; decode optional example subscription_id. Written nonnull user_id controls; nullable country is an explicit specification compatibility overlay, preserving absence independently. Adopt explicit specification-backed auth categories, <=100 unique SKU filters and optional subscription-get user_id; SKU list and create test remain bot-only, unfiltered subscription list bearer-only. Spec-only only_active, current-user route, quest-reward kind 10 and Commerce fulfillment/parent/gifter fields retain unsupported typed classifications and exact raw preservation.",
+      "requiredResolution": "Official reconciled schemas and complete public wire/auth/access/lifecycle contracts before promoting the remaining specification/Commerce surfaces. This policy does not establish full stable/preview parity.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
     }
   ]
 }

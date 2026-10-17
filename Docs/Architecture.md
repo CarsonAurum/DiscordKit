@@ -23,7 +23,12 @@ with bounded CSV jobs, recurrence/status contracts, finite user traversal and sn
 reconciliation in the same independent products. Part 5G adds
 [applications/users, linked roles and commands](ApplicationsUsers.md), typed profile and
 configuration contracts, finite guild traversal and explicit registration reconciliation
-without adding dependencies or command-routing targets.
+without adding dependencies or command-routing targets. Part 5H adds
+[webhook/interaction/voice REST contracts](WebhooksInteractionsVoice.md) with typed
+path-token scopes. Part 5I adds [monetization contracts](Monetization.md), complete
+written SKU/Entitlement/Subscription fields, premium interaction data and finite
+traversal in Models/HTTP. Subscription lifecycle state is separate from entitlement
+decisions; broader Commerce products remain planned.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations

@@ -157,3 +157,22 @@ validation and local HTTP measurements. These short synthetic macOS measurements
 do not establish served-user, live Discord, fleet, device or sustained capacity.
 Interaction ingress/signatures/routing and voice media/device ownership remain
 separate roadmap work; batches 5I–5J remain pending.
+
+## Part 5I monetization update (2026-10-16)
+
+The [monetization catalog](../Monetization.md) adds all eight current written REST
+operations, owned SKU/Entitlement/Subscription fields and named variants, typed
+premium interaction entitlements, owner-safe test requests and finite lazy traversal.
+Current official source fingerprints, corrected numeric status chronology, explicit
+written/specification precedence and private-scope/Commerce boundaries accompany
+the [dated record](changes/2026-10-16-monetization.md). Historical discovery pins
+and earlier support records remain intact; counts do not imply unique operations.
+
+Deterministic tests cover malformed/null/missing/future fields and bounds, exact
+requests and responses, OAuth/bot category enforcement, rate/transport/API errors,
+read reduction/invalidation, cancellation/deadlines and bounded cursor/resource
+validation. The [execution record](../../.air/plans/phase-5i-execution.plan.md) records
+validation and local measurements. No live Discord, private OAuth eligibility,
+Social Commerce checkout/fulfillment, event dispatch, other-host/device, distributed
+storage or sustained capacity qualification follows from these scripted tests.
+Batch 5J and later event/catalog/platform gates remain open.

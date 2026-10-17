@@ -27,6 +27,8 @@ contracts, finite subscriber traversal and snapshot reconciliation.
 Phase 5G adds [applications, users, linked roles and commands](../ApplicationsUsers.md).
 Phase 5H adds all 28 [webhook, interaction-response and voice-control operations](../WebhooksInteractionsVoice.md),
 with typed path credentials and independent IP-global admission.
+Phase 5I adds all eight written [SKU, entitlement and subscription operations](../Monetization.md),
+complete owned resource fields, typed premium interaction entitlements and finite lazy traversal.
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
@@ -45,7 +47,8 @@ measurable; discovery records and unavailable-capability stubs do not count as s
   date, authority, protocol version, prerequisites and exact discovered membership.
 - Resource-specific current-source records, including `moderation-current-sources.json` and
   `expression-current-sources.json`, `discovery-event-current-sources.json`,
-  `application-user-current-sources.json` and `webhook-voice-interaction-current-sources.json`,
+  `application-user-current-sources.json`, `webhook-voice-interaction-current-sources.json`
+  and `monetization-current-sources.json`,
   retain current official verification hashes separately from original discovery pins.
 - `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
 - `history.json` is append-only support history; `changes/` contains human-readable entries.

@@ -46,6 +46,33 @@ import Testing
         #expect(input.entitlements != .absent)
     }
 
+    /// Premium interaction entitlement entries use the complete typed projection and preserve future origins,
+    /// deleted/consumed flags, absent perpetual-test lifecycle fields and exact unknown numeric content.
+    /// Every malformed nested entry is rejected without exposing continuation tokens or granting access.
+    /// - Throws: Unexpected fixture/projection failures fail the test.
+    @Test func premiumEntitlementProjection() throws {
+        let entitlement = try JSONValue.parse(Data(#"{"id":"18446744073709551615","sku_id":"9007199254740993","application_id":"3","user_id":"4","type":99,"deleted":true,"consumed":true,"future":12345678901234567890.123456789}"#.utf8))
+        var fields = try Self.object(Self.commandBytes())
+        fields["entitlements"] = .array([entitlement])
+        let input = try Interaction(data: JSONValue.object(fields).serialized())
+        guard case .value(let values) = input.entitlements else { Issue.record("Expected premium entitlements"); return }
+        let projected = try #require(values.first)
+        #expect(projected.id.rawValue == .max)
+        #expect(projected.skuID.rawValue == 9_007_199_254_740_993)
+        #expect(projected.type.rawValue == 99 && projected.type.knownValue == nil)
+        #expect(projected.deleted && projected.consumed == .value(true))
+        #expect(projected.startsAt == .absent && projected.endsAt == .absent)
+        #expect(projected.jsonValue() == entitlement)
+        #expect(input.jsonValue() == .object(fields))
+        for invalid in [JSONValue.null, .string("private"), .object([:]),
+                        .object(["id": .string("18446744073709551616")])] {
+            fields["entitlements"] = .array([invalid])
+            #expect(throws: DiscordError.transport(.invalidResponse)) {
+                try Interaction(data: JSONValue.object(fields).serialized())
+            }
+        }
+    }
+
     /// Minimal PING, future kinds and explicit context metadata are accepted without invented enum support.
     /// Known command/component/modal interactions must contain a nonnull, correctly shaped data object.
     /// - Throws: Unexpected parse or serialization failures fail the test.

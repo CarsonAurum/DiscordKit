@@ -119,7 +119,7 @@ The [execution plan](../.air/plans/phase-5g-execution.plan.md) records final com
 and results. Local tests use synthetic credentials and injected peers, never
 authenticated Discord requests. Platform/device, live API, distributed coordination
 and sustained-capacity qualification remain open; interaction handlers, command
-routers and batches 5I–5J remain later work.
+routers and batches 5J remain later work.
 
 The [chronological change record](Parity/changes/2026-10-16-applications-users.md)
 separates known upstream announcements/effective dates from local support dates.

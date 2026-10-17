@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "sources": [
+    {
+      "name": "sku",
+      "url": "https://docs.discord.com/developers/resources/sku.md",
+      "sha256": "71eae8c2cc161460333bdb661a15578739f39f25c9116118b705c96270ac5cf8",
+      "bytes": 4487,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "entitlement",
+      "url": "https://docs.discord.com/developers/resources/entitlement.md",
+      "sha256": "fd0b326159147c5ffdd70f56b38d52e30224c1052c4a611296fe5da9c5ee9f44",
+      "bytes": 7483,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "subscription",
+      "url": "https://docs.discord.com/developers/resources/subscription.md",
+      "sha256": "ff969776250923cdf9c15c9c96988f5485e5bcd4fb3b1b40b2205a1ec07a3f72",
+      "bytes": 4511,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "interactions",
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+      "sha256": "1dd54be770724955aec33c96cf763be5a9774e62b590b2c5ff82d670c6eccae0",
+      "bytes": 35721,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "rate-limits",
+      "url": "https://docs.discord.com/developers/topics/rate-limits.md",
+      "sha256": "2dc2df4cc03734b8904dd2f5ec33a5a0f139d742b40be5544ba4f338f258c622",
+      "bytes": 8815,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "monetization-overview",
+      "url": "https://docs.discord.com/developers/monetization/overview.md",
+      "sha256": "c87c54e5d4ff634145767368a63ea0e36b4998e8e1db5eae913c6d637adcbace",
+      "bytes": 2787,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "implementing-app-subscriptions",
+      "url": "https://docs.discord.com/developers/monetization/implementing-app-subscriptions.md",
+      "sha256": "b754adddbb3cd99b847036854546aa47ea193ac9c54a41cfcdde951310cb2d42",
+      "bytes": 15258,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "social-commerce-overview",
+      "url": "https://docs.discord.com/developers/social-commerce/overview.md",
+      "sha256": "2e0eb4ad222f5d1a8245d89fc6ab29069a435d856ca4d4ae44e7105526325183",
+      "bytes": 4389,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Full upstream content is not redistributed."
+    },
+    {
+      "name": "official-openapi-preview",
+      "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi_preview.json",
+      "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9",
+      "bytes": 1193721,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Explicit compatibility overlays and finite request bounds; written references control conflicts. Full source not redistributed."
+    },
+    {
+      "name": "official-openapi",
+      "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+      "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a",
+      "bytes": 1193084,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Explicit authentication, additive query compatibility and finite request bounds; written references control conflicts. Full source not redistributed."
+    }
+  ]
+}

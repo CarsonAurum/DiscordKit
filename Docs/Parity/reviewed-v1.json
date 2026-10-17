@@ -132,6 +132,21 @@
       "id": "spec/openapi_preview.json",
       "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
       "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9"
+    },
+    {
+      "id": "developers/resources/sku",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "c29bdcc5393e94bc245c8e3a1258822ba3ef90399c369aba2e3f72a7520163a5"
+    },
+    {
+      "id": "developers/resources/entitlement",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "4792d07ce9a8f31420b59f95379066a17cc95c7f847685f50055ec1cd94f6093"
+    },
+    {
+      "id": "developers/resources/subscription",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "241c83988dd060d7573b8dc1c111502556a5d8bf0d79ebfd21d6f23724cb7b91"
     }
   ],
   "definitions": [
@@ -49000,9 +49015,21 @@
         "evidence.5h.InteractionRequestTests.editsAndDeferredPolls",
         "evidence.5h.InteractionRequestTests.validModalChildren",
         "evidence.5h.InteractionRequestTests.invalidModalChildren",
-        "evidence.5h.InteractionRequestTests.modalRootBounds"
+        "evidence.5h.InteractionRequestTests.modalRootBounds",
+        "evidence.5i.InteractionModelTests.completeCommandInput",
+        "evidence.5i.InteractionModelTests.premiumEntitlementProjection",
+        "evidence.5i.InteractionModelTests.pingUnknownAndVariants",
+        "evidence.5i.InteractionModelTests.malformedOptionalRootFields",
+        "evidence.5i.InteractionModelTests.requiredRootFields",
+        "evidence.5i.InteractionModelTests.requiredNonPingContext",
+        "evidence.5i.InteractionModelTests.commandOptionKinds",
+        "evidence.5i.InteractionModelTests.invalidOptions",
+        "evidence.5i.InteractionModelTests.resolvedDictionaryValidation",
+        "evidence.5i.InteractionModelTests.callbackResults",
+        "evidence.5i.InteractionModelTests.invalidCallbackResults",
+        "evidence.5i.InteractionModelTests.publicEntryPointBounds"
       ],
-      "notes": "REST API v10 verified and locally added 2026-10-16. Current source fingerprints are in Docs/Parity/webhook-voice-interaction-current-sources.json; historical discovery pins are unchanged. Written references control conflicts with explicit preview overlays. Related resources retain named partial coverage. No live API, other-host, durable coordination or capacity qualification is claimed. Upstream dates are unknown except dated chronological records.",
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current source fingerprints are in Docs/Parity/webhook-voice-interaction-current-sources.json; historical discovery pins are unchanged. Written references control conflicts with explicit preview overlays. Related resources retain named partial coverage. No live API, other-host, durable coordination or capacity qualification is claimed. Upstream dates are unknown except dated chronological records. Phase 5I upgrades entitlements to typed owned Entitlement values; see changes/2026-10-16-monetization.md for source migration.",
       "manual": {
         "behavior": "An API v10 interaction snapshot; it performs no signature verification, ingress routing or acknowledgement. Initial callbacks must reach Discord within three seconds; continuation tokens expire after fifteen minutes. Applications own those deadlines and must use an interaction-scoped HTTP client; never log rawFields/token. REST API v10 verified and locally added 2026-10-16. Current source fingerprints are in Docs/Parity/webhook-voice-interaction-current-sources.json; historical discovery pins are unchanged. Written references control conflicts with explicit preview overlays. Related resources retain named partial coverage. No live API, other-host, durable coordination or capacity qualification is claimed. Upstream dates are unknown except dated chronological records.",
         "fields": [
@@ -49286,14 +49313,14 @@
           {
             "wireName": "entitlements",
             "swiftName": "entitlements",
-            "valueType": "Field<[MessageRelatedResource]>",
+            "valueType": "Field<[Entitlement]>",
             "optional": true,
             "nullable": false,
             "defaultBehavior": "absent",
             "constraints": [
               "Known scalar/container types are validated under complete-document byte/depth/node bounds.",
-              "Related resource retains explicit partial typed coverage and original unknown JSON; no hydration occurs.",
-              "Required for known non-PING kinds; omission permitted for minimal PING and unknown future kinds."
+              "Required for known non-PING kinds; omission permitted for minimal PING and unknown future kinds.",
+              "Phase 5I projects complete written entitlement fields with bounded exact unknown-data preservation; known core fields are validated."
             ],
             "access": "Exact operation token or documented bot permissions; decoded snapshots confer no authorization.",
             "unknownValueBehavior": "preserveRawAndUnknownVariants",
@@ -52630,6 +52657,1676 @@
       "notes": "REST API v10 verified and locally added 2026-10-16. Current source fingerprints are in Docs/Parity/webhook-voice-interaction-current-sources.json; historical discovery pins are unchanged. Written references control conflicts with explicit preview overlays. Related resources retain named partial coverage. No live API, other-host, durable coordination or capacity qualification is claimed. Upstream dates are unknown except dated chronological records.",
       "manual": {
         "behavior": "Typed WebhookSlackEmbedField compatibility payload validates all supplied known fields, nullable states, nested objects, URLs, colors and finite preview bounds. API operation body/admission limits apply in addition to schema bounds. GitHub-owned event selection remains explicit; no third-party request or schema hydration occurs. REST API v10 verified and locally added 2026-10-16. Current source fingerprints are in Docs/Parity/webhook-voice-interaction-current-sources.json; historical discovery pins are unchanged. Written references control conflicts with explicit preview overlays. Related resources retain named partial coverage. No live API, other-host, durable coordination or capacity qualification is claimed. Upstream dates are unknown except dated chronological records."
+      }
+    },
+    {
+      "id": "manual.5i.SKU",
+      "kind": "manual",
+      "name": "SKU",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-72330c01acf1149cc2035e01",
+        "d-e29997b9448aec44eff0c61e",
+        "d-ad79f8415ae101dae002952c",
+        "d-1becbe2539dd37564ffd9061",
+        "d-8af46af5c0cefe514cf8ae47",
+        "d-da5468d4d40a2071aced3e7f"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKU",
+        "symbol.5i.SKU.field.id",
+        "symbol.5i.SKU.field.type",
+        "symbol.5i.SKU.field.applicationID",
+        "symbol.5i.SKU.field.name",
+        "symbol.5i.SKU.field.slug",
+        "symbol.5i.SKU.field.flags",
+        "symbol.5i.SKU.initData",
+        "symbol.5i.SKU.initValue"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Six current written offering fields, open kinds and exact flags; example-only fields remain raw. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+        "fields": [
+          {
+            "wireName": "id",
+            "swiftName": "id",
+            "valueType": "SKUID",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-72330c01acf1149cc2035e01"
+            ],
+            "symbolID": "symbol.5i.SKU.field.id"
+          },
+          {
+            "wireName": "type",
+            "swiftName": "type",
+            "valueType": "RawValue<SKUType>",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-e29997b9448aec44eff0c61e"
+            ],
+            "symbolID": "symbol.5i.SKU.field.type"
+          },
+          {
+            "wireName": "application_id",
+            "swiftName": "applicationID",
+            "valueType": "ApplicationID",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-ad79f8415ae101dae002952c"
+            ],
+            "symbolID": "symbol.5i.SKU.field.applicationID"
+          },
+          {
+            "wireName": "name",
+            "swiftName": "name",
+            "valueType": "String",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-1becbe2539dd37564ffd9061"
+            ],
+            "symbolID": "symbol.5i.SKU.field.name"
+          },
+          {
+            "wireName": "slug",
+            "swiftName": "slug",
+            "valueType": "String",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-8af46af5c0cefe514cf8ae47"
+            ],
+            "symbolID": "symbol.5i.SKU.field.slug"
+          },
+          {
+            "wireName": "flags",
+            "swiftName": "flags",
+            "valueType": "UInt64",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-da5468d4d40a2071aced3e7f"
+            ],
+            "symbolID": "symbol.5i.SKU.field.flags"
+          }
+        ]
+      }
+    },
+    {
+      "id": "manual.5i.Entitlement",
+      "kind": "manual",
+      "name": "Entitlement",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-85a55edc5b76e266b455cd8c",
+        "d-e3fc5a55713605ecb63916fb",
+        "d-de289d5ac8f2efc537d8ed7f",
+        "d-f3318ef20b98375a4bc3a856",
+        "d-0a427e9038f5099c0d70b6c7",
+        "d-e09efbc6d1f0dc0ccf351751",
+        "d-81d61796998776411fb7dcf6",
+        "d-2f40dc8732cb108f9795e385",
+        "d-8cba87de7be625548175ee88",
+        "d-f7200460af7966e20910c349"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.Entitlement",
+        "symbol.5i.Entitlement.field.id",
+        "symbol.5i.Entitlement.field.skuID",
+        "symbol.5i.Entitlement.field.applicationID",
+        "symbol.5i.Entitlement.field.userID",
+        "symbol.5i.Entitlement.field.type",
+        "symbol.5i.Entitlement.field.deleted",
+        "symbol.5i.Entitlement.field.startsAt",
+        "symbol.5i.Entitlement.field.endsAt",
+        "symbol.5i.Entitlement.field.guildID",
+        "symbol.5i.Entitlement.field.consumed",
+        "symbol.5i.Entitlement.initData",
+        "symbol.5i.Entitlement.initValue",
+        "symbol.5i.Entitlement.field.subscriptionID"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Current written entitlement fields and open kinds; optional subscription_id is additive official-example compatibility. Nullable lifecycle Fields preserve explicit perpetual test-create omissions. These values never grant access or consume items locally. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+        "fields": [
+          {
+            "wireName": "id",
+            "swiftName": "id",
+            "valueType": "EntitlementID",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-85a55edc5b76e266b455cd8c"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.id"
+          },
+          {
+            "wireName": "sku_id",
+            "swiftName": "skuID",
+            "valueType": "SKUID",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-e3fc5a55713605ecb63916fb"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.skuID"
+          },
+          {
+            "wireName": "application_id",
+            "swiftName": "applicationID",
+            "valueType": "ApplicationID",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-de289d5ac8f2efc537d8ed7f"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.applicationID"
+          },
+          {
+            "wireName": "user_id",
+            "swiftName": "userID",
+            "valueType": "Field<UserID>",
+            "optional": true,
+            "nullable": false,
+            "defaultBehavior": "absent",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-f3318ef20b98375a4bc3a856"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.userID"
+          },
+          {
+            "wireName": "type",
+            "swiftName": "type",
+            "valueType": "RawValue<EntitlementType>",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-0a427e9038f5099c0d70b6c7"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.type"
+          },
+          {
+            "wireName": "deleted",
+            "swiftName": "deleted",
+            "valueType": "Bool",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-e09efbc6d1f0dc0ccf351751"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.deleted"
+          },
+          {
+            "wireName": "starts_at",
+            "swiftName": "startsAt",
+            "valueType": "Field<DiscordTimestamp>",
+            "optional": true,
+            "nullable": true,
+            "defaultBehavior": "absent",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained.",
+              "General reads document required nullable dates; explicit perpetual create-test partial responses may omit these keys. Absence and null remain distinct."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-81d61796998776411fb7dcf6"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.startsAt"
+          },
+          {
+            "wireName": "ends_at",
+            "swiftName": "endsAt",
+            "valueType": "Field<DiscordTimestamp>",
+            "optional": true,
+            "nullable": true,
+            "defaultBehavior": "absent",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained.",
+              "General reads document required nullable dates; explicit perpetual create-test partial responses may omit these keys. Absence and null remain distinct."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-2f40dc8732cb108f9795e385"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.endsAt"
+          },
+          {
+            "wireName": "guild_id",
+            "swiftName": "guildID",
+            "valueType": "Field<GuildID>",
+            "optional": true,
+            "nullable": true,
+            "defaultBehavior": "absent",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained.",
+              "Written optional ownership is retained; nullable guild_id is an explicit additive official-specification compatibility overlay."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-8cba87de7be625548175ee88"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.guildID"
+          },
+          {
+            "wireName": "consumed",
+            "swiftName": "consumed",
+            "valueType": "Field<Bool>",
+            "optional": true,
+            "nullable": false,
+            "defaultBehavior": "absent",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-f7200460af7966e20910c349"
+            ],
+            "symbolID": "symbol.5i.Entitlement.field.consumed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "manual.5i.Subscription",
+      "kind": "manual",
+      "name": "Subscription",
+      "sourceID": "developers/resources/subscription",
+      "upstreamIDs": [
+        "d-66bf33cfc1ff86f371297360",
+        "d-bbad112b2eeaa9fc464a83a1",
+        "d-b8b2fda5abe15016c2ff9701",
+        "d-b102b5e84d1713973666dad7",
+        "d-c5dfb7081454f43048a55df9",
+        "d-5333a6ccdf99442be4f75da6",
+        "d-421ba400f568b6c84c7185b8",
+        "d-2fceaaba37a7e2d207743ea1",
+        "d-3b4d8335851102f48045e8c6",
+        "d-c2b328f9dc281042934a54da"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.Subscription",
+        "symbol.5i.Subscription.field.id",
+        "symbol.5i.Subscription.field.userID",
+        "symbol.5i.Subscription.field.skuIDs",
+        "symbol.5i.Subscription.field.entitlementIDs",
+        "symbol.5i.Subscription.field.renewalSKUIDs",
+        "symbol.5i.Subscription.field.currentPeriodStart",
+        "symbol.5i.Subscription.field.currentPeriodEnd",
+        "symbol.5i.Subscription.field.status",
+        "symbol.5i.Subscription.field.canceledAt",
+        "symbol.5i.Subscription.field.country",
+        "symbol.5i.Subscription.initData",
+        "symbol.5i.Subscription.initValue"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Complete current written billing snapshot. ACTIVE=0, INACTIVE=1, ENDING=2; renewal/canceled nullable state is exact. Subscription state and period never independently grant perks. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+        "fields": [
+          {
+            "wireName": "id",
+            "swiftName": "id",
+            "valueType": "SubscriptionID",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-66bf33cfc1ff86f371297360"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.id"
+          },
+          {
+            "wireName": "user_id",
+            "swiftName": "userID",
+            "valueType": "UserID",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-bbad112b2eeaa9fc464a83a1"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.userID"
+          },
+          {
+            "wireName": "sku_ids",
+            "swiftName": "skuIDs",
+            "valueType": "[SKUID]",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-b8b2fda5abe15016c2ff9701"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.skuIDs"
+          },
+          {
+            "wireName": "entitlement_ids",
+            "swiftName": "entitlementIDs",
+            "valueType": "[EntitlementID]",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-b102b5e84d1713973666dad7"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.entitlementIDs"
+          },
+          {
+            "wireName": "renewal_sku_ids",
+            "swiftName": "renewalSKUIDs",
+            "valueType": "Nullable<[SKUID]>",
+            "optional": false,
+            "nullable": true,
+            "defaultBehavior": "requiredNullable",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-c5dfb7081454f43048a55df9"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.renewalSKUIDs"
+          },
+          {
+            "wireName": "current_period_start",
+            "swiftName": "currentPeriodStart",
+            "valueType": "DiscordTimestamp",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-5333a6ccdf99442be4f75da6"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.currentPeriodStart"
+          },
+          {
+            "wireName": "current_period_end",
+            "swiftName": "currentPeriodEnd",
+            "valueType": "DiscordTimestamp",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-421ba400f568b6c84c7185b8"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.currentPeriodEnd"
+          },
+          {
+            "wireName": "status",
+            "swiftName": "status",
+            "valueType": "RawValue<SubscriptionStatus>",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "required",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-2fceaaba37a7e2d207743ea1"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.status"
+          },
+          {
+            "wireName": "canceled_at",
+            "swiftName": "canceledAt",
+            "valueType": "Nullable<DiscordTimestamp>",
+            "optional": false,
+            "nullable": true,
+            "defaultBehavior": "requiredNullable",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-3b4d8335851102f48045e8c6"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.canceledAt"
+          },
+          {
+            "wireName": "country",
+            "swiftName": "country",
+            "valueType": "Field<String>",
+            "optional": true,
+            "nullable": true,
+            "defaultBehavior": "absent",
+            "constraints": [
+              "Whole-document byte, depth and node bounds include known and unknown fields; exact IDs, integral variants and numeric lexemes are retained.",
+              "Optional private-OAuth-scope payment-source data; no public scope or local authorization is inferred. Nullable country is an explicit additive official-specification compatibility overlay; absent private-scope data remains distinct."
+            ],
+            "access": "Owning application bot or appropriately scoped OAuth where supported; snapshots confer no authority, eligibility or freshness.",
+            "unknownValueBehavior": "preserveRawAndUnknownVariants",
+            "upstreamIDs": [
+              "d-c2b328f9dc281042934a54da"
+            ],
+            "symbolID": "symbol.5i.Subscription.field.country"
+          }
+        ]
+      }
+    },
+    {
+      "id": "manual.5i.variant.SKUType.durable",
+      "kind": "manual",
+      "name": "variant.SKUType.durable",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-8ba39b777e03db23c80b91fd"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUType.durable"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value DURABLE=2. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SKUType.consumable",
+      "kind": "manual",
+      "name": "variant.SKUType.consumable",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-52059ce87bbdfad8ef604846"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUType.consumable"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value CONSUMABLE=3. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SKUType.subscription",
+      "kind": "manual",
+      "name": "variant.SKUType.subscription",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-02cf98b02fa981705755c32d"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUType.subscription"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value SUBSCRIPTION=5. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SKUType.subscriptionGroup",
+      "kind": "manual",
+      "name": "variant.SKUType.subscriptionGroup",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-2268541a49b06b546196dbad"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUType.subscriptionGroup"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value SUBSCRIPTION_GROUP=6. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SKUFlags.available",
+      "kind": "manual",
+      "name": "variant.SKUFlags.available",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-970f6410cec6e8e51e230aa5"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUFlags.available"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value AVAILABLE=1 << 2. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SKUFlags.guildSubscription",
+      "kind": "manual",
+      "name": "variant.SKUFlags.guildSubscription",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-44220bd979f59386b8e808e8"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUFlags.guildSubscription"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value GUILD_SUBSCRIPTION=1 << 7. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SKUFlags.userSubscription",
+      "kind": "manual",
+      "name": "variant.SKUFlags.userSubscription",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-cee99da6c7febb543cec76d4"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUFlags.userSubscription"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value USER_SUBSCRIPTION=1 << 8. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.purchase",
+      "kind": "manual",
+      "name": "variant.EntitlementType.purchase",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-da545708d24678dfdf084535"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.purchase"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value PURCHASE=1. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.premiumSubscription",
+      "kind": "manual",
+      "name": "variant.EntitlementType.premiumSubscription",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-90cf5958d516a016174b37f1"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.premiumSubscription"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value PREMIUM_SUBSCRIPTION=2. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.developerGift",
+      "kind": "manual",
+      "name": "variant.EntitlementType.developerGift",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-cbe65b93d4e1314e3dcc5d45"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.developerGift"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value DEVELOPER_GIFT=3. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.testModePurchase",
+      "kind": "manual",
+      "name": "variant.EntitlementType.testModePurchase",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-ff50129c85c12736dc35b06e"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.testModePurchase"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value TEST_MODE_PURCHASE=4. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.freePurchase",
+      "kind": "manual",
+      "name": "variant.EntitlementType.freePurchase",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-d59c5c2e0f8ad9b3b04edc1b"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.freePurchase"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value FREE_PURCHASE=5. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.userGift",
+      "kind": "manual",
+      "name": "variant.EntitlementType.userGift",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-a69609efdb016777659c4f0b"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.userGift"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value USER_GIFT=6. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.premiumPurchase",
+      "kind": "manual",
+      "name": "variant.EntitlementType.premiumPurchase",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-5e10426f6b7019818af9abf6"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.premiumPurchase"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value PREMIUM_PURCHASE=7. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.EntitlementType.applicationSubscription",
+      "kind": "manual",
+      "name": "variant.EntitlementType.applicationSubscription",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-5a9379df53d43f5018682783"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementType.applicationSubscription"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value APPLICATION_SUBSCRIPTION=8. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SubscriptionStatus.active",
+      "kind": "manual",
+      "name": "variant.SubscriptionStatus.active",
+      "sourceID": "developers/resources/subscription",
+      "upstreamIDs": [
+        "d-9174e5f189d76c14b4800864"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SubscriptionStatus.active"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value ACTIVE=0. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SubscriptionStatus.inactive",
+      "kind": "manual",
+      "name": "variant.SubscriptionStatus.inactive",
+      "sourceID": "developers/resources/subscription",
+      "upstreamIDs": [
+        "d-ce5573556024b27d8d643e00"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SubscriptionStatus.inactive"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value INACTIVE=1. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.variant.SubscriptionStatus.ending",
+      "kind": "manual",
+      "name": "variant.SubscriptionStatus.ending",
+      "sourceID": "developers/resources/subscription",
+      "upstreamIDs": [
+        "d-1e503e80e49c8e281fda1fed"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SubscriptionStatus.ending"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+        "evidence.5i.MonetizationModelTests.skuKinds",
+        "evidence.5i.MonetizationModelTests.completeEntitlement",
+        "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+        "evidence.5i.MonetizationModelTests.entitlementKinds",
+        "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+        "evidence.5i.MonetizationModelTests.completeSubscription",
+        "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+        "evidence.5i.MonetizationModelTests.requiredFields",
+        "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+        "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+        "evidence.5i.MonetizationModelTests.boundedParsing"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Named current written value ENDING=2. Unknown numeric values and flag bits remain exact, without inferred premium access. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.CreateTestEntitlementRequest",
+      "kind": "manual",
+      "name": "CreateTestEntitlementRequest",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-706bb5c20f97bddd26acb1ba",
+        "d-9b22e65ee9f44086e3f3aabf",
+        "d-25d995a606e1bc4dde925738"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.CreateTestEntitlementRequest",
+        "symbol.5i.CreateTestEntitlementRequest.init",
+        "symbol.5i.CreateTestEntitlementRequest.jsonValue",
+        "symbol.5i.TestEntitlementOwner"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationRequestTests.typedOwners"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Exact sku_id, owner_id and owner_type body derived from a typed guild/user recipient; owner_type is 1 for guild and 2 for user, preventing mismatch. All UInt64 IDs survive, including zero; server ownership/eligibility validation remains authoritative. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.SKUEndpoints.list",
+      "kind": "manual",
+      "name": "endpoint.SKUEndpoints.list",
+      "sourceID": "developers/resources/sku",
+      "upstreamIDs": [
+        "d-9a6195bdc9cc6da47077d3c0"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SKUEndpoints.list"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed GET /applications/{application.id}/skus descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.EntitlementEndpoints.list",
+      "kind": "manual",
+      "name": "endpoint.EntitlementEndpoints.list",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-8f18f6db3b26ccde1d4b443d",
+        "d-42d5c052e65ec3f412a79737",
+        "d-326ffad48e09a7abd320da64",
+        "d-f434d5d71ba9b74dd0ce6bea",
+        "d-d61783130c4aaaa3964f8ec3",
+        "d-0f421883495e19eb99446a6d",
+        "d-26b29c105592c35b1f076346",
+        "d-56e300b2d5ccc5c280c1c347",
+        "d-410b4954c80438935cdc1dc7"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementEndpoints.list"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed GET /applications/{application.id}/entitlements descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.EntitlementEndpoints.get",
+      "kind": "manual",
+      "name": "endpoint.EntitlementEndpoints.get",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-0af4132bba846975e614febd"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementEndpoints.get"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed GET /applications/{application.id}/entitlements/{entitlement.id} descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.EntitlementEndpoints.consume",
+      "kind": "manual",
+      "name": "endpoint.EntitlementEndpoints.consume",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-90c91c2ec958287c2a00d653"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementEndpoints.consume"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed POST /applications/{application.id}/entitlements/{entitlement.id}/consume descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.EntitlementEndpoints.createTest",
+      "kind": "manual",
+      "name": "endpoint.EntitlementEndpoints.createTest",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-fb37ed9cc2fd50452e61ddb5"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementEndpoints.createTest"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed POST /applications/{application.id}/entitlements descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.EntitlementEndpoints.deleteTest",
+      "kind": "manual",
+      "name": "endpoint.EntitlementEndpoints.deleteTest",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-e613a52244352a41a7ba714b"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementEndpoints.deleteTest"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed DELETE /applications/{application.id}/entitlements/{entitlement.id} descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.SubscriptionEndpoints.list",
+      "kind": "manual",
+      "name": "endpoint.SubscriptionEndpoints.list",
+      "sourceID": "developers/resources/subscription",
+      "upstreamIDs": [
+        "d-18de19dedb4addacb941030b",
+        "d-99a17c5f5b22dd14d0ad8019",
+        "d-e5c8a282b78f65ed72bb0f28",
+        "d-dd5a019228db603124a72064",
+        "d-b94a8d4fb36dcc86ecc9ae2a"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SubscriptionEndpoints.list"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed GET /skus/{sku.id}/subscriptions descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.endpoint.SubscriptionEndpoints.get",
+      "kind": "manual",
+      "name": "endpoint.SubscriptionEndpoints.get",
+      "sourceID": "developers/resources/subscription",
+      "upstreamIDs": [
+        "d-99e2b0e40215fa7ae9a882fa"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SubscriptionEndpoints.get"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationEndpointTests.completeCatalog",
+        "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+        "evidence.5i.MonetizationEndpointTests.readPolicies",
+        "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+        "evidence.5i.MonetizationIntegrationTests.success",
+        "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+        "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+        "evidence.5i.MonetizationIntegrationTests.failures",
+        "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+        "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+        "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+        "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+        "evidence.5i.MonetizationIntegrationTests.transportFailure",
+        "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+        "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+        "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+        "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+        "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+        "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+        "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+        "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Typed GET /skus/{sku.id}/subscriptions/{subscription.id} descriptor. Safe reads share bounded credential-scoped admission/reuse; test-create and consume/delete are explicit unsafe mutations with no ambiguous transport replay. SKU list and create test require bot; unfiltered subscription list requires bearer; documented entitlement bearer scope and ownership are enforced upstream. Cursor, optional defaults, <=100 unique SKU filter, page size 1...100, response/status and conservative entitlement invalidation policies are explicit. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.EntitlementOperations",
+      "kind": "manual",
+      "name": "EntitlementOperations",
+      "sourceID": "developers/resources/entitlement",
+      "upstreamIDs": [
+        "d-8fed223169fa9bfc3cceb614"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.EntitlementOperations",
+        "symbol.5i.EntitlementOperations.pages"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationOperationsTests.entitlementContinuation",
+        "evidence.5i.MonetizationOperationsTests.subscriptionContinuation",
+        "evidence.5i.MonetizationOperationsTests.initialBoundaries",
+        "evidence.5i.MonetizationOperationsTests.invalidConfiguration",
+        "evidence.5i.MonetizationOperationsTests.malformedPages",
+        "evidence.5i.MonetizationOperationsTests.mismatchedOwnership",
+        "evidence.5i.MonetizationOperationsTests.terminalFailures",
+        "evidence.5i.MonetizationOperationsTests.cancellation",
+        "evidence.5i.MonetizationOperationsTests.suspendedDeadlines"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Finite lazy page traversal with direction, exact cursors, all chosen filters, page limits and at most 10000 requests. No prefetch/reuse or full-result accumulation; preserve unsorted wire order and advance min/max cursor. Empty terminates; short nonempty continues. Reject oversized/duplicate/nonadvancing and mismatched resource responses. Cancellation/deadline/page-budget failure retains prior yielded values and finishes that iterator. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
+      }
+    },
+    {
+      "id": "manual.5i.SubscriptionOperations",
+      "kind": "manual",
+      "name": "SubscriptionOperations",
+      "sourceID": "developers/resources/subscription",
+      "upstreamIDs": [
+        "d-770c2e20cb895c3c9ec37bfa"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.5i.SubscriptionOperations",
+        "symbol.5i.SubscriptionOperations.pages"
+      ],
+      "evidenceIDs": [
+        "evidence.5i.MonetizationOperationsTests.entitlementContinuation",
+        "evidence.5i.MonetizationOperationsTests.subscriptionContinuation",
+        "evidence.5i.MonetizationOperationsTests.initialBoundaries",
+        "evidence.5i.MonetizationOperationsTests.invalidConfiguration",
+        "evidence.5i.MonetizationOperationsTests.malformedPages",
+        "evidence.5i.MonetizationOperationsTests.mismatchedOwnership",
+        "evidence.5i.MonetizationOperationsTests.terminalFailures",
+        "evidence.5i.MonetizationOperationsTests.cancellation",
+        "evidence.5i.MonetizationOperationsTests.suspendedDeadlines"
+      ],
+      "notes": "REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification.",
+      "manual": {
+        "behavior": "Finite lazy page traversal with direction, exact cursors, all chosen filters, page limits and at most 10000 requests. No prefetch/reuse or full-result accumulation; preserve unsorted wire order and advance min/max cursor. Empty terminates; short nonempty continues. Reject oversized/duplicate/nonadvancing and mismatched resource responses. Cancellation/deadline/page-budget failure retains prior yielded values and finishes that iterator. REST API v10 verified and locally added 2026-10-16. Current semantic source fingerprints are in Docs/Parity/monetization-current-sources.json; historical discovery pins are unchanged. Written contracts control conflicts with explicitly documented specification compatibility. Premium Apps REST coverage does not establish SDK/Social Commerce purchase or fulfillment parity, private OAuth access, live API, event dispatch, other-host, distributed or sustained-capacity qualification."
       }
     }
   ],
@@ -65842,7 +67539,7 @@
     {
       "id": "symbol.5h.Interaction.field.entitlements",
       "path": "Sources/DiscordModels/Interaction.swift",
-      "declaration": "public let entitlements: Field<[MessageRelatedResource]>"
+      "declaration": "public let entitlements: Field<[Entitlement]>"
     },
     {
       "id": "symbol.5h.Interaction.field.authorizingIntegrationOwners",
@@ -66413,6 +68110,356 @@
       "id": "symbol.5h.WebhookSlackEmbedField.declaration21",
       "path": "Sources/DiscordModels/WebhookCompatibilityRequest.swift",
       "declaration": "public func jsonValue() -> JSONValue { .object(fields) }"
+    },
+    {
+      "id": "symbol.5i.SKU",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public struct SKU: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.5i.SKU.field.id",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public let id: SKUID"
+    },
+    {
+      "id": "symbol.5i.SKU.field.type",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public let type: RawValue<SKUType>"
+    },
+    {
+      "id": "symbol.5i.SKU.field.applicationID",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public let applicationID: ApplicationID"
+    },
+    {
+      "id": "symbol.5i.SKU.field.name",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public let name: String"
+    },
+    {
+      "id": "symbol.5i.SKU.field.slug",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public let slug: String"
+    },
+    {
+      "id": "symbol.5i.SKU.field.flags",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public let flags: UInt64"
+    },
+    {
+      "id": "symbol.5i.SKU.initData",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "public init(data: Data, limits: JSONLimits = .default) throws {"
+    },
+    {
+      "id": "symbol.5i.SKU.initValue",
+      "path": "Sources/DiscordModels/SKU.swift",
+      "declaration": "init(value: JSONValue, limits: JSONLimits) throws {"
+    },
+    {
+      "id": "symbol.5i.Entitlement",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public struct Entitlement: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.id",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let id: EntitlementID"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.skuID",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let skuID: SKUID"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.applicationID",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let applicationID: ApplicationID"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.userID",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let userID: Field<UserID>"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.type",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let type: RawValue<EntitlementType>"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.deleted",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let deleted: Bool"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.startsAt",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let startsAt: Field<DiscordTimestamp>"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.endsAt",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let endsAt: Field<DiscordTimestamp>"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.guildID",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let guildID: Field<GuildID>"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.consumed",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let consumed: Field<Bool>"
+    },
+    {
+      "id": "symbol.5i.Entitlement.initData",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public init(data: Data, limits: JSONLimits = .default) throws {"
+    },
+    {
+      "id": "symbol.5i.Entitlement.initValue",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "init(value: JSONValue, limits: JSONLimits) throws {"
+    },
+    {
+      "id": "symbol.5i.Entitlement.field.subscriptionID",
+      "path": "Sources/DiscordModels/Entitlement.swift",
+      "declaration": "public let subscriptionID: Field<SubscriptionID>"
+    },
+    {
+      "id": "symbol.5i.Subscription",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public struct Subscription: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.id",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let id: SubscriptionID"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.userID",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let userID: UserID"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.skuIDs",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let skuIDs: [SKUID]"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.entitlementIDs",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let entitlementIDs: [EntitlementID]"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.renewalSKUIDs",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let renewalSKUIDs: Nullable<[SKUID]>"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.currentPeriodStart",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let currentPeriodStart: DiscordTimestamp"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.currentPeriodEnd",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let currentPeriodEnd: DiscordTimestamp"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.status",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let status: RawValue<SubscriptionStatus>"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.canceledAt",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let canceledAt: Nullable<DiscordTimestamp>"
+    },
+    {
+      "id": "symbol.5i.Subscription.field.country",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public let country: Field<String>"
+    },
+    {
+      "id": "symbol.5i.Subscription.initData",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "public init(data: Data, limits: JSONLimits = .default) throws {"
+    },
+    {
+      "id": "symbol.5i.Subscription.initValue",
+      "path": "Sources/DiscordModels/Subscription.swift",
+      "declaration": "init(value: JSONValue, limits: JSONLimits) throws {"
+    },
+    {
+      "id": "symbol.5i.SKUType.durable",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case durable = 2"
+    },
+    {
+      "id": "symbol.5i.SKUType.consumable",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case consumable = 3"
+    },
+    {
+      "id": "symbol.5i.SKUType.subscription",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case subscription = 5"
+    },
+    {
+      "id": "symbol.5i.SKUType.subscriptionGroup",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case subscriptionGroup = 6"
+    },
+    {
+      "id": "symbol.5i.SKUFlags.available",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "public static let available = Self(rawValue: 1 << 2)"
+    },
+    {
+      "id": "symbol.5i.SKUFlags.guildSubscription",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "public static let guildSubscription = Self(rawValue: 1 << 7)"
+    },
+    {
+      "id": "symbol.5i.SKUFlags.userSubscription",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "public static let userSubscription = Self(rawValue: 1 << 8)"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.purchase",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case purchase = 1"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.premiumSubscription",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case premiumSubscription = 2"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.developerGift",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case developerGift = 3"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.testModePurchase",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case testModePurchase = 4"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.freePurchase",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case freePurchase = 5"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.userGift",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case userGift = 6"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.premiumPurchase",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case premiumPurchase = 7"
+    },
+    {
+      "id": "symbol.5i.EntitlementType.applicationSubscription",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case applicationSubscription = 8"
+    },
+    {
+      "id": "symbol.5i.SubscriptionStatus.active",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case active = 0"
+    },
+    {
+      "id": "symbol.5i.SubscriptionStatus.inactive",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case inactive = 1"
+    },
+    {
+      "id": "symbol.5i.SubscriptionStatus.ending",
+      "path": "Sources/DiscordModels/MonetizationValues.swift",
+      "declaration": "case ending = 2"
+    },
+    {
+      "id": "symbol.5i.CreateTestEntitlementRequest",
+      "path": "Sources/DiscordModels/EntitlementRequest.swift",
+      "declaration": "public struct CreateTestEntitlementRequest: UserRequestPayload {"
+    },
+    {
+      "id": "symbol.5i.CreateTestEntitlementRequest.init",
+      "path": "Sources/DiscordModels/EntitlementRequest.swift",
+      "declaration": "public init(skuID: SKUID, owner: TestEntitlementOwner) throws {"
+    },
+    {
+      "id": "symbol.5i.CreateTestEntitlementRequest.jsonValue",
+      "path": "Sources/DiscordModels/EntitlementRequest.swift",
+      "declaration": "public func jsonValue() -> JSONValue { .object(fields) }"
+    },
+    {
+      "id": "symbol.5i.TestEntitlementOwner",
+      "path": "Sources/DiscordModels/EntitlementRequest.swift",
+      "declaration": "public enum TestEntitlementOwner: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.5i.SKUEndpoints.list",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func list(applicationID: ApplicationID,"
+    },
+    {
+      "id": "symbol.5i.EntitlementEndpoints.list",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func list(applicationID: ApplicationID, userID: UserID? = nil, skuIDs: [SKUID]? = nil,"
+    },
+    {
+      "id": "symbol.5i.EntitlementEndpoints.get",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func get(applicationID: ApplicationID, entitlementID: EntitlementID,"
+    },
+    {
+      "id": "symbol.5i.EntitlementEndpoints.consume",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func consume(applicationID: ApplicationID,"
+    },
+    {
+      "id": "symbol.5i.EntitlementEndpoints.createTest",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func createTest(applicationID: ApplicationID,"
+    },
+    {
+      "id": "symbol.5i.EntitlementEndpoints.deleteTest",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func deleteTest(applicationID: ApplicationID,"
+    },
+    {
+      "id": "symbol.5i.SubscriptionEndpoints.list",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func list(skuID: SKUID, userID: UserID? = nil, position: SubscriptionPosition? = nil,"
+    },
+    {
+      "id": "symbol.5i.SubscriptionEndpoints.get",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationEndpoints.swift",
+      "declaration": "public static func get(skuID: SKUID, subscriptionID: SubscriptionID, userID: UserID? = nil,"
+    },
+    {
+      "id": "symbol.5i.EntitlementOperations",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationOperations.swift",
+      "declaration": "public enum EntitlementOperations {"
+    },
+    {
+      "id": "symbol.5i.EntitlementOperations.pages",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationOperations.swift",
+      "declaration": "public static func pages<C: Clock>("
+    },
+    {
+      "id": "symbol.5i.SubscriptionOperations",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationOperations.swift",
+      "declaration": "public enum SubscriptionOperations {"
+    },
+    {
+      "id": "symbol.5i.SubscriptionOperations.pages",
+      "path": "Sources/DiscordHTTP/Resources/MonetizationOperations.swift",
+      "declaration": "public static func pages<C: Clock>("
     }
   ],
   "evidence": [
@@ -69625,6 +71672,281 @@
       "id": "evidence.5h.InteractionRequestTests.modalRootBounds",
       "path": "Tests/DiscordModelsTests/InteractionRequestTests.swift",
       "anchor": "modalRootBounds"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.completeSKUAndFlags",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "completeSKUAndFlags"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.skuKinds",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "skuKinds"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.completeEntitlement",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "completeEntitlement"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.partialTestEntitlementAndPresence",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "partialTestEntitlementAndPresence"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.entitlementKinds",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "entitlementKinds"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.entitlementOptionalFields",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "entitlementOptionalFields"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.completeSubscription",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "completeSubscription"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.subscriptionStatusesAndPresence",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "subscriptionStatusesAndPresence"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.requiredFields",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "requiredFields"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.exactIdentifiersAndNumbers",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "exactIdentifiersAndNumbers"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.subscriptionMalformedArraysAndTimes",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "subscriptionMalformedArraysAndTimes"
+    },
+    {
+      "id": "evidence.5i.MonetizationModelTests.boundedParsing",
+      "path": "Tests/DiscordModelsTests/MonetizationModelTests.swift",
+      "anchor": "boundedParsing"
+    },
+    {
+      "id": "evidence.5i.MonetizationRequestTests.typedOwners",
+      "path": "Tests/DiscordModelsTests/MonetizationRequestTests.swift",
+      "anchor": "typedOwners"
+    },
+    {
+      "id": "evidence.5i.MonetizationEndpointTests.completeCatalog",
+      "path": "Tests/DiscordHTTPTests/MonetizationEndpointTests.swift",
+      "anchor": "completeCatalog"
+    },
+    {
+      "id": "evidence.5i.MonetizationEndpointTests.queryValidationAndDefaults",
+      "path": "Tests/DiscordHTTPTests/MonetizationEndpointTests.swift",
+      "anchor": "queryValidationAndDefaults"
+    },
+    {
+      "id": "evidence.5i.MonetizationEndpointTests.readPolicies",
+      "path": "Tests/DiscordHTTPTests/MonetizationEndpointTests.swift",
+      "anchor": "readPolicies"
+    },
+    {
+      "id": "evidence.5i.MonetizationEndpointTests.boundedPagesAndPartialCreate",
+      "path": "Tests/DiscordHTTPTests/MonetizationEndpointTests.swift",
+      "anchor": "boundedPagesAndPartialCreate"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.success",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "success"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.malformedSuccessBodies",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "malformedSuccessBodies"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.unexpectedSuccessStatus",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "unexpectedSuccessStatus"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.failures",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "failures"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.explicitRateRejectionRetriesWithinBudget",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "explicitRateRejectionRetriesWithinBudget"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.authenticationMismatch",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "authenticationMismatch"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.bearerExecution",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "bearerExecution"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.botCannotOmitSubscriptionUser",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "botCannotOmitSubscriptionUser"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.transportFailure",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "transportFailure"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.cancelledBeforeSend",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "cancelledBeforeSend"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.cancellationDuringExchange",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "cancellationDuringExchange"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.readsCoalesceWithinIdentity",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "readsCoalesceWithinIdentity"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.cancellingOneCoalescedSubscriber",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "cancellingOneCoalescedSubscriber"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.scopedTTLAndInclusiveExpiry",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "scopedTTLAndInclusiveExpiry"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.malformedReadsNeverPopulateCache",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "malformedReadsNeverPopulateCache"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.writesInvalidateScopedSnapshots",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "writesInvalidateScopedSnapshots"
+    },
+    {
+      "id": "evidence.5i.MonetizationIntegrationTests.rejectedWritesPreserveSnapshots",
+      "path": "Tests/DiscordHTTPTests/MonetizationIntegrationTests.swift",
+      "anchor": "rejectedWritesPreserveSnapshots"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.entitlementContinuation",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "entitlementContinuation"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.subscriptionContinuation",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "subscriptionContinuation"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.initialBoundaries",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "initialBoundaries"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.invalidConfiguration",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "invalidConfiguration"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.malformedPages",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "malformedPages"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.mismatchedOwnership",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "mismatchedOwnership"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.terminalFailures",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "terminalFailures"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.cancellation",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "cancellation"
+    },
+    {
+      "id": "evidence.5i.MonetizationOperationsTests.suspendedDeadlines",
+      "path": "Tests/DiscordHTTPTests/MonetizationOperationsTests.swift",
+      "anchor": "suspendedDeadlines"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.completeCommandInput",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "completeCommandInput"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.premiumEntitlementProjection",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "premiumEntitlementProjection"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.pingUnknownAndVariants",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "pingUnknownAndVariants"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.malformedOptionalRootFields",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "malformedOptionalRootFields"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.requiredRootFields",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "requiredRootFields"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.requiredNonPingContext",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "requiredNonPingContext"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.commandOptionKinds",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "commandOptionKinds"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.invalidOptions",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "invalidOptions"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.resolvedDictionaryValidation",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "resolvedDictionaryValidation"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.callbackResults",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "callbackResults"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.invalidCallbackResults",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "invalidCallbackResults"
+    },
+    {
+      "id": "evidence.5i.InteractionModelTests.publicEntryPointBounds",
+      "path": "Tests/DiscordModelsTests/InteractionModelTests.swift",
+      "anchor": "publicEntryPointBounds"
     }
   ]
 }

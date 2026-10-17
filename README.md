@@ -11,8 +11,9 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [emoji, stickers and soundboard](Docs/Expressions.md) in Phase 5E,
 [invites, templates, scheduled events and stages](Docs/DiscoveryEvents.md) in Phase 5F, and
 [applications, users, linked roles and commands](Docs/ApplicationsUsers.md) in Phase 5G, and
-[webhooks, interaction responses and voice control](Docs/WebhooksInteractionsVoice.md) in Phase 5H. Interaction ingress/routing,
-OAuth2 flows, voice media, RPC, Activities, Social and commerce remain later work.
+[webhooks, interaction responses and voice control](Docs/WebhooksInteractionsVoice.md) in Phase 5H, and
+[SKUs, entitlements and subscriptions](Docs/Monetization.md) in Phase 5I. Interaction ingress/routing,
+OAuth2 flows, voice media, RPC, Activities, Social and broader commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
@@ -56,10 +57,12 @@ establish endpoint parity or qualify untested hosts. See the
 - `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
 - `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
 - `DiscordApplePlatform`: app-driven lifecycle resource ownership and capability checks.
-- `DiscordModels`: presence-aware Message/Poll/Channel/Guild/Audit Log/Auto Moderation/Emoji/Sticker/Soundboard/Invite/Template/Event/Stage/Application/User/Command payloads, components, partial related-resource
-  projections and exact unknown fields.
+- `DiscordModels`: presence-aware resource and request values for the implemented catalogs,
+  typed components and premium interaction data, partial related-resource projections and exact unknown fields.
 - `DiscordHTTP`: typed descriptors, codecs, coordinated admission, safe retries, pagination,
-  scoped coalescing, opt-in bounded response caching and message/poll, channel/thread, guild, moderation, expression, discovery/event and application/user/command REST catalogs.
+  scoped coalescing, opt-in bounded response caching, and message/poll, channel/thread, guild,
+  moderation, expression, discovery/event, application/user/command, webhook/interaction/voice
+  and monetization REST catalogs.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases and startup budgets.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),

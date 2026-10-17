@@ -262,7 +262,10 @@ public struct Interaction: MessageResponseValue, MessageTreeProjectable {
     public let appPermissions: Field<String>
     public let locale: Field<String>
     public let guildLocale: Field<String>
-    public let entitlements: Field<[MessageRelatedResource]>
+    /// Typed premium access snapshots for the invoking user or guild, preserving unknown fields and partial
+    /// test-entitlement lifecycle presence. Applications evaluate owner/SKU/deletion/time/consumption policy;
+    /// an interaction snapshot does not establish continuing access or replace authoritative freshness checks.
+    public let entitlements: Field<[Entitlement]>
     public let authorizingIntegrationOwners: Field<[String: String]>
     public let context: Field<RawValue<InteractionContextType>>
     public let attachmentSizeLimit: Field<Int>
@@ -283,7 +286,8 @@ public struct Interaction: MessageResponseValue, MessageTreeProjectable {
     ///   - limits: Bounds established at the original document root.
     /// - Throws: Invalid-response for malformed required fields, wrong version, known non-PING interactions without
     ///   data or required context metadata, invalid permissions/owner snowflakes, negative attachment limits or
-    ///   malformed optional fields. Minimal PING and future kinds may omit contextual metadata. No I/O occurs.
+    ///   malformed optional fields or nested entitlement objects. Minimal PING and future kinds may omit
+    ///   contextual metadata. No I/O occurs; premium entitlement parsing never grants or consumes access locally.
     init(value: JSONValue, limits: JSONLimits) throws {
         let object = try PayloadObject(value, limits: limits)
         id = try object.required("id", InteractionID.self)
@@ -319,7 +323,7 @@ public struct Interaction: MessageResponseValue, MessageTreeProjectable {
         }
         locale = try object.field("locale", String.self)
         guildLocale = try object.field("guild_locale", String.self)
-        entitlements = try object.messageArray("entitlements", MessageRelatedResource.self)
+        entitlements = try object.messageArray("entitlements", Entitlement.self)
         authorizingIntegrationOwners = try object.field("authorizing_integration_owners", [String: String].self)
         if case .value(let owners) = authorizingIntegrationOwners {
             guard owners.values.allSatisfy({ !$0.isEmpty && $0.utf8.allSatisfy({ (48...57).contains($0) }) && UInt64($0) != nil })

@@ -8,6 +8,20 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — monetization REST catalog (Phase 5I)
+
+- Add all eight current SKU, Entitlement and Subscription REST operations with
+  exact IDs, owned fields, unknown values and explicit Bot/Bearer authorization.
+- Add typed guild/user test-entitlement ownership and complete premium interaction
+  entitlements, including perpetual partial test responses and subscription linkage.
+- Preserve current subscription status values, nullable renewal/cancellation data
+  and private-scope country omission; subscription state never grants premium access.
+- Add finite lazy traversal with retained filters, exclusive cursors, cancellation,
+  deadlines, page budgets and response scope checks, without prefetch or hidden reads.
+- Retain credential-scoped reuse/invalidation, unsafe mutation outcome semantics,
+  current source fingerprints, upstream chronology and deterministic regression evidence.
+  Broader Commerce, Gateway catalogs, 5J and existing qualification gates remain open.
+
 ### 2026-10-16 — emoji, stickers and soundboard REST catalog (Phase 5E)
 
 - Add all 25 current Emoji, Sticker and Soundboard operations with complete written
