@@ -212,6 +212,16 @@
       "id": "developers/discord-social-sdk/development-guides/provisional-accounts/merging-accounts",
       "revision": "37148620d2324292b76047541d5f8331f81ea77a",
       "sha256": "bf4a933142aa3526510e679a2c4a69da9d4d6c08d7c6e2e60b6e40ef61c0193d"
+    },
+    {
+      "id": "developers/topics/rpc",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "314090470c24f0d5f80d82dde063516f2e4561b275ffbfd0e3aa201901a24c89"
+    },
+    {
+      "id": "developers/topics/certified-devices",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "021d66d2dfbb1fc9dc8f4d6d3fc6606a9f8b41d6b3831d5e15377f8a949b644c"
     }
   ],
   "definitions": [
@@ -69213,6 +69223,461 @@
       "manual": {
         "behavior": "Explicit code or confidential device-code exchange with paired provider proof; migration asynchronous and secret-redacted. Host owns device authorization acquisition; no native SDK wrapper, public native merge or automatic account migration. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
       }
+    },
+    {
+      "id": "manual.10.NativeDiscovery",
+      "kind": "manual",
+      "name": "NativeDiscovery",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-c66a0ebf2ad657342803fef3",
+        "d-192be3b8b0368c01160108b5"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "2026-04-03",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCDiscovery",
+        "symbol.10.RPCIPCConnector"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCFramingTests.discovery",
+        "evidence.10.RPCConnectorTests.ipcSequentialOpeningAndFreshAttempts",
+        "evidence.10.RPCConnectorTests.ipcAllUnavailable",
+        "evidence.10.RPCConnectorTests.ipcCancellationAndLateCleanup",
+        "evidence.10.UnixRPCIntegrationTests.nativeUnixRPCHandshakeRequestControlAndCancellation"
+      ],
+      "notes": "Pure prefix-precedence Unix paths and documented Windows pipe names plus bounded sequential injected opening. Default indices 0..<10 and maximum 100 candidates are local policy; no upstream maximum index is asserted. Owned Windows named-pipe I/O and all real desktop smoke tests remain absent. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Pure prefix-precedence Unix paths and documented Windows pipe names plus bounded sequential injected opening. Default indices 0..<10 and maximum 100 candidates are local policy; no upstream maximum index is asserted. Owned Windows named-pipe I/O and all real desktop smoke tests remain absent. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.IPCFraming",
+      "kind": "manual",
+      "name": "IPCFraming",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-195b2441a2498acbc4a412fb",
+        "d-fe0aa0e6d8f59a3b81d91261",
+        "d-385d57e834c88764c7eec7fb"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "2026-04-03",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCFrame",
+        "symbol.10.RPCFrameDecoder",
+        "symbol.10.RPCIPCConnection"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCFramingTests.splitFrames",
+        "evidence.10.RPCFramingTests.coalescingAndTruncation",
+        "evidence.10.RPCFramingTests.malformedAndOversized",
+        "evidence.10.RPCFramingTests.ipcConnection",
+        "evidence.10.UnixRPCIntegrationTests.nativeUnixRPCHandshakeRequestControlAndCancellation"
+      ],
+      "notes": "Little-endian opcode/length framing, bounded fragmented/coalesced parsing, RPC v1 handshake and close/ping/pong opcodes through injected byte streams; malformed/truncated/oversized input rejects without silently widening bounds. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Little-endian opcode/length framing, bounded fragmented/coalesced parsing, RPC v1 handshake and close/ping/pong opcodes through injected byte streams; malformed/truncated/oversized input rejects without silently widening bounds. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.DeprecatedWebSocket",
+      "kind": "manual",
+      "name": "DeprecatedWebSocket",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-bc8c318204207f90386e78be",
+        "d-8b3e62ca2423d1be318d6b3c",
+        "d-9f8b33544a9460167d895845"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCWebSocketConnector"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCConnectorTests.webSocketEndpointAndText",
+        "evidence.10.RPCConnectorTests.webSocketConfiguration",
+        "evidence.10.RPCConnectorTests.webSocketMessageBounds",
+        "evidence.10.RPCConnectorTests.webSocketCancellationAndLateCleanup"
+      ],
+      "notes": "Explicit approved-participant loopback WebSocket v1 JSON endpoints with origin, fixed explicitly selected port and bounded frame policy; deprecated private-beta transport is not general availability. RPC range 6463...6472 remains separate from Certified Devices 6463...6473. Host endpoint/conformance remains unqualified. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Explicit approved-participant loopback WebSocket v1 JSON endpoints with origin, fixed explicitly selected port and bounded frame policy; deprecated private-beta transport is not general availability. RPC range 6463...6472 remains separate from Certified Devices 6463...6473. Host endpoint/conformance remains unqualified. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.SessionOwnership",
+      "kind": "manual",
+      "name": "SessionOwnership",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-2a75a31940472b896f77a778",
+        "d-e0e7260b669b0479ae6d37e8",
+        "d-463e03833ecae4bf6a9d6e8b"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCClient"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCClientTests.correlationAndErrors",
+        "evidence.10.RPCClientTests.overloadCancellationAndLateReply",
+        "evidence.10.RPCClientTests.reconnectAndClose",
+        "evidence.10.RPCClientTests.invalidResponses",
+        "evidence.10.RPCClientTests.pingAndEvents",
+        "evidence.10.RPCClientTests.startupFailure",
+        "evidence.10.RPCClientTests.deadlineAndEventCancellation",
+        "evidence.10.UnixRPCIntegrationTests.nativeUnixRPCHandshakeRequestControlAndCancellation",
+        "evidence.10.RPCClientTests.documentedSubscriptionAndConnectAfterFailure",
+        "evidence.10.RPCClientTests.eventOverload",
+        "evidence.10.RPCClientTests.replyEventCorrelation",
+        "evidence.10.RPCClientTests.startupCleanup",
+        "evidence.10.RPCClientTests.budgetValidation"
+      ],
+      "notes": "Explicit connect and READY v1 admission, single reader/writer, count/byte bounded pending/event queues, command+nonce correlation, independent cancellation/deadlines, ping/pong, generation-fenced reconnect and awaited cleanup. Overload fails closed; mutations/authentication/subscriptions are never automatically replayed or restored. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Explicit connect and READY v1 admission, single reader/writer, count/byte bounded pending/event queues, command+nonce correlation, independent cancellation/deadlines, ping/pong, generation-fenced reconnect and awaited cleanup. Overload fails closed; mutations/authentication/subscriptions are never automatically replayed or restored. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.LocalAuthorization",
+      "kind": "manual",
+      "name": "LocalAuthorization",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-d36bfe9dcfdf9907db09f3eb",
+        "d-fe0807c9d51c8ed1f56f7b01"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCRequest",
+        "symbol.10.RPCCommand",
+        "symbol.10.RPCResponsePayload"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCCatalogTests.authorizationAndRawArgumentsRejectMalformedInputs",
+        "evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions",
+        "evidence.10.RPCCatalogTests.reflectiveDiagnosticsConcealSecretsAndPayloadTrees"
+      ],
+      "notes": "Typed authorize/authenticate with redacted user-token values and partial local authorization/application responses; token exchange remains caller-owned. Scope/tester/partner checks remain server-authoritative and local access is separate from bot credentials. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Typed authorize/authenticate with redacted user-token values and partial local authorization/application responses; token exchange remains caller-owned. Scope/tester/partner checks remain server-authoritative and local access is separate from bot credentials. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.ResourceReads",
+      "kind": "manual",
+      "name": "ResourceReads",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-fbe520ca50f06148b1b0bc55",
+        "d-537a2a590422416bcd51f33b",
+        "d-f73ad0b0f8e04b30b7b17d64",
+        "d-7440a4cb48c39ebbb32733ca"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCRequest",
+        "symbol.10.RPCResponsePayload"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCCatalogTests.everyCommandHasAConstructibleTypedRequest",
+        "evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions"
+      ],
+      "notes": "Typed guild/channel requests and partial RPC-specific responses, distinct from HTTP/Gateway shapes; deprecated guild members remain non-authoritative. Bounded full payload retention preserves unknown fields and exact snowflakes. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Typed guild/channel requests and partial RPC-specific responses, distinct from HTTP/Gateway shapes; deprecated guild members remain non-authoritative. Bounded full payload retention preserves unknown fields and exact snowflakes. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.VoiceControls",
+      "kind": "manual",
+      "name": "VoiceControls",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-b9c86534a37bfe53692f5f4c",
+        "d-79474479113ac4615a7054e6",
+        "d-f800bf99039b64c6fe5c4ffb",
+        "d-46f02cba621ef8ef87bfb57a",
+        "d-655884bc3bcabd0b88bf3fcf",
+        "d-70ea6ee85e77633bb92b4aed"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCRequest",
+        "symbol.10.RPCResponsePayload",
+        "symbol.10.RPCVoiceSettingsUpdate"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCCatalogTests.voiceControlsValidateExactRangesAndReadOnlyFields",
+        "evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions"
+      ],
+      "notes": "Validated user-pan/volume, voice/text selection and voice settings contracts with documented null/absence distinctions; no native audio capture. Shortcut arrays follow published examples despite singular table prose. Voice telemetry preserves decimal JSON numbers despite integer table prose. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Validated user-pan/volume, voice/text selection and voice settings contracts with documented null/absence distinctions; no native audio capture. Shortcut arrays follow published examples despite singular table prose. Voice telemetry preserves decimal JSON numbers despite integer table prose. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.Subscriptions",
+      "kind": "manual",
+      "name": "Subscriptions",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-676b69c9a7871e9c2515f513",
+        "d-3e7094a070af5b9b4c109727"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCRequest",
+        "symbol.10.RPCEventName",
+        "symbol.10.RPCSubscriptionAcknowledgement"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCCatalogTests.subscriptionIdentityAndMetadataRemainExplicit",
+        "evidence.10.RPCClientTests.documentedSubscriptionAndConnectAfterFailure"
+      ],
+      "notes": "Typed subscription/event arguments and acknowledgement projection, including required guild/channel identities and no-argument events. Unknown event names remain explicit; READY/ERROR are not subscribable. No implicit local fan-out/refcount, automatic subscription restoration or approval inference. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Typed subscription/event arguments and acknowledgement projection, including required guild/channel identities and no-argument events. Unknown event names remain explicit; READY/ERROR are not subscribable. No implicit local fan-out/refcount, automatic subscription restoration or approval inference. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.PresenceInvites",
+      "kind": "manual",
+      "name": "PresenceInvites",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-38161d43d6e9ec1249506671",
+        "d-487a25e36cd7c46e7a9d7305",
+        "d-a8e4d73eb29b4363ff88157f"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCRequest",
+        "symbol.10.RPCActivity"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCCatalogTests.activityAndCertifiedDeviceArgumentsFollowDocumentedContracts",
+        "evidence.10.RPCCatalogTests.reflectiveDiagnosticsConcealSecretsAndPayloadTrees"
+      ],
+      "notes": "Nonnull activity updates with pid and types 0/2/3/5 plus join-request accept/reject commands. Activity child schema is partial and lossless; raw JSON is not full typed parity. No null/omitted activity clearing contract is invented. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Nonnull activity updates with pid and types 0/2/3/5 plus join-request accept/reject commands. Activity child schema is partial and lossless; raw JSON is not full typed parity. No null/omitted activity clearing contract is invented. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.CertifiedDeviceCommand",
+      "kind": "manual",
+      "name": "CertifiedDeviceCommand",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-92ba23d261021e99980b220a"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCRequest",
+        "symbol.10.RPCCertifiedDevice"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCCatalogTests.activityAndCertifiedDeviceArgumentsFollowDocumentedContracts"
+      ],
+      "notes": "Documented ordered devices array, input-only processing fields and hardware identity values. Application-supplied native IDs remain distinct from native enumeration; full-array replacement preserves priority and permits empty state. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Documented ordered devices array, input-only processing fields and hardware identity values. Application-supplied native IDs remain distinct from native enumeration; full-array replacement preserves priority and permits empty state. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.DispatchCatalog",
+      "kind": "manual",
+      "name": "DispatchCatalog",
+      "sourceID": "developers/topics/rpc",
+      "upstreamIDs": [
+        "d-d12c14826f9d2ef750285abf",
+        "d-3d6245d0368660b10502df42",
+        "d-7c4cebf6c124842c6595ef0f",
+        "d-6e77b00e5dfa82024a75cbb2",
+        "d-8cd3f2322a2f36920f3f922c",
+        "d-365baac7725b72e9df7f059d",
+        "d-1ff0a47d70331e4a152d6ffa",
+        "d-776962b4a06d0b37de4f9e8f",
+        "d-71351c0c5efffccf976cd303",
+        "d-089c5b30045d7b5ca8d7e3c0",
+        "d-a527d6cb54b0e5b354710fc6",
+        "d-3f828f13d741ded42bb17ad8",
+        "d-e6df2bfedd4c2d2d0c63c4a5",
+        "d-653eb5b62a085a3129204686",
+        "d-bf8089697c6ce90573ec2f6e",
+        "d-92721887a18ec1731ecb4e77",
+        "d-2842a889234f0d5749b5f8f7",
+        "d-337b06a0b224c356f015c7d9",
+        "d-4c119148d19626902246deba",
+        "d-faf7b94fa17d393273e3e825",
+        "d-c8ee1e903edcf8d4c8312e5f",
+        "d-b56f69023793f0d096f4a5df",
+        "d-38be9daeb84b14b5712ef13b",
+        "d-e60d10b684728804f74124eb",
+        "d-e9e2762ae13c56b7cdb57912"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.RPCEventName",
+        "symbol.10.RPCEventPayload",
+        "symbol.10.RPCPayload"
+      ],
+      "evidenceIDs": [
+        "evidence.10.RPCCatalogTests.allDocumentedEventsHaveTypedProjections",
+        "evidence.10.RPCCatalogTests.projectionPresenceUnknownFieldsAndBoundsAreLossless",
+        "evidence.10.RPCCatalogTests.reflectiveDiagnosticsConcealSecretsAndPayloadTrees"
+      ],
+      "notes": "All 25 documented dispatch names decode to RPC-specific typed envelopes/projections with bounded original JSON, unknown fields/raw values and exact numeric lexemes; related resources and Activity children retain partial typed coverage. Guild online counts remain deprecated zero. Relationship scope spelling differs across current RPC/OAuth sources; advisory metadata never substitutes scopes or proves access. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "All 25 documented dispatch names decode to RPC-specific typed envelopes/projections with bounded original JSON, unknown fields/raw values and exact numeric lexemes; related resources and Activity children retain partial typed coverage. Guild online counts remain deprecated zero. Relationship scope spelling differs across current RPC/OAuth sources; advisory metadata never substitutes scopes or proves access. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.CertifiedDeviceModels",
+      "kind": "manual",
+      "name": "CertifiedDeviceModels",
+      "sourceID": "developers/topics/certified-devices",
+      "upstreamIDs": [
+        "d-ebf90199e747c900e9182ff4",
+        "d-ec4df9c40248f219aef72d00",
+        "d-634dc2b1d3c591dce62e2173",
+        "d-796268e2d358610e57506b71",
+        "d-baaf75e430785543a5ed885c"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.CertifiedDevice"
+      ],
+      "evidenceIDs": [
+        "evidence.10.CertifiedDeviceTests.wireProjection",
+        "evidence.10.CertifiedDeviceTests.modelTextBoundaries",
+        "evidence.10.CertifiedDeviceTests.audioOnlyFields",
+        "evidence.10.CertifiedDeviceTests.diagnosticRedaction"
+      ],
+      "notes": "Validated device/vendor/model values and input-only optional processing flags; native Windows UUID and macOS name identification is host-injected. Local size/control/URL validation is resource policy, not invented Discord hardware certification or automatic enumeration. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Validated device/vendor/model values and input-only optional processing flags; native Windows UUID and macOS name identification is host-injected. Local size/control/URL validation is resource policy, not invented Discord hardware certification or automatic enumeration. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.CertifiedDeviceHTTP",
+      "kind": "manual",
+      "name": "CertifiedDeviceHTTP",
+      "sourceID": "developers/topics/certified-devices",
+      "upstreamIDs": [
+        "d-212efd256fc8cd05f64f5e41",
+        "d-690a3effd86deb5e9bd0549e",
+        "d-c64438b4e7a0dd40e4e3d945"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.CertifiedDeviceHTTPPublisher"
+      ],
+      "evidenceIDs": [
+        "evidence.10.CertifiedDeviceHTTPPublisherTests.fullReplacementAndEndpoint",
+        "evidence.10.CertifiedDeviceHTTPPublisherTests.responseFailures",
+        "evidence.10.CertifiedDeviceHTTPPublisherTests.remoteAccessFailures",
+        "evidence.10.CertifiedDeviceHTTPPublisherTests.closeCancelsPendingAndRejectsOverlap",
+        "evidence.10.CertifiedDeviceHTTPPublisherTests.cancellationDuringResponse",
+        "evidence.10.CertifiedDeviceHTTPPublisherTests.transportFailureAndRecovery"
+      ],
+      "notes": "Explicit fixed loopback /rpc?v=1&client_id endpoint through borrowed HTTP transport. One in-flight prioritized complete-array replacement, 200 + exact nonce/command/null acknowledgement, bounded bodies and awaited cancellation cleanup. Empty arrays clear device state; no scans, background hardware observers, proxy/redirect authority, automatic mutation replay or certified-hardware qualification. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Explicit fixed loopback /rpc?v=1&client_id endpoint through borrowed HTTP transport. One in-flight prioritized complete-array replacement, 200 + exact nonce/command/null acknowledgement, bounded bodies and awaited cancellation cleanup. Empty arrays clear device state; no scans, background hardware observers, proxy/redirect authority, automatic mutation replay or certified-hardware qualification. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.CertifiedDeviceWebSocket",
+      "kind": "manual",
+      "name": "CertifiedDeviceWebSocket",
+      "sourceID": "developers/topics/certified-devices",
+      "upstreamIDs": [
+        "d-4d44e893c7bcbee94e1fc2c5",
+        "d-9a2aa87dbd3d08037f7d828a",
+        "d-43c650bcccc373f61da4a1da"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.CertifiedDeviceWebSocketConnector"
+      ],
+      "evidenceIDs": [
+        "evidence.10.CertifiedDeviceWebSocketTests.connectorEndpointAndFrameOwnership",
+        "evidence.10.CertifiedDeviceWebSocketTests.connectorValidation",
+        "evidence.10.CertifiedDeviceWebSocketTests.connectorCancellationAndLateCleanup",
+        "evidence.10.CertifiedDeviceWebSocketTests.frameValidation"
+      ],
+      "notes": "Separate explicit loopback WebSocket v1 JSON connector with approved origin, bounded frames and inclusive Certified Devices range 6463...6473. Port discrepancy with deprecated general RPC remains open; scripted peers do not prove desktop availability. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Separate explicit loopback WebSocket v1 JSON connector with approved origin, bounded frames and inclusive Certified Devices range 6463...6473. Port discrepancy with deprecated general RPC remains open; scripted peers do not prove desktop availability. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
+    },
+    {
+      "id": "manual.10.CertifiedDeviceRPCPublication",
+      "kind": "manual",
+      "name": "CertifiedDeviceRPCPublication",
+      "sourceID": "developers/topics/certified-devices",
+      "upstreamIDs": [
+        "d-dba6724f57dd163e65bb99e6",
+        "d-9a2aa87dbd3d08037f7d828a",
+        "d-43c650bcccc373f61da4a1da"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.10.CertifiedDeviceRPCPublisher"
+      ],
+      "evidenceIDs": [
+        "evidence.10.CertifiedDeviceWebSocketTests.rpcPublisher",
+        "evidence.10.CertifiedDeviceWebSocketTests.rpcPublisherValidation"
+      ],
+      "notes": "Shared validated full-priority device arrays submitted through caller-owned RPCClient with correlated null acknowledgement. Unknown/denied/invalid responses remain explicit; wrapper does not close borrowed session, enumerate hardware, merge prior arrays or restore state after reconnect. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.",
+      "manual": {
+        "behavior": "Shared validated full-priority device arrays submitted through caller-owned RPCClient with correlated null acknowledgement. Unknown/denied/invalid responses remain explicit; wrapper does not close borrowed session, enumerate hardware, merge prior arrays or restore state after reconnect. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit."
+      }
     }
   ],
   "symbols": [
@@ -88610,6 +89075,111 @@
       "id": "symbol.9.OAuthInstallationURL",
       "path": "Sources/DiscordOAuth/OAuthInstallationURL.swift",
       "declaration": "public struct OAuthInstallationURL: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCDiscovery",
+      "path": "Sources/DiscordRPC/RPCConnection.swift",
+      "declaration": "public enum RPCDiscovery {"
+    },
+    {
+      "id": "symbol.10.RPCIPCConnector",
+      "path": "Sources/DiscordRPC/RPCConnection.swift",
+      "declaration": "public struct RPCIPCConnector: RPCConnector {"
+    },
+    {
+      "id": "symbol.10.RPCFrame",
+      "path": "Sources/DiscordRPC/RPCFraming.swift",
+      "declaration": "public struct RPCFrame: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCFrameDecoder",
+      "path": "Sources/DiscordRPC/RPCFraming.swift",
+      "declaration": "public struct RPCFrameDecoder: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCIPCConnection",
+      "path": "Sources/DiscordRPC/RPCConnection.swift",
+      "declaration": "public actor RPCIPCConnection: RPCConnection {"
+    },
+    {
+      "id": "symbol.10.RPCWebSocketConnector",
+      "path": "Sources/DiscordRPC/RPCConnection.swift",
+      "declaration": "public struct RPCWebSocketConnector: RPCConnector {"
+    },
+    {
+      "id": "symbol.10.RPCClient",
+      "path": "Sources/DiscordRPC/RPCClient.swift",
+      "declaration": "public actor RPCClient<C: Clock> where C.Duration == Duration {"
+    },
+    {
+      "id": "symbol.10.RPCRequest",
+      "path": "Sources/DiscordRPC/RPCCatalog.swift",
+      "declaration": "public struct RPCRequest: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCCommand",
+      "path": "Sources/DiscordRPC/RPCCatalog.swift",
+      "declaration": "public enum RPCCommand: String, Sendable, CaseIterable {"
+    },
+    {
+      "id": "symbol.10.RPCEventName",
+      "path": "Sources/DiscordRPC/RPCCatalog.swift",
+      "declaration": "public struct RPCEventName: RawRepresentable, Sendable, Hashable {"
+    },
+    {
+      "id": "symbol.10.RPCEventPayload",
+      "path": "Sources/DiscordRPC/RPCDispatch.swift",
+      "declaration": "public enum RPCEventPayload: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCResponsePayload",
+      "path": "Sources/DiscordRPC/RPCDispatch.swift",
+      "declaration": "public enum RPCResponsePayload: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCVoiceSettingsUpdate",
+      "path": "Sources/DiscordRPC/RPCArguments.swift",
+      "declaration": "public struct RPCVoiceSettingsUpdate: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCSubscriptionAcknowledgement",
+      "path": "Sources/DiscordRPC/RPCProjections.swift",
+      "declaration": "public struct RPCSubscriptionAcknowledgement: RPCPayload {"
+    },
+    {
+      "id": "symbol.10.RPCActivity",
+      "path": "Sources/DiscordRPC/RPCArguments.swift",
+      "declaration": "public struct RPCActivity: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.RPCCertifiedDevice",
+      "path": "Sources/DiscordRPC/RPCArguments.swift",
+      "declaration": "public struct RPCCertifiedDevice: RPCPayload {"
+    },
+    {
+      "id": "symbol.10.RPCPayload",
+      "path": "Sources/DiscordRPC/RPCPayload.swift",
+      "declaration": "public protocol RPCPayload: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.10.CertifiedDevice",
+      "path": "Sources/DiscordCertifiedDevices/CertifiedDevice.swift",
+      "declaration": "public struct CertifiedDeviceProduct: Sendable, Hashable, CustomStringConvertible,"
+    },
+    {
+      "id": "symbol.10.CertifiedDeviceHTTPPublisher",
+      "path": "Sources/DiscordCertifiedDevices/CertifiedDeviceHTTPPublisher.swift",
+      "declaration": "public actor CertifiedDeviceHTTPPublisher: TransportResource {"
+    },
+    {
+      "id": "symbol.10.CertifiedDeviceWebSocketConnector",
+      "path": "Sources/DiscordCertifiedDevices/CertifiedDeviceWebSocketConnector.swift",
+      "declaration": "public struct CertifiedDeviceWebSocketConnector: RPCConnector {"
+    },
+    {
+      "id": "symbol.10.CertifiedDeviceRPCPublisher",
+      "path": "Sources/DiscordCertifiedDevices/CertifiedDeviceRPCPublisher.swift",
+      "declaration": "public struct CertifiedDeviceRPCPublisher<C: Clock>: Sendable where C.Duration == Duration {"
     }
   ],
   "evidence": [
@@ -92977,6 +93547,256 @@
       "id": "evidence.9.OAuthInstallationURLTests.guildInstallation",
       "path": "Tests/DiscordOAuthTests/OAuthInstallationURLTests.swift",
       "anchor": "guildInstallation"
+    },
+    {
+      "id": "evidence.10.RPCFramingTests.discovery",
+      "path": "Tests/DiscordRPCTests/RPCFramingTests.swift",
+      "anchor": "discovery"
+    },
+    {
+      "id": "evidence.10.RPCFramingTests.splitFrames",
+      "path": "Tests/DiscordRPCTests/RPCFramingTests.swift",
+      "anchor": "splitFrames"
+    },
+    {
+      "id": "evidence.10.RPCFramingTests.coalescingAndTruncation",
+      "path": "Tests/DiscordRPCTests/RPCFramingTests.swift",
+      "anchor": "coalescingAndTruncation"
+    },
+    {
+      "id": "evidence.10.RPCFramingTests.malformedAndOversized",
+      "path": "Tests/DiscordRPCTests/RPCFramingTests.swift",
+      "anchor": "malformedAndOversized"
+    },
+    {
+      "id": "evidence.10.RPCFramingTests.ipcConnection",
+      "path": "Tests/DiscordRPCTests/RPCFramingTests.swift",
+      "anchor": "ipcConnection"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.correlationAndErrors",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "correlationAndErrors"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.overloadCancellationAndLateReply",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "overloadCancellationAndLateReply"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.reconnectAndClose",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "reconnectAndClose"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.invalidResponses",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "invalidResponses"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.pingAndEvents",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "pingAndEvents"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.startupFailure",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "startupFailure"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.deadlineAndEventCancellation",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "deadlineAndEventCancellation"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.authorizationAndRawArgumentsRejectMalformedInputs",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "authorizationAndRawArgumentsRejectMalformedInputs"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "successfulResponsesRetainSchemaAndNullableDistinctions"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.everyCommandHasAConstructibleTypedRequest",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "everyCommandHasAConstructibleTypedRequest"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.voiceControlsValidateExactRangesAndReadOnlyFields",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "voiceControlsValidateExactRangesAndReadOnlyFields"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.subscriptionIdentityAndMetadataRemainExplicit",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "subscriptionIdentityAndMetadataRemainExplicit"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.activityAndCertifiedDeviceArgumentsFollowDocumentedContracts",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "activityAndCertifiedDeviceArgumentsFollowDocumentedContracts"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.allDocumentedEventsHaveTypedProjections",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "allDocumentedEventsHaveTypedProjections"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.projectionPresenceUnknownFieldsAndBoundsAreLossless",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "projectionPresenceUnknownFieldsAndBoundsAreLossless"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceTests.wireProjection",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceTests.swift",
+      "anchor": "wireProjection"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceTests.modelTextBoundaries",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceTests.swift",
+      "anchor": "modelTextBoundaries"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceTests.audioOnlyFields",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceTests.swift",
+      "anchor": "audioOnlyFields"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceTests.diagnosticRedaction",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceTests.swift",
+      "anchor": "diagnosticRedaction"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceHTTPPublisherTests.fullReplacementAndEndpoint",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceHTTPPublisherTests.swift",
+      "anchor": "fullReplacementAndEndpoint"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceHTTPPublisherTests.responseFailures",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceHTTPPublisherTests.swift",
+      "anchor": "responseFailures"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceHTTPPublisherTests.remoteAccessFailures",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceHTTPPublisherTests.swift",
+      "anchor": "remoteAccessFailures"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceHTTPPublisherTests.closeCancelsPendingAndRejectsOverlap",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceHTTPPublisherTests.swift",
+      "anchor": "closeCancelsPendingAndRejectsOverlap"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceHTTPPublisherTests.cancellationDuringResponse",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceHTTPPublisherTests.swift",
+      "anchor": "cancellationDuringResponse"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceHTTPPublisherTests.transportFailureAndRecovery",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceHTTPPublisherTests.swift",
+      "anchor": "transportFailureAndRecovery"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceWebSocketTests.connectorEndpointAndFrameOwnership",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceWebSocketTests.swift",
+      "anchor": "connectorEndpointAndFrameOwnership"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceWebSocketTests.connectorValidation",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceWebSocketTests.swift",
+      "anchor": "connectorValidation"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceWebSocketTests.connectorCancellationAndLateCleanup",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceWebSocketTests.swift",
+      "anchor": "connectorCancellationAndLateCleanup"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceWebSocketTests.frameValidation",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceWebSocketTests.swift",
+      "anchor": "frameValidation"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceWebSocketTests.rpcPublisher",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceWebSocketTests.swift",
+      "anchor": "rpcPublisher"
+    },
+    {
+      "id": "evidence.10.CertifiedDeviceWebSocketTests.rpcPublisherValidation",
+      "path": "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceWebSocketTests.swift",
+      "anchor": "rpcPublisherValidation"
+    },
+    {
+      "id": "evidence.10.RPCConnectorTests.ipcSequentialOpeningAndFreshAttempts",
+      "path": "Tests/DiscordRPCTests/RPCConnectorTests.swift",
+      "anchor": "ipcSequentialOpeningAndFreshAttempts"
+    },
+    {
+      "id": "evidence.10.RPCConnectorTests.ipcAllUnavailable",
+      "path": "Tests/DiscordRPCTests/RPCConnectorTests.swift",
+      "anchor": "ipcAllUnavailable"
+    },
+    {
+      "id": "evidence.10.RPCConnectorTests.ipcCancellationAndLateCleanup",
+      "path": "Tests/DiscordRPCTests/RPCConnectorTests.swift",
+      "anchor": "ipcCancellationAndLateCleanup"
+    },
+    {
+      "id": "evidence.10.RPCConnectorTests.webSocketEndpointAndText",
+      "path": "Tests/DiscordRPCTests/RPCConnectorTests.swift",
+      "anchor": "webSocketEndpointAndText"
+    },
+    {
+      "id": "evidence.10.RPCConnectorTests.webSocketConfiguration",
+      "path": "Tests/DiscordRPCTests/RPCConnectorTests.swift",
+      "anchor": "webSocketConfiguration"
+    },
+    {
+      "id": "evidence.10.RPCConnectorTests.webSocketMessageBounds",
+      "path": "Tests/DiscordRPCTests/RPCConnectorTests.swift",
+      "anchor": "webSocketMessageBounds"
+    },
+    {
+      "id": "evidence.10.RPCConnectorTests.webSocketCancellationAndLateCleanup",
+      "path": "Tests/DiscordRPCTests/RPCConnectorTests.swift",
+      "anchor": "webSocketCancellationAndLateCleanup"
+    },
+    {
+      "id": "evidence.10.RPCCatalogTests.reflectiveDiagnosticsConcealSecretsAndPayloadTrees",
+      "path": "Tests/DiscordRPCTests/RPCCatalogTests.swift",
+      "anchor": "reflectiveDiagnosticsConcealSecretsAndPayloadTrees"
+    },
+    {
+      "id": "evidence.10.UnixRPCIntegrationTests.nativeUnixRPCHandshakeRequestControlAndCancellation",
+      "path": "Tests/DiscordUnixPlatformTests/UnixRPCIntegrationTests.swift",
+      "anchor": "nativeUnixRPCHandshakeRequestControlAndCancellation"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.documentedSubscriptionAndConnectAfterFailure",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "documentedSubscriptionAndConnectAfterFailure"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.eventOverload",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "eventOverload"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.replyEventCorrelation",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "replyEventCorrelation"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.startupCleanup",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "startupCleanup"
+    },
+    {
+      "id": "evidence.10.RPCClientTests.budgetValidation",
+      "path": "Tests/DiscordRPCTests/RPCClientTests.swift",
+      "anchor": "budgetValidation"
     }
   ]
 }

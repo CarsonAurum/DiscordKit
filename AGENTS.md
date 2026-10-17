@@ -49,6 +49,13 @@ and server entitlement verification; see `Docs/OAuth.md` and `Docs/Phase9Service
 Secure storage/browser UI are injected; native SDK and unpublished Social Commerce
 contracts remain blocked. Construction starts no network or background work.
 
+Part 10 adds independently adopted RPC and CertifiedDevices products for local
+RPC v1 sessions, typed commands/events and prioritized full-array device publication;
+see `Docs/RPC.md` and `Docs/CertifiedDevices.md`. Construction starts no tasks or I/O.
+Transport adapters and device identifiers are injected. Windows named-pipe I/O,
+real desktop/hardware smoke tests, ambiguous WebSocket port bounds and presence
+clearing semantics remain explicit gates; no remote Gateway substitutes for RPC.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -63,6 +70,9 @@ contracts remain blocked. Construction starts no network or background work.
   transport-neutral response ownership and bounded command workflows; neither imports Gateway.
 - `Sources/DiscordOAuth/`, `Sources/DiscordGameServices/`, `Sources/DiscordCommerce/`:
   independently adopted authentication, public game/backend and server entitlement workflows.
+- `Sources/DiscordRPC/`, `Sources/DiscordCertifiedDevices/`: independent local RPC v1
+  protocol/session ownership and certified-device publication; no HTTP/Gateway/OAuth dependency.
+- `Examples/RPCApp/`: independent portable RPC/device consumer; build without connecting to Discord.
 - `Examples/OAuthApp/`: independent OAuth consumer; build without running authenticated calls.
 - `Examples/RESTOnly/`: independent REST consumer; build it without running authenticated calls.
 - `Examples/HTTPApp/`: independent signed HTTP consumer; build without authenticated calls.
@@ -135,6 +145,11 @@ For OAuth/game/commerce changes, also build `Examples/OAuthApp`; preserve its gr
 without Gateway, Client, Cache, Commands or Interactions. Secure storage implementations
 must enforce atomic generation replacement and publisher-child invalidation; no native
 SDK wrapper or undocumented Commerce protocol counts as implemented support.
+For RPC/device changes, also build `Examples/RPCApp`; preserve its graph without
+HTTP, Gateway, Client, Cache, OAuth, Commands or Interactions. Use deterministic
+local peers for framing, correlation, cancellation and device replacement tests.
+Real Discord desktop/hardware tests and Windows named-pipe host qualification are
+separate gates; preserve the documented port-range and presence-clear blockers.
 For documentation-only changes, review the diff; a build is not required.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.

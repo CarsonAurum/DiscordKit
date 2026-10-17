@@ -6,6 +6,21 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Part 10 local RPC and Certified Devices
+
+- Added independent RPC and CertifiedDevices products with task-free construction,
+  injected transports and a separate portable consumer example.
+- Added bounded native discovery, incremental RPC v1 framing, handshake/READY,
+  nonce/command/subscription correlation, ping/pong, independent cancellation,
+  ordered bounded events and explicit generation-fenced reconnect/awaited close.
+- Added typed builders for all 18 documented commands and all 25 event names,
+  exact unknown/numeric/presence preservation and diagnostic/reflection redaction.
+- Added prioritized full-array device publication over fixed-loopback HTTP and
+  approved deprecated WebSocket RPC with validated native IDs/audio capabilities.
+- Added deterministic peers and real local Unix integration, current source pins,
+  parity/history and access/platform guides. Owned Windows named-pipe I/O, real
+  desktop smoke tests and upstream port/scope/presence ambiguities remain open.
+
 ## 2026-10-17 — Part 9 OAuth2, game services and entitlement ownership
 
 - Added independently adopted OAuth, GameServices and Commerce products, with

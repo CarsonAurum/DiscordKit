@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "verifiedAt": "2026-10-16",
+  "verifiedAt": "2026-10-17",
   "entries": [
     {
       "id": "identity-profile-success-response",
@@ -43,9 +43,9 @@
         }
       ],
       "impact": "One default range cannot be represented as an upstream-confirmed common contract.",
-      "interimPolicy": "Retain the two surface-specific ranges separately; no live port scan or host qualification has run. Do not silently normalize 6473 away or claim a shared resolved range.",
+      "interimPolicy": "Keep RPC WebSocket 6463...6472 and Certified Devices HTTP/WebSocket 6463...6473 as distinct explicit policies. Local endpoint builders validate the selected surface rather than silently normalizing 6473 away. No real Discord desktop scan, official correction or approved host conformance has run. WebSocket RPC remains deprecated and restricted to old private-beta participants; IPC is preferred. Portable path construction and scripted peers do not resolve the discrepancy.",
       "requiredResolution": "Official Discord clarification/correction or approved desktop-host conformance evidence covering range endpoints and distinct HTTP/WebSocket/IPC surface semantics.",
-      "verifiedAt": "2026-10-15",
+      "verifiedAt": "2026-10-17",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"
@@ -174,9 +174,9 @@
         }
       ],
       "impact": "Public presence update support alone does not prove the clearing operation.",
-      "interimPolicy": "Record a partial desktop RPC candidate and an explicit clearing-schema blocker. Do not invent nullable activity support from common client-library behavior.",
+      "interimPolicy": "SET_ACTIVITY accepts the documented nonnull activity object, restricted to types 0, 2, 3 and 5. No typed clear-presence operation or nullable/omitted activity is exposed. Raw escape hatches do not establish support. Current public RPC docs and change log still do not establish a clear schema; no approved host conformance has run.",
       "requiredResolution": "Official clear-presence argument schema or approved host conformance covering null/omitted activity and effect on current application presence.",
-      "verifiedAt": "2026-10-15",
+      "verifiedAt": "2026-10-17",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "unknown"
@@ -975,6 +975,75 @@
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
       "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "rpc-relationship-scope-spelling",
+      "status": "open",
+      "surface": "RPC v1 / RELATIONSHIP_UPDATE authorization",
+      "description": "RPC RELATIONSHIP_UPDATE requires relationships_read, while its linked current OAuth2 scope table publishes relationships.read with Social SDK access prerequisites. No current alias or equivalence is established.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/topics/rpc",
+          "section": "RELATIONSHIP_UPDATE",
+          "revision": "unknown",
+          "sha256": "bcabc6931b969f2b8a21ec52cdbf1bf0b4f39062537228c26d2bc279b0999d8d"
+        },
+        {
+          "url": "https://docs.discord.com/developers/topics/oauth2",
+          "section": "OAuth2 scopes / relationships.read",
+          "revision": "unknown",
+          "sha256": "d2eb4d4f3e04bd2ee2ce1dfe5a720a021c934347cb5e03a77f8074b5c6901c81"
+        }
+      ],
+      "impact": "A decoded relationship event or scope string cannot establish local subscription access or automatic scope equivalence.",
+      "interimPolicy": "Retain both source spellings in documentation. Advisory event metadata names the current OAuth table entry relationships.read; runtime does not substitute scopes, infer approval or reject subscription requests from this advisory metadata. The desktop server decides actual access; no alias claim or native SDK behavior is inferred.",
+      "requiredResolution": "Official correction or explicit scope-alias and access documentation, or approved desktop-host authorization conformance for both spellings.",
+      "verifiedAt": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "rpc-voice-shortcut-shape",
+      "status": "policy_resolved",
+      "surface": "RPC v1 / GET_VOICE_SETTINGS and SET_VOICE_SETTINGS",
+      "description": "Voice Settings Mode table specifies shortcut as one key-combo object; official GET/SET/VOICE_SETTINGS_UPDATE examples consistently encode shortcut as an array.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/topics/rpc",
+          "section": "GET_VOICE_SETTINGS / Voice Settings Mode Object and GET/SET examples",
+          "revision": "unknown",
+          "sha256": "bcabc6931b969f2b8a21ec52cdbf1bf0b4f39062537228c26d2bc279b0999d8d"
+        }
+      ],
+      "impact": "Object-only decoding rejects the published examples and loses multi-key shortcut combinations.",
+      "interimPolicy": "Use the official examples array shape for typed shortcut decoding and outgoing updates; preserve the complete bounded raw object. Do not silently coerce a single object to an array or claim that the upstream table has been corrected.",
+      "requiredResolution": "Official correction establishing whether a singleton object, array, or both are accepted.",
+      "verifiedAt": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-17"
+    },
+    {
+      "id": "rpc-voice-telemetry-numeric-type",
+      "status": "policy_resolved",
+      "surface": "RPC v1 / VOICE_CONNECTION_STATUS",
+      "description": "The telemetry table specifies integer pings, average_ping and last_ping, while the official event example includes 13.37 milliseconds.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/topics/rpc",
+          "section": "VOICE_CONNECTION_STATUS / dispatch table and example",
+          "revision": "unknown",
+          "sha256": "bcabc6931b969f2b8a21ec52cdbf1bf0b4f39062537228c26d2bc279b0999d8d"
+        }
+      ],
+      "impact": "Integer-only decoding rejects the published decimal telemetry example.",
+      "interimPolicy": "Accept exact JSON numbers for ping telemetry, preserving integer or decimal lexemes without floating-point narrowing. This explicit compatibility policy does not resolve upstream type prose or establish unavailable desktop behavior.",
+      "requiredResolution": "Official clarification of decimal telemetry types and valid numeric ranges.",
+      "verifiedAt": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-17"
     }
   ]
 }

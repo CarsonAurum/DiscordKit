@@ -20,7 +20,10 @@ Phase 8 adds [signed HTTP ingress, interaction response ownership, command routi
 and explicit reconciliation, webhook-event admission and display-only link previews](Docs/Interactions.md).
 Phase 9 adds [OAuth2, installation and token ownership](Docs/OAuth.md),
 [public game-account services](Docs/Phase9ServiceContracts.md), server entitlement
-verification and explicit Activity purchase orchestration. Voice media, RPC, the
+verification and explicit Activity purchase orchestration. Phase 10 adds
+[local desktop RPC v1](Docs/RPC.md) and [Certified Devices](Docs/CertifiedDevices.md)
+with bounded injected IPC/WebSocket sessions and prioritized device publication.
+Voice media, the
 Activity host bridge, native Social SDK and schema-blocked Social Commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -81,6 +84,10 @@ establish endpoint parity or qualify untested hosts. See the
   and explicit profile/stat/lobby conveniences.
 - `DiscordCommerce`: authoritative entitlement verification/consumption and injected Activity
   purchase orchestration; early-access storefront/fulfillment schemas remain blocked.
+- `DiscordRPC`: local RPC v1 framing, session ownership, typed commands/events and bounded
+  nonce correlation through injected IPC or deprecated approved-participant WebSocket transports.
+- `DiscordCertifiedDevices`: validated prioritized full-array device publication through
+  injected local HTTP or RPC; host applications supply native device identifiers.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases,
   startup/opcode budgets, typed dispatch decoding, correlated requests, bounded broadcast
   subscriptions and independently supervised ordered handlers.
@@ -91,6 +98,7 @@ establish endpoint parity or qualify untested hosts. See the
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),
 [interaction contracts](Docs/Interactions.md), the [HTTP application example](Examples/HTTPApp/README.md),
+[local RPC contracts](Docs/RPC.md), the [RPC consumer example](Examples/RPCApp/README.md),
 [Gateway lifecycle and event catalog](Docs/Gateway.md),
 [the bot consumer example](Examples/GatewayBot/README.md), and
 [transport ownership, budgets and qualification limits](Docs/Transport.md).
@@ -111,6 +119,8 @@ other-platform runtime qualification remains recorded separately.
 - Bot clients supervise heartbeats, reconnect/resume, rate limits and socket
   ownership through an async run operation.
 - HTTP interactions work without loading Gateway or voice.
+- Local RPC and Certified Devices retain independent products; applications supply
+  local user authorization, host integration and platform qualification separately.
 - Commands and routers provide conveniences over complete typed requests.
 - Planned optional voice APIs will own the media protocol and expose join, frames and leave.
 - Platform and access restrictions produce explicit capability information.
@@ -155,6 +165,8 @@ provisioning are not invented SDK endpoints. See Discord's
 - [Signed ingress, interactions, commands and webhook events](Docs/Interactions.md)
 - [OAuth2, installations and token ownership](Docs/OAuth.md)
 - [Public account/game contracts and Commerce blockers](Docs/Phase9ServiceContracts.md)
+- [Local RPC v1 and host qualification](Docs/RPC.md)
+- [Certified Devices and prioritized publication](Docs/CertifiedDevices.md)
 - [Sharded Gateway lifecycle and event catalog](Docs/Gateway.md)
 - [Concurrency and ownership](Docs/Concurrency.md)
 - [Scalability and request efficiency](Docs/Scalability.md)

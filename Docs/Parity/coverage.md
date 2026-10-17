@@ -2,8 +2,19 @@
 
 Current Phase 7 consumer/cache/event delivery is recorded in the
 [client guide](../Client.md) and [execution record](../../.air/plans/phase-7-execution.plan.md).
+Current Phase 10 local RPC/device support and remaining host/schema gates are
+recorded in [RPC](../RPC.md), [Certified Devices](../CertifiedDevices.md) and the
+[dated parity record](changes/2026-10-17-rpc-devices.md).
 The historical counts and qualification gates below retain their original scope;
 local composition/permission calculation adds no new endpoint/dispatch-name records.
+
+Phase 10's partial reviewed groups map local RPC v1 discovery/framing/session
+ownership, documented command/event names and Certified Device publication to
+real declarations and deterministic evidence. They do not promote untouched
+discovery records or claim complete related-resource projection. Original Part 0
+counts below remain historical. The roadmap's real Discord desktop smoke gate
+remains open on macOS/Linux/Windows, owned Windows named-pipe I/O is absent, and
+the two documented WebSocket port ranges and clear-presence schema remain unresolved.
 
 Verified **2026-10-15**, on macOS arm64 with Swift **6.4**. This is a discovery and
 feasibility baseline. **The complete Part 0 gate is still open**: other-host runtime
@@ -251,3 +262,22 @@ catalog/pricing/gifting/wishlist/fulfillment remain blocked and excluded from su
 The [OAuth guide](../OAuth.md), [service inventory](../Phase9ServiceContracts.md) and
 [execution record](../../.air/plans/phase-9-execution.plan.md) record the exact tests,
 commands and remaining live/browser/storage/approval/platform qualification limits.
+
+## Part 10 local RPC/device update (2026-10-17)
+
+Independent RPC and CertifiedDevices products add bounded injected RPC v1
+IPC/WebSocket sessions, the 18 documented request commands and 25 dispatch names,
+partial RPC-specific payload projections and prioritized complete device publication
+through fixed loopback HTTP or RPC. Fifteen partial reviewed operation groups link
+unchanged discovery provenance to actual declarations and deterministic test anchors.
+Current [source fingerprints](rpc-device-current-sources.json) preserve separate
+verification from the historical pinned source revisions.
+
+The [dated record](changes/2026-10-17-rpc-devices.md), [RPC guide](../RPC.md),
+[Certified Devices guide](../CertifiedDevices.md) and
+[execution record](../../.air/plans/phase-10-execution.plan.md) identify local policy,
+ownership and remaining work. Real Discord desktop/hardware smoke tests on all
+three desktop hosts and owned Windows named-pipe I/O remain open. Deprecated
+WebSocket approval, differing published port bounds, missing clear-presence schema
+and relationship-scope spelling remain explicit. Shortcut-array and decimal-telemetry
+compatibility follow the published examples without claiming upstream correction.

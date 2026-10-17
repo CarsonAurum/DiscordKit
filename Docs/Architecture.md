@@ -48,6 +48,13 @@ in independently adopted OAuth/GameServices/Commerce products. OAuth uses Swift 
 for S256; the HTTP graph remains independent of OAuth and Crypto. Browser UI and
 secure transactional storage are injected. Native SDK-only and missing Commerce
 wire contracts remain blocked.
+Part 10 adds independently adopted [local RPC](RPC.md) and
+[Certified Devices](CertifiedDevices.md) products. RPC uses injected Transport
+IPC/WebSocket contracts and Core values; CertifiedDevices depends on RPC/Core/Transport.
+Neither product selects HTTP, Gateway, OAuth, Client, Cache or a concrete adapter.
+Local authorization is explicit and separate from bot credentials. Desktop-host
+access, deprecated WebSocket availability and platform adapters remain qualified
+separately from portable protocol code.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
@@ -100,7 +107,10 @@ flowchart TD
     DiscordKit --> DiscordCommerce
     VoiceProduct[Optional voice product] --> DiscordVoice
     DiscordRPC --> DiscordTransport
+    DiscordRPC --> DiscordCore
     DiscordCertifiedDevices --> DiscordRPC
+    DiscordCertifiedDevices --> DiscordTransport
+    DiscordCertifiedDevices --> DiscordCore
     DiscordActivities --> DiscordTransport
     DiscordSocial --> DiscordOAuth
     DiscordSocial --> DiscordRPC
@@ -129,9 +139,11 @@ normalize trusted interaction dispatches into the same context and response acto
 | Commands | Complete typed definitions, bounded exact routing and explicit canonical registration reconciliation. Imports neither Gateway nor Client. |
 | OAuth | Fixed-origin authorization/token contracts, injected browser UI and secure storage, bounded per-grant refresh, expiry and revocation lineage. No Gateway/Client/Cache dependency. |
 | GameServices/Commerce | Public account and publisher wire contracts, snapshot conveniences and backend entitlement authorization. Native SDK and unpublished storefront/fulfillment protocols remain blocked. |
+| RPC | Bounded local IPC/WebSocket framing, handshake, nonce correlation, typed commands/events and explicit session/subscription ownership. Injected transport; no remote Gateway or automatic OAuth exchange. |
+| CertifiedDevices | Prioritized full-array device publication through injected local HTTP or RPC, with native device identifiers supplied by the host. No native audio-device discovery or media capture. |
 | Client/Kit | Supervised discovery/shard/ingestion composition, configuration, optional cache bridge, event access, diagnostics and typed services. |
 | Voice | Optional voice/media protocols; narrow Gateway control contracts rather than dependence on the facade. Crypto, MLS and codec work stays isolated. |
-| RPC/Activities/Social/Commerce | Distinct local, host, authentication and access contracts; missing wire definitions remain explicit blockers. |
+| Activities/Social | Distinct host, authentication and access contracts; missing wire definitions remain explicit blockers. |
 
 Put a shared protocol in the lowest module that already knows its parameter types.
 Do not create an upward dependency just to access a facade convenience. The voice
@@ -182,6 +194,8 @@ bodies, signed URLs, errors, descriptions, logs, metrics, traces and fixtures.
   payload version 1 and webhook-event envelope version 1. The planned voice baseline
   is [Voice Gateway v8](https://docs.discord.com/developers/topics/voice-connections),
   subject to official re-verification before implementation.
+  Local RPC and Certified Devices explicitly use RPC version 1 and JSON; IPC
+  framing and the deprecated approved-participant WebSocket transport are distinct.
 - Model permissions, intents, access prerequisites, pagination and retry policy
   per operation. Preserve cancellation and expose an indeterminate mutation
   outcome instead of automatically replaying an ambiguous non-idempotent request.

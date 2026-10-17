@@ -18,6 +18,13 @@ OAuthApp graph excludes Gateway, Cache, Client, Commands and Interactions. Brows
 presentation and encrypted transactional token storage remain application supplied;
 no native Social SDK or third-party storage dependency is introduced.
 
+Part 10 adds no package dependency. RPC depends on portable Core/Transport and
+CertifiedDevices depends on RPC/Core/Transport. Applications inject an existing
+Unix IPC or WebSocket/HTTP adapter; importing either product does not select NIO,
+Foundation networking, OAuth, Gateway or the umbrella facade. The independent
+RPCApp consumer verifies the portable graph. Native Windows named-pipe I/O,
+audio-device enumeration and Discord's distributed SDK remain outside this graph.
+
 The foundational targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
 explicit newer Apple availability; it does not raise the runtime product minima

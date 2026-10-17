@@ -1231,6 +1231,126 @@ Status: supported. Support since: 2026-10-16. Source: developers/resources/user.
 
 Evidence: evidence.reviewed-field-contracts, evidence.user-projection.
 
+## CertifiedDeviceCommand
+
+Documented ordered devices array, input-only processing fields and hardware identity values. Application-supplied native IDs remain distinct from native enumeration; full-array replacement preserves priority and permits empty state. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCCatalogTests.activityAndCertifiedDeviceArgumentsFollowDocumentedContracts.
+
+## CertifiedDeviceHTTP
+
+Explicit fixed loopback /rpc?v=1&client_id endpoint through borrowed HTTP transport. One in-flight prioritized complete-array replacement, 200 + exact nonce/command/null acknowledgement, bounded bodies and awaited cancellation cleanup. Empty arrays clear device state; no scans, background hardware observers, proxy/redirect authority, automatic mutation replay or certified-hardware qualification. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/certified-devices. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.CertifiedDeviceHTTPPublisherTests.cancellationDuringResponse, evidence.10.CertifiedDeviceHTTPPublisherTests.closeCancelsPendingAndRejectsOverlap, evidence.10.CertifiedDeviceHTTPPublisherTests.fullReplacementAndEndpoint, evidence.10.CertifiedDeviceHTTPPublisherTests.remoteAccessFailures, evidence.10.CertifiedDeviceHTTPPublisherTests.responseFailures, evidence.10.CertifiedDeviceHTTPPublisherTests.transportFailureAndRecovery.
+
+## CertifiedDeviceModels
+
+Validated device/vendor/model values and input-only optional processing flags; native Windows UUID and macOS name identification is host-injected. Local size/control/URL validation is resource policy, not invented Discord hardware certification or automatic enumeration. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/certified-devices. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.CertifiedDeviceTests.audioOnlyFields, evidence.10.CertifiedDeviceTests.diagnosticRedaction, evidence.10.CertifiedDeviceTests.modelTextBoundaries, evidence.10.CertifiedDeviceTests.wireProjection.
+
+## CertifiedDeviceRPCPublication
+
+Shared validated full-priority device arrays submitted through caller-owned RPCClient with correlated null acknowledgement. Unknown/denied/invalid responses remain explicit; wrapper does not close borrowed session, enumerate hardware, merge prior arrays or restore state after reconnect. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/certified-devices. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.CertifiedDeviceWebSocketTests.rpcPublisher, evidence.10.CertifiedDeviceWebSocketTests.rpcPublisherValidation.
+
+## CertifiedDeviceWebSocket
+
+Separate explicit loopback WebSocket v1 JSON connector with approved origin, bounded frames and inclusive Certified Devices range 6463...6473. Port discrepancy with deprecated general RPC remains open; scripted peers do not prove desktop availability. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/certified-devices. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.CertifiedDeviceWebSocketTests.connectorCancellationAndLateCleanup, evidence.10.CertifiedDeviceWebSocketTests.connectorEndpointAndFrameOwnership, evidence.10.CertifiedDeviceWebSocketTests.connectorValidation, evidence.10.CertifiedDeviceWebSocketTests.frameValidation.
+
+## DeprecatedWebSocket
+
+Explicit approved-participant loopback WebSocket v1 JSON endpoints with origin, fixed explicitly selected port and bounded frame policy; deprecated private-beta transport is not general availability. RPC range 6463...6472 remains separate from Certified Devices 6463...6473. Host endpoint/conformance remains unqualified. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCConnectorTests.webSocketCancellationAndLateCleanup, evidence.10.RPCConnectorTests.webSocketConfiguration, evidence.10.RPCConnectorTests.webSocketEndpointAndText, evidence.10.RPCConnectorTests.webSocketMessageBounds.
+
+## DispatchCatalog
+
+All 25 documented dispatch names decode to RPC-specific typed envelopes/projections with bounded original JSON, unknown fields/raw values and exact numeric lexemes; related resources and Activity children retain partial typed coverage. Guild online counts remain deprecated zero. Relationship scope spelling differs across current RPC/OAuth sources; advisory metadata never substitutes scopes or proves access. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCCatalogTests.allDocumentedEventsHaveTypedProjections, evidence.10.RPCCatalogTests.projectionPresenceUnknownFieldsAndBoundsAreLossless, evidence.10.RPCCatalogTests.reflectiveDiagnosticsConcealSecretsAndPayloadTrees.
+
+## IPCFraming
+
+Little-endian opcode/length framing, bounded fragmented/coalesced parsing, RPC v1 handshake and close/ping/pong opcodes through injected byte streams; malformed/truncated/oversized input rejects without silently widening bounds. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: 2026-04-03; effective: unknown.
+
+Evidence: evidence.10.RPCFramingTests.coalescingAndTruncation, evidence.10.RPCFramingTests.ipcConnection, evidence.10.RPCFramingTests.malformedAndOversized, evidence.10.RPCFramingTests.splitFrames, evidence.10.UnixRPCIntegrationTests.nativeUnixRPCHandshakeRequestControlAndCancellation.
+
+## LocalAuthorization
+
+Typed authorize/authenticate with redacted user-token values and partial local authorization/application responses; token exchange remains caller-owned. Scope/tester/partner checks remain server-authoritative and local access is separate from bot credentials. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCCatalogTests.authorizationAndRawArgumentsRejectMalformedInputs, evidence.10.RPCCatalogTests.reflectiveDiagnosticsConcealSecretsAndPayloadTrees, evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions.
+
+## NativeDiscovery
+
+Pure prefix-precedence Unix paths and documented Windows pipe names plus bounded sequential injected opening. Default indices 0..<10 and maximum 100 candidates are local policy; no upstream maximum index is asserted. Owned Windows named-pipe I/O and all real desktop smoke tests remain absent. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: 2026-04-03; effective: unknown.
+
+Evidence: evidence.10.RPCConnectorTests.ipcAllUnavailable, evidence.10.RPCConnectorTests.ipcCancellationAndLateCleanup, evidence.10.RPCConnectorTests.ipcSequentialOpeningAndFreshAttempts, evidence.10.RPCFramingTests.discovery, evidence.10.UnixRPCIntegrationTests.nativeUnixRPCHandshakeRequestControlAndCancellation.
+
+## PresenceInvites
+
+Nonnull activity updates with pid and types 0/2/3/5 plus join-request accept/reject commands. Activity child schema is partial and lossless; raw JSON is not full typed parity. No null/omitted activity clearing contract is invented. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCCatalogTests.activityAndCertifiedDeviceArgumentsFollowDocumentedContracts, evidence.10.RPCCatalogTests.reflectiveDiagnosticsConcealSecretsAndPayloadTrees.
+
+## ResourceReads
+
+Typed guild/channel requests and partial RPC-specific responses, distinct from HTTP/Gateway shapes; deprecated guild members remain non-authoritative. Bounded full payload retention preserves unknown fields and exact snowflakes. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCCatalogTests.everyCommandHasAConstructibleTypedRequest, evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions.
+
+## SessionOwnership
+
+Explicit connect and READY v1 admission, single reader/writer, count/byte bounded pending/event queues, command+nonce correlation, independent cancellation/deadlines, ping/pong, generation-fenced reconnect and awaited cleanup. Overload fails closed; mutations/authentication/subscriptions are never automatically replayed or restored. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCClientTests.budgetValidation, evidence.10.RPCClientTests.correlationAndErrors, evidence.10.RPCClientTests.deadlineAndEventCancellation, evidence.10.RPCClientTests.documentedSubscriptionAndConnectAfterFailure, evidence.10.RPCClientTests.eventOverload, evidence.10.RPCClientTests.invalidResponses, evidence.10.RPCClientTests.overloadCancellationAndLateReply, evidence.10.RPCClientTests.pingAndEvents, evidence.10.RPCClientTests.reconnectAndClose, evidence.10.RPCClientTests.replyEventCorrelation, evidence.10.RPCClientTests.startupCleanup, evidence.10.RPCClientTests.startupFailure, evidence.10.UnixRPCIntegrationTests.nativeUnixRPCHandshakeRequestControlAndCancellation.
+
+## Subscriptions
+
+Typed subscription/event arguments and acknowledgement projection, including required guild/channel identities and no-argument events. Unknown event names remain explicit; READY/ERROR are not subscribable. No implicit local fan-out/refcount, automatic subscription restoration or approval inference. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCCatalogTests.subscriptionIdentityAndMetadataRemainExplicit, evidence.10.RPCClientTests.documentedSubscriptionAndConnectAfterFailure.
+
+## VoiceControls
+
+Validated user-pan/volume, voice/text selection and voice settings contracts with documented null/absence distinctions; no native audio capture. Shortcut arrays follow published examples despite singular table prose. Voice telemetry preserves decimal JSON numbers despite integer table prose. Verified and locally added 2026-10-17. RPC v1 and JSON are independent from REST/Gateway v10. Current source fingerprints: Docs/Parity/rpc-device-current-sources.json; original discovery provenance is preserved. These partial groups establish deterministic portable behavior, not complete related-resource projection, native Windows named-pipe I/O, real Discord desktop/hardware conformance, private-beta access or fleet capacity. Port-range, presence-clear and relationship-scope discrepancies remain explicit.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/rpc. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.10.RPCCatalogTests.successfulResponsesRetainSchemaAndNullableDistinctions, evidence.10.RPCCatalogTests.voiceControlsValidateExactRangesAndReadOnlyFields.
+
 ## MessageEndpoints.bulkDelete
 
 API v10 POST /channels/{channel.id}/messages/bulk-delete; handwritten MessageEndpoints.bulkDelete, verified 2026-10-16. Bot authentication, shared credential-global/route admission and finite cancellation/deadline/retry budgets. Permissions, cursor/status semantics, payload validation and resource bounds are documented in Docs/RESTCatalog.md and the public symbol. No live Discord or full resource-family qualification claim.

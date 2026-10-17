@@ -961,6 +961,52 @@
       ],
       "details": "changes/2026-10-17-oauth-game-commerce.md",
       "remainingGates": "../Phase9ServiceContracts.md"
+    },
+    {
+      "id": "2026-10-17-rpc-devices",
+      "recordedOn": "2026-10-17",
+      "upstreamVersions": {
+        "RPC": "1",
+        "IPCFraming": "little-endian 32-bit opcode and byte length"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-17",
+      "localSupportDate": "2026-10-17",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "Generic injectable local HTTP/WebSocket and Unix IPC byte streams without Discord desktop RPC framing, correlated sessions, typed local command/event catalog or Certified Device publication.",
+      "currentBehavior": "Independent RPC/CertifiedDevices products add bounded local IPC framing/discovery/handshake/session ownership, explicit deprecated-approved WebSocket connections, typed documented command/event contracts and prioritized complete device publication through fixed loopback HTTP or RPC. Native Windows named-pipe I/O, desktop/hardware qualification, port discrepancy and presence-clear schema remain open.",
+      "affectedSymbols": [
+        "RPCFrame",
+        "RPCFrameDecoder",
+        "RPCDiscovery",
+        "RPCIPCConnection",
+        "RPCIPCConnector",
+        "RPCWebSocketConnector",
+        "RPCClient",
+        "RPCCommand",
+        "RPCEventName",
+        "RPCRequest",
+        "RPCPayload",
+        "CertifiedDevice",
+        "CertifiedDeviceHTTPPublisher",
+        "CertifiedDeviceRPCPublisher"
+      ],
+      "affectedPayloads": "RPC v1 JSON commands/events and IPC opcodes 0...4; all 18 documented request commands and 25 event names, partial RPC-specific related-resource projections and Certified Device full-array replacement. IPC documentation announcement 2026-04-03; activity-type expansion 2024-07-25; guild member/online-count deprecation 2018-06-11; original introduction and other effective dates unknown.",
+      "breakingChanges": [],
+      "migration": "Additive independent products; inject transports and host device identifiers. Authorize locally, exchange tokens explicitly and authenticate without bot credentials or a remote Gateway. Await cleanup; reconnect explicitly and reauthenticate/resubscribe without replaying ambiguous mutations. RPC WebSocket 6463...6472 and Certified Devices 6463...6473 remain distinct. No typed presence-clear schema, native Windows pipe adapter or real desktop/hardware qualification.",
+      "sources": [
+        "https://docs.discord.com/developers/topics/rpc",
+        "https://docs.discord.com/developers/topics/certified-devices",
+        "https://docs.discord.com/developers/topics/oauth2",
+        "https://docs.discord.com/developers/events/gateway-events",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-17-rpc-devices.md",
+      "remainingGates": "../RPC.md"
     }
   ]
 }

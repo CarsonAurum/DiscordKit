@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-17",
+  "sources": [
+    {
+      "name": "topics/rpc",
+      "url": "https://docs.discord.com/developers/topics/rpc.md",
+      "sha256": "bcabc6931b969f2b8a21ec52cdbf1bf0b4f39062537228c26d2bc279b0999d8d",
+      "bytes": 68868,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 10 RPC/device contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "topics/certified-devices",
+      "url": "https://docs.discord.com/developers/topics/certified-devices.md",
+      "sha256": "f3f0b5c274c6d64d32b845c82b1ea291d074014d47fc420c32f65a5157e6ece0",
+      "bytes": 8015,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 10 RPC/device contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "topics/oauth2",
+      "url": "https://docs.discord.com/developers/topics/oauth2.md",
+      "sha256": "d2eb4d4f3e04bd2ee2ce1dfe5a720a021c934347cb5e03a77f8074b5c6901c81",
+      "bytes": 32494,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 10 RPC/device contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 10 RPC/device contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 10 RPC/device contract verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "events/gateway-events",
+      "url": "https://docs.discord.com/developers/events/gateway-events.md",
+      "sha256": "a0999b3fa7eba9f2429e672100072826b1d85c9d6f16aae6a051d1cb9537dfc2",
+      "bytes": 83326,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 10 RPC shared payload verification; original discovery source pins are preserved."
+    },
+    {
+      "name": "resources/entitlement",
+      "url": "https://docs.discord.com/developers/resources/entitlement.md",
+      "sha256": "fd0b326159147c5ffdd70f56b38d52e30224c1052c4a611296fe5da9c5ee9f44",
+      "bytes": 7483,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 10 RPC shared payload verification; original discovery source pins are preserved."
+    }
+  ]
+}

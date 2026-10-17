@@ -1,11 +1,22 @@
 # Platform support and qualification
 
 Updated **2026-10-17**. The initial HTTP execution and minimal sharded Gateway
-slices and portable OAuth flows are implemented; voice and desktop RPC remain later work.
+slices and portable OAuth flows are implemented; voice remains later work.
 Phase 9 [OAuth](OAuth.md) and [public game/entitlement helpers](Phase9ServiceContracts.md)
 have local deterministic coverage. The injected browser adapter does not qualify OS
 authentication UI; secure distributed storage, approval-gated publisher access and
 Social Commerce contracts retain separate gates.
+
+Phase 10 adds portable [RPC v1](RPC.md) and [Certified Devices](CertifiedDevices.md)
+with injected local transports and deterministic peer coverage. macOS Unix-domain
+IPC can use the existing owned Unix adapter. Named-pipe path discovery is portable
+protocol policy, while owned Windows named-pipe I/O remains unimplemented and
+unqualified. No real Discord desktop or certified-hardware smoke test has run on
+macOS, Linux or Windows. Deprecated WebSocket RPC requires Discord's old private-beta
+access and an allowed origin. Certified HTTP/WebSocket's documented upper port
+6473 remains distinct from RPC WebSocket's 6472; no upstream clarification or
+approved desktop conformance has resolved that discrepancy. Mobile, browser and
+WASI compilation cannot establish a local Discord desktop host.
 
 Part 7 adds portable consumer/cache/event-delivery code with macOS-local deterministic
 tests and separate offline load/soak evidence; see [Client](Client.md). New product
@@ -36,7 +47,7 @@ requirements may raise these baselines when those products are implemented.
 
 | Platform | Toolchain deployment baseline | Compilation evidence | Runtime evidence | Capability and remaining qualification |
 |---|---|---|---|---|
-| macOS | 13.0 | Exact transport fixture graph compiled on arm64 with Swift 6.4 and macOS 27 SDK | Local HTTP, trusted HTTPS, rejected trust/hostname, WebSocket upgrade/text echo, and UDP empty/binary echo passed | Server and desktop adapters remain unimplemented. Minimum-OS, x86_64, cancellation, pooling, backpressure, Unix RPC, audio/video, and application lifecycle still need qualification. |
+| macOS | 13.0 | Exact transport fixture graph compiled on arm64 with Swift 6.4 and macOS 27 SDK | Local HTTP, trusted HTTPS, rejected trust/hostname, WebSocket upgrade/text echo, and UDP empty/binary echo passed | Historical Part 0 fixture evidence; subsequent owned ingress/Unix and portable RPC coverage is recorded separately. Real Discord desktop, minimum-OS, x86_64 and native audio/video qualification remain open. |
 | Linux | Ubuntu 22.04, Debian 12, Fedora 41, Amazon Linux 2023, UBI 9 | Not run | Not run | Candidate NIO POSIX/TLS path; qualify each advertised distribution/architecture and trust-store loading. Ingress/Unix RPC require a reachable listener/desktop host; audio requires a separately supplied device provider. |
 | Windows | Windows 10 | Not run | Not run | NIO contains Windows socket/selector code and NIOSSL Windows build definitions. Those are source evidence only. Run the same HTTP/TLS/WebSocket/UDP probes before choosing any owned fallback. Named-pipe RPC and native media remain separate gates. |
 | iOS | 16.0 | SDK installed; graph not cross-built | Not run | Foreground HTTP and applicable WebSocket/media/auth adapters are qualification targets. Lifecycle suspension prevents an unconditional persistent Gateway heartbeat promise; test physical-device suspension/recovery and approved background modes. Desktop RPC needs an available local Discord desktop host. |
