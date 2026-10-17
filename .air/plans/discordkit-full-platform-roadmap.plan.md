@@ -748,6 +748,15 @@ For message uploads specifically, separate per-file limits from endpoint aggrega
 
 ### Part 6 — Gateway lifecycle, shards and every documented dispatch
 
+**2026-10-16 execution:** The independent Models/Gateway products now add all 79
+written opcode-zero dispatch names, 13 opcode values, 21 intents, Identify
+capabilities and bounded member/soundboard/channel-info requests. Related resource
+projections remain explicitly partial and exact raw unknown data survives. See
+[Phase 6 execution evidence](phase-6-execution.plan.md) and the
+[Gateway contract](../../Docs/Gateway.md). JSON/uncompressed transport remains
+intentional; live Discord, broader platform/device, distributed storage and
+sustained-capacity qualification remain separate gates.
+
 **Early execution requirement:** Design topology/coordination in Parts 0–2 and
 implement steps 1–5 as a minimal multi-shard vertical slice alongside Part 3.
 Depend only on qualified HTTP/WebSocket adapters, required models and discovery

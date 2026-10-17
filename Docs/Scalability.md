@@ -232,3 +232,18 @@ contracts are injectable without shipping a durable adapter. The independent loa
 package extends local profiles, separating logical accounts from physical exchanges.
 No broad deployment capacity or 30-minute sustained-load qualification follows from
 short scripted/local measurements; the evidence requirements above remain in force.
+
+## Part 6 request admission and retained results
+
+[Gateway requests](Gateway.md) keep application sends, presence updates, all-member
+requests and server opcode cooldowns separate from REST and Identify scheduling.
+Per-connection control headroom protects heartbeat processing; pending requests,
+retained response events/bytes and correlation/admission metadata are finite.
+Shared bot identities require shared authority for per-bot/per-guild member quotas.
+Nonces and generation fencing reject stale keyed work; failed or directly sent
+no-nonce soundboard/channel-info keys cannot be reused within a generation. A
+successfully completed no-nonce key may be reused, with an explicit duplicate/
+unsolicited-response ambiguity because Discord supplies no correlation nonce.
+Timeout, cancellation and disconnect preserve bounded partial results and never
+imply that a submitted command was withdrawn from Discord. These finite policies
+and synthetic load observations do not establish production sharded capacity.

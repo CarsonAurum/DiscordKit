@@ -18,6 +18,7 @@ let package = Package(
                 .product(name: "DiscordNIOTransport", package: "DiscordKit"),
                 .product(name: "DiscordHTTP", package: "DiscordKit"),
                 .product(name: "DiscordGateway", package: "DiscordKit"),
+                .product(name: "DiscordModels", package: "DiscordKit"),
                 .product(name: "DiscordCore", package: "DiscordKit"),
             ],
             swiftSettings: concurrencySettings

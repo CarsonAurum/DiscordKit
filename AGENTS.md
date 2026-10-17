@@ -6,7 +6,7 @@ DiscordKit is a Swift Package Manager library. Part 1 implements portable values
 transport contracts and deterministic test support. Part 2 adds owned Foundation/NIO
 network adapters, Unix IPC, Apple lifecycle ownership and a separate local load harness.
 Part 3 adds HTTP execution, partial User/Application models and the required early
-sharded Gateway lifecycle. Full REST/event catalogs remain later work. Part 0 records
+sharded Gateway lifecycle. Part 0 records
 architecture/parity and separate probes.
 Part 4 adds offline reviewed-definition validation and deterministic generation for
 the existing model/endpoint slice; see `Docs/Generation.md`.
@@ -30,7 +30,10 @@ Part 5I adds SKUs, entitlements, subscriptions, premium interaction data and bou
 monetization traversal; see `Docs/Monetization.md`.
 Part 5J adds lobbies/members/messages, linked-channel invites and application identity
 profiles with bounded bulk workflows and full-replacement stats; see `Docs/SocialGame.md`.
-Event catalogs, native Social SDK and other resource-family completion remain separate.
+Part 6 adds all documented Gateway dispatch names, typed outgoing requests and
+bounded correlated request execution with independent opcode admission; see
+`Docs/Gateway.md`. Full child-resource projections, native Social SDK and other
+resource-family completion remain separate.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

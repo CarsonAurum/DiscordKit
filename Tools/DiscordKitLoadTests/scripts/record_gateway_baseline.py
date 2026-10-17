@@ -11,16 +11,28 @@ def validate_gateway(report, burst):
     """Reject lost work, multiplied startup allowance, missing Resume and retained ownership."""
     shards = report["selectedShards"]
     if (report["deliveredDispatches"] != report["targetDispatches"]
-            or report["identifies"] != shards or report["resumes"] != shards
+            or report["identifies"] != shards or report["resumes"] != shards * 2
+            or report["reconnects"] != shards * 2
+            or report["completedMemberRequests"] != shards * 3
+            or report["completedSoundboardRequests"] != shards * 3
+            or report["completedChannelInfoRequests"] != shards * 3
+            or report["typedResponseEvents"] != shards * 12
+            or report["applicationCommandWrites"] != shards * 15
             or report["startupStormAdmitted"] != shards
             or report["startupStormOffered"] != shards * (10 if burst else 2)
             or report["peakOwnedConnections"] > shards
             or report["ownedConnectionsAfterShutdown"] or report["leasesAfterShutdown"]
+            or report["pendingRequestsAfterShutdown"] or report["applicationWritesAfterShutdown"]
+            or report["configuredMaximumPendingRequests"] != shards * 4
+            or report["configuredMaximumResponseEventsPerRequest"] != 8
+            or report["configuredMaximumResponseBytes"] != shards * 65_536
+            or report["configuredMaximumRequestKeys"] != shards * 32
             or report["sampledPeakQueuedEvents"] > 32
             or report["configuredMaximumQueuedEvents"] != shards * 32
             or report["configuredMaximumQueuedBytes"] != shards * 65_536
             or report["heartbeats"] <= 0 or report["heartbeatACKs"] <= 0
             or report["controlDelay"]["sampleCount"] <= 0
+            or report["controlDelay"]["sampleCount"] > shards * 3
             or report["eventLag"]["sampleCount"] != min(4_096, report["targetDispatches"])):
         raise RuntimeError("Gateway script violated bounded work, control, startup or cleanup invariants")
 
@@ -35,7 +47,7 @@ def main():
     context = environment()
     context["peer"] = "offline credit-limited Gateway JSON script; zero sockets and no real credentials"
     context["measurementScope"] = ("bounded 1/4/16 local Gateway sessions, 1/2/4 synthetic bot identities; "
-        "startup storm, Resume, yielding event drains, requested heartbeat delay, CPU/RSS; "
+        "startup storm, two Resumes per shard, typed request rounds, yielding event drains, requested heartbeat delay, CPU/RSS; "
         "no network, real Discord quota, fleet, soak or capacity qualification")
     for accounts in (100, 10000, 1000000):
         for burst in (False, True):

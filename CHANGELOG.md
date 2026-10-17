@@ -8,6 +8,20 @@ of when Discord introduced a feature.
 
 ## Unreleased
 
+### 2026-10-16 — Gateway dispatches and bounded requests (Phase 6)
+
+- Add typed recognition of all 79 documented opcode-zero dispatch names, preserving
+  sparse/unavailable resources, exact raw fields, unknown values and event names.
+- Add all 13 Gateway opcode values, 21 named intents, Identify capabilities and
+  validated presence, voice-state, member, soundboard and channel-info commands.
+- Add bounded request correlation, nonce/chunk completion, partial progress,
+  cancellation/deadlines, rate-limit outcomes and connection-generation cleanup.
+- Separate opcode admission from REST/startup scheduling and reserve control
+  headroom; preserve shared all-members quota scope and server cooldowns.
+- Record current source hashes, upstream chronology, channel-obfuscation migration
+  and deterministic evidence. Child-resource schemas and platform/live/soak gates
+  retain explicit limits; JSON/uncompressed transport remains the protocol choice.
+
 ### 2026-10-16 — monetization REST catalog (Phase 5I)
 
 - Add all eight current SKU, Entitlement and Subscription REST operations with

@@ -1,12 +1,16 @@
-# Minimal sharded Gateway lifecycle
+# Sharded Gateway lifecycle, dispatches and requests
 
 Implemented 2026-10-16 against the current
 [Gateway reference](https://docs.discord.com/developers/events/gateway),
 [event controls](https://docs.discord.com/developers/events/gateway-events) and
 [close codes](https://docs.discord.com/developers/topics/opcodes-and-status-codes).
-The protocol is explicitly **v10**, JSON and uncompressed. This delivers the early
-Part 6 steps required alongside HTTP; full dispatch/model/request parity remains
-Part 6 work. Raw unknown dispatch payloads are preserved without a typed-parity claim.
+The protocol is explicitly **v10**, JSON and uncompressed. Phase 6 extends the early
+lifecycle with typed recognition of all **79 documented opcode-zero dispatch names**,
+all **13 documented Gateway opcode values**, **21 named intents**, Identify
+capabilities and bounded member/soundboard/channel-info requests. Named catalog
+coverage does not imply complete typed child-resource schemas: related partial
+projections and raw unknown payloads remain explicit. Current official source hashes
+are [recorded separately](Parity/gateway-current-sources.json) from historical pins.
 
 `GatewayEndpoints.bot()` uses the HTTP pipeline for authenticated discovery.
 `GatewayDiscovery` validates the trusted WSS URL and recommended shard/session-start
@@ -30,7 +34,8 @@ or awaits a cache/subscriber. Consumers call `drainEvents` for bounded ordered b
 overflow ends the run with a resynchronization requirement. Per-shard ingestion order
 is preserved, while duplicates and replay remain possible. There is no global order
 or exactly-once claim. New dispatches/opcodes survive as raw bounded JSON where the
-control contract permits; arbitrary outbound opcode support is not implemented.
+control contract permits. Outgoing application commands use the finite typed
+`GatewayCommand` contract.
 
 Disconnects use a finite lifetime retry budget and capped jittered backoff. Session
 IDs, last sequence and trusted resume URLs support Resume; invalid sessions choose
@@ -79,8 +84,92 @@ Deterministic suites cover transition guards, every documented close-code class,
 Identify contention, reset/bucket boundaries, reconnect/resume/invalid sessions,
 heartbeat ACKs, event order/duplicates/overflow, lease loss and cancellation cleanup.
 Real local WebSocket adapter tests verify numeric close codes and abort ownership.
-No live Discord connection, full dispatch catalog, handler framework, cross-platform
-session qualification or sharded runtime capacity is established by these tests.
+No live Discord connection, complete typed child-resource parity, handler framework,
+cross-platform session qualification or sharded runtime capacity is established by
+these tests.
+
+## Typed dispatch and command contracts
+
+`GatewayDispatchName` enumerates the complete written receive catalog after separating
+Hello, Reconnect and Invalid Session, which use their own control opcodes.
+`GatewayDispatch` carries the matching typed payload and retains its exact JSON.
+Unknown names survive as raw data; unknown resource fields, enum values and large
+snowflakes retain their original representations. Consumers can decode a drained
+`GatewayEvent` without coupling the heartbeat loop to user handlers.
+
+Sparse updates are presence-aware. An unavailable `GUILD_CREATE`/`GUILD_DELETE`
+is distinct from a full guild snapshot or permanent removal. A `MESSAGE_UPDATE`
+does not replace omitted fields with default values. Member chunks expose their
+nonce/index/count, and RATE_LIMITED preserves opcode/retry metadata. Voice channel
+status and start time are ephemeral event data, separate from persistent Channel
+fields. Existing nested resources may remain partial typed projections; their exact
+raw values are still available and no cache merge policy is invented here.
+
+`GatewayIntents` and `GatewayCapabilities` are distinct bitfields. Privileged member,
+presence and message-content intents still require the documented Developer Portal
+configuration/approval. Setting a bit cannot obtain permission or guarantee delivery.
+The CHANNEL_OBFUSCATION capability (`1 << 15`) is a temporary testing opt-in,
+verified 2026-10-16. The official 2026-08-12 announcement schedules mandatory bot
+obfuscation for **2026-11-16**. Channels may contain redacted names, null/reduced
+metadata and the CHANNEL_OBFUSCATED flag (`1 << 17`); a later Channel Update may
+restore visible data. Preserve these payloads and do not infer current authorization
+from a prior full snapshot. [Official change log](https://docs.discord.com/developers/change-log).
+
+Commands validate documented payload shapes before sending, including the 32-byte
+UTF-8 member nonce, query/user-ID choices, requested presences/intents and finite
+local array/frame bounds. Local safety bounds are implementation choices, not new
+Discord quotas. Identify optionally carries capabilities, large-threshold and initial
+presence while retaining explicit JSON/uncompressed negotiation. Presence/voice
+updates remain main-Gateway control operations; they do not implement voice media.
+
+## Bounded requests and outgoing admission
+
+`GatewayShard.send` sends a validated application command only while the current
+session is ready and owns its fenced lease. `GatewayShard.request` additionally
+awaits a finite response set and returns the original `GatewayEvent` values.
+Member requests require a nonce and track unique chunk indices without assuming
+wire order. Duplicate chunks do not count twice; conflicting metadata, invalid
+bounds and request overflow fail explicitly. Unrelated guild/nonce observations
+remain raw events without completing the request.
+Successful member results use chunk-index order and soundboard results use the
+requested guild order; failure partial events retain bounded observations.
+
+Soundboard and channel-info commands have **no documented response nonce**. They
+use exclusive guild/family ownership within the socket generation. A failed or
+directly sent correlation key cannot be reused in that generation: a late response cannot safely
+be distinguished from a replacement request. Successful keys may be reused after
+completion, but upstream duplicate or unsolicited responses remain ambiguous and
+can be mistaken for the replacement response; establish a new generation when this
+ambiguity is unacceptable. Soundboard completes after one response per requested
+guild; channel-info completes after its guild response. These rules deliberately
+avoid inventing a protocol nonce or promising exactly-once correlation.
+
+Requests use caller-selected finite deadlines through one day (30 seconds by
+default). Defaults allow 16 pending requests, 4,096 response events per request,
+8 MiB retained response bytes across pending requests and 4,096 active/retired
+correlation keys per shard. Cancellation, stop and connection-generation changes
+clean up registrations and retained results. Cancellation throws `CancellationError`;
+timeout/disconnect/invalid-response/capacity/rate failures carry bounded partial
+observations in `GatewayRequestFailure`. They are never replayed automatically after reconnect;
+callers decide whether to issue a new read using a fresh correlation identity.
+Ordinary drained events remain independently available, so request assembly does
+not consume the consumer's event stream or await handlers. Awaiting a request does
+not drain raw ingestion: keep a consumer draining the configured raw queue (128
+events by default), or that independent queue can overflow before a large request
+reaches its own response bound.
+
+Gateway send admission is separate from REST scheduling and Identify/startup budgets.
+Application admission stops when the rolling 60-second total reaches 110 events,
+reserving ten control slots within Discord's 120-event connection limit. Control
+messages also count toward the hard 120-event ceiling. Presence updates
+have their documented five-per-20-second bound. All-members requests honor the
+per-bot/per-guild one-per-30-second scope. That full-list request means an empty
+query with limit zero. Local and server-reported opcode-8 full-list cooldowns do
+not block prefix or targeted-user reads; generic opcode limits retain their wider
+scope. RATE_LIMITED supplies validated server cooldowns.
+Failed or ambiguous submitted writes are not refunded or retried blindly. Shared
+admission authority must accompany shared bot identities; process-local defaults do
+not certify an external distributed coordinator.
 
 ## Local control and ownership evidence
 
@@ -91,11 +180,17 @@ local sessions** across **1/2/4 synthetic bot identities**, respectively. They p
 10,000/100,000/100,000 dispatches without allocating the logical user population.
 No socket, real credential or live Discord request is involved.
 
-Each session reconnects once at its source midpoint and resumes from retained
-sequence/session state. An isolated startup storm offers 2× or 10× the bucket count
+Each session reconnects twice at gated source thirds and resumes from retained
+sequence/session state. All three ready generations send presence and voice-state
+updates and complete one request from each of the member, soundboard and
+channel-info families. That is three completions per family, 12 typed response
+events and 15 application writes per selected shard. An isolated startup storm offers 2× or 10× the bucket count
 and admits exactly one start per bucket. Consumers yield between batches; source
 credits of 8/16 bound undrained dispatch metadata. Control requests and ACKs bypass
-these credits. Queue limits are 32 events and 65,536 wire bytes per selected shard.
+these credits. Each socket generation issues at most one requested heartbeat,
+which keeps the fixture within the newly enforced connection event allowance;
+control sampling therefore retains at most three requested-beat observations per
+shard. Queue limits are 32 events and 65,536 wire bytes per selected shard.
 Both control delay and event lag retain the first 4,096 samples, with CPU/RSS measured
 for the complete client process. Sampled queue peaks can miss transient peaks; the
 configured aggregate ceilings are also reported.
@@ -103,18 +198,21 @@ configured aggregate ceilings are also reported.
 Release evidence and hardware/toolchain context are preserved in
 [Gateway baselines](../Tools/DiscordKitLoadTests/Baselines/gateway-environment.json).
 The 2026-10-16 release captures used an Apple M3 Max, macOS 27.0.1 and Swift 6.4.
-Every run delivered its exact dispatch target, completed one Resume per selected
-session and retained zero connections or leases after shutdown. CPU is relative to
+Every refreshed Phase 6 run delivered its exact synthetic dispatch target,
+completed two Resumes per selected session and retained zero connections, pending
+requests, application writes or leases after shutdown. These are refreshed Phase 6
+captures; the earlier one-Resume/control-per-eight-dispatch measurements described
+a different fixture and are not directly comparable. CPU is relative to
 one core and can exceed 100%; peak RSS is an un-settled process high-water mark.
 
 | Logical users | Mode | Sessions / bots | Control p99, ms | Event lag p99, ms | CPU, one-core % | Peak RSS, MiB |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 100 | Normal | 1 / 1 | 0.020 | 0.039 | 219.6 | 8.91 |
-| 100 | Burst | 1 / 1 | 0.018 | 0.036 | 220.8 | 8.91 |
-| 10,000 | Normal | 4 / 2 | 0.035 | 0.302 | 352.6 | 11.13 |
-| 10,000 | Burst | 4 / 2 | 0.035 | 0.565 | 382.1 | 11.44 |
-| 1,000,000 | Normal | 16 / 4 | 0.322 | 0.486 | 312.3 | 11.36 |
-| 1,000,000 | Burst | 16 / 4 | 0.331 | 0.508 | 312.2 | 11.50 |
+| 100 | Normal | 1 / 1 | 0.038 | 0.070 | 211.7 | 9.84 |
+| 100 | Burst | 1 / 1 | 0.031 | 0.143 | 211.7 | 9.83 |
+| 10,000 | Normal | 4 / 2 | 0.052 | 0.320 | 323.4 | 11.91 |
+| 10,000 | Burst | 4 / 2 | 0.043 | 1.161 | 333.2 | 11.66 |
+| 1,000,000 | Normal | 16 / 4 | 0.486 | 2.655 | 409.3 | 12.80 |
+| 1,000,000 | Burst | 16 / 4 | 0.423 | 3.128 | 430.2 | 13.25 |
 
 Reproduce all six serial captures after building release:
 

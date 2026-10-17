@@ -210,3 +210,25 @@ python3 Tools/DiscordKitLoadTests/scripts/record_gateway_baseline.py
 
 HTTP and Gateway scenarios reject transport-only portable/deadline/settling flags;
 all recorded control traffic and responses are script-produced.
+
+Each selected shard now completes three ready-session rounds separated by two
+scripted reconnects. Every round sends production presence and voice-state
+commands, then completes member, soundboard and channel-info requests through
+the production correlation registry. Member responses arrive as two chunks in
+reverse order; all four response events per round pass typed dispatch decoding.
+The report requires exactly three completions per request family, twelve typed
+response events and fifteen application writes per selected shard. The raw
+dispatch target remains a separate count controlled by the selected profile.
+
+The scenario shares command authority across each synthetic bot's shards, uses
+at most four pending requests and 65,536 response bytes per shard, and retains
+at most eight response events per request and 32 correlation keys per shard.
+It reports aggregate configured ceilings alongside actual pending request and
+application write counts after shutdown; both must be zero, together with owned
+connections and leases. Producer credits bound raw ingress while each request
+round runs, and reconnect gates wait for that round's replies before replacing
+the socket. Each socket requests at most one extra heartbeat after eight raw
+events, bounding control-delay samples to three per shard while respecting
+production send-rate admission. These finite scripts qualify local recovery and correlation only;
+they do not establish real Discord quotas, network throughput, distributed
+coordination or sustained production capacity.

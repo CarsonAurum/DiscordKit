@@ -111,3 +111,14 @@ for exact contracts and the separate load report for measured workload budgets.
 The graph builds on macOS arm64 with Swift 6.4. These checks do not qualify live
 Discord behavior, physical-device background execution, other OS hosts, minimum OS,
 a full dispatch/resource catalog, or a durable distributed coordinator.
+
+## Part 6 local catalog and request evidence
+
+Phase 6 extends the same JSON v10 Gateway actors with the written dispatch/command
+catalog, intent/capability values, opcode admission and bounded request completion.
+Deterministic model/request tests complement the existing lifecycle and local
+adapter suites. The [Gateway guide](Gateway.md) and [execution record](../.air/plans/phase-6-execution.plan.md)
+record exact supported behavior and validation. Named dispatch coverage does not
+qualify every nested resource field, live Discord behavior, new hosts/devices,
+distributed storage adapters or sustained runtime capacity. Platform support and
+the open transport gates above are unchanged.

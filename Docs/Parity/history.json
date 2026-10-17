@@ -762,6 +762,57 @@
       ],
       "details": "changes/2026-10-16-social-game.md",
       "remainingGates": "../SocialGame.md"
+    },
+    {
+      "id": "2026-10-16-gateway-catalog",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "Gateway": "10"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "The early sharded JSON v10 lifecycle owned Identify/Resume/heartbeats, raw bounded dispatches, leases and startup coordination without a typed dispatch catalog or application-request completion.",
+      "currentBehavior": "All 79 documented opcode-zero dispatch names have typed decoding and exact raw preservation, with related partial-resource projections explicit. All 13 documented opcode values, 21 intents, Identify capabilities and outgoing application commands are represented. Bounded member/soundboard/channel-info requests preserve partial results, correlate chunks or exclusive generation-scoped guild keys and terminate on timeout, cancellation, disconnect, overload or rate failure. Independent opcode admission preserves control headroom and per-bot/guild all-members scope.",
+      "affectedSymbols": [
+        "GatewayDispatchName",
+        "GatewayDispatch",
+        "GatewayReady",
+        "GatewayGuildCreate",
+        "GatewayGuildMembersChunk",
+        "GatewayMessageUpdate",
+        "GatewayChannelInfo",
+        "GatewayVoiceChannelStatusUpdate",
+        "GatewayVoiceChannelStartTimeUpdate",
+        "GatewayRateLimited",
+        "GatewayOpcode",
+        "GatewayIntents",
+        "GatewayCapabilities",
+        "GatewayIdentifyConfiguration",
+        "GatewayCommand",
+        "GatewayShard",
+        "GatewayEvent.decodeDispatch",
+        "GatewayRequestResult",
+        "GatewayRequestFailure",
+        "GatewayCommandCoordinator",
+        "InProcessGatewayCommandCoordinator"
+      ],
+      "affectedPayloads": "All documented Gateway dispatch names and handwritten payload projections; sparse updates, unavailable guilds, current soundboard/channel-info, voice timing/status, rate-limit metadata and channel obfuscation; finite outgoing presence/voice/member/soundboard/channel-info commands.",
+      "breakingChanges": [],
+      "migration": "Additive opt-in typed decode/send/request APIs preserve existing raw drains and JSON/uncompressed negotiation. Related partial resources and absence/null updates must not be treated as complete snapshots. Privileged intents require portal configuration/approval. Temporary obfuscation capability bit15 is an early test opt-in; mandatory obfuscation is announced for 2026-11-16. Member nonce identities cannot be reused within a generation; failed or directly sent no-nonce guild/family keys are similarly poisoned. Successful no-nonce keys may be reused with explicit duplicate/unsolicited-response ambiguity; disconnects fail pending requests without implicit replay. Share command authority across bot workers/replacements.",
+      "sources": [
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/events/gateway-events",
+        "https://docs.discord.com/developers/topics/opcodes-and-status-codes",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-16-gateway-catalog.md",
+      "remainingGates": "../Gateway.md"
     }
   ]
 }

@@ -30,7 +30,10 @@ written SKU/Entitlement/Subscription fields, premium interaction data and finite
 traversal in Models/HTTP. Subscription lifecycle state is separate from entitlement
 decisions; broader Commerce products remain planned. Part 5J adds
 [lobbies and application identity profiles](SocialGame.md), bounded member bulk
-workflows and full-replacement profile statistics in the same products.
+workflows and full-replacement profile statistics in the same products. Part 6 adds
+[typed Gateway dispatches and commands](Gateway.md), bounded request correlation
+and independent opcode admission in Models/Gateway. Gateway continues to depend on
+HTTP only for discovery and never imports cache, handlers or concrete transports.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
@@ -99,7 +102,7 @@ test support are separate from public runtime products.
 | Models | Immutable, `Sendable` Discord payloads and forward-compatible variants. No client, socket or transport references. |
 | Transport | Narrow HTTP, WebSocket, datagram, IPC, ingress, stream and lifecycle contracts. Own no Discord endpoint policy. |
 | HTTP | Typed service descriptors, authentication policy, codecs, bounded bodies, rate limits, retries and pagination. No Gateway requirement. |
-| Gateway | Protocol state, discovery, shards, heartbeats and ordered event production. Does not import cache. |
+| Gateway | Protocol state, discovery, shards, heartbeats, typed dispatch/command catalog, bounded request correlation and opcode admission. Does not import cache. |
 | Cache | Optional projections of model/event data with explicit freshness, partial state and uncertainty. |
 | Interactions/Commands | HTTP-only signature/response lifecycle and complete typed command construction/routing. Commands does not import Client. |
 | Client/Kit | Supervised composition, consumer-facing configuration, handlers and service access. |

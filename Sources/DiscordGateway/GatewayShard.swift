@@ -13,6 +13,10 @@ public struct GatewayShardConfiguration: Sendable {
     public let leaseLifetime: Duration
     public let retryBase: Duration
     public let retryMaximum: Duration
+    public let maximumPendingRequests: Int
+    public let maximumResponseEvents: Int
+    public let maximumResponseBytes: Int
+    public let maximumRequestKeys: Int
 
     /// Validates finite frame/queue/retry/lease bounds before opening any socket.
     /// - Parameters:
@@ -27,20 +31,29 @@ public struct GatewayShardConfiguration: Sendable {
     ///     default 60 seconds.
     ///   - retryBase: Positive exponential reconnect base, default one second.
     ///   - retryMaximum: Maximum retry delay at least the base, default 30 seconds.
+    ///   - maximumPendingRequests: Concurrent request/write admission cap, default 16.
+    ///   - maximumResponseEvents: Maximum unique chunks per response, default 4,096.
+    ///   - maximumResponseBytes: Aggregate retained pending-response wire bytes, default 8 MiB.
+    ///   - maximumRequestKeys: Generation-local active/retired correlation key cap, default 4,096.
     /// - Throws: `invalidConfiguration` for zero/negative bounds or more than 30 retries.
     public init(maximumFrameBytes: Int = 1_048_576, maximumBufferedEvents: Int = 128,
                 maximumBufferedBytes: Int = 4_194_304, maximumReconnectAttempts: Int = 5,
                 helloTimeout: Duration = .seconds(15), writeTimeout: Duration = .seconds(10),
                 leaseLifetime: Duration = .seconds(60), retryBase: Duration = .seconds(1),
-                retryMaximum: Duration = .seconds(30)) throws {
+                retryMaximum: Duration = .seconds(30), maximumPendingRequests: Int = 16,
+                maximumResponseEvents: Int = 4_096, maximumResponseBytes: Int = 8_388_608,
+                maximumRequestKeys: Int = 4_096) throws {
         guard maximumFrameBytes > 0, maximumBufferedEvents > 0, maximumBufferedBytes > 0,
               (0...30).contains(maximumReconnectAttempts), helloTimeout > .zero,
               writeTimeout > .zero, leaseLifetime >= .milliseconds(2),
-              retryBase > .zero, retryMaximum >= retryBase else { throw GatewayFailure.invalidConfiguration }
+              retryBase > .zero, retryMaximum >= retryBase, maximumPendingRequests > 0,
+              maximumResponseEvents > 0, maximumResponseBytes > 0, maximumRequestKeys > 0 else { throw GatewayFailure.invalidConfiguration }
         self.maximumFrameBytes = maximumFrameBytes; self.maximumBufferedEvents = maximumBufferedEvents
         self.maximumBufferedBytes = maximumBufferedBytes; self.maximumReconnectAttempts = maximumReconnectAttempts
         self.helloTimeout = helloTimeout; self.writeTimeout = writeTimeout; self.leaseLifetime = leaseLifetime
         self.retryBase = retryBase; self.retryMaximum = retryMaximum
+        self.maximumPendingRequests = maximumPendingRequests; self.maximumResponseEvents = maximumResponseEvents
+        self.maximumResponseBytes = maximumResponseBytes; self.maximumRequestKeys = maximumRequestKeys
     }
 }
 
@@ -52,6 +65,8 @@ public struct GatewayShardSnapshot: Sendable {
     public let hasResumableSession: Bool
     public let bufferedEvents: Int
     public let bufferedBytes: Int
+    public let pendingRequests: Int
+    public let applicationWrites: Int
 }
 
 /// Owns one fenced shard's socket/session and bounded raw ingestion queue.
@@ -59,8 +74,9 @@ public struct GatewayShardSnapshot: Sendable {
 /// `run` supervises receive, heartbeat, authentication and lease renewal as structured
 /// children. Control handling never calls user code. Consumers synchronously poll batches;
 /// overflow terminates the run and requires resynchronization rather than silently dropping.
-/// Only JSON/uncompressed Gateway v10 control is implemented; full event/request catalogs,
-/// outgoing application commands, compression and broadcast subscriptions are separate work.
+/// Gateway v10 JSON/uncompressed commands and bounded request correlation are supported.
+/// Typed dispatch decoding is opt-in after ingestion; compression and broadcast subscriptions
+/// remain separate work. No request is automatically replayed across socket replacement.
 public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration == Duration, Leases.LeaseClock == C {
     public let identity: ShardIdentity
     private let token: BotToken
@@ -84,6 +100,12 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     private var heartbeatPending = false
     private var events: [GatewayEvent] = []
     private var bufferedBytes = 0
+    private let identifyConfiguration: GatewayIdentifyConfiguration
+    private var commandCoordinator: (any GatewayCommandCoordinator)?
+    private var requests: GatewayRequestRegistry
+    private var applicationWrites = 0
+    private var sentAt: [C.Instant] = []
+    private var presenceSentAt: [C.Instant] = []
 
     /// Stores a complete injected shard runtime without performing I/O.
     /// - Parameters:
@@ -96,15 +118,25 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     ///   - leases: Shared injectable ownership store, failing closed on outages or expired fences.
     ///   - startup: Shared per-credential atomic Identify budget, also shared across topology generations.
     ///   - configuration: Finite bounds/timeouts validated before construction.
+    ///   - identifyConfiguration: Validated optional Identify fields; default portable properties.
+    ///   - commandCoordinator: Shared per-bot opcode/resource admission, preserved across replacements.
+    ///     Nil creates a bounded local authority on first command; share an injected authority
+    ///     across workers/handoffs to preserve cooldowns beyond one actor lifetime.
     ///   - owner: Fresh nonsecret worker ID; defaults to a random UUID.
     ///   - random: Independent jitter sample; values are clamped to 0...1 and nonfinite samples become 0.5.
     public init(identity: ShardIdentity, token: BotToken, intents: UInt64, discovery: GatewayDiscovery,
                 transport: any WebSocketTransport, clock: C, leases: Leases,
                 startup: any GatewayStartupCoordinator, configuration: GatewayShardConfiguration,
+                identifyConfiguration: GatewayIdentifyConfiguration = .default,
+                commandCoordinator: (any GatewayCommandCoordinator)? = nil,
                 owner: UUID = UUID(), random: @escaping @Sendable () -> Double = { Double.random(in: 0...1) }) {
         self.identity = identity; self.token = token; self.intents = intents; initialURL = discovery.url
         self.transport = transport; self.clock = clock; self.leases = leases; self.startup = startup
         self.configuration = configuration; self.owner = owner; self.random = random
+        self.identifyConfiguration = identifyConfiguration; self.commandCoordinator = commandCoordinator
+        requests = GatewayRequestRegistry(maximumRequests: configuration.maximumPendingRequests,
+            maximumEvents: configuration.maximumResponseEvents, maximumBytes: configuration.maximumResponseBytes,
+            maximumRetiredKeys: configuration.maximumRequestKeys)
     }
 
     /// Runs until explicit stop, cancellation, exhausted retries or a terminal failure.
@@ -145,6 +177,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     public func stop() async {
         let neverStarted = !running && state.phase == .disconnected
         running = false
+        requests.reset()
         if state.phase != .stopped, state.phase != .draining { _ = try? state.apply(.drain) }
         await connection?.close()
         if neverStarted { _ = try? state.apply(.closed) }
@@ -155,7 +188,8 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     public func snapshot() -> GatewayShardSnapshot {
         GatewayShardSnapshot(phase: state.phase, socketGeneration: generation, sequence: sequence,
             hasResumableSession: sessionID != nil && sequence != nil && resumeURL != nil,
-            bufferedEvents: events.count, bufferedBytes: bufferedBytes)
+            bufferedEvents: events.count, bufferedBytes: bufferedBytes,
+            pendingRequests: requests.pending.count, applicationWrites: applicationWrites)
     }
 
     /// Removes the oldest bounded batch in shard ingestion order without waiting for new events.
@@ -170,6 +204,147 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         return result
     }
 
+    /// Sends one typed command through the current fenced ready session, without REST scheduling.
+    /// Application writes use immediate bounded admission: at most 110 total events per rolling
+    /// minute leaves ten of Discord's 120 slots for control traffic. Presence additionally allows
+    /// five writes per 20 seconds. Reservations are never refunded after an ambiguous write.
+    /// Raw sends of request commands fence their nonce or nonce-less guild scopes for this
+    /// generation, preventing a later correlated request from consuming their late replies.
+    /// - Parameter command: Validated 4,096-byte command with explicit required intents and guild scope.
+    /// - Throws: Cancellation, `notReady`, `missingIntent`, capacity, scope, rate, authority or
+    ///   sanitized adapter errors. Caller decides whether a failed mutation can safely be repeated.
+    public func send(_ command: GatewayCommand) async throws {
+        do {
+            try Task.checkCancellation()
+            guard state.phase == .ready else { throw GatewayFailure.notReady }
+            try requests.fenceUncorrelated(command)
+            try await sendCommand(command, generation: generation)
+        }
+        catch { throw safeGatewayFailure(error) }
+    }
+
+    /// Sends and collects one bounded member, soundboard or channel-info request.
+    ///
+    /// Member requests require a unique nonempty nonce per socket generation. Soundboard and
+    /// channel-info protocols contain no nonce: only one request per guild/family can be active,
+    /// and cancellation/timeout/write uncertainty fences that scope until socket replacement.
+    /// Successful nonce-less replies identify guild/family only; unsolicited/duplicate replies
+    /// are inherently indistinguishable. Consumers requiring stronger freshness must reconnect.
+    /// Raw responses remain independently available in `drainEvents`; callers must drain that
+    /// ingestion queue to avoid its documented overflow. No automatic retry or request replay runs.
+    /// - Parameters:
+    ///   - command: Typed request with correct shard routing; presence/voice updates are rejected.
+    ///   - timeout: Positive total send-and-response deadline through one day, default 30 seconds.
+    /// - Returns: All unique member chunks in chunk-index order, or every requested guild response.
+    /// - Throws: Cancellation; closed admission/transport failures; or `GatewayRequestFailure`
+    ///   with bounded partial observations for timeout, disconnect, malformed chunks, overflow
+    ///   and server rate limits. Cancellation disposes registration before returning.
+    public func request(_ command: GatewayCommand, timeout: Duration = .seconds(30)) async throws -> GatewayRequestResult {
+        try Task.checkCancellation()
+        guard timeout > .zero, timeout <= .seconds(86_400) else { throw GatewayFailure.invalidConfiguration }
+        guard state.phase == .ready else { throw GatewayFailure.notReady }
+        let active = generation, id = UUID(), deadline = clock.now.advanced(by: timeout)
+        let stream = try requests.register(id: id, command: command)
+        defer { requests.remove(id) }
+        do {
+            return try await withThrowingTaskGroup(of: GatewayRequestResult.self) { group in
+                group.addTask {
+                    do { try await self.sendCommand(command, generation: active) }
+                    catch {
+                        // A reply or disconnect may finish registration while the write's
+                        // post-send fence is suspended. Prefer that buffered terminal evidence.
+                        if await self.requestIsPending(id) { throw error }
+                    }
+                    var iterator = stream.makeAsyncIterator()
+                    guard let result = try await iterator.next() else { throw CancellationError() }
+                    return result
+                }
+                group.addTask { [clock] in
+                    try await clock.sleep(until: deadline, tolerance: nil)
+                    throw GatewayRequestFailure(reason: .timedOut, partialEvents: [], retryAfter: nil)
+                }
+                defer { group.cancelAll() }
+                return try await group.next()!
+            }
+        } catch let failure as GatewayRequestFailure {
+            if failure.reason == .timedOut {
+                throw GatewayRequestFailure(reason: .timedOut, partialEvents: requests.partial(id), retryAfter: nil)
+            }
+            throw failure
+        } catch { throw safeGatewayFailure(error) }
+    }
+
+    /// Checks whether a send error still owns an unresolved request registration.
+    /// - Parameter id: Operation identity, never exposed on the wire.
+    /// - Returns: False when a received result or disconnection already completed the stream;
+    ///   the caller must then consume that terminal evidence instead of losing partial progress.
+    private func requestIsPending(_ id: UUID) -> Bool { requests.pending[id] != nil }
+
+    /// Admits one caller-owned application write without an unbounded actor/adapter queue.
+    /// - Parameters:
+    ///   - command: Validated typed command; its encoded data never enters errors.
+    ///   - generation: Captured generation, checked around coordinator and transport suspensions.
+    /// - Throws: Cancellation, missing intent, nonready/stale session, finite capacity,
+    ///   wrong shard, caller-visible rate delay, authority loss or adapter write failure.
+    private func sendCommand(_ command: GatewayCommand, generation active: UInt64) async throws {
+        try Task.checkCancellation()
+        guard state.phase == .ready else { throw GatewayFailure.notReady }
+        guard command.requiredIntents.rawValue & intents == command.requiredIntents.rawValue else { throw GatewayFailure.missingIntent }
+        guard applicationWrites < configuration.maximumPendingRequests else { throw GatewayFailure.commandCapacityExceeded }
+        applicationWrites += 1
+        defer { applicationWrites -= 1 }
+        try await fence(active)
+        if commandCoordinator == nil {
+            commandCoordinator = try InProcessGatewayCommandCoordinator(botID: identity.botID, clock: clock)
+        }
+        let coordinator = commandCoordinator!
+        let admission = try await coordinator.reserve(command, for: identity)
+        try await fence(active)
+        guard state.phase == .ready else { throw GatewayFailure.notReady }
+        if case .limited(let retryAfter) = admission { throw GatewayFailure.commandRateLimited(retryAfter: retryAfter) }
+        if command.kind == .presence {
+            let now = clock.now
+            presenceSentAt.removeAll { $0.duration(to: now) >= .seconds(20) }
+            guard presenceSentAt.count < 5 else {
+                throw GatewayFailure.commandRateLimited(retryAfter: now.duration(to: presenceSentAt[0].advanced(by: .seconds(20))))
+            }
+            presenceSentAt.append(now)
+        }
+        try await send(opcode: command.opcode.rawValue, data: command.data, generation: active)
+    }
+
+    /// Records RATE_LIMITED independently of REST and completes matching request waiters.
+    /// - Parameters:
+    ///   - value: Raw server payload; only numeric opcode/delay and optional guild/nonce are interpreted.
+    ///   - generation: Receive generation, revalidated around shared coordinator mutation.
+    /// - Throws: Malformed rate metadata, invalid bounded delay or coordinator/authority failure.
+    private func recordRateLimit(_ value: JSONValue, generation active: UInt64) async throws {
+        guard case .object(let data) = value,
+              case .number(let op) = data["opcode"], let opcode = Int(op.rawValue), opcode >= 0,
+              case .number(let delay) = data["retry_after"], let seconds = Double(delay.rawValue),
+              seconds.isFinite, seconds > 0, seconds <= 86_400 else { throw GatewayFailure.invalidPayload }
+        let retryAfter = Duration.nanoseconds(Int64((seconds * 1_000_000_000).rounded(.up)))
+        var guild: GuildID?, nonce: String?
+        if case .object(let metadata) = data["meta"] {
+            if let value = metadata["guild_id"] {
+                guard case .string(let raw) = value, let parsed = GuildID(raw) else { throw GatewayFailure.invalidPayload }
+                guild = parsed
+            }
+            if let value = metadata["nonce"] {
+                guard case .string(let parsed) = value else { throw GatewayFailure.invalidPayload }
+                nonce = parsed
+            }
+        }
+        if commandCoordinator == nil {
+            commandCoordinator = try InProcessGatewayCommandCoordinator(botID: identity.botID, clock: clock)
+        }
+        do {
+            try await commandCoordinator!.recordLimit(opcode: GatewayOpcode(rawValue: opcode), guildID: guild, retryAfter: retryAfter)
+        } catch { throw safeGatewayFailure(error) }
+        try await fence(active)
+        requests.rateLimited(opcode: opcode, guild: guild, nonce: nonce, retryAfter: retryAfter)
+    }
+
     /// Owns sequential socket generations and a finite reconnect budget for the whole run.
     /// - Throws: Cancellation or terminal protocol/ownership failures; transient errors consume retries.
     private func connectionLoop() async throws {
@@ -178,6 +353,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
             try Task.checkCancellation()
             guard generation < UInt64.max else { throw GatewayFailure.staleGeneration }
             generation += 1
+            requests.reset(); sentAt.removeAll(); presenceSentAt.removeAll()
             let active = generation
             _ = try state.apply(.start)
             do {
@@ -201,6 +377,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
                     clearSession()
                 }
                 connection = nil
+                requests.reset()
                 heartbeatPending = false
                 if !running { return }
                 try Task.checkCancellation()
@@ -279,6 +456,8 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
                 } else if name == "RESUMED" { _ = try state.apply(.ready) }
                 sequence = next
                 try append(envelope)
+                requests.ingest(GatewayEvent(shard: identity, envelope: envelope))
+                if name == "RATE_LIMITED" { try await recordRateLimit(envelope.data, generation: active) }
             case 1: try await sendHeartbeat(generation: active, scheduled: false)
             case 7: throw GatewayFailure.reconnectRequested
             case 9:
@@ -341,11 +520,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
             try await fence(active)
             switch admission {
             case .admitted:
-                let payload = token.withUnsafeValue { token in JSONValue.object([
-                    "token": .string(token), "intents": gatewayNumber(intents),
-                    "shard": .array([gatewayNumber(identity.index), gatewayNumber(identity.count)]),
-                    "properties": .object(["os": .string("portable"), "browser": .string("DiscordKit"),
-                                           "device": .string("DiscordKit")])]) }
+                let payload = try identifyConfiguration.payload(token: token, intents: intents, shard: identity)
                 try await send(opcode: 2, data: payload, generation: active)
                 return
             case .wait(let duration):
@@ -357,7 +532,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
 
     /// Sends one bounded control payload through the adapter's serialized write lane.
     /// - Parameters:
-    ///   - opcode: Implemented control opcode (Identify, Resume or Heartbeat).
+    ///   - opcode: Implemented lifecycle or typed application opcode.
     ///   - data: Exact JSON payload, possibly containing the token; never logged.
     ///   - generation: Socket fence rechecked around every suspension.
     /// - Throws: Authority, cancellation, 4096-byte outbound limit or adapter/deadline failures.
@@ -366,6 +541,15 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         guard let socket = connection else { throw GatewayFailure.disconnected }
         let bytes = try JSONValue.object(["op": gatewayNumber(opcode), "d": data])
             .serialized(limits: JSONLimits(maximumBytes: 4_096))
+        let now = clock.now
+        sentAt.removeAll { $0.duration(to: now) >= .seconds(60) }
+        let control = opcode == 1 || opcode == 2 || opcode == 6
+        let limit = control ? 120 : 110
+        guard sentAt.count < limit else {
+            let retry = sentAt.first.map { now.duration(to: $0.advanced(by: .seconds(60))) } ?? .seconds(60)
+            throw GatewayFailure.commandRateLimited(retryAfter: retry)
+        }
+        sentAt.append(now)
         try await socket.send(.text(String(decoding: bytes, as: UTF8.self)), context:
             TransportContext(clock: clock, deadline: clock.now.advanced(by: configuration.writeTimeout)))
         try await fence(active)
@@ -430,6 +614,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     ///   expiry or repair coordination before assuming handoff authority became available.
     private func finish() async throws {
         running = false
+        requests.reset()
         let socket = connection; connection = nil
         await socket?.close()
         var releaseFailure: (any Error)?

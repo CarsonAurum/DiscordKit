@@ -193,3 +193,25 @@ This completes the named 5A–5J written REST batches under their documented
 compatibility limits; it does not establish complete Discord parity, every
 referenced family projection, native Social SDK/OAuth flows, event dispatch,
 production eligibility, live Discord, other-host/device, distributed or soak qualification.
+
+## Part 6 Gateway catalog and requests update (2026-10-16)
+
+The [Gateway contract](../Gateway.md) adds typed recognition of all 79 documented
+opcode-zero dispatch names, all 13 documented Gateway opcode values, 21 intents,
+Identify capabilities and presence/voice/member/soundboard/channel-info commands.
+Named dispatch coverage is distinct from complete child-resource projection:
+reviewed event definitions retain partial status where related fields are not fully
+typed, and all exact raw payloads and unknown event names remain available.
+
+Member requests assemble nonce-correlated chunks with bounded partial progress.
+Soundboard/channel-info responses have no upstream nonce and use exclusive
+per-guild/family ownership; failed/direct-send keys cannot be reused in a generation,
+while successful-key reuse has an explicit duplicate-response ambiguity. Cancellation,
+disconnect, deadlines, overflow and opcode-specific rate limits have explicit
+outcomes, independent of REST scheduling. No hidden request replay or cache follows.
+
+The [dated record](changes/2026-10-16-gateway-catalog.md) records official chronology,
+source fingerprints and compatibility. The [execution record](../../.air/plans/phase-6-execution.plan.md)
+records integrated validation. JSON/uncompressed transport remains the explicit
+protocol choice; live Discord, other hosts/devices, distributed storage adapters
+and sustained-capacity qualification remain separate gates.

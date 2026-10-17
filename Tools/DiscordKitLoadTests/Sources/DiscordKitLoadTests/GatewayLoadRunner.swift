@@ -1,5 +1,6 @@
 import DiscordCore
 import DiscordGateway
+import DiscordModels
 import DiscordTransport
 import Foundation
 
@@ -25,6 +26,17 @@ struct GatewayLoadReport: Codable, Sendable {
     let peakOwnedConnections: Int
     let ownedConnectionsAfterShutdown: Int
     let leasesAfterShutdown: Int
+    let completedMemberRequests: Int
+    let completedSoundboardRequests: Int
+    let completedChannelInfoRequests: Int
+    let typedResponseEvents: Int
+    let applicationCommandWrites: Int
+    let pendingRequestsAfterShutdown: Int
+    let applicationWritesAfterShutdown: Int
+    let configuredMaximumPendingRequests: Int
+    let configuredMaximumResponseEventsPerRequest: Int
+    let configuredMaximumResponseBytes: Int
+    let configuredMaximumRequestKeys: Int
     let controlDelay: LatencySummary
     let eventLag: LatencySummary
     let durationSeconds: Double
@@ -49,7 +61,7 @@ struct GatewayLoadRunner: Sendable {
         return try await run(profile: profile, burst: burst)
     }
 
-    /// Runs a bounded local session subset with a synthetic reconnect per shard and credit-limited dispatches.
+    /// Runs a bounded local session subset with two reconnects per shard, typed requests and credit-limited dispatches.
     ///
     /// The producer credit limit models bounded upstream demand, while consumers deliberately yield
     /// between batches. This measures lifecycle/control isolation; it does not measure network I/O,
@@ -82,6 +94,7 @@ struct GatewayLoadRunner: Sendable {
             {"total":\(perBot * 2),"remaining":\(perBot * 2),"reset_after":86400000,"max_concurrency":\(perBot)}}
             """))
             let startup = InProcessGatewayStartupCoordinator(botID: botID, limit: discovery.sessionStartLimit, clock: clock)
+            let commands = try InProcessGatewayCommandCoordinator(botID: botID, clock: clock)
             for index in 0..<perBot {
                 let ordinal = bot * perBot + index
                 let count = totalEvents / shardCount + (ordinal < totalEvents % shardCount ? 1 : 0)
@@ -93,7 +106,9 @@ struct GatewayLoadRunner: Sendable {
                     transport: GatewayLoadTransport(feed: feed, metrics: metrics), clock: clock,
                     leases: leases, startup: startup, configuration: try GatewayShardConfiguration(
                         maximumBufferedEvents: 32, maximumBufferedBytes: 65_536,
-                        maximumReconnectAttempts: 1, leaseLifetime: .seconds(60)), random: { 0 })
+                        maximumReconnectAttempts: 2, leaseLifetime: .seconds(60), maximumPendingRequests: 4,
+                        maximumResponseEvents: 8, maximumResponseBytes: 65_536, maximumRequestKeys: 32),
+                    commandCoordinator: commands, random: { 0 })
                 shards.append(shard)
             }
         }
@@ -121,11 +136,17 @@ struct GatewayLoadRunner: Sendable {
                     for ordinal in selectedShards.indices {
                         consumers.addTask {
                             let shard = selectedShards[ordinal], feed = selectedFeeds[ordinal]
-                            while await feed.deliveredCount() < feed.target {
+                            var handledGeneration: UInt64?
+                            while await !feed.isComplete() {
                                 try Task.checkCancellation()
                                 for _ in 0..<32 { await Task.yield() }
                                 let snapshot = await shard.snapshot()
                                 await metrics.observeQueue(snapshot.bufferedEvents)
+                                if snapshot.phase == .ready, handledGeneration != snapshot.socketGeneration {
+                                    try await Self.exerciseCommands(shard, generation: snapshot.socketGeneration, metrics: metrics)
+                                    handledGeneration = snapshot.socketGeneration
+                                    await feed.completeRequestRound()
+                                }
                                 let batch = await shard.drainEvents(maximum: 8)
                                 try await feed.consume(batch)
                             }
@@ -142,6 +163,11 @@ struct GatewayLoadRunner: Sendable {
         let elapsed = Self.seconds(started.duration(to: clock.now))
         let after = ProcessSample.capture(), values = await metrics.snapshot()
         let leaseCount = await leases.retainedLeaseCount()
+        var pendingAfterShutdown = 0, writesAfterShutdown = 0
+        for shard in selectedShards {
+            let snapshot = await shard.snapshot()
+            pendingAfterShutdown += snapshot.pendingRequests; writesAfterShutdown += snapshot.applicationWrites
+        }
         return GatewayLoadReport(profile: profile.name, logicalAccounts: profile.logicalAccounts,
             profileBotIdentities: profile.botIdentities, selectedBotIdentities: botCount, selectedShards: shardCount,
             targetDispatches: totalEvents, deliveredDispatches: values.dispatches,
@@ -151,18 +177,62 @@ struct GatewayLoadRunner: Sendable {
             sampledPeakQueuedEvents: values.peakQueue, configuredMaximumQueuedEvents: shardCount * 32,
             configuredMaximumQueuedBytes: shardCount * 65_536, peakOwnedConnections: values.peakConnections,
             ownedConnectionsAfterShutdown: values.connections, leasesAfterShutdown: leaseCount,
+            completedMemberRequests: values.members, completedSoundboardRequests: values.soundboard,
+            completedChannelInfoRequests: values.channelInfo, typedResponseEvents: values.typedResponses,
+            applicationCommandWrites: values.applicationWrites, pendingRequestsAfterShutdown: pendingAfterShutdown,
+            applicationWritesAfterShutdown: writesAfterShutdown, configuredMaximumPendingRequests: shardCount * 4,
+            configuredMaximumResponseEventsPerRequest: 8, configuredMaximumResponseBytes: shardCount * 65_536,
+            configuredMaximumRequestKeys: shardCount * 32,
             controlDelay: LatencySummary.summarize(values.control), eventLag: LatencySummary.summarize(values.lag),
             durationSeconds: elapsed, cpuSeconds: max(0, after.cpuSeconds - before.cpuSeconds),
             meanCPUPercentOfOneCore: elapsed > 0 ? max(0, after.cpuSeconds - before.cpuSeconds) / elapsed * 100 : 0,
             before: before, afterShutdown: after,
             notes: ["Scripted local-only JSON Gateway; zero sockets and no real credential or Discord request.",
                 "Logical served users and configured bot identities are separate from selected measured sessions.",
-                "One reconnect per selected shard exercises Resume without additional Identify allowance.",
+                "Two reconnects per selected shard exercise Resume without additional Identify allowance.",
+                "Each ready generation sends presence/voice and completes member/soundboard/channel-info requests; typed response decoding is counted.",
                 "An isolated synthetic identity measures startup contention without resetting runtime budgets.",
                 "Consumers yield between batches; producer credits bound source demand and pending timestamp metadata.",
+                "At most one server-requested heartbeat per socket generation preserves production send-rate admission while sampling control delay.",
                 "Queue peaks are per-shard sampled maxima; configured aggregate ceilings include every selected shard.",
                 "CPU/RSS are process measurements; allocator/parser overhead is outside wire-byte accounting.",
                 "This evidence does not qualify network throughput, real Discord quotas, fleet behavior or runtime capacity."])
+    }
+
+    /// Exercises every application command family once per ready socket generation through production send/request methods.
+    /// - Parameters:
+    ///   - shard: Fenced local shard whose scripted socket responds to bounded request frames.
+    ///   - generation: Distinct socket fence used to form a unique nonsecret member nonce.
+    ///   - metrics: Bounded result accounting without storing response payloads.
+    /// - Throws: Admission, correlation, typed decoding or script invariant failures; no request is replayed.
+    private static func exerciseCommands(_ shard: GatewayShard<ContinuousClock, InProcessShardLeaseStore<ContinuousClock>>,
+                                         generation: UInt64, metrics: GatewayLoadMetrics) async throws {
+        let identity = await shard.identity
+        let guild = GuildID(rawValue: UInt64(identity.index) << 22)
+        try await shard.send(GatewayCommand.updatePresence(GatewayPresence(status: .online)))
+        try await shard.send(GatewayCommand.updateVoiceState(guildID: guild, channelID: nil))
+        let commands = [
+            try GatewayCommand.requestGuildMembers(guildID: guild, userIDs: [UserID(rawValue: 1)], nonce: "load-\(generation)"),
+            try GatewayCommand.requestSoundboardSounds(guildIDs: [guild]),
+            try GatewayCommand.requestChannelInfo(guildID: guild)
+        ]
+        for command in commands {
+            let result = try await shard.request(command)
+            let expectedCount = command.kind == .members ? 2 : 1
+            guard result.events.count == expectedCount else { throw LoadFailure.unexpectedResponse }
+            for event in result.events {
+                switch (command.kind, try event.decodeDispatch()) {
+                case (.members, .guildMembersChunk(let value)):
+                    guard value.guildID == guild else { throw LoadFailure.unexpectedResponse }
+                case (.soundboardSounds, .soundboardSounds(let value)):
+                    guard value.guildID == guild else { throw LoadFailure.unexpectedResponse }
+                case (.channelInfo, .channelInfo(let value)):
+                    guard value.guildID == guild else { throw LoadFailure.unexpectedResponse }
+                default: throw LoadFailure.unexpectedResponse
+                }
+            }
+            await metrics.completed(command.kind, events: result.events.count)
+        }
     }
 
     /// Converts a bounded monotonic duration to report seconds without wall-clock arithmetic.
@@ -206,6 +276,7 @@ private actor GatewayLoadMetrics {
     struct Values: Sendable {
         var identifies = 0, resumes = 0, heartbeats = 0, acks = 0, dispatches = 0
         var connections = 0, peakConnections = 0, peakQueue = 0
+        var members = 0, soundboard = 0, channelInfo = 0, typedResponses = 0, applicationWrites = 0
         var control: [Double] = [], lag: [Double] = []
     }
     private var values = Values()
@@ -215,11 +286,23 @@ private actor GatewayLoadMetrics {
     func connection(_ change: Int) { values.connections += change; values.peakConnections = max(values.peakConnections, values.connections) }
 
     /// Records one implemented outgoing opcode without retaining its token-bearing JSON.
-    /// - Parameter opcode: Identify, Resume or Heartbeat control.
+    /// - Parameter opcode: Lifecycle control or reviewed outgoing application command.
     func outgoing(_ opcode: Int) {
         if opcode == 2 { values.identifies += 1 }
         if opcode == 6 { values.resumes += 1 }
         if opcode == 1 { values.heartbeats += 1 }
+        if [3, 4, 8, 31, 43].contains(opcode) { values.applicationWrites += 1 }
+    }
+
+    /// Records one successful fully correlated request only after every response passes production typed decoding.
+    /// - Parameters:
+    ///   - kind: One of members, soundboard sounds, or channel info.
+    ///   - events: Exact number of typed response events in that completed request.
+    func completed(_ kind: GatewayCommandKind, events: Int) {
+        if kind == .members { values.members += 1 }
+        if kind == .soundboardSounds { values.soundboard += 1 }
+        if kind == .channelInfo { values.channelInfo += 1 }
+        values.typedResponses += events
     }
 
     /// Records an ACK delivered to the receive loop independently of consumer credits.
@@ -249,7 +332,7 @@ private actor GatewayLoadFeed {
     let metrics: GatewayLoadMetrics
     var sequence: Int64 = 0
     var generated = 0, delivered = 0, credits: Int
-    var reconnected = false
+    var reconnects = 0, completedRequestRounds = 0
     var timestamps: [Int64: ContinuousClock.Instant] = [:]
     var signal = GatewayLoadSignal()
 
@@ -263,19 +346,23 @@ private actor GatewayLoadFeed {
         self.target = target; self.credits = credits; payload = String(repeating: "x", count: payloadBytes); self.metrics = metrics
     }
 
-    /// Reports how many application events the consumer has actually drained.
-    /// - Returns: Monotonic count in zero through target.
-    func deliveredCount() -> Int { delivered }
+    /// Reports completion only after credited dispatches and all three ready-generation request rounds finish.
+    /// - Returns: Whether this consumer can stop without truncating a reconnect or command round.
+    func isComplete() -> Bool { delivered == target && completedRequestRounds == 3 }
+
+    /// Releases the next reconnect gate after successful production commands and typed response decoding.
+    func completeRequestRound() async { completedRequestRounds += 1; await wake() }
 
     /// Generates one sequence for READY/RESUMED without consuming application credits.
     /// - Returns: Strictly increasing session dispatch sequence.
     func controlSequence() -> Int64 { sequence += 1; return sequence }
 
-    /// Reserves a single simulated reconnect around the midpoint of this shard's workload.
+    /// Reserves each of two simulated reconnects after its request round and finite dispatch threshold.
     /// - Returns: Whether this receive should emit opcode seven.
     func shouldReconnect() -> Bool {
-        guard !reconnected, generated >= target / 2 else { return false }
-        reconnected = true; return true
+        guard reconnects < 2, completedRequestRounds > reconnects,
+              generated >= target * (reconnects + 1) / 3 else { return false }
+        reconnects += 1; return true
     }
 
     /// Generates an event only within the bounded outstanding source-credit allowance.
@@ -334,8 +421,9 @@ private actor GatewayLoadSocket: WebSocketSessionConnection {
     let feed: GatewayLoadFeed
     let metrics: GatewayLoadMetrics
     var hello = false, authenticated = false, ready = false, resuming = false, closed = false
-    var acks = 0, applicationFrames = 0
+    var acks = 0, applicationFrames = 0, requestedHeartbeats = 0
     var requestedAt: ContinuousClock.Instant?
+    var responses: [(String, JSONValue)] = []
 
     /// Takes ownership of a counted scripted connection without launching background work.
     /// - Parameters:
@@ -343,7 +431,7 @@ private actor GatewayLoadSocket: WebSocketSessionConnection {
     ///   - metrics: Shared counters released by idempotent close.
     init(feed: GatewayLoadFeed, metrics: GatewayLoadMetrics) { self.feed = feed; self.metrics = metrics }
 
-    /// Parses only outgoing control opcode and records bounded response delay, discarding token fields.
+    /// Parses outgoing reviewed commands, records control delay and schedules at most two bounded response frames.
     /// - Parameters:
     ///   - message: Runtime-generated bounded text control frame.
     ///   - context: Cancellation/deadline for the send.
@@ -362,11 +450,30 @@ private actor GatewayLoadSocket: WebSocketSessionConnection {
                 self.requestedAt = nil
             }
         }
+        if [8, 31, 43].contains(opcode) {
+            guard responses.isEmpty, case .object(let data) = root["d"] else { throw LoadFailure.unexpectedResponse }
+            switch opcode {
+            case 8:
+                guard let guild = data["guild_id"], let nonce = data["nonce"] else { throw LoadFailure.unexpectedResponse }
+                for index in [1, 0] {
+                    responses.append(("GUILD_MEMBERS_CHUNK", .object(["guild_id": guild, "nonce": nonce,
+                        "members": .array([]), "chunk_index": .number(try JSONNumber(rawValue: String(index))),
+                        "chunk_count": .number(try JSONNumber(rawValue: "2"))])))
+                }
+            case 31:
+                guard case .array(let guilds) = data["guild_ids"], guilds.count == 1 else { throw LoadFailure.unexpectedResponse }
+                responses.append(("SOUNDBOARD_SOUNDS", .object(["guild_id": guilds[0], "soundboard_sounds": .array([])])))
+            case 43:
+                guard let guild = data["guild_id"] else { throw LoadFailure.unexpectedResponse }
+                responses.append(("CHANNEL_INFO", .object(["guild_id": guild, "channels": .array([])])))
+            default: throw LoadFailure.unexpectedResponse
+            }
+        }
         await metrics.outgoing(opcode)
         await feed.wake()
     }
 
-    /// Produces Hello/auth dispatch, priority ACK/requested beat, one reconnect and credited events.
+    /// Produces Hello/auth dispatch, priority ACK/request replies, two gated reconnects and credited events.
     /// - Parameter context: Cancellation/deadline for this sole pull reader.
     /// - Returns: Finite uncompressed JSON frames, or EOF after explicit close.
     /// - Throws: Cancellation, deadline or local script invariant failure.
@@ -383,8 +490,15 @@ private actor GatewayLoadSocket: WebSocketSessionConnection {
                     "{\"op\":0,\"s\":\(sequence),\"t\":\"READY\",\"d\":{\"session_id\":\"local\",\"resume_gateway_url\":\"wss://resume.discord.gg/\"}}")
             }
             if ready {
-                if requestedAt == nil, applicationFrames > 0, applicationFrames % 8 == 0 {
-                    applicationFrames += 1; requestedAt = ContinuousClock().now
+                if !responses.isEmpty {
+                    let (name, data) = responses.removeFirst()
+                    let sequence = await feed.controlSequence()
+                    let bytes = try JSONValue.object(["op": .number(JSONNumber(rawValue: "0")),
+                        "s": .number(JSONNumber(rawValue: String(sequence))), "t": .string(name), "d": data]).serialized()
+                    return .text(String(decoding: bytes, as: UTF8.self))
+                }
+                if requestedAt == nil, requestedHeartbeats == 0, applicationFrames >= 8 {
+                    requestedHeartbeats += 1; requestedAt = ContinuousClock().now
                     return .text(#"{"op":1,"d":null}"#)
                 }
                 if await feed.shouldReconnect() { return .text(#"{"op":7,"d":null}"#) }
@@ -395,7 +509,8 @@ private actor GatewayLoadSocket: WebSocketSessionConnection {
             }
             let signal = await feed.wakeup()
             // Recheck after obtaining the wake generation to avoid missing a send/credit race.
-            if acks > 0 || closed || (!ready && authenticated) { continue }
+            if acks > 0 || !responses.isEmpty || closed || (!ready && authenticated) { continue }
+            if ready, await feed.shouldReconnect() { return .text(#"{"op":7,"d":null}"#) }
             if ready, let (sequence,payload) = await feed.nextEvent() {
                 applicationFrames += 1
                 return .text("{\"op\":0,\"s\":\(sequence),\"t\":\"LOAD_EVENT\",\"d\":{\"payload\":\"\(payload)\"}}")

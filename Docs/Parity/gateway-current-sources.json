@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "sources": [
+    {
+      "name": "gateway",
+      "url": "https://docs.discord.com/developers/events/gateway.md",
+      "sha256": "3a3f876dc268c1bdb9c507eb030f224f05ef8517b7f7889346beff2c36fa60ad",
+      "bytes": 52237,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current written Gateway v10 contracts verified separately from unchanged historical discovery provenance. Official written documentation controls preview conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "gateway-events",
+      "url": "https://docs.discord.com/developers/events/gateway-events.md",
+      "sha256": "a0999b3fa7eba9f2429e672100072826b1d85c9d6f16aae6a051d1cb9537dfc2",
+      "bytes": 83326,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current written Gateway v10 contracts verified separately from unchanged historical discovery provenance. Official written documentation controls preview conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "opcodes-and-status-codes",
+      "url": "https://docs.discord.com/developers/topics/opcodes-and-status-codes.md",
+      "sha256": "8c541ff7c62a5688a4348713f77ad9e0d25b2a07ae9ac5caf741c151824f4da7",
+      "bytes": 26845,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current written Gateway v10 contracts verified separately from unchanged historical discovery provenance. Official written documentation controls preview conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current written Gateway v10 contracts verified separately from unchanged historical discovery provenance. Official written documentation controls preview conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current written Gateway v10 contracts verified separately from unchanged historical discovery provenance. Official written documentation controls preview conflicts; full upstream content is not redistributed."
+    }
+  ]
+}

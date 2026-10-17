@@ -13,7 +13,8 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [applications, users, linked roles and commands](Docs/ApplicationsUsers.md) in Phase 5G, and
 [webhooks, interaction responses and voice control](Docs/WebhooksInteractionsVoice.md) in Phase 5H, and
 [SKUs, entitlements and subscriptions](Docs/Monetization.md) in Phase 5I, and
-[lobbies and application identity profiles](Docs/SocialGame.md) in Phase 5J. Interaction ingress/routing,
+[lobbies and application identity profiles](Docs/SocialGame.md) in Phase 5J. Phase 6 adds
+[typed Gateway dispatches, commands and bounded requests](Docs/Gateway.md). Interaction ingress/routing,
 OAuth2 flows, voice media, RPC, Activities, native Social SDK and broader commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -24,7 +25,7 @@ The architecture baseline records platform capabilities, dependency policy, a
 versioned parity inventory and explicit feasibility blockers. Portable values are
 usable today; HTTP/WebSocket/UDP/ingress/Unix adapters are available with explicit
 limits and macOS-local qualification. REST and Gateway are independently adoptable;
-the full resource/event catalog and consumer facade follow later. A planned
+broader resource projections and the consumer facade follow later. A planned
 target or an unavailable-capability stub never counts as implemented support.
 
 ## Build and test
@@ -64,10 +65,11 @@ establish endpoint parity or qualify untested hosts. See the
   scoped coalescing, opt-in bounded response caching, and message/poll, channel/thread, guild,
   moderation, expression, discovery/event, application/user/command, webhook/interaction/voice
   monetization and social/game backend REST catalogs.
-- `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases and startup budgets.
+- `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases,
+  startup/opcode budgets, typed dispatch decoding and bounded correlated requests.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),
-[minimal Gateway lifecycle](Docs/Gateway.md), and
+[Gateway lifecycle and event catalog](Docs/Gateway.md), and
 [transport ownership, budgets and qualification limits](Docs/Transport.md).
 The independent [local load harness](Tools/DiscordKitLoadTests/README.md) records
 bounded cohort measurements; broad platform and Phase 2 qualification gates remain open.
@@ -88,7 +90,8 @@ other-platform runtime qualification remains recorded separately.
 - Optional voice APIs own the media protocol and expose join, frames and leave.
 - Platform and access restrictions produce explicit capability information.
 
-The HTTP execution and minimal raw Gateway lifecycle are implemented. The remaining
+The HTTP execution, sharded Gateway lifecycle and documented dispatch names are
+implemented with explicit partial child-resource projections. The remaining
 consumer workflows describe future work. Feature products are introduced
 with implementations and tests as their roadmap phases are completed.
 
@@ -124,7 +127,7 @@ provisioning are not invented SDK endpoints. See Discord's
 - [Portable foundation contracts](Docs/Foundation.md)
 - [Owned transport adapters](Docs/Transport.md)
 - [HTTP execution and request reuse](Docs/HTTP.md)
-- [Minimal sharded Gateway lifecycle](Docs/Gateway.md)
+- [Sharded Gateway lifecycle and event catalog](Docs/Gateway.md)
 - [Concurrency and ownership](Docs/Concurrency.md)
 - [Scalability and request efficiency](Docs/Scalability.md)
 - [Dependency policy and candidate releases](Docs/Dependencies.md)

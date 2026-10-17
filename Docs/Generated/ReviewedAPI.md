@@ -27,6 +27,954 @@ Status: supported. Support since: 2026-10-16. Source: developers/resources/user.
 
 Evidence: evidence.user-projection.
 
+## APPLICATION_COMMAND_PERMISSIONS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## AUTO_MODERATION_ACTION_EXECUTION
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## AUTO_MODERATION_RULE_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## AUTO_MODERATION_RULE_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## AUTO_MODERATION_RULE_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## CHANNEL_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## CHANNEL_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## CHANNEL_INFO
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## CHANNEL_PINS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## CHANNEL_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## ENTITLEMENT_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## ENTITLEMENT_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## ENTITLEMENT_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_AUDIT_LOG_ENTRY_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_BAN_ADD
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_BAN_REMOVE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_EMOJIS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_INTEGRATIONS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_MEMBERS_CHUNK
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_MEMBER_ADD
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_MEMBER_REMOVE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_MEMBER_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_ROLE_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_ROLE_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_ROLE_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SCHEDULED_EVENT_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SCHEDULED_EVENT_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SCHEDULED_EVENT_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SCHEDULED_EVENT_USER_ADD
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SCHEDULED_EVENT_USER_REMOVE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SOUNDBOARD_SOUNDS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SOUNDBOARD_SOUND_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SOUNDBOARD_SOUND_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_SOUNDBOARD_SOUND_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_STICKERS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GUILD_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## INTEGRATION_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## INTEGRATION_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## INTEGRATION_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## INTERACTION_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## INVITE_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## INVITE_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_DELETE_BULK
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_POLL_VOTE_ADD
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_POLL_VOTE_REMOVE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_REACTION_ADD
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_REACTION_REMOVE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_REACTION_REMOVE_ALL
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_REACTION_REMOVE_EMOJI
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## MESSAGE_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## PRESENCE_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## RATE_LIMITED
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## READY
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## RESUMED
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## SOUNDBOARD_SOUNDS
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## STAGE_INSTANCE_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## STAGE_INSTANCE_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## STAGE_INSTANCE_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## SUBSCRIPTION_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## SUBSCRIPTION_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## SUBSCRIPTION_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## THREAD_CREATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## THREAD_DELETE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## THREAD_LIST_SYNC
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## THREAD_MEMBERS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## THREAD_MEMBER_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## THREAD_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## TYPING_START
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## USER_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## VOICE_CHANNEL_EFFECT_SEND
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## VOICE_CHANNEL_START_TIME_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## VOICE_CHANNEL_STATUS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## VOICE_SERVER_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## VOICE_STATE_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## WEBHOOKS_UPDATE
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Payload model: none. Related variants: .
+
+Handwritten event behavior: Typed named dispatch with exact raw payload preservation and explicit sparse/nullable semantics. The handwritten payload and related resources are not a claim of exhaustive reviewed typed child-field coverage. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
 ## approximateGuildCount
 
 API v10, verified 2026-10-16. Phase 5G moves the generated partial seed to handwritten bounded models and tagged descriptors. Existing scalar wire contracts and redacted diagnostics remain regression tested; see Docs/ApplicationsUsers.md.
@@ -5778,6 +6726,662 @@ REST API v10 verified and locally added 2026-10-16. Current semantic fingerprint
 Status: supported. Support since: 2026-10-16. Source: developers/resources/lobby. Upstream announcement: unknown; effective: unknown.
 
 Evidence: evidence.5j.LobbyEndpointTests.bulkResponseCorrelation, evidence.5j.LobbyEndpointTests.completeCatalog, evidence.5j.LobbyEndpointTests.recentBoundsAndReadPolicy, evidence.5j.LobbyIntegrationTests.authenticationMismatch, evidence.5j.LobbyIntegrationTests.cancellationDuringExchange, evidence.5j.LobbyIntegrationTests.cancelledBeforeSend, evidence.5j.LobbyIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5j.LobbyIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5j.LobbyIntegrationTests.failures, evidence.5j.LobbyIntegrationTests.malformedReadsNeverPopulateCache, evidence.5j.LobbyIntegrationTests.malformedSuccessBodies, evidence.5j.LobbyIntegrationTests.readsCoalesceWithinIdentity, evidence.5j.LobbyIntegrationTests.scopedMutationInvalidation, evidence.5j.LobbyIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5j.LobbyIntegrationTests.success, evidence.5j.LobbyIntegrationTests.transportFailure, evidence.5j.LobbyIntegrationTests.unexpectedSuccessStatus, evidence.5j.LobbyOperationsTests.concurrentIndependentExecutions, evidence.5j.LobbyOperationsTests.corruptCustomAcknowledgement, evidence.5j.LobbyOperationsTests.invalidPlans, evidence.5j.LobbyOperationsTests.legalChunks, evidence.5j.LobbyOperationsTests.metadataSnapshots, evidence.5j.LobbyOperationsTests.partialFailure, evidence.5j.LobbyOperationsTests.preEntryAndRacingCancellation, evidence.5j.LobbyOperationsTests.suspendedTermination.
+
+## GatewayActivity
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayActivityAssets
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayActivityEmoji
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayActivityParty
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayActivitySecrets
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayActivityStatusDisplayType
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayActivityTimestamps
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayActivityType
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayAutoModerationActionExecution
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayAvailableGuild
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayCapabilities
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayChannelInfo
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayChannelInfoChannel
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayChannelInfoField
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayChannelPinsUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayClientStatus
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayCloseDisposition
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/topics/opcodes-and-status-codes. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayProtocolTests.closeCodes, evidence.6.GatewayProtocolTests.transitionTable, evidence.6.GatewayRuntimeTests.fatalPeerCode.
+
+## GatewayCommand
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayCommandCoordinator bounded requests
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayRequestTests.aggregateResponseByteCapacity, evidence.6.GatewayRequestTests.channelInfoCompletionAndMalformedResponse, evidence.6.GatewayRequestTests.concurrentSharedFullMemberAdmission, evidence.6.GatewayRequestTests.coordinatorBotAndRoutingValidation, evidence.6.GatewayRequestTests.coordinatorCancellation, evidence.6.GatewayRequestTests.coordinatorMetadataCapacityAndValidation, evidence.6.GatewayRequestTests.inconsistentMemberCounts, evidence.6.GatewayRequestTests.invalidRequestFamiliesAndNonces, evidence.6.GatewayRequestTests.lateResponseFencingAndReset, evidence.6.GatewayRequestTests.localMemberCooldownScope, evidence.6.GatewayRequestTests.malformedMemberChunks, evidence.6.GatewayRequestTests.memberCorrelationFilters, evidence.6.GatewayRequestTests.orderedMemberChunks, evidence.6.GatewayRequestTests.rawSendCorrelationFences, evidence.6.GatewayRequestTests.registrationCapacity, evidence.6.GatewayRequestTests.registrationConflicts, evidence.6.GatewayRequestTests.responseCapacityAndAccountingRelease, evidence.6.GatewayRequestTests.scopedRateLimitFailures, evidence.6.GatewayRequestTests.serverCooldownScopesAndExpiry, evidence.6.GatewayRequestTests.serverFullMemberCooldownScope, evidence.6.GatewayRequestTests.serverFullMemberFailureScope, evidence.6.GatewayRequestTests.soundboardGuildOrdering, evidence.6.GatewayRuntimeTests.activeWriteCapacityAndCleanup, evidence.6.GatewayRuntimeTests.admissionGuards, evidence.6.GatewayRuntimeTests.commandCoordinatorErrorsAreSanitized, evidence.6.GatewayRuntimeTests.correlatedRequests, evidence.6.GatewayRuntimeTests.identifyOptionsAndTypedDecode, evidence.6.GatewayRuntimeTests.outgoingBudgets, evidence.6.GatewayRuntimeTests.requestConfigurationAndPreCancellation, evidence.6.GatewayRuntimeTests.requestDisconnect, evidence.6.GatewayRuntimeTests.requestRateLimit, evidence.6.GatewayRuntimeTests.requestTimeoutAndCancellation, evidence.6.GatewayRuntimeTests.rollingBoundariesAndControlHeadroom.
+
+## GatewayCommandKind
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayGuildAuditLogEntryCreate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildAvailability
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildCreate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildEmojisUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildIntegrationsUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildMemberAdd
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildMemberUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildMembersChunk
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildRoleDelete
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildRoleUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildSoundboardSoundDelete
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildStickersUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayGuildUser
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayIdentifyConfiguration
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayIntegrationDelete
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayIntegrationUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayIntents
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayInviteApplication
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayInviteCreate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayInviteDelete
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMemberRateLimitMetadata
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageCreate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageDelete
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageDeleteBulk
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageMention
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessagePollVote
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageReactionAdd
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageReactionRemove
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageReactionRemoveAll
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageReactionRemoveEmoji
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayMessageUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayOpcode
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/topics/opcodes-and-status-codes. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayPartialGuildMember
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayPartialPresence
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayPresence
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayPresenceStatus
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayCommandTests.activityFields, evidence.6.GatewayCommandTests.activityStreamingURLs, evidence.6.GatewayCommandTests.channelInfoRequests, evidence.6.GatewayCommandTests.configuredIdentify, evidence.6.GatewayCommandTests.controlEncodingAndRedaction, evidence.6.GatewayCommandTests.defaultIdentify, evidence.6.GatewayCommandTests.exactOutboundByteLimit, evidence.6.GatewayCommandTests.intentAndCapabilityDefinitions, evidence.6.GatewayCommandTests.invalidIdentify, evidence.6.GatewayCommandTests.invalidMemberQueries, evidence.6.GatewayCommandTests.invalidMemberUserIDs, evidence.6.GatewayCommandTests.memberNonceBytes, evidence.6.GatewayCommandTests.memberQueries, evidence.6.GatewayCommandTests.memberUserIDs, evidence.6.GatewayCommandTests.opcodeDefinitions, evidence.6.GatewayCommandTests.presenceFields, evidence.6.GatewayCommandTests.presenceTimestampsAndActivities, evidence.6.GatewayCommandTests.soundboardRequests, evidence.6.GatewayCommandTests.voiceState.
+
+## GatewayPresenceUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayPresenceUser
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayRateLimited
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayReactionType
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayReady
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayReadyApplication
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayReceivedActivity
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayReceivedActivityType
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayRequests bounded requests
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayRequestTests.aggregateResponseByteCapacity, evidence.6.GatewayRequestTests.channelInfoCompletionAndMalformedResponse, evidence.6.GatewayRequestTests.concurrentSharedFullMemberAdmission, evidence.6.GatewayRequestTests.coordinatorBotAndRoutingValidation, evidence.6.GatewayRequestTests.coordinatorCancellation, evidence.6.GatewayRequestTests.coordinatorMetadataCapacityAndValidation, evidence.6.GatewayRequestTests.inconsistentMemberCounts, evidence.6.GatewayRequestTests.invalidRequestFamiliesAndNonces, evidence.6.GatewayRequestTests.lateResponseFencingAndReset, evidence.6.GatewayRequestTests.localMemberCooldownScope, evidence.6.GatewayRequestTests.malformedMemberChunks, evidence.6.GatewayRequestTests.memberCorrelationFilters, evidence.6.GatewayRequestTests.orderedMemberChunks, evidence.6.GatewayRequestTests.rawSendCorrelationFences, evidence.6.GatewayRequestTests.registrationCapacity, evidence.6.GatewayRequestTests.registrationConflicts, evidence.6.GatewayRequestTests.responseCapacityAndAccountingRelease, evidence.6.GatewayRequestTests.scopedRateLimitFailures, evidence.6.GatewayRequestTests.serverCooldownScopesAndExpiry, evidence.6.GatewayRequestTests.serverFullMemberCooldownScope, evidence.6.GatewayRequestTests.serverFullMemberFailureScope, evidence.6.GatewayRequestTests.soundboardGuildOrdering, evidence.6.GatewayRuntimeTests.activeWriteCapacityAndCleanup, evidence.6.GatewayRuntimeTests.admissionGuards, evidence.6.GatewayRuntimeTests.commandCoordinatorErrorsAreSanitized, evidence.6.GatewayRuntimeTests.correlatedRequests, evidence.6.GatewayRuntimeTests.identifyOptionsAndTypedDecode, evidence.6.GatewayRuntimeTests.outgoingBudgets, evidence.6.GatewayRuntimeTests.requestConfigurationAndPreCancellation, evidence.6.GatewayRuntimeTests.requestDisconnect, evidence.6.GatewayRuntimeTests.requestRateLimit, evidence.6.GatewayRuntimeTests.requestTimeoutAndCancellation, evidence.6.GatewayRuntimeTests.rollingBoundariesAndControlHeadroom.
+
+## GatewayResumed
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayScheduledEventUser
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayShard bounded requests
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayRequestTests.aggregateResponseByteCapacity, evidence.6.GatewayRequestTests.channelInfoCompletionAndMalformedResponse, evidence.6.GatewayRequestTests.concurrentSharedFullMemberAdmission, evidence.6.GatewayRequestTests.coordinatorBotAndRoutingValidation, evidence.6.GatewayRequestTests.coordinatorCancellation, evidence.6.GatewayRequestTests.coordinatorMetadataCapacityAndValidation, evidence.6.GatewayRequestTests.inconsistentMemberCounts, evidence.6.GatewayRequestTests.invalidRequestFamiliesAndNonces, evidence.6.GatewayRequestTests.lateResponseFencingAndReset, evidence.6.GatewayRequestTests.localMemberCooldownScope, evidence.6.GatewayRequestTests.malformedMemberChunks, evidence.6.GatewayRequestTests.memberCorrelationFilters, evidence.6.GatewayRequestTests.orderedMemberChunks, evidence.6.GatewayRequestTests.rawSendCorrelationFences, evidence.6.GatewayRequestTests.registrationCapacity, evidence.6.GatewayRequestTests.registrationConflicts, evidence.6.GatewayRequestTests.responseCapacityAndAccountingRelease, evidence.6.GatewayRequestTests.scopedRateLimitFailures, evidence.6.GatewayRequestTests.serverCooldownScopesAndExpiry, evidence.6.GatewayRequestTests.serverFullMemberCooldownScope, evidence.6.GatewayRequestTests.serverFullMemberFailureScope, evidence.6.GatewayRequestTests.soundboardGuildOrdering, evidence.6.GatewayRuntimeTests.activeWriteCapacityAndCleanup, evidence.6.GatewayRuntimeTests.admissionGuards, evidence.6.GatewayRuntimeTests.commandCoordinatorErrorsAreSanitized, evidence.6.GatewayRuntimeTests.correlatedRequests, evidence.6.GatewayRuntimeTests.identifyOptionsAndTypedDecode, evidence.6.GatewayRuntimeTests.outgoingBudgets, evidence.6.GatewayRuntimeTests.requestConfigurationAndPreCancellation, evidence.6.GatewayRuntimeTests.requestDisconnect, evidence.6.GatewayRuntimeTests.requestRateLimit, evidence.6.GatewayRuntimeTests.requestTimeoutAndCancellation, evidence.6.GatewayRuntimeTests.rollingBoundariesAndControlHeadroom.
+
+## GatewaySoundboardSounds
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayThreadAddedMember
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayThreadCreate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayThreadDelete
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayThreadListSync
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayThreadMemberUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayThreadMembersUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayTypingStart
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayVoiceChannelEffect
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayVoiceChannelStartTimeUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayVoiceChannelStatusUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayVoiceEffectAnimationType
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: supported. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayVoiceServerUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
+
+## GatewayWebhooksUpdate
+
+Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate.
+
+Status: partial. Support since: 2026-10-16. Source: developers/events/gateway-events. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.6.GatewayDispatchTests.allDispatchFixtures, evidence.6.GatewayDispatchTests.asyncDispatchDecodingUsesBoundedStorage, evidence.6.GatewayDispatchTests.guildAvailability, evidence.6.GatewayDispatchTests.malformedDispatchFields, evidence.6.GatewayDispatchTests.presenceAndSparseUpdates, evidence.6.GatewayDispatchTests.shardChunkAndIntegerBoundaries, evidence.6.GatewayDispatchTests.unknownDispatchAndBounds, evidence.6.GatewayDispatchTests.voiceEffectsRateLimitsAndActivities.
 
 ## GatewayEndpoints.bot
 

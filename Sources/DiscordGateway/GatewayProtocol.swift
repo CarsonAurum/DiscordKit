@@ -1,4 +1,5 @@
 import DiscordCore
+import DiscordModels
 import DiscordTransport
 import Foundation
 
@@ -18,6 +19,11 @@ public enum GatewayFailure: Error, Equatable, Sendable {
     case eventCapacityExceeded
     case startupRefreshRequired
     case coordinatorUnavailable
+    case commandCapacityExceeded
+    case commandRateLimited(retryAfter: Duration)
+    case requestConflict
+    case notReady
+    case missingIntent
 }
 
 /// Explicit phases for one socket/session lifecycle, independently testable without I/O.
@@ -88,7 +94,7 @@ public enum GatewayCloseDisposition: Sendable, Equatable {
     }
 }
 
-/// A bounded raw Gateway event; later catalog work can decode its lossless payload.
+/// A bounded raw Gateway event with opt-in typed dispatch decoding.
 /// This ingestion queue is single-consumer polling, not a broadcast subscription.
 public struct GatewayEvent: Sendable, CustomStringConvertible, CustomReflectable {
     public let shard: ShardIdentity
@@ -105,6 +111,17 @@ public struct GatewayEvent: Sendable, CustomStringConvertible, CustomReflectable
     init(shard: ShardIdentity, envelope: GatewayEnvelope) {
         self.shard = shard; opcode = envelope.opcode; name = envelope.name
         sequence = envelope.sequence; data = envelope.data; byteCount = envelope.byteCount
+    }
+
+    /// Decodes a dispatch on demand, preserving raw future names and unknown payload fields.
+    /// Control/future opcode observations remain available through `data`. No handlers or I/O run.
+    /// - Parameter limits: Explicit synchronous payload decode bounds, default 1 MiB.
+    /// - Returns: Typed known or raw unknown dispatch for opcode zero, otherwise nil.
+    /// - Throws: Model/JSON errors for malformed known payloads or exceeded decode bounds;
+    ///   a failure never changes the shard lifecycle or destroys the raw event.
+    public func decodeDispatch(limits: JSONLimits = .default) throws -> GatewayDispatch? {
+        guard opcode == 0, let name else { return nil }
+        return try GatewayDispatch(name: name, value: data, limits: limits)
     }
 
     /// Conceals payload and session-bearing event fields in generic diagnostics.

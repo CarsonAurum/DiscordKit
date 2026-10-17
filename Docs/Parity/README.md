@@ -31,6 +31,10 @@ Phase 5I adds all eight written [SKU, entitlement and subscription operations](.
 complete owned resource fields, typed premium interaction entitlements and finite lazy traversal.
 Phase 5J adds all 21 written [lobby and identity/profile operations](../SocialGame.md),
 bounded correlated member bulk plans and full-replacement game-stat requests.
+Phase 6 adds all 79 documented [Gateway dispatch names](../Gateway.md), typed
+commands/intents/capabilities and bounded correlated requests. Event-name coverage
+is separate from full typed child-resource parity; reviewed events retain explicit
+partial classifications where relevant. See [Gateway history](changes/2026-10-16-gateway-catalog.md).
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the

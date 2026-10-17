@@ -10,7 +10,12 @@ class GatewayBaselineTests(unittest.TestCase):
     def report(self, burst=False):
         """Construct the smallest accounting report accepted by the release recorder."""
         return {"selectedShards": 4, "deliveredDispatches": 100, "targetDispatches": 100,
-                "identifies": 4, "resumes": 4, "startupStormAdmitted": 4,
+                "identifies": 4, "resumes": 8, "reconnects": 8, "startupStormAdmitted": 4,
+                "completedMemberRequests": 12, "completedSoundboardRequests": 12,
+                "completedChannelInfoRequests": 12, "typedResponseEvents": 48, "applicationCommandWrites": 60,
+                "pendingRequestsAfterShutdown": 0, "applicationWritesAfterShutdown": 0,
+                "configuredMaximumPendingRequests": 16, "configuredMaximumResponseEventsPerRequest": 8,
+                "configuredMaximumResponseBytes": 262_144, "configuredMaximumRequestKeys": 128,
                 "startupStormOffered": 40 if burst else 8, "peakOwnedConnections": 4,
                 "ownedConnectionsAfterShutdown": 0, "leasesAfterShutdown": 0,
                 "sampledPeakQueuedEvents": 16, "configuredMaximumQueuedEvents": 128,
@@ -27,7 +32,13 @@ class GatewayBaselineTests(unittest.TestCase):
         for key, value in (("deliveredDispatches", 99), ("resumes", 3), ("identifies", 5),
                            ("startupStormAdmitted", 5), ("peakOwnedConnections", 5),
                            ("ownedConnectionsAfterShutdown", 1), ("leasesAfterShutdown", 1),
-                           ("sampledPeakQueuedEvents", 33), ("heartbeatACKs", 0)):
+                           ("sampledPeakQueuedEvents", 33), ("heartbeatACKs", 0), ("reconnects", 7),
+                           ("completedMemberRequests", 11), ("completedSoundboardRequests", 11),
+                           ("completedChannelInfoRequests", 11), ("typedResponseEvents", 47),
+                           ("applicationCommandWrites", 59), ("pendingRequestsAfterShutdown", 1),
+                           ("applicationWritesAfterShutdown", 1), ("configuredMaximumPendingRequests", 15),
+                           ("configuredMaximumResponseEventsPerRequest", 7), ("configuredMaximumResponseBytes", 1),
+                           ("configuredMaximumRequestKeys", 127)):
             report = self.report()
             report[key] = value
             with self.subTest(key=key), self.assertRaises(RuntimeError):
@@ -40,6 +51,10 @@ class GatewayBaselineTests(unittest.TestCase):
                       eventLag={"sampleCount": 4_096})
         validate_gateway(report, False)
         report["eventLag"]["sampleCount"] = 100_000
+        with self.assertRaises(RuntimeError):
+            validate_gateway(report, False)
+        report = self.report()
+        report["controlDelay"]["sampleCount"] = 13
         with self.assertRaises(RuntimeError):
             validate_gateway(report, False)
 

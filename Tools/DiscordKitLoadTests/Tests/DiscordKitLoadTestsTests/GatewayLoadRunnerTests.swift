@@ -5,7 +5,7 @@ import Testing
 /// Bounded scripted Gateway evidence separates logical users from owned sessions and verifies cleanup.
 @Suite("Gateway load harness", .timeLimit(.minutes(1)))
 struct GatewayLoadRunnerTests {
-    /// Four sessions share two bot identities, survive Resume and drain exactly the credited events.
+    /// Four sessions share two bot identities, survive two Resumes each and complete all typed request rounds.
     /// Baseline/burst change offered startup contention without increasing the actual session ceiling.
     @Test(arguments: [false, true])
     func boundedLifecycle(burst: Bool) async throws {
@@ -17,8 +17,13 @@ struct GatewayLoadRunnerTests {
         #expect(report.targetDispatches == 128)
         #expect(report.deliveredDispatches == 128)
         #expect(report.identifies == 4)
-        #expect(report.resumes == 4)
-        #expect(report.reconnects == 4)
+        #expect(report.resumes == 8)
+        #expect(report.reconnects == 8)
+        #expect(report.completedMemberRequests == 12)
+        #expect(report.completedSoundboardRequests == 12)
+        #expect(report.completedChannelInfoRequests == 12)
+        #expect(report.typedResponseEvents == 48)
+        #expect(report.applicationCommandWrites == 60)
         #expect(report.heartbeats > 0)
         #expect(report.heartbeatACKs > 0)
         #expect(report.heartbeatACKs <= report.heartbeats)
@@ -30,6 +35,12 @@ struct GatewayLoadRunnerTests {
         #expect(report.peakOwnedConnections <= 4)
         #expect(report.ownedConnectionsAfterShutdown == 0)
         #expect(report.leasesAfterShutdown == 0)
+        #expect(report.pendingRequestsAfterShutdown == 0)
+        #expect(report.applicationWritesAfterShutdown == 0)
+        #expect(report.configuredMaximumPendingRequests == 16)
+        #expect(report.configuredMaximumResponseEventsPerRequest == 8)
+        #expect(report.configuredMaximumResponseBytes == 262_144)
+        #expect(report.configuredMaximumRequestKeys == 128)
         #expect(report.controlDelay.sampleCount > 0)
         #expect(report.eventLag.sampleCount == 128)
         #expect(report.durationSeconds > 0)
@@ -46,8 +57,41 @@ struct GatewayLoadRunnerTests {
         let report = try await GatewayLoadRunner().run(profile: fixture(overrides: ["requests": 65, "shards": 4]), burst: false)
         #expect(report.deliveredDispatches == 65)
         #expect(report.eventLag.sampleCount == 65)
-        #expect(report.resumes == 4)
+        #expect(report.resumes == 8)
+        #expect(report.completedMemberRequests == 12)
+        #expect(report.completedSoundboardRequests == 12)
+        #expect(report.completedChannelInfoRequests == 12)
         #expect(report.leasesAfterShutdown == 0)
+        #expect(report.ownedConnectionsAfterShutdown == 0)
+    }
+
+    /// A single credited raw event still executes every request round and both gated reconnects before shutdown.
+    @Test func minimalRawWorkCompletesEveryGeneration() async throws {
+        let report = try await GatewayLoadRunner().run(profile: fixture(overrides: ["requests": 1, "shards": 1]), burst: false)
+        #expect(report.deliveredDispatches == 1)
+        #expect(report.identifies == 1)
+        #expect(report.resumes == 2)
+        #expect(report.completedMemberRequests == 3)
+        #expect(report.completedSoundboardRequests == 3)
+        #expect(report.completedChannelInfoRequests == 3)
+        #expect(report.typedResponseEvents == 12)
+        #expect(report.applicationCommandWrites == 15)
+        #expect(report.pendingRequestsAfterShutdown == 0)
+        #expect(report.applicationWritesAfterShutdown == 0)
+        #expect(report.ownedConnectionsAfterShutdown == 0)
+        #expect(report.leasesAfterShutdown == 0)
+    }
+
+    /// Thousands of raw events keep synthetic heartbeat requests bounded so production command admission remains eligible.
+    @Test func sustainedRawIngressPreservesCommandBudget() async throws {
+        let report = try await GatewayLoadRunner().run(profile: fixture(overrides: ["requests": 4096, "shards": 1]), burst: true)
+        #expect(report.deliveredDispatches == 4096)
+        #expect(report.resumes == 2)
+        #expect(report.applicationCommandWrites == 15)
+        #expect(report.completedMemberRequests == 3)
+        #expect(report.controlDelay.sampleCount == 3)
+        #expect(report.pendingRequestsAfterShutdown == 0)
+        #expect(report.applicationWritesAfterShutdown == 0)
         #expect(report.ownedConnectionsAfterShutdown == 0)
     }
 
