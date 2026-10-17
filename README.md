@@ -12,8 +12,9 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [invites, templates, scheduled events and stages](Docs/DiscoveryEvents.md) in Phase 5F, and
 [applications, users, linked roles and commands](Docs/ApplicationsUsers.md) in Phase 5G, and
 [webhooks, interaction responses and voice control](Docs/WebhooksInteractionsVoice.md) in Phase 5H, and
-[SKUs, entitlements and subscriptions](Docs/Monetization.md) in Phase 5I. Interaction ingress/routing,
-OAuth2 flows, voice media, RPC, Activities, Social and broader commerce remain later work.
+[SKUs, entitlements and subscriptions](Docs/Monetization.md) in Phase 5I, and
+[lobbies and application identity profiles](Docs/SocialGame.md) in Phase 5J. Interaction ingress/routing,
+OAuth2 flows, voice media, RPC, Activities, native Social SDK and broader commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
@@ -62,7 +63,7 @@ establish endpoint parity or qualify untested hosts. See the
 - `DiscordHTTP`: typed descriptors, codecs, coordinated admission, safe retries, pagination,
   scoped coalescing, opt-in bounded response caching, and message/poll, channel/thread, guild,
   moderation, expression, discovery/event, application/user/command, webhook/interaction/voice
-  and monetization REST catalogs.
+  monetization and social/game backend REST catalogs.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases and startup budgets.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),

@@ -4,7 +4,7 @@
   "entries": [
     {
       "id": "identity-profile-success-response",
-      "status": "open",
+      "status": "policy_resolved",
       "surface": "REST v10 / Application Identity Profile",
       "description": "The update endpoint introductory text promises an Application Identity Profile object, while its response section specifies 201 on first write and 204 on later writes. Whether a first-write body is guaranteed remains unspecified.",
       "evidence": [
@@ -16,12 +16,12 @@
         }
       ],
       "impact": "A generated always-decode-object response would fail on valid empty 204 updates.",
-      "interimPolicy": "Do not implement or mark support based on an invented mandatory success body. Preserve first-write and update variants in the inventory; require no body for a 204.",
-      "requiredResolution": "Official corrected response schema/examples, or approved conformance evidence for both first-write 201 and subsequent-update 204 including content type and body.",
-      "verifiedAt": "2026-10-15",
+      "interimPolicy": "Accept the response section statuses 201 and 204 without a mandatory body. Decode a supplied 201 object as ApplicationIdentityProfile; empty success maps to Nullable.null. Never require or decode a body for a 204. Written full-replacement data semantics and bot/target-user consent control. This explicit compatibility policy does not resolve upstream prose.",
+      "requiredResolution": "Official reconciliation of the object-return prose with first-write 201 and subsequent bodyless 204; retain both valid first-write body variants in deterministic tests.",
+      "verifiedAt": "2026-10-16",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",
-      "resolvedAt": "unknown"
+      "resolvedAt": "2026-10-16"
     },
     {
       "id": "rpc-certified-device-websocket-ports",
@@ -944,6 +944,33 @@
       "impact": "Blind specification generation rejects valid guild/test responses, widens typed surfaces without reviewed public contracts or changes written field presence semantics.",
       "interimPolicy": "Preserve optional written ownership, nullable guild_id compatibility from the official specification and absent test timestamps using Field; decode optional example subscription_id. Written nonnull user_id controls; nullable country is an explicit specification compatibility overlay, preserving absence independently. Adopt explicit specification-backed auth categories, <=100 unique SKU filters and optional subscription-get user_id; SKU list and create test remain bot-only, unfiltered subscription list bearer-only. Spec-only only_active, current-user route, quest-reward kind 10 and Commerce fulfillment/parent/gifter fields retain unsupported typed classifications and exact raw preservation.",
       "requiredResolution": "Official reconciled schemas and complete public wire/auth/access/lifecycle contracts before promoting the remaining specification/Commerce surfaces. This policy does not establish full stable/preview parity.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "2026-10-16"
+    },
+    {
+      "id": "lobby-written-specification-boundaries",
+      "status": "policy_resolved",
+      "surface": "REST v10 / Lobby",
+      "description": "Preview authorization permits bot tokens on some user lobby actions where the written reference explicitly requires Bearer. Preview bulk schema permits a null root whereas the written reference requires a 1-25 member array. Preview linked-channel shapes are narrower than the written Channel object.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/lobby.md",
+          "section": "Authorization, bulk member updates and Lobby Structure",
+          "revision": "unknown",
+          "sha256": "aeae0e3aa11973d513f387422093752a755a9f492a682b50daf9ac3154e9c4a3"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi_preview.json",
+          "section": "Lobby routes, BulkLobbyMemberRequest and linked-channel schemas",
+          "revision": "unknown",
+          "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9"
+        }
+      ],
+      "impact": "Blind preview adoption widens user authorization, admits invalid null bulk input or discards written linked-channel fields.",
+      "interimPolicy": "Use written Bearer authorization for create/join, leave, linking, user messages and self invites; bot authorization for backend CRUD/members/moderation/user invites. Bulk requires a nonnull unique member array of 1-25 entries. Project linked_channel through the existing Channel projection. No unknown Social SDK writable message flag allowlist is invented; server validation remains authoritative.",
+      "requiredResolution": "Recheck current official contracts when preview and written references converge. No native Social SDK or undocumented protocol parity follows from this policy.",
       "verifiedAt": "2026-10-16",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",

@@ -10,7 +10,7 @@ Phase 5H implements **28 current written REST operations** in API **v10**:
 **2026-10-16**. Current fingerprints are independent of historical discovery pins.
 No dependencies or runtime products are added. HTTP ingress/signature verification,
 interaction routing and durable acknowledgement are Phase 8; voice networking,
-media and devices are separate work. Batches 5J remain pending.
+media and devices are separate work. Phase 5J adds [lobbies and identity profiles](SocialGame.md).
 
 ## Webhook ownership and execution
 

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-16",
+  "sources": [
+    {
+      "name": "lobby",
+      "url": "https://docs.discord.com/developers/resources/lobby.md",
+      "sha256": "aeae0e3aa11973d513f387422093752a755a9f492a682b50daf9ac3154e9c4a3",
+      "bytes": 19256,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Written references control conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "application-identity-profile",
+      "url": "https://docs.discord.com/developers/resources/application-identity-profile.md",
+      "sha256": "e49fc4ab7fb193db299bd8ee30e95d95cb26b39bf514183838d35b20f4c530df",
+      "bytes": 18701,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Written references control conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Written references control conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Written references control conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "rate-limits",
+      "url": "https://docs.discord.com/developers/topics/rate-limits.md",
+      "sha256": "2dc2df4cc03734b8904dd2f5ec33a5a0f139d742b40be5544ba4f338f258c622",
+      "bytes": 8815,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Written references control conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "official-openapi",
+      "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi.json",
+      "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a",
+      "bytes": 1193084,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Written references control conflicts; full upstream content is not redistributed."
+    },
+    {
+      "name": "official-openapi-preview",
+      "url": "https://raw.githubusercontent.com/discord/discord-api-spec/main/specs/openapi_preview.json",
+      "sha256": "271baba37496876fc603f951ceeb2895de6290102d7d10642d69ec869b4283c9",
+      "bytes": 1193721,
+      "verifiedOn": "2026-10-16",
+      "revision": "unknown",
+      "purpose": "Current semantic verification separate from historical discovery pins. Written references control conflicts; full upstream content is not redistributed."
+    }
+  ]
+}

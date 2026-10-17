@@ -28,7 +28,9 @@ without adding dependencies or command-routing targets. Part 5H adds
 path-token scopes. Part 5I adds [monetization contracts](Monetization.md), complete
 written SKU/Entitlement/Subscription fields, premium interaction data and finite
 traversal in Models/HTTP. Subscription lifecycle state is separate from entitlement
-decisions; broader Commerce products remain planned.
+decisions; broader Commerce products remain planned. Part 5J adds
+[lobbies and application identity profiles](SocialGame.md), bounded member bulk
+workflows and full-replacement profile statistics in the same products.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations

@@ -39,7 +39,8 @@ Part 5D [audit logs and Auto Moderation](Moderation.md), and Part 5E
 [invites, templates, scheduled events and stages](DiscoveryEvents.md), and Part 5G
 [applications, users, linked roles and commands](ApplicationsUsers.md), and Part 5H
 [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md), and Part 5I
-[SKUs, entitlements and subscriptions](Monetization.md);
+[SKUs, entitlements and subscriptions](Monetization.md), and Part 5J
+[lobbies and application identity profiles](SocialGame.md);
 these initial descriptors do not imply full resource-family parity.
 
 `AssetClient` accepts HTTPS destinations without credential/header customization.

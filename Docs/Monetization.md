@@ -118,4 +118,4 @@ and finite traversal failure paths. The [dated support record](Parity/changes/20
 links chronology and migration; the [execution plan](../.air/plans/phase-5i-execution.plan.md)
 records executed checks. Local scripted evidence does not qualify live Discord,
 other hosts/devices, distributed storage, sustained capacity or early-access Commerce.
-Batch 5J and later catalog/event/platform work remain open.
+Phase 5J adds [lobbies and identity profiles](SocialGame.md); later catalog/event/platform work remains open.

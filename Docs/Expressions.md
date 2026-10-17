@@ -12,7 +12,7 @@ ten Emoji, eight Sticker and seven Soundboard operations. Contracts were verifie
 [change log](https://docs.discord.com/developers/change-log). Current hashes are
 recorded separately from original discovery pins. No product or dependency was added.
 Phase 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md).
-Batches 5J and expression Gateway event catalogs remain pending.
+Phase 5J adds [lobbies and identity profiles](SocialGame.md); expression Gateway event catalogs remain pending.
 Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordModels` and `DiscordHTTP` and inject the existing bounded HTTP

@@ -28,7 +28,9 @@ Part 5H adds webhooks, interaction callbacks/original/follow-up REST and voice s
 operations with typed path-token scopes; see `Docs/WebhooksInteractionsVoice.md`.
 Part 5I adds SKUs, entitlements, subscriptions, premium interaction data and bounded
 monetization traversal; see `Docs/Monetization.md`.
-Part 5J and other resource-family completion remain pending.
+Part 5J adds lobbies/members/messages, linked-channel invites and application identity
+profiles with bounded bulk workflows and full-replacement stats; see `Docs/SocialGame.md`.
+Event catalogs, native Social SDK and other resource-family completion remain separate.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

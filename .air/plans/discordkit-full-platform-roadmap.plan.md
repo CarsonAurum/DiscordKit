@@ -714,6 +714,13 @@ See [monetization contracts](../../Docs/Monetization.md) and
 [execution evidence](phase-5i-execution.plan.md). Broader Commerce, Gateway event
 catalogs, 5J and platform/live/distributed/soak qualification remain separate.
 
+**5J implementation update, 2026-10-16:** All 16 current written Lobby and five
+Application Identity/Profile operations have typed Models/HTTP APIs, owned field
+contracts, bot/Bearer separation, bounded correlated member bulk workflows and
+full-replacement statistics. See [social/game backend contracts](../../Docs/SocialGame.md)
+and [execution evidence](phase-5j-execution.plan.md). Native Social SDK, event
+catalogs and platform/live/distributed/soak qualification remain separate.
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |

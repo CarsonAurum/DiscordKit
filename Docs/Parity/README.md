@@ -29,6 +29,8 @@ Phase 5H adds all 28 [webhook, interaction-response and voice-control operations
 with typed path credentials and independent IP-global admission.
 Phase 5I adds all eight written [SKU, entitlement and subscription operations](../Monetization.md),
 complete owned resource fields, typed premium interaction entitlements and finite lazy traversal.
+Phase 5J adds all 21 written [lobby and identity/profile operations](../SocialGame.md),
+bounded correlated member bulk plans and full-replacement game-stat requests.
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
@@ -48,7 +50,7 @@ measurable; discovery records and unavailable-capability stubs do not count as s
 - Resource-specific current-source records, including `moderation-current-sources.json` and
   `expression-current-sources.json`, `discovery-event-current-sources.json`,
   `application-user-current-sources.json`, `webhook-voice-interaction-current-sources.json`
-  and `monetization-current-sources.json`,
+  `monetization-current-sources.json` and `social-game-current-sources.json`,
   retain current official verification hashes separately from original discovery pins.
 - `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
 - `history.json` is append-only support history; `changes/` contains human-readable entries.

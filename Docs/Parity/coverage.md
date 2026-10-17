@@ -176,3 +176,20 @@ validation and local measurements. No live Discord, private OAuth eligibility,
 Social Commerce checkout/fulfillment, event dispatch, other-host/device, distributed
 storage or sustained capacity qualification follows from these scripted tests.
 Batch 5J and later event/catalog/platform gates remain open.
+
+## Part 5J social/game backend update (2026-10-16)
+
+The [lobby and identity/profile catalog](../SocialGame.md) adds all 21 written
+operations, including the distinct link/unlink contracts sharing one route. Owned
+fields, additional-name snapshots, bot/Bearer separation, targeted invites,
+moderation metadata and full-replacement statistics are explicit. Bounded sequential
+member bulk plans retain correlation, silent upsert omissions and completed progress;
+caller-snapshot reconciliation avoids unchanged writes without hidden reads.
+
+The [dated record](changes/2026-10-16-social-game.md) records current source hashes,
+chronology and written/specification precedence. The
+[execution record](../../.air/plans/phase-5j-execution.plan.md) records final checks.
+This completes the named 5A–5J written REST batches under their documented
+compatibility limits; it does not establish complete Discord parity, every
+referenced family projection, native Social SDK/OAuth flows, event dispatch,
+production eligibility, live Discord, other-host/device, distributed or soak qualification.
