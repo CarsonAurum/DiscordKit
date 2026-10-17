@@ -240,3 +240,14 @@ See [contracts](../Interactions.md), [dated record](changes/2026-10-17-interacti
 and [execution evidence](../../.air/plans/phase-8-execution.plan.md). Current source
 hashes are separate from unchanged historical pins. Live Discord/rendering, durable
 fleet authorities, other-host/device and sustained capacity remain open gates.
+
+## Part 9 OAuth/game/commerce update (2026-10-17)
+
+Independent OAuth, GameServices and Commerce products add explicit consent/PKCE,
+installation, bounded refresh/storage ownership, public provisional/publisher backend
+operations and authoritative entitlement verification. Public-client native-only
+provisional creation/post-create naming/unmerge and unpublished Social Commerce
+catalog/pricing/gifting/wishlist/fulfillment remain blocked and excluded from support.
+The [OAuth guide](../OAuth.md), [service inventory](../Phase9ServiceContracts.md) and
+[execution record](../../.air/plans/phase-9-execution.plan.md) record the exact tests,
+commands and remaining live/browser/storage/approval/platform qualification limits.

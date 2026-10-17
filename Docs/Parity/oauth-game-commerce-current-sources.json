@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-17",
+  "sources": [
+    {
+      "name": "topics/oauth2",
+      "url": "https://docs.discord.com/developers/topics/oauth2.md",
+      "sha256": "d2eb4d4f3e04bd2ee2ce1dfe5a720a021c934347cb5e03a77f8074b5c6901c81",
+      "bytes": 32494,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/publisher-level-account-linking",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/publisher-level-account-linking.md",
+      "sha256": "c414b6e7ee54c2a7d39042bcec29a73b2b2306a6d3dff55ea0afbdd8337c242f",
+      "bytes": 22989,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "social-commerce/overview",
+      "url": "https://docs.discord.com/developers/social-commerce/overview.md",
+      "sha256": "2e0eb4ad222f5d1a8245d89fc6ab29069a435d856ca4d4ae44e7105526325183",
+      "bytes": 4389,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/provisional-accounts/overview",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/overview.md",
+      "sha256": "680c57adbc8035d20e68e41091fad753876cdab2449bc7fb9456579bb7cffcf0",
+      "bytes": 16618,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/provisional-accounts/bot-token-endpoint",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/bot-token-endpoint.md",
+      "sha256": "b421df3d82541444a7fb06d424281924003703cab21a781af700d7bae7096973",
+      "bytes": 8914,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/provisional-accounts/external-credentials-exchange",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/external-credentials-exchange.md",
+      "sha256": "cd4b2c291c20a836afa45d37f4c4ba8e720c0abd610cf9daa1dcfa2f53bbba27",
+      "bytes": 7444,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/provisional-accounts/public-client",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/public-client.md",
+      "sha256": "ff93409d35b736f1ee1feb26298ad57ba2701ab9c5da6b9674b2e0c29853ef74",
+      "bytes": 7976,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/provisional-accounts/managing-accounts",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/managing-accounts.md",
+      "sha256": "5015b111331c6f42ba5dc6e5fa65b3fe2b86cdbfb44ebbbbb2ae2906c6e8094a",
+      "bytes": 9126,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/provisional-accounts/merging-accounts",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/merging-accounts.md",
+      "sha256": "656290156ec2c0bf0c1fd8c2318635c33c7ddf409e1872a32bc2c7cb7f6ed7cb",
+      "bytes": 25171,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/provisional-accounts/unmerging-accounts",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/unmerging-accounts.md",
+      "sha256": "c22c718470474c76ac8d771768b848bc3c21489f1156854bb997a446b909f446",
+      "bytes": 16287,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/account-linking-with-discord",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-with-discord.md",
+      "sha256": "e040ea7ec41c0320ca01dacc6131c909f4338cad07713fb50beeec7016899082",
+      "bytes": 27743,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/account-linking-on-mobile",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-mobile.md",
+      "sha256": "29c21f0b8c44010d43540180706d86c092d4e2e9a2466ffb949162c7e517c311",
+      "bytes": 25438,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/account-linking-on-consoles",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-consoles.md",
+      "sha256": "3457539791b6be47b00a4932d6476e5997b87dfc15a2b86fa350a716bba76cec",
+      "bytes": 15419,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/development-guides/linked-channels",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/linked-channels.md",
+      "sha256": "558cb2929e263aaa3eae16f60e3d9f06d7cce7fe9c13e5bd192273367c72614d",
+      "bytes": 18737,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "social-layer/game-stats-widgets/sending-game-data",
+      "url": "https://docs.discord.com/developers/social-layer/game-stats-widgets/sending-game-data.md",
+      "sha256": "16de229224d4f8f78112deed6e3a50632f0f1f876d814b7f5fa463124b3fdbbe",
+      "bytes": 6577,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "resources/entitlement",
+      "url": "https://docs.discord.com/developers/resources/entitlement.md",
+      "sha256": "fd0b326159147c5ffdd70f56b38d52e30224c1052c4a611296fe5da9c5ee9f44",
+      "bytes": 7483,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "resources/application-identity-profile",
+      "url": "https://docs.discord.com/developers/resources/application-identity-profile.md",
+      "sha256": "e49fc4ab7fb193db299bd8ee30e95d95cb26b39bf514183838d35b20f4c530df",
+      "bytes": 18701,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "resources/lobby",
+      "url": "https://docs.discord.com/developers/resources/lobby.md",
+      "sha256": "aeae0e3aa11973d513f387422093752a755a9f492a682b50daf9ac3154e9c4a3",
+      "bytes": 19256,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "monetization/implementing-one-time-purchases",
+      "url": "https://docs.discord.com/developers/monetization/implementing-one-time-purchases.md",
+      "sha256": "c4c1cf6046fb6f26a7910fd045632db4cd0e8b363c0d2b09413d030677034481",
+      "bytes": 8628,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "monetization/implementing-iap-for-activities.md",
+      "url": "https://docs.discord.com/developers/monetization/implementing-iap-for-activities.md",
+      "sha256": "9b388c8daeb7a1c0639c5bf1b787fa2866a4db0053d6d0de8f927fae1b5eebc0",
+      "bytes": 11688,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "discord-social-sdk/core-concepts/oauth2-scopes.md",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/core-concepts/oauth2-scopes.md",
+      "sha256": "9efba23a043024ee7392b7631e8fc2cfb93e711c26e55440df1abadbe4a491ff",
+      "bytes": 6849,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    },
+    {
+      "name": "oauth-server-metadata",
+      "url": "https://discord.com/.well-known/oauth-authorization-server",
+      "sha256": "d8ced2fd12936a4703e146f1637be018de3b78fa867a28be636c8ad7fc11a461",
+      "bytes": 872,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+    }
+  ]
+}

@@ -182,6 +182,36 @@
       "id": "developers/link-previews/overview",
       "revision": "37148620d2324292b76047541d5f8331f81ea77a",
       "sha256": "145d6784efb22eedf28bcc4035390c82d6a9dd39b4a11591e71168bb32a2b341"
+    },
+    {
+      "id": "developers/topics/oauth2",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "c1ad4fe2ee08895034185dd5b52c93f775b6745c634aae9e0218455affc5c57b"
+    },
+    {
+      "id": "developers/discord-social-sdk/development-guides/provisional-accounts/bot-token-endpoint",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "0f77004a2d220c5df17617645017b4331a034eeb1354af97f65e940cced84a02"
+    },
+    {
+      "id": "developers/discord-social-sdk/development-guides/provisional-accounts/external-credentials-exchange",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "10143a625a6f30b32999232dcb77c7480643f9b86d66f307d4a530a7b4522b46"
+    },
+    {
+      "id": "developers/discord-social-sdk/development-guides/publisher-level-account-linking",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "e6a38c1aea9ba0ac74b2a661b78b6461346d5e6adc0d5df71e0a08f82012201d"
+    },
+    {
+      "id": "developers/discord-social-sdk/development-guides/provisional-accounts/unmerging-accounts",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "fa151ba94cdb6a6ddf541a7312249f2aee5fc6b8d320fb8e074ac62329cb478d"
+    },
+    {
+      "id": "developers/discord-social-sdk/development-guides/provisional-accounts/merging-accounts",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "bf4a933142aa3526510e679a2c4a69da9d4d6c08d7c6e2e60b6e40ef61c0193d"
     }
   ],
   "definitions": [
@@ -39795,7 +39825,7 @@
       ],
       "notes": "API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
       "manual": {
-        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group → subcommand → leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in ±(2^53-1), numbers in ±2^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
+        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group \u2192 subcommand \u2192 leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in \u00b1(2^53-1), numbers in \u00b12^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
         "fields": [
           {
             "wireName": "type",
@@ -68926,6 +68956,263 @@
       "manual": {
         "behavior": "Safe common Open Graph fallback metadata for title, description, page/image URL, site name, RGB color and optional large-image Twitter marker. No HTML parser, video/oEmbed or JSON-LD family; their unsupported inventory classifications remain. Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity."
       }
+    },
+    {
+      "id": "manual.9.AuthorizationFlow",
+      "kind": "manual",
+      "name": "AuthorizationFlow",
+      "sourceID": "developers/topics/oauth2",
+      "upstreamIDs": [
+        "d-ed07b8527e8632d0a7de705f",
+        "d-b5c273638631812f6d82dbc9",
+        "d-7e0402cb653150467698cc83",
+        "d-bb9aee7f825d4c7da70b91ae",
+        "d-5765829c66bc94fabf72a9d2"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.AuthorizationFlow",
+        "symbol.9.OAuthInstallationURL"
+      ],
+      "evidenceIDs": [
+        "evidence.9.AuthorizationFlowTests.codeAuthorizationAndSingleUse",
+        "evidence.9.AuthorizationFlowTests.implicitCompatibility",
+        "evidence.9.OAuthBrowserAdapterTests.browserCallbackUsesFlowValidation",
+        "evidence.9.OAuthInstallationURLTests.guildInstallation"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "One-use exact redirect/state/issuer ownership, generated S256/state, guild/user context and permissions URLs, incoming webhook scopes, explicit legacy implicit compatibility. Scope approvals advisory. Authorization-server metadata explicitly supports S256/issuer and none token/revocation authentication; Public Client portal configuration and live qualification remain required. Callbackless installation URLs preserve guild/user context and permission hints; native public client provisional flows remain blocked. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.TokenGrants",
+      "kind": "manual",
+      "name": "TokenGrants",
+      "sourceID": "developers/topics/oauth2",
+      "upstreamIDs": [
+        "d-7e8394c75c4fdc0f2bfb43b2"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.TokenGrants"
+      ],
+      "evidenceIDs": [
+        "evidence.9.OAuthClientTests.codeExchangeFormsAndClientMatching",
+        "evidence.9.OAuthClientTests.facadeExecutesBoundedGrantSequence",
+        "evidence.9.OAuthClientTests.tokenResponseVariants"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Bounded form code/refresh/client-credential grants, typed redacted tokens/advanced bot guild/incoming webhook responses and unsafe replay semantics. Full generic device authorization acquisition/polling and native-only provisional grants remain separate. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.TokenRevocation",
+      "kind": "manual",
+      "name": "TokenRevocation",
+      "sourceID": "developers/topics/oauth2",
+      "upstreamIDs": [
+        "d-87c6060660b18a1c7612c244"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.TokenRevocation"
+      ],
+      "evidenceIDs": [
+        "evidence.9.OAuthClientTests.refreshCredentialsAndRevocationDescriptors",
+        "evidence.9.TokenCoordinatorTests.revokeFencesLateRefreshAndCascades"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Access/refresh token hints, fixed-origin bounded form authentication, empty/object acknowledgement compatibility. Injected atomic storage with generation fences and publisher cascades; explicit local invalidation; no distributed refresh lease implementation. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.AuthorizationInformation",
+      "kind": "manual",
+      "name": "AuthorizationInformation",
+      "sourceID": "developers/topics/oauth2",
+      "upstreamIDs": [
+        "d-72790c9e705940948e65e7c3"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.AuthorizationInformation"
+      ],
+      "evidenceIDs": [
+        "evidence.9.OAuthClientTests.currentAuthorizationAndApplicationDescriptors"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Bearer-only safe uncached authorization information, partial application/user projection and exact expiry/scopes; absent user preserved. No implicit user hydration. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.BotApplicationInformation",
+      "kind": "manual",
+      "name": "BotApplicationInformation",
+      "sourceID": "developers/topics/oauth2",
+      "upstreamIDs": [
+        "d-66680852b2a9f32d48e1fd8d"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.BotApplicationInformation"
+      ],
+      "evidenceIDs": [
+        "evidence.9.OAuthClientTests.currentAuthorizationAndApplicationDescriptors"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Bot-only safe current application compatibility route using the already implemented Application model; no new application provisioning. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.ProvisionalBot",
+      "kind": "manual",
+      "name": "ProvisionalBot",
+      "sourceID": "developers/discord-social-sdk/development-guides/provisional-accounts/bot-token-endpoint",
+      "upstreamIDs": [
+        "d-bbe6a533a28add67a49803c9"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.ProvisionalBot"
+      ],
+      "evidenceIDs": [
+        "evidence.9.PartnerAccountTests.botProvisioning",
+        "evidence.9.PartnerIntegrationTests.success",
+        "evidence.9.PartnerIntegrationTests.failure",
+        "evidence.9.PartnerIntegrationTests.cancellation"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Backend bot-token create/reauthenticate limited provisional identity and optional preferred display name; explicit external account identity and seven-day token lifetime. This does not create a full Discord account. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.ProvisionalExternal",
+      "kind": "manual",
+      "name": "ProvisionalExternal",
+      "sourceID": "developers/discord-social-sdk/development-guides/provisional-accounts/external-credentials-exchange",
+      "upstreamIDs": [
+        "d-3e669ee29859c1d3013528f6"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.ProvisionalExternal"
+      ],
+      "evidenceIDs": [
+        "evidence.9.PartnerAccountTests.externalPublisherAndUnmergeContracts",
+        "evidence.9.PartnerIntegrationTests.success",
+        "evidence.9.PartnerIntegrationTests.failure",
+        "evidence.9.PartnerIntegrationTests.cancellation"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Confidential JSON external-provider proof exchange; provider/portal configuration remains required. Public-client/native creation and post-create naming remain blocked. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.PublisherChild",
+      "kind": "manual",
+      "name": "PublisherChild",
+      "sourceID": "developers/discord-social-sdk/development-guides/publisher-level-account-linking",
+      "upstreamIDs": [
+        "d-5620e9c481146c80c9a4adfa"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-17",
+      "announcementDate": "2026-02-18",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.PublisherChild"
+      ],
+      "evidenceIDs": [
+        "evidence.9.PartnerAccountTests.externalPublisherAndUnmergeContracts",
+        "evidence.9.PartnerIntegrationTests.success",
+        "evidence.9.PartnerIntegrationTests.failure",
+        "evidence.9.PartnerIntegrationTests.cancellation"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Approved publisher parent-token to child-audience JSON exchange. Child tokens have no refresh token; original expiry is capped to parent issuance lifetime. Parent refresh preserves existing child expiry, root revocation cascades. Discord-managed destructive hierarchy migration is never automated. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.AccountUnmerge",
+      "kind": "manual",
+      "name": "AccountUnmerge",
+      "sourceID": "developers/discord-social-sdk/development-guides/provisional-accounts/unmerging-accounts",
+      "upstreamIDs": [
+        "d-923eeadf44cd6ffe8134a624",
+        "d-5c935dac8fb6e5f7e06118af"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.AccountUnmerge"
+      ],
+      "evidenceIDs": [
+        "evidence.9.PartnerAccountTests.externalPublisherAndUnmergeContracts",
+        "evidence.9.PartnerIntegrationTests.success",
+        "evidence.9.PartnerIntegrationTests.failure"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Explicit bot/confidential destructive unmerge. Guide lacks exact success status/schema, so any successful 2xx retains optional bounded JSON acknowledgement without claiming a new token, user or completed asynchronous migration. Public native unmerge remains blocked. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.9.AccountMerge",
+      "kind": "manual",
+      "name": "AccountMerge",
+      "sourceID": "developers/discord-social-sdk/development-guides/provisional-accounts/merging-accounts",
+      "upstreamIDs": [
+        "d-6ea12e712ec59298e70c6736",
+        "d-c52547c02c304beccb447d25",
+        "d-252d977e4bfebd724759a279"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.9.AccountMerge"
+      ],
+      "evidenceIDs": [
+        "evidence.9.PartnerAccountTests.deviceMerge",
+        "evidence.9.PartnerIntegrationTests.success",
+        "evidence.9.OAuthClientTests.codeExchangeFormsAndClientMatching"
+      ],
+      "notes": "Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.",
+      "manual": {
+        "behavior": "Explicit code or confidential device-code exchange with paired provider proof; migration asynchronous and secret-redacted. Host owns device authorization acquisition; no native SDK wrapper, public native merge or automatic account migration. Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity."
+      }
     }
   ],
   "symbols": [
@@ -88268,6 +88555,61 @@
       "id": "symbol.8.LinkPreviewMetadata",
       "path": "Sources/DiscordModels/ComponentEmbed.swift",
       "declaration": "public struct LinkPreviewMetadata: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.9.AuthorizationFlow",
+      "path": "Sources/DiscordOAuth/AuthorizationFlow.swift",
+      "declaration": "public actor OAuthAuthorizationFlow: CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.9.TokenGrants",
+      "path": "Sources/DiscordOAuth/OAuthClient.swift",
+      "declaration": "public enum OAuthEndpoints {"
+    },
+    {
+      "id": "symbol.9.TokenRevocation",
+      "path": "Sources/DiscordOAuth/OAuthClient.swift",
+      "declaration": "public enum OAuthEndpoints {"
+    },
+    {
+      "id": "symbol.9.AuthorizationInformation",
+      "path": "Sources/DiscordOAuth/OAuthClient.swift",
+      "declaration": "public struct OAuthAuthorizationInformation: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.9.BotApplicationInformation",
+      "path": "Sources/DiscordOAuth/OAuthClient.swift",
+      "declaration": "public enum OAuthEndpoints {"
+    },
+    {
+      "id": "symbol.9.ProvisionalBot",
+      "path": "Sources/DiscordGameServices/PartnerAccounts.swift",
+      "declaration": "public enum PartnerAccountEndpoints {"
+    },
+    {
+      "id": "symbol.9.ProvisionalExternal",
+      "path": "Sources/DiscordGameServices/PartnerAccounts.swift",
+      "declaration": "public enum PartnerAccountEndpoints {"
+    },
+    {
+      "id": "symbol.9.PublisherChild",
+      "path": "Sources/DiscordGameServices/PartnerAccounts.swift",
+      "declaration": "public enum PartnerAccountEndpoints {"
+    },
+    {
+      "id": "symbol.9.AccountUnmerge",
+      "path": "Sources/DiscordGameServices/PartnerAccounts.swift",
+      "declaration": "public enum PartnerAccountEndpoints {"
+    },
+    {
+      "id": "symbol.9.AccountMerge",
+      "path": "Sources/DiscordGameServices/PartnerAccounts.swift",
+      "declaration": "public enum PartnerAccountEndpoints {"
+    },
+    {
+      "id": "symbol.9.OAuthInstallationURL",
+      "path": "Sources/DiscordOAuth/OAuthInstallationURL.swift",
+      "declaration": "public struct OAuthInstallationURL: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
     }
   ],
   "evidence": [
@@ -92555,6 +92897,86 @@
       "id": "evidence.8.ComponentEmbedTests.metadataFallbackAndEscaping",
       "path": "Tests/DiscordModelsTests/ComponentEmbedTests.swift",
       "anchor": "metadataFallbackAndEscaping"
+    },
+    {
+      "id": "evidence.9.AuthorizationFlowTests.codeAuthorizationAndSingleUse",
+      "path": "Tests/DiscordOAuthTests/AuthorizationFlowTests.swift",
+      "anchor": "codeAuthorizationAndSingleUse"
+    },
+    {
+      "id": "evidence.9.AuthorizationFlowTests.implicitCompatibility",
+      "path": "Tests/DiscordOAuthTests/AuthorizationFlowTests.swift",
+      "anchor": "implicitCompatibility"
+    },
+    {
+      "id": "evidence.9.OAuthBrowserAdapterTests.browserCallbackUsesFlowValidation",
+      "path": "Tests/DiscordOAuthTests/OAuthBrowserAdapterTests.swift",
+      "anchor": "browserCallbackUsesFlowValidation"
+    },
+    {
+      "id": "evidence.9.OAuthClientTests.codeExchangeFormsAndClientMatching",
+      "path": "Tests/DiscordOAuthTests/OAuthClientTests.swift",
+      "anchor": "codeExchangeFormsAndClientMatching"
+    },
+    {
+      "id": "evidence.9.OAuthClientTests.facadeExecutesBoundedGrantSequence",
+      "path": "Tests/DiscordOAuthTests/OAuthClientTests.swift",
+      "anchor": "facadeExecutesBoundedGrantSequence"
+    },
+    {
+      "id": "evidence.9.OAuthClientTests.tokenResponseVariants",
+      "path": "Tests/DiscordOAuthTests/OAuthClientTests.swift",
+      "anchor": "tokenResponseVariants"
+    },
+    {
+      "id": "evidence.9.OAuthClientTests.refreshCredentialsAndRevocationDescriptors",
+      "path": "Tests/DiscordOAuthTests/OAuthClientTests.swift",
+      "anchor": "refreshCredentialsAndRevocationDescriptors"
+    },
+    {
+      "id": "evidence.9.TokenCoordinatorTests.revokeFencesLateRefreshAndCascades",
+      "path": "Tests/DiscordOAuthTests/TokenCoordinatorTests.swift",
+      "anchor": "revokeFencesLateRefreshAndCascades"
+    },
+    {
+      "id": "evidence.9.OAuthClientTests.currentAuthorizationAndApplicationDescriptors",
+      "path": "Tests/DiscordOAuthTests/OAuthClientTests.swift",
+      "anchor": "currentAuthorizationAndApplicationDescriptors"
+    },
+    {
+      "id": "evidence.9.PartnerAccountTests.botProvisioning",
+      "path": "Tests/DiscordGameServicesTests/PartnerAccountTests.swift",
+      "anchor": "botProvisioning"
+    },
+    {
+      "id": "evidence.9.PartnerIntegrationTests.success",
+      "path": "Tests/DiscordGameServicesTests/PartnerIntegrationTests.swift",
+      "anchor": "success"
+    },
+    {
+      "id": "evidence.9.PartnerIntegrationTests.failure",
+      "path": "Tests/DiscordGameServicesTests/PartnerIntegrationTests.swift",
+      "anchor": "failure"
+    },
+    {
+      "id": "evidence.9.PartnerIntegrationTests.cancellation",
+      "path": "Tests/DiscordGameServicesTests/PartnerIntegrationTests.swift",
+      "anchor": "cancellation"
+    },
+    {
+      "id": "evidence.9.PartnerAccountTests.externalPublisherAndUnmergeContracts",
+      "path": "Tests/DiscordGameServicesTests/PartnerAccountTests.swift",
+      "anchor": "externalPublisherAndUnmergeContracts"
+    },
+    {
+      "id": "evidence.9.PartnerAccountTests.deviceMerge",
+      "path": "Tests/DiscordGameServicesTests/PartnerAccountTests.swift",
+      "anchor": "deviceMerge"
+    },
+    {
+      "id": "evidence.9.OAuthInstallationURLTests.guildInstallation",
+      "path": "Tests/DiscordOAuthTests/OAuthInstallationURLTests.swift",
+      "anchor": "guildInstallation"
     }
   ]
 }

@@ -39,6 +39,10 @@ Phase 7 adds the [consumer client and optional scoped state](../Client.md), boun
 broadcast/handlers and permission resolution. This local composition adds no new
 Discord endpoints or dispatch names and does not inflate discovery support counts;
 see [consumer runtime history](changes/2026-10-16-consumer-runtime.md).
+Phase 9 adds [OAuth/installation and token ownership](../OAuth.md),
+[public game account and entitlement workflows](../Phase9ServiceContracts.md),
+and current verification hashes with explicit native/Commerce blockers; see
+[Phase 9 history](changes/2026-10-17-oauth-game-commerce.md).
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the

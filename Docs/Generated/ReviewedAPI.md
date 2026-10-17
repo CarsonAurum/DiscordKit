@@ -7431,6 +7431,86 @@ Status: partial. Support since: 2026-10-17. Source: developers/events/webhook-ev
 
 Evidence: evidence.8.WebhookEventModelTests.everyWrittenEvent, evidence.8.WebhookEventProcessorTests.ambiguousDurableCommitRetry, evidence.8.WebhookEventProcessorTests.signedPingAndDuplicateRetry.
 
+## AccountMerge
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/discord-social-sdk/development-guides/provisional-accounts/merging-accounts. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.OAuthClientTests.codeExchangeFormsAndClientMatching, evidence.9.PartnerAccountTests.deviceMerge, evidence.9.PartnerIntegrationTests.success.
+
+## AccountUnmerge
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/discord-social-sdk/development-guides/provisional-accounts/unmerging-accounts. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.PartnerAccountTests.externalPublisherAndUnmergeContracts, evidence.9.PartnerIntegrationTests.failure, evidence.9.PartnerIntegrationTests.success.
+
+## AuthorizationFlow
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/oauth2. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.AuthorizationFlowTests.codeAuthorizationAndSingleUse, evidence.9.AuthorizationFlowTests.implicitCompatibility, evidence.9.OAuthBrowserAdapterTests.browserCallbackUsesFlowValidation, evidence.9.OAuthInstallationURLTests.guildInstallation.
+
+## AuthorizationInformation
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/oauth2. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.OAuthClientTests.currentAuthorizationAndApplicationDescriptors.
+
+## BotApplicationInformation
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: supported. Support since: 2026-10-17. Source: developers/topics/oauth2. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.OAuthClientTests.currentAuthorizationAndApplicationDescriptors.
+
+## ProvisionalBot
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: supported. Support since: 2026-10-17. Source: developers/discord-social-sdk/development-guides/provisional-accounts/bot-token-endpoint. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.PartnerAccountTests.botProvisioning, evidence.9.PartnerIntegrationTests.cancellation, evidence.9.PartnerIntegrationTests.failure, evidence.9.PartnerIntegrationTests.success.
+
+## ProvisionalExternal
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: supported. Support since: 2026-10-17. Source: developers/discord-social-sdk/development-guides/provisional-accounts/external-credentials-exchange. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.PartnerAccountTests.externalPublisherAndUnmergeContracts, evidence.9.PartnerIntegrationTests.cancellation, evidence.9.PartnerIntegrationTests.failure, evidence.9.PartnerIntegrationTests.success.
+
+## PublisherChild
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: supported. Support since: 2026-10-17. Source: developers/discord-social-sdk/development-guides/publisher-level-account-linking. Upstream announcement: 2026-02-18; effective: unknown.
+
+Evidence: evidence.9.PartnerAccountTests.externalPublisherAndUnmergeContracts, evidence.9.PartnerIntegrationTests.cancellation, evidence.9.PartnerIntegrationTests.failure, evidence.9.PartnerIntegrationTests.success.
+
+## TokenGrants
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: partial. Support since: 2026-10-17. Source: developers/topics/oauth2. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.OAuthClientTests.codeExchangeFormsAndClientMatching, evidence.9.OAuthClientTests.facadeExecutesBoundedGrantSequence, evidence.9.OAuthClientTests.tokenResponseVariants.
+
+## TokenRevocation
+
+Verified/local support 2026-10-17. REST v10; browser OAuth unversioned. Current source hashes: Docs/Parity/oauth-game-commerce-current-sources.json. Historical pins preserved. Local deterministic evidence does not qualify live Discord, OS browser UI, secure distributed storage, approved publisher access or fleet capacity.
+
+Status: supported. Support since: 2026-10-17. Source: developers/topics/oauth2. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.9.OAuthClientTests.refreshCredentialsAndRevocationDescriptors, evidence.9.TokenCoordinatorTests.revokeFencesLateRefreshAndCascades.
+
 ## GatewayEndpoints.bot
 
 Handwritten GET /gateway/bot discovery remains mapped to reviewed API v10 provenance and executable evidence. Bot authentication, exact JSON parsing and in-flight-only coalescing preserve changing startup allowances. No generator owns Gateway lifecycle behavior.

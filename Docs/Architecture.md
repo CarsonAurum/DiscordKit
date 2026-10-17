@@ -43,6 +43,11 @@ in independent Interactions/Commands products. HTTP applications adopt neither G
 nor Client/Cache. Interactions selects Swift Crypto for signed requests and digests;
 HTTP itself keeps its existing dependency graph. Webhook-event admission requires an
 injected durable commit authority; display-only preview values remain in Models.
+Part 9 adds [OAuth](OAuth.md), [public game-account services and entitlement helpers](Phase9ServiceContracts.md)
+in independently adopted OAuth/GameServices/Commerce products. OAuth uses Swift Crypto
+for S256; the HTTP graph remains independent of OAuth and Crypto. Browser UI and
+secure transactional storage are injected. Native SDK-only and missing Commerce
+wire contracts remain blocked.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
@@ -76,6 +81,7 @@ flowchart TD
     DiscordInteractions --> SwiftCrypto[Swift Crypto]
     DiscordCommands --> DiscordInteractions
     DiscordOAuth --> DiscordHTTP
+    DiscordOAuth --> SwiftCrypto
     DiscordGameServices --> DiscordOAuth
     DiscordGameServices --> DiscordHTTP
     DiscordClient --> DiscordGateway
@@ -89,6 +95,9 @@ flowchart TD
     DiscordVoiceCrypto --> DiscordMLS
     DiscordKit --> DiscordClient
     DiscordKit --> DiscordCommands
+    DiscordKit --> DiscordOAuth
+    DiscordKit --> DiscordGameServices
+    DiscordKit --> DiscordCommerce
     VoiceProduct[Optional voice product] --> DiscordVoice
     DiscordRPC --> DiscordTransport
     DiscordCertifiedDevices --> DiscordRPC
@@ -118,6 +127,8 @@ normalize trusted interaction dispatches into the same context and response acto
 | Cache | Optional scoped projections, explicit coalesced refresh/freshness, sparse state, uncertainty and pure arbitrary-width permission resolution. Imports no Gateway/HTTP/Client. |
 | Interactions | Signed bounded HTTP ingress, shared HTTP/Gateway response ownership, independent initial admission and durable webhook-event admission hooks. Imports neither Gateway nor concrete adapters. |
 | Commands | Complete typed definitions, bounded exact routing and explicit canonical registration reconciliation. Imports neither Gateway nor Client. |
+| OAuth | Fixed-origin authorization/token contracts, injected browser UI and secure storage, bounded per-grant refresh, expiry and revocation lineage. No Gateway/Client/Cache dependency. |
+| GameServices/Commerce | Public account and publisher wire contracts, snapshot conveniences and backend entitlement authorization. Native SDK and unpublished storefront/fulfillment protocols remain blocked. |
 | Client/Kit | Supervised discovery/shard/ingestion composition, configuration, optional cache bridge, event access, diagnostics and typed services. |
 | Voice | Optional voice/media protocols; narrow Gateway control contracts rather than dependence on the facade. Crypto, MLS and codec work stays isolated. |
 | RPC/Activities/Social/Commerce | Distinct local, host, authentication and access contracts; missing wire definitions remain explicit blockers. |

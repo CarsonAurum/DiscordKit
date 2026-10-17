@@ -11,6 +11,13 @@ umbrella facade. Bits/Core/Transport, Models, HTTP and Foundation transport rema
 independent of Crypto. Its selected products and conditional native graph are recorded
 [below](#part-8-signed-ingress-addition).
 
+Part 9 additionally selects the existing Swift Crypto product in OAuth for RFC 7636
+S256. GameServices depends on OAuth; Commerce depends only on HTTP/Models/Core/Transport.
+The locked versions and native/transitive graph remain unchanged. The independent
+OAuthApp graph excludes Gateway, Cache, Client, Commands and Interactions. Browser
+presentation and encrypted transactional token storage remain application supplied;
+no native Social SDK or third-party storage dependency is introduced.
+
 The foundational targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
 explicit newer Apple availability; it does not raise the runtime product minima

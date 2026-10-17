@@ -31,6 +31,9 @@ let package = Package(
         .library(name: "DiscordClient", targets: ["DiscordClient"]),
         .library(name: "DiscordInteractions", targets: ["DiscordInteractions"]),
         .library(name: "DiscordCommands", targets: ["DiscordCommands"]),
+        .library(name: "DiscordOAuth", targets: ["DiscordOAuth"]),
+        .library(name: "DiscordGameServices", targets: ["DiscordGameServices"]),
+        .library(name: "DiscordCommerce", targets: ["DiscordCommerce"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.104.0"),
@@ -40,7 +43,7 @@ let package = Package(
     targets: [
         .target(
             name: "DiscordKit",
-            dependencies: ["DiscordCore", "DiscordClient", "DiscordGateway", "DiscordTransport", "DiscordCommands", "DiscordInteractions"],
+            dependencies: ["DiscordCore", "DiscordClient", "DiscordGateway", "DiscordTransport", "DiscordCommands", "DiscordInteractions", "DiscordOAuth", "DiscordGameServices", "DiscordCommerce"],
             swiftSettings: concurrencySettings,
         ),
         .target(name: "DiscordBits", swiftSettings: concurrencySettings),
@@ -53,6 +56,9 @@ let package = Package(
         .target(name: "DiscordClient", dependencies: ["DiscordCore", "DiscordModels", "DiscordHTTP", "DiscordGateway", "DiscordCache", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordInteractions", dependencies: ["DiscordCore", "DiscordModels", "DiscordHTTP", "DiscordTransport", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
         .target(name: "DiscordCommands", dependencies: ["DiscordInteractions", "DiscordHTTP", "DiscordModels", "DiscordCore"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordOAuth", dependencies: ["DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
+        .target(name: "DiscordGameServices", dependencies: ["DiscordOAuth", "DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordCommerce", dependencies: ["DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordFoundationTransport", dependencies: ["DiscordTransport"], swiftSettings: concurrencySettings),
         .target(
             name: "DiscordNIOTransport",
@@ -98,6 +104,9 @@ let package = Package(
         .testTarget(name: "DiscordClientTests", dependencies: ["DiscordClient", "DiscordCache", "DiscordGateway", "DiscordHTTP", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordInteractionsTests", dependencies: ["DiscordInteractions", "DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordCommandsTests", dependencies: ["DiscordCommands", "DiscordInteractions", "DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordOAuthTests", dependencies: ["DiscordOAuth", "DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordGameServicesTests", dependencies: ["DiscordGameServices", "DiscordOAuth", "DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordCommerceTests", dependencies: ["DiscordCommerce", "DiscordHTTP", "DiscordModels", "DiscordCore", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(
             name: "DiscordTransportTests",
             dependencies: ["DiscordTransport", "DiscordTestSupport"],

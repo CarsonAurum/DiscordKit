@@ -1,7 +1,11 @@
 # Platform support and qualification
 
 Updated **2026-10-17**. The initial HTTP execution and minimal sharded Gateway
-slices are implemented; OAuth flows, voice and desktop RPC remain later work.
+slices and portable OAuth flows are implemented; voice and desktop RPC remain later work.
+Phase 9 [OAuth](OAuth.md) and [public game/entitlement helpers](Phase9ServiceContracts.md)
+have local deterministic coverage. The injected browser adapter does not qualify OS
+authentication UI; secure distributed storage, approval-gated publisher access and
+Social Commerce contracts retain separate gates.
 
 Part 7 adds portable consumer/cache/event-delivery code with macOS-local deterministic
 tests and separate offline load/soak evidence; see [Client](Client.md). New product

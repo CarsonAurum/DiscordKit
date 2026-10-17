@@ -914,6 +914,53 @@
       ],
       "details": "changes/2026-10-17-interaction-runtime.md",
       "remainingGates": "../Interactions.md"
+    },
+    {
+      "id": "2026-10-17-oauth-game-commerce",
+      "recordedOn": "2026-10-17",
+      "upstreamVersions": {
+        "REST": "10",
+        "OAuthBrowser": "unversioned"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-17",
+      "localSupportDate": "2026-10-17",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "Typed REST bearer/profile/lobby/entitlement contracts without OAuth consent/token ownership or public account/publisher workflow products.",
+      "currentBehavior": "Independent OAuth/GameServices/Commerce products add state/issuer/S256/install URLs, bounded form grants/revocation, injected browser/CAS storage, refresh sharing and publisher lineage, public provisional/merge/unmerge/child exchange, profile/lobby conveniences and authoritative entitlement verification/consumption with injected Activity purchase hints. Native-only and Social Commerce schema/access blockers remain excluded.",
+      "affectedSymbols": [
+        "OAuthAuthorizationFlow",
+        "OAuthInstallationURL",
+        "OAuthBrowserAdapter",
+        "OAuthEndpoints",
+        "OAuthClient",
+        "OAuthTokenResponse",
+        "OAuthTokenCoordinator",
+        "OAuthTokenStorage",
+        "PartnerAccountEndpoints",
+        "GameServiceOperations",
+        "EntitlementRequirement",
+        "EntitlementVerification",
+        "ActivityPurchasing"
+      ],
+      "affectedPayloads": "API v10 form/JSON OAuth and partner token bodies, partial authorization information and unmerge acknowledgements; existing typed lobby/profile/entitlement payloads reused. Browser OAuth unversioned. Publisher guide initial release 2026-02-18; effective date unknown.",
+      "breakingChanges": [],
+      "migration": "Additive opt-in products; share application/rate/grant authorities and inject secure transactional storage/browser UI. Configure Public Client deliberately, keep confidential secrets backend-only. Invalidate local lineage after observed unmerge/deauthorization. No native SDK wrapper, startup migration, device polling, broader Commerce fulfillment or live/distributed qualification.",
+      "sources": [
+        "https://docs.discord.com/developers/topics/oauth2",
+        "https://discord.com/.well-known/oauth-authorization-server",
+        "https://docs.discord.com/developers/discord-social-sdk/development-guides/publisher-level-account-linking",
+        "https://docs.discord.com/developers/discord-social-sdk/development-guides/provisional-accounts/overview",
+        "https://docs.discord.com/developers/resources/entitlement",
+        "https://docs.discord.com/developers/monetization/implementing-iap-for-activities",
+        "https://docs.discord.com/developers/social-commerce/overview",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-17-oauth-game-commerce.md",
+      "remainingGates": "../Phase9ServiceContracts.md"
     }
   ]
 }

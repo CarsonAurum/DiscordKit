@@ -4,6 +4,20 @@ import DiscordGateway
 import DiscordTransport
 import DiscordCommands
 import DiscordInteractions
+import DiscordOAuth
+import DiscordGameServices
+import DiscordCommerce
+
+/// Independently adopted OAuth execution through an injected REST client and client authentication.
+public typealias OAuthClient<C: Clock> = DiscordOAuth.OAuthClient<C> where C.Duration == Duration
+/// Single-use state/issuer/PKCE authorization flow; construction opens no browser or network work.
+public typealias AuthorizationFlow = DiscordOAuth.OAuthAuthorizationFlow
+/// Bounded token refresh and durable local lineage ownership with caller-supplied secure storage.
+public typealias TokenCoordinator = DiscordOAuth.OAuthTokenCoordinator
+/// Documented public provisional-account, merge/unmerge and approved publisher exchange descriptors.
+public typealias GameAccountEndpoints = DiscordGameServices.PartnerAccountEndpoints
+/// Backend authoritative premium grant checks and explicit consumption operations.
+public typealias EntitlementVerification = DiscordCommerce.EntitlementVerification
 
 /// Macro-free typed command definition; independent consumers import `DiscordCommands`.
 public typealias CommandDefinition = DiscordCommands.CommandDefinition

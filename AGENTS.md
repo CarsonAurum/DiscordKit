@@ -43,6 +43,12 @@ early defer, command definitions/routing/reconciliation, durable webhook-event a
 and display-only link previews; see `Docs/Interactions.md`. Construction starts no tasks
 or network I/O; initial acknowledgement admission remains independent of ordinary REST.
 
+Part 9 adds independently adopted OAuth, GameServices and Commerce products for
+state/issuer/PKCE flows, token ownership, public account/publisher backend operations
+and server entitlement verification; see `Docs/OAuth.md` and `Docs/Phase9ServiceContracts.md`.
+Secure storage/browser UI are injected; native SDK and unpublished Social Commerce
+contracts remain blocked. Construction starts no network or background work.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -55,6 +61,9 @@ or network I/O; initial acknowledgement admission remains independent of ordinar
   presence-aware projections, bounded HTTP policy and independently adopted shard runtime.
 - `Sources/DiscordInteractions/`, `Sources/DiscordCommands/`: signed ingress,
   transport-neutral response ownership and bounded command workflows; neither imports Gateway.
+- `Sources/DiscordOAuth/`, `Sources/DiscordGameServices/`, `Sources/DiscordCommerce/`:
+  independently adopted authentication, public game/backend and server entitlement workflows.
+- `Examples/OAuthApp/`: independent OAuth consumer; build without running authenticated calls.
 - `Examples/RESTOnly/`: independent REST consumer; build it without running authenticated calls.
 - `Examples/HTTPApp/`: independent signed HTTP consumer; build without authenticated calls.
 - `Sources/DiscordCache/`, `Sources/DiscordClient/`: optional bounded entity state and
@@ -122,6 +131,10 @@ initial-response admission, token expiry and durable webhook acknowledgement con
 For consumer/cache/event changes, also build `Examples/GatewayBot` and run the load
 package's cache/soak scenarios, including the fixed-working-set 30-minute local soak
 and actual RSS/accounted-byte evidence described in `Docs/Client.md` and the load README.
+For OAuth/game/commerce changes, also build `Examples/OAuthApp`; preserve its graph
+without Gateway, Client, Cache, Commands or Interactions. Secure storage implementations
+must enforce atomic generation replacement and publisher-child invalidation; no native
+SDK wrapper or undocumented Commerce protocol counts as implemented support.
 For documentation-only changes, review the diff; a build is not required.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.

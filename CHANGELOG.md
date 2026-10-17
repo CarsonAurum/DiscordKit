@@ -6,6 +6,21 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Part 9 OAuth2, game services and entitlement ownership
+
+- Added independently adopted OAuth, GameServices and Commerce products, with
+  an OAuth-only consumer example and umbrella aliases. HTTP remains independent.
+- Added state/issuer-bound consent/install URLs, generated S256 PKCE, explicit legacy
+  implicit compatibility, bounded form grants/revocation and redacted typed responses.
+- Added injected secure transactional storage, bounded shared refresh, independent
+  cancellation, atomic rotation, expiry, local invalidation and publisher cascades.
+- Added public provisional/backend merge/unmerge/publisher operations, exact profile
+  replacement and partial lobby helpers, plus authoritative entitlement ownership/expiry
+  checks, explicit consumption and injected Activity purchase verification.
+- Preserved native-only and Social Commerce schema/access blockers; no native SDK
+  wrapper, automatic migration or broader fulfillment support is implied. Updated
+  dated parity/source evidence, dependency/platform guides and deterministic tests.
+
 ## Unreleased
 
 ### 2026-10-16 — consumer runtime, state and event delivery (Phase 7)

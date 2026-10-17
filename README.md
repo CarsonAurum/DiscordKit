@@ -18,7 +18,10 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [the consumer client, bounded broadcast/handlers, entity state and permission resolution](Docs/Client.md).
 Phase 8 adds [signed HTTP ingress, interaction response ownership, command routing
 and explicit reconciliation, webhook-event admission and display-only link previews](Docs/Interactions.md).
-OAuth2 flows, voice media, RPC, Activities, native Social SDK and broader commerce remain later work.
+Phase 9 adds [OAuth2, installation and token ownership](Docs/OAuth.md),
+[public game-account services](Docs/Phase9ServiceContracts.md), server entitlement
+verification and explicit Activity purchase orchestration. Voice media, RPC, the
+Activity host bridge, native Social SDK and schema-blocked Social Commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
@@ -72,6 +75,12 @@ establish endpoint parity or qualify untested hosts. See the
   optional early defer and independent durable webhook-event admission.
 - `DiscordCommands`: complete typed command definitions, bounded exact routing and
   explicit canonical registration reconciliation.
+- `DiscordOAuth`: state/issuer-bound authorization, S256 PKCE, installation URLs,
+  form-encoded token operations, injected browser presentation and bounded refresh ownership.
+- `DiscordGameServices`: documented provisional/merge/unmerge/publisher backend operations
+  and explicit profile/stat/lobby conveniences.
+- `DiscordCommerce`: authoritative entitlement verification/consumption and injected Activity
+  purchase orchestration; early-access storefront/fulfillment schemas remain blocked.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases,
   startup/opcode budgets, typed dispatch decoding, correlated requests, bounded broadcast
   subscriptions and independently supervised ordered handlers.
@@ -144,6 +153,8 @@ provisioning are not invented SDK endpoints. See Discord's
 - [Owned transport adapters](Docs/Transport.md)
 - [HTTP execution and request reuse](Docs/HTTP.md)
 - [Signed ingress, interactions, commands and webhook events](Docs/Interactions.md)
+- [OAuth2, installations and token ownership](Docs/OAuth.md)
+- [Public account/game contracts and Commerce blockers](Docs/Phase9ServiceContracts.md)
 - [Sharded Gateway lifecycle and event catalog](Docs/Gateway.md)
 - [Concurrency and ownership](Docs/Concurrency.md)
 - [Scalability and request efficiency](Docs/Scalability.md)
