@@ -20,7 +20,10 @@ retain partial projections. Numeric audit action recognition does not implement 
 related Gateway events or resource operations. Phase 5E adds all 25 current
 [Emoji, Sticker and Soundboard operations](../Expressions.md), including guild/app
 emoji, sticker packs and direct multipart creation, default/guild soundboard reads,
-writes and play, and explicit snapshot reconciliation.
+writes and play, and explicit snapshot reconciliation. Phase 5F adds all 25 current
+[Invite, Guild Template, Guild Scheduled Event and Stage Instance operations](../DiscoveryEvents.md),
+including target-user CSV/jobs/bulk changes, typed template placeholders, recurrence/status
+contracts, finite subscriber traversal and snapshot reconciliation.
 These handwritten contracts retain explicit partial related
 resource projections and do not claim full resource-family parity.
 Part 1 adds local values and transport contracts, recorded in the
@@ -38,7 +41,7 @@ measurable; discovery records and unavailable-capability stubs do not count as s
 - `sources-2026-10-15.json` pins source revisions, SHA-256 content hashes, verification
   date, authority, protocol version, prerequisites and exact discovered membership.
 - Resource-specific current-source records, including `moderation-current-sources.json` and
-  `expression-current-sources.json`,
+  `expression-current-sources.json` and `discovery-event-current-sources.json`,
   retain current official verification hashes separately from original discovery pins.
 - `ambiguities.json` records contradictions, adopted precedence and unresolved contracts.
 - `history.json` is append-only support history; `changes/` contains human-readable entries.

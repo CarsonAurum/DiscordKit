@@ -20,7 +20,9 @@ Part 5D adds audit logs, Auto Moderation rules, validated moderation payloads an
 bounded audit traversal; see `Docs/Moderation.md`.
 Part 5E adds guild/application emoji, stickers/packs and default/guild soundboard
 operations, validated media and bounded uploads; see `Docs/Expressions.md`.
-Part 5F–5J and other resource-family completion remain pending.
+Part 5F adds invites/target-user jobs, guild templates, recurring scheduled events and
+Stage instances with bounded workflows; see `Docs/DiscoveryEvents.md`.
+Part 5G–5J and other resource-family completion remain pending.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.

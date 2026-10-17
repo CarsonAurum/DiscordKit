@@ -3,7 +3,7 @@ import Foundation
 import Testing
 @testable import DiscordModels
 
-/// Verifies channel-owned invite contracts without claiming completion of the Invite resource batch.
+/// Verifies complete invite projection and channel-owned creation contracts without live Discord requests.
 @Suite struct ChannelInviteTests {
     /// Every documented invite/metadata field is projected; unknown enums, bits and numeric lexemes survive.
     /// - Throws: Unexpected invite/fixture validation, bounded JSON or required-value assertion errors fail the test; expected rejections are asserted locally.
@@ -13,7 +13,7 @@ import Testing
          "guild":{"id":"1","future":1.2300},"inviter":{"id":"2","username":"private","avatar":null},
          "target_type":999,"target_user":{"id":"3","username":"streamer","avatar":null},
          "target_application":{"id":"4"},"approximate_presence_count":0,"approximate_member_count":100,
-         "expires_at":null,"guild_scheduled_event":{"id":"5"},"flags":9223372036854775809,
+         "expires_at":null,"guild_scheduled_event":{"id":"5","guild_id":"1","channel_id":null,"name":"event","scheduled_start_time":"2026-10-16T12:00:00Z","scheduled_end_time":null,"privacy_level":2,"status":1,"entity_type":3,"entity_id":null,"entity_metadata":{"location":"local"},"recurrence_rule":null},"flags":9223372036854775809,
          "roles":[{"id":"6","name":"role"}],"uses":0,"max_uses":100,"max_age":604800,
          "temporary":false,"created_at":"2026-10-16T12:00:00.123456789+00:00","future":1e1000}
         """

@@ -941,7 +941,7 @@ Evidence: evidence.5b.completeForumModification, evidence.5b.flagsTagsAndOverwri
 
 ## ChannelInvite
 
-API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.
+API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record. Phase 5F upgrades embedded guild/roles to typed documented partial shapes and the scheduled-event subtree to GuildScheduledEvent; historical change records remain unchanged.
 
 Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
 
@@ -2794,6 +2794,622 @@ API v10 verified and locally added 2026-10-16. Current official hashes in Docs/P
 Status: supported. Support since: 2026-10-16. Source: developers/resources/sticker. Upstream announcement: unknown; effective: unknown.
 
 Evidence: evidence.5e.StickerUploadTests.cancelledAttempt, evidence.5e.StickerUploadTests.fileAndWholeRequestBounds, evidence.5e.StickerUploadTests.framingReplayAndOwnership, evidence.5e.StickerUploadTests.invalidFieldsAndBoundaries, evidence.5e.StickerUploadTests.invalidFiles, evidence.5e.StickerUploadTests.supportedFile.
+
+## BulkInviteTargetUsersFailure
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteTargetUsersPlanTests.legalChunksAndAcknowledgements, evidence.5f.InviteTargetUsersPlanTests.partialFailure, evidence.5f.InviteTargetUsersPlanTests.preEntryFailuresAndRacingAcknowledgement, evidence.5f.InviteTargetUsersPlanTests.suspendedTermination, evidence.5f.InviteTargetUsersPlanTests.validationAndExplicitDeduplication.
+
+## BulkInviteTargetUsersOutcome
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteTargetUsersPlanTests.legalChunksAndAcknowledgements, evidence.5f.InviteTargetUsersPlanTests.partialFailure, evidence.5f.InviteTargetUsersPlanTests.preEntryFailuresAndRacingAcknowledgement, evidence.5f.InviteTargetUsersPlanTests.suspendedTermination, evidence.5f.InviteTargetUsersPlanTests.validationAndExplicitDeduplication.
+
+## BulkInviteTargetUsersPlan
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteTargetUsersPlanTests.legalChunksAndAcknowledgements, evidence.5f.InviteTargetUsersPlanTests.partialFailure, evidence.5f.InviteTargetUsersPlanTests.preEntryFailuresAndRacingAcknowledgement, evidence.5f.InviteTargetUsersPlanTests.suspendedTermination, evidence.5f.InviteTargetUsersPlanTests.validationAndExplicitDeduplication.
+
+## ChannelInvite
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## ChannelInvite.metadata
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## ChannelInvite.previewFriendExtras
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## ChannelInvite.previewGuildExtras
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## ChannelInviteGuild
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## ChannelInviteRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## GuildScheduledEvent
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## GuildScheduledEvent.previewExtras
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## GuildScheduledEventCreate
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventRequestTests.creationAndStageBodies, evidence.5f.ScheduledEventRequestTests.invalidCreation, evidence.5f.ScheduledEventRequestTests.modifications, evidence.5f.ScheduledEventRequestTests.recurrenceRules.
+
+## GuildScheduledEventEndpoints.create
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildScheduledEventEndpoints.delete
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildScheduledEventEndpoints.get
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildScheduledEventEndpoints.list
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildScheduledEventEndpoints.modify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildScheduledEventEndpoints.users
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildScheduledEventEntityType
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## GuildScheduledEventModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventRequestTests.creationAndStageBodies, evidence.5f.ScheduledEventRequestTests.invalidCreation, evidence.5f.ScheduledEventRequestTests.modifications, evidence.5f.ScheduledEventRequestTests.recurrenceRules.
+
+## GuildScheduledEventOperations.modifyIfChanged
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventOperationsTests.cancellationAndIndependentIterators, evidence.5f.ScheduledEventOperationsTests.continuation, evidence.5f.ScheduledEventOperationsTests.malformedPages, evidence.5f.ScheduledEventOperationsTests.noOpSnapshots, evidence.5f.ScheduledEventOperationsTests.statusTransitions, evidence.5f.ScheduledEventOperationsTests.terminalFailures.
+
+## GuildScheduledEventOperations.transition
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventOperationsTests.cancellationAndIndependentIterators, evidence.5f.ScheduledEventOperationsTests.continuation, evidence.5f.ScheduledEventOperationsTests.malformedPages, evidence.5f.ScheduledEventOperationsTests.noOpSnapshots, evidence.5f.ScheduledEventOperationsTests.statusTransitions, evidence.5f.ScheduledEventOperationsTests.terminalFailures.
+
+## GuildScheduledEventOperations.userPages
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventOperationsTests.cancellationAndIndependentIterators, evidence.5f.ScheduledEventOperationsTests.continuation, evidence.5f.ScheduledEventOperationsTests.malformedPages, evidence.5f.ScheduledEventOperationsTests.noOpSnapshots, evidence.5f.ScheduledEventOperationsTests.statusTransitions, evidence.5f.ScheduledEventOperationsTests.terminalFailures.
+
+## GuildScheduledEventPrivacyLevel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## GuildScheduledEventStatus
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## GuildScheduledEventUser
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## GuildScheduledEventUser.previewExtras
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## GuildTemplate
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateChannel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateCreate
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateEndpoints.create
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateEndpointTests.completeCatalog, evidence.5f.GuildTemplateEndpointTests.publicReadsPoliciesAndInvalidCodes, evidence.5f.GuildTemplateEndpointTests.snapshotNoOpReconciliation, evidence.5f.GuildTemplateIntegrationTests.anonymousTemplateRead, evidence.5f.GuildTemplateIntegrationTests.authenticationMismatch, evidence.5f.GuildTemplateIntegrationTests.cancellationDuringExchange, evidence.5f.GuildTemplateIntegrationTests.cancelledBeforeSend, evidence.5f.GuildTemplateIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.GuildTemplateIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.GuildTemplateIntegrationTests.failures, evidence.5f.GuildTemplateIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.GuildTemplateIntegrationTests.malformedSuccessBodies, evidence.5f.GuildTemplateIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.GuildTemplateIntegrationTests.rejectedWritesPreserveSnapshots, evidence.5f.GuildTemplateIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.GuildTemplateIntegrationTests.snapshotReconciliationRequestCounts, evidence.5f.GuildTemplateIntegrationTests.success, evidence.5f.GuildTemplateIntegrationTests.transportFailure, evidence.5f.GuildTemplateIntegrationTests.unexpectedSuccessStatus, evidence.5f.GuildTemplateIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildTemplateEndpoints.delete
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateEndpointTests.completeCatalog, evidence.5f.GuildTemplateEndpointTests.publicReadsPoliciesAndInvalidCodes, evidence.5f.GuildTemplateEndpointTests.snapshotNoOpReconciliation, evidence.5f.GuildTemplateIntegrationTests.anonymousTemplateRead, evidence.5f.GuildTemplateIntegrationTests.authenticationMismatch, evidence.5f.GuildTemplateIntegrationTests.cancellationDuringExchange, evidence.5f.GuildTemplateIntegrationTests.cancelledBeforeSend, evidence.5f.GuildTemplateIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.GuildTemplateIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.GuildTemplateIntegrationTests.failures, evidence.5f.GuildTemplateIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.GuildTemplateIntegrationTests.malformedSuccessBodies, evidence.5f.GuildTemplateIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.GuildTemplateIntegrationTests.rejectedWritesPreserveSnapshots, evidence.5f.GuildTemplateIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.GuildTemplateIntegrationTests.snapshotReconciliationRequestCounts, evidence.5f.GuildTemplateIntegrationTests.success, evidence.5f.GuildTemplateIntegrationTests.transportFailure, evidence.5f.GuildTemplateIntegrationTests.unexpectedSuccessStatus, evidence.5f.GuildTemplateIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildTemplateEndpoints.get
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateEndpointTests.completeCatalog, evidence.5f.GuildTemplateEndpointTests.publicReadsPoliciesAndInvalidCodes, evidence.5f.GuildTemplateEndpointTests.snapshotNoOpReconciliation, evidence.5f.GuildTemplateIntegrationTests.anonymousTemplateRead, evidence.5f.GuildTemplateIntegrationTests.authenticationMismatch, evidence.5f.GuildTemplateIntegrationTests.cancellationDuringExchange, evidence.5f.GuildTemplateIntegrationTests.cancelledBeforeSend, evidence.5f.GuildTemplateIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.GuildTemplateIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.GuildTemplateIntegrationTests.failures, evidence.5f.GuildTemplateIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.GuildTemplateIntegrationTests.malformedSuccessBodies, evidence.5f.GuildTemplateIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.GuildTemplateIntegrationTests.rejectedWritesPreserveSnapshots, evidence.5f.GuildTemplateIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.GuildTemplateIntegrationTests.snapshotReconciliationRequestCounts, evidence.5f.GuildTemplateIntegrationTests.success, evidence.5f.GuildTemplateIntegrationTests.transportFailure, evidence.5f.GuildTemplateIntegrationTests.unexpectedSuccessStatus, evidence.5f.GuildTemplateIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildTemplateEndpoints.list
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateEndpointTests.completeCatalog, evidence.5f.GuildTemplateEndpointTests.publicReadsPoliciesAndInvalidCodes, evidence.5f.GuildTemplateEndpointTests.snapshotNoOpReconciliation, evidence.5f.GuildTemplateIntegrationTests.anonymousTemplateRead, evidence.5f.GuildTemplateIntegrationTests.authenticationMismatch, evidence.5f.GuildTemplateIntegrationTests.cancellationDuringExchange, evidence.5f.GuildTemplateIntegrationTests.cancelledBeforeSend, evidence.5f.GuildTemplateIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.GuildTemplateIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.GuildTemplateIntegrationTests.failures, evidence.5f.GuildTemplateIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.GuildTemplateIntegrationTests.malformedSuccessBodies, evidence.5f.GuildTemplateIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.GuildTemplateIntegrationTests.rejectedWritesPreserveSnapshots, evidence.5f.GuildTemplateIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.GuildTemplateIntegrationTests.snapshotReconciliationRequestCounts, evidence.5f.GuildTemplateIntegrationTests.success, evidence.5f.GuildTemplateIntegrationTests.transportFailure, evidence.5f.GuildTemplateIntegrationTests.unexpectedSuccessStatus, evidence.5f.GuildTemplateIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildTemplateEndpoints.modify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateEndpointTests.completeCatalog, evidence.5f.GuildTemplateEndpointTests.publicReadsPoliciesAndInvalidCodes, evidence.5f.GuildTemplateEndpointTests.snapshotNoOpReconciliation, evidence.5f.GuildTemplateIntegrationTests.anonymousTemplateRead, evidence.5f.GuildTemplateIntegrationTests.authenticationMismatch, evidence.5f.GuildTemplateIntegrationTests.cancellationDuringExchange, evidence.5f.GuildTemplateIntegrationTests.cancelledBeforeSend, evidence.5f.GuildTemplateIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.GuildTemplateIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.GuildTemplateIntegrationTests.failures, evidence.5f.GuildTemplateIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.GuildTemplateIntegrationTests.malformedSuccessBodies, evidence.5f.GuildTemplateIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.GuildTemplateIntegrationTests.rejectedWritesPreserveSnapshots, evidence.5f.GuildTemplateIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.GuildTemplateIntegrationTests.snapshotReconciliationRequestCounts, evidence.5f.GuildTemplateIntegrationTests.success, evidence.5f.GuildTemplateIntegrationTests.transportFailure, evidence.5f.GuildTemplateIntegrationTests.unexpectedSuccessStatus, evidence.5f.GuildTemplateIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildTemplateEndpoints.sync
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateEndpointTests.completeCatalog, evidence.5f.GuildTemplateEndpointTests.publicReadsPoliciesAndInvalidCodes, evidence.5f.GuildTemplateEndpointTests.snapshotNoOpReconciliation, evidence.5f.GuildTemplateIntegrationTests.anonymousTemplateRead, evidence.5f.GuildTemplateIntegrationTests.authenticationMismatch, evidence.5f.GuildTemplateIntegrationTests.cancellationDuringExchange, evidence.5f.GuildTemplateIntegrationTests.cancelledBeforeSend, evidence.5f.GuildTemplateIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.GuildTemplateIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.GuildTemplateIntegrationTests.failures, evidence.5f.GuildTemplateIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.GuildTemplateIntegrationTests.malformedSuccessBodies, evidence.5f.GuildTemplateIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.GuildTemplateIntegrationTests.rejectedWritesPreserveSnapshots, evidence.5f.GuildTemplateIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.GuildTemplateIntegrationTests.snapshotReconciliationRequestCounts, evidence.5f.GuildTemplateIntegrationTests.success, evidence.5f.GuildTemplateIntegrationTests.transportFailure, evidence.5f.GuildTemplateIntegrationTests.unexpectedSuccessStatus, evidence.5f.GuildTemplateIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildTemplateModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateOperations.modifyIfChanged
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateEndpointTests.completeCatalog, evidence.5f.GuildTemplateEndpointTests.publicReadsPoliciesAndInvalidCodes, evidence.5f.GuildTemplateEndpointTests.snapshotNoOpReconciliation, evidence.5f.GuildTemplateIntegrationTests.anonymousTemplateRead, evidence.5f.GuildTemplateIntegrationTests.authenticationMismatch, evidence.5f.GuildTemplateIntegrationTests.cancellationDuringExchange, evidence.5f.GuildTemplateIntegrationTests.cancelledBeforeSend, evidence.5f.GuildTemplateIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.GuildTemplateIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.GuildTemplateIntegrationTests.failures, evidence.5f.GuildTemplateIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.GuildTemplateIntegrationTests.malformedSuccessBodies, evidence.5f.GuildTemplateIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.GuildTemplateIntegrationTests.rejectedWritesPreserveSnapshots, evidence.5f.GuildTemplateIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.GuildTemplateIntegrationTests.snapshotReconciliationRequestCounts, evidence.5f.GuildTemplateIntegrationTests.success, evidence.5f.GuildTemplateIntegrationTests.transportFailure, evidence.5f.GuildTemplateIntegrationTests.unexpectedSuccessStatus, evidence.5f.GuildTemplateIntegrationTests.writesInvalidateScopedSnapshots.
+
+## GuildTemplateOverwrite
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateReference
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateRole
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateSnapshot
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateSnapshot.writtenExample
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-template. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## GuildTemplateTag
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.GuildTemplateTests.boundsUnknownFieldsAndRedaction, evidence.5f.GuildTemplateTests.completeTemplateSnapshot, evidence.5f.GuildTemplateTests.exactIdentifiersPermissionsAndFutureValues, evidence.5f.GuildTemplateTests.fieldContracts, evidence.5f.GuildTemplateTests.requestMetadataBoundaries.
+
+## InviteEndpoints.addTargetUser
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.bulkAddTargetUsers
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.bulkDeleteTargetUsers
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.delete
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.get
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: partial. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.removeTargetUser
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.targetUsers
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.targetUsersJob
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteEndpoints.updateTargetUsers
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteOperations.targetUsersJobStatuses
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteOperationsTests.budgetAndExecutorFailures, evidence.5f.InviteOperationsTests.cancellationDuringPollDelay, evidence.5f.InviteOperationsTests.cancelledBeforePullAndExpiredDeadline, evidence.5f.InviteOperationsTests.immediateTerminalAndIndependentIterators, evidence.5f.InviteOperationsTests.invalidConfiguration, evidence.5f.InviteOperationsTests.lazyPacingAndTerminalStates, evidence.5f.InviteOperationsTests.suspendedExecutorTermination.
+
+## InviteTargetUsersBulkAction
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteTargetUsersPlanTests.legalChunksAndAcknowledgements, evidence.5f.InviteTargetUsersPlanTests.partialFailure, evidence.5f.InviteTargetUsersPlanTests.preEntryFailuresAndRacingAcknowledgement, evidence.5f.InviteTargetUsersPlanTests.suspendedTermination, evidence.5f.InviteTargetUsersPlanTests.validationAndExplicitDeduplication.
+
+## InviteTargetUsersCSV
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.InviteCatalogIntegrationTests.authenticationMismatch, evidence.5f.InviteCatalogIntegrationTests.cancellationDuringExchange, evidence.5f.InviteCatalogIntegrationTests.cancelledBeforeSend, evidence.5f.InviteCatalogIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.InviteCatalogIntegrationTests.failures, evidence.5f.InviteCatalogIntegrationTests.malformedSuccessBodies, evidence.5f.InviteCatalogIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.InviteCatalogIntegrationTests.scopedCacheAndMutationInvalidation, evidence.5f.InviteCatalogIntegrationTests.success, evidence.5f.InviteCatalogIntegrationTests.transportFailure, evidence.5f.InviteCatalogIntegrationTests.unexpectedSuccessStatus, evidence.5f.InviteEndpointTests.bulkAndCSVRequestBodies, evidence.5f.InviteEndpointTests.completeCatalog, evidence.5f.InviteEndpointTests.exportedCSV, evidence.5f.InviteEndpointTests.queryPoliciesAuditAndValidation.
+
+## InviteTargetUsersJob
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## InviteTargetUsersJobStatus
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/invite. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ChannelInviteTests.completeResponseAndRedaction, evidence.5f.ChannelInviteTests.creationFieldsAndTargets, evidence.5f.ChannelInviteTests.invalidCreation, evidence.5f.ChannelInviteTests.nullableSchemaCompatibility, evidence.5f.ChannelInviteTests.presenceAndMetadata, evidence.5f.ChannelInviteTests.targetApplicationBoundsAndRoots, evidence.5f.ChannelInviteTests.targetApplicationNullableTypeAndUnknownData, evidence.5f.InviteModelTests.boundsRootsAndRoundTrips, evidence.5f.InviteModelTests.jobFields, evidence.5f.InviteModelTests.malformedPartialFields, evidence.5f.InviteModelTests.partialGuildAndRoleFields.
+
+## ScheduledEventEntityMetadata
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## ScheduledEventException
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## ScheduledEventMonth
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## ScheduledEventNWeekday
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## ScheduledEventNWeekdayRequest
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventRequestTests.creationAndStageBodies, evidence.5f.ScheduledEventRequestTests.invalidCreation, evidence.5f.ScheduledEventRequestTests.modifications, evidence.5f.ScheduledEventRequestTests.recurrenceRules.
+
+## ScheduledEventRecurrenceFrequency
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## ScheduledEventRecurrenceRequest
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventRequestTests.creationAndStageBodies, evidence.5f.ScheduledEventRequestTests.invalidCreation, evidence.5f.ScheduledEventRequestTests.modifications, evidence.5f.ScheduledEventRequestTests.recurrenceRules.
+
+## ScheduledEventRecurrenceRule
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## ScheduledEventUserResponse
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: spec/openapi.json. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## ScheduledEventWeekday
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/guild-scheduled-event. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## StageInstance
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
+
+## StageInstanceCreate
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventRequestTests.creationAndStageBodies, evidence.5f.ScheduledEventRequestTests.invalidCreation, evidence.5f.ScheduledEventRequestTests.modifications, evidence.5f.ScheduledEventRequestTests.recurrenceRules.
+
+## StageInstanceEndpoints.create
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## StageInstanceEndpoints.delete
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## StageInstanceEndpoints.get
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## StageInstanceEndpoints.modify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventEndpointTests.boundedCoverSerialization, evidence.5f.ScheduledEventEndpointTests.completeCatalog, evidence.5f.ScheduledEventEndpointTests.policiesAndAudit, evidence.5f.ScheduledEventEndpointTests.queriesAndSubscriberValidation, evidence.5f.ScheduledEventIntegrationTests.authenticationMismatch, evidence.5f.ScheduledEventIntegrationTests.cancellationDuringExchange, evidence.5f.ScheduledEventIntegrationTests.cancelledBeforeSend, evidence.5f.ScheduledEventIntegrationTests.cancellingOneCoalescedSubscriber, evidence.5f.ScheduledEventIntegrationTests.explicitRateRejectionRetriesWithinBudget, evidence.5f.ScheduledEventIntegrationTests.failures, evidence.5f.ScheduledEventIntegrationTests.malformedReadsNeverPopulateCache, evidence.5f.ScheduledEventIntegrationTests.malformedSuccessBodies, evidence.5f.ScheduledEventIntegrationTests.readsCoalesceWithinIdentity, evidence.5f.ScheduledEventIntegrationTests.scopedTTLAndInclusiveExpiry, evidence.5f.ScheduledEventIntegrationTests.success, evidence.5f.ScheduledEventIntegrationTests.transportFailure, evidence.5f.ScheduledEventIntegrationTests.unexpectedSuccessStatus, evidence.5f.ScheduledEventIntegrationTests.writesInvalidateScopedSnapshots.
+
+## StageInstanceModify
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventRequestTests.creationAndStageBodies, evidence.5f.ScheduledEventRequestTests.invalidCreation, evidence.5f.ScheduledEventRequestTests.modifications, evidence.5f.ScheduledEventRequestTests.recurrenceRules.
+
+## StageInstanceOperations.modifyIfChanged
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventOperationsTests.cancellationAndIndependentIterators, evidence.5f.ScheduledEventOperationsTests.continuation, evidence.5f.ScheduledEventOperationsTests.malformedPages, evidence.5f.ScheduledEventOperationsTests.noOpSnapshots, evidence.5f.ScheduledEventOperationsTests.statusTransitions, evidence.5f.ScheduledEventOperationsTests.terminalFailures.
+
+## StageInstancePrivacyLevel
+
+API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/discovery-event-current-sources.json remain separate from original discovery pins. Written resource contracts control conflicts with explicitly documented preview compatibility. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; no hidden hydration, live API conformance, other-platform or capacity qualification is claimed. Upstream chronology remains distinct from local support.
+
+Status: supported. Support since: 2026-10-16. Source: developers/resources/stage-instance. Upstream announcement: unknown; effective: unknown.
+
+Evidence: evidence.5f.ScheduledEventModelTests.completeProjections, evidence.5f.ScheduledEventModelTests.futurePresenceAndBounds, evidence.5f.ScheduledEventModelTests.invalidProjections, evidence.5f.ScheduledEventModelTests.nestedRecurrenceAndOptionalValidation.
 
 ## GatewayEndpoints.bot
 

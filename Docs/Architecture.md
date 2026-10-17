@@ -18,6 +18,9 @@ Part 5D adds [audit logs and Auto Moderation](Moderation.md), typed audit change
 validated rule requests and bounded directional audit traversal without adding targets.
 Part 5E adds [emoji, stickers and soundboard](Expressions.md), complete written
 resource-owned contracts, bounded media and opt-in snapshot reconciliation in Models/HTTP.
+Part 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md),
+with bounded CSV jobs, recurrence/status contracts, finite user traversal and snapshot
+reconciliation in the same independent products.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations

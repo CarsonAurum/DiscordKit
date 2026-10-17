@@ -442,6 +442,75 @@
       ],
       "details": "changes/2026-10-16-expressions.md",
       "remainingGates": "../Expressions.md"
+    },
+    {
+      "id": "2026-10-16-part-5f-discovery-events",
+      "recordedOn": "2026-10-16",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-16",
+      "localSupportDate": "2026-10-16",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "discovery_event_rest_implementation",
+      "previousBehavior": "Channel invite creation/listing and Guild invite listing were available with partial related projections; Invite target-user jobs, Guild Template, Guild Scheduled Event and Stage Instance resource operations were unsupported.",
+      "currentBehavior": "Typed descriptors expose all 25 current written-reference family operations: nine Invite, six Guild Template, six Guild Scheduled Event and four Stage Instance, reusing existing channel/guild invite operations. Resource-owned fields, typed partial invite guild/role snapshots, template integer placeholders, recurrence and status validation, bounded CSV ownership/jobs and lazy user continuation preserve independent HTTP adoption. Related User/Application projections and corresponding Gateway catalogs remain partial or pending; 5G-5J and existing qualification gates remain separate.",
+      "affectedSymbols": [
+        "ChannelInvite",
+        "ChannelInviteGuild",
+        "ChannelInviteRole",
+        "InviteTargetUsersCSV",
+        "InviteTargetUsersJob",
+        "InviteTargetUsersJobStatus",
+        "InviteEndpoints",
+        "InviteOperations",
+        "InviteTargetUsersBulkAction",
+        "BulkInviteTargetUsersPlan",
+        "BulkInviteTargetUsersOutcome",
+        "BulkInviteTargetUsersFailure",
+        "GuildTemplate",
+        "GuildTemplateSnapshot",
+        "GuildTemplateRole",
+        "GuildTemplateChannel",
+        "GuildTemplateReference",
+        "GuildTemplateCreate",
+        "GuildTemplateModify",
+        "GuildTemplateEndpoints",
+        "GuildTemplateOperations",
+        "GuildScheduledEvent",
+        "ScheduledEventEntityMetadata",
+        "ScheduledEventRecurrenceRule",
+        "ScheduledEventNWeekday",
+        "ScheduledEventException",
+        "GuildScheduledEventUser",
+        "GuildScheduledEventEndpoints",
+        "GuildScheduledEventOperations",
+        "StageInstance",
+        "StageInstanceEndpoints",
+        "StageInstanceOperations"
+      ],
+      "affectedPayloads": "REST v10 invite retrieval/deletion, target-user CSV and asynchronous jobs, target-user single/bulk mutations; template snapshots, CRUD and sync; scheduled-event voice/stage/external variants, recurrence/status transitions, subscriber pagination and optional preview RSVP/exception projections; stage instance CRUD with deprecated response privacy retained.",
+      "breakingChanges": [
+        "ChannelInvite.guild, guildScheduledEvent and roles now expose typed Guild/Role/Event projections rather than MessageRelatedResource wrappers; explicit old type annotations require adjustment."
+      ],
+      "migration": "Opt into Models/HTTP descriptors and explicit bounded continuations; share credential-scoped rate/reuse authorities and preserve CSV header user_id. Template IDs are local integer placeholders and cannot authorize live resource operations. Event creation requires CREATE_EVENTS and type-specific channel permissions; stage mutation requires moderator permissions. Snapshot reconciliation performs no hidden reads and does not prove current authorization. Replace explicit MessageRelatedResource annotations for ChannelInvite guild/roles/event fields with their typed projection names; rawFields continues to retain exact original payloads.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/invite",
+        "https://docs.discord.com/developers/resources/guild-template",
+        "https://docs.discord.com/developers/resources/guild-scheduled-event",
+        "https://docs.discord.com/developers/resources/stage-instance",
+        "https://docs.discord.com/developers/topics/permissions",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/discord/discord-api-spec/tree/ed014089afa986f2b532ae081c456a85de074d0c"
+      ],
+      "details": "changes/2026-10-16-discovery-events.md",
+      "remainingGates": "../DiscoveryEvents.md"
     }
   ]
 }

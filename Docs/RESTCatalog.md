@@ -8,7 +8,8 @@ Verified 2026-10-16 against the official [message](https://docs.discord.com/deve
 use API v10. This is Phase 5A, the first independent REST catalog work package;
 5B adds [channels and threads](Channels.md), 5C adds [guild administration](Guilds.md),
 5D adds [audit logs and Auto Moderation](Moderation.md), and 5E adds
-[emoji, stickers and soundboard](Expressions.md); 5F–5J remain pending.
+[emoji, stickers and soundboard](Expressions.md), and 5F adds
+[invites, templates, scheduled events and stages](DiscoveryEvents.md); 5G–5J remain pending.
 Models and descriptors are committed handwritten semantic
 contracts linked through the reviewed inventory. Consumer builds fetch nothing.
 

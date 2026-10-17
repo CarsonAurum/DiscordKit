@@ -79,8 +79,8 @@ public struct ChannelInviteApplication: MessageResponseValue, MessageTreeProject
 }
 
 /// Channel invite response including the complete invite/metadata field surface.
-/// Referenced Guild/Application/Event/Role projections retain exact JSON but remain partial
-/// until their resource batches. The channel itself uses the complete Channel projection.
+/// Embedded Guild/Application/Role snapshots are explicitly partial and never hydrated.
+/// Scheduled events and channels use their complete resource projections.
 /// API v10, verified 2026-10-16 against the official Channel and Invite references.
 public struct ChannelInvite: MessageResponseValue, Equatable {
     /// Required invite kind; future integral variants survive.
@@ -88,7 +88,7 @@ public struct ChannelInvite: MessageResponseValue, Equatable {
     /// Required opaque invitation code. Ordinary diagnostics conceal it.
     public let code: String
     /// Optional partial guild snapshot; no permission or membership inference is made.
-    public let guild: Field<MessageRelatedResource>
+    public let guild: Field<ChannelInviteGuild>
     /// Required nullable partial channel; id/type are required for present objects.
     public let channel: Nullable<Channel>
     /// Optional inviter snapshot; unknown user-family fields remain in rawFields.
@@ -107,13 +107,13 @@ public struct ChannelInvite: MessageResponseValue, Equatable {
     public let approximateMemberCount: Field<Int>
     /// Required nullable expiry; null denotes no specified expiration.
     public let expiresAt: Nullable<DiscordTimestamp>
-    /// Optional partial scheduled event, present only for applicable invite retrieval.
-    public let guildScheduledEvent: Field<MessageRelatedResource>
+    /// Optional complete scheduled event, present only for applicable invite retrieval.
+    public let guildScheduledEvent: Field<GuildScheduledEvent>
     /// Optional complete flag bitset; bit 0 is IS_GUEST_INVITE. Unknown bits survive.
     public let flags: Field<UInt64>
     /// Optional nullable partial role snapshots assigned upon acceptance; original order survives.
     /// Explicit null follows the official schema even though the written Invite table omits a nullable marker.
-    public let roles: Field<[MessageRelatedResource]>
+    public let roles: Field<[ChannelInviteRole]>
     /// Metadata use count; required when requiresMetadata is true at initialization.
     public let uses: Field<Int>
     /// Metadata maximum uses, zero for unlimited; omission is preserved for ordinary invites.
@@ -124,6 +124,16 @@ public struct ChannelInvite: MessageResponseValue, Equatable {
     public let temporary: Field<Bool>
     /// Metadata creation time preserving offset and nanosecond precision.
     public let createdAt: Field<DiscordTimestamp>
+    /// Optional guild identifier exposed by the official preview schema; no hidden lookup occurs.
+    public let guildID: Field<GuildID>
+    /// Optional target channel/message retained from the official preview, independently of invite target kind.
+    public let targetChannelID: Field<ChannelID>
+    public let targetMessageID: Field<MessageID>
+    /// Optional contact and nickname-change flags; no relationship/permission inference is made.
+    public let isContact: Field<Bool>
+    public let isNicknameChangeable: Field<Bool>
+    /// Optional friend-invite count from the official preview; omission remains distinct from zero.
+    public let friendsCount: Field<Int>
     /// Complete exact original object including unknown fields.
     public let rawFields: [String: JSONValue]
 
@@ -148,7 +158,7 @@ public struct ChannelInvite: MessageResponseValue, Equatable {
         let object = try PayloadObject(JSONValue.parse(data, limits: limits), limits: limits)
         type = try object.required("type", RawValue<ChannelInviteType>.self)
         code = try object.required("code", String.self)
-        guild = try object.messageField("guild", MessageRelatedResource.self)
+        guild = try object.messageField("guild", ChannelInviteGuild.self)
         guard let value = object.resource.fields["channel"] else { throw DiscordError.transport(.invalidResponse) }
         channel = value == .null ? .null : .value(try Channel(value: value, limits: limits))
         inviter = try object.messageField("inviter", MessageAuthor.self)
@@ -158,11 +168,11 @@ public struct ChannelInvite: MessageResponseValue, Equatable {
         approximatePresenceCount = try object.field("approximate_presence_count", Int.self, nullable: true)
         approximateMemberCount = try object.field("approximate_member_count", Int.self, nullable: true)
         expiresAt = try object.required("expires_at", Nullable<DiscordTimestamp>.self)
-        guildScheduledEvent = try object.messageField("guild_scheduled_event", MessageRelatedResource.self)
+        guildScheduledEvent = try object.messageField("guild_scheduled_event", GuildScheduledEvent.self)
         flags = try object.field("flags", UInt64.self)
         roles = try object.nested("roles", nullable: true) { value in
             guard case .array(let values) = value else { throw DiscordError.transport(.invalidResponse) }
-            return try values.map { try MessageRelatedResource(value: $0, limits: limits) }
+            return try values.map { try ChannelInviteRole(value: $0, limits: limits) }
         }
         uses = try object.field("uses", Int.self)
         maxUses = try object.field("max_uses", Int.self)
@@ -177,6 +187,13 @@ public struct ChannelInvite: MessageResponseValue, Equatable {
                 guard object.resource.fields[key] != nil else { throw DiscordError.transport(.invalidResponse) }
             }
         }
+        guildID = try object.field("guild_id", GuildID.self)
+        targetChannelID = try object.field("target_channel_id", ChannelID.self)
+        targetMessageID = try object.field("target_message_id", MessageID.self)
+        isContact = try object.field("is_contact", Bool.self)
+        isNicknameChangeable = try object.field("is_nickname_changeable", Bool.self)
+        friendsCount = try object.field("friends_count", Int.self)
+        if case .value(let count) = friendsCount, count < 0 { throw DiscordError.transport(.invalidResponse) }
         rawFields = object.resource.fields
     }
 }

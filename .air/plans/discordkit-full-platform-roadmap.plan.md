@@ -678,6 +678,15 @@ See [Expression contracts](../../Docs/Expressions.md) and
 [execution evidence](phase-5e-execution.plan.md). Batches 5F–5J, Gateway catalogs
 and platform/live/soak qualification remain separate.
 
+**5F implementation update, 2026-10-16:** All 25 current Invite, Guild Template,
+Guild Scheduled Event and Stage Instance reference operations have typed Models/HTTP
+APIs. Target-user CSV upload/export/job state, explicit bulk allowlist changes,
+placeholder-safe template snapshots, recurrence/status transitions, bounded lazy
+subscriber traversal and snapshot reconciliation are covered by deterministic fixtures.
+See [Discovery/event contracts](../../Docs/DiscoveryEvents.md) and
+[execution evidence](phase-5f-execution.plan.md). Related User/Application projections,
+Gateway events, 5G–5J and platform/live/soak qualification remain separate.
+
 | Batch | F04 families | Coverage that must not be missed |
 |---|---|---|
 | 5A: messages | Message, Poll | History/search, get/send/edit/delete/bulk delete/crosspost, reaction variants, new and deprecated pin APIs, forwarding/snapshots/references, attachments, mentions, embeds/component embeds, voice messages, poll creation/voters/ending. Search has indexing-202 and endpoint-specific continuation semantics. [Messages](https://docs.discord.com/developers/resources/message), [Polls](https://docs.discord.com/developers/resources/poll) |

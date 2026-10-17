@@ -11,7 +11,8 @@ ten Emoji, eight Sticker and seven Soundboard operations. Contracts were verifie
 [official OpenAPI](https://github.com/discord/discord-api-spec) and
 [change log](https://docs.discord.com/developers/change-log). Current hashes are
 recorded separately from original discovery pins. No product or dependency was added.
-Batches 5F–5J and expression Gateway event catalogs remain pending.
+Phase 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md).
+Batches 5G–5J and expression Gateway event catalogs remain pending.
 
 Import `DiscordModels` and `DiscordHTTP` and inject the existing bounded HTTP
 pipeline with shared credential-scoped rate/reuse authorities. REST adoption

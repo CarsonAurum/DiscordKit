@@ -19,28 +19,7 @@ func channelInviteBody(_ request: ChannelInviteCreate, csv: Data?, maximumBytes:
     guard let csv else { return try RequestBody(bytes: payload, contentType: "application/json", maximumBytes: maximumBytes) }
     guard request.targetUserIDs == nil, !csv.isEmpty else { throw DiscordError.validation(.invalidValue) }
     guard csv.count <= maximumBytes else { throw DiscordError.validation(.limitExceeded) }
-    // Validate ASCII UTF-8 and numeric range in one pass with constant auxiliary storage.
-    // Splitting millions of tiny rows would amplify a small bounded upload into large metadata arrays.
-    var hasDigits = false, pendingCR = false
-    var value: UInt64 = 0
-    for byte in csv {
-        guard !pendingCR || byte == 10 else { throw DiscordError.validation(.invalidValue) }
-        switch byte {
-        case 48...57:
-            let product = value.multipliedReportingOverflow(by: 10)
-            let sum = product.partialValue.addingReportingOverflow(UInt64(byte - 48))
-            guard !product.overflow, !sum.overflow else { throw DiscordError.validation(.invalidValue) }
-            value = sum.partialValue; hasDigits = true
-        case 13:
-            guard hasDigits else { throw DiscordError.validation(.invalidValue) }
-            pendingCR = true
-        case 10:
-            guard hasDigits else { throw DiscordError.validation(.invalidValue) }
-            hasDigits = false; pendingCR = false; value = 0
-        default: throw DiscordError.validation(.invalidValue)
-        }
-    }
-    guard !pendingCR else { throw DiscordError.validation(.invalidValue) }
+    _ = try inviteCSVRows(csv, hasHeader: false, maximumUsers: nil, response: false)
     // All request strings are decimal IDs and CSV is numeric-only; fixed field names cannot
     // contain this boundary. Multipart still independently checks every part for collisions.
     let boundary = "DiscordKitInvite"

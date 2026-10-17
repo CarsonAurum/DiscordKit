@@ -11,7 +11,8 @@ verified **2026-10-16** against REST **v10**, the
 [change log](https://docs.discord.com/developers/change-log). Current source hashes
 are recorded separately from discovery membership pins. No dependency or product
 target was added. Phase 5E adds [emoji, stickers and soundboard](Expressions.md);
-phases 5F–5J and corresponding Gateway event catalogs remain pending.
+Phase 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md).
+Phases 5G–5J and corresponding Gateway event catalogs remain pending.
 
 Import `DiscordModels` and `DiscordHTTP`, inject a transport and shared
 credential-scoped rate/reuse authorities, then execute the descriptors. REST

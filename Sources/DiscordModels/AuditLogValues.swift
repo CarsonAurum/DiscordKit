@@ -10,7 +10,7 @@ public enum ApplicationCommandTag: Sendable {}
 public typealias ApplicationCommandID = Snowflake<ApplicationCommandTag>
 /// Marker for guild scheduled events referenced by an audit response.
 public enum GuildScheduledEventTag: Sendable {}
-/// Exact unsigned scheduled event snowflake without scheduling or event management behavior.
+/// Exact unsigned scheduled event snowflake shared by audit references and the scheduled-event REST catalog.
 public typealias GuildScheduledEventID = Snowflake<GuildScheduledEventTag>
 
 /// Known API v10 administrative action codes, verified 2026-10-16 against the official Audit Log

@@ -255,7 +255,7 @@
         }
       ],
       "impact": "Rejecting explicit null would discard an officially described preview response; mapping null to omission would lose presence information.",
-      "interimPolicy": "Accept and preserve absent/null/value states for the three fields in ChannelInvite, retaining exact raw JSON and recording the broader response compatibility. No request nullability is inferred. Referenced role/guild/application/event projections remain explicitly partial.",
+      "interimPolicy": "Accept and preserve absent/null/value states for the three fields in ChannelInvite, retaining exact raw JSON and recording the broader response compatibility. No request nullability is inferred. Referenced guild/roles now use typed documented partial projections and scheduled events use GuildScheduledEvent; User/Application resource catalogs remain explicitly partial.",
       "requiredResolution": "Official written nullability clarification or corrected specification, with realistic fixtures for the documented invite variants.",
       "verifiedAt": "2026-10-16",
       "announcementDate": "unknown",
@@ -602,6 +602,120 @@
       "impact": "Interpreting kb as KiB could accept a larger payload than the literal decimal bound; byte validation cannot establish media duration.",
       "interimPolicy": "Conservatively cap decoded sound bytes at 512000 until clarified; support MP3/Ogg data URIs. Caller/server validation remains responsible for 5.2-second duration and media correctness. Sticker dimensions/duration/Lottie guild-feature eligibility and emoji 128x128 dimensions are likewise documented server/caller checks; byte bounds do not claim transcoding or codec validation.",
       "requiredResolution": "Official written clarification or corrected specification and deterministic fixtures before changing the explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "template-written-partial-snapshot-and-preview-types",
+      "status": "open",
+      "surface": "REST v10 / Guild Template response presence and placeholder types",
+      "description": "Written Guild Template creator is required nonnull, while the official preview permits null. The written serialized_source_guild is partial and its example omits newer fields required by preview schemas. Written role permissions and channel/parent IDs are integer placeholders; preview role permission fields are strings and references may use snowflake strings. The preview permits nullable template channel/tag IDs and adds forum settings.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/guild-template.md",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "unknown",
+          "sha256": "55acadd7f99925b0565f474d0af3cc1242aa8870d6ee5982a25fb68f0440df1a"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Requiring every preview field would reject the written example; treating template integer placeholders as live snowflakes would lose representation and suggest incorrect identity semantics.",
+      "interimPolicy": "Require nonnull creator under the written contract. Keep all written Guild Template outer fields required, retaining nullable description/is_dirty. Snapshot members remain optional to honor the partial Guild/example contract. Preserve integer placeholders; accept canonical decimal-string reference alternatives and arbitrary-width nonnegative permission digits in either integer or string form. Preserve raw original representation. Retain nullable channel/tag ID compatibility and optional preview forum fields. No template ID authorizes live operations.",
+      "requiredResolution": "Official written clarification or corrected specification with deterministic fixtures before changing the explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "scheduled-event-recurrence-frequency-prose-codes",
+      "status": "open",
+      "surface": "REST v10 / Guild Scheduled Event recurrence frequency",
+      "description": "Recurrence system-limit prose calls DAILY (0) and WEEKLY (1), while the same written frequency table, JSON examples and official specification consistently use YEARLY=0, MONTHLY=1, WEEKLY=2, DAILY=3.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/guild-scheduled-event.md",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "unknown",
+          "sha256": "81d5654e5c0982ef267503947b3191f92fe5406ef1e61acc0e5ce8554666a5dd"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Using contradictory prose parentheticals would serialize a different recurrence kind despite selecting a known enum.",
+      "interimPolicy": "Use the consistent frequency table/examples/specification codes 0 yearly, 1 monthly, 2 weekly, 3 daily. Apply prose restrictions by their named recurrence kinds: documented daily weekday sets, one weekly weekday, one monthly ordinal, yearly month/day pairs; interval 2 is weekly-only. Preserve unknown response values.",
+      "requiredResolution": "Official written clarification or corrected specification with deterministic fixtures before changing the explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "scheduled-event-response-and-request-preview-presence",
+      "status": "open",
+      "surface": "REST v10 / Scheduled Event nullable fields, recurrence and RSVP supplements",
+      "description": "Written response description/creator_id/image are optional, while preview schemas require nullable fields; written recurrence end/by_year_day/count are required nullable, while preview allows omission. Written create/PATCH tables omit some nullable markers accepted by preview, including description/image/recurrence and channel-backed end. The preview adds ID-only RSVP and recurrence-exception projections, and does not require an end on external create although the written contract does.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/guild-scheduled-event.md",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "unknown",
+          "sha256": "81d5654e5c0982ef267503947b3191f92fe5406ef1e61acc0e5ce8554666a5dd"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Blindly applying one schema loses field presence, rejects compatible responses or permits incomplete external event creation. Preview response extras alone do not establish mutation-route availability.",
+      "interimPolicy": "Preserve written optional response fields and accept their explicit nullable-preview forms. Recurrence end/by_year_day/count retain absent/null/value compatibility; they cannot be set by clients. Accept explicitly documented nullable preview request fields, while external creation/conversion requires nonnull location and end plus explicit null channel. The users endpoint requires User objects, even though generic preview RSVP snapshots may use user_id; matching IDs are checked when both exist. Optional preview exception/RSVP fields are fully decoded without exposing preview-only exception mutation endpoints. Cover image has a documented local 1 MiB decoded-byte safety cap and event JSON has a local 2 MiB encoded-byte cap; media correctness/dimensions remain server checks.",
+      "requiredResolution": "Official written clarification or corrected specification with deterministic fixtures before changing the explicit compatibility policy.",
+      "verifiedAt": "2026-10-16",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "resolvedAt": "unknown"
+    },
+    {
+      "id": "invite-create-written-age-and-preview-target-variants",
+      "status": "open",
+      "surface": "REST v10 / Channel Invite creation lifetime and target variants",
+      "description": "Written Channel creation limits max_age to 604800 seconds and lists STREAM/EMBEDDED_APPLICATION targets. Preview CreateGuildInviteRequest permits max_age up to 5184000 and additional target_type variants from a wider platform surface.",
+      "evidence": [
+        {
+          "url": "https://docs.discord.com/developers/resources/channel.md",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "unknown",
+          "sha256": "bd0779405b2d5f2df96986b1d4e2768ca1c9b368424ea3bf9c678a5ab3dae02c"
+        },
+        {
+          "url": "https://docs.discord.com/developers/resources/invite.md",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "unknown",
+          "sha256": "bf8e5d5cf299e5eb502fd085af07b585a4c52deef0d2c97c23dd623c6fed5d12"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/discord/discord-api-spec/ed014089afa986f2b532ae081c456a85de074d0c/specs/openapi.json",
+          "section": "Relevant resource structures, example and request/response contracts",
+          "revision": "ed014089afa986f2b532ae081c456a85de074d0c",
+          "sha256": "79e3faff046cd35e432e4cbaacd457c5f4b0e01149c541c010366191e38bc18a"
+        }
+      ],
+      "impact": "Using preview limits/target variants without written availability could silently broaden the supported bot creation contract.",
+      "interimPolicy": "Preserve the written 0...604800-second lifetime and only current written stream/application creation targets. Retain target_user_ids and role_ids with their documented target/permission constraints and existing bounded CSV form. Future response target integers remain readable. Invite get accepts explicitly documented preview target channel/message queries, which does not enable unsupported creation target types.",
+      "requiredResolution": "Official written clarification or corrected specification with deterministic fixtures before changing the explicit compatibility policy.",
       "verifiedAt": "2026-10-16",
       "announcementDate": "unknown",
       "effectiveDate": "unknown",

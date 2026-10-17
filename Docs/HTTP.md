@@ -34,7 +34,8 @@ JSON fields, large string snowflakes and absent/null/value states. Full resource
 catalog expansion includes Part 5A [messages and polls](RESTCatalog.md) and Part 5B
 [channels and threads](Channels.md), Part 5C [guild administration](Guilds.md), and
 Part 5D [audit logs and Auto Moderation](Moderation.md), and Part 5E
-[emoji, stickers and soundboard](Expressions.md);
+[emoji, stickers and soundboard](Expressions.md), and Part 5F
+[invites, templates, scheduled events and stages](DiscoveryEvents.md);
 these initial descriptors do not imply full resource-family parity.
 
 `AssetClient` accepts HTTPS destinations without credential/header customization.
