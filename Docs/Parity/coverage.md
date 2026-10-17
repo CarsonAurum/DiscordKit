@@ -220,3 +220,23 @@ source fingerprints and compatibility. The [execution record](../../.air/plans/p
 records integrated validation. JSON/uncompressed transport remains the explicit
 protocol choice; live Discord, other hosts/devices, distributed storage adapters
 and sustained-capacity qualification remain separate gates.
+
+## Part 8 signed ingress and interaction runtime (2026-10-17)
+
+Independent Interactions/Commands products add exact raw-body Ed25519 verification,
+bounded replay/admission, HTTP/Gateway contexts, reserved initial acknowledgements,
+explicit defer/expiry/uncertainty, bounded routing and canonical change-only command
+synchronization. Identical managed definitions send zero writes; unmanaged commands
+and omitted settings are preserved. The HTTPApp graph has no Gateway/Client/Cache.
+
+Webhook events recognize twelve current names, with typed authorization/entitlement
+and explicitly partial social-message children/quest schema. Empty HTTP 204 follows PING
+or durable admission; failed/uncertain admission gets retryable HTTP 503. Exact-byte local
+deduplication is advisory. Display-only component embeds and partial common Open
+Graph helpers never enter interaction routing. Six reviewed contracts link sixty-two
+newly reviewed discovery records to actual declarations and deterministic tests.
+
+See [contracts](../Interactions.md), [dated record](changes/2026-10-17-interaction-runtime.md)
+and [execution evidence](../../.air/plans/phase-8-execution.plan.md). Current source
+hashes are separate from unchanged historical pins. Live Discord/rendering, durable
+fleet authorities, other-host/device and sustained capacity remain open gates.

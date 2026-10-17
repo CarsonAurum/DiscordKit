@@ -187,6 +187,28 @@ public struct ApplicationCommandCreate: GuildRequestPayload {
     /// Returns the immutable upsert JSON without performing command registration.
     /// - Returns: Complete bounded create body with explicit type and preserved omitted/default/null semantics.
     public func jsonValue() -> JSONValue { .object(fields) }
+
+    /// Converts this complete definition into an edit of its known standard configuration.
+    /// This supports explicit reconciliation by stable ID without resetting application-owned settings
+    /// merely because another field changed. The command type remains validation context and is not encoded.
+    /// - Returns: A validated immutable edit with name/description, localization dictionaries, permissions,
+    ///   age restriction and slash options completely replaced. Omitted localizations and permissions clear
+    ///   to null, omitted age restriction becomes false, and omitted slash options become an empty array.
+    ///   Omitted installation contexts, interaction contexts, entry-point handler and deprecated DM/default
+    ///   permission settings remain absent and are therefore preserved by PATCH. Explicit values remain exact.
+    ///   This performs no I/O, permission check, server fetch or new validation; the original initializer
+    ///   already validated every retained field and the added defaults satisfy the same kind constraints.
+    public func replacementChanges() -> ApplicationCommandModify {
+        var replacement = fields
+        replacement.removeValue(forKey: "type")
+        for key in ["name_localizations", "description_localizations", "default_member_permissions"] {
+            if replacement[key] == nil { replacement[key] = .null }
+        }
+        if replacement["description"] == nil { replacement["description"] = .string("") }
+        if replacement["nsfw"] == nil { replacement["nsfw"] = .bool(false) }
+        if type == .chatInput, replacement["options"] == nil { replacement["options"] = .array([]) }
+        return ApplicationCommandModify(type: type, validatedFields: replacement)
+    }
 }
 
 /// Presence-aware validated command edit. The existing type is context only and is never sent in PATCH.
@@ -194,6 +216,15 @@ public struct ApplicationCommandModify: GuildRequestPayload {
     private let fields: [String: JSONValue]
     /// Caller-supplied existing kind, used for name/option/handler validation; Discord remains authoritative.
     public let type: ApplicationCommandType
+
+    /// Adopts a kind-compatible subset of an already validated complete create definition and valid defaults.
+    /// - Parameters:
+    ///   - type: Known existing kind, retained only as descriptor-validation context.
+    ///   - validatedFields: Writable fields after removing type; exclusively produced by replacementChanges().
+    ///     This private construction path preserves omission/null semantics without reparsing immutable JSON.
+    fileprivate init(type: ApplicationCommandType, validatedFields: [String: JSONValue]) {
+        self.type = type; fields = validatedFields
+    }
 
     /// Validates selected changes without fetching the existing command. Every supplied collection replaces that field.
     /// - Parameters:

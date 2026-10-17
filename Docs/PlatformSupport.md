@@ -1,6 +1,6 @@
 # Platform support and qualification
 
-Updated **2026-10-16**. The initial HTTP execution and minimal sharded Gateway
+Updated **2026-10-17**. The initial HTTP execution and minimal sharded Gateway
 slices are implemented; OAuth flows, voice and desktop RPC remain later work.
 
 Part 7 adds portable consumer/cache/event-delivery code with macOS-local deterministic
@@ -128,3 +128,21 @@ record exact supported behavior and validation. Named dispatch coverage does not
 qualify every nested resource field, live Discord behavior, new hosts/devices,
 distributed storage adapters or sustained runtime capacity. Platform support and
 the open transport gates above are unchanged.
+
+## Part 8 local interaction evidence
+
+[Interactions and Commands](Interactions.md) add signed ingress, response lifecycle,
+command routing/reconciliation and durable webhook-event admission contracts.
+Deterministic macOS arm64/Swift 6.4 tests use real Ed25519 signatures, virtual clocks,
+scripted HTTP responses and injected durable admission. Display-only component embeds
+and common Open Graph metadata have bounded encoding tests, without a remote preview
+rendering claim. The independent [HTTPApp](../Examples/HTTPApp/README.md) builds with
+Commands/Interactions/HTTP and NIOTransport; the selected graph contains no Gateway,
+Client, Cache or umbrella facade. The executable was not run with Discord credentials.
+
+Only the `Crypto` product from Swift Crypto 5.0.1 is selected. Darwin uses CryptoKit;
+other platforms compile conditional bundled native implementations, which were not
+exercised on this host. See the [dependency audit](Dependencies.md#part-8-signed-ingress-addition).
+No live Discord delivery, other OS, minimum deployment version, physical device,
+cross-process durable-store adapter or fleet throughput/memory result follows from
+these checks. Existing adapter and background-execution restrictions remain open.

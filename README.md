@@ -16,7 +16,8 @@ slice retrieves the current user/application and Gateway discovery, and adds
 [lobbies and application identity profiles](Docs/SocialGame.md) in Phase 5J. Phase 6 adds
 [typed Gateway dispatches, commands and bounded requests](Docs/Gateway.md). Phase 7 adds
 [the consumer client, bounded broadcast/handlers, entity state and permission resolution](Docs/Client.md).
-Interaction ingress/routing,
+Phase 8 adds [signed HTTP ingress, interaction response ownership, command routing
+and explicit reconciliation, webhook-event admission and display-only link previews](Docs/Interactions.md).
 OAuth2 flows, voice media, RPC, Activities, native Social SDK and broader commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -56,7 +57,7 @@ establish endpoint parity or qualify untested hosts. See the
   timestamps, open raw values, redacted credentials, errors and capability reporting.
 - `DiscordTransport`: injectable HTTP, WebSocket, datagram, IPC and HTTP-ingress
   protocols, bounded pull bodies and monotonic deadline contexts.
-- `DiscordKit`: foundational aliases plus `BotClient`, `BotConfiguration` and `EventHub`.
+- `DiscordKit`: foundational aliases plus consumer client, interaction and command aliases.
 - `DiscordFoundationTransport`: Apple Foundation HTTP and WebSocket adapters.
 - `DiscordNIOTransport`: owned bounded HTTP, WebSocket, UDP and ingress adapters.
 - `DiscordUnixPlatform`: bounded Unix-domain IPC byte streams.
@@ -67,6 +68,10 @@ establish endpoint parity or qualify untested hosts. See the
   scoped coalescing, opt-in bounded response caching, and message/poll, channel/thread, guild,
   moderation, expression, discovery/event, application/user/command, webhook/interaction/voice
   monetization and social/game backend REST catalogs.
+- `DiscordInteractions`: signed bounded ingress, transport-neutral response ownership,
+  optional early defer and independent durable webhook-event admission.
+- `DiscordCommands`: complete typed command definitions, bounded exact routing and
+  explicit canonical registration reconciliation.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases,
   startup/opcode budgets, typed dispatch decoding, correlated requests, bounded broadcast
   subscriptions and independently supervised ordered handlers.
@@ -76,6 +81,7 @@ establish endpoint parity or qualify untested hosts. See the
   service access, diagnostics and idempotent awaited shutdown.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),
+[interaction contracts](Docs/Interactions.md), the [HTTP application example](Examples/HTTPApp/README.md),
 [Gateway lifecycle and event catalog](Docs/Gateway.md),
 [the bot consumer example](Examples/GatewayBot/README.md), and
 [transport ownership, budgets and qualification limits](Docs/Transport.md).
@@ -83,24 +89,26 @@ The independent [local load harness](Tools/DiscordKitLoadTests/README.md) record
 bounded cohort measurements; broad platform and Phase 2 qualification gates remain open.
 
 Concrete NIO/Unix adapters use approved Apple NIO/TLS dependencies; portable and
-Foundation products do not link those packages. Development-only deterministic
+Foundation products do not link those packages. Interactions independently adopts
+Swift Crypto for Ed25519 verification and delivery digests; HTTP alone does not.
+Development-only deterministic
 clocks, barriers, scripts and resource tracking are excluded from library products.
 Apple deployment baselines are macOS 13, iOS/tvOS 16, watchOS 9 and visionOS 1;
 other-platform runtime qualification remains recorded separately.
 
-## Planned consumer experience
+## Consumer experience
 
 - REST services work without a Gateway connection or voice dependencies.
 - Bot clients supervise heartbeats, reconnect/resume, rate limits and socket
   ownership through an async run operation.
 - HTTP interactions work without loading Gateway or voice.
 - Commands and routers provide conveniences over complete typed requests.
-- Optional voice APIs own the media protocol and expose join, frames and leave.
+- Planned optional voice APIs will own the media protocol and expose join, frames and leave.
 - Platform and access restrictions produce explicit capability information.
 
-HTTP execution, the consumer client, sharded Gateway lifecycle and documented dispatch
-names are implemented with explicit partial child-resource projections. The remaining
-consumer workflows describe future work. Feature products are introduced
+HTTP execution, the consumer client, sharded Gateway lifecycle, HTTP interactions and
+command workflows are implemented with explicit partial child-resource projections.
+Feature products are introduced
 with implementations and tests as their roadmap phases are completed.
 
 Scalability is an early design requirement: deployments serving hundreds through
@@ -135,6 +143,7 @@ provisioning are not invented SDK endpoints. See Discord's
 - [Portable foundation contracts](Docs/Foundation.md)
 - [Owned transport adapters](Docs/Transport.md)
 - [HTTP execution and request reuse](Docs/HTTP.md)
+- [Signed ingress, interactions, commands and webhook events](Docs/Interactions.md)
 - [Sharded Gateway lifecycle and event catalog](Docs/Gateway.md)
 - [Concurrency and ownership](Docs/Concurrency.md)
 - [Scalability and request efficiency](Docs/Scalability.md)

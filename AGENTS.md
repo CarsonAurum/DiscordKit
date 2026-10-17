@@ -38,6 +38,10 @@ Part 7 adds the independently adopted consumer client, bounded broadcast subscri
 and ordered handlers, optional scoped entity cache/refresh and permission resolution;
 see `Docs/Client.md`. Client construction starts no tasks or network I/O. Reuse shared
 credential and aggregate resource authorities across client instances.
+Part 8 adds independently adopted signed HTTP ingress, interaction response ownership,
+early defer, command definitions/routing/reconciliation, durable webhook-event admission
+and display-only link previews; see `Docs/Interactions.md`. Construction starts no tasks
+or network I/O; initial acknowledgement admission remains independent of ordinary REST.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -49,7 +53,10 @@ credential and aggregate resource authorities across client instances.
 - `Sources/DiscordUnixPlatform/`, `Sources/DiscordApplePlatform/`: owned IPC/lifecycle.
 - `Sources/DiscordModels/`, `Sources/DiscordHTTP/`, `Sources/DiscordGateway/`:
   presence-aware projections, bounded HTTP policy and independently adopted shard runtime.
+- `Sources/DiscordInteractions/`, `Sources/DiscordCommands/`: signed ingress,
+  transport-neutral response ownership and bounded command workflows; neither imports Gateway.
 - `Examples/RESTOnly/`: independent REST consumer; build it without running authenticated calls.
+- `Examples/HTTPApp/`: independent signed HTTP consumer; build without authenticated calls.
 - `Sources/DiscordCache/`, `Sources/DiscordClient/`: optional bounded entity state and
   supervised consumer composition; Cache must never import Gateway, HTTP or Client.
 - `Examples/GatewayBot/`: independent bot consumer; build without authenticated calls.
@@ -109,6 +116,9 @@ The root suites cover the implemented foundations, without live Discord requests
 For HTTP/Gateway changes, also build `Examples/RESTOnly` and run affected local load
 scenarios. See `Docs/HTTP.md` and `Docs/Gateway.md` for authority sharing, ownership
 and qualification limits. Source changes must meet the method documentation and unit testing requirements below.
+For interaction/command changes, also build `Examples/HTTPApp` and preserve its selected
+graph without Gateway, Client or Cache. See `Docs/Interactions.md` for signature/replay,
+initial-response admission, token expiry and durable webhook acknowledgement contracts.
 For consumer/cache/event changes, also build `Examples/GatewayBot` and run the load
 package's cache/soak scenarios, including the fixed-working-set 30-minute local soak
 and actual RSS/accounted-byte evidence described in `Docs/Client.md` and the load README.

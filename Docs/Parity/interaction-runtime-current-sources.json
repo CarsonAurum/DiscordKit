@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-17",
+  "sources": [
+    {
+      "name": "receiving-and-responding",
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+      "sha256": "1dd54be770724955aec33c96cf763be5a9774e62b590b2c5ff82d670c6eccae0",
+      "bytes": 35721,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    },
+    {
+      "name": "application-commands",
+      "url": "https://docs.discord.com/developers/interactions/application-commands.md",
+      "sha256": "55c50c6b38feae40728a40c16480af889d086760913e19735894b7963736e473",
+      "bytes": 85981,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    },
+    {
+      "name": "webhook-events",
+      "url": "https://docs.discord.com/developers/events/webhook-events.md",
+      "sha256": "84c680a18f6f5067bde5f38ef7eb11b701c55a4b5e2b298c4709a26dd8c0bf58",
+      "bytes": 25431,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    },
+    {
+      "name": "component-embeds",
+      "url": "https://docs.discord.com/developers/link-previews/component-embeds.md",
+      "sha256": "b6f42d005469bd6fa1792157cb7a3377800ccdaf7dd7a31ae000f323f97f5fb3",
+      "bytes": 10581,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    },
+    {
+      "name": "overview",
+      "url": "https://docs.discord.com/developers/link-previews/overview.md",
+      "sha256": "a6750d584884ae3b2805bada1e4f29baecf776e0c3b5a0cdbacc26348952746d",
+      "bytes": 13751,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    },
+    {
+      "name": "component-reference",
+      "url": "https://docs.discord.com/developers/components/reference.md",
+      "sha256": "5ef3c56131881ad3dab3cdae9e8b28f03362cdf6528ef1adc0b60b2e99293013",
+      "bytes": 111348,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    },
+    {
+      "name": "api-reference",
+      "url": "https://docs.discord.com/developers/reference.md",
+      "sha256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "bytes": 36143,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-17",
+      "revision": "unknown",
+      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+    }
+  ]
+}

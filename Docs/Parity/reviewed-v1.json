@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "verifiedOn": "2026-10-16",
+  "verifiedOn": "2026-10-17",
   "maxAgeDays": 30,
   "sources": [
     {
@@ -167,6 +167,21 @@
       "id": "developers/topics/opcodes-and-status-codes",
       "revision": "37148620d2324292b76047541d5f8331f81ea77a",
       "sha256": "1eb069a0b5b8cece37de1d840be90432328ce91eaa617813cfe1b456cdbdf50f"
+    },
+    {
+      "id": "developers/events/webhook-events",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "c691bb026b03480ff4b406258d2ac7fa9129f2a3150692bb449bb40719c02fc0"
+    },
+    {
+      "id": "developers/link-previews/component-embeds",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "c949708581566a22e02d6d3ce2d4308e952daf92c8bf695046363a3e69ab5377"
+    },
+    {
+      "id": "developers/link-previews/overview",
+      "revision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "sha256": "145d6784efb22eedf28bcc4035390c82d6a9dd39b4a11591e71168bb32a2b341"
     }
   ],
   "definitions": [
@@ -39780,7 +39795,7 @@
       ],
       "notes": "API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
       "manual": {
-        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group \u2192 subcommand \u2192 leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in \u00b1(2^53-1), numbers in \u00b12^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
+        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group → subcommand → leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in ±(2^53-1), numbers in ±2^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
         "fields": [
           {
             "wireName": "type",
@@ -68702,6 +68717,215 @@
       "manual": {
         "behavior": "Reviewed classification and deterministic lifecycle evidence for every documented Gateway close code. Fatal authentication/configuration codes terminate, invalid/expired sessions reidentify and resumable failures use the bounded existing session lifecycle; unknown codes remain conservative. This records previously implemented early-slice behavior without changing upstream chronology. Gateway API v10 verified and locally added 2026-10-16. Current written source hashes are recorded in Docs/Parity/gateway-current-sources.json separately from unchanged original discovery provenance. JSON/uncompressed transport remains explicit. Named event coverage is separate from complete typed child-resource schemas. Privileged intent approval, live Discord, other-host/device, distributed storage adapters and sustained-capacity qualification remain separate."
       }
+    },
+    {
+      "id": "manual.8.SignedInteractionIngress",
+      "kind": "manual",
+      "name": "SignedInteractionIngress",
+      "sourceID": "developers/interactions/receiving-and-responding",
+      "upstreamIDs": [
+        "d-4fe57ce7a1ceec3615ac04da"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.8.SignedRequestVerifier",
+        "symbol.8.DiscordSignedIngress",
+        "symbol.8.InteractionHTTPApplication"
+      ],
+      "evidenceIDs": [
+        "evidence.8.SignedIngressTests.authenticatesExactOriginalBytes",
+        "evidence.8.SignedIngressTests.tamperingAndWrongKeys",
+        "evidence.8.InteractionHTTPApplicationTests.signedPing"
+      ],
+      "notes": "Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity.",
+      "manual": {
+        "behavior": "Ed25519 authentication of exact timestamp plus raw body before decoding; bounded body/header/count/replay admission and response cleanup through deadline/cancellation races. Configurable exact retry policy; fleet replay and deployment TLS remain consumer responsibilities. Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.8.InteractionLifecycle",
+      "kind": "manual",
+      "name": "InteractionLifecycle",
+      "sourceID": "developers/interactions/receiving-and-responding",
+      "upstreamIDs": [
+        "d-5cafa89f6fdd8ca3f9419adf"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.8.InteractionContext",
+        "symbol.8.InteractionResponder",
+        "symbol.8.InteractionAcknowledgementAdmission"
+      ],
+      "evidenceIDs": [
+        "evidence.8.InteractionLifecycleTests.continuationsAndExpiry",
+        "evidence.8.InteractionHTTPApplicationTests.earlyInlineDeferWhileHandlerContinues"
+      ],
+      "notes": "Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity.",
+      "manual": {
+        "behavior": "Transport-neutral context with distinct HTTP/Gateway mechanics, reserved initial acknowledgement, receipt-relative three-second/fifteen-minute deadlines, independent admission, explicit uncertainty and compatible early auto-defer with fixed visibility. Gateway replies use HTTP. JSON sinks leave bounded upload ownership to existing endpoints. Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.8.CommandRuntime",
+      "kind": "manual",
+      "name": "CommandRuntime",
+      "sourceID": "developers/interactions/application-commands",
+      "upstreamIDs": [
+        "d-5d8281cb8156827160e4542b"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.8.CommandDefinition",
+        "symbol.8.CommandRouter",
+        "symbol.8.CommandReconciler"
+      ],
+      "evidenceIDs": [
+        "evidence.8.CommandReconcilerTests.concurrencyCancellationAndDeadline"
+      ],
+      "notes": "Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity.",
+      "manual": {
+        "behavior": "Macro-free complete validated command definitions, bounded exact command/autocomplete/component/modal routing, and explicit canonical reconciliation. Fetch first, PATCH changed existing IDs and POST new definitions; preserve unmanaged commands and omitted contexts/install/handler settings. Identical definitions send zero writes; no startup registration or deletion. Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.8.WebhookEvents",
+      "kind": "manual",
+      "name": "WebhookEvents",
+      "sourceID": "developers/events/webhook-events",
+      "upstreamIDs": [
+        "d-331ffad083584c48874f0e97",
+        "d-0784e38ae7eb60460d98b83d",
+        "d-736e672e1264e78dc3bce468",
+        "d-f9272e776c22cc42c36cb605",
+        "d-6b50a23dd5750b5f05e383d1",
+        "d-f3d9f16a1c9074239cc0ada6",
+        "d-2d416c842dd09a8c3371d183",
+        "d-2a70baea972da33b2e54f342",
+        "d-d3919e48cfb7b692974379ce",
+        "d-85e0d8a04758f3c38d94f12b",
+        "d-e125b8ca38281f3088d43398",
+        "d-e8ca8dc7362a90943837ce55",
+        "d-c5167eca178ec6dce6b83b2c",
+        "d-8a8304157f9447370caa73b4",
+        "d-3097f8e17f12da787dba70ab",
+        "d-6ff525751018ce8ddb15f358",
+        "d-5ffbbef53b42ed582b6b0848",
+        "d-b205946de4d594c350d56e66",
+        "d-82cfd48219ccb12a911362e8",
+        "d-230b7ee69ba756b2e33041c6",
+        "d-6cf2b25ed703a6e047fb7479",
+        "d-fa341dd589ee107fecc25498",
+        "d-a8cb781f0b591111139faa04",
+        "d-30a73835cc385e43a69ee576",
+        "d-27c6efebaf31cc4dc1ed09da",
+        "d-5213401bdf1fb7dc7fbbdd68",
+        "d-59634480e11d5997217629a4",
+        "d-ce0cd08531126c27f6b8fcd0",
+        "d-ad50d4758d8c034bdebb4085",
+        "d-23d7da5370c7e59384cff355",
+        "d-a4ff467b17377ad2f6d85bfa",
+        "d-e23e0500d95dd0e7d21bd8c7",
+        "d-2d49fc78eb8fd8331f37bf94",
+        "d-9a3abf67977486ff1391afb8",
+        "d-1d3120cf66946322bf0697f0",
+        "d-557efab884dab3279f7cf06a",
+        "d-4ea46ebd254992ca7c55cfae",
+        "d-e75217576c97b5521ccf749d",
+        "d-58cf125e47dda0b50cc32e7f",
+        "d-a53440f9c7ffe2a4267d9638",
+        "d-c523641be3364bf01cb0ab2e",
+        "d-1babf054f3fbb4d6c12d113c",
+        "d-ecf4214fb658d8f2d4a1d4e4",
+        "d-1f30fc3c6de3eba1b346e364",
+        "d-316ab72a4db47a82a88e7253",
+        "d-5b5eecf9f7ea0ff50ec0ba9e"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.8.WebhookEventEnvelope",
+        "symbol.8.WebhookEvent",
+        "symbol.8.WebhookEventProcessor"
+      ],
+      "evidenceIDs": [
+        "evidence.8.WebhookEventModelTests.everyWrittenEvent",
+        "evidence.8.WebhookEventProcessorTests.signedPingAndDuplicateRetry",
+        "evidence.8.WebhookEventProcessorTests.ambiguousDurableCommitRetry"
+      ],
+      "notes": "Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity.",
+      "manual": {
+        "behavior": "Envelope v1 with typed authorization/entitlement and partial social messages; twelve names recognized, future values preserved. Unavailable quest schema and SDK child families remain partial. Signed PING gets empty204; events get204 after durable admission or duplicate result. Overload/pending duplicate/failed or uncertain commits return503 for retry. Bounded exact-byte digest cache does not establish semantic exactly-once effects or ordering. Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.8.ComponentEmbed",
+      "kind": "manual",
+      "name": "ComponentEmbed",
+      "sourceID": "developers/link-previews/component-embeds",
+      "upstreamIDs": [
+        "d-d660f6e1e47b50bc37c62cfb",
+        "d-1c60dc041e46144c03f1318d",
+        "d-ce9d59852cb146b4c8731ab1",
+        "d-a87a51f6020760d0b280e396",
+        "d-6b9ce9488007a7cee84d0982",
+        "d-9e0b43a0850122460461ec74",
+        "d-8330daf376fef3f32ff56d1e",
+        "d-0a8aeccdce41e2862d42e799",
+        "d-7b124b899d5a4c6a34ef04a4"
+      ],
+      "status": "supported",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.8.ComponentEmbed"
+      ],
+      "evidenceIDs": [
+        "evidence.8.ComponentEmbedTests.validDisplayBuilders",
+        "evidence.8.ComponentEmbedTests.countsAndBytes",
+        "evidence.8.ComponentEmbedTests.builderBoundariesAndLinkedJSON"
+      ],
+      "notes": "Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity.",
+      "manual": {
+        "behavior": "Display-only component embeds and inline/linked metadata. Publishing requires one root Container, eight documented display types with link-only buttons, at most forty components, ten gallery items and three thousand escaped UTF-8 JSON bytes. Bounded HTTP(S) URLs; unknown input retained but not publishable without validation. No interaction routing or render/fetch guarantee. Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity."
+      }
+    },
+    {
+      "id": "manual.8.LinkPreviewMetadata",
+      "kind": "manual",
+      "name": "LinkPreviewMetadata",
+      "sourceID": "developers/link-previews/overview",
+      "upstreamIDs": [
+        "d-022082ffb5039db02583edc3",
+        "d-b0919851c272c35f38cfc6cf",
+        "d-1fb5d05db041f1147dcf3ea5",
+        "d-7cc993705701c06d398a69a1"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-17",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.8.LinkPreviewMetadata"
+      ],
+      "evidenceIDs": [
+        "evidence.8.ComponentEmbedTests.metadataFallbackAndEscaping"
+      ],
+      "notes": "Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity.",
+      "manual": {
+        "behavior": "Safe common Open Graph fallback metadata for title, description, page/image URL, site name, RGB color and optional large-image Twitter marker. No HTML parser, video/oEmbed or JSON-LD family; their unsupported inventory classifications remain. Verified and locally added 2026-10-17. REST v10, interaction payload v1 and webhook envelope v1 are distinct. Current written fingerprints: Docs/Parity/interaction-runtime-current-sources.json; original discovery pins unchanged. Local deterministic support does not qualify live Discord, rendering, durable distributed storage, other hosts/devices or fleet capacity."
+      }
     }
   ],
   "symbols": [
@@ -87974,6 +88198,76 @@
       "id": "symbol.6.GatewayCloseDisposition.classify",
       "path": "Sources/DiscordGateway/GatewayProtocol.swift",
       "declaration": "    public static func classify(_ code: Int?) -> Self {"
+    },
+    {
+      "id": "symbol.8.SignedRequestVerifier",
+      "path": "Sources/DiscordInteractions/SignedRequestVerifier.swift",
+      "declaration": "public actor SignedRequestVerifier {"
+    },
+    {
+      "id": "symbol.8.DiscordSignedIngress",
+      "path": "Sources/DiscordInteractions/DiscordSignedIngress.swift",
+      "declaration": "public actor DiscordSignedIngress {"
+    },
+    {
+      "id": "symbol.8.InteractionHTTPApplication",
+      "path": "Sources/DiscordInteractions/InteractionHTTPApplication.swift",
+      "declaration": "public struct InteractionHTTPApplication: Sendable {"
+    },
+    {
+      "id": "symbol.8.InteractionContext",
+      "path": "Sources/DiscordInteractions/InteractionContext.swift",
+      "declaration": "public struct InteractionContext: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.8.InteractionResponder",
+      "path": "Sources/DiscordInteractions/InteractionResponder.swift",
+      "declaration": "public actor InteractionResponder: CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.8.InteractionAcknowledgementAdmission",
+      "path": "Sources/DiscordInteractions/InteractionAcknowledgementAdmission.swift",
+      "declaration": "public actor InteractionAcknowledgementAdmission {"
+    },
+    {
+      "id": "symbol.8.CommandDefinition",
+      "path": "Sources/DiscordCommands/CommandDefinition.swift",
+      "declaration": "public struct CommandDefinition: Sendable {"
+    },
+    {
+      "id": "symbol.8.CommandRouter",
+      "path": "Sources/DiscordCommands/CommandRouter.swift",
+      "declaration": "public actor CommandRouter {"
+    },
+    {
+      "id": "symbol.8.CommandReconciler",
+      "path": "Sources/DiscordCommands/CommandReconciler.swift",
+      "declaration": "public actor CommandReconciler {"
+    },
+    {
+      "id": "symbol.8.WebhookEventEnvelope",
+      "path": "Sources/DiscordModels/WebhookEvent.swift",
+      "declaration": "public struct WebhookEventEnvelope: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.8.WebhookEvent",
+      "path": "Sources/DiscordModels/WebhookEvent.swift",
+      "declaration": "public struct WebhookEvent: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.8.WebhookEventProcessor",
+      "path": "Sources/DiscordInteractions/WebhookEventProcessor.swift",
+      "declaration": "public actor WebhookEventProcessor {"
+    },
+    {
+      "id": "symbol.8.ComponentEmbed",
+      "path": "Sources/DiscordModels/ComponentEmbed.swift",
+      "declaration": "public struct ComponentEmbed: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.8.LinkPreviewMetadata",
+      "path": "Sources/DiscordModels/ComponentEmbed.swift",
+      "declaration": "public struct LinkPreviewMetadata: Sendable, Equatable {"
     }
   ],
   "evidence": [
@@ -92196,6 +92490,71 @@
       "id": "evidence.6.GatewayRuntimeTests.fatalPeerCode",
       "path": "Tests/DiscordGatewayTests/GatewayRuntimeTests.swift",
       "anchor": "fatalPeerCode"
+    },
+    {
+      "id": "evidence.8.SignedIngressTests.authenticatesExactOriginalBytes",
+      "path": "Tests/DiscordInteractionsTests/SignedIngressTests.swift",
+      "anchor": "authenticatesExactOriginalBytes"
+    },
+    {
+      "id": "evidence.8.SignedIngressTests.tamperingAndWrongKeys",
+      "path": "Tests/DiscordInteractionsTests/SignedIngressTests.swift",
+      "anchor": "tamperingAndWrongKeys"
+    },
+    {
+      "id": "evidence.8.InteractionHTTPApplicationTests.signedPing",
+      "path": "Tests/DiscordInteractionsTests/InteractionHTTPApplicationTests.swift",
+      "anchor": "signedPing"
+    },
+    {
+      "id": "evidence.8.InteractionLifecycleTests.continuationsAndExpiry",
+      "path": "Tests/DiscordInteractionsTests/InteractionLifecycleTests.swift",
+      "anchor": "continuationsAndExpiry"
+    },
+    {
+      "id": "evidence.8.InteractionHTTPApplicationTests.earlyInlineDeferWhileHandlerContinues",
+      "path": "Tests/DiscordInteractionsTests/InteractionHTTPApplicationTests.swift",
+      "anchor": "earlyInlineDeferWhileHandlerContinues"
+    },
+    {
+      "id": "evidence.8.CommandReconcilerTests.concurrencyCancellationAndDeadline",
+      "path": "Tests/DiscordCommandsTests/CommandReconcilerTests.swift",
+      "anchor": "concurrencyCancellationAndDeadline"
+    },
+    {
+      "id": "evidence.8.WebhookEventModelTests.everyWrittenEvent",
+      "path": "Tests/DiscordModelsTests/WebhookEventModelTests.swift",
+      "anchor": "everyWrittenEvent"
+    },
+    {
+      "id": "evidence.8.WebhookEventProcessorTests.signedPingAndDuplicateRetry",
+      "path": "Tests/DiscordInteractionsTests/WebhookEventProcessorTests.swift",
+      "anchor": "signedPingAndDuplicateRetry"
+    },
+    {
+      "id": "evidence.8.WebhookEventProcessorTests.ambiguousDurableCommitRetry",
+      "path": "Tests/DiscordInteractionsTests/WebhookEventProcessorTests.swift",
+      "anchor": "ambiguousDurableCommitRetry"
+    },
+    {
+      "id": "evidence.8.ComponentEmbedTests.validDisplayBuilders",
+      "path": "Tests/DiscordModelsTests/ComponentEmbedTests.swift",
+      "anchor": "validDisplayBuilders"
+    },
+    {
+      "id": "evidence.8.ComponentEmbedTests.countsAndBytes",
+      "path": "Tests/DiscordModelsTests/ComponentEmbedTests.swift",
+      "anchor": "countsAndBytes"
+    },
+    {
+      "id": "evidence.8.ComponentEmbedTests.builderBoundariesAndLinkedJSON",
+      "path": "Tests/DiscordModelsTests/ComponentEmbedTests.swift",
+      "anchor": "builderBoundariesAndLinkedJSON"
+    },
+    {
+      "id": "evidence.8.ComponentEmbedTests.metadataFallbackAndEscaping",
+      "path": "Tests/DiscordModelsTests/ComponentEmbedTests.swift",
+      "anchor": "metadataFallbackAndEscaping"
     }
   ]
 }

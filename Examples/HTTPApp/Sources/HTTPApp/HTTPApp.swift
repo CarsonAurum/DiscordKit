@@ -1,0 +1,63 @@
+import DiscordCommands
+import DiscordCore
+import DiscordInteractions
+import DiscordModels
+import DiscordNIOTransport
+import DiscordTransport
+import Foundation
+
+/// Independent signed HTTP command application. It never imports or starts Gateway or reads a bot token.
+@main struct HTTPApp {
+    /// Runs an opt-in loopback listener with a fixed task/socket/body budget and explicit shutdown ownership.
+    /// Requires DISCORD_APPLICATION_ID and DISCORD_PUBLIC_KEY; port defaults to 8080. Register `/ping`
+    /// explicitly using CommandReconciler or the Developer Portal before invoking it. Deployment supplies
+    /// HTTPS termination and forwarding of original bytes/signature fields. Repository checks build only.
+    static func main() async {
+        let environment = ProcessInfo.processInfo.environment
+        guard let rawID = environment["DISCORD_APPLICATION_ID"], let identifier = UInt64(rawID),
+              let publicKey = environment["DISCORD_PUBLIC_KEY"],
+              let port = UInt16(environment["DISCORD_HTTP_PORT"] ?? "8080"), port > 0 else {
+            print("Set DISCORD_APPLICATION_ID and DISCORD_PUBLIC_KEY; optional DISCORD_HTTP_PORT defaults to 8080.")
+            return
+        }
+        do {
+            let clock = ContinuousClock()
+            let verifier = try SignedRequestVerifier(publicKey: publicKey)
+            let application = try InteractionHTTPApplication(applicationID: .init(rawValue: identifier),
+                ingress: DiscordSignedIngress(verifier: verifier, maximumConcurrentRequests: 32),
+                admission: InteractionAcknowledgementAdmission(maximumConcurrent: 32))
+            let definition = try CommandDefinition.slash(name: "ping", description: "Check this HTTP application")
+            _ = definition // Intentional explicit definition; construction never registers commands.
+            let router = try CommandRouter(routes: [
+                CommandRoute(key: .command(name: "ping")) { context in
+                    try await context.responder.reply(InteractionMessageCreate(content: .value("Pong!"), flags: .value(.ephemeral)))
+                },
+            ], maximumConcurrentHandlers: 32)
+            let listener = try await NIOHTTPIngress.bind(localAddress: .init(host: "127.0.0.1", port: port),
+                maximumConnections: 64, maximumPendingRequests: 32, context: TransportContext(clock: clock))
+            print("HTTP interaction listener ready on loopback port \(port).")
+            do {
+                try await withThrowingTaskGroup(of: Void.self) { group in
+                    var active = 0
+                    while !Task.isCancelled {
+                        if active == 32 { _ = try await group.next(); active -= 1 }
+                        guard let exchange = try await listener.accept(context: TransportContext(clock: clock)) else { break }
+                        active += 1
+                        group.addTask {
+                            do {
+                                try await application.handle(exchange,
+                                    context: TransportContext(clock: clock, deadline: clock.now.advanced(by: .seconds(3)))) { context in
+                                    if try await !router.route(context) {
+                                        try await context.responder.reply(InteractionMessageCreate(content: .value("Unknown command"), flags: .value(.ephemeral)))
+                                    }
+                                }
+                            } catch { await exchange.responder.close() }
+                        }
+                    }
+                    try await group.waitForAll()
+                }
+            } catch { print("HTTP listener stopped; inspect typed errors in your application.") }
+            await listener.close()
+        } catch { print("HTTP application configuration or listener setup failed.") }
+    }
+}

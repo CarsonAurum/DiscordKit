@@ -8,9 +8,10 @@ Phase 5H implements **28 current written REST operations** in API **v10**:
 [reference](https://docs.discord.com/developers/reference) and
 [change log](https://docs.discord.com/developers/change-log) contracts were verified
 **2026-10-16**. Current fingerprints are independent of historical discovery pins.
-No dependencies or runtime products are added. HTTP ingress/signature verification,
-interaction routing and durable acknowledgement are Phase 8; voice networking,
-media and devices are separate work. Phase 5J adds [lobbies and identity profiles](SocialGame.md).
+Phase 5H added no dependencies or runtime products. Phase 8 now adds independently
+adopted [signed ingress, response ownership, routing and durable webhook-event
+admission](Interactions.md). Voice networking, media and devices remain separate
+work. Phase 5J adds [lobbies and identity profiles](SocialGame.md).
 
 ## Webhook ownership and execution
 
@@ -100,8 +101,11 @@ verify signatures or establish authority from retained permission strings.
 
 The initial acknowledgement must reach Discord within **three seconds**; continuation
 tokens last **15 minutes**. Callers own trusted receipt times and supply finite
-execution deadlines. REST factories do not start timers or claim to enforce token
-age without that information. Expiry cannot recall an already submitted mutation.
+execution deadlines. Raw REST factories do not start timers or enforce token age.
+The optional Phase 8 response actor binds that receipt evidence to exclusive
+deadlines, one initial owner and independent initial admission; see
+[the lifecycle guide](Interactions.md#response-ownership-and-deadlines). Expiry
+cannot recall an already submitted mutation.
 Original and follow-up deletion includes ephemeral messages. Message visibility,
 follow-up count restrictions, channel permissions, application eligibility and token
 expiry remain server checks.

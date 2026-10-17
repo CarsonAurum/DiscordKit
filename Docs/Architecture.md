@@ -1,6 +1,6 @@
 # Architecture and API conventions
 
-Status: adopted design, updated 2026-10-16. `DiscordBits`, `DiscordCore` and
+Status: adopted design, updated 2026-10-17. `DiscordBits`, `DiscordCore` and
 `DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
 Core aliases. Part 2 adds independently injected Foundation/NIO adapters, Unix IPC
 and Apple lifecycle ownership. Part 3 adds [HTTP execution](HTTP.md), partial Models
@@ -38,6 +38,11 @@ Part 7 adds [consumer composition and optional state](Client.md): independent Ca
 and Client products, bounded broadcast/ordered handler infrastructure in Gateway,
 explicit scoped cache bridging and typed service access. The umbrella now composes
 Client; REST-only consumers retain the independent HTTP graph.
+Part 8 adds [signed ingress, response ownership and command workflows](Interactions.md)
+in independent Interactions/Commands products. HTTP applications adopt neither Gateway
+nor Client/Cache. Interactions selects Swift Crypto for signed requests and digests;
+HTTP itself keeps its existing dependency graph. Webhook-event admission requires an
+injected durable commit authority; display-only preview values remain in Models.
 See [transport contracts](Transport.md). The complete
 graph below remains the intended architecture, beyond
 the current manifest. Introduce further targets and products with implementations
@@ -68,6 +73,7 @@ flowchart TD
     DiscordNIOTransport --> DiscordTransport
     DiscordCache --> DiscordModels
     DiscordInteractions --> DiscordHTTP
+    DiscordInteractions --> SwiftCrypto[Swift Crypto]
     DiscordCommands --> DiscordInteractions
     DiscordOAuth --> DiscordHTTP
     DiscordGameServices --> DiscordOAuth
@@ -97,6 +103,8 @@ Owned adapters may depend on approved Apple networking packages or platform
 facilities. Their concrete dependency graph must be recorded and qualified before
 advertising support. Development generators, documentation audits, fixtures and
 test support are separate from public runtime products.
+The Client → Interactions edge remains planned; current Gateway consumers explicitly
+normalize trusted interaction dispatches into the same context and response actor.
 
 ## Responsibilities and invariants
 
@@ -108,7 +116,8 @@ test support are separate from public runtime products.
 | HTTP | Typed service descriptors, authentication policy, codecs, bounded bodies, rate limits, retries and pagination. No Gateway requirement. |
 | Gateway | Protocol state, discovery, shards, heartbeats, typed catalog, bounded requests/admission, independent bounded broadcast and handler execution. Does not import cache or user handlers. |
 | Cache | Optional scoped projections, explicit coalesced refresh/freshness, sparse state, uncertainty and pure arbitrary-width permission resolution. Imports no Gateway/HTTP/Client. |
-| Interactions/Commands | HTTP-only signature/response lifecycle and complete typed command construction/routing. Commands does not import Client. |
+| Interactions | Signed bounded HTTP ingress, shared HTTP/Gateway response ownership, independent initial admission and durable webhook-event admission hooks. Imports neither Gateway nor concrete adapters. |
+| Commands | Complete typed definitions, bounded exact routing and explicit canonical registration reconciliation. Imports neither Gateway nor Client. |
 | Client/Kit | Supervised discovery/shard/ingestion composition, configuration, optional cache bridge, event access, diagnostics and typed services. |
 | Voice | Optional voice/media protocols; narrow Gateway control contracts rather than dependence on the facade. Crypto, MLS and codec work stays isolated. |
 | RPC/Activities/Social/Commerce | Distinct local, host, authentication and access contracts; missing wire definitions remain explicit blockers. |
@@ -135,8 +144,11 @@ rate-limit scheduling, serialization and sockets.
 
 HTTP-only applications validate and respond to interactions without loading
 Gateway or voice. Command builders expose all supported typed fields and permit
-direct typed request construction. Voice consumers join, exchange frames and
-leave; the module owns heartbeats, discovery, encryption and media counters.
+direct typed request construction. The same response actor accepts trusted Gateway
+snapshots and uses a dedicated HTTP callback queue. Defer, expiry and ambiguous
+submission remain explicit; no handler, command synchronization or listener starts
+at construction. Planned voice consumers will join, exchange frames and leave;
+the module will own heartbeats, discovery, encryption and media counters.
 
 Expose status, errors and diagnostic hooks without making callers maintain
 protocol internals. Diagnostics must redact credentials in headers, paths,
@@ -153,12 +165,12 @@ bodies, signed URLs, errors, descriptions, logs, metrics, traces and fixtures.
 - Typed authentication distinguishes bot, bearer, interaction, webhook and
   credential-free operations. Services cannot send API credentials to arbitrary
   origins or CDN requests. Portal setup is documented separately from API calls.
-- Specify protocol versions explicitly. The baseline intends
+- Specify protocol versions explicitly. Current REST and Gateway integrations use
   [REST v10](https://docs.discord.com/developers/reference#api-versioning),
-  [Gateway v10](https://docs.discord.com/developers/events/gateway) and
-  [Voice Gateway v8](https://docs.discord.com/developers/topics/voice-connections),
-  subject to official re-verification before each implementation; these values
-  are not current runtime integrations.
+  [Gateway v10](https://docs.discord.com/developers/events/gateway), interaction
+  payload version 1 and webhook-event envelope version 1. The planned voice baseline
+  is [Voice Gateway v8](https://docs.discord.com/developers/topics/voice-connections),
+  subject to official re-verification before implementation.
 - Model permissions, intents, access prerequisites, pagination and retry policy
   per operation. Preserve cancellation and expose an indeterminate mutation
   outcome instead of automatically replaying an ambiguous non-idempotent request.

@@ -1,12 +1,17 @@
 # Dependency policy and qualification
 
-Updated: 2026-10-15. Part 2 adds approved Apple SwiftNIO/TLS dependencies only
+Updated: 2026-10-17. Part 2 adds approved Apple SwiftNIO/TLS dependencies only
 to the concrete NIO/Unix adapters. Bits, Core, Transport, DiscordKit and Foundation
 products do not import or link NIO. Separate development probes retain their
 independent exact graphs. Runtime qualification remains capability/host-specific;
 see [owned adapters](Transport.md) and [platform evidence](PlatformSupport.md).
 
-The portable targets use the Swift standard library and Foundation. The internal
+Part 8 adds Swift Crypto only to Interactions, and consequently to Commands and the
+umbrella facade. Bits/Core/Transport, Models, HTTP and Foundation transport remain
+independent of Crypto. Its selected products and conditional native graph are recorded
+[below](#part-8-signed-ingress-addition).
+
+The foundational targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
 explicit newer Apple availability; it does not raise the runtime product minima
 or introduce a package dependency. The runtime adapter graph is now independently
@@ -86,9 +91,9 @@ also identifies bundled MIT/BSD-3 components; NIOSSL's
 identifies bundled BoringSSL under combined ISC/OpenSSL terms. Preserve the
 applicable license and attribution notices when distributing those components.
 This identifies reviewed files rather than certifying a complete redistribution
-audit: Crypto/CryptoExtras' complete native-component notices and the
-selected binaries' complete attribution requirements remain to be checked before
-their production addition or distribution.
+audit: selected binaries' complete native-component attribution requirements remain
+to be reviewed for distribution. The Part 8 addition below records the selected
+Crypto product; CryptoExtras remains a development-probe dependency only.
 
 ## Requirements, resolved pins and provenance
 
@@ -185,3 +190,47 @@ Gateway or a concrete adapter. The RESTOnly example selects Foundation transport
 the separate load harness adopts HTTP/Gateway explicitly. Existing approved NIO/TLS
 versions remain unchanged. Example resolution is pinned independently and build/test
 support is excluded from all runtime products.
+
+## Part 8 signed ingress addition
+
+The official latest stable [Swift Crypto release](https://github.com/apple/swift-crypto/releases/tag/5.0.1)
+was verified as **5.0.1 on 2026-10-17**; its upstream publication date is unknown in
+this record. The root requirement is `from: "5.0.1"`, allowing compatible releases
+below 6.0.0. `DiscordInteractions` selects only `Crypto` for Ed25519 signature
+verification and SHA-256 webhook delivery digests. No CryptoExtras or SwiftASN1
+product is linked by that selection. Package-level resolution still includes ASN.1
+because CryptoExtras declares it; the committed root and HTTPApp lockfiles retain
+the exact two new pins:
+
+| Package | Version | Git revision | Selected role |
+| --- | --- | --- | --- |
+| swift-crypto | 5.0.1 | 1c80d3aff53fedc445b60692980cb4f19a618657 | `Crypto` runtime product |
+| swift-asn1 | 1.7.3 | 3b6410f7dee09eb33cdd26260c5fd47fda19b0e2 | Resolved, unselected product dependency |
+
+The pinned [Crypto manifest](https://github.com/apple/swift-crypto/blob/1c80d3aff53fedc445b60692980cb4f19a618657/Package.swift)
+requires Swift tools 6.2; ASN.1 requires 6.1, both compatible with the root's 6.4
+minimum. Root Apple deployment minima remain unchanged. Darwin's Crypto module
+reexports the platform CryptoKit implementation. On Linux, Android, Windows, WASI,
+OpenBSD and FreeBSD its selected target conditionally includes CCryptoBoringSSL,
+CryptoBoringWrapper, CXKCP and CXKCPShims. The vendored BoringSSL revision is
+`0226f30467f540a3f62ef48d453f93927da199b6`; XKCP provenance and notices are
+retained in the pinned package's source headers and vendored-source records.
+Those edges describe source selection, not compilation or runtime qualification
+on those hosts.
+
+The pinned Crypto and ASN.1 top-level licenses are Apache-2.0, linked above.
+Crypto's NOTICE and embedded native-source notices also apply to distributions
+containing those components; the newer Crypto BoringSSL copy must not inherit
+NIOSSL's separate older combined-license description by assumption. The checked
+Crypto signing source includes Apache-2.0 and public-domain-origin attribution;
+XKCP files carry their own notices. Preserve the applicable exact notices and
+review the complete selected binary's attribution on each distributing platform.
+The top-level license check is not a complete native redistribution audit.
+
+Real-signature and digest tests run locally on macOS arm64/Swift 6.4. The independent
+[HTTPApp](../Examples/HTTPApp/README.md) builds through Interactions/Commands and an
+explicit NIO adapter without compiling Gateway, Client, Cache or the umbrella.
+REST-only consumers still select HTTP without Crypto or Gateway. No authenticated
+example execution, other-host native Crypto build, physical-device result or
+voice/MLS interoperability is established by these checks. Existing NIO/TLS pins
+are unchanged; see [the interaction guide](Interactions.md) for the implemented scope.

@@ -863,6 +863,57 @@
       ],
       "details": "changes/2026-10-16-consumer-runtime.md",
       "remainingGates": "../Client.md"
+    },
+    {
+      "id": "2026-10-17-interaction-runtime",
+      "recordedOn": "2026-10-17",
+      "upstreamVersions": {
+        "REST": "10",
+        "interactionPayload": "1",
+        "webhookEnvelope": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-17",
+      "localSupportDate": "2026-10-17",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "Typed callback/command/component REST payloads without signed ingress, response lifecycle ownership, routing, durable webhook admission or website component embeds.",
+      "currentBehavior": "Independent Interactions/Commands products add exact-byte Ed25519 authentication, bounded replay/admission, actor-reserved acknowledgement and continuation lifecycle, explicit auto-defer and uncertainty, typed routing, canonical PATCH/POST-only command synchronization, durable duplicate-aware webhook events, display-only component embeds and partial common metadata helpers.",
+      "affectedSymbols": [
+        "SignedRequestVerifier",
+        "DiscordSignedIngress",
+        "InteractionHTTPApplication",
+        "InteractionContext",
+        "InteractionResponder",
+        "InteractionAcknowledgementAdmission",
+        "InteractionResponseSink",
+        "CommandDefinition",
+        "CommandRouter",
+        "CommandReconciler",
+        "ApplicationCommandCreate.replacementChanges",
+        "WebhookEventEnvelope",
+        "WebhookEvent",
+        "WebhookEventProcessor",
+        "ComponentEmbed",
+        "LinkPreviewMetadata"
+      ],
+      "affectedPayloads": "REST v10 callback/command JSON, interaction v1, webhook envelope v1, current component display subset. SDK social child projections, quest schema and broader metadata remain partial/unsupported.",
+      "breakingChanges": [],
+      "migration": "Additive opt-in products. Select one interaction delivery mode, share bounded authorities and explicitly own adapters and durable admission. Separate initial REST queues; edit deferred originals before follow-ups. Reconciliation preserves unmanaged commands and omitted installation/context/handler settings. JSON sinks use existing typed endpoints for multipart. Distributed replay/idempotency and live/platform qualification remain separate.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/interactions/application-commands",
+        "https://docs.discord.com/developers/events/webhook-events",
+        "https://docs.discord.com/developers/link-previews/component-embeds",
+        "https://docs.discord.com/developers/link-previews/overview",
+        "https://docs.discord.com/developers/components/reference",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-17-interaction-runtime.md",
+      "remainingGates": "../Interactions.md"
     }
   ]
 }

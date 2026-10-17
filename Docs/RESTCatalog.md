@@ -101,7 +101,8 @@ is rejected. Forward requests require the source channel and message IDs. Poll
 requests validate text/answer/duration/emoji constraints separately from response
 schemas. Components V2 use the correct flag and reject incompatible traditional
 content fields. Modal-only component types are decoded for forward access but
-are rejected by message-request validation; interaction/modal lifecycle is Phase 8.
+are rejected by message-request validation; [Phase 8 interaction/modal lifecycle](Interactions.md)
+provides independent signed ingress, response ownership and command routing.
 
 `MessageUploadFile` owns materialized bytes or a fresh bounded producer factory.
 `MessageUploadLimits` distinguishes the current default **20 MiB per-file** cap

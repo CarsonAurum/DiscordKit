@@ -1,0 +1,17 @@
+{
+  "architecture": "arm64",
+  "buildConfiguration": "release",
+  "concurrentWork": "Other repository validation and a separate sustained cache process ran concurrently; timing is local regression evidence, not an isolated throughput qualification. Process RSS is per executable instance.",
+  "dirtySource": true,
+  "executableSHA256": "321cb1f4043288d2fa50abef67eaab533d7ebc0250bb1ac96544a52c6d3675ed",
+  "hardwareModel": "Mac15,10",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "measurementScope": "HTTP policy owners in one process; sampled queue/cache/metadata caps, request savings and CPU/RSS; no Discord quota or fleet/soak qualification",
+  "peer": "offline finite HTTP policy script; zero credentials and sockets; artificial 1 ms exchange latency",
+  "physicalMemoryBytes": 38654705664,
+  "processor": "Apple M3 Max",
+  "qualification": "Existing HTTP policy or cache/broadcast regression only; does not measure Part 8 ingress, routing, durable admission, live Discord or fleet capacity.",
+  "recordedAtUTC": "2026-10-17T16:50:22.645548+00:00",
+  "sourceCommitBasis": "aa4325a9f690475a360d5560fe3654db1eea001d",
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0"
+}

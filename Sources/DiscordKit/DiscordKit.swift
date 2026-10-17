@@ -2,6 +2,19 @@ import DiscordCore
 import DiscordClient
 import DiscordGateway
 import DiscordTransport
+import DiscordCommands
+import DiscordInteractions
+
+/// Macro-free typed command definition; independent consumers import `DiscordCommands`.
+public typealias CommandDefinition = DiscordCommands.CommandDefinition
+/// Explicit bounded command/autocomplete/component/modal routing for either delivery mode.
+public typealias CommandRouter = DiscordCommands.CommandRouter
+/// Explicit command synchronization that preserves unmanaged registrations.
+public typealias CommandReconciler = DiscordCommands.CommandReconciler
+/// Typed HTTP/Gateway input paired with one actor-protected response owner.
+public typealias InteractionContext = DiscordInteractions.InteractionContext
+/// HTTP-only signed interaction application; no Gateway product is required for independent adoption.
+public typealias InteractionHTTPApplication = DiscordInteractions.InteractionHTTPApplication
 
 /// Supervised consumer bot client; import `DiscordClient` for the independent runtime product.
 public typealias BotClient<C: Clock, Leases: ShardLeaseStore> = DiscordClient<C, Leases>
