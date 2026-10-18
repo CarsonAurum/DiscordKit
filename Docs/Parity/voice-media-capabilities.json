@@ -81,7 +81,12 @@
         "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift",
         "Sources/DiscordVoiceCodecs/SILKParameterTables.swift",
         "Sources/DiscordVoiceCodecs/SILKNLSF.swift",
-        "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift"
+        "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKFrameParameterEncoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKPacketLossConcealment.swift",
+        "Sources/DiscordVoiceCodecs/SILKStereoDecoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKStereoEncoder.swift"
       ],
       "evidence": [
         "Tests/DiscordVoiceCodecsTests/SILKLinearPredictionTests.swift",
@@ -92,7 +97,7 @@
         "Tests/DiscordVoiceCodecsTests/SILKNLSFTests.swift",
         "Tests/DiscordVoiceCodecsTests/SILKFrameDecoderTests.swift"
       ],
-      "remainingGates": "Owned pulse/shell/sign entropy, gain/NLSF/pitch/LTP parameters, fixed-point NLSF conversion/interpolation/stability and no-loss compressed channel-to-PCM16 reconstruction. Exact official integer PCM/history/entropy comparisons across successive frames. No encoder analysis/quantization, stereo, PLC/FEC or complete hybrid codec."
+      "remainingGates": "Owned fixed-point mono/stereo reconstruction, normative API1 mid output, internal-rate changes, CNG/PLC/recovery and LBRR selection with exact scalar reference evidence. Conservative PCM encoding and parameter entropy are implemented; perceptual encoder quality, complete adaptive analysis/rate policy and broad malformed-stream qualification remain bounded."
     },
     {
       "id": "celt-band-shape",
@@ -138,7 +143,7 @@
         "Tests/DiscordVoiceCodecsTests/CELTFrameHeaderTests.swift",
         "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift"
       ],
-      "remainingGates": "Owned segmented headers, coarse/fine/final energies, bit allocation/skips/stereo, denormalization, variable-duration transient overlap, pitch postfilters and deemphasis. Exact entropy/integer decisions; floating PCM tolerance-qualified against pinned scalar reference. No perceptual analysis, PLC/FEC, complete hybrid or full official conformance claim."
+      "remainingGates": "Owned ordinary and hybrid-band CELT decode, spectral channel conversion, periodic/noise PLC and post-loss energy recovery. Exact compressed arithmetic; floating synthesis/PLC tolerance-qualified against pinned scalar reference. Basic encoder omits perceptual VBR/transient/pitch decisions; numerical stress tolerances are report-specific and do not imply bit-exact float PCM."
     },
     {
       "id": "opus-encoder-decoder",
@@ -148,15 +153,42 @@
         "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift",
         "Sources/DiscordVoiceCodecs/CELTPacketCodec.swift",
         "Sources/DiscordVoiceCodecs/SILKMonoDecoder.swift",
-        "Sources/DiscordVoiceCodecs/SILKMonoPacketDecoder.swift"
+        "Sources/DiscordVoiceCodecs/SILKMonoPacketDecoder.swift",
+        "Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift",
+        "Sources/DiscordVoiceCodecs/OpusAudioDecoder.swift",
+        "Sources/DiscordVoiceCodecs/OpusHybridDecoder.swift",
+        "Sources/DiscordVoiceCodecs/OpusHybridEncoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKFrameParameterEncoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKPacketLossConcealment.swift",
+        "Sources/DiscordVoiceCodecs/SILKStereoDecoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKStereoEncoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKFrameQuantization.swift",
+        "Sources/DiscordVoiceCodecs/CELTSynthesis.swift",
+        "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift",
+        "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift"
       ],
       "evidence": [
         "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
         "Tests/DiscordVoiceCodecsTests/SILKMonoDecoderTests.swift",
         "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
-        "Tests/DiscordVoiceCodecsTests/CELTFrameOracleTests.swift"
+        "Tests/DiscordVoiceCodecsTests/CELTFrameOracleTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTConcealmentTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTPacketLossTests.swift",
+        "Tests/DiscordVoiceCodecsTests/OpusAudioDecoderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/OpusHybridCodecTests.swift",
+        "Tests/DiscordVoiceCodecsTests/OpusRangeStorageTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKFrameParameterEncoderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKPacketLossTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKStereoEncoderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTChannelConversionTests.swift",
+        "Tests/DiscordVoiceCodecsTests/OpusMalformedAudioTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
+        "Tests/DiscordVoiceCodecsTests/OpusHybridFECOracleTests.swift"
       ],
-      "remainingGates": "Ordinary CELT long-block PCM encoding and ordinary no-loss frame/packet decoding; mono SILK-only decoding to48kPCM16 at fixed internal8/12/16kHz rate. No full SILK/hybrid encoding, SILK stereo/rate changes, hybrid/mode transitions, redundant-frame mixing, PLC/FEC/DTX or official full decoded-PCM conformance. Basic CELT encoder has no perceptual VBR/transient/pitch analysis. Zero/one-byte CELT and empty SILK loss frames reject explicitly."
+      "remainingGates": "Ordinary 48kHz mono/stereo SILK/CELT/hybrid decoding, coded/output channel and rate changes, transition redundancy/fades, explicit PLC/CNG and subsequent-packet FEC. Conservative fixed-format SILK/hybrid PCM encoders and long-block CELT encoder have bounded analysis/rate policies; voiced pitch/LTP and optional encoder LBRR are implemented; perceptual/noise-shaping/transient/VBR/DTX qualification remains separate. No multistream, container, enhancement-extension, output-gain or integer soft-clip API. Official full-vector evidence and exact scope are in phase12a-opus-conformance-validation.json; device and realtime qualification remain open."
     },
     {
       "id": "transport-aead",
@@ -266,7 +298,7 @@
       "status": "unsupported",
       "implementation": [],
       "evidence": [],
-      "remainingGates": "External crypto audit, Opus/MLS/DAVE conformance, per-platform tests, authorized Discord smoke, ten-minute lossless duplex and frame-budget/RSS evidence have not run."
+      "remainingGates": "Official ordinary RFC8251 48kHz decoded-PCM corpus and independent compressed/loss/FEC comparisons are reported separately with exact scope. External crypto audit, MLS/DAVE conformance, per-platform native tests, perceptual encoding quality, authorized Discord smoke, ten-minute lossless duplex and frame-budget/RSS evidence remain open."
     }
   ]
 }

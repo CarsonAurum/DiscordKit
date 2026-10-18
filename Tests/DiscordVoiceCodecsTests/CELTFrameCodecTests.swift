@@ -70,6 +70,52 @@ struct CELTFrameCodecTests {
         for end in [Int.min, -1, 0, 22, Int.max] {
             #expect(throws: CELTBitAllocationError.invalidBandRange) { try CELTFrameEncoder(frameSampleCount: 120, endBand: end) }
         }
+        for (start, end) in [(Int.min,21),(-1,21),(20,20),(21,21),(Int.max,Int.max),(17,16)] {
+            #expect(throws: CELTBitAllocationError.invalidBandRange) {
+                try CELTFrameEncoder(frameSampleCount: 120, startBand: start, endBand: end)
+            }
+        }
+    }
+
+    /// Shared encoding rejects too-small storage, finalized coders and operation exhaustion atomically.
+    /// A failure after spectral analysis must preserve both the caller's arithmetic state and the
+    /// encoder's warm overlap/preemphasis/envelope history, including hybrid high-band configurations.
+    /// - Throws: Valid setup or recovery coding failures indicate an implementation regression.
+    @Test func sharedEncoderFailurePreservesCallerAndSignalState() throws {
+        for channels in 1...2 {
+            for start in [0, 17] {
+                var encoder = try CELTFrameEncoder(frameSampleCount: 480, channelCount: channels, startBand: start)
+                let pcm = samples(size: 480, channels: channels)
+                _ = try encoder.encode(pcm, frameByteCount: 80)
+                var baseline = encoder
+                for count in [0, 1] {
+                    var entropy = try OpusRangeEncoder(frameByteCount: count)
+                    #expect(throws: CELTFrameEncoderError.invalidFrameByteCount) {
+                        try encoder.encode(pcm, into: &entropy)
+                    }
+                    #expect(entropy.operationCount == 0 && entropy.bitsUsed == 1)
+                }
+                var finalized = try OpusRangeEncoder(frameByteCount: 80)
+                _ = try finalized.finalize()
+                let before = (finalized.finalRange, finalized.bitsUsed, finalized.operationCount)
+                #expect(throws: OpusRangeCodingError.finalized) {
+                    try encoder.encode(pcm, into: &finalized)
+                }
+                #expect(finalized.finalRange == before.0 && finalized.bitsUsed == before.1
+                    && finalized.operationCount == before.2)
+                var limited = try OpusRangeEncoder(frameByteCount: 80, maximumOperations: 1)
+                #expect(throws: OpusRangeCodingError.operationLimitExceeded) {
+                    try encoder.encode(pcm, into: &limited)
+                }
+                #expect(limited.operationCount == 0 && limited.bitsUsed == 1)
+                try limited.encodeBit(false, logProbability: 1)
+                #expect(limited.operationCount == 1)
+                var valid = try OpusRangeEncoder(frameByteCount: 80)
+                var control = valid
+                #expect(try encoder.encode(pcm, into: &valid) == baseline.encode(pcm, into: &control))
+                #expect(valid.finalRange == control.finalRange && valid.bitsUsed == control.bitsUsed)
+            }
+        }
     }
 
     /// Validation and entropy failures after a warm frame preserve every encoder predictor/history field.

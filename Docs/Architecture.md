@@ -67,6 +67,11 @@ and tests. See [foundation contracts](Foundation.md) for current scope and limit
 Part 12's initial [media/voice release](Voice.md) adds Media, VoiceCodecs,
 VoiceCrypto and pure Voice protocol components. ApplePlatform additionally adopts
 Media for native capture/playback and supported explicit device routing; Media selects no Apple frameworks.
+VoiceCodecs owns ordinary SILK/CELT/hybrid arithmetic, synthesis and loss recovery;
+its unified decoder starts no tasks or I/O and retains fixed output channels while
+coded channels and modes change. Native Opus is used only by opt-in development
+comparisons, never by product or ordinary test linkage. Encoder analysis limits and
+the remaining native adapter gates are recorded in the voice capability inventory.
 Voice uses Core/Models/Transport plus those media products; existing Gateway dispatch models supply narrow join
 inputs without a Gateway runtime dependency. VoiceCrypto uses Crypto/CryptoExtras.
 The MLS/DAVE and supervised Voice→Gateway edges below remain planned; no empty

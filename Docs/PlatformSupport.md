@@ -7,9 +7,10 @@ The Apple adapter implements capture/playback with explicit permission, session,
 bounded queues and supported device selection: macOS input/output UIDs and
 iOS/tvOS/visionOS preferred inputs. watchOS preferred input and arbitrary non-macOS
 output UID selection are explicitly unsupported by these APIs. Native device runtime
-remains unqualified; Windows/Android audio is unimplemented. There is no
-owned Opus encoder/decoder, MLS/DAVE backend, supervised live voice session or
-authorized Discord media smoke result.
+remains unqualified; Windows/Android audio is unimplemented. Owned ordinary
+SILK/CELT/hybrid codecs and loss recovery are available with the limits and pinned
+evidence in [Voice](Voice.md). There is no MLS/DAVE backend, supervised live voice
+session or authorized Discord media smoke result.
 Crypto vector tests and synthetic packet round trips do not qualify devices,
 codec interoperability, other hosts, minimum OS versions or ten-minute duplex stability.
 
@@ -26,6 +27,10 @@ rollback. Deterministic Apple tests use synthetic devices/listeners; they do not
 request permission or access a microphone/output. `swift sdk list` currently reports
 no installed Swift SDK bundles on this host; only the Xcode Apple SDKs are available
 for this qualification. There is no Windows/Android native host/device result.
+The [native prerequisite audit](Parity/phase12a-native-platform-audit.json) records
+failed target-library and AAudio/WASAPI-header probes, downloadable toolchain
+availability and the concrete unimplemented adapter paths. It is availability
+evidence, not native implementation or device qualification.
 See the [compile evidence](Parity/phase12a-apple-compile-validation.json).
 Phase 9 [OAuth](OAuth.md) and [public game/entitlement helpers](Phase9ServiceContracts.md)
 have local deterministic coverage. The injected browser adapter does not qualify OS

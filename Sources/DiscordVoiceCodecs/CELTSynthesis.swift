@@ -43,8 +43,9 @@ public enum CELTSynthesisError: Error, Sendable, Equatable {
 /// then deemphasized and divided by 32768 into interleaved floating-point PCM.
 /// A common 120-sample tail supports duration/transient changes without resetting.
 /// Value copies own independent histories; execution is synchronous and bounded.
-/// No entropy decoding, packet-loss concealment, channel conversion, clipping,
-/// resampling, device work or tasks occur here. Callers apply anti-collapse first.
+/// Coded mono spectra can feed two independent output histories, and coded stereo
+/// is downmixed to mono after per-channel denormalization. No entropy decoding,
+/// clipping, resampling, device work or tasks occur here. Callers apply anti-collapse first.
 public struct CELTSynthesis: Sendable {
     public let channelCount: Int
     private let transforms: [CELTTransform]
@@ -54,7 +55,12 @@ public struct CELTSynthesis: Sendable {
     private var deemphasisMemory: [Float]
     private var filter: CELTPostfilterParameters?
     private var oldFilter: CELTPostfilterParameters?
-    private static let historyCount = 1024
+    private static let historyCount = 2048
+    private var periodicConcealment = CELTPeriodicConcealment()
+    private var lossDuration = 0
+    private var previousLossWasPeriodic = false
+    private var skipPeriodicConcealment = true
+    private var needsPredictionFold = false
     private static let means: [Float] = [6.4375, 6.25, 5.75, 5.3125, 5.0625,
         4.8125, 4.5, 4.375, 4.875, 4.6875, 4.5625, 4.4375, 4.875, 4.625,
         4.3125, 4.5, 4.375, 4.625, 4.75, 4.4375, 3.75]
@@ -65,7 +71,8 @@ public struct CELTSynthesis: Sendable {
     ]
 
     /// Precomputes every ordinary mono transform and initializes independent zero histories.
-    /// - Parameter channelCount: Exactly one or two coded/output channels; default one.
+    /// - Parameter channelCount: Exactly one or two persistent output channels; default one.
+    ///   Each frame may independently declare one or two coded channels when synthesizing.
     /// - Throws: `invalidChannelCount` outside `1...2`; transform validation errors cannot
     ///   occur for the four internal fixed modes. Construction starts no I/O or work tasks.
     public init(channelCount: Int = 1) throws {
@@ -83,11 +90,11 @@ public struct CELTSynthesis: Sendable {
 
     /// Restores one ordinary decoded frame and commits its signal histories atomically.
     /// - Parameters:
-    ///   - normalizedCoefficients: Exactly `frameSampleCount * channelCount` finite
+    ///   - normalizedCoefficients: Exactly `frameSampleCount * codedChannelCount` finite
     ///     channel-major coefficients with magnitude at most four. Active bands are
     ///     independently normalized; transient short-block bins are frequency-major
     ///     with the block index varying fastest, as emitted by CELT all-band decoding.
-    ///   - bandLogEnergies: Exactly `21 * channelCount` finite channel-major log2
+    ///   - bandLogEnergies: Exactly `21 * codedChannelCount` finite channel-major log2
     ///     amplitudes relative to CELT band means, in `-32768...32768`. All values,
     ///     including inactive entries, are validated; exponent gain caps at 32.
     ///   - frameSampleCount: Exactly 120, 240, 480 or 960 samples/channel at 48 kHz;
@@ -101,6 +108,12 @@ public struct CELTSynthesis: Sendable {
     ///     transition toward this filter, preserving normative 2.5-ms delay.
     ///   - silence: Ignores otherwise validated spectral values and synthesizes zero
     ///     MDCT input while draining previous overlap/filter/deemphasis history.
+    ///   - codedChannelCount: One or two channels in the supplied spectra/envelopes;
+    ///     nil defaults to the persistent output `channelCount`. Coded mono duplicates
+    ///     denormalized spectra for stereo output while preserving separate signal
+    ///     histories. Coded stereo feeding mono output averages the independently
+    ///     denormalized frequencies before the inverse transform. Per-frame changes
+    ///     retain overlap, postfilter and deemphasis histories for each output channel.
     /// - Returns: Exactly `frameSampleCount * channelCount` interleaved float PCM;
     ///   amplitude is normalized by 32768 and is deliberately not clipped to unity.
     /// - Throws: `CELTSynthesisError` for invalid shape/range/numeric values before
@@ -109,39 +122,51 @@ public struct CELTSynthesis: Sendable {
     public mutating func synthesize(normalizedCoefficients: [Float], bandLogEnergies: [Float],
         frameSampleCount: Int, startBand: Int = 0, endBand: Int = 21,
         isTransient: Bool = false, postfilter: CELTPostfilterParameters? = nil,
-        silence: Bool = false) throws -> [Float] {
+        silence: Bool = false, codedChannelCount: Int? = nil) throws -> [Float] {
         guard let mode = [120, 240, 480, 960].firstIndex(of: frameSampleCount) else {
             throw CELTSynthesisError.invalidFrameSize
         }
+        let codedChannels = codedChannelCount ?? channelCount
+        guard (1...2).contains(codedChannels) else { throw CELTSynthesisError.invalidChannelCount }
         guard (0...20).contains(startBand), endBand > startBand, endBand <= 21 else {
             throw CELTSynthesisError.invalidBandRange
         }
-        guard normalizedCoefficients.count == frameSampleCount * channelCount,
+        guard normalizedCoefficients.count == frameSampleCount * codedChannels,
               normalizedCoefficients.allSatisfy({ $0.isFinite && abs($0) <= 4 }) else {
             throw CELTSynthesisError.invalidCoefficients
         }
-        guard bandLogEnergies.count == 21 * channelCount,
+        guard bandLogEnergies.count == 21 * codedChannels,
               bandLogEnergies.allSatisfy({ $0.isFinite && abs($0) <= 32_768 }) else {
             throw CELTSynthesisError.invalidBandEnergies
         }
         guard !isTransient || mode > 0 else { throw CELTSynthesisError.invalidTransient }
         var working = self
+        if working.lossDuration == 0 { working.skipPeriodicConcealment = false }
+        working.foldPredictionOverlap()
         let multiple = 1 << mode
         let blockCount = isTransient ? multiple : 1
         let blockSize = frameSampleCount / blockCount
         let transform = transforms[isTransient ? 0 : mode]
         var output = Array(repeating: Float(0), count: frameSampleCount * channelCount)
-        for channel in 0..<channelCount {
-            var frequencies = Array(repeating: Float(0), count: frameSampleCount)
-            if !silence {
+        var codedFrequencies = Array(repeating: Array(repeating: Float(0), count: frameSampleCount), count: codedChannels)
+        if !silence {
+            for channel in 0..<codedChannels {
                 for band in startBand..<endBand {
                     let gain = Self.exponential(min(32, bandLogEnergies[channel * 21 + band] + Self.means[band]))
                     let lower = multiple * CELTAllocationTables.bandEdges[band]
                     let upper = multiple * CELTAllocationTables.bandEdges[band + 1]
                     for bin in lower..<upper {
-                        frequencies[bin] = normalizedCoefficients[channel * frameSampleCount + bin] * gain
+                        codedFrequencies[channel][bin] = normalizedCoefficients[channel * frameSampleCount + bin] * gain
                     }
                 }
+            }
+        }
+        for channel in 0..<channelCount {
+            let frequencies: [Float]
+            if channelCount == 1 && codedChannels == 2 {
+                frequencies = zip(codedFrequencies[0], codedFrequencies[1]).map { 0.5 * $0 + 0.5 * $1 }
+            } else {
+                frequencies = codedFrequencies[codedChannels == 1 ? 0 : channel]
             }
             var signal = working.pitchHistory[channel]
             for block in 0..<blockCount {
@@ -174,8 +199,102 @@ public struct CELTSynthesis: Sendable {
         }
         working.oldFilter = mode > 0 ? postfilter : working.filter
         working.filter = postfilter
+        working.lossDuration = 0
+        working.previousLossWasPeriodic = false
         self = working
         return output
+    }
+
+    /// Conceals one missing ordinary CELT frame with periodic LPC or shaped-noise synthesis.
+    ///
+    /// The first 100ms of eligible losses use shared pitch search, per-channel 24th-order
+    /// LPC excitation extrapolation, decay/fading and explosion protection. Cold-start,
+    /// hybrid high-band or long-loss output instead uses deterministic random normalized
+    /// bands and a decaying envelope bounded below by the supplied background. Prediction
+    /// overlap is prefiltered and TDAC-folded before the next ordinary/noise MDCT frame.
+    /// Two received frames are required after noise PLC before periodic PLC is eligible.
+    /// This is loss synthesis, not entropy decoding, FEC or a complete Opus loss policy.
+    /// - Parameters:
+    ///   - frameSampleCount: Exactly 120, 240, 480 or 960 samples/channel at 48 kHz.
+    ///   - bandLogEnergies: Current channel-major 21-band predictor, finite in -32768...32768.
+    ///   - backgroundLogEnergies: Same-shaped learned lower envelope; every entry must be
+    ///     finite in -32768...32768. The enclosing decoder owns background adaptation.
+    ///   - seed: Current range/random seed; noise PLC advances the normative wrapping LCG.
+    ///   - startBand: First active band in 0...20; nonzero forces noise PLC for hybrid use.
+    ///   - endBand: Exclusive active upper band in `(startBand + 1)...21`; default 21.
+    ///   - forceNoise: Explicitly selects noise PLC when the enclosing decoder requires it.
+    /// - Returns: Exactly `frameSampleCount * channelCount` PCM samples, updated envelope,
+    ///   random seed, bounded loss duration and selected loss path diagnostics.
+    /// - Throws: Synthesis validation errors for bad dimensions/ranges/numeric values.
+    ///   All validation and synthesis use a private value copy; failure changes no history.
+    /// The call is synchronous, has bounded O(C*N) scratch plus fixed pitch-search work,
+    /// starts no tasks/I/O and contains no suspension or cancellation point.
+    public mutating func conceal(frameSampleCount: Int, bandLogEnergies: [Float],
+        backgroundLogEnergies: [Float], seed: UInt32, startBand: Int = 0,
+        endBand: Int = 21, forceNoise: Bool = false) throws -> CELTConcealedFrame {
+        guard let mode = [120, 240, 480, 960].firstIndex(of: frameSampleCount) else {
+            throw CELTSynthesisError.invalidFrameSize
+        }
+        guard (0...20).contains(startBand), endBand > startBand, endBand <= 21 else {
+            throw CELTSynthesisError.invalidBandRange
+        }
+        guard bandLogEnergies.count == channelCount * 21,
+              backgroundLogEnergies.count == channelCount * 21,
+              (bandLogEnergies + backgroundLogEnergies).allSatisfy({ $0.isFinite && abs($0) <= 32_768 }) else {
+            throw CELTSynthesisError.invalidBandEnergies
+        }
+        var working = self
+        let noise = forceNoise || startBand != 0 || lossDuration >= 40 || skipPeriodicConcealment
+        let duration = min(10_000, lossDuration + (1 << mode))
+        var energies = bandLogEnergies
+        var nextSeed = seed
+        let output: [Float]
+        if noise {
+            var coefficients = Array(repeating: Float(0), count: frameSampleCount * channelCount)
+            for channel in 0..<channelCount {
+                for band in startBand..<endBand {
+                    let energyIndex = channel * 21 + band
+                    energies[energyIndex] = max(backgroundLogEnergies[energyIndex], energies[energyIndex] - (lossDuration == 0 ? 1.5 : 0.5))
+                    let lower = (CELTAllocationTables.bandEdges[band] << mode) + channel * frameSampleCount
+                    let upper = (CELTAllocationTables.bandEdges[band + 1] << mode) + channel * frameSampleCount
+                    var energy: Float = 1e-15
+                    for bin in lower..<upper {
+                        nextSeed = nextSeed &* 1_664_525 &+ 1_013_904_223
+                        let value = Float(Int32(bitPattern: nextSeed) >> 20)
+                        coefficients[bin] = value
+                        energy += value * value
+                    }
+                    let gain = 1 / sqrt(energy)
+                    for bin in lower..<upper { coefficients[bin] *= gain }
+                }
+            }
+            output = try working.synthesize(normalizedCoefficients: coefficients, bandLogEnergies: energies,
+                frameSampleCount: frameSampleCount, startBand: startBand, endBand: endBand, postfilter: filter)
+            working.skipPeriodicConcealment = true
+        } else {
+            let prediction = working.periodicConcealment.predict(history: pitchHistory,
+                frameSampleCount: frameSampleCount, window: window, continuing: previousLossWasPeriodic)
+            var samples = Array(repeating: Float(0), count: frameSampleCount * channelCount)
+            for channel in 0..<channelCount {
+                working.pitchHistory[channel] = Array((pitchHistory[channel] + prediction[channel].prefix(frameSampleCount)).suffix(Self.historyCount))
+                working.overlap[channel] = Array(prediction[channel].suffix(120))
+                var memory = deemphasisMemory[channel]
+                for index in 0..<frameSampleCount {
+                    let sample = prediction[channel][index] + 1e-30 + memory
+                    memory = 0.85000610 * sample
+                    samples[index * channelCount + channel] = sample / 32768
+                }
+                working.deemphasisMemory[channel] = memory
+            }
+            working.needsPredictionFold = true
+            output = samples
+        }
+        working.lossDuration = duration
+        working.previousLossWasPeriodic = !noise
+        self = working
+        return CELTConcealedFrame(samples: output, bandLogEnergies: energies, seed: nextSeed,
+            usesNoise: noise, lossDuration: duration,
+            pitchPeriod: noise ? 0 : periodicConcealment.pitchPeriod)
     }
 
     /// Clears overlap, pitch/filter and deemphasis histories while retaining immutable transform plans.
@@ -187,6 +306,41 @@ public struct CELTSynthesis: Sendable {
         deemphasisMemory = Array(repeating: 0, count: channelCount)
         filter = nil
         oldFilter = nil
+        periodicConcealment = CELTPeriodicConcealment()
+        lossDuration = 0
+        previousLossWasPeriodic = false
+        skipPeriodicConcealment = true
+        needsPredictionFold = false
+    }
+
+    /// Converts predicted postfiltered future audio into the compact MDCT overlap representation.
+    ///
+    /// The negative comb prefilter reads the unchanged input rather than feeding its
+    /// output back recursively. Symmetric tail folding is the full-120-sample equivalent
+    /// of the reference decoder's 60-sample TDAC folded overlap. No work occurs unless
+    /// a preceding periodic loss supplied raw future prediction samples.
+    private mutating func foldPredictionOverlap() {
+        guard needsPredictionFold else { return }
+        for channel in 0..<channelCount {
+            let source = pitchHistory[channel] + overlap[channel]
+            var filtered = overlap[channel]
+            let next = filter
+            let coefficients1 = Self.taps[next?.tapset ?? 0].map { -(next?.gain ?? 0) * $0 }
+            let period1 = next?.period ?? 15
+            for index in 0..<120 {
+                let position = Self.historyCount + index
+                // prefilter_and_fold uses a zero-length transition window: use the latest filter.
+                var value = source[position] + coefficients1[0] * source[position - period1]
+                value += coefficients1[1] * (source[position - period1 + 1] + source[position - period1 - 1])
+                value += coefficients1[2] * (source[position - period1 + 2] + source[position - period1 - 2])
+                filtered[index] = value
+            }
+            for index in 0..<120 {
+                let falling = window[119 - index]
+                overlap[channel][index] = falling * (falling * filtered[index] + window[index] * filtered[119 - index])
+            }
+        }
+        needsPredictionFold = false
     }
 
     /// Evaluates the ordinary floating-point libopus base-two exponential approximation.
@@ -207,7 +361,7 @@ public struct CELTSynthesis: Sendable {
     /// Applies one exact in-place five-tap recursive comb filter with a 120-sample window crossfade.
     /// - Parameters:
     ///   - signal: Pitch history followed by current unfiltered synthesis, modified in place.
-    ///   - start: First current sample, at least 1024 so the largest delayed tap is in bounds.
+    ///   - start: First current sample, at least 2048 so the largest delayed tap is in bounds.
     ///   - count: Multiple of 120 samples, at least 120; all referenced samples exist.
     ///   - previous: Previous validated filter; nil has zero gain and period clamped to 15.
     ///   - next: Target validated filter; nil has zero gain and period clamped to 15.

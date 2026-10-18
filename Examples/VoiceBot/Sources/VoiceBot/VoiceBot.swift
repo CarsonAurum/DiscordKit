@@ -11,7 +11,8 @@ import DiscordVoiceCrypto
     /// independent synthetic entropy/pulse-codebook symbols, CELT transform/band shapes
     /// and SILK predictor analysis/synthesis. It then encodes/decodes actual ordinary
     /// CELT packets and reconstructs a committed reference SILK packet to exact PCM.
-    /// Complete SILK/hybrid coding and loss recovery remain outside this example.
+    /// It also checks conservative stereo SILK/hybrid encoding and CELT loss/recovery.
+    /// Full codec conformance and native device qualification remain separate.
     /// Uses a fixed, public test-only key that must never be used for real media. No network,
     /// device, authentication, DAVE context or background task is created. The two cipher
     /// instances model one sender and one receive-only peer, never two sending nonce owners.
@@ -21,6 +22,7 @@ import DiscordVoiceCrypto
         try demonstrateEntropyCoding()
         try demonstrateCodecComponents()
         try demonstrateCompressedAudio()
+        try demonstrateHybridAndLoss()
         let key = Data(0..<32)
         let sender = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
         let receiver = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
@@ -186,7 +188,57 @@ import DiscordVoiceCrypto
             throw ExampleFailure.invalidInvariant
         }
         print("Owned CELT packets produced 2,880 PCM samples; reference SILK packet matched 480 exact 48-kHz samples.")
-        print("Ordinary no-loss codec paths only; complete SILK/hybrid, PLC/FEC and live voice remain open.")
+        print("Ordinary codec paths checked; device, perceptual and live voice qualification remain open.")
+    }
+
+    /// Exercises stereo SILK/hybrid coding, CELT concealment and unified mode/recovery ownership.
+    /// All PCM is synthetic. The shared hybrid interval is checked through the owned
+    /// decoder while independent pinned-oracle comparisons remain in development tests.
+    /// - Throws: Codec/admission errors or a duration, channel, finite-value or PCM
+    ///   activity invariant failure. No device, network or background task is started.
+    private static func demonstrateHybridAndLoss() throws {
+        let samples = (0..<1_920).map { index in
+            Float(sin(Double(index / 2) * (index % 2 == 0 ? 0.05 : 0.09))) * 0.2
+        }
+        let internalSamples = (0..<640).map { index in
+            Int16(sin(Double(index / 2) * (index % 2 == 0 ? 0.15 : 0.27)) * 8_000)
+        }
+        var silkEncoder = try SILKStereoEncoder(sampleRate: 16_000)
+        var silkDecoder = try SILKStereoDecoder(sampleRate: 16_000)
+        let silkPacket = try silkEncoder.encode(internalSamples)
+        let silkPCM = try silkDecoder.decode(silkPacket.packet)
+        guard silkPCM.pcm48k.count == 1_920,
+              silkPCM.pcm48k.contains(where: { $0 != 0 }) else { throw ExampleFailure.invalidInvariant }
+        var hybridEncoder = try OpusHybridEncoder(channelCount: 2)
+        var hybridDecoder = try OpusHybridDecoder(channelCount: 2)
+        let hybridPacket = try hybridEncoder.encode(samples, packetByteCount: 320)
+        let hybridPCM = try hybridDecoder.decode(hybridPacket)
+        guard hybridPCM.count == 1, hybridPCM[0].samples.count == 1_920,
+              hybridPCM[0].samples.allSatisfy({ $0.isFinite }),
+              hybridPCM[0].samples.contains(where: { abs($0) > 1e-6 }) else { throw ExampleFailure.invalidInvariant }
+        var celtEncoder = try CELTPacketEncoder(frameSampleCount: 960, channelCount: 2)
+        var celtDecoder = try CELTPacketDecoder(channelCount: 2)
+        let received = try celtEncoder.encode(samples, packetByteCount: 320)
+        _ = try celtDecoder.decode(received)
+        let missing = try celtDecoder.conceal(frameSampleCount: 960)
+        let recovery = try celtEncoder.encode(samples, packetByteCount: 320)
+        let recovered = try celtDecoder.decode(recovery)
+        guard missing.samples.count == 1_920, missing.samples.allSatisfy({ $0.isFinite }),
+              recovered.count == 1, recovered[0].samples.count == 1_920 else { throw ExampleFailure.invalidInvariant }
+        var ordinary = try OpusAudioDecoder(channelCount: 2)
+        for packet in [silkPacket.packet.data, hybridPacket, received] {
+            let decoded = try ordinary.decode(packet)
+            guard decoded.flatMap(\.samples).count == 1_920,
+                  decoded.allSatisfy({ $0.samples.allSatisfy { $0.isFinite } }) else {
+                throw ExampleFailure.invalidInvariant
+            }
+        }
+        let concealed = try ordinary.conceal(frameSampleCount: 960)
+        let fecOrPLC = try ordinary.recover(recovery, frameSampleCount: 960)
+        let following = try ordinary.decode(recovery)
+        guard concealed.samples.count == 1_920, fecOrPLC.samples.count == 1_920,
+              following.flatMap(\.samples).count == 1_920 else { throw ExampleFailure.invalidInvariant }
+        print("Stereo SILK/hybrid and unified mode transitions decoded; explicit loss/recovery preserved exact duration.")
     }
 
     /// Example-local invariant failures, without treating an entropy round trip as voice support.

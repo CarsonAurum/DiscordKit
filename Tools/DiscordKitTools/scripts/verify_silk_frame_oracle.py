@@ -23,7 +23,7 @@ from verify_opus_range_oracle import (
 from verify_silk_parameter_oracle import OWNED_PATHS as PARAMETER_PATHS, OFFICIAL_PATHS as PARAMETER_OFFICIAL_PATHS, GENERATOR_DRIVER, generator_commands
 from verify_silk_pulse_oracle import compare_results
 
-OWNED_PATHS = PARAMETER_PATHS + ("Sources/DiscordVoiceCodecs/SILKNLSF.swift", "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift")
+OWNED_PATHS = PARAMETER_PATHS + ("Sources/DiscordVoiceCodecs/SILKNLSF.swift", "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift", "Sources/DiscordVoiceCodecs/SILKPacketLossConcealment.swift")
 OFFICIAL_PATHS = PARAMETER_OFFICIAL_PATHS + tuple("silk/" + name + ".c" for name in (
     "decode_parameters", "decode_core", "NLSF2A", "LPC_fit", "LPC_inv_pred_gain",
     "bwexpander_32", "bwexpander", "LPC_analysis_filter", "table_LSF_cos"))

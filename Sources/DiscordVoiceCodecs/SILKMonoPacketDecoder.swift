@@ -14,9 +14,9 @@ extension SILKMonoDecoder {
     /// - Returns: 480 through 5,760 PCM16 samples at 48kHz plus payload evidence.
     /// - Throws: `SILKMonoDecoderError.unsupportedMode`, `unsupportedChannels` or
     ///   `sampleRateMismatch` before state changes, or any payload error, including
-    ///   empty DTX/loss frames requiring PLC. Any failure preserves the whole decoder,
+    ///   empty DTX/loss frames requiring explicit `conceal` calls. Any failure preserves the whole decoder,
     ///   even if earlier payloads in this packet succeeded. Padding is excluded by
-    ///   `OpusPacket`; no external work, tasks, rate negotiation or loss recovery occur.
+    ///   `OpusPacket`; rate changes, concealment and FEC selection are explicit calls.
     public mutating func decode(_ packet: OpusPacket) throws -> SILKDecodedPacket {
         guard packet.mode == .silk else { throw SILKMonoDecoderError.unsupportedMode }
         guard packet.channelCount == 1 else { throw SILKMonoDecoderError.unsupportedChannels }

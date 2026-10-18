@@ -54,6 +54,7 @@ public struct CELTEncodedFrame: Sendable, Equatable {
 public struct CELTFrameEncoder: Sendable {
     public let frameSampleCount: Int
     public let channelCount: Int
+    public let startBand: Int
     public let endBand: Int
     private var analysis: CELTTransformStream
     private var preemphasisMemory: [Float]
@@ -67,15 +68,17 @@ public struct CELTFrameEncoder: Sendable {
     /// - Parameters:
     ///   - frameSampleCount: Exactly 120, 240, 480 or 960 samples/channel at 48 kHz.
     ///   - channelCount: Exactly one or two coded channels; default one.
+    ///   - startBand: Inclusive lower band in `0...20`; default zero. Hybrid uses 17.
     ///   - endBand: Exclusive upper band in `1...21`; default 21. Standard Opus TOCs
     ///     use 13/17/19/21 for narrow/wide/superwide/full bandwidth respectively.
     /// - Throws: `CELTTransformError` for invalid duration/channels, or
     ///   `CELTBitAllocationError.invalidBandRange` for an invalid upper band.
-    public init(frameSampleCount: Int, channelCount: Int = 1, endBand: Int = 21) throws {
+    public init(frameSampleCount: Int, channelCount: Int = 1, startBand: Int = 0, endBand: Int = 21) throws {
         let transform = try CELTTransform(frameSampleCount: frameSampleCount, channelCount: channelCount)
-        _ = try CELTBitAllocation(frameSampleCount: frameSampleCount, channelCount: channelCount, endBand: endBand)
+        _ = try CELTBitAllocation(frameSampleCount: frameSampleCount, channelCount: channelCount, startBand: startBand, endBand: endBand)
         self.frameSampleCount = frameSampleCount
         self.channelCount = channelCount
+        self.startBand = startBand
         self.endBand = endBand
         analysis = CELTTransformStream(transform: transform)
         preemphasisMemory = Array(repeating: 0, count: channelCount)
@@ -114,19 +117,46 @@ public struct CELTFrameEncoder: Sendable {
         }
         guard (2...1_275).contains(frameByteCount) else { throw CELTFrameEncoderError.invalidFrameByteCount }
         var working = self
-        let result = try working.encodeFrame(samples, frameByteCount: frameByteCount, intra: intra)
+        var entropy = try OpusRangeEncoder(frameByteCount: frameByteCount)
+        let result = try working.encodeFrame(samples, into: &entropy, intra: intra)
         self = working
+        return result
+    }
+
+    /// Appends CELT to a shared arithmetic interval and finalizes its complete frame.
+    /// - Parameters:
+    ///   - samples: Exactly the fixed interleaved 48kHz frame, finite and within `-1...1`.
+    ///   - encoder: Active fixed-size arithmetic encoder after any SILK/redundancy
+    ///     header syntax. Its raw bits retain the common physical frame end.
+    ///   - intra: Desired independent coarse envelope predictor; default false.
+    /// - Returns: Finalized shared bytes, including preceding SILK syntax when used
+    ///   for hybrid, and exact final range/bit accounting. Successful calls finalize
+    ///   the caller's coder; no further syntax may be appended.
+    /// - Throws: Input/storage/component errors, preserving both coder and stream.
+    ///   This synchronous operation owns bounded histories and starts no I/O or tasks.
+    public mutating func encode(_ samples: [Float], into encoder: inout OpusRangeEncoder,
+                                intra: Bool = false) throws -> CELTEncodedFrame {
+        guard samples.count == frameSampleCount * channelCount,
+              samples.allSatisfy({ $0.isFinite && (-1...1).contains($0) }) else {
+            throw CELTFrameEncoderError.invalidSamples
+        }
+        guard (2...1_275).contains(encoder.frameByteCount) else { throw CELTFrameEncoderError.invalidFrameByteCount }
+        var working = self
+        var entropy = encoder
+        let result = try working.encodeFrame(samples, into: &entropy, intra: intra)
+        self = working
+        encoder = entropy
         return result
     }
 
     /// Composes complete long-block CELT syntax on a private stream copy.
     /// - Parameters:
     ///   - samples: Admitted normalized interleaved PCM for the fixed stream format.
-    ///   - frameByteCount: Admitted physical compressed size, excluding Opus headers.
+    ///   - encoder: Active shared arithmetic interval with admitted physical storage.
     ///   - intra: Desired independent coarse envelope predictor.
     /// - Returns: Finalized raw CELT frame and exact final range/accounting.
     /// - Throws: Component/entropy errors; the caller discards this private stream copy.
-    private mutating func encodeFrame(_ samples: [Float], frameByteCount: Int,
+    private mutating func encodeFrame(_ samples: [Float], into encoder: inout OpusRangeEncoder,
                                       intra: Bool) throws -> CELTEncodedFrame {
         var preemphasized = Array(repeating: Float(0), count: samples.count)
         for frame in 0..<frameSampleCount {
@@ -140,22 +170,22 @@ public struct CELTFrameEncoder: Sendable {
         }
         let spectrum = try analysis.analyze(preemphasized).map { $0 * 2 }
         let envelope = normalize(spectrum)
-        var encoder = try OpusRangeEncoder(frameByteCount: frameByteCount)
+        let frameByteCount = encoder.frameByteCount
         let header = try CELTFrameHeader(frameSampleCount: frameSampleCount,
-                                         channelCount: channelCount, endBand: endBand)
+                                         channelCount: channelCount, startBand: startBand, endBand: endBand)
         _ = try header.encodePrefix(into: &encoder)
         let quantizer = try CELTEnergyQuantizer(frameSampleCount: frameSampleCount,
-            channelCount: channelCount, endBand: endBand)
+            channelCount: channelCount, startBand: startBand, endBand: endBand)
         var energy = try quantizer.encodeCoarse(target: envelope.logEnergies,
             previous: previousEnergies, intra: intra, into: &encoder)
         let fields = try header.encodeAfterCoarse(isTransient: false, into: &encoder)
         let allocator = try CELTBitAllocation(frameSampleCount: frameSampleCount,
-            channelCount: channelCount, endBand: endBand, allocationTrim: fields.allocationTrim)
+            channelCount: channelCount, startBand: startBand, endBand: endBand, allocationTrim: fields.allocationTrim)
         let allocation = try allocator.encode(totalEighthBits: fields.allocationEighthBits,
                                                dynamicOffsets: fields.dynamicOffsets, into: &encoder)
         energy = try quantizer.encodeFine(energy, bitCounts: allocation.fineEnergyBits, into: &encoder)
         let shapes = try CELTShapeFrameCoding(frameSampleCount: frameSampleCount,
-            channelCount: channelCount, endBand: endBand,
+            channelCount: channelCount, startBand: startBand, endBand: endBand,
             timeFrequencyChanges: fields.timeFrequencyChanges, spreading: fields.spreading)
         _ = try shapes.encode(envelope.coefficients, allocation: allocation,
             totalEighthBits: frameByteCount * 64, seed: seed,
@@ -167,7 +197,7 @@ public struct CELTFrameEncoder: Sendable {
         let bytes = try encoder.finalize()
         previousEnergies = energy.energies
         for channel in 0..<channelCount {
-            for band in endBand..<21 { previousEnergies[channel * 21 + band] = 0 }
+            for band in 0..<21 where band < startBand || band >= endBand { previousEnergies[channel * 21 + band] = 0 }
         }
         seed = encoder.finalRange
         return CELTEncodedFrame(bytes: bytes, finalRange: encoder.finalRange,
@@ -187,7 +217,7 @@ public struct CELTFrameEncoder: Sendable {
         var logs = Array(repeating: Float(0), count: channelCount * 21)
         let multiplier = frameSampleCount / 120
         for channel in 0..<channelCount {
-            for band in 0..<endBand {
+            for band in startBand..<endBand {
                 let first = CELTAllocationTables.bandEdges[band] * multiplier
                 let last = CELTAllocationTables.bandEdges[band + 1] * multiplier
                 var squared: Double = 1e-30

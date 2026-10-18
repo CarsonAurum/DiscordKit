@@ -3,7 +3,8 @@
 
 Verbatim synthesis/deemphasis functions are extracted; original denormalization,
 MDCT, FFT and comb filters compile separately. Independent multi-frame sequences
-cover duration/short-block/postfilter transitions and exact signal-domain scaling.
+cover duration/short-block/postfilter transitions, coded/output channel conversion
+and exact signal-domain scaling with retained independent output histories.
 No entropy, packet, PLC/FEC, resampler, device or full-codec evidence is implied.
 """
 import argparse
@@ -22,7 +23,8 @@ from verify_celt_pulse_oracle import parse_outputs
 OWNED_PATHS=('Sources/DiscordVoiceCodecs/OpusRangeCoding.swift','Sources/DiscordVoiceCodecs/CELTAllocationTables.swift',
              'Sources/DiscordVoiceCodecs/CELTBitAllocation.swift','Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift',
              'Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift','Sources/DiscordVoiceCodecs/CELTFrameHeader.swift',
-             'Sources/DiscordVoiceCodecs/CELTTransform.swift','Sources/DiscordVoiceCodecs/CELTSynthesis.swift')
+             'Sources/DiscordVoiceCodecs/CELTTransform.swift','Sources/DiscordVoiceCodecs/CELTSynthesis.swift',
+             'Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift')
 UPSTREAM_PATHS=('celt/celt_decoder.c','celt/celt.c','celt/bands.c','celt/quant_bands.c','celt/mathops.h','celt/mdct.c','celt/kiss_fft.c','celt/modes.c','celt/static_modes_float.h')
 FIXTURE_PATH='Tests/DiscordVoiceCodecsTests/CELTSynthesisOracleFixtures.swift'
 ABSOLUTE_TOLERANCE=0.000003
@@ -44,13 +46,14 @@ int main(void){int C,count;
   int oldPeriod=0,period=0,oldTapset=0,tapset=0;float oldGain=0,gain=0;
   printf("{\"frames\":[");
   for(int frame=0;frame<count;frame++){
-   int LM,start,end,transient,pitch,qg,newTapset,silence;unsigned seed;
-   if(scanf("%d%d%d%d%d%d%d%d",&LM,&start,&end,&transient,&pitch,&qg,&newTapset,&silence)!=8)return 2;
+   int LM,start,end,transient,pitch,qg,newTapset,silence,codedChannels;unsigned seed;
+   if(scanf("%d%d%d%d%d%d%d%d%d",&LM,&start,&end,&transient,&pitch,&qg,&newTapset,&silence,&codedChannels)!=9)return 2;
+   if(codedChannels<1||codedChannels>2)return 2;
    int N=120<<LM;
-   for(int i=0;i<C*N;i++)if(scanf("%f",X+i)!=1)return 2;
-   for(int i=0;i<C*21;i++)if(scanf("%f",energies+i)!=1)return 2;
+   for(int i=0;i<codedChannels*N;i++)if(scanf("%f",X+i)!=1)return 2;
+   for(int i=0;i<codedChannels*21;i++)if(scanf("%f",energies+i)!=1)return 2;
    float *out[2]={buffer[0]+1024,buffer[1]+1024};
-   celt_synthesis(&mode48000_960_120,X,out,energies,start,end,C,C,transient,LM,1,silence,0);
+   celt_synthesis(&mode48000_960_120,X,out,energies,start,end,codedChannels,C,transient,LM,1,silence,0);
    float newGain=pitch?.09375f*(qg+1):0;
    for(int c=0;c<C;c++){
     comb_filter(out[c],out[c],oldPeriod,period,120,oldGain,gain,oldTapset,tapset,mode48000_960_120.window,120,0);
@@ -68,14 +71,14 @@ int main(void){int C,count;
 '''
 SWIFT_DRIVER=r'''
 import Foundation
-struct Frame:Decodable{let lm:Int;let start:Int;let end:Int;let transient:Bool;let period:Int;let gainIndex:Int;let tapset:Int;let silence:Bool;let coefficients:[Float];let energies:[Float]}
+struct Frame:Decodable{let lm:Int;let start:Int;let end:Int;let transient:Bool;let period:Int;let gainIndex:Int;let tapset:Int;let silence:Bool;let coefficients:[Float];let energies:[Float];let codedChannelCount:Int?}
 struct Input:Decodable{let channels:Int;let frames:[Frame]}
 struct Output:Encodable{let frames:[[Float]]}
 @main struct Driver{
  /// Runs independent bounded signal sequences through value-owned shared synthesis history.
  static func main()throws{while let line=readLine(){let x=try JSONDecoder().decode(Input.self,from:Data(line.utf8));var s=try CELTSynthesis(channelCount:x.channels);var frames=[[Float]]()
   for f in x.frames{let filter=f.period==0 ? nil:try CELTPostfilterParameters(period:f.period,gainIndex:f.gainIndex,tapset:f.tapset)
-   frames.append(try s.synthesize(normalizedCoefficients:f.coefficients,bandLogEnergies:f.energies,frameSampleCount:120<<f.lm,startBand:f.start,endBand:f.end,isTransient:f.transient,postfilter:filter,silence:f.silence))}
+   frames.append(try s.synthesize(normalizedCoefficients:f.coefficients,bandLogEnergies:f.energies,frameSampleCount:120<<f.lm,startBand:f.start,endBand:f.end,isTransient:f.transient,postfilter:filter,silence:f.silence,codedChannelCount:f.codedChannelCount))}
   print(String(decoding:try JSONEncoder().encode(Output(frames:frames)),as:UTF8.self))}}
 }
 '''
@@ -108,6 +111,16 @@ def fixed_cases():
         result.append(dict(channels=channels,frames=[frame(3,channels,start=17,end=19,period=63,gain=7,tapset=2),frame(1,channels,silence=True),frame(0,channels,silence=True)]))
         for exponent in (-32768,-60,-50,-7,0,25,32768):
             result.append(dict(channels=channels,frames=[frame(1,channels,energy=exponent)]))
+    for channels in (1,2):
+        for lm in range(4):
+            frames=[]
+            for index,coded in enumerate((1,2,1,2,1,2)):
+                f=frame(lm,coded,transient=lm>0 and index%2==0,period=63,gain=4,tapset=1,phase=index,silence=index==4)
+                f['codedChannelCount']=coded
+                # Distinct envelopes require averaging after independent denormalization.
+                if coded==2:f['energies'][21:]=[v+3 for v in f['energies'][21:]]
+                frames.append(f)
+            result.append(dict(channels=channels,frames=frames))
     return result
 
 
@@ -118,7 +131,9 @@ def random_cases(count,seed):
         channels=rng.randint(1,2);frames=[]
         for index in range(rng.randint(1,8)):
             lm=rng.randrange(4);start=rng.choice((0,0,0,17));end=rng.randint(max(start+1,19),21)
-            f=frame(lm,channels,start,end,transient=lm>0 and bool(rng.randrange(2)),period=rng.choice((0,rng.randint(15,1022))),gain=rng.randrange(8),tapset=rng.randrange(3),silence=rng.randrange(16)==0)
+            coded=rng.randint(1,2)
+            f=frame(lm,coded,start,end,transient=lm>0 and bool(rng.randrange(2)),period=rng.choice((0,rng.randint(15,1022))),gain=rng.randrange(8),tapset=rng.randrange(3),silence=rng.randrange(16)==0)
+            f['codedChannelCount']=coded
             f['coefficients']=[rng.randint(-512,512)/512 for _ in f['coefficients']]
             f['energies']=[rng.randint(-320,320)/16 for _ in f['energies']]
             frames.append(f)
@@ -132,7 +147,7 @@ def commands(inputs):
     for x in inputs:
         fields=[x['channels'],len(x['frames'])]
         for f in x['frames']:
-            fields += [int(f[k]) for k in ('lm','start','end','transient','period','gainIndex','tapset','silence')]+f['coefficients']+f['energies']
+            fields += [int(f[k]) for k in ('lm','start','end','transient','period','gainIndex','tapset','silence')]+[f.get('codedChannelCount',x['channels'])]+f['coefficients']+f['energies']
         lines.append(' '.join(map(str,fields)))
     return '\n'.join(lines).encode()
 

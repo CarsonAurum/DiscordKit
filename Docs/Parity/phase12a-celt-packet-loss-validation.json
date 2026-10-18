@@ -1,0 +1,73 @@
+{
+  "verifiedAt": "2026-10-18T02:25:16.285621+00:00",
+  "scope": "actual compressed CELT packets withheld and recovered through full official Opus API",
+  "version": "1.6.1",
+  "releaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "sourceURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "archiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "seed": 6716410,
+  "fixedSequences": 6,
+  "randomSequences": 200,
+  "totalSequences": 206,
+  "totalFrames": 5022,
+  "comparedSamples": 3553080,
+  "concealedPackets": 3065,
+  "maximumAbsoluteError": 0.005970029000000002,
+  "maximumSequenceScaledAbsoluteError": 0.0051284842275822985,
+  "tolerance": {
+    "absoluteTimesSequenceMaximum": 0.006,
+    "relative": 0.0001
+  },
+  "exact": [
+    "every received and lost packet final range"
+  ],
+  "excluded": [
+    "SILK/hybrid",
+    "FEC",
+    "full decoded-PCM conformance",
+    "devices/realtime"
+  ],
+  "ownedSources": {
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "217be419f0f299f7126ba8cd9f999ee4bf16ed115135887e93fd4ca3ed0430a2",
+    "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
+    "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift": "de91fa5930b1c285fc74f3229baa63a2347989a3b271ee03cdea3c6cb85813be",
+    "Sources/DiscordVoiceCodecs/CELTAllocationTables.swift": "2e264fd2ebfa0e69ef32cf393ab52e9d7473e4e35a89b2beed88a4ee9c326894",
+    "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift": "545af9e53ef2abb4ee19b745d381cc858b6f4fe6725bc066a0cf78420b92e98b",
+    "Sources/DiscordVoiceCodecs/CELTShapeTables.swift": "3c7fe7be7dbf01eba178d907542697976a09dc2391ed96c9aafdba20d9e8b74d",
+    "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift": "f204727035942717114e65ceb8d98fac8cb17c137945eded3564e637ef964007",
+    "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift": "d86f05a805473ca41cc079de4e67cd780084d463212536385c235dcd44b11cf6",
+    "Sources/DiscordVoiceCodecs/CELTTransform.swift": "fec3dc376fead581a4b2a593c6247760692e4bb5dc5c518db4bba89a808762fd",
+    "Sources/DiscordVoiceCodecs/CELTSynthesis.swift": "ee599d473f6aad1984c5dbf611fd784233d5e9b4c3614a41c8b08a0a9d022233",
+    "Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift": "859002144e888609728c362d87c16c7b7594d49e3fafa640581c7d7040d974ec",
+    "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift": "1b238b15095ac397a0a349d299ab1662e8b8c115d0e71609af5b799933a1d462",
+    "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift": "e15b182762910a384bc59e61c3ea92e7ce500a545d6a6204f6256065abecc879",
+    "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift": "34b71434d4d363d7e3d344305bd3e73567870f0363ac31be03074b18f902abe3",
+    "Sources/DiscordVoiceCodecs/OpusPacket.swift": "012a2e9c0c15fa29a46d219e94a1a7c0a75fceee9f026ac9f5626b70eedf8212",
+    "Sources/DiscordVoiceCodecs/CELTPacketCodec.swift": "fb70c94436e63772d9349a2707f4e34f71ce91297dfef87e2221102c05d1e7d3",
+    "Sources/DiscordMedia/PCM.swift": "ae83b88cfee07074b18e7c59827f37a638f5915b25f9d57f6eec509c2f23f997"
+  },
+  "sourceDriftAtCompletion": {},
+  "upstreamSources": {
+    "src/opus_encoder.c": "c9e0a841e60fb904c9918f9f9a82f744cefed0b55ea47d9d7027dd6b95ac2a2c",
+    "src/opus_decoder.c": "ddc60846096a83669aa33992481ce088eca791d6478ecdbf1e445a59d678779a",
+    "src/opus.c": "1cee175636295bbd576ff384b77c31663b04fe09619598a452e067229205ade1",
+    "celt/celt_encoder.c": "5fa1a138c061cb4939141ff6704c33229e07168de72d9dcf071f17277829ced7",
+    "celt/celt_decoder.c": "a53393c70ae917d39229f34bce2c16ada535807e095cad00a4580aee48c9bfdb",
+    "celt/bands.c": "fc7ddcc7a46135c2cd89016025e4b96d30e9b514565610115467405d78d63ec6",
+    "celt/quant_bands.c": "bec6e7ac19ff02b83480c6ca6a01c084566781856a1e3442b7468bf25a4b937b",
+    "celt/rate.c": "f288c8b88882e6500ee5fbb9036eef1ee572e0301d28cd686061c815747a7b9e",
+    "celt/vq.c": "7f488e7ced4080d267e4ff44cb512861a47a49d45891277f4e898fe680dad0e5",
+    "celt/mdct.c": "8a21116be9b1332926586f8f44af0e1afd9bb7e8a65614683f972654a0668dcb",
+    "celt/kiss_fft.c": "0ff3c57ce9dededbf9925338808223ee8e164b5847f2b320da49b11bac4024d0",
+    "celt/static_modes_float.h": "c3cf8439cdcf9281a5a0a66eefd5f9d0c82537c6f88e33b53ace9c9b3880f60c"
+  },
+  "fixture": {
+    "path": "Tests/DiscordVoiceCodecsTests/CELTPacketLossOracleFixtures.swift",
+    "sha256": "dd1c209dc6a005b0cdc2936f21e7954e93b00c37cb24a39545fab8da41e35e58"
+  },
+  "verifierSHA256": "d093bfa12c1e4770b160df50a49d12a115092ed4e82a515a8c75d2cacaaffd7d",
+  "referenceBuild": {
+    "librarySHA256": "82c2ea4f70e5e2670ca421639f7cab289717334297a99a940184f247cc8ff6fb",
+    "configurationSHA256": "4d95928c5b4c8a2d502e20a4f221ed1fc50c58f05ab5b51a40f421975c81446b"
+  }
+}

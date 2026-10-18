@@ -43,16 +43,17 @@ public struct SILKDecodedFrame: Sendable, Equatable {
 /// gain-adjusted persistent short-term history, rewhitened five-tap long-term
 /// prediction, fixed-point saturation and final PCM rounding. The caller supplies
 /// enclosing packet VAD/LBRR/conditional decisions and positions shared entropy.
-/// This is an ordinary no-loss channel decoder: no packet header/stereo policy,
-/// output resampling, CNG, PLC, post-loss transition or full Opus codec is claimed.
+/// Also provides scalar PLC/CNG and post-loss recovery through caller-driven loss
+/// decisions. Packet headers, stereo policy, output resampling and full Opus mode
+/// transitions belong to higher-level owners.
 /// Arithmetic adapts libopus 1.6.1 decode_core.c and Inlines.h; no native runtime.
 ///
 /// One instance owns one channel. It retains sixteen short-term samples, at most
-/// 320 PCM history samples and sixteen previous LSFs. Per-call allocations/work
+/// 320 PCM history samples, sixteen previous LSFs and bounded PLC/CNG excitation/filter state. Per-call allocations/work
 /// are bounded by the configured 10/20 ms frame. Construction starts no I/O/tasks.
 /// Callers serialize mutation; failed calls commit neither entropy nor any history.
 public struct SILKFrameDecoder: Sendable {
-    public let sampleRate: Int
+    public private(set) var sampleRate: Int
     public private(set) var frameDurationMilliseconds: Int
     /// Last successfully decoded gain in Q16, initially exactly one (65,536).
     public private(set) var previousGainQ16: Int32 = 65_536
@@ -65,6 +66,7 @@ public struct SILKFrameDecoder: Sendable {
     /// True until the first successful frame, forcing that frame's interpolation to four.
     public private(set) var isFirstFrameAfterReset = true
     private var parameterDecoder: SILKFrameParameterDecoder
+    private var loss = SILKLossState()
 
     /// Creates one zero-state internal-rate channel decoder without reading entropy.
     /// - Parameters:
@@ -92,6 +94,7 @@ public struct SILKFrameDecoder: Sendable {
         outputHistory = Array(repeating: 0, count: sampleRate / 50)
         previousNormalizedLSFsQ15 = Array(repeating: 0, count: parameterDecoder.normalizedLSFOrder)
         isFirstFrameAfterReset = true
+        loss = SILKLossState()
     }
 
     /// Changes between ten- and twenty-millisecond internal frames without resetting history.
@@ -110,6 +113,48 @@ public struct SILKFrameDecoder: Sendable {
         )
         parameterDecoder = replacement
         frameDurationMilliseconds = milliseconds
+    }
+
+    /// Reconfigures the internal rate using the normative SILK bandwidth reset.
+    /// - Parameter sampleRate: Exactly 8,000, 12,000 or 16,000 Hz. An unchanged
+    ///   rate is a no-op. A transition clears LPC/LTP/LSF memory, marks the first
+    ///   frame and sets the previous gain index to ten while retaining scalar gain
+    ///   and entropy type/lag contexts. Output resampling/alignment belong to callers.
+    /// - Throws: `SILKFrameParameterError.invalidSampleRate` without state changes.
+    public mutating func updateSampleRate(_ sampleRate: Int) throws {
+        guard [8_000, 12_000, 16_000].contains(sampleRate) else {
+            throw SILKFrameParameterError.invalidSampleRate
+        }
+        guard sampleRate != self.sampleRate else { return }
+        let replacement = try SILKFrameParameterDecoder(
+            sampleRate: sampleRate, frameDurationMilliseconds: frameDurationMilliseconds,
+            previousGainIndex: 10, previousSignalType: parameterDecoder.previousSignalType,
+            previousPitchLagIndex: parameterDecoder.previousPitchLagIndex
+        )
+        parameterDecoder = replacement
+        self.sampleRate = sampleRate
+        loss.resetPrediction()
+        shortTermHistoryQ14 = Array(repeating: 0, count: 16)
+        outputHistory = Array(repeating: 0, count: sampleRate / 50)
+        previousNormalizedLSFsQ15 = Array(repeating: 0, count: replacement.normalizedLSFOrder)
+        isFirstFrameAfterReset = true
+    }
+
+    /// Clears side-channel prediction after a mid-only interval without losing gain.
+    /// The packet decoder invokes this before the next coded side frame. Entropy
+    /// type/lag context survives; previous gain index becomes ten. No I/O occurs.
+    /// - Throws: Only internal configuration validation errors, impossible for an
+    ///   initialized channel; caller copy-and-commit keeps enclosing calls atomic.
+    mutating func resetSidePrediction() throws {
+        loss.resetPrediction()
+        parameterDecoder = try SILKFrameParameterDecoder(
+            sampleRate: sampleRate, frameDurationMilliseconds: frameDurationMilliseconds,
+            previousGainIndex: 10, previousSignalType: parameterDecoder.previousSignalType,
+            previousPitchLagIndex: parameterDecoder.previousPitchLagIndex
+        )
+        shortTermHistoryQ14 = Array(repeating: 0, count: 16)
+        outputHistory = Array(repeating: 0, count: sampleRate / 50)
+        isFirstFrameAfterReset = true
     }
 
     /// Decodes one ordinary channel frame, atomically advancing bounded synthesis history.
@@ -147,6 +192,31 @@ public struct SILKFrameDecoder: Sendable {
         return result
     }
 
+    /// Conceals one configured ten/twenty-millisecond missing channel frame.
+    /// - Parameter resetGainIndex: Defaults true for ordinary packet loss, matching
+    ///   the API's reset to gain index ten. FEC owners pass false for absent LBRR.
+    /// - Returns: Exact internal-rate PCM16 using scalar pitch/noise extrapolation,
+    ///   LPC synthesis, comfort noise and recovery-energy tracking. No entropy is read.
+    /// - Throws: Only bounded CNG/LPC validation errors. The entire state commits
+    ///   atomically. Consecutive losses attenuate predictions; no device/I/O occurs.
+    public mutating func concealFrame(resetGainIndex: Bool = true) throws -> [Int16] {
+        var working = self
+        var pcm = try working.loss.conceal(sampleRate: sampleRate,
+            frameDuration: frameDurationMilliseconds, firstFrame: isFirstFrameAfterReset,
+            outputHistory: outputHistory, shortTermHistory: &working.shortTermHistoryQ14)
+        working.outputHistory = Array(outputHistory.dropFirst(pcm.count)) + pcm
+        try working.loss.applyComfortNoise(to: &pcm, sampleRate: sampleRate)
+        working.loss.glue(&pcm)
+        if resetGainIndex {
+            working.parameterDecoder = try SILKFrameParameterDecoder(sampleRate: sampleRate,
+                frameDurationMilliseconds: frameDurationMilliseconds, previousGainIndex: 10,
+                previousSignalType: parameterDecoder.previousSignalType,
+                previousPitchLagIndex: parameterDecoder.previousPitchLagIndex)
+        }
+        self = working
+        return pcm
+    }
+
     /// Reconstructs LPC/LTP and gain synthesis from bounded, already decoded syntax.
     /// - Parameter decoded: A complete channel frame matching this decoder's format.
     /// - Returns: Saturated PCM16 while updating only the temporary decoder copy.
@@ -158,11 +228,15 @@ public struct SILKFrameDecoder: Sendable {
         let frameLength = parameterDecoder.sampleCount
         let memoryLength = outputHistory.count
         let interpolation = isFirstFrameAfterReset ? 4 : parameters.interpolationQ2
-        let current = try SILKNLSFCoefficients(q15: parameters.normalizedLSFsQ15).lpcQ12
-        let first = interpolation < 4
+        var current = try SILKNLSFCoefficients(q15: parameters.normalizedLSFsQ15).lpcQ12
+        var first = interpolation < 4
             ? try SILKNLSFCoefficients(q15: SILKNLSFCoefficients.interpolate(
                 previous: previousNormalizedLSFsQ15, current: parameters.normalizedLSFsQ15, weight: interpolation
             )).lpcQ12 : current
+        if loss.lossCount > 0 {
+            SILKLossState.expand(&first, chirp: 63_570)
+            SILKLossState.expand(&current, chirp: 63_570)
+        }
         let coefficientSets = [first, current]
         var lpcState = shortTermHistoryQ14 + Array(repeating: 0, count: subframeLength)
         var outputBuffer = outputHistory + Array(repeating: Int16(0), count: frameLength)
@@ -179,8 +253,10 @@ public struct SILKFrameDecoder: Sendable {
                 for index in 0..<16 { lpcState[index] = SILKFrameMath.multiplyWW(adjustment, lpcState[index]) }
             }
             previousGainQ16 = gain
-            let lag = parameters.pitchLags[subframe]
-            if parameters.signalType == .voiced {
+            let transition = loss.lossCount > 0 && loss.previousSignalType == .voiced && parameters.signalType != .voiced && subframe < 2
+            let voiced = parameters.signalType == .voiced || transition
+            let lag = transition ? loss.previousPitchLag : parameters.pitchLags[subframe]
+            if voiced {
                 if subframe == 0 || (subframe == 2 && interpolation < 4) {
                     let start = memoryLength - lag - order - 2
                     if subframe == 2 {
@@ -208,10 +284,10 @@ public struct SILKFrameDecoder: Sendable {
                 // The independently exposed excitation's integer scale is 1/64 of
                 // the scalar core's Q14 signal; multiplying exactly preserves it.
                 var residual = decoded.excitationQ23[frameIndex] &* 64
-                if parameters.signalType == .voiced {
+                if voiced {
                     var prediction: Int32 = 2
                     for tap in 0..<5 {
-                        let coefficient = Int32(parameters.longTermCoefficientsQ7[subframe][tap]) * 128
+                        let coefficient: Int32 = transition ? (tap == 2 ? 4_096 : 0) : Int32(parameters.longTermCoefficientsQ7[subframe][tap]) * 128
                         prediction = prediction &+ SILKFrameMath.multiplyWB(ltpState[ltpPosition - lag + 2 - tap], coefficient)
                     }
                     residual = residual &+ (prediction &<< 1)
@@ -232,6 +308,10 @@ public struct SILKFrameDecoder: Sendable {
         outputHistory = Array(outputHistory.dropFirst(frameLength)) + pcm
         previousNormalizedLSFsQ15 = parameters.normalizedLSFsQ15
         isFirstFrameAfterReset = false
+        try loss.record(decoded, coefficients: current, sampleRate: sampleRate,
+                        frameDuration: frameDurationMilliseconds)
+        try loss.applyComfortNoise(to: &pcm, sampleRate: sampleRate)
+        loss.glue(&pcm)
         return pcm
     }
 
@@ -242,7 +322,7 @@ public struct SILKFrameDecoder: Sendable {
     /// - Returns: PCM16 residuals; first `order` samples are explicitly zero because
     ///   this analysis starts without earlier history. Intermediate sums wrap modulo
     ///   2^32 before rounded shifting and Int16 saturation, as scalar SILK specifies.
-    private static func rewhiten(_ input: [Int16], coefficients: [Int16]) -> [Int16] {
+    static func rewhiten(_ input: [Int16], coefficients: [Int16]) -> [Int16] {
         let order = coefficients.count
         var output = Array(repeating: Int16(0), count: input.count)
         for index in order..<input.count {
@@ -256,7 +336,7 @@ public struct SILKFrameDecoder: Sendable {
 }
 
 /// Scalar two's-complement, saturation and reciprocal arithmetic for frame synthesis.
-private enum SILKFrameMath {
+enum SILKFrameMath {
     /// Multiplies a signed Int32 by the low signed sixteen bits of another value.
     /// - Parameters:
     ///   - lhs: Full signed multiplicand.

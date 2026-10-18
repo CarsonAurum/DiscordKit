@@ -1,0 +1,643 @@
+{
+  "verifiedOn": "2026-10-18",
+  "scope": "Official RFC8251 full decoded-PCM vectors at 48kHz with exact nonzero final ranges and official opus_compare; no device/network/perceptual/realtime qualification",
+  "vectorURL": "https://www.opus-codec.org/docs/opus_testvectors-rfc8251.tar.gz",
+  "vectorSHA256": "6b26a22f9ba87b2b836906a9bb7afec5f8e54d49553b1200382520ee6fedfa55",
+  "vectorArchiveByteCount": 74624664,
+  "officialVersion": "1.6.1",
+  "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "sourceArchiveByteCount": 10472813,
+  "comparatorSHA256": "387e5486b93899b012065f1c71fe27d96eade36a7c0bd419f03945d124a110c7",
+  "ownedSwiftSHA256": {
+    "Sources/DiscordMedia/MediaClock.swift": "0c5e64095e54a39df73e8948f77d002e7843a3c10afd5acf48bffdcef8a79d98",
+    "Sources/DiscordMedia/MediaDescriptors.swift": "6c3fed0cae1a2313eb44c6d2a95801bb2eb41b1d4a749558747f5634db3f6b21",
+    "Sources/DiscordMedia/MediaFrames.swift": "0dc2be2bcd306a97d6fb47a4f65dc447abb03d0d342511c9a2370181ac71a1c6",
+    "Sources/DiscordMedia/PCM.swift": "ae83b88cfee07074b18e7c59827f37a638f5915b25f9d57f6eec509c2f23f997",
+    "Sources/DiscordMedia/PCMBandlimitedResampler.swift": "14e17b75517198f89cef0ff1866aa76e6526ea1f0ae3cece22eb725ba96ce7b9",
+    "Sources/DiscordMedia/PCMFramePacer.swift": "75495bdb666e7925905314bade4ffae8495f89173f533b3949f953eabd8f935f",
+    "Sources/DiscordMedia/PCMFrameStream.swift": "db70bb76e8695f98e8ee227b919a0454e67ec67cafb0d80ac19477406134bf31",
+    "Sources/DiscordMedia/PCMSpeechActivityDetector.swift": "926ce853879c4e6a77737ef00f794cc0270147c422b156ae1308feed4ebc975f",
+    "Sources/DiscordMedia/PCMStreamingResampler.swift": "358cbada6ac79266c41415f527b093aed10ebe02e95c51a2c235d712b1787f31",
+    "Sources/DiscordVoiceCodecs/CELTAllocationTables.swift": "2e264fd2ebfa0e69ef32cf393ab52e9d7473e4e35a89b2beed88a4ee9c326894",
+    "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift": "de91fa5930b1c285fc74f3229baa63a2347989a3b271ee03cdea3c6cb85813be",
+    "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift": "545af9e53ef2abb4ee19b745d381cc858b6f4fe6725bc066a0cf78420b92e98b",
+    "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift": "1b238b15095ac397a0a349d299ab1662e8b8c115d0e71609af5b799933a1d462",
+    "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift": "34b71434d4d363d7e3d344305bd3e73567870f0363ac31be03074b18f902abe3",
+    "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift": "e15b182762910a384bc59e61c3ea92e7ce500a545d6a6204f6256065abecc879",
+    "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift": "d86f05a805473ca41cc079de4e67cd780084d463212536385c235dcd44b11cf6",
+    "Sources/DiscordVoiceCodecs/CELTPacketCodec.swift": "fb70c94436e63772d9349a2707f4e34f71ce91297dfef87e2221102c05d1e7d3",
+    "Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift": "859002144e888609728c362d87c16c7b7594d49e3fafa640581c7d7040d974ec",
+    "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
+    "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift": "f204727035942717114e65ceb8d98fac8cb17c137945eded3564e637ef964007",
+    "Sources/DiscordVoiceCodecs/CELTShapeTables.swift": "3c7fe7be7dbf01eba178d907542697976a09dc2391ed96c9aafdba20d9e8b74d",
+    "Sources/DiscordVoiceCodecs/CELTSynthesis.swift": "ee599d473f6aad1984c5dbf611fd784233d5e9b4c3614a41c8b08a0a9d022233",
+    "Sources/DiscordVoiceCodecs/CELTTransform.swift": "fec3dc376fead581a4b2a593c6247760692e4bb5dc5c518db4bba89a808762fd",
+    "Sources/DiscordVoiceCodecs/OpusAudioDecoder.swift": "9576955f4fd71a2523c821214db569608a0d0a160ba55122f023186b788e86ab",
+    "Sources/DiscordVoiceCodecs/OpusHybridDecoder.swift": "a261e1b25c01f5ca6b31000a055697ac84fd71b93686da3ec6af293b03691309",
+    "Sources/DiscordVoiceCodecs/OpusHybridEncoder.swift": "fd16d54c967a659ecb8b68963db117362a4384b12226c3b4f1a7e0455bc46c17",
+    "Sources/DiscordVoiceCodecs/OpusPacket.swift": "012a2e9c0c15fa29a46d219e94a1a7c0a75fceee9f026ac9f5626b70eedf8212",
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "217be419f0f299f7126ba8cd9f999ee4bf16ed115135887e93fd4ca3ed0430a2",
+    "Sources/DiscordVoiceCodecs/SILKExcitation.swift": "866a9851099d736644289e3d0c1f1eeea6a85cb7d727a5e8efde86bfce62b426",
+    "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift": "fef73df9542e10cfb976cbea257633ddcda957256b54330218d746fa0fb0f09e",
+    "Sources/DiscordVoiceCodecs/SILKFrameParameterEncoder.swift": "29c4ce3321c25f1b41d8c1dcf1305f5b8816be9f39e3a2edae46683783f20ff8",
+    "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift": "5c1eb225f2bdb846c4dc523f8e7724f24a71a718062fc4de8ffcf625af025ace",
+    "Sources/DiscordVoiceCodecs/SILKFrameQuantization.swift": "6d54b6aa44aacd9051fd5eaf162b9db4d9999b279091fc5e6842da1e95c917d6",
+    "Sources/DiscordVoiceCodecs/SILKLinearPrediction.swift": "8434c07be5e41ef15e41b46894c1b65ee3781ff53c954c28265ceccedc5109bc",
+    "Sources/DiscordVoiceCodecs/SILKLongTermPrediction.swift": "7cd11da14ded6696eaac5e1a6338987ab1f6b04cfd5fe7c18965048eddbb185e",
+    "Sources/DiscordVoiceCodecs/SILKMonoDecoder.swift": "75c634483b24faf0cc1b819981ffbbd1511112a1e2040074968eef26589d3b22",
+    "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift": "62692dc732d6ce44178cfb707cac859528d615055e9dd231815c1423fe1081c4",
+    "Sources/DiscordVoiceCodecs/SILKMonoPacketDecoder.swift": "4009e3a1b25337b8a8a479df5f6567cee7f521c90e161cbe281e74ae7870f699",
+    "Sources/DiscordVoiceCodecs/SILKNLSF.swift": "e0bae50faee701b7f169f7d1c083d207cdb87817ce3b62924cbf065748773afb",
+    "Sources/DiscordVoiceCodecs/SILKPacketLossConcealment.swift": "e32ec37200e32d40f93f4a10062e9439214ee26794662d5f200d98cb5c08be1c",
+    "Sources/DiscordVoiceCodecs/SILKParameterTables.swift": "7407899016d0e1ff4108013fad3695296c65bc00a00e82d05b0b1b2939157b61",
+    "Sources/DiscordVoiceCodecs/SILKPulseCoding.swift": "9c50b18f1f8cfc9b896a8d04ff65c08a07d21ee7eed6f3e0928d8edd3ea4f1b8",
+    "Sources/DiscordVoiceCodecs/SILKPulseTables.swift": "9f5382f4aa68c85753c5be06a573417687a2b0b34364aa90f36e93c694ddbb48",
+    "Sources/DiscordVoiceCodecs/SILKStereoDecoder.swift": "75e713a1f6c89bc60b0b09b96585102b4afb222be1f89cea070dfb073177c785",
+    "Sources/DiscordVoiceCodecs/SILKStereoEncoder.swift": "05a4a40f0ef46a3df195f9e7ed09f5d21f56152d2133ebe7ab774a3c217acba0"
+  },
+  "sourceDrift": [],
+  "verifierSHA256": "48afe451343192f2a042c4087abe57a5593274e5da90379cc7e373517025e792",
+  "verifierDrift": false,
+  "host": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "swiftCompiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "fullCorpus": true,
+  "results": [
+    {
+      "vector": 1,
+      "channels": 1,
+      "expectedPackets": 2147,
+      "samples": 1415040,
+      "packets": 2147,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 2830080,
+      "comparisons": [
+        {
+          "reference": "testvector01.dec",
+          "referencePCMBytes": 5660160,
+          "exitCode": 1,
+          "comparison": "Test vector FAILS\nInternal weighted error is 0.338939"
+        },
+        {
+          "reference": "testvector01m.dec",
+          "referencePCMBytes": 5660160,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 98.2 % (internal weighted error is 0.004328)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 1,
+      "channels": 2,
+      "expectedPackets": 2147,
+      "packets": 2147,
+      "rangeMismatches": 0,
+      "samples": 2830080,
+      "actualPCMBytes": 5660160,
+      "comparisons": [
+        {
+          "reference": "testvector01.dec",
+          "referencePCMBytes": 5660160,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.9 % (internal weighted error is 0.000260)"
+        },
+        {
+          "reference": "testvector01m.dec",
+          "referencePCMBytes": 5660160,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 66.3 % (internal weighted error is 0.085941)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 2,
+      "channels": 1,
+      "expectedPackets": 1185,
+      "rangeMismatches": 0,
+      "packets": 1185,
+      "samples": 1201440,
+      "actualPCMBytes": 2402880,
+      "comparisons": [
+        {
+          "reference": "testvector02.dec",
+          "referencePCMBytes": 4805760,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.2 % (internal weighted error is 0.009403)"
+        },
+        {
+          "reference": "testvector02m.dec",
+          "referencePCMBytes": 4805760,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.2 % (internal weighted error is 0.009403)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 2,
+      "channels": 2,
+      "expectedPackets": 1185,
+      "rangeMismatches": 0,
+      "samples": 2402880,
+      "packets": 1185,
+      "actualPCMBytes": 4805760,
+      "comparisons": [
+        {
+          "reference": "testvector02.dec",
+          "referencePCMBytes": 4805760,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 100.0 % (internal weighted error is 0.000000)"
+        },
+        {
+          "reference": "testvector02m.dec",
+          "referencePCMBytes": 4805760,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 100.0 % (internal weighted error is 0.000000)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 3,
+      "channels": 1,
+      "expectedPackets": 998,
+      "packets": 998,
+      "rangeMismatches": 0,
+      "samples": 1015680,
+      "actualPCMBytes": 2031360,
+      "comparisons": [
+        {
+          "reference": "testvector03.dec",
+          "referencePCMBytes": 4062720,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.7 % (internal weighted error is 0.008038)"
+        },
+        {
+          "reference": "testvector03m.dec",
+          "referencePCMBytes": 4062720,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.7 % (internal weighted error is 0.008038)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 3,
+      "channels": 2,
+      "expectedPackets": 998,
+      "packets": 998,
+      "rangeMismatches": 0,
+      "samples": 2031360,
+      "actualPCMBytes": 4062720,
+      "comparisons": [
+        {
+          "reference": "testvector03.dec",
+          "referencePCMBytes": 4062720,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 100.0 % (internal weighted error is 0.000000)"
+        },
+        {
+          "reference": "testvector03m.dec",
+          "referencePCMBytes": 4062720,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 100.0 % (internal weighted error is 0.000000)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 4,
+      "channels": 1,
+      "expectedPackets": 1265,
+      "samples": 1278240,
+      "packets": 1265,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 2556480,
+      "comparisons": [
+        {
+          "reference": "testvector04.dec",
+          "referencePCMBytes": 5112960,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.5 % (internal weighted error is 0.008508)"
+        },
+        {
+          "reference": "testvector04m.dec",
+          "referencePCMBytes": 5112960,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.5 % (internal weighted error is 0.008508)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 4,
+      "channels": 2,
+      "expectedPackets": 1265,
+      "packets": 1265,
+      "rangeMismatches": 0,
+      "samples": 2556480,
+      "actualPCMBytes": 5112960,
+      "comparisons": [
+        {
+          "reference": "testvector04.dec",
+          "referencePCMBytes": 5112960,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 100.0 % (internal weighted error is 0.000000)"
+        },
+        {
+          "reference": "testvector04m.dec",
+          "referencePCMBytes": 5112960,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 100.0 % (internal weighted error is 0.000000)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 5,
+      "channels": 1,
+      "expectedPackets": 2037,
+      "rangeMismatches": 0,
+      "samples": 1304160,
+      "packets": 2037,
+      "actualPCMBytes": 2608320,
+      "comparisons": [
+        {
+          "reference": "testvector05.dec",
+          "referencePCMBytes": 5216640,
+          "exitCode": 1,
+          "comparison": "Test vector FAILS\nInternal weighted error is 8.870156"
+        },
+        {
+          "reference": "testvector05m.dec",
+          "referencePCMBytes": 5216640,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.3 % (internal weighted error is 0.009183)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 5,
+      "channels": 2,
+      "expectedPackets": 2037,
+      "samples": 2608320,
+      "rangeMismatches": 0,
+      "packets": 2037,
+      "actualPCMBytes": 5216640,
+      "comparisons": [
+        {
+          "reference": "testvector05.dec",
+          "referencePCMBytes": 5216640,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.8 % (internal weighted error is 0.000409)"
+        },
+        {
+          "reference": "testvector05m.dec",
+          "referencePCMBytes": 5216640,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 33.4 % (internal weighted error is 0.176919)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 6,
+      "channels": 1,
+      "expectedPackets": 1876,
+      "samples": 1200960,
+      "packets": 1876,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 2401920,
+      "comparisons": [
+        {
+          "reference": "testvector06.dec",
+          "referencePCMBytes": 4803840,
+          "exitCode": 1,
+          "comparison": "Test vector FAILS\nInternal weighted error is 4.076123"
+        },
+        {
+          "reference": "testvector06m.dec",
+          "referencePCMBytes": 4803840,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.3 % (internal weighted error is 0.009020)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 6,
+      "channels": 2,
+      "expectedPackets": 1876,
+      "samples": 2401920,
+      "rangeMismatches": 0,
+      "packets": 1876,
+      "actualPCMBytes": 4803840,
+      "comparisons": [
+        {
+          "reference": "testvector06.dec",
+          "referencePCMBytes": 4803840,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.8 % (internal weighted error is 0.000448)"
+        },
+        {
+          "reference": "testvector06m.dec",
+          "referencePCMBytes": 4803840,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 45.0 % (internal weighted error is 0.143813)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 7,
+      "channels": 1,
+      "expectedPackets": 4186,
+      "packets": 4186,
+      "samples": 1085040,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 2170080,
+      "comparisons": [
+        {
+          "reference": "testvector07.dec",
+          "referencePCMBytes": 4340160,
+          "exitCode": 1,
+          "comparison": "Test vector FAILS\nInternal weighted error is 2.724740"
+        },
+        {
+          "reference": "testvector07m.dec",
+          "referencePCMBytes": 4340160,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 98.1 % (internal weighted error is 0.004616)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 7,
+      "channels": 2,
+      "expectedPackets": 4186,
+      "rangeMismatches": 0,
+      "samples": 2170080,
+      "packets": 4186,
+      "actualPCMBytes": 4340160,
+      "comparisons": [
+        {
+          "reference": "testvector07.dec",
+          "referencePCMBytes": 4340160,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.9 % (internal weighted error is 0.000343)"
+        },
+        {
+          "reference": "testvector07m.dec",
+          "referencePCMBytes": 4340160,
+          "exitCode": 1,
+          "comparison": "Test vector FAILS\nInternal weighted error is 0.347141"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 8,
+      "channels": 1,
+      "expectedPackets": 1247,
+      "samples": 1310160,
+      "packets": 1247,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 2620320,
+      "comparisons": [
+        {
+          "reference": "testvector08.dec",
+          "referencePCMBytes": 5240640,
+          "exitCode": 1,
+          "comparison": "Test vector FAILS\nInternal weighted error is 7.318658"
+        },
+        {
+          "reference": "testvector08m.dec",
+          "referencePCMBytes": 5240640,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 96.5 % (internal weighted error is 0.008574)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 8,
+      "channels": 2,
+      "expectedPackets": 1247,
+      "packets": 1247,
+      "samples": 2620320,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 5240640,
+      "comparisons": [
+        {
+          "reference": "testvector08.dec",
+          "referencePCMBytes": 5240640,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.8 % (internal weighted error is 0.000390)"
+        },
+        {
+          "reference": "testvector08m.dec",
+          "referencePCMBytes": 5240640,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 13.2 % (internal weighted error is 0.236407)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 9,
+      "channels": 1,
+      "expectedPackets": 1337,
+      "samples": 1323600,
+      "packets": 1337,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 2647200,
+      "comparisons": [
+        {
+          "reference": "testvector09.dec",
+          "referencePCMBytes": 5294400,
+          "exitCode": 1,
+          "comparison": "Test vector FAILS\nInternal weighted error is 0.813325"
+        },
+        {
+          "reference": "testvector09m.dec",
+          "referencePCMBytes": 5294400,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 98.1 % (internal weighted error is 0.004608)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 9,
+      "channels": 2,
+      "expectedPackets": 1337,
+      "rangeMismatches": 0,
+      "packets": 1337,
+      "samples": 2647200,
+      "actualPCMBytes": 5294400,
+      "comparisons": [
+        {
+          "reference": "testvector09.dec",
+          "referencePCMBytes": 5294400,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.8 % (internal weighted error is 0.000413)"
+        },
+        {
+          "reference": "testvector09m.dec",
+          "referencePCMBytes": 5294400,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 40.7 % (internal weighted error is 0.155938)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 10,
+      "channels": 1,
+      "expectedPackets": 1912,
+      "packets": 1912,
+      "samples": 1536480,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 3072960,
+      "comparisons": [
+        {
+          "reference": "testvector10.dec",
+          "referencePCMBytes": 6145920,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 97.7 % (internal weighted error is 0.005626)"
+        },
+        {
+          "reference": "testvector10m.dec",
+          "referencePCMBytes": 6145920,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 97.7 % (internal weighted error is 0.005626)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 10,
+      "channels": 2,
+      "expectedPackets": 1912,
+      "samples": 3072960,
+      "rangeMismatches": 0,
+      "packets": 1912,
+      "actualPCMBytes": 6145920,
+      "comparisons": [
+        {
+          "reference": "testvector10.dec",
+          "referencePCMBytes": 6145920,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.8 % (internal weighted error is 0.000486)"
+        },
+        {
+          "reference": "testvector10m.dec",
+          "referencePCMBytes": 6145920,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.8 % (internal weighted error is 0.000486)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 11,
+      "channels": 1,
+      "expectedPackets": 553,
+      "rangeMismatches": 0,
+      "packets": 553,
+      "samples": 1440960,
+      "actualPCMBytes": 2881920,
+      "comparisons": [
+        {
+          "reference": "testvector11.dec",
+          "referencePCMBytes": 5763840,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 93.5 % (internal weighted error is 0.016106)"
+        },
+        {
+          "reference": "testvector11m.dec",
+          "referencePCMBytes": 5763840,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 98.5 % (internal weighted error is 0.003644)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 11,
+      "channels": 2,
+      "expectedPackets": 553,
+      "packets": 553,
+      "samples": 2881920,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 5763840,
+      "comparisons": [
+        {
+          "reference": "testvector11.dec",
+          "referencePCMBytes": 5763840,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.8 % (internal weighted error is 0.000411)"
+        },
+        {
+          "reference": "testvector11m.dec",
+          "referencePCMBytes": 5763840,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 97.0 % (internal weighted error is 0.007255)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 12,
+      "channels": 1,
+      "expectedPackets": 1332,
+      "packets": 1332,
+      "samples": 1278720,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 2557440,
+      "comparisons": [
+        {
+          "reference": "testvector12.dec",
+          "referencePCMBytes": 5114880,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.9 % (internal weighted error is 0.000365)"
+        },
+        {
+          "reference": "testvector12m.dec",
+          "referencePCMBytes": 5114880,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.9 % (internal weighted error is 0.000365)"
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "vector": 12,
+      "channels": 2,
+      "expectedPackets": 1332,
+      "samples": 2557440,
+      "packets": 1332,
+      "rangeMismatches": 0,
+      "actualPCMBytes": 5114880,
+      "comparisons": [
+        {
+          "reference": "testvector12.dec",
+          "referencePCMBytes": 5114880,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.9 % (internal weighted error is 0.000363)"
+        },
+        {
+          "reference": "testvector12m.dec",
+          "referencePCMBytes": 5114880,
+          "exitCode": 0,
+          "comparison": "Test vector PASSES\nOpus quality metric: 99.9 % (internal weighted error is 0.000363)"
+        }
+      ],
+      "result": "passed"
+    }
+  ],
+  "result": "passed"
+}

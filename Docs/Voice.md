@@ -3,25 +3,24 @@
 Verified and locally added **2026-10-17**. This is the first release of the
 multi-release [Part 12 plan](../.air/plans/phase-12-execution.plan.md), with four
 independently adopted products. **Complete Discord voice is not implemented.**
-No `VoiceSession`/`VoiceManager`, complete Opus codec, MLS group or DAVE
-backend is shipped yet. Apple system-route capture/playback is independently
+No `VoiceSession`/`VoiceManager`, MLS group or DAVE backend is shipped yet. Apple system-route capture/playback is independently
 available through `DiscordApplePlatform`; device qualification remains open.
 
 The subsequent [12A execution](../.air/plans/phase-12a-execution.plan.md) adds
 streaming media, bandlimited resampling, statistical speech detection and native
-Apple audio ownership. The latest
-[compressed-audio continuation](Parity/changes/2026-10-17-phase12a-compressed-audio.md)
-composes owned CELT frame/packet encoding and decoding, and ordinary mono SILK
-packet decoding to 48-kHz PCM. **The full 12A milestone remains incomplete**:
-SILK/hybrid encoding, complete mode transitions/loss recovery, official full-codec
-conformance and Windows/Android device adapters remain required.
+Apple audio ownership. The [codec/loss continuation](Parity/changes/2026-10-17-phase12a-codec-loss-conformance.md)
+adds mono/stereo SILK, shared-entropy hybrid coding, ordinary mode/channel/rate
+transitions, and explicit PLC/CNG/in-band FEC recovery. Encoders have deliberately
+bounded analysis and configuration; native platform and quality qualification
+remain separate. **The full 12A milestone remains incomplete** while required
+Windows/Android audio adapters and native device qualification are unavailable.
 
 ## Products and ownership
 
 | Product | Implemented behavior | Dependency boundary |
 | --- | --- | --- |
 | DiscordMedia | Rational/sample clocks, caller-driven pacing, bounded PCM/audio/video values, PCM16 conversion, gain/mixing, linear/windowed-sinc resampling, RMS/statistical speech detection, polling and terminal-aware async queues | Foundation; no codecs/network/platform capture |
-| DiscordVoiceCodecs | Owned Opus framing/entropy, ordinary CELT frame/packet coding and mono SILK packet decoding, with independent component and compressed-audio fixtures | Media; no native Opus runtime; complete SILK/hybrid encoder/decoder, mode transitions and loss recovery remain open |
+| DiscordVoiceCodecs | Owned Opus framing/entropy, mono/stereo SILK/CELT/hybrid coding, unified ordinary decoding, mode transitions and explicit PLC/CNG/FEC | Media; no native Opus runtime; conservative encoding analysis, ordinary packets and 48-kHz decoder output |
 | DiscordVoiceCrypto | XChaCha20-Poly1305, owned HChaCha20, public AES256-GCM, experimental truncated AES128-GCM adapter and actor-owned RTP-size packet protection | Existing Swift Crypto and its public CryptoExtras product |
 | DiscordApplePlatform | Apple engine capture/playback, bounded queues, permission/session ownership, explicit supported device selection and observed-route invalidation | Media/Core/Transport; native AVFoundation/CoreAudio only in this adapter |
 | DiscordVoice | Bounded Voice v8 JSON/binary frames/opcodes, pure handshake/heartbeat/resume reducer, main-Gateway join rendezvous, discovery, RTP framing, Opus packetization and reorder window | Core/Models/Transport and the three media products; no Client/Gateway/facade ownership |
@@ -139,14 +138,28 @@ composes these into ordinary no-loss 8/12/16-kHz PCM16 with gain scaling, rewhit
 and persistent LPC/output history. Independent comparisons check exact integer
 PCM, entropy and history across successive frames.
 
-`SILKMonoDecoder` adds mono SILK payload/Opus packet decoding at a fixed internal
-NB/MB/WB rate. It consumes VAD/LBRR headers, skips redundant syntax, handles
-10/20/40/60ms payloads and every ordinary packing form, and produces exact-duration
-48-kHz PCM16 through owned allpass/FIR resampling and mono alignment. Duration
-changes retain history. LBRR flags report availability; no missing audio is recovered.
-Stereo, internal-rate changes, PLC/CNG after loss, SILK encoding and hybrid are absent.
-Empty loss/DTX payloads reject explicitly. SILK's normative entropy zero extension
-can accept damaged/truncated nonempty payloads; decoding is not authentication.
+`SILKMonoDecoder` and `SILKStereoDecoder` consume VAD/LBRR headers, decode
+10/20/40/60ms payloads and produce 48-kHz PCM16 through owned allpass/FIR
+resampling. The generalized stereo owner handles coded mono/stereo, output
+mono/stereo, mid-only frames, predictor interpolation and internal-rate changes.
+Mono output uses normative mid synthesis rather than averaging rendered left/right.
+`SILKFrameDecoder` now owns pitch/LPC concealment, comfort noise and recovery glue.
+`conceal` advances missing audio; `recoverPayload` consumes following-packet LBRR
+when present and otherwise conceals. Decode that following packet normally afterward.
+Independent scalar reference comparisons check complete PCM16 samples and entropy.
+SILK's normative entropy zero extension can accept damaged nonempty payloads;
+decoding provides no authentication.
+
+`SILKFrameParameterEncoding` supplies the inverse parameter syntax, including
+conditional voiced pitch. `SILKMonoEncoder` and `SILKStereoEncoder` emit actual
+bounded packets from 8/12/16-kHz PCM16, with 10/20ms frames, quantized NLSF/gains,
+voiced pitch/five-tap LTP analysis, exact synthesis-feedback excitation and local
+reconstruction. Optional in-band FEC carries preceding active channels as
+following-packet LBRR within the same explicit budget. The stereo encoder uses
+explicit mid/side coding. Their shared range-encoder entry points permit hybrid
+composition without finalizing the interval between layers. Configuration,
+analysis and rate-control limitations are documented at the API; independent
+reference decoding establishes syntax and reconstruction, not perceptual quality.
 
 `CELTEnergyQuantizer`, `CELTFrameHeader` and `CELTBitAllocation` implement segmented
 prefix/TF/boost/trim syntax, predictive/coarse/fine/final energies, caps/interpolation,
@@ -156,17 +169,35 @@ splitting, theta/stereo/intensity, TF/Haar, folding/noise and bounded PVQ leaves
 adds denormalization, short/long overlap, delayed pitch postfilters and deemphasis,
 sharing history across durations. Floating PCM is normalized by 32768 without clipping.
 
-`CELTFrameDecoder` composes the complete ordinary CELT frame pipeline with atomic
-history replacement. `CELTFrameEncoder` supplies a basic long-block encoder from
-normalized 48-kHz PCM: preemphasis, transform, band normalization, energy/allocation
-and shape coding. It selects no pitch prefilter/transient analysis and provides no
-psychoacoustic VBR/DTX/FEC quality policy. `CELTPacketEncoder` adds a standard
-single-frame TOC; `CELTPacketDecoder` accepts all ordinary packing/padding forms,
-with fixed channels and variable duration/bandwidth. Failed multi-frame packets
-advance no history. Zero/one-byte frames require an unimplemented loss policy.
-There is no SILK/hybrid transition, PLC/FEC or multistream support. Component and
-selected compressed-frame interoperability checks do not establish official full
-RFC 8251 decoded-PCM conformance, universal quality or realtime frame-budget qualification.
+`CELTFrameDecoder` composes the ordinary frame pipeline with atomic history
+replacement, coded/output channel conversion and hybrid start-band selection.
+`CELTFrameEncoder` supplies bounded long-block encoding from normalized 48-kHz
+PCM: preemphasis, transform, band normalization, energy/allocation and shape coding.
+It selects no pitch prefilter/transient analysis or psychoacoustic VBR policy.
+`CELTPacketEncoder` supplies a single-frame TOC; `CELTPacketDecoder` accepts ordinary
+packing/padding and owns explicit loss. Periodic CELT PLC uses pitch and order-24
+LPC, falling back to shaped noise for long loss/high-band-only audio. Loss updates
+energy predictors and retains recovery histories. Floating PLC error can amplify
+small transform differences; the pinned reports specify exercised tolerances.
+
+`OpusHybridEncoder` combines a delayed, bandlimited 48-to-16-kHz SILK path with
+CELT bands 17 and above in one range interval. It supports mono/stereo, 10/20ms,
+superwide/full bandwidth and explicit packet budgets. Its conservative layer
+allocation and analysis are not libopus perceptual rate-control equivalence.
+Optional hybrid FEC protects the SILK layer; its missing high band uses CELT PLC.
+`OpusHybridDecoder` independently adopts shared-entropy hybrid payloads, entropy
+storage reduction before backward raw-bit access, redundant CELT tails and fades.
+
+`OpusAudioDecoder` is the ordinary packet owner for all three modes. It preserves
+histories across coded mono/stereo, bandwidth, duration and mode changes; applies
+5ms transition redundancy and squared-window fades; handles empty/one-byte
+payload loss; and exposes bounded `conceal` and subsequent-packet `recover`.
+The output is fixed mono/stereo 48-kHz normalized float, without clipping. Decode
+operations on malformed packed packets commit no history. Cold loss yields zeros;
+recovery consumes missing audio before the following packet is decoded normally.
+It does not implement multistream/container framing, enhancement extensions,
+output gain or integer-output soft clipping. No network/device/task ownership is
+implicit. See the dated record for independent streams and official vector results.
 
 Encoded video values retain opaque H.264/H.265/VP8/VP9/AV1, keyframe, dimension and
 optional spatial/temporal-layer metadata. Layer bounds are local storage policy,
@@ -299,7 +330,12 @@ padding splits, both AEAD modes, tamper/replay, concurrent nonce allocation,
 cancellation, byte/stream limits, counter exhaustion, generation fencing and
 heartbeat/resume/E2EE suspension. They establish local component behavior only.
 
-MLS/DAVE/Opus interoperability, an owned supervised network/media pipeline,
+The [owned Opus verification guide](VoiceVerification.md) documents pinned source
+admission, independent compressed streams, loss/FEC comparisons and the complete
+official RFC 8251 corpus. Reports distinguish exact integer/entropy decisions from
+tolerance-qualified floating PCM and record the compiled source snapshots.
+
+MLS/DAVE interoperability, an owned supervised network/media pipeline,
 complete device routing/adapters and their qualification, non-macOS runtime and
 minimum-OS testing, authorized Discord voice smoke, a ten-minute lossless duplex run and per-frame p99 budgets
 remain open. No production voice, video, cross-platform or fleet-capacity claim

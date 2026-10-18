@@ -68,13 +68,16 @@ public struct CELTPacketEncoder: Sendable {
 ///
 /// All four ordinary packing codes and padding are accepted through `OpusPacket`.
 /// Coded channel count is fixed; bandwidth/duration may change between packets.
-/// There is no channel conversion, SILK/hybrid transition, packet-loss concealment,
-/// FEC or transport ownership. A zero/one-byte frame requires such an enclosing
-/// policy and is rejected by the raw frame decoder. No construction or call starts
+/// There is no channel conversion, SILK/hybrid transition, FEC or transport ownership.
+/// Explicit missing frames and zero/one-byte packed frames use CELT periodic/noise
+/// concealment. Short-frame results have zero entropy accounting and final range,
+/// with no signaled transient or silence flag. No construction or call starts
 /// tasks, device work or I/O; callers serialize mutable access.
 public struct CELTPacketDecoder: Sendable {
     public let channelCount: Int
     private var decoder: CELTFrameDecoder
+    private var previousFrameSampleCount = 120
+    private var previousEndBand = 21
 
     /// Creates an idle decoder with a fixed coded/output channel layout.
     /// - Parameter channelCount: Exactly one or two channels; default one.
@@ -88,7 +91,10 @@ public struct CELTPacketDecoder: Sendable {
     /// - Parameter data: Complete Opus packet including TOC/packing/padding, bounded
     ///   by the parser to 65,536 bytes and at most 120 ms of output per channel.
     /// - Returns: One owned PCM result per packed frame, preserving individual final
-    ///   ranges and accounting. Concatenate samples in order for the packet's PCM.
+    ///   ranges and accounting. Zero/one-byte frames select concealment, matching the
+    ///   reference ordinary CELT loss rule; their final range and both bit counts are
+    ///   zero and transient/silence flags are false because no such syntax was read.
+    ///   Concatenate samples in order for the packet's PCM.
     ///   Output is normalized 48-kHz interleaved float PCM and can exceed unity.
     /// - Throws: Parser errors, `unsupportedMode` for SILK/hybrid,
     ///   `channelCountMismatch` or frame-decoder failures. The entire packet is
@@ -106,17 +112,69 @@ public struct CELTPacketDecoder: Sendable {
         case .mediumband: throw CELTPacketCodecError.unsupportedBandwidth
         }
         var working = decoder
+        var workingEndBand = previousEndBand
         var output: [CELTDecodedFrame] = []
         output.reserveCapacity(packet.frameRanges.count)
         for range in packet.frameRanges {
-            output.append(try working.decode(Data(packet.data[range]),
-                frameSampleCount: packet.frameSampleCount, endBand: band))
+            if range.count <= 1 {
+                let concealed = try working.conceal(frameSampleCount: packet.frameSampleCount, endBand: workingEndBand)
+                output.append(CELTDecodedFrame(samples: concealed.samples, frameSampleCount: packet.frameSampleCount,
+                    channelCount: channelCount, finalRange: 0, bitsUsed: 0, fractionalBitsUsed: 0,
+                    isTransient: false, isSilence: false))
+            } else {
+                output.append(try working.decode(Data(packet.data[range]),
+                    frameSampleCount: packet.frameSampleCount, endBand: band))
+                workingEndBand = band
+            }
         }
         decoder = working
+        previousFrameSampleCount = packet.frameSampleCount
+        previousEndBand = workingEndBand
         return output
+    }
+
+    /// Synthesizes one explicitly missing ordinary CELT interval without constructing a packet.
+    /// - Parameters:
+    ///   - frameSampleCount: Exactly 120, 240, 480 or 960 samples/channel at 48 kHz.
+    ///     The caller chooses the missing duration; no packet or wall-clock inference occurs.
+    ///   - endBand: Optional exclusive active upper band in 1...21, normally 13/17/19/21
+    ///     for narrow/wide/superwide/fullband. Nil uses the last received compressed
+    ///     frame's band, or fullband 21 before reception. A missing/short payload does
+    ///     not replace the last received bandwidth, matching ordinary Opus PLC.
+    /// - Returns: Owned interleaved PCM, updated envelope/seed and explicit periodic/noise
+    ///   diagnostics from the final concealed subframe. Following the ordinary Opus packet
+    ///   loss policy, intervals longer than the last received TOC frame are synthesized in
+    ///   subframes no longer than that duration; the startup duration is 120 samples. This
+    ///   matters for LPC fading and recovery when packet duration changes. This advances
+    ///   the same history used for subsequent received packets.
+    /// - Throws: Synthesis configuration errors before any history changes. The bounded
+    ///   synchronous call owns no network, task, timer or device and does not recover FEC.
+    public mutating func conceal(frameSampleCount: Int, endBand: Int? = nil) throws -> CELTConcealedFrame {
+        guard [120, 240, 480, 960].contains(frameSampleCount) else { throw CELTSynthesisError.invalidFrameSize }
+        var working = decoder
+        var output: [Float] = []
+        output.reserveCapacity(frameSampleCount * channelCount)
+        var last: CELTConcealedFrame?
+        var remaining = frameSampleCount
+        while remaining > 0 {
+            let count = min(remaining, previousFrameSampleCount)
+            let result = try working.conceal(frameSampleCount: count, endBand: endBand ?? previousEndBand)
+            output += result.samples
+            last = result
+            remaining -= count
+        }
+        decoder = working
+        let final = last!
+        return CELTConcealedFrame(samples: output, bandLogEnergies: final.bandLogEnergies,
+            seed: final.seed, usesNoise: final.usesNoise, lossDuration: final.lossDuration,
+            pitchPeriod: final.pitchPeriod)
     }
 
     /// Discards every predictor, overlap, pitch, anti-collapse and deemphasis history.
     /// This synchronous operation preserves the configured channel count and opens no devices.
-    public mutating func reset() { decoder.reset() }
+    public mutating func reset() {
+        decoder.reset()
+        previousFrameSampleCount = 120
+        previousEndBand = 21
+    }
 }

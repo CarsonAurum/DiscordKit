@@ -70084,7 +70084,32 @@
         "symbol.12A.SILKNLSFCoefficients",
         "symbol.12A.SILKPulseCodingError",
         "symbol.12A.SILKPulseFrame",
-        "symbol.12A.SILKPulseCoding"
+        "symbol.12A.SILKPulseCoding",
+        "symbol.12A.CELTConcealedFrame",
+        "symbol.12A.OpusAudioDecoderError",
+        "symbol.12A.OpusAudioDecodedFrame",
+        "symbol.12A.OpusAudioDecoder",
+        "symbol.12A.OpusHybridDecoderError",
+        "symbol.12A.OpusHybridDecodedFrame",
+        "symbol.12A.OpusHybridDecoder",
+        "symbol.12A.OpusHybridEncoderError",
+        "symbol.12A.OpusHybridEncoder",
+        "symbol.12A.SILKFrameParameterEncodingError",
+        "symbol.12A.SILKFrameParameterEncoding",
+        "symbol.12A.SILKMonoEncoderError",
+        "symbol.12A.SILKEncodedPayload",
+        "symbol.12A.SILKEncodedPacket",
+        "symbol.12A.SILKMonoEncoder",
+        "symbol.12A.SILKConcealedPayload",
+        "symbol.12A.SILKRecoveredPayload",
+        "symbol.12A.SILKStereoDecodedPayload",
+        "symbol.12A.SILKStereoDecodedPacket",
+        "symbol.12A.SILKStereoDecoder",
+        "symbol.12A.SILKStereoEncodedPayload",
+        "symbol.12A.SILKStereoEncodedPacket",
+        "symbol.12A.SILKStereoEncoder",
+        "symbol.12A.SILKRedundantFrame",
+        "symbol.12A.OpusRangeCodingError"
       ],
       "evidenceIDs": [
         "evidence.12A.tocConfigurations",
@@ -70137,11 +70162,81 @@
         "evidence.12A.observationPartialFailureRollbackAndRetry",
         "evidence.12A.compressed.officialEncoderToOwnedDecoder",
         "evidence.12A.compressed.ownedEncoderToOfficialDecoder",
-        "evidence.12A.compressed.independentNativePacketsAndBandwidthDurationChanges"
+        "evidence.12A.compressed.independentNativePacketsAndBandwidthDurationChanges",
+        "evidence.12A.loss.CELTConcealmentTests.independentPeriodicNoiseAndRecoveryVectors",
+        "evidence.12A.loss.CELTConcealmentTests.malformedConcealmentIsAtomic",
+        "evidence.12A.loss.CELTConcealmentTests.noiseEnvelopeSeedAndInactiveBands",
+        "evidence.12A.loss.CELTConcealmentTests.periodicNoiseBoundaryAndTwoGoodFrameRecovery",
+        "evidence.12A.loss.CELTConcealmentTests.zeroSignalCopyResetAndForcedNoise",
+        "evidence.12A.loss.CELTPacketLossTests.independentCompressedLossAndPredictiveRecovery",
+        "evidence.12A.loss.CELTPacketLossTests.missingDurationUsesLastReceivedTOC",
+        "evidence.12A.loss.CELTPacketLossTests.shortPayloadPreservesReceivedBandwidth",
+        "evidence.12A.loss.OpusAudioDecoderTests.independentHybridPackets",
+        "evidence.12A.loss.OpusAudioDecoderTests.independentSILKPackets",
+        "evidence.12A.loss.OpusAudioDecoderTests.coldAndRepeatedLoss",
+        "evidence.12A.loss.OpusAudioDecoderTests.allModeTransitionsAndChannelConversion",
+        "evidence.12A.loss.OpusAudioDecoderTests.recoveryAndAtomicFailures",
+        "evidence.12A.loss.OpusHybridCodecTests.independentHybridPackets",
+        "evidence.12A.loss.OpusHybridCodecTests.ownedHybridEncoding",
+        "evidence.12A.loss.OpusHybridCodecTests.hybridAdmissionAndAtomicOwnership",
+        "evidence.12A.loss.OpusHybridCodecTests.sharedCELTCompositionAndAtomicity",
+        "evidence.12A.loss.OpusRangeStorageTests.suffixReductionPreservesIntervalAndRawAnchor",
+        "evidence.12A.loss.OpusRangeStorageTests.invalidReductionIsAtomic",
+        "evidence.12A.loss.SILKFrameParameterEncoderTests.reproducesOfficialBytes",
+        "evidence.12A.loss.SILKFrameParameterEncoderTests.voicedPitchContexts",
+        "evidence.12A.loss.SILKFrameParameterEncoderTests.extremeLegalIndices",
+        "evidence.12A.loss.SILKFrameParameterEncoderTests.validationAndAtomicFailures",
+        "evidence.12A.loss.SILKMonoEncoderTests.ordinaryPacketsAndPersistentReconstruction",
+        "evidence.12A.loss.SILKMonoEncoderTests.toneFidelityAndSignalDependence",
+        "evidence.12A.loss.SILKMonoEncoderTests.validationResetAndCopyOwnership",
+        "evidence.12A.loss.SILKMonoEncoderTests.boundedSharedEntropyAndFailureAtomicity",
+        "evidence.12A.loss.SILKPacketLossTests.independentScalarOperations",
+        "evidence.12A.loss.SILKPacketLossTests.initialLossResetCopiesAndBounds",
+        "evidence.12A.loss.SILKPacketLossTests.lossAndFECAdmissionIsAtomic",
+        "evidence.12A.loss.SILKPacketLossTests.absentRedundancyUsesScalarConcealment",
+        "evidence.12A.loss.SILKStereoDecoderTests.independentPacketPCM",
+        "evidence.12A.loss.SILKStereoDecoderTests.packingAndMaximumDuration",
+        "evidence.12A.loss.SILKStereoDecoderTests.sharedEntropyAdmissionAndAtomicity",
+        "evidence.12A.loss.SILKStereoDecoderTests.validationResetAndCopies",
+        "evidence.12A.loss.SILKStereoDecoderTests.monoRateTransitions",
+        "evidence.12A.loss.SILKStereoDecoderTests.channelPredictionResetSemantics",
+        "evidence.12A.loss.SILKStereoDecoderTests.boundedArbitraryPayloads",
+        "evidence.12A.loss.SILKStereoEncoderTests.ordinaryStereoPackets",
+        "evidence.12A.loss.SILKStereoEncoderTests.sharedEntropyValidationAndOwnedState",
+        "evidence.12A.loss.CELTChannelConversionTests.independentIntensityInversionVector",
+        "evidence.12A.loss.CELTChannelConversionTests.invalidCodedChannelCountsPreserveHistories",
+        "evidence.12A.loss.OpusAudioDecoderTests.malformedCELTCodedChannelsAreAtomic",
+        "evidence.12A.loss.OpusMalformedAudioTests.arbitraryPayloadAdmissionAndRollback",
+        "evidence.12A.loss.SILKMonoEncoderTests.voicedAnalysisAndExactLongTermFeedback",
+        "evidence.12A.loss.CELTFrameCodecTests.ordinaryModesChannelsAndBandwidths",
+        "evidence.12A.loss.CELTFrameCodecTests.storageAndSampleExtremes",
+        "evidence.12A.loss.CELTFrameCodecTests.configurationBounds",
+        "evidence.12A.loss.CELTFrameCodecTests.sharedEncoderFailurePreservesCallerAndSignalState",
+        "evidence.12A.loss.CELTFrameCodecTests.encoderFailureRollbackAndRecovery",
+        "evidence.12A.loss.CELTFrameCodecTests.decoderFailureRollbackAndRecovery",
+        "evidence.12A.loss.CELTFrameCodecTests.streamCopyAndReset",
+        "evidence.12A.loss.CELTFrameCodecTests.silenceDurationBandwidthTransitionsAndArbitraryFrames",
+        "evidence.12A.loss.CELTPacketCodecTests.everyStandardCELTConfiguration",
+        "evidence.12A.loss.CELTPacketCodecTests.packingCodesVBRAndPadding",
+        "evidence.12A.loss.CELTPacketCodecTests.maximumDurationAndFrameCardinality",
+        "evidence.12A.loss.CELTPacketCodecTests.shortPackedFramesUseConcealment",
+        "evidence.12A.loss.CELTPacketCodecTests.modeChannelAndFramingRejection",
+        "evidence.12A.loss.CELTPacketCodecTests.explicitPacketLossValidationCopyAndReset",
+        "evidence.12A.loss.CELTPacketCodecTests.encoderValidationAndStorageBounds",
+        "evidence.12A.loss.CELTPacketCodecTests.resetCopyAndSlicedData",
+        "evidence.12A.loss.CELTPacketCodecTests.independentNativePacketsAndBandwidthDurationChanges",
+        "evidence.12A.loss.CELTSynthesisTests.independentMultiframeSignalVectors",
+        "evidence.12A.loss.CELTSynthesisTests.malformedInputsPreserveCompleteSignalState",
+        "evidence.12A.loss.CELTSynthesisTests.copyResetSilenceAndChannelIndependence",
+        "evidence.12A.loss.CELTSynthesisTests.exponentAndActiveBandBoundaries",
+        "evidence.12A.loss.CELTSynthesisTests.codedChannelConversionAndSwitches",
+        "evidence.12A.loss.SILKMonoEncoderTests.emittedRedundancySelectionAndAtomicity",
+        "evidence.12A.loss.SILKStereoEncoderTests.channelRedundancySelectionAndAtomicity",
+        "evidence.12A.loss.OpusHybridFECOracleTests.independentOwnedLBRRRecovery"
       ],
-      "notes": "Owned RFC6716 framing/entropy now composes ordinary CELT frame/packet encoding and decoding and mono SILK packet decoding to 48-kHz PCM16. CELT includes segmented headers, energy/allocation, recursive mono/stereo/intensity shapes, all-band folding/anti-collapse and transient/pitch/deemphasis synthesis. Basic CELT encoding selects long blocks without perceptual VBR/transient/pitch analysis. SILK includes shell/pulse/sign contexts, gain/NLSF/pitch/LTP parameters, fixed-point NLSF conversion, persistent channel synthesis, mono alignment and allpass/FIR resampling at fixed internal 8/12/16-kHz; VAD/LBRR headers are consumed and redundancy skipped without FEC recovery. Independent pinned libopus 1.6.1 component and ordinary compressed-audio comparisons distinguish exact integer/entropy from tolerance-qualified float PCM. Atomic frame/packet failure and independently copied histories are tested. Portable media and synthetic-only VAD remain implemented. Apple device liveness checks after observer install/start and atomic listener rollback narrow startup races; native hardware qualification remains open. Full SILK/hybrid encoding, SILK stereo/rate changes, hybrid/mode transitions, redundant mixing, PLC/FEC/DTX and official full decoded-PCM conformance remain absent. Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; behavior/evidence/gates: Docs/Parity/changes/2026-10-17-phase12a-compressed-audio.md. Voice v8/RTP 48,000 Hz unchanged; upstream announcement/effective dates unknown. Phase 12A remains incomplete; no complete codec, live voice, production or broad platform claim.",
+      "notes": "Owned ordinary mono/stereo SILK/CELT/hybrid packets compose common range coding, generalized coded/output channels, internal-rate changes, transition redundancy/fades and explicit PLC/CNG/in-band FEC. Mono/stereo SILK and hybrid PCM encoders select real voiced pitch/LTP, exact synthesis-feedback excitation and optional prior-active-channel LBRR within bounded budgets; CELT encoding uses long blocks without perceptual VBR/transient/pitch analysis. Independent pinned libopus 1.6.1 comparisons distinguish exact SILK integer/entropy from tolerance-qualified floating audio. Official RFC8251 vector results, source fingerprints, encoder limits and remaining native gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-codec-loss-conformance.md. Portable media and synthetic-only VAD remain implemented. Apple native device qualification is open; Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; Voice v8/RTP 48,000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no MLS/DAVE, live voice, production, hardware or perceptual-quality claim.",
       "manual": {
-        "behavior": "Owned RFC6716 framing/entropy now composes ordinary CELT frame/packet encoding and decoding and mono SILK packet decoding to 48-kHz PCM16. CELT includes segmented headers, energy/allocation, recursive mono/stereo/intensity shapes, all-band folding/anti-collapse and transient/pitch/deemphasis synthesis. Basic CELT encoding selects long blocks without perceptual VBR/transient/pitch analysis. SILK includes shell/pulse/sign contexts, gain/NLSF/pitch/LTP parameters, fixed-point NLSF conversion, persistent channel synthesis, mono alignment and allpass/FIR resampling at fixed internal 8/12/16-kHz; VAD/LBRR headers are consumed and redundancy skipped without FEC recovery. Independent pinned libopus 1.6.1 component and ordinary compressed-audio comparisons distinguish exact integer/entropy from tolerance-qualified float PCM. Atomic frame/packet failure and independently copied histories are tested. Portable media and synthetic-only VAD remain implemented. Apple device liveness checks after observer install/start and atomic listener rollback narrow startup races; native hardware qualification remains open. Full SILK/hybrid encoding, SILK stereo/rate changes, hybrid/mode transitions, redundant mixing, PLC/FEC/DTX and official full decoded-PCM conformance remain absent. Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; behavior/evidence/gates: Docs/Parity/changes/2026-10-17-phase12a-compressed-audio.md. Voice v8/RTP 48,000 Hz unchanged; upstream announcement/effective dates unknown. Phase 12A remains incomplete; no complete codec, live voice, production or broad platform claim."
+        "behavior": "Owned ordinary mono/stereo SILK/CELT/hybrid packets compose common range coding, generalized coded/output channels, internal-rate changes, transition redundancy/fades and explicit PLC/CNG/in-band FEC. Mono/stereo SILK and hybrid PCM encoders select real voiced pitch/LTP, exact synthesis-feedback excitation and optional prior-active-channel LBRR within bounded budgets; CELT encoding uses long blocks without perceptual VBR/transient/pitch analysis. Independent pinned libopus 1.6.1 comparisons distinguish exact SILK integer/entropy from tolerance-qualified floating audio. Official RFC8251 vector results, source fingerprints, encoder limits and remaining native gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-codec-loss-conformance.md. Portable media and synthetic-only VAD remain implemented. Apple native device qualification is open; Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; Voice v8/RTP 48,000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no MLS/DAVE, live voice, production, hardware or perceptual-quality claim."
       }
     }
   ],
@@ -90080,6 +90175,131 @@
       "id": "symbol.12A.SILKPulseCoding",
       "path": "Sources/DiscordVoiceCodecs/SILKPulseCoding.swift",
       "declaration": "public enum SILKPulseCoding {"
+    },
+    {
+      "id": "symbol.12A.CELTConcealedFrame",
+      "path": "Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift",
+      "declaration": "public struct CELTConcealedFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusAudioDecoderError",
+      "path": "Sources/DiscordVoiceCodecs/OpusAudioDecoder.swift",
+      "declaration": "public enum OpusAudioDecoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusAudioDecodedFrame",
+      "path": "Sources/DiscordVoiceCodecs/OpusAudioDecoder.swift",
+      "declaration": "public struct OpusAudioDecodedFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusAudioDecoder",
+      "path": "Sources/DiscordVoiceCodecs/OpusAudioDecoder.swift",
+      "declaration": "public struct OpusAudioDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.OpusHybridDecoderError",
+      "path": "Sources/DiscordVoiceCodecs/OpusHybridDecoder.swift",
+      "declaration": "public enum OpusHybridDecoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusHybridDecodedFrame",
+      "path": "Sources/DiscordVoiceCodecs/OpusHybridDecoder.swift",
+      "declaration": "public struct OpusHybridDecodedFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusHybridDecoder",
+      "path": "Sources/DiscordVoiceCodecs/OpusHybridDecoder.swift",
+      "declaration": "public struct OpusHybridDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.OpusHybridEncoderError",
+      "path": "Sources/DiscordVoiceCodecs/OpusHybridEncoder.swift",
+      "declaration": "public enum OpusHybridEncoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusHybridEncoder",
+      "path": "Sources/DiscordVoiceCodecs/OpusHybridEncoder.swift",
+      "declaration": "public struct OpusHybridEncoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKFrameParameterEncodingError",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameParameterEncoder.swift",
+      "declaration": "public enum SILKFrameParameterEncodingError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKFrameParameterEncoding",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameParameterEncoder.swift",
+      "declaration": "public enum SILKFrameParameterEncoding {"
+    },
+    {
+      "id": "symbol.12A.SILKMonoEncoderError",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift",
+      "declaration": "public enum SILKMonoEncoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKEncodedPayload",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift",
+      "declaration": "public struct SILKEncodedPayload: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKEncodedPacket",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift",
+      "declaration": "public struct SILKEncodedPacket: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKMonoEncoder",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift",
+      "declaration": "public struct SILKMonoEncoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKConcealedPayload",
+      "path": "Sources/DiscordVoiceCodecs/SILKPacketLossConcealment.swift",
+      "declaration": "public struct SILKConcealedPayload: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKRecoveredPayload",
+      "path": "Sources/DiscordVoiceCodecs/SILKPacketLossConcealment.swift",
+      "declaration": "public struct SILKRecoveredPayload: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKStereoDecodedPayload",
+      "path": "Sources/DiscordVoiceCodecs/SILKStereoDecoder.swift",
+      "declaration": "public struct SILKStereoDecodedPayload: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKStereoDecodedPacket",
+      "path": "Sources/DiscordVoiceCodecs/SILKStereoDecoder.swift",
+      "declaration": "public struct SILKStereoDecodedPacket: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKStereoDecoder",
+      "path": "Sources/DiscordVoiceCodecs/SILKStereoDecoder.swift",
+      "declaration": "public struct SILKStereoDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKStereoEncodedPayload",
+      "path": "Sources/DiscordVoiceCodecs/SILKStereoEncoder.swift",
+      "declaration": "public struct SILKStereoEncodedPayload: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKStereoEncodedPacket",
+      "path": "Sources/DiscordVoiceCodecs/SILKStereoEncoder.swift",
+      "declaration": "public struct SILKStereoEncodedPacket: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKStereoEncoder",
+      "path": "Sources/DiscordVoiceCodecs/SILKStereoEncoder.swift",
+      "declaration": "public struct SILKStereoEncoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKRedundantFrame",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift",
+      "declaration": "public struct SILKRedundantFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusRangeCodingError",
+      "path": "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift",
+      "declaration": "public enum OpusRangeCodingError: Error, Sendable, Equatable {"
     }
   ],
   "evidence": [
@@ -95067,6 +95287,356 @@
       "id": "evidence.12A.compressed.independentNativePacketsAndBandwidthDurationChanges",
       "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
       "anchor": "independentNativePacketsAndBandwidthDurationChanges"
+    },
+    {
+      "id": "evidence.12A.loss.CELTConcealmentTests.independentPeriodicNoiseAndRecoveryVectors",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTConcealmentTests.swift",
+      "anchor": "independentPeriodicNoiseAndRecoveryVectors"
+    },
+    {
+      "id": "evidence.12A.loss.CELTConcealmentTests.malformedConcealmentIsAtomic",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTConcealmentTests.swift",
+      "anchor": "malformedConcealmentIsAtomic"
+    },
+    {
+      "id": "evidence.12A.loss.CELTConcealmentTests.noiseEnvelopeSeedAndInactiveBands",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTConcealmentTests.swift",
+      "anchor": "noiseEnvelopeSeedAndInactiveBands"
+    },
+    {
+      "id": "evidence.12A.loss.CELTConcealmentTests.periodicNoiseBoundaryAndTwoGoodFrameRecovery",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTConcealmentTests.swift",
+      "anchor": "periodicNoiseBoundaryAndTwoGoodFrameRecovery"
+    },
+    {
+      "id": "evidence.12A.loss.CELTConcealmentTests.zeroSignalCopyResetAndForcedNoise",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTConcealmentTests.swift",
+      "anchor": "zeroSignalCopyResetAndForcedNoise"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketLossTests.independentCompressedLossAndPredictiveRecovery",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketLossTests.swift",
+      "anchor": "independentCompressedLossAndPredictiveRecovery"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketLossTests.missingDurationUsesLastReceivedTOC",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketLossTests.swift",
+      "anchor": "missingDurationUsesLastReceivedTOC"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketLossTests.shortPayloadPreservesReceivedBandwidth",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketLossTests.swift",
+      "anchor": "shortPayloadPreservesReceivedBandwidth"
+    },
+    {
+      "id": "evidence.12A.loss.OpusAudioDecoderTests.independentHybridPackets",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioDecoderTests.swift",
+      "anchor": "independentHybridPackets"
+    },
+    {
+      "id": "evidence.12A.loss.OpusAudioDecoderTests.independentSILKPackets",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioDecoderTests.swift",
+      "anchor": "independentSILKPackets"
+    },
+    {
+      "id": "evidence.12A.loss.OpusAudioDecoderTests.coldAndRepeatedLoss",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioDecoderTests.swift",
+      "anchor": "coldAndRepeatedLoss"
+    },
+    {
+      "id": "evidence.12A.loss.OpusAudioDecoderTests.allModeTransitionsAndChannelConversion",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioDecoderTests.swift",
+      "anchor": "allModeTransitionsAndChannelConversion"
+    },
+    {
+      "id": "evidence.12A.loss.OpusAudioDecoderTests.recoveryAndAtomicFailures",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioDecoderTests.swift",
+      "anchor": "recoveryAndAtomicFailures"
+    },
+    {
+      "id": "evidence.12A.loss.OpusHybridCodecTests.independentHybridPackets",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusHybridCodecTests.swift",
+      "anchor": "independentHybridPackets"
+    },
+    {
+      "id": "evidence.12A.loss.OpusHybridCodecTests.ownedHybridEncoding",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusHybridCodecTests.swift",
+      "anchor": "ownedHybridEncoding"
+    },
+    {
+      "id": "evidence.12A.loss.OpusHybridCodecTests.hybridAdmissionAndAtomicOwnership",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusHybridCodecTests.swift",
+      "anchor": "hybridAdmissionAndAtomicOwnership"
+    },
+    {
+      "id": "evidence.12A.loss.OpusHybridCodecTests.sharedCELTCompositionAndAtomicity",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusHybridCodecTests.swift",
+      "anchor": "sharedCELTCompositionAndAtomicity"
+    },
+    {
+      "id": "evidence.12A.loss.OpusRangeStorageTests.suffixReductionPreservesIntervalAndRawAnchor",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusRangeStorageTests.swift",
+      "anchor": "suffixReductionPreservesIntervalAndRawAnchor"
+    },
+    {
+      "id": "evidence.12A.loss.OpusRangeStorageTests.invalidReductionIsAtomic",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusRangeStorageTests.swift",
+      "anchor": "invalidReductionIsAtomic"
+    },
+    {
+      "id": "evidence.12A.loss.SILKFrameParameterEncoderTests.reproducesOfficialBytes",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKFrameParameterEncoderTests.swift",
+      "anchor": "reproducesOfficialBytes"
+    },
+    {
+      "id": "evidence.12A.loss.SILKFrameParameterEncoderTests.voicedPitchContexts",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKFrameParameterEncoderTests.swift",
+      "anchor": "voicedPitchContexts"
+    },
+    {
+      "id": "evidence.12A.loss.SILKFrameParameterEncoderTests.extremeLegalIndices",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKFrameParameterEncoderTests.swift",
+      "anchor": "extremeLegalIndices"
+    },
+    {
+      "id": "evidence.12A.loss.SILKFrameParameterEncoderTests.validationAndAtomicFailures",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKFrameParameterEncoderTests.swift",
+      "anchor": "validationAndAtomicFailures"
+    },
+    {
+      "id": "evidence.12A.loss.SILKMonoEncoderTests.ordinaryPacketsAndPersistentReconstruction",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "ordinaryPacketsAndPersistentReconstruction"
+    },
+    {
+      "id": "evidence.12A.loss.SILKMonoEncoderTests.toneFidelityAndSignalDependence",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "toneFidelityAndSignalDependence"
+    },
+    {
+      "id": "evidence.12A.loss.SILKMonoEncoderTests.validationResetAndCopyOwnership",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "validationResetAndCopyOwnership"
+    },
+    {
+      "id": "evidence.12A.loss.SILKMonoEncoderTests.boundedSharedEntropyAndFailureAtomicity",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "boundedSharedEntropyAndFailureAtomicity"
+    },
+    {
+      "id": "evidence.12A.loss.SILKPacketLossTests.independentScalarOperations",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKPacketLossTests.swift",
+      "anchor": "independentScalarOperations"
+    },
+    {
+      "id": "evidence.12A.loss.SILKPacketLossTests.initialLossResetCopiesAndBounds",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKPacketLossTests.swift",
+      "anchor": "initialLossResetCopiesAndBounds"
+    },
+    {
+      "id": "evidence.12A.loss.SILKPacketLossTests.lossAndFECAdmissionIsAtomic",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKPacketLossTests.swift",
+      "anchor": "lossAndFECAdmissionIsAtomic"
+    },
+    {
+      "id": "evidence.12A.loss.SILKPacketLossTests.absentRedundancyUsesScalarConcealment",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKPacketLossTests.swift",
+      "anchor": "absentRedundancyUsesScalarConcealment"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoDecoderTests.independentPacketPCM",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+      "anchor": "independentPacketPCM"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoDecoderTests.packingAndMaximumDuration",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+      "anchor": "packingAndMaximumDuration"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoDecoderTests.sharedEntropyAdmissionAndAtomicity",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+      "anchor": "sharedEntropyAdmissionAndAtomicity"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoDecoderTests.validationResetAndCopies",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+      "anchor": "validationResetAndCopies"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoDecoderTests.monoRateTransitions",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+      "anchor": "monoRateTransitions"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoDecoderTests.channelPredictionResetSemantics",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+      "anchor": "channelPredictionResetSemantics"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoDecoderTests.boundedArbitraryPayloads",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoDecoderTests.swift",
+      "anchor": "boundedArbitraryPayloads"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoEncoderTests.ordinaryStereoPackets",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoEncoderTests.swift",
+      "anchor": "ordinaryStereoPackets"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoEncoderTests.sharedEntropyValidationAndOwnedState",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoEncoderTests.swift",
+      "anchor": "sharedEntropyValidationAndOwnedState"
+    },
+    {
+      "id": "evidence.12A.loss.CELTChannelConversionTests.independentIntensityInversionVector",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTChannelConversionTests.swift",
+      "anchor": "independentIntensityInversionVector"
+    },
+    {
+      "id": "evidence.12A.loss.CELTChannelConversionTests.invalidCodedChannelCountsPreserveHistories",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTChannelConversionTests.swift",
+      "anchor": "invalidCodedChannelCountsPreserveHistories"
+    },
+    {
+      "id": "evidence.12A.loss.OpusAudioDecoderTests.malformedCELTCodedChannelsAreAtomic",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioDecoderTests.swift",
+      "anchor": "malformedCELTCodedChannelsAreAtomic"
+    },
+    {
+      "id": "evidence.12A.loss.OpusMalformedAudioTests.arbitraryPayloadAdmissionAndRollback",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusMalformedAudioTests.swift",
+      "anchor": "arbitraryPayloadAdmissionAndRollback"
+    },
+    {
+      "id": "evidence.12A.loss.SILKMonoEncoderTests.voicedAnalysisAndExactLongTermFeedback",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "voicedAnalysisAndExactLongTermFeedback"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.ordinaryModesChannelsAndBandwidths",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "ordinaryModesChannelsAndBandwidths"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.storageAndSampleExtremes",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "storageAndSampleExtremes"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.configurationBounds",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "configurationBounds"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.sharedEncoderFailurePreservesCallerAndSignalState",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "sharedEncoderFailurePreservesCallerAndSignalState"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.encoderFailureRollbackAndRecovery",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "encoderFailureRollbackAndRecovery"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.decoderFailureRollbackAndRecovery",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "decoderFailureRollbackAndRecovery"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.streamCopyAndReset",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "streamCopyAndReset"
+    },
+    {
+      "id": "evidence.12A.loss.CELTFrameCodecTests.silenceDurationBandwidthTransitionsAndArbitraryFrames",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "silenceDurationBandwidthTransitionsAndArbitraryFrames"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.everyStandardCELTConfiguration",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "everyStandardCELTConfiguration"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.packingCodesVBRAndPadding",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "packingCodesVBRAndPadding"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.maximumDurationAndFrameCardinality",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "maximumDurationAndFrameCardinality"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.shortPackedFramesUseConcealment",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "shortPackedFramesUseConcealment"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.modeChannelAndFramingRejection",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "modeChannelAndFramingRejection"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.explicitPacketLossValidationCopyAndReset",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "explicitPacketLossValidationCopyAndReset"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.encoderValidationAndStorageBounds",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "encoderValidationAndStorageBounds"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.resetCopyAndSlicedData",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "resetCopyAndSlicedData"
+    },
+    {
+      "id": "evidence.12A.loss.CELTPacketCodecTests.independentNativePacketsAndBandwidthDurationChanges",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "independentNativePacketsAndBandwidthDurationChanges"
+    },
+    {
+      "id": "evidence.12A.loss.CELTSynthesisTests.independentMultiframeSignalVectors",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
+      "anchor": "independentMultiframeSignalVectors"
+    },
+    {
+      "id": "evidence.12A.loss.CELTSynthesisTests.malformedInputsPreserveCompleteSignalState",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
+      "anchor": "malformedInputsPreserveCompleteSignalState"
+    },
+    {
+      "id": "evidence.12A.loss.CELTSynthesisTests.copyResetSilenceAndChannelIndependence",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
+      "anchor": "copyResetSilenceAndChannelIndependence"
+    },
+    {
+      "id": "evidence.12A.loss.CELTSynthesisTests.exponentAndActiveBandBoundaries",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
+      "anchor": "exponentAndActiveBandBoundaries"
+    },
+    {
+      "id": "evidence.12A.loss.CELTSynthesisTests.codedChannelConversionAndSwitches",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
+      "anchor": "codedChannelConversionAndSwitches"
+    },
+    {
+      "id": "evidence.12A.loss.SILKMonoEncoderTests.emittedRedundancySelectionAndAtomicity",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "emittedRedundancySelectionAndAtomicity"
+    },
+    {
+      "id": "evidence.12A.loss.SILKStereoEncoderTests.channelRedundancySelectionAndAtomicity",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKStereoEncoderTests.swift",
+      "anchor": "channelRedundancySelectionAndAtomicity"
+    },
+    {
+      "id": "evidence.12A.loss.OpusHybridFECOracleTests.independentOwnedLBRRRecovery",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusHybridFECOracleTests.swift",
+      "anchor": "independentOwnedLBRRRecovery"
     }
   ]
 }

@@ -28,13 +28,14 @@ class CELTSynthesisVerifierTests(unittest.TestCase):
     def test_fixed_sequences_modes_durations_filters_gain_and_exponent_bounds(self):
         """Fixture inputs reproduce every mode, active-band and extreme energy domain exactly."""
         self.assertEqual(self.inputs,verifier.fixed_cases())
-        self.assertEqual(len(self.inputs),26)
+        self.assertEqual(len(self.inputs),34)
         frames=[f for x in self.inputs for f in x['frames']]
         self.assertEqual({f['lm'] for f in frames},set(range(4)))
         self.assertEqual({x['channels'] for x in self.inputs},{1,2})
         self.assertTrue(any(f['silence'] for f in frames))
         self.assertTrue(any(f['period']==1022 for f in frames))
         self.assertTrue(any(f['gainIndex']==7 and f['tapset']==2 for f in frames))
+        self.assertTrue(any(f.get('codedChannelCount',x['channels'])!=x['channels'] for x in self.inputs for f in x['frames']))
         stats=verifier.compare_results(self.inputs,self.expected,copy.deepcopy(self.expected))
         self.assertEqual(stats['maximumAbsoluteError'],0)
         self.assertGreater(stats['comparedSamples'],20000)
@@ -52,12 +53,14 @@ class CELTSynthesisVerifierTests(unittest.TestCase):
             offset=2
             for f in x['frames']:
                 self.assertTrue(0<=f['start']<f['end']<=21)
-                self.assertEqual(len(f['coefficients']),(120<<f['lm'])*x['channels'])
-                self.assertEqual(len(f['energies']),21*x['channels'])
+                self.assertIn(f['codedChannelCount'],(1,2))
+                self.assertEqual(len(f['coefficients']),(120<<f['lm'])*f['codedChannelCount'])
+                self.assertEqual(len(f['energies']),21*f['codedChannelCount'])
                 self.assertTrue(all(abs(v)<=4 for v in f['coefficients']))
                 self.assertTrue(all(abs(v)<=32768 for v in f['energies']))
                 self.assertEqual(list(map(int,fields[offset:offset+8])),[int(f[k]) for k in ('lm','start','end','transient','period','gainIndex','tapset','silence')])
-                offset+=8+len(f['coefficients'])+len(f['energies'])
+                self.assertEqual(int(fields[offset+8]),f['codedChannelCount'])
+                offset+=9+len(f['coefficients'])+len(f['energies'])
             self.assertEqual(offset,len(fields))
 
     def test_wrong_sequence_frame_and_sample_counts_rejected(self):

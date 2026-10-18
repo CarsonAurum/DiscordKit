@@ -1,20 +1,20 @@
 {
-  "verifiedAt": "2026-10-18T00:55:29.365101+00:00",
+  "verifiedAt": "2026-10-18T02:45:59.126211+00:00",
   "scope": "bidirectional ordinary CELT raw frame interoperability with full official Opus entry points",
   "version": "1.6.1",
   "releaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
   "sourceURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
   "archiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
   "seed": 6716436,
-  "randomSequences": 1000,
+  "randomSequences": 1,
   "fixedSequences": 36,
-  "totalSequences": 1036,
-  "totalFrames": 4086,
-  "maximumAbsoluteError": 8.38000000003003e-07,
-  "comparedSamples": 5746560,
-  "transientFrames": 2636,
-  "silenceFrames": 201,
-  "postfilterFrames": 373,
+  "totalSequences": 37,
+  "totalFrames": 138,
+  "maximumAbsoluteError": 3.6099999989325227e-07,
+  "comparedSamples": 214560,
+  "transientFrames": 92,
+  "silenceFrames": 6,
+  "postfilterFrames": 14,
   "exact": [
     "full-decoder final range both directions"
   ],
@@ -31,7 +31,7 @@
     "devices/realtime"
   ],
   "ownedSources": {
-    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00",
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "217be419f0f299f7126ba8cd9f999ee4bf16ed115135887e93fd4ca3ed0430a2",
     "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
     "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift": "de91fa5930b1c285fc74f3229baa63a2347989a3b271ee03cdea3c6cb85813be",
     "Sources/DiscordVoiceCodecs/CELTAllocationTables.swift": "2e264fd2ebfa0e69ef32cf393ab52e9d7473e4e35a89b2beed88a4ee9c326894",
@@ -40,10 +40,11 @@
     "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift": "f204727035942717114e65ceb8d98fac8cb17c137945eded3564e637ef964007",
     "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift": "d86f05a805473ca41cc079de4e67cd780084d463212536385c235dcd44b11cf6",
     "Sources/DiscordVoiceCodecs/CELTTransform.swift": "fec3dc376fead581a4b2a593c6247760692e4bb5dc5c518db4bba89a808762fd",
-    "Sources/DiscordVoiceCodecs/CELTSynthesis.swift": "9b404df2d59b7c91989d5362f96a086dab2661c35930f683ec715fef55b62f83",
+    "Sources/DiscordVoiceCodecs/CELTSynthesis.swift": "ee599d473f6aad1984c5dbf611fd784233d5e9b4c3614a41c8b08a0a9d022233",
+    "Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift": "859002144e888609728c362d87c16c7b7594d49e3fafa640581c7d7040d974ec",
     "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift": "1b238b15095ac397a0a349d299ab1662e8b8c115d0e71609af5b799933a1d462",
-    "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift": "e87ddd1317cc7ee6eec73994fce2174a92cf11848e94a5f6e869b16d5822b9f3",
-    "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift": "1571178d82ad4d0aa9e50722cb1072b7116d4f3da193153bcdf807f08fdc56c8"
+    "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift": "e15b182762910a384bc59e61c3ea92e7ce500a545d6a6204f6256065abecc879",
+    "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift": "34b71434d4d363d7e3d344305bd3e73567870f0363ac31be03074b18f902abe3"
   },
   "upstreamSources": {
     "src/opus_encoder.c": "c9e0a841e60fb904c9918f9f9a82f744cefed0b55ea47d9d7027dd6b95ac2a2c",
@@ -61,14 +62,14 @@
   },
   "fixture": {
     "path": "Tests/DiscordVoiceCodecsTests/CELTFrameOracleFixtures.swift",
-    "sha256": "18b2c4a0a930971d1ce32ee0f04536587ec17295edc78f3f27c79b686f0bcd4e"
+    "sha256": "78c92e5feb4f8b13ba9a93ab93ba9ba65f901879cfd1aef049518d7fc4b9ceca"
   },
   "verifierSHA256": "ec38b054d0e073d962f3686c01f70d40f4049d5c06c7ab98292a00996afff60e",
   "referenceBuild": {
-    "reused": false,
+    "reused": true,
     "scalar": true,
-    "configureArguments": "--disable-intrinsics --disable-rtcd --disable-shared --disable-extra-programs --disable-doc --disable-dependency-tracking 'CFLAGS=-O2 -ffp-contract=off'",
-    "librarySHA256": "c2a4c2962d3c61c154676a805738260c4effa28cab32d7bd92817e0a811b5743",
+    "configureArguments": "--disable-shared --disable-extra-programs --disable-doc --disable-intrinsics --disable-rtcd",
+    "librarySHA256": "82c2ea4f70e5e2670ca421639f7cab289717334297a99a940184f247cc8ff6fb",
     "configurationSHA256": "4d95928c5b4c8a2d502e20a4f221ed1fc50c58f05ab5b51a40f421975c81446b"
   },
   "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",

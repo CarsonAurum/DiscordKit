@@ -82,23 +82,30 @@ struct CELTPacketCodecTests {
         }
     }
 
-    /// A valid first frame followed by an unsupported zero/one-byte loss frame rolls back the whole packed packet.
-    @Test func lateFrameFailureIsAtomic() throws {
+    /// A valid first frame followed by zero/one-byte frames uses explicit concealment in
+    /// wire order. Subsequent compressed frames observe exactly the same recovery history
+    /// as a raw-frame caller that selected each missing interval itself.
+    @Test func shortPackedFramesUseConcealment() throws {
         var encoder = try CELTFrameEncoder(frameSampleCount: 240)
         let first = try encoder.encode(samples(size: 240, channels: 1), frameByteCount: 40).bytes
         let next = try encoder.encode(samples(size: 240, channels: 1, phase: 1), frameByteCount: 40).bytes
         let following = try encoder.encode(samples(size: 240, channels: 1, phase: 2), frameByteCount: 40).bytes
-        var warm = try CELTPacketDecoder()
-        _ = try warm.decode(Data([0xe8]) + first)
         for code in [2, 3] {
-            for invalid in [Data(), Data([0])] {
-                var decoder = warm
-                var baseline = warm
-                let packet = pack(toc: 0xe8, code: code, frames: [next, invalid], variable: true)
+            for short in [Data(), Data([0]), Data([255])] {
+                var decoder = try CELTPacketDecoder()
+                var baseline = try CELTFrameDecoder()
+                _ = try decoder.decode(Data([0xe8]) + first)
+                _ = try baseline.decode(first, frameSampleCount: 240)
+                let packet = pack(toc: 0xe8, code: code, frames: [next, short], variable: true)
                 #expect(try OpusPacket(packet).frameRanges.count == 2)
-                #expect(throws: CELTFrameDecoderError.invalidFrame) { try decoder.decode(packet) }
-                #expect(try decoder.decode(Data([0xe8]) + next) == baseline.decode(Data([0xe8]) + next))
-                #expect(try decoder.decode(Data([0xe8]) + following) == baseline.decode(Data([0xe8]) + following))
+                let expected = try baseline.decode(next, frameSampleCount: 240)
+                let concealment = try baseline.conceal(frameSampleCount: 240)
+                let actual = try decoder.decode(packet)
+                #expect(actual.count == 2 && actual[0] == expected)
+                #expect(actual[1].samples == concealment.samples)
+                #expect(actual[1].finalRange == 0 && actual[1].bitsUsed == 0 && actual[1].fractionalBitsUsed == 0)
+                #expect(!actual[1].isSilence && !actual[1].isTransient)
+                #expect(try decoder.decode(Data([0xe8]) + following) == [baseline.decode(following, frameSampleCount: 240)])
             }
         }
     }
@@ -131,9 +138,40 @@ struct CELTPacketCodecTests {
         #expect(throws: OpusPacketError.invalidPadding) { try decoder.decode(Data([0xe3, 0x41, 0xff])) }
         #expect(throws: OpusPacketError.unequalCBRFrames) { try decoder.decode(Data([0xe1, 0, 0, 0])) }
         #expect(throws: OpusPacketError.invalidFrameLength) { try decoder.decode(Data([0xe2, 10, 0, 0])) }
-        #expect(throws: CELTFrameDecoderError.invalidFrame) { try decoder.decode(Data([0xe0])) }
-        #expect(throws: CELTFrameDecoderError.invalidFrame) { try decoder.decode(Data([0xe0, 0])) }
         #expect(try decoder.decode(next) == baseline.decode(next))
+    }
+
+    /// Explicit missing intervals support every ordinary duration and preserve all stream
+    /// state on bad configuration; reset returns the deterministic cold-start noise path.
+    @Test func explicitPacketLossValidationCopyAndReset() throws {
+        var decoder = try CELTPacketDecoder()
+        var raw = try CELTFrameDecoder()
+        for size in [120, 240, 480, 960] {
+            for end in [13, 17, 19, 21] {
+                var expected: [Float] = []
+                var last: CELTConcealedFrame?
+                for _ in 0..<(size / 120) {
+                    let result = try raw.conceal(frameSampleCount: 120, endBand: end)
+                    expected += result.samples
+                    last = result
+                }
+                let actual = try decoder.conceal(frameSampleCount: size, endBand: end)
+                #expect(actual.samples == expected)
+                #expect(actual.seed == last?.seed && actual.lossDuration == last?.lossDuration)
+                #expect(actual.bandLogEnergies == last?.bandLogEnergies)
+            }
+        }
+        var baseline = decoder
+        for size in [Int.min, -1, 0, 119, 121, 1920, Int.max] {
+            #expect(throws: CELTSynthesisError.invalidFrameSize) { try decoder.conceal(frameSampleCount: size) }
+        }
+        for end in [Int.min, -1, 0, 22, Int.max] {
+            #expect(throws: CELTSynthesisError.invalidBandRange) { try decoder.conceal(frameSampleCount: 120, endBand: end) }
+        }
+        #expect(try decoder.conceal(frameSampleCount: 120) == baseline.conceal(frameSampleCount: 120))
+        decoder.reset()
+        var fresh = try CELTPacketDecoder()
+        #expect(try decoder.conceal(frameSampleCount: 120) == fresh.conceal(frameSampleCount: 120))
     }
 
     /// All constructor/sample/storage extremes fail predictably and packet failures retain encoding history.

@@ -56,16 +56,16 @@ public struct SILKDecodedPayload: Sendable, Equatable {
 /// Reads the VAD/LBRR header, skips optional redundant channel syntax, decodes
 /// all ordinary internal frames with correct conditional contexts, buffers mono
 /// alignment and runs the scalar allpass/FIR decoder resampler. State persists
-/// across payload duration changes at one fixed internal rate. No native codec,
+/// across payload duration changes; explicit rate changes reset the normative histories. No native codec,
 /// tasks, I/O or global mutable state are used. Arithmetic adapts libopus 1.6.1
 /// dec_API.c, resampler.c, resampler_private_up2_HQ.c and resampler_private_IIR_FIR.c.
 ///
-/// This decoder covers mono SILK-only ordinary packets. It rejects empty loss/DTX
-/// payloads and does not implement PLC, CNG after loss, FEC recovery, stereo, rate
-/// changes, CELT/hybrid or mode-transition mixing. A caller must explicitly reset
-/// or replace it after a stream discontinuity. Each call is atomic on every error.
+/// This decoder covers mono SILK payloads plus caller-driven scalar PLC/CNG and
+/// selected in-band FEC. Empty compressed payloads are handled explicitly through
+/// `conceal`; stereo and complete Opus mode transitions belong to enclosing owners.
+/// Reset at a stream discontinuity. Each call is atomic on every error.
 public struct SILKMonoDecoder: Sendable {
-    public let sampleRate: Int
+    public private(set) var sampleRate: Int
     private var channel: SILKFrameDecoder
     private var resampler: SILKDecoderResampler
     private var previousMonoSample: Int16 = 0
@@ -88,10 +88,104 @@ public struct SILKMonoDecoder: Sendable {
         previousMonoSample = 0
     }
 
+    /// Changes the internal rate at a genuine SILK stream bandwidth transition.
+    /// - Parameter sampleRate: Exactly 8,000, 12,000 or 16,000 Hz. Repeating the
+    ///   current rate preserves all state. A different rate resets LPC/LTP and
+    ///   resampler memory while preserving scalar gain and mono alignment, following
+    ///   `silk_decoder_set_fs`; this is not a complete Opus mode-transition crossfade.
+    /// - Throws: `SILKFrameParameterError.invalidSampleRate`; failure changes nothing.
+    public mutating func updateSampleRate(_ sampleRate: Int) throws {
+        var working = self
+        try working.channel.updateSampleRate(sampleRate)
+        if sampleRate != self.sampleRate {
+            working.resampler = SILKDecoderResampler(sampleRate: sampleRate)
+            working.sampleRate = sampleRate
+        }
+        self = working
+    }
+
+    /// Conceals a missing/DTX payload without consuming compressed entropy.
+    /// - Parameter durationMilliseconds: Exactly ten, twenty, forty or sixty;
+    ///   default twenty. Longer durations contain successive twenty-millisecond
+    ///   internal PLC frames, each retaining scalar attenuation and CNG history.
+    /// - Returns: Exact-duration mono 48kHz PCM16 and pre-alignment internal frames.
+    /// - Throws: `invalidPayloadDuration` or CNG/LPC validation errors; all state
+    ///   commits atomically. No native codec, entropy, device or I/O is used.
+    public mutating func conceal(durationMilliseconds: Int = 20) throws -> SILKConcealedPayload {
+        guard [10, 20, 40, 60].contains(durationMilliseconds) else { throw SILKMonoDecoderError.invalidPayloadDuration }
+        var working = self
+        let duration = durationMilliseconds == 10 ? 10 : 20
+        try working.channel.updateFrameDuration(milliseconds: duration)
+        var output: [Int16] = []
+        var frames: [[[Int16]]] = []
+        for _ in 0..<(durationMilliseconds / duration) {
+            let frame = try working.channel.concealFrame()
+            let aligned = [working.previousMonoSample] + frame.dropLast()
+            working.previousMonoSample = frame.last!
+            output += working.resampler.process(aligned)
+            frames.append([frame])
+        }
+        self = working
+        return SILKConcealedPayload(pcm48k: output, channelFrames: frames)
+    }
+
+    /// Selects in-band LBRR from a subsequent compressed payload for missing audio.
+    /// - Parameters:
+    ///   - payload: One through 1,275 compressed bytes, excluding Opus framing.
+    ///   - durationMilliseconds: Exactly ten, twenty, forty or sixty milliseconds,
+    ///     describing the redundant internal frames carried by this payload.
+    /// - Returns: Exact-duration mono 48kHz PCM16, decoded redundant-frame evidence
+    ///   or nil for frames concealed because LBRR was absent, and availability flags.
+    ///   Entropy evidence stops after LBRR; decode this payload normally afterwards
+    ///   to obtain its ordinary current audio. FEC does not guarantee reconstruction
+    ///   of the original encoder PCM and does not authenticate compressed bytes.
+    /// - Throws: Size/duration admission or channel/CNG/range errors. All state
+    ///   commits atomically. Caller selects missing-packet order; no I/O occurs.
+    public mutating func recoverPayload(_ payload: Data, durationMilliseconds: Int) throws -> SILKRecoveredPayload {
+        guard [10, 20, 40, 60].contains(durationMilliseconds) else { throw SILKMonoDecoderError.invalidPayloadDuration }
+        guard (1...1_275).contains(payload.count) else { throw SILKMonoDecoderError.invalidPayloadSize }
+        var working = self
+        let duration = durationMilliseconds == 10 ? 10 : 20
+        let count = durationMilliseconds / duration
+        try working.channel.updateFrameDuration(milliseconds: duration)
+        var entropy = try OpusRangeDecoder(frame: payload)
+        var activity: [Bool] = []
+        for _ in 0..<count { activity.append(try entropy.decodeBit(logProbability: 1)) }
+        let hasRedundancy = try entropy.decodeBit(logProbability: 1)
+        var available = Array(repeating: false, count: count)
+        if hasRedundancy {
+            let mask = count == 1 ? 1 : try entropy.decodeSymbol(model: OpusProbabilityModel(inverseCDF:
+                count == 2 ? [203, 150, 0] : [215, 195, 166, 125, 110, 82, 0])) + 1
+            for index in 0..<count { available[index] = mask & (1 << index) != 0 }
+        }
+        var output: [Int16] = []
+        var frames: [[SILKDecodedFrame?]] = []
+        for index in 0..<count {
+            let decoded: SILKDecodedFrame?
+            let pcm: [Int16]
+            if available[index] {
+                decoded = try working.channel.decode(from: &entropy, voiceActivity: activity[index],
+                    lowBitrateRedundancy: true, coding: index > 0 && available[index - 1] ? .conditional : .independent)
+                pcm = decoded!.pcm
+            } else {
+                decoded = nil
+                pcm = try working.channel.concealFrame(resetGainIndex: false)
+            }
+            let aligned = [working.previousMonoSample] + pcm.dropLast()
+            working.previousMonoSample = pcm.last!
+            output += working.resampler.process(aligned)
+            frames.append([decoded])
+        }
+        self = working
+        return SILKRecoveredPayload(pcm48k: output, channelFrames: frames, voiceActivity: [activity],
+            redundancy: [available], midOnly: Array(repeating: false, count: count),
+            finalRange: entropy.finalRange, bitsUsed: entropy.bitsUsed)
+    }
+
     /// Decodes an entire ordinary mono SILK payload with shared header/entropy state.
     /// - Parameters:
     ///   - payload: Compressed bytes excluding the Opus TOC and frame-packing bytes;
-    ///     one through 1,275 bytes. Empty payloads require unimplemented PLC/DTX handling.
+    ///     one through 1,275 bytes. Use `conceal` for empty loss/DTX payloads.
     ///   - durationMilliseconds: Exactly ten, twenty, forty or sixty milliseconds.
     /// - Returns: Exact-duration 48kHz PCM16 plus ordinary frames, header flags and
     ///   final entropy evidence. LBRR data is consumed without synthesizing or selecting it.
@@ -104,11 +198,29 @@ public struct SILKMonoDecoder: Sendable {
     public mutating func decodePayload(_ payload: Data, durationMilliseconds: Int) throws -> SILKDecodedPayload {
         guard [10, 20, 40, 60].contains(durationMilliseconds) else { throw SILKMonoDecoderError.invalidPayloadDuration }
         guard (1...1_275).contains(payload.count) else { throw SILKMonoDecoderError.invalidPayloadSize }
+        var entropy = try OpusRangeDecoder(frame: payload)
+        return try decodePayload(from: &entropy, durationMilliseconds: durationMilliseconds)
+    }
+
+    /// Decodes mono SILK syntax in a shared arithmetic interval for hybrid composition.
+    /// - Parameters:
+    ///   - decoder: Entropy state at the SILK header. Its full physical frame also
+    ///     contains any following CELT syntax and raw tail; those bytes are retained.
+    ///   - durationMilliseconds: Exactly ten, twenty, forty or sixty milliseconds.
+    /// - Returns: Exact-duration 48kHz PCM16 and SILK accounting at the boundary
+    ///   immediately before following redundancy/CELT syntax. No frame is reinitialized.
+    /// - Throws: Invalid duration/size or underlying parameter/synthesis/range errors.
+    ///   Both signal and arithmetic state remain unchanged on every error. No I/O,
+    ///   suspension or task occurs; callers serialize access to mutable stream state.
+    public mutating func decodePayload(from decoder: inout OpusRangeDecoder,
+                                      durationMilliseconds: Int) throws -> SILKDecodedPayload {
+        guard [10, 20, 40, 60].contains(durationMilliseconds) else { throw SILKMonoDecoderError.invalidPayloadDuration }
+        guard (1...1_275).contains(decoder.frame.count) else { throw SILKMonoDecoderError.invalidPayloadSize }
         var working = self
+        var entropy = decoder
         let internalDuration = durationMilliseconds == 10 ? 10 : 20
         let count = durationMilliseconds / internalDuration
         try working.channel.updateFrameDuration(milliseconds: internalDuration)
-        var entropy = try OpusRangeDecoder(frame: payload)
         var activity: [Bool] = []
         for _ in 0..<count { activity.append(try entropy.decodeBit(logProbability: 1)) }
         let hasRedundancy = try entropy.decodeBit(logProbability: 1)
@@ -146,6 +258,7 @@ public struct SILKMonoDecoder: Sendable {
             frames.append(frame)
         }
         self = working
+        decoder = entropy
         return SILKDecodedPayload(pcm48k: output, frames: frames, voiceActivity: activity,
                                   redundancy: redundancy, finalRange: entropy.finalRange, bitsUsed: entropy.bitsUsed)
     }
@@ -153,7 +266,7 @@ public struct SILKMonoDecoder: Sendable {
 
 /// Fixed 8/12/16kHz to 48kHz decoder resampling with bounded scalar state.
 /// All products and sums follow signed two's-complement scalar SILK arithmetic.
-private struct SILKDecoderResampler: Sendable {
+struct SILKDecoderResampler: Sendable {
     private let rate: Int
     private let delay: Int
     private var delaySamples: [Int16]

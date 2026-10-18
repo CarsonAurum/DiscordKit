@@ -25,7 +25,11 @@ Those individual primitive checks remain separate from compressed-audio integrat
 The executable then encodes three actual mono CELT packets and reconstructs 2,880
 48-kHz PCM samples. A committed synthetic libopus 1.6.1 SILK packet decodes to 480
 48-kHz PCM16 samples whose complete fingerprint and final range match the independent
-reference. Normal builds use only the owned Swift codec, never native libopus.
+reference. It also emits and decodes stereo SILK and hybrid packets, exercises CELT
+loss concealment and subsequent recovery, and drives the unified decoder across
+all three modes plus explicit conceal/FEC fallback and following-packet decoding.
+Every demonstration checks exact duration and finite output.
+Normal builds use only the owned Swift codec, never native libopus.
 
 The selected product graph excludes HTTP, Gateway, Client, Cache, OAuth,
 Interactions, Commands, NIO and concrete network/device adapters. It includes
@@ -33,6 +37,6 @@ Core/Models/Transport plus Media/VoiceCodecs/VoiceCrypto and the existing Swift
 Crypto/CryptoExtras graph. See [Voice](../../Docs/Voice.md) for ownership and limits.
 
 This Phase 12 consumer has no MLS/DAVE backend, supervised network session,
-complete SILK/hybrid codec, loss recovery or microphone/playback adapter. Discord
+microphone/playback adapter or perceptual/realtime qualification. Discord
 requires DAVE for eligible live sessions; this offline example cannot join one.
 It is not the roadmap's ten-minute duplex or authorized Discord smoke qualification.

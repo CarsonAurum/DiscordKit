@@ -16,6 +16,7 @@ public enum OpusRangeCodingError: Error, Sendable, Equatable {
     case corruptUniformValue
     case finalized
     case unusableState
+    case invalidStorageReduction
 }
 
 /// Immutable frequency counts for at most 257 symbols, retaining the exact total frequency.
@@ -379,7 +380,7 @@ public struct OpusRangeEncoder: Sendable {
 /// value creates no I/O/tasks and supplies no PCM, FEC, PLC or complete codec validation.
 public struct OpusRangeDecoder: Sendable {
     /// Owned bytes of this entropy frame only, excluding packet headers and other frames.
-    public let frame: Data
+    public private(set) var frame: Data
     /// Maximum admitted public decoding calls.
     public let maximumOperations: Int
     /// Number of admitted calls; a corrupt decoding call is included.
@@ -391,7 +392,7 @@ public struct OpusRangeDecoder: Sendable {
     /// Bit-exact conservative consumed-bit upper bound in eighth-bit units.
     public var fractionalBitsUsed: Int { OpusRangeMath.fractionalUsage(range: range, totalBits: totalBits) }
 
-    private let bytes: [UInt8]
+    private var bytes: [UInt8]
     private var range: UInt32 = 128
     private var value: UInt32 = 0
     private var remainingByte: UInt32 = 0
@@ -478,6 +479,26 @@ public struct OpusRangeDecoder: Sendable {
         guard (0...25).contains(count) else { throw OpusRangeCodingError.invalidRawBitCount }
         try beginOperation()
         return try readRawBits(count: count)
+    }
+
+    /// Excludes a separately coded redundancy suffix before backward CELT raw reads.
+    ///
+    /// RFC 6716 hybrid transitions place independently coded CELT redundancy after
+    /// the shared arithmetic frame. SILK and the redundancy header are decoded
+    /// first, then storage shrinks without restarting the arithmetic interval or
+    /// discarding already buffered forward read-ahead, matching `ec_dec.storage`.
+    /// - Parameter byteCount: New retained prefix length in `0...frame.count`.
+    ///   Whole-bit usage must fit, and no backward raw bits may have been read.
+    /// - Throws: `invalidStorageReduction` for invalid size, insufficient retained
+    ///   budget or prior raw reads; `unusableState` after a terminal decoder error.
+    ///   Rejection changes no bytes, arithmetic state or operation accounting.
+    /// Successful calls retain at most 1,275 dense bytes and perform no I/O.
+    public mutating func reduceStorage(to byteCount: Int) throws {
+        guard !isFailed else { throw OpusRangeCodingError.unusableState }
+        guard byteCount >= 0, byteCount <= bytes.count, rawBitCount == 0,
+              bitsUsed <= byteCount * 8 else { throw OpusRangeCodingError.invalidStorageReduction }
+        bytes = Array(bytes.prefix(byteCount))
+        frame = Data(bytes)
     }
 
     /// Admits one bounded decode call; failed state and exhausted limits preserve the stream.

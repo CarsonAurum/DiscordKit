@@ -311,3 +311,99 @@ SILK stereo/internal-rate changes, hybrid/mode transitions/redundant mixing,
 PLC/CNG-after-loss/FEC/DTX, official complete decoded-PCM conformance and quality/
 realtime qualification. Windows/Android audio adapters and all native device
 qualification remain open. No scope gate was waived and 12B has not advanced.
+
+## Full-milestone closure pass
+
+The user again requested all of 12A, including implementation, validation and a
+commit, from clean `f6306c5`. The original milestone gate remains authoritative.
+The implementation is being advanced in parallel without substituting another
+component milestone for completion:
+
+1. Complete ordinary SILK stereo, mid-only transitions, mono/stereo and internal
+   rate changes; retain exact scalar PCM and shared arithmetic state for hybrid.
+2. Implement inverse SILK parameter entropy and bounded real PCM encoders; compose
+   mono/stereo SILK with CELT in a common hybrid frame and independently decode
+   owned packets using pinned libopus.
+3. Implement actual CELT periodic/noise concealment, safe energy prediction after
+   loss, packet-level loss admission and reference lost/recovered streams.
+4. Implement ordinary hybrid decoding with shared entropy, bounded redundancy
+   storage and normative transition mixing; verify both bandwidths/layouts.
+5. Continue remaining SILK loss/CNG/FEC and full mode transitions; run official
+   decoded-PCM conformance rather than infer it from component interoperability.
+6. Preserve required native Windows/Android routing and per-host/device gates.
+   The macOS host has Apple SDKs only; Windows/Android hosts/SDKs/devices are not
+   available. Do not add empty adapters or claim hardware qualification.
+7. Run root strict build/tests, independent codec comparisons, offline consumer,
+   tools/Python/generation/parity, source/evidence/diff audit and commit with exact
+   achieved scope and every remaining gate explicit.
+
+The master roadmap assigns echo cancellation, noise reduction and automatic gain
+to 12E, so this pass does not pull those later DSP policies into 12A based on the
+earlier execution table's overly broad shorthand. No advance to 12B is implied.
+
+
+### Closure-pass validation and completion boundary
+
+The connection interruptions preserved the implementation; work resumed from the
+same diff rather than restarting. Local validation completed on **2026-10-17**
+(machine evidence uses actual UTC **2026-10-18**):
+
+- Root `swift build` passed. Final `SWIFTNIO_STRICT=1 swift test` passed **1,825
+  tests in 224 suites across 26 test binaries**, including the full native operation
+  fixtures, voiced/FEC encoder regressions and 768 seeded arbitrary-payload
+  admissions. Host access was used for existing loopback/Unix socket fixtures;
+  tests used no live credentials or device capture/playback.
+- All twelve official RFC 8251 streams at both fixed output layouts passed
+  `opus_compare` and exact nonzero final-range/sample-count checks: **40,150
+  packet decodes / 46,171,440 scalar samples**. The complete report fingerprints
+  the compiled source snapshot; no full encoder-quality or hardware claim follows.
+- Generalized SILK: **313 streams / 3,336 packets / 7,924,320 exact PCM16 values**.
+  Independent SILK normal/loss/CNG/FEC comparison: **313 streams / 9,053 operations /
+  21,063,840 exact PCM16 values**, including 4,668 concealed and 1,161 FEC selections.
+- Owned SILK encoding covers real voiced pitch/LTP, exact synthesis-feedback
+  excitation and optional prior-active-channel LBRR. Native comparisons cover
+  72 format/policy streams, bounded budget rejections, actual selected LBRR and
+  subsequent ordinary decoding. Exact current packet/recovery counts are retained
+  in phase12a-silk-encoder-validation.json.
+- Hybrid comparison passed in both directions: 128 native packets / 138,240 samples,
+  and 256 owned packets / 276,480 samples across both bandwidths/layouts/durations
+  and false/true FEC. Native selected-FEC checks covered 64 operations, including
+  32 present LBRR selections; compressed ranges match exactly.
+- Unified ordinary mode ownership passed eight independent streams / 370 operations /
+  528,120 PCM values, including loss/FEC and both redundancy directions. Ordinary
+  maximum error is 1.23e-7; paths invoking periodic PLC use the separately declared
+  scalar CELT loss tolerance. RFC8251 mono-output phase-inversion and hybrid FEC
+  final-range fixes have literal independent regressions.
+- CELT packet loss passed 206 sequences / 5,022 frames / 3,553,080 samples with
+  3,065 withheld packets; raw PLC and spectral channel-conversion comparisons also
+  passed with explicit report-specific floating tolerances. Component reports
+  preserve exact arithmetic versus tolerance-qualified PCM distinctions.
+- VoiceBot built and ran offline through bounded media, actual CELT/SILK/hybrid,
+  unified transitions/conceal/recovery and five authenticated RTP rollover packets.
+  No native codec dependency, new package dependency or adapter graph was selected.
+- Tools passed 93 tests in seven suites; Python discovery passed 158 tests.
+  Explicit generation updated the reviewed documentation, then all five outputs
+  passed byte identity. Inventory/parity checks retain 18,137 discovery entries,
+  280 sources, 931 reviewed definitions and 249 mapped endpoints; these counts
+  do not certify complete API parity. The final diff/whitespace audit is clean.
+
+**Phase 12A remains incomplete.** Required Windows/Android native microphone and
+playback adapters are unimplemented; actual target-library/header probes and
+concrete WASAPI/AAudio/JNI prerequisites are recorded in the native platform audit.
+Apple permission/routing/interruption/hot-unplug device qualification also remains
+open. Download availability does not establish a working native execution path.
+Encoder analysis remains conservative (no reference delayed-decision shaping,
+perceptual CELT transient/VBR/prefilter search or DTX policy), and perceptual/corpus/
+realtime/device qualification is not inferred from native numerical agreement.
+The original completion gate was not waived; no advance to 12B is implied. The
+commit records the implemented and validated scope without labeling it full 12A.
+
+
+Final fixture audit: raw CELT frame fixtures/report were refreshed against the
+actual pinned scalar library build (37 sequences / 138 frames / 214,560 samples,
+maximum owned/native error 3.61e-7). Different reference compiler flags changed
+native encoder decisions; fixed inputs and owned bytes/ranges were unchanged.
+Both affected Swift interoperability tests passed. The late owned-hybrid LBRR
+fixture adds eight independently expected streams (16 selected recoveries), all
+passing strict 3e-6 PCM/range checks; the earlier full 1,825-test run is supplemented
+by this focused fixture test. No production source changed after the full run.

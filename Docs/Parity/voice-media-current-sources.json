@@ -100,6 +100,15 @@
       "verifiedOn": "2026-10-17",
       "revision": "1.6.1",
       "purpose": "Development-only independent entropy, SILK/CELT component and ordinary compressed-audio oracle, with literal fixtures and opt-in differential verification. No runtime linkage or native codec vendoring; selected ordinary paths do not establish full decoded-PCM codec conformance."
+    },
+    {
+      "name": "opus-rfc8251-conformance-vectors",
+      "url": "https://www.opus-codec.org/docs/opus_testvectors-rfc8251.tar.gz",
+      "sha256": "6b26a22f9ba87b2b836906a9bb7afec5f8e54d49553b1200382520ee6fedfa55",
+      "bytes": 74624664,
+      "verifiedOn": "2026-10-17",
+      "revision": "RFC8251 updated test vectors",
+      "purpose": "Opt-in official decoded-PCM conformance corpus; source archive and official comparator remain development-only inputs. Exact outcomes are reported separately; no native codec or vector download enters consumer builds."
     }
   ]
 }
