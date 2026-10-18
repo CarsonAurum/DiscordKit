@@ -104,6 +104,14 @@ adapters. Applications compose qualified voice separately rather than making Soc
 account capabilities imply SDK-only lobby-call signaling. OAuth additionally owns the
 published confidential backend device flow with explicit bounded polling.
 
+Phase 15A adds independently adopted [shared authoring declarations](DSL.md) in
+`DiscordDSL`. Its only direct dependencies are Core and Models; existing products
+have no upward DSL dependency. Synchronous module composition produces a finite,
+immutable description with stable explicit identities, source diagnostics and
+configurable structural admission limits. It owns no tasks, transport, command
+registration or event execution. Command lowering, macros, policies, message builders
+and HTTP/Gateway hosts remain later [implementation milestones](DSLImplementationRoadmap.md).
+
 ## Product boundaries
 
 Expose a convenient `DiscordKit` composition root while allowing REST, HTTP
@@ -119,6 +127,8 @@ modules do not choose a concrete networking backend.
 flowchart TD
     DiscordCore --> DiscordBits
     DiscordModels --> DiscordCore
+    DiscordDSL --> DiscordCore
+    DiscordDSL --> DiscordModels
     DiscordTransport --> DiscordCore
     DiscordHTTP --> DiscordModels
     DiscordHTTP --> DiscordTransport
@@ -188,6 +198,7 @@ normalize trusted interaction dispatches into the same context and response acto
 | Layer | Responsibility and boundary |
 | --- | --- |
 | Bits/Core | Portable value semantics, identifiers, field presence, errors, credentials, redaction and capability descriptions. No live networking. |
+| DSL | Synchronous structural module composition, bounded source diagnostics and a deterministic immutable declaration description. Core/Models only; no runtime, compiler-plugin or concrete-adapter ownership. |
 | Models | Immutable, `Sendable` Discord payloads and forward-compatible variants. No client, socket or transport references. |
 | Transport | Narrow HTTP, WebSocket, datagram, IPC, ingress, stream and lifecycle contracts. Own no Discord endpoint policy. |
 | HTTP | Typed service descriptors, authentication policy, codecs, bounded bodies, rate limits, retries and pagination. No Gateway requirement. |

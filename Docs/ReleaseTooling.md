@@ -40,10 +40,10 @@ behavior was added.
 swift package dump-symbol-graph --minimum-access-level public
 python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
   --repository . --symbolgraphs .build/out/symbolgraph \
-  --version 0.14.0 --output /tmp/discordkit-current-api.json
+  --version 0.15.0 --output /tmp/discordkit-current-api.json
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline.json \
-  --candidate /tmp/discordkit-current-api.json --version 0.14.0
+  --candidate /tmp/discordkit-current-api.json --version 0.15.0
 ```
 
 Use the symbolgraph directory printed by the installed SwiftPM toolchain if it
@@ -51,7 +51,15 @@ differs. Compile the graphs with the same target/deployment scope as the baselin
 The initial `0.14.0` baseline records 28 modules and 13,235 public/open symbols on
 macOS arm64. It establishes a starting point; there is no earlier public baseline
 against which to establish historical compatibility. This candidate is neither a
-published release nor a tag.
+published release nor a tag. The current `0.15.0` candidate adds the independent
+shared-declaration product for Part 15A and is compared against that frozen baseline
+with a pre-1.0 minor increment. The checker conservatively labels added enum cases
+and protocol requirements as requiring a major increment (a minor increment before
+1.0), including declarations in a new module; inspect the detailed comparison to
+distinguish those additions from changes to existing APIs. The full Phase 15
+baseline is captured separately when its remaining milestones are implemented
+and reviewed; never rewrite the
+historical baseline to make a new API pass.
 
 Snapshots normalize all owned graph shards, including external-type extensions,
 and reject missing modules, conflicting duplicates and mixed platform scopes.
@@ -78,8 +86,14 @@ tracked separately in release and parity history.
 
 ```sh
 python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
-  --report Docs/Release/phase14-report.json
+  --report Docs/Release/phase15-report.json
 ```
+
+The current report covers only the shared declaration milestone and the checks
+actually recorded for it. Validate the historical `phase14-report.json` separately;
+its frozen evidence describes that checkpoint rather than current source. Neither
+passing record implies that the remaining Phase 15 command/macro/runtime milestones
+or external qualification gates have completed.
 
 The schema-1 report identifies the candidate semantic version, verification date,
 explicit REST/Gateway/Voice/RPC/MLS/DAVE versions, every required gate, and the

@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.15.0",
+  "verifiedOn": "2026-10-18",
+  "published": false,
+  "protocols": {
+    "REST": "10",
+    "Gateway": "10",
+    "Voice": "8",
+    "RPC": "1",
+    "MLS": "1.0",
+    "DAVE": "1"
+  },
+  "checks": [
+    {
+      "id": "root-build",
+      "status": "passed",
+      "scope": "Debug root build with direct dependency imports checked as errors; no optimized build rerun.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "root-tests",
+      "status": "passed",
+      "scope": "2,134 strict tests in 265 suites across 30 root test targets, including 26 public-API DSL tests; local loopback sockets only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "tooling",
+      "status": "passed",
+      "scope": "103 Swift tooling tests, 218 Python tools tests and 29 CI helper tests, including refining-protocol DocC path regressions.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "passed",
+      "scope": "18,137 discovery entries, 280 sources; existing reviewed support classifications unchanged.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "generation",
+      "status": "passed",
+      "scope": "Five committed generated artifacts byte-identical; no reviewed-definition regeneration.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "parity",
+      "status": "passed",
+      "scope": "Existing offline inventory and parity validation with append-only authoring-layer history.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "declaration-docs",
+      "status": "passed",
+      "scope": "669 Swift files, 7,337 explicit callables, zero missing documentation comments; syntactic presence only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "docc",
+      "status": "passed",
+      "scope": "29 public module archives converted with strict diagnostics and merged; curation check unchanged and 22 existing example listings verified.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "product-isolation",
+      "status": "passed",
+      "scope": "29 production targets/products, 662 imports across 313 source files and all nine independent consumer manifests audited; shared DSL selects Core/Models only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "api-baseline",
+      "status": "passed",
+      "scope": "macOS source API comparison of 0.15.0 against frozen 0.14.0: one added module, 108 added symbols, no existing symbols changed or removed; no ABI claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "status": "passed",
+      "scope": "All nine existing independent example packages built with strict dependency imports; examples were not executed.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no browser qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no browser qualification.",
+      "excludedClaims": [
+        "browser"
+      ]
+    },
+    {
+      "id": "social-catalog",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no social-catalog qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no social-catalog qualification.",
+      "excludedClaims": [
+        "social-catalog"
+      ]
+    },
+    {
+      "id": "local-load",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no local-load qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no local-load qualification.",
+      "excludedClaims": [
+        "local-load"
+      ]
+    },
+    {
+      "id": "fixed-working-set-soak",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no fixed-working-set-soak qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no fixed-working-set-soak qualification.",
+      "excludedClaims": [
+        "fixed-working-set-soak"
+      ]
+    },
+    {
+      "id": "macos",
+      "status": "passed",
+      "scope": "Current local macOS arm64 compiler/build/tests only, with host-enabled local loopback tests; no cross-SDK or physical-device check rerun.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15a-validation.json",
+          "sha256": "f663af169d4501a3b2f46a4211c8cb05d786a7e749cc073f897666a8277463a7"
+        }
+      ]
+    },
+    {
+      "id": "linux",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no linux qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no linux qualification.",
+      "excludedClaims": [
+        "linux"
+      ]
+    },
+    {
+      "id": "windows",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no windows qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no windows qualification.",
+      "excludedClaims": [
+        "windows"
+      ]
+    },
+    {
+      "id": "apple-simulators",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no apple-simulators qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no apple-simulators qualification.",
+      "excludedClaims": [
+        "apple-simulators"
+      ]
+    },
+    {
+      "id": "apple-devices",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no apple-devices qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no apple-devices qualification.",
+      "excludedClaims": [
+        "apple-devices"
+      ]
+    },
+    {
+      "id": "android-cross-build",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no android-cross-build qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no android-cross-build qualification.",
+      "excludedClaims": [
+        "android-cross-build"
+      ]
+    },
+    {
+      "id": "android-runtime",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no android-runtime qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no android-runtime qualification.",
+      "excludedClaims": [
+        "android-runtime"
+      ]
+    },
+    {
+      "id": "live-discord",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no live-discord qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no live-discord qualification.",
+      "excludedClaims": [
+        "live-discord"
+      ]
+    },
+    {
+      "id": "hardware",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no hardware qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no hardware qualification.",
+      "excludedClaims": [
+        "hardware"
+      ]
+    },
+    {
+      "id": "independent-crypto-review",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no independent-crypto-review qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no independent-crypto-review qualification.",
+      "excludedClaims": [
+        "independent-crypto-review"
+      ]
+    },
+    {
+      "id": "codec-interop",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no codec-interop qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no codec-interop qualification.",
+      "excludedClaims": [
+        "codec-interop"
+      ]
+    },
+    {
+      "id": "semantic-documentation",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no semantic-documentation qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no semantic-documentation qualification.",
+      "excludedClaims": [
+        "semantic-documentation"
+      ]
+    },
+    {
+      "id": "api-other-platforms",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no api-other-platforms qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no api-other-platforms qualification.",
+      "excludedClaims": [
+        "api-other-platforms"
+      ]
+    },
+    {
+      "id": "upstream-collection",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no upstream-collection qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no upstream-collection qualification.",
+      "excludedClaims": [
+        "upstream-collection"
+      ]
+    },
+    {
+      "id": "zero-resource-growth",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no zero-resource-growth qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no zero-resource-growth qualification.",
+      "excludedClaims": [
+        "zero-resource-growth"
+      ]
+    },
+    {
+      "id": "performance-regression",
+      "status": "unverified",
+      "scope": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no performance-regression qualification.",
+      "reason": "Not rerun or established by the shared declaration milestone. Historical Phase 14 results remain separate; this current report claims no performance-regression qualification.",
+      "excludedClaims": [
+        "performance-regression"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "shared-declaration-milestone",
+      "description": "Part 15A only: independently adopted protocol modules, finite ordered builders, raw/typed contribution metadata and bounded deterministic offline descriptions; no command or bot runtime.",
+      "checkIDs": [
+        "api-baseline",
+        "declaration-docs",
+        "docc",
+        "examples",
+        "generation",
+        "inventory",
+        "macos",
+        "parity",
+        "product-isolation",
+        "root-build",
+        "root-tests",
+        "tooling"
+      ]
+    }
+  ],
+  "globalExclusions": [
+    "entire-platform-parity",
+    "production-qualification",
+    "fleet-capacity",
+    "binary-ABI",
+    "historical-API-compatibility",
+    "full-phase15-certification",
+    "dsl-command-event-execution",
+    "dsl-macro-interop",
+    "dsl-benchmark-capacity"
+  ]
+}

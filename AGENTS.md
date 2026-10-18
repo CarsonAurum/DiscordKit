@@ -114,6 +114,14 @@ public API/semver baselines, platform CI and weekly official-source review. See
 candidate is unpublished. Unverified platform/live/hardware/crypto/interop gates
 remain explicit exclusions, and syntactic presence never proves semantic completeness.
 
+Part 15A adds independently adopted `DiscordDSL`: synchronous module/body and public
+contribution protocols, structural builders, stable explicit module IDs, source diagnostics
+and bounded deterministic declaration descriptions. It selects Core/Models only; existing
+products remain independent of the DSL. Construction and compilation start no tasks, I/O,
+registration or handler execution. Command lowering/macros, response builders/policies
+and HTTP/Gateway hosts remain later milestones; see `Docs/DSL.md` and
+`Docs/DSLImplementationRoadmap.md`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -140,6 +148,8 @@ remain explicit exclusions, and syntactic presence never proves semantic complet
   codec-aware frame transforms and bounded ephemeral verification; no transport/device I/O.
 - `Sources/DiscordSocial/`: independently adopted provider composition, scoped local
   observations and PCM controls; no upward dependency from existing products.
+- `Sources/DiscordDSL/`: inert structural module composition and finite validated
+  descriptions over Core/Models only; no runtime, macro or concrete-adapter ownership.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -249,6 +259,12 @@ The local encoded-packet round trip does not satisfy the full codec/MLS/DAVE,
 device, authorized Discord or ten-minute duplex gates in `Docs/Voice.md`.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.
+
+For shared DSL changes, preserve the Core/Models-only graph and run root build/tests,
+callable documentation, graph/import isolation and scoped API/DocC checks. Test structural
+count/depth/text limits, duplicate identities, unsupported capabilities, deterministic
+builder order and zero execution of injected work. Pure descriptions are authoring-layer
+evidence; they do not qualify command/event execution, macros, live Discord or capacity.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

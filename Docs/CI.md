@@ -16,6 +16,12 @@ manifest/import DAG, validate release/maintenance records, and build every consu
 CommandsApp/ActivityHost tests and CommandsApp/VoiceBot/SocialApp offline runs are
 explicit. Credential-bearing examples are built only.
 
+Part 15A adds the independently selected `DiscordDSL` product and its root tests.
+CI compares the current `0.15.0` shared-declarations candidate against the frozen
+`0.14.0` API baseline, validates both historical and current reports, and discovers
+the new public DocC module from the manifest. The current candidate covers shared
+declarations only; the remaining command, macro and runtime milestones are planned.
+
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to
 arm64 macOS 13 module availability. If a runner architecture or platform scope
 changes, the comparison must fail and receive review rather than resetting the

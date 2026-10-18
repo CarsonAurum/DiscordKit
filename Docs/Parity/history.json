@@ -1221,6 +1221,48 @@
       ],
       "details": "changes/2026-10-18-phase14-certification.md",
       "remainingGates": "../Release/phase14-report.json"
+    },
+    {
+      "id": "2026-10-18-phase15a-shared-dsl",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.15.0 candidate; unpublished; shared declaration milestone only",
+      "localCommit": "unknown",
+      "changeType": "authoring_layer_only",
+      "previousBehavior": "Consumers composed existing low-level command definitions/routes and Gateway runtimes directly; no shared protocol-led structural module product.",
+      "currentBehavior": "Independent Core/Models-only DiscordDSL adds synchronous module/body and custom contribution protocols, structural builders, stable explicit identities, source diagnostics and bounded deterministic immutable descriptions. Existing runtime products and upstream support classifications are unchanged.",
+      "affectedSymbols": [
+        "BotDefinition",
+        "BotModule",
+        "Module",
+        "BotBuilder",
+        "DefinitionContribution",
+        "RawDefinitionContribution",
+        "DefinitionPlan",
+        "DefinitionDescription",
+        "DefinitionLimits",
+        "DefinitionDiagnostic"
+      ],
+      "affectedPayloads": "Local inert authoring metadata only. No new Discord endpoint, payload field, permission, intent, Gateway event or opcode support.",
+      "breakingChanges": [],
+      "migration": "Additively select DiscordDSL for offline structural authoring. Existing consumers require no changes. Command lowering, macros, response/policy builders and HTTP/Gateway execution remain later milestones.",
+      "sources": [
+        "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md",
+        "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0348-buildpartialblock.md"
+      ],
+      "details": "changes/phase15-dsl.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

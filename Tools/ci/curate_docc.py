@@ -119,18 +119,34 @@ def symbol_path(symbol, module):
     return (module, *components)
 
 
-def link_paths(symbols, module):
+def link_paths(symbols, module, relationships=()):
     """Resolve collision-safe links for all graph symbols, including inherited ones.
 
     Counting every graph declaration ensures an explicit member is still
     disambiguated when its otherwise identical name is inherited. DocC accepts
     the precise hash even when its presentation chooses an unhashed canonical
     path for a protocol requirement or a preferred declaration.
+
+    Default implementations are documented beside their requirement, including
+    when a refining protocol supplies the implementation. Their compiler-emitted
+    path can name the refining protocol, so relationship-based paths must be
+    resolved before collision counting rather than copied from pathComponents.
+    Missing external requirements retain the available graph path.
     """
+    paths = {identifier: symbol_path(symbol, module) for identifier, symbol in symbols.items()}
+    default_paths = defaultdict(set)
+    for relation in relationships:
+        source, target = relation["source"], relation["target"]
+        if relation["kind"] == "defaultImplementationOf" and source in paths and target in paths:
+            default_paths[source].add((*paths[target][:-1], paths[source][-1]))
+    for identifier, candidates in default_paths.items():
+        if len(candidates) != 1:
+            raise ValueError(f"Multiple default implementation paths for {identifier}")
+        paths[identifier] = next(iter(candidates))
     groups = defaultdict(list)
     for symbol in symbols.values():
         if symbol["kind"]["identifier"] != "swift.extension":
-            groups[symbol_path(symbol, module)].append(symbol)
+            groups[paths[symbol["identifier"]["precise"]]].append(symbol)
     links = {}
     for path, candidates in groups.items():
         for symbol in candidates:
@@ -214,7 +230,7 @@ def reference_files(module, graphs):
             requirement_parent = parents.get(relation["target"])
             if requirement_parent is not None:
                 parents[relation["source"]] = requirement_parent
-    links = link_paths(symbols, module)
+    links = link_paths(symbols, module, relationships)
     children = defaultdict(list)
     top_level = []
     extensions = []

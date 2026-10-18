@@ -398,6 +398,41 @@
       "DiscordTestSupport",
       "DiscordUnixPlatform"
     ],
+    "DiscordDSL": [
+      "DiscordActivities",
+      "DiscordApplePlatform",
+      "DiscordBotDSL",
+      "DiscordCache",
+      "DiscordCertifiedDevices",
+      "DiscordClient",
+      "DiscordCommandDSL",
+      "DiscordCommands",
+      "DiscordCommerce",
+      "DiscordDAVE",
+      "DiscordDSLMacroPlugin",
+      "DiscordDSLMacros",
+      "DiscordFoundationTransport",
+      "DiscordGameServices",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordInteractions",
+      "DiscordKit",
+      "DiscordKitTools",
+      "DiscordMLS",
+      "DiscordMedia",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordRPC",
+      "DiscordSocial",
+      "DiscordTestSupport",
+      "DiscordTransport",
+      "DiscordUnixPlatform",
+      "DiscordVoice",
+      "DiscordVoiceCodecs",
+      "DiscordVoiceCrypto",
+      "swift-syntax/SwiftCompilerPlugin",
+      "swift-syntax/SwiftSyntax"
+    ],
     "DiscordFoundationTransport": [
       "DiscordTestSupport"
     ],
@@ -640,6 +675,9 @@
     "DiscordDAVE": [
       "DiscordDAVE"
     ],
+    "DiscordDSL": [
+      "DiscordDSL"
+    ],
     "DiscordFoundationTransport": [
       "DiscordFoundationTransport"
     ],
@@ -752,6 +790,7 @@
     "DiscordCommerce": "Sources/DiscordCommerce",
     "DiscordCore": "Sources/DiscordCore",
     "DiscordDAVE": "Sources/DiscordDAVE",
+    "DiscordDSL": "Sources/DiscordDSL",
     "DiscordFoundationTransport": "Sources/DiscordFoundationTransport",
     "DiscordGameServices": "Sources/DiscordGameServices",
     "DiscordGateway": "Sources/DiscordGateway",
@@ -835,6 +874,10 @@
       "DiscordVoiceCrypto",
       "swift-crypto/Crypto",
       "swift-crypto/CryptoExtras"
+    ],
+    "DiscordDSL": [
+      "DiscordCore",
+      "DiscordModels"
     ],
     "DiscordFoundationTransport": [
       "DiscordTransport"

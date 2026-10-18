@@ -48,6 +48,12 @@ and all excluded platform/live/hardware claims. Start with [setup](Docs/Setup.md
 [migration](Docs/Migration.md) and the offline
 [commands/components consumer](Examples/CommandsApp/README.md).
 
+Phase 15A adds an independently adopted [Swift module authoring foundation](Docs/DSL.md).
+`DiscordDSL` composes finite declarations into deterministic descriptions with explicit
+module identities, source diagnostics and structural bounds. Construction and compilation
+start no tasks or I/O; typed commands, macros and HTTP/Gateway execution remain later
+[DSL milestones](Docs/DSLImplementationRoadmap.md).
+
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
 [reviewed generation and parity checks](Docs/Generation.md).
@@ -121,6 +127,8 @@ explains navigation generation, synchronized tutorial code, validation and hosti
   optional early defer and independent durable webhook-event admission.
 - `DiscordCommands`: complete typed command definitions, bounded exact routing and
   explicit canonical registration reconciliation.
+- `DiscordDSL`: synchronous module/result-builder composition, bounded structural
+  diagnostics and immutable deterministic descriptions; Core/Models dependencies only.
 - `DiscordOAuth`: state/issuer-bound authorization, S256 PKCE, installation URLs,
   form-encoded token operations, injected browser presentation and bounded refresh ownership.
 - `DiscordGameServices`: documented provisional/merge/unmerge/publisher backend operations

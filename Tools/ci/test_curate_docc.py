@@ -75,6 +75,52 @@ class ReferenceCurationTests(unittest.TestCase):
         self.assertIn("### Default implementations", page)
         self.assertIn("### Instance methods", page)
 
+    def test_refining_protocol_defaults_link_beside_the_base_requirement(self):
+        """Real compiler identities resolve at DocC's base-protocol paths with hashes.
+
+        The compiler gives these defaults refining-protocol path components but
+        no memberOf edges. DocC places both beside BotDefinition's requirement;
+        counting collisions after reparenting retains distinct, resolvable links
+        to every declaration without deleting the default implementation group.
+        """
+        module = "DiscordDSL"
+        base = symbol("BotDefinition", "swift.protocol", module=module)
+        first = symbol("BotModule", "swift.protocol", module=module)
+        second = symbol("DefinitionContribution", "swift.protocol", module=module)
+        requirement = symbol("BotDefinition/collect(into:)", "swift.method", module=module,
+            identifier="s:10DiscordDSL13BotDefinitionP7collect4intoyAA0D9CollectorVz_tKF")
+        defaults = [symbol("BotModule/collect(into:)", "swift.method", module=module,
+            identifier="s:10DiscordDSL9BotModulePAAE7collect4intoyAA19DefinitionCollectorVz_tKF"),
+            symbol("DefinitionContribution/collect(into:)", "swift.method", module=module,
+            identifier="s:10DiscordDSL22DefinitionContributionPAAE7collect4intoyAA0C9CollectorVz_tKF")]
+        declarations = [base, first, second, requirement, *defaults]
+        relations = [member(requirement, base, "requirementOf"),
+            *(member(value, requirement, "defaultImplementationOf") for value in defaults)]
+        files, stats = curate_docc.reference_files(module, [graph(declarations, relations, module)])
+        page = files[Path("Reference/BotDefinition.md")]
+        self.assertIn("### Default implementations", page)
+        self.assertIn("``DiscordDSL/BotDefinition/collect(into:)-5y6bb``", page)
+        self.assertIn("``DiscordDSL/BotDefinition/collect(into:)-7p9rz``", page)
+        self.assertNotIn("``DiscordDSL/BotModule/collect(into:)", page)
+        self.assertNotIn("``DiscordDSL/DefinitionContribution/collect(into:)", page)
+        self.assertEqual(stats["memberLinks"], 3)
+        self.assertEqual((files, stats), curate_docc.reference_files(module,
+            [graph(list(reversed(declarations)), list(reversed(relations)), module)]))
+
+    def test_default_paths_keep_external_fallbacks_and_reject_conflicting_parents(self):
+        """Unavailable external requirements keep existing paths; ambiguity fails closed."""
+        default = symbol("Refined/read()", "swift.method")
+        identifier = default["identifier"]["precise"]
+        symbols = {identifier: default}
+        missing = {"source": identifier, "target": "external-requirement", "kind": "defaultImplementationOf"}
+        self.assertEqual(curate_docc.link_paths(symbols, "Example", [missing]),
+            {identifier: "Example/Refined/read()"})
+        requirements = [symbol("First/read()", "swift.method"), symbol("Second/read()", "swift.method")]
+        symbols.update((value["identifier"]["precise"], value) for value in requirements)
+        relations = [member(default, value, "defaultImplementationOf") for value in requirements]
+        with self.assertRaisesRegex(ValueError, "Multiple default implementation paths"):
+            curate_docc.link_paths(symbols, "Example", relations)
+
     def test_inherited_symbols_are_not_curated_but_remain_part_of_collision_resolution(self):
         """An inherited overload still requires a precise link for the owned member."""
         parent = symbol("Value")

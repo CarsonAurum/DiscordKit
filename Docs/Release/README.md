@@ -1,8 +1,15 @@
 # Release certification
 
-The [0.14.0 candidate report](2026-10-18.md) and
-[machine-readable certification](phase14-report.json) state exact verification and
-excluded claims. This repository checkpoint is not a published package release or tag.
+The current **0.15.0 shared-declarations candidate** covers [Part 15A](../DSL.md)
+only. Its [machine report](phase15-report.json) and
+[validation record](phase15a-validation.json) state the checks actually run and
+explicit exclusions. Typed commands, macros, HTTP/Gateway hosts and the remaining
+[DSL milestones](../DSLImplementationRoadmap.md) are still planned.
+
+The historical [0.14.0 candidate report](2026-10-18.md) and
+[machine-readable certification](phase14-report.json) retain their exact evidence
+and excluded claims. Historical snapshots remain unchanged and do not certify new
+source. Neither checkpoint is a published package release or tag.
 Use [release tooling](../ReleaseTooling.md), [CI](../CI.md),
 [setup](../Setup.md) and [migration](../Migration.md) for repeatable adoption/release work.
 
