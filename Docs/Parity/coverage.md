@@ -1,5 +1,14 @@
 # Part 0 coverage and completion gates
 
+Phase 13 adds [owned Social providers](../Social.md), explicit confidential device
+authorization and bounded local state/audio behavior. Every discovered Social method
+declaration/callback and Commerce capability remains visible in the
+[release catalog](phase13-social-catalog.json), alongside mobile gates. Local typed
+provider tests, reducers, PCM and backend grants establish only their documented
+public/local scope. Missing SDK wires/projections/access, mobile/console/native host
+qualification and Commerce schemas remain unmet; entire-platform parity is incomplete.
+Exact checks are recorded in [Phase 13 validation](phase13-validation.json).
+
 Current Phase 7 consumer/cache/event delivery is recorded in the
 [client guide](../Client.md) and [execution record](../../.air/plans/phase-7-execution.plan.md).
 Current Phase 10 local RPC/device support and remaining host/schema gates are

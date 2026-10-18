@@ -62,6 +62,27 @@ implementation or physical-device qualification. The independent
 [OAuthApp example](../Examples/OAuthApp/README.md) compiles this adoption without
 Gateway, Client, Cache, Commands, Interactions or concrete network adapters.
 
+## Explicit backend device authorization (Phase 13)
+
+Verified **2026-10-18** against the published
+[console account-linking flow](https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-consoles)
+and [RFC 8628](https://www.rfc-editor.org/rfc/rfc8628.html).
+`OAuthDeviceAuthorizationEndpoints` owns API v10 device authorization and device-code
+token descriptors, including the documented optional paired provisional merge proof.
+It uses the existing confidential client's form-encoded token authentication and
+suppresses ambient bearer/bot authorization. The client secret remains on the backend.
+Native public-client device authorization and console host integrations remain separate.
+
+`OAuthDeviceAuthorizationFlow` is inert and single-session. Explicit `start` returns
+redacted challenge instructions for the application's UI; explicit `poll` performs at
+most one due token request. Calls before the next permitted time return waiting without
+I/O. Pending preserves the interval; slow_down adds a persistent five seconds. Local
+request-start expiry, terminal grant errors, a finite poll budget, concurrent busy
+admission and cancel/result fencing prevent unbounded or overlapping work. No background
+loop, sleep or browser starts automatically. Rate policy and uncertain submitted requests
+retain the existing REST ownership rules. The application owns scheduled polling,
+presentation, server session binding, token persistence and revocation.
+
 Legacy implicit support requires `.implicitCompatibility`. It accepts a fragment
 bearer with no refresh token and rejects incompatible scopes; code flow with S256
 is the default. Implicit fragment tokens are unsuitable for durable server sessions.

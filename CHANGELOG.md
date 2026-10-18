@@ -6,6 +6,19 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-18 — Phase 13 owned Social composition
+
+- Added independent Social consent/host coordination and typed HTTP/RPC/Activity
+  providers with bounded admission, stale-result fencing and separate bot authority.
+- Added scoped relationship/presence synchronization, bounded invite/additional
+  metadata, local PCM mute/deafen/gain and no-input transition observations.
+- Added published confidential backend device authorization with explicit bounded
+  polling, pending/slow-down timing, expiry and cancellation fencing.
+- Added an exhaustive 743-row SDK/Commerce/mobile catalog, current official source
+  fingerprints, offline traceability checks and an independent Social consumer.
+- Native SDK/Commerce wires, approved live hosts and platform/device/production
+  qualification remain explicit unmet requirements; no entire-platform parity claim.
+
 ## 2026-10-17 — Phase 12A encoder policies and Apple qualification
 
 - Added fixed-format SILK/CELT/hybrid encoder ownership with fractional bitrate

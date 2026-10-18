@@ -1134,6 +1134,55 @@
       ],
       "details": "changes/2026-10-18-phase12b-mls.md",
       "remainingGates": "../MLSCryptoReview.md"
+    },
+    {
+      "id": "2026-10-18-phase13-social",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "rpc": "1",
+        "activityBridge": "1",
+        "socialSession": "unknown",
+        "socialCommerce": "unknown"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "owned_social_composition",
+      "previousBehavior": "Independent public providers and a historical Social feasibility map; no Social coordinator or explicit backend device-flow owner.",
+      "currentBehavior": "Independent Social consent/host coordination, real typed HTTP/RPC/Activity equivalents, bounded local relationship/presence/audio behavior and explicit confidential backend device authorization; exhaustive catalog retains all unmet SDK/Commerce/mobile requirements.",
+      "affectedSymbols": [
+        "SocialClient",
+        "SocialProfileProvider",
+        "SocialPresenceProvider",
+        "SocialHTTPProvider",
+        "SocialHTTPApplicationProvider",
+        "SocialRPCProvider",
+        "SocialActivityProvider",
+        "SocialRelationshipStore",
+        "SocialAudioControls",
+        "SocialAudioInputMonitor",
+        "SocialActivityInvite",
+        "SocialAdditionalContent",
+        "OAuthDeviceAuthorizationEndpoints",
+        "OAuthDeviceAuthorizationFlow"
+      ],
+      "affectedPayloads": "Existing v10 user/lobby/identity, RPC v1 and Activity contracts; published device authorize/token forms; application-normalized local Social state and PCM. No guessed SDK/Commerce wire.",
+      "breakingChanges": [],
+      "migration": "Additively select DiscordSocial, inject authorized caller-owned providers, activate exact user consent/host scope, own shared-client cleanup and consult all catalog prerequisites. Bot authority remains separate.",
+      "sources": [
+        "https://discord.com/developers/docs/social-sdk/classdiscordpp_1_1Client.html",
+        "https://docs.discord.com/developers/topics/rpc",
+        "https://docs.discord.com/developers/developer-tools/embedded-app-sdk",
+        "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-consoles",
+        "https://docs.discord.com/developers/social-commerce/overview",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-10-18-phase13-social.md",
+      "remainingGates": "phase13-social-catalog.json"
     }
   ]
 }

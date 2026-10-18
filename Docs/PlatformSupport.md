@@ -1,5 +1,13 @@
 # Platform support and qualification
 
+Phase 13's [Social composition](Social.md) is locally tested on macOS arm64 with
+Swift 6.4. Public backend device authorization is distinct from a console runtime.
+The [Social catalog](Parity/phase13-social-catalog.json) records current iOS/Android
+native SDK prerequisites, PKCE/account linking, installed-client presence, audio,
+permissions and lifecycle separately. Desktop IPC does not supply a mobile adapter.
+Local scripted/provider and PCM tests do not qualify real Discord, mobile/console
+hosts, physical hardware, minimum OS versions, purchases or other native platforms.
+
 Updated **2026-10-18**. The initial HTTP execution and minimal sharded Gateway
 slices and portable OAuth flows are implemented. Phase 12 adds locally tested
 [media/voice protocol components](Voice.md); full live/device qualification remains open.

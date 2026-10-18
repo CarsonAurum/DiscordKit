@@ -1,0 +1,54 @@
+# Phase 13: owned Social composition
+
+Recorded/local support date: **2026-10-18**. Base: `ea5394c`.
+Upstream announcement/effective dates: **unknown** for grouped SDK methods; exact
+dated mobile/change-log evidence remains in the source record. Local release/commit:
+**unknown** until this change is committed. REST **v10**, desktop RPC **v1**, owned
+Activity bridge **v1**; no native SDK wire/version equivalence is implied.
+
+Previously, public HTTP/OAuth/game/Commerce, local desktop RPC, Activities and Media
+were independently available, and Social SDK declarations had a feasibility mapping.
+There was no unified owned Social coordinator or backend device-flow owner.
+
+The independent `DiscordSocial` product now provides explicit user consent and host
+prerequisites, narrow profile/presence providers, bounded operation admission and
+authorization-result fencing. Real typed HTTP/RPC/Activity equivalents reuse existing
+owners, rate policies and scopes; bot identity/profile authority remains separate.
+New local relationship snapshots/events enforce account/consent/generation/sequence
+domains, byte/count limits and explicit overflow/gap resynchronization. Local presence
+grouping, invite/additional metadata, mute/deafen/gain and no-input RMS observations
+are tested without claiming a native Social event source or remote lobby call.
+
+OAuth now implements the published confidential backend device grant: redacted
+instructions, explicit bounded one-request polling, pending/slow-down intervals,
+expiry/denial and cancellation/result fencing. No implicit poll loop or native runtime
+is added. Application secrets remain on the backend and are excluded from diagnostics.
+
+The release catalog maps **743 rows**: 649 Social method declarations, 71 callbacks,
+15 Commerce rows and eight mobile capability records. It records narrower owned
+equivalents and every named unmet requirement without changing historical discovery
+support counts. An offline validator enforces exact membership, source/test traceability,
+authorization/platform limits and no unsupported SDK/live-parity promotion.
+
+This is additive. Adopt Social explicitly, inject already authorized providers, activate
+the exact scope/approved capabilities, and own cancellation/cleanup of shared clients.
+Disconnect/close clears local observations and fences results; a submitted mutation may
+already have executed. Existing products preserve independent adoption and do not
+select Social or the prohibited Discord native runtime. The independent Social example
+builds/runs offline from MainActor and audits the actual selected dependency graph.
+
+Validation is local macOS arm64/Swift 6.4, recorded in
+[the machine record](../phase13-validation.json). Current official source hashes are in
+[source evidence](../phase13-current-sources.json); exact rows and required evidence are
+in [the catalog](../phase13-social-catalog.json). Unpublished SDK session/DM/friend/call
+wires, remaining live-handle fields, early-access Commerce schemas/access, native
+mobile/console adapters, authorized Discord/host, device/platform and production
+qualification remain explicit unmet requirements. Entire-platform parity is incomplete.
+
+Official references: [Social Client](https://discord.com/developers/docs/social-sdk/classdiscordpp_1_1Client.html),
+[RPC](https://docs.discord.com/developers/topics/rpc),
+[Activity SDK](https://docs.discord.com/developers/developer-tools/embedded-app-sdk),
+[console linking](https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-consoles),
+[mobile overview](https://docs.discord.com/developers/discord-social-sdk/development-guides/mobile-overview),
+[Commerce](https://docs.discord.com/developers/social-commerce/overview),
+[change log](https://docs.discord.com/developers/change-log).

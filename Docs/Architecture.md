@@ -89,6 +89,15 @@ HTTP/Gateway/Client/Kit remain independent of voice,
 MLS and DAVE. Independent crypto review, complete-client/live interoperability,
 platform/device and ten-minute duplex qualification remain open.
 
+Phase 13 adds independently adopted [Social composition](Social.md) over narrow
+HTTP/RPC/Activity provider contracts, explicit consent/host admission, bounded scoped
+relationship observations and local PCM controls. It imports Core/Models/Transport,
+HTTP/OAuth/GameServices/Commerce, RPC/Activities and Media; no existing product depends
+upward on Social. Social does not select Gateway/Client/Cache, Voice/MLS/DAVE or concrete
+adapters. Applications compose qualified voice separately rather than making Social
+account capabilities imply SDK-only lobby-call signaling. OAuth additionally owns the
+published confidential backend device flow with explicit bounded polling.
+
 ## Product boundaries
 
 Expose a convenient `DiscordKit` composition root while allowing REST, HTTP
@@ -148,9 +157,16 @@ flowchart TD
     DiscordCertifiedDevices --> DiscordCore
     DiscordActivities --> DiscordTransport
     DiscordActivities --> DiscordCore
+    DiscordSocial --> DiscordCore
+    DiscordSocial --> DiscordModels
+    DiscordSocial --> DiscordTransport
+    DiscordSocial --> DiscordHTTP
     DiscordSocial --> DiscordOAuth
+    DiscordSocial --> DiscordGameServices
+    DiscordSocial --> DiscordCommerce
     DiscordSocial --> DiscordRPC
-    DiscordSocial --> DiscordVoice
+    DiscordSocial --> DiscordActivities
+    DiscordSocial --> DiscordMedia
     DiscordCommerce --> DiscordHTTP
 ```
 

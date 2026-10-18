@@ -1,5 +1,12 @@
 # Dependency policy and qualification
 
+Phase 13 adds no external dependency. The independent Social product composes existing
+Core/Models/Transport, HTTP/OAuth/GameServices/Commerce, RPC/Activities and Media.
+It selects neither concrete adapters nor Gateway/Client/Cache/Voice/MLS/DAVE, and no
+existing product selects Social. The independent Social example audits this selected
+graph. Device authorization reuses OAuth's existing HTTP/form/redaction policy. No
+Discord-distributed native runtime or third-party Social SDK wrapper is selected.
+
 Updated: 2026-10-18. Part 2 adds approved Apple SwiftNIO/TLS dependencies only
 to the concrete NIO/Unix adapters. Bits, Core, Transport, DiscordKit and Foundation
 products do not import or link NIO. Separate development probes retain their

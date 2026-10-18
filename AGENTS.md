@@ -100,6 +100,13 @@ local UDP qualification harness uses synthetic PCM and owned MLS/DAVE peers;
 authorized Discord, independent review and full device/platform qualification
 remain explicit gates. See `Docs/VoiceSessions.md`.
 
+Part 13 adds independently adopted `DiscordSocial`: explicit consent/host capability
+coordination over narrow owned HTTP/RPC/Activity providers, bounded scoped relationship
+state, local PCM controls and exhaustive SDK/Commerce/mobile gap accounting. OAuth also
+adds the published confidential backend device grant with explicit bounded polling.
+Construction starts no work. No native Discord runtime or guessed Social/Commerce wire
+is permitted; see `Docs/Social.md` and `Docs/Parity/phase13-social-catalog.json`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -124,6 +131,8 @@ remain explicit gates. See `Docs/VoiceSessions.md`.
 - `Sources/DiscordVoice/`: deterministic voice framing/control/RTP components; no client ownership.
 - `Sources/DiscordDAVE/`: exact-session Voice/MLS signaling ownership, sender ratchets,
   codec-aware frame transforms and bounded ephemeral verification; no transport/device I/O.
+- `Sources/DiscordSocial/`: independently adopted provider composition, scoped local
+  observations and PCM controls; no upward dependency from existing products.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -226,6 +235,12 @@ The local encoded-packet round trip does not satisfy the full codec/MLS/DAVE,
 device, authorized Discord or ten-minute duplex gates in `Docs/Voice.md`.
 
 For C# code on macOS, use `msbuild` rather than `dotnet`.
+
+For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
+validator and Python tests, and preserve its graph without Gateway/Client/Cache,
+Voice/MLS/DAVE or concrete adapters. Build affected provider examples and run the
+Activity browser tests. User consent, bot authority, desktop/mobile hosts and local
+media routes remain distinct; named unmet requirements never count as SDK support.
 
 ## Code conventions
 

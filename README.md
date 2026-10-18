@@ -36,7 +36,9 @@ Phase 12C adds independently adopted [DAVE signaling, encoded-frame protection
 and human verification](Docs/DAVE.md). Independent crypto review and complete-client/live
 interoperability remain open. [Phase 12D](Docs/VoiceSessions.md) adds supervised per-guild
 voice sessions, bounded PCM/Opus pipelines and an independently composed DAVE adapter;
-native Social SDK and schema-blocked Social Commerce remain later work.
+Phase 13 adds an independently adopted [owned Social client](Docs/Social.md), typed
+HTTP/RPC/Activity providers, bounded local state/audio controls and explicit device
+authorization. Native Social protocols and schema-blocked Commerce remain visible blockers.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
@@ -103,6 +105,8 @@ establish endpoint parity or qualify untested hosts. See the
   injected local HTTP or RPC; host applications supply native device identifiers.
 - `DiscordActivities`: transport-neutral Activity sessions, typed command/event values,
   bounded subscription ownership and an owned dependency-free browser bridge.
+- `DiscordSocial`: explicit user/host capability coordination, typed owned providers,
+  bounded relationship synchronization and local PCM controls; no native SDK runtime.
 - `DiscordGateway`: discovery, supervised shards, heartbeat/reconnect/resume, leases,
   startup/opcode budgets, typed dispatch decoding, correlated requests, bounded broadcast
   subscriptions and independently supervised ordered handlers.

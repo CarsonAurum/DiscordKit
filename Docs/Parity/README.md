@@ -1,5 +1,13 @@
 # Parity inventory and chronological history
 
+Phase 13 adds [owned Social composition](../Social.md) and an exhaustive
+[SDK/Commerce/mobile release catalog](phase13-social-catalog.json), verified against
+current official references. Its local public equivalents are explicitly narrower
+than native SDK behavior. The offline Social catalog validator checks every baseline
+declaration/callback, actual source/test evidence and named unmet requirements.
+This separate mapping preserves historical discovery classifications and never adds
+native SDK support counts or entire-platform claims from mocks or local substitutes.
+
 Phase 12 starts with [media/voice protocol foundations](../Voice.md), three partial
 reviewed groups and a separate [capability inventory](voice-media-capabilities.json).
 Primitive/framing tests do not establish codec, MLS/DAVE or live voice support.
