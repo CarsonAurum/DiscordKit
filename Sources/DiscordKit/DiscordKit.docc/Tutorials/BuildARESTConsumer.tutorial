@@ -1,0 +1,56 @@
+@Tutorial(time: 20) {
+    @Intro(title: "Build a REST consumer") {
+        Compose typed REST reads, a shared rate authority and an explicitly owned Foundation adapter.
+
+        Inspect a complete API v10 consumer without running an authenticated request. The example reads the current bot and application only when DISCORD_BOT_TOKEN is set. Build it during this tutorial; choose a deliberately authorized environment for any later live run.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the RESTOnly example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/RESTOnly) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Choose the independent REST graph.** Open the RESTOnly manifest. Its product selection uses Core, HTTP and FoundationTransport without a Gateway connection. Run `swift build --package-path Examples/RESTOnly` to compile the consumer; a build does not execute its main function.
+
+                @Code(name: "RESTOnly-Package.swift", file: "RESTOnly-Package.swift.txt")
+            }
+            @Step {
+                **Inject execution and shared authority.** Read the initialization of ContinuousClock, RateLimitCoordinator, FoundationHTTPTransport and RESTClient. The rate identity is opaque metadata, not a token string. Share the identity and corresponding credential/resource authorities when composing multiple clients for the same credential.
+
+                @Code(name: "RESTOnly.swift", file: "RESTOnly.swift.txt")
+            }
+            @Step {
+                **Execute bounded typed reads.** Inspect currentUser() and currentApplication(). The descriptors determine response types and API behavior; execution uses explicit monotonic deadlines. Never print the bot token or full server-controlled error payload. If you later choose to run the program with configured credentials, it sends real Discord requests.
+
+                @Code(name: "RESTOnly.swift", file: "RESTOnly.swift.txt")
+            }
+            @Step {
+                **Await cleanup on every outcome.** Follow the inner success/error paths into coordinator.close() and transport.close(). An injected adapter shared by several consumers needs one separate cleanup owner. A timeout after a mutation is different from a definitely rejected read; use the endpoint replay contract before retrying other operations.
+
+                @Code(name: "RESTOnly.swift", file: "RESTOnly.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            Which step performs the authenticated reads?
+
+            @Choice(isCorrect: true) {
+                Running the executable with its bot token configured.
+                @Justification {
+                    SwiftPM compilation does not run the example entry point. Keep credential-bearing execution separate from offline checks.
+                }
+            }
+            @Choice(isCorrect: false) {
+                Building the independent package.
+                @Justification {
+                    SwiftPM compilation does not run the example entry point. Keep credential-bearing execution separate from offline checks.
+                }
+            }
+        }
+    }
+}

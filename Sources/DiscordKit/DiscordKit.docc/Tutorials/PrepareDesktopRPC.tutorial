@@ -1,0 +1,51 @@
+@Tutorial(time: 15) {
+    @Intro(title: "Prepare a local desktop integration") {
+        Create typed local RPC requests and device metadata while keeping host connection and consent explicit.
+
+        Inspect the local RPC v1 example without opening a Discord desktop session. Your application supplies its connector, registered application identity and local authorization. The example does not provide a native Discord runtime.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the RPCApp example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/RPCApp) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Adopt RPC and device products.** Run `swift build --package-path Examples/RPCApp`. The consumer selects local RPC and CertifiedDevices independently from the HTTP/Gateway bot stack.
+
+                @Code(name: "RPCApp-Package.swift", file: "RPCApp-Package.swift.txt")
+            }
+            @Step {
+                **Validate request and device metadata.** Read RPCRequest.getGuilds() and CertifiedDevice construction. Vendor/model metadata and the native device identifier are supplied by the application. A sample identifier is descriptive fixture data, not a platform device discovery mechanism.
+
+                @Code(name: "RPCApp.swift", file: "RPCApp.swift.txt")
+            }
+            @Step {
+                **Inject connection and session ownership.** Read makeClient(applicationID:connector:). The connector represents the actual local IPC or approved legacy WebSocket host. Construction starts no I/O; a real owner must connect, authorize, subscribe and close. Device publication replaces the complete prioritized array, including an empty replacement.
+
+                @Code(name: "RPCApp.swift", file: "RPCApp.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            Can a bot Gateway connection substitute for the local RPC connector?
+
+            @Choice(isCorrect: true) {
+                No. RPC requires its own local host connection and authority.
+                @Justification {
+                    Local desktop capabilities and user consent differ from remote bot Gateway authority.
+                }
+            }
+            @Choice(isCorrect: false) {
+                Yes. Both APIs send Discord events.
+                @Justification {
+                    Local desktop capabilities and user consent differ from remote bot Gateway authority.
+                }
+            }
+        }
+    }
+}

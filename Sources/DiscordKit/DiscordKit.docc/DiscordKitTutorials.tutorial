@@ -1,0 +1,25 @@
+@Tutorials(name: "DiscordKit") {
+    @Intro(title: "Build with DiscordKit") {
+        Learn the library through nine focused examples. Start with offline definitions and values, inspect network compositions without credentials, then explore consent-scoped hosts and synthetic media. Each tutorial connects an independently buildable package to its API and lifecycle contracts.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Independent library products compose under an application-owned lifecycle.")
+    }
+    @Chapter(name: "Values, REST and bots") {
+        @Image(source: "LibraryArchitecture.svg", alt: "Values, protocols, domain products and injected adapters remain separately adopted.")
+        @TutorialReference(tutorial: "doc:DefineACommand")
+        @TutorialReference(tutorial: "doc:BuildARESTConsumer")
+        @TutorialReference(tutorial: "doc:SuperviseABot")
+    }
+    @Chapter(name: "HTTP interactions and account authorization") {
+        @Image(source: "LibraryArchitecture.svg", alt: "Values, protocols, domain products and injected adapters remain separately adopted.")
+        @TutorialReference(tutorial: "doc:ServeSignedInteractions")
+        @TutorialReference(tutorial: "doc:PrepareOAuth")
+    }
+    @Chapter(name: "Desktop, embedded hosts and media") {
+        @Image(source: "LibraryArchitecture.svg", alt: "Values, protocols, domain products and injected adapters remain separately adopted.")
+        @TutorialReference(tutorial: "doc:PrepareDesktopRPC")
+        @TutorialReference(tutorial: "doc:ComposeAnActivity")
+        @TutorialReference(tutorial: "doc:CoordinateSocialState")
+        @TutorialReference(tutorial: "doc:ProcessOfflineVoice")
+    }
+}

@@ -1,0 +1,56 @@
+@Tutorial(time: 25) {
+    @Intro(title: "Compose an Activity and its backend") {
+        Keep host authentication, code exchange and purchase authorization on their respective trust boundaries.
+
+        Inspect the ActivityHost package and its separately selected client/backend targets. Its portable executable does not create a Discord Activity host. Actual execution requires a Discord-owned iframe and an authenticated browser transport.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the ActivityHost example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/ActivityHost) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Inspect separate product selections.** Build with `swift build --package-path Examples/ActivityHost` and run `swift test --package-path Examples/ActivityHost`. Inspect ActivityHostSupport and ActivityBackend as separate targets. Keep backend dependencies and confidential credentials out of browser/mobile code.
+
+                @Code(name: "ActivityHost-Package.swift", file: "ActivityHost-Package.swift.txt")
+            }
+            @Step {
+                **Authenticate through the real host.** Read authenticate(). The explicitly started ActivityClient requests authorization; an injected application-authenticated backend exchanges the code; the client uses the returned scoped access token to authenticate the iframe. The browser bridge must validate both exact event source and configured origin.
+
+                @Code(name: "ActivityHostSession.swift", file: "ActivityHostSession.swift.txt")
+            }
+            @Step {
+                **Verify entitlements on the backend.** Read exchange() and verifyPurchase(). The backend derives the user/application/SKU policy from its authenticated session and checks authoritative entitlement data. A browser purchase response supplies hints, and null may represent asynchronous completion. Neither hints nor a subscription status grant an item by themselves.
+
+                @Code(name: "ActivityBackend.swift", file: "ActivityBackend.swift.txt")
+            }
+            @Step {
+                **Test without a live iframe.** Run `node --test Browser/DiscordActivityBridge/*.test.mjs` for simulated host admission/correlation. The portable executable only describes injection requirements. These checks do not qualify Discord Web, iOS or Android hosting, real purchases or a native Swift/browser binding.
+
+                @Code(name: "ActivityHost.swift", file: "ActivityHost.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            Where should the confidential client secret and entitlement policy live?
+
+            @Choice(isCorrect: true) {
+                In the separately authenticated backend.
+                @Justification {
+                    The client obtains scoped host authority. Confidential exchange and authoritative grants remain server-owned.
+                }
+            }
+            @Choice(isCorrect: false) {
+                In iframe code alongside the host access token.
+                @Justification {
+                    The client obtains scoped host authority. Confidential exchange and authoritative grants remain server-owned.
+                }
+            }
+        }
+    }
+}

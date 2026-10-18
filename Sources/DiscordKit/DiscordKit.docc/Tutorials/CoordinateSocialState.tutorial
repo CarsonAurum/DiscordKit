@@ -1,0 +1,56 @@
+@Tutorial(time: 20) {
+    @Intro(title: "Coordinate consent-scoped Social state") {
+        Synchronize local relationships and apply PCM controls under an explicit account and consent generation.
+
+        Run a synthetic local example of SocialClient and SocialAudioControls. It creates no provider connection, platform device or authenticated request. Use the Social product guides when adding actual provider and host capability decisions.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the SocialApp example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/SocialApp) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Select the provider-composition product.** Build with `swift build --package-path Examples/SocialApp`. The selected graph excludes bot Gateway/Client/Cache and Voice/MLS/DAVE. Local PCM processing is independently usable.
+
+                @Code(name: "SocialApp-Package.swift", file: "SocialApp-Package.swift.txt")
+            }
+            @Step {
+                **Activate and synchronize a scope.** Read SocialScope with application, account and consentGeneration, then activate() and synchronize(). The snapshot generation and sequence bound the local observation. Retained state from an old account or consent generation must not become current merely because a user ID matches.
+
+                @Code(name: "SocialApp.swift", file: "SocialApp.swift.txt")
+            }
+            @Step {
+                **Apply a local audio policy.** Inspect the muted SocialAudioSettings and synthetic mono PCMBuffer. capture() returns zeros under that mute setting. This is a local transform, not a platform route, a native call or authorization to access voice data.
+
+                @Code(name: "SocialApp.swift", file: "SocialApp.swift.txt")
+            }
+            @Step {
+                **Run and close the local owners.** Run `swift run --package-path Examples/SocialApp`. Expect one local friend and muted PCM, followed by closed-state output with no retained calls. The example awaits both client.close() and audio.close(). Production provider operations still need user consent and the corresponding host capability.
+
+                @Code(name: "SocialApp.swift", file: "SocialApp.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            What does a synchronized local friend snapshot prove?
+
+            @Choice(isCorrect: true) {
+                Only the scoped local observation supplied to this client.
+                @Justification {
+                    Scope, generation, freshness, provider capability and explicit consent remain separate conditions.
+                }
+            }
+            @Choice(isCorrect: false) {
+                That every provider and native SDK feature is authorized and current.
+                @Justification {
+                    Scope, generation, freshness, provider capability and explicit consent remain separate conditions.
+                }
+            }
+        }
+    }
+}

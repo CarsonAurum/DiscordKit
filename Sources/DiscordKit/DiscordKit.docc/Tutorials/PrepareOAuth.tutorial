@@ -1,0 +1,51 @@
+@Tutorial(time: 15) {
+    @Intro(title: "Prepare an OAuth authorization flow") {
+        Construct state and S256 PKCE ownership without presenting a browser or exchanging a token.
+
+        This exercise uses synthetic application configuration to inspect a user-install authorization flow. Real hosts must register their redirect URI and inject browser presentation, callback delivery, secure storage and REST execution.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the OAuthApp example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/OAuthApp) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Select an OAuth-only consumer.** Build with `swift build --package-path Examples/OAuthApp`. The dependency selection avoids a bot runtime and concrete network backend. The host chooses those pieces when it implements browser/code-exchange ownership.
+
+                @Code(name: "OAuthApp-Package.swift", file: "OAuthApp-Package.swift.txt")
+            }
+            @Step {
+                **Create a fresh flow.** Read OAuthAuthorizationFlow with its synthetic ID, HTTPS redirect, scopes and user installation context. Each flow owns fresh state and an S256 PKCE verifier/challenge. Merely accessing authorizationURL neither opens a browser nor sends a request. Do not log that URL in a real application.
+
+                @Code(name: "OAuthApp.swift", file: "OAuthApp.swift.txt")
+            }
+            @Step {
+                **Plan callback and token ownership.** Replace the example ID/redirect with registered configuration before using it. Validate returned state, issuer and redirect through the one-use flow before exchanging a code. Your injected secure store must provide atomic generation replacement and publisher-child invalidation; cancellation and unlinking must end the appropriate ownership. The product guides show those later operations.
+
+                @Code(name: "OAuthApp.swift", file: "OAuthApp.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            Does an operating-system browser callback establish account authority by itself?
+
+            @Choice(isCorrect: true) {
+                No. Validate the flow-bound callback and exchange it under the correct policy.
+                @Justification {
+                    Callback data is input to validate. State, issuer, redirect, single use and PKCE bind the operation to the intended flow.
+                }
+            }
+            @Choice(isCorrect: false) {
+                Yes. The browser already authenticated the URL.
+                @Justification {
+                    Callback data is input to validate. State, issuer, redirect, single use and PKCE bind the operation to the intended flow.
+                }
+            }
+        }
+    }
+}

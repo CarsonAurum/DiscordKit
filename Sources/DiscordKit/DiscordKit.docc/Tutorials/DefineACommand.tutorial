@@ -1,0 +1,56 @@
+@Tutorial(time: 15) {
+    @Intro(title: "Define and validate a command") {
+        Build a slash-command definition and an interaction reply without registering a command or opening a connection.
+
+        You will inspect the offline CommandsApp package, validate a result-builder definition, and understand how a message button maps to explicit routing. The exercise requires Swift 6.4 and a repository checkout; it uses no credentials.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the CommandsApp example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/CommandsApp) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Select command products.** Inspect the package dependencies. CommandsApp imports DiscordCommands, DiscordCore and DiscordModels. The manifest points to the repository root and preserves its explicit concurrency settings. Build it in its existing example folder so that relative dependency path remains valid.
+
+                @Code(name: "CommandsApp-Package.swift", file: "CommandsApp-Package.swift.txt")
+            }
+            @Step {
+                **Construct an ordered definition.** Read greetingCommand(). It declares the required string option before the optional private flag. CommandDefinition.slash validates the definition locally; retaining the resulting value does not register anything with Discord.
+
+                @Code(name: "CommandsApp.swift", file: "CommandsApp.swift.txt")
+            }
+            @Step {
+                **Validate the reply and component.** Read greetingMessage(). It constructs one action row and a primary button with the exact greeting:refresh custom ID. It then builds InteractionMessageCreate with explicit ephemeral/public visibility. A custom ID selects a route; your handler must still authorize the invoker and any retained application state.
+
+                @Code(name: "CommandsApp.swift", file: "CommandsApp.swift.txt")
+            }
+            @Step {
+                **Run the offline checks.** Run `swift test --package-path Examples/CommandsApp`, then `swift run --package-path Examples/CommandsApp`. Expect the validated greeting/refresh output. The tests compare both visibility variants and component content. Delivering this reply later requires a trusted InteractionContext and its single response owner.
+
+                @Code(name: "CommandsApp.swift", file: "CommandsApp.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            Does constructing CommandDefinition register the command?
+
+            @Choice(isCorrect: true) {
+                No. Registration requires an explicit endpoint or reconciliation operation.
+                @Justification {
+                    Definitions are inert. Review registration changes and execute them through an authorized REST owner.
+                }
+            }
+            @Choice(isCorrect: false) {
+                Yes. The builder registers once it validates.
+                @Justification {
+                    Definitions are inert. Review registration changes and execute them through an authorized REST owner.
+                }
+            }
+        }
+    }
+}

@@ -2,7 +2,7 @@
 
 Track local API design and upstream feature transitions independently.
 
-Phase 14 establishes the initial 0.14.0 development API baseline, documentation
+The initial 0.14.0 development API baseline records documentation
 presence audit, isolated consumer checks and release evidence. It does not publish
 a tag or qualify every host. Use a matching compiler/platform when comparing
 public symbol graphs; review semantic behavior, isolation, defaults and errors

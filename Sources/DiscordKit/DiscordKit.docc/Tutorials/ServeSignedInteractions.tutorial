@@ -1,0 +1,56 @@
+@Tutorial(time: 25) {
+    @Intro(title: "Serve signed HTTP interactions") {
+        Inspect exact-byte signature admission, bounded handler work and a single initial response owner.
+
+        Build an HTTP-only command consumer that does not start Gateway. The example can bind a loopback listener when a public application ID and signing key are configured. A deployment additionally owns HTTPS forwarding of original signed bytes and explicit command registration.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the HTTPApp example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/HTTPApp) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Choose HTTP-only products.** Run `swift build --package-path Examples/HTTPApp`. Its manifest selects interactions, commands, models and an NIO ingress adapter. A bot Gateway connection is unnecessary for this HTTP delivery composition.
+
+                @Code(name: "HTTPApp-Package.swift", file: "HTTPApp-Package.swift.txt")
+            }
+            @Step {
+                **Authenticate before routing.** Read SignedRequestVerifier, DiscordSignedIngress and InteractionHTTPApplication. The public key authenticates Discord signatures over the original timestamp/body bytes. Do not parse and reserialize the request before verification; a valid signature also needs bounded replay/freshness policy.
+
+                @Code(name: "HTTPApp.swift", file: "HTTPApp.swift.txt")
+            }
+            @Step {
+                **Bound requests and initial replies.** Inspect the 32-handler router/admission limits and the independent listener connection/request bounds. The ping handler uses context.responder.reply with an ephemeral message. One responder owns the initial acknowledgement. Long work needs an early defer and an explicitly bounded continuation rather than a second initial reply.
+
+                @Code(name: "HTTPApp.swift", file: "HTTPApp.swift.txt")
+            }
+            @Step {
+                **Own listener tasks and closure.** Follow accept() into the task group and the three-second transport deadline. Failed exchanges close their responder; the listener is awaited closed after serving stops. Build-only verification does not bind the listener. A real deployment must supply TLS termination and preserve signature headers and original body bytes.
+
+                @Code(name: "HTTPApp.swift", file: "HTTPApp.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            What bytes should signature verification authenticate?
+
+            @Choice(isCorrect: true) {
+                The original timestamp and body bytes received from Discord.
+                @Justification {
+                    Equivalent JSON values may have different byte encodings. Verification precedes parsing and routing.
+                }
+            }
+            @Choice(isCorrect: false) {
+                A normalized JSON re-encoding of the body.
+                @Justification {
+                    Equivalent JSON values may have different byte encodings. Verification precedes parsing and routing.
+                }
+            }
+        }
+    }
+}

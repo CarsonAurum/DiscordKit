@@ -78,7 +78,27 @@ stream ownership, cancellation and virtual time. Passing these tests does not
 establish endpoint parity or qualify untested hosts. See the
 [foundation contracts](Docs/Foundation.md) for limits and examples.
 
-## Available foundations
+## Documentation
+
+The DocC catalogs cover all 28 public products, with task guides, nine tutorials,
+an example cookbook and organized pages for every public type. Start with the
+[documentation contents](Sources/DiscordKit/DiscordKit.docc/TableOfContents.md)
+or [getting started](Sources/DiscordKit/DiscordKit.docc/GettingStarted.md).
+
+Build the independent archives and merged library navigator locally:
+
+```sh
+swift package dump-symbol-graph --minimum-access-level public
+python3 Tools/ci/curate_docc.py --check
+python3 Tools/ci/documentation_examples.py
+python3 Tools/ci/build_docc.py
+```
+
+Open `.build/documentation/DiscordKitLibrary.doccarchive` in Xcode. The
+[documentation build guide](Sources/DiscordKit/DiscordKit.docc/BuildingDocumentation.md)
+explains navigation generation, synchronized tutorial code, validation and hosting.
+
+## Available products
 
 - `DiscordBits`: arbitrary-width unsigned bitsets with decimal-string encoding.
 - `DiscordCore`: tagged snowflakes, bounded lossless JSON, absent/null/value fields,

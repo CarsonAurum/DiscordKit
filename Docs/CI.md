@@ -23,7 +23,12 @@ baseline silently. Compiler/SDK changes can also produce conservative difference
 The macOS job emits public symbol graphs, compares the named platform API baseline,
 and converts every owned public library's DocC archive with warnings as errors,
 diagnostic analysis and experimental coverage. Each module receives its own primary
-and extension graphs; the umbrella catalog supplies the nine consumer guides.
+and extension graphs. Every product has authored guides and curated individual
+type pages. The umbrella catalog supplies the package contents, learning paths,
+nine step-by-step tutorials and application recipes. Nonwriting checks reject
+drift in compiler-derived type/member navigation and tutorial example snapshots.
+The converter resolves cross-product links through local archive metadata and
+merges all products into one `DiscordKitLibrary.doccarchive` navigator.
 Archives and API evidence are downloadable workflow artifacts. The job publishes
 artifacts only; it does not deploy documentation or publish a package/tag.
 DocC public coverage cannot prove private declaration presence or accurate semantics.

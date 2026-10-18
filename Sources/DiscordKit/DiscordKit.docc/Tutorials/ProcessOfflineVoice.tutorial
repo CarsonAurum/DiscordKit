@@ -1,0 +1,61 @@
+@Tutorial(time: 30) {
+    @Intro(title: "Explore an offline voice pipeline") {
+        Trace synthetic PCM through codec, RTP, transport protection and separate MLS/DAVE examples.
+
+        Build and run the offline VoiceBot package. Its public test-only keys, synthetic peers and invariant checks teach protocol composition; the program opens no device and never joins Discord. Never reuse fixture keys for real media.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the VoiceBot example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/VoiceBot) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Adopt the independent media products.** Run `swift build --package-path Examples/VoiceBot`. The package selects portable media, codecs, Voice, VoiceCrypto, MLS and DAVE. A real network/device composition injects its own adapters and host ownership.
+
+                @Code(name: "VoiceBot-Package.swift", file: "VoiceBot-Package.swift.txt")
+            }
+            @Step {
+                **Inspect PCM, packets and RTP rollover.** Read demonstratePortableMedia() and main(). Bounded PCM streams are resampled with cumulative sample accounting. The packetizer crosses sequence/timestamp rollover, transport AEAD authenticates the RTP header, and a bounded jitter queue drains authenticated packets. Full frames are handled before/after packetization at the appropriate encryption layer.
+
+                @Code(name: "VoiceBot.swift", file: "VoiceBot.swift.txt")
+            }
+            @Step {
+                **Separate key establishment from transport.** Read the synthetic MLS exchange. Participant signing-key associations and expected external sender trust are supplied inputs; key establishment is independently adopted from transport ownership. Recovery may replace init/HPKE keys while preserving the related signing identity policy.
+
+                @Code(name: "MLSExample.swift", file: "MLSExample.swift.txt")
+            }
+            @Step {
+                **Inspect authenticated DAVE transitions.** Read the local DAVE demonstration with its bounded sender ratchet and epoch/transition behavior. A real session must authenticate signaling, participant membership and complete-frame transforms. Do not downgrade after an unverified or failed transition.
+
+                @Code(name: "DAVEExample.swift", file: "DAVEExample.swift.txt")
+            }
+            @Step {
+                **Run bounded local checks.** Run `swift run --package-path Examples/VoiceBot VoiceBot`. Expect local invariant output for PCM, codec components, MLS/DAVE and five authenticated packets. These results do not establish complete codec/MLS/DAVE interoperability, independent cryptographic review, qualified device routing or authorized Discord duplex media.
+
+                @Code(name: "VoiceBot.swift", file: "VoiceBot.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            What does this offline round trip establish?
+
+            @Choice(isCorrect: true) {
+                Its named local framing, authentication and synthetic invariants.
+                @Justification {
+                    Protocol components and local peers provide scoped evidence. Live hosts, complete clients and physical audio routes require separate qualification.
+                }
+            }
+            @Choice(isCorrect: false) {
+                Production voice interoperability and physical-device qualification.
+                @Justification {
+                    Protocol components and local peers provide scoped evidence. Live hosts, complete clients and physical audio routes require separate qualification.
+                }
+            }
+        }
+    }
+}

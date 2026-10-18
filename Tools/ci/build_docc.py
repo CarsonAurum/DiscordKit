@@ -34,8 +34,13 @@ def module_graphs(directory, module):
     return graphs
 
 
-def conversion_command(docc, repository, output, module, graphs):
-    """Return argument-array conversion with strict warnings, analysis and coverage."""
+def conversion_command(docc, repository, output, module, graphs, dependencies=()):
+    """Plan strict conversion; dependencies resolve the umbrella's product links.
+
+    ``dependencies`` contains already-built owned archives, never network URLs.
+    Every archive exports link metadata so the independently converted products
+    can be cross-referenced without importing them into a Swift target.
+    """
     command = [docc, "convert"]
     catalog = repository / "Sources" / module / f"{module}.docc"
     if catalog.is_dir():
@@ -44,8 +49,32 @@ def conversion_command(docc, repository, output, module, graphs):
                     "--fallback-display-name", module,
                     "--fallback-bundle-identifier", f"org.discordkit.{module}",
                     "--warnings-as-errors", "--analyze", "--experimental-documentation-coverage",
-                    "--coverage-summary-level", "brief"])
+                    "--coverage-summary-level", "brief",
+                    "--enable-experimental-external-link-support"])
+    for dependency in dependencies:
+        command.extend(["--dependency", str(dependency)])
     return command
+
+
+def merge_command(docc, archives, output):
+    """Plan a single browsable archive with all independent product navigators."""
+    ordered = sorted(archives, key=lambda archive: archive.name != "DiscordKit.doccarchive")
+    return [docc, "merge", *map(str, ordered), "--output-path", str(output),
+            "--synthesized-landing-page-name", "DiscordKit Library",
+            "--synthesized-landing-page-kind", "Swift Package",
+            "--synthesized-landing-page-topics-style", "list"]
+
+
+def remove_archive(path):
+    """Remove one owned output archive, including a partial failed conversion.
+
+    Symbolic links are unlinked rather than followed. Callers supply only the
+    current modules' exact generated archive paths and the merged archive path.
+    """
+    if path.is_symlink() or path.is_file():
+        path.unlink()
+    elif path.exists():
+        shutil.rmtree(path)
 
 
 def main():
@@ -66,19 +95,51 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     modules = public_modules(repository)
     failures = []
-    for module in modules:
-        with tempfile.TemporaryDirectory(prefix=f"docc-{module}-") as staging:
-            for graph in module_graphs(directory, module):
-                shutil.copy2(graph, Path(staging) / graph.name)
-            result = subprocess.run(conversion_command(arguments.docc, repository, output / f"{module}.doccarchive",
-                                                       module, Path(staging)))
-            if result.returncode:
-                failures.append(module)
-    (output / "build-report.json").write_text(json.dumps({
-        "modules": modules, "archiveCount": len(modules), "warningsAsErrors": True,
-        "analyze": True, "publicSymbolsOnly": True, "failedModules": failures,
-        "limits": "DocC conversion does not prove private documentation presence or semantic completeness",
-    }, indent=2) + "\n")
+    archives = []
+    merged = output / "DiscordKitLibrary.doccarchive"
+    report_path = output / "build-report.json"
+    # Output paths are owned generated artifacts. A failed rebuild must not leave
+    # an earlier successful archive or report that appears to describe this run.
+    report_path.unlink(missing_ok=True)
+    for archive in [merged, *(output / f"{module}.doccarchive" for module in modules)]:
+        remove_archive(archive)
+    active_module = None
+    merge_status = "skipped"
+    try:
+        # Product link metadata must exist before converting the umbrella.
+        for module in sorted(modules, key=lambda value: (value == "DiscordKit", value)):
+            active_module = module
+            archive = output / f"{module}.doccarchive"
+            with tempfile.TemporaryDirectory(prefix=f"docc-{module}-") as staging:
+                for graph in module_graphs(directory, module):
+                    shutil.copy2(graph, Path(staging) / graph.name)
+                dependencies = archives if module == "DiscordKit" else ()
+                result = subprocess.run(conversion_command(arguments.docc, repository, archive,
+                                                           module, Path(staging), dependencies))
+                if result.returncode:
+                    failures.append(module)
+                    remove_archive(archive)
+                else:
+                    archives.append(archive)
+            active_module = None
+        if not failures:
+            merge_status = "failed"
+            subprocess.run(merge_command(arguments.docc, archives, merged), check=True)
+            merge_status = "succeeded"
+    finally:
+        if active_module is not None:
+            if active_module not in failures:
+                failures.append(active_module)
+            remove_archive(output / f"{active_module}.doccarchive")
+        if merge_status != "succeeded":
+            remove_archive(merged)
+        report_path.write_text(json.dumps({
+            "modules": modules, "archiveCount": len(archives), "warningsAsErrors": True,
+            "analyze": True, "publicSymbolsOnly": True, "failedModules": failures,
+            "mergeStatus": merge_status,
+            "mergedArchive": merged.name if merge_status == "succeeded" else None,
+            "limits": "DocC conversion does not prove private documentation presence or semantic completeness",
+        }, indent=2) + "\n")
     if failures:
         raise SystemExit("DocC conversion failed: " + ", ".join(failures))
     print(f"Converted {len(modules)} public-module DocC archives with strict diagnostics")

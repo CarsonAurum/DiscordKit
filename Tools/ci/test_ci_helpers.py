@@ -1,11 +1,14 @@
 """Deterministic planning tests for CI commands; no compiler or network needed."""
 
+import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 import build_docc
+import documentation_examples
 import compile_apple
 import live_rest_smoke
 import qualify_android
@@ -50,6 +53,139 @@ class CIHelpersTests(unittest.TestCase):
         with patch("build_docc.subprocess.run", return_value=result) as run:
             self.assertEqual(build_docc.public_modules(Path("a repository")), ["A", "B"])
             self.assertTrue(run.call_args.kwargs["check"])
+
+    def test_docc_dependencies_and_merge_preserve_paths_and_all_archives(self):
+        """Cross-module resolution and global navigation use argument arrays."""
+        archives = [Path("output with spaces/A.doccarchive"), Path("output/B.doccarchive")]
+        command = build_docc.conversion_command("docc", Path("repo"), Path("out"),
+                                               "DiscordKit", Path("graphs"), archives)
+        self.assertIn("--enable-experimental-external-link-support", command)
+        self.assertEqual(command[-4:], ["--dependency", str(archives[0]), "--dependency", str(archives[1])])
+        merged = build_docc.merge_command("docc", archives, Path("combined archive"))
+        self.assertEqual(merged[:4], ["docc", "merge", *map(str, archives)])
+        self.assertEqual(merged[merged.index("--output-path") + 1], "combined archive")
+        umbrella = Path("output/DiscordKit.doccarchive")
+        merged = build_docc.merge_command("docc", [*archives, umbrella], Path("combined archive"))
+        self.assertEqual(merged[2:5], [str(umbrella), *map(str, archives)])
+
+    def test_tutorial_listings_preserve_executable_code_and_regular_comments(self):
+        """Historical doc-comment labels are omitted; executable literals stay intact."""
+        original = '/// Phase 12 overview\n  /// Detail\nlet value = "Part 9 literal"\n// retained\n'
+        self.assertEqual(documentation_examples.displayed_source(original),
+                         '/// overview\n  /// Detail\nlet value = "Part 9 literal"\n// retained\n')
+
+    def test_tutorial_snapshot_check_is_nonwriting_and_reports_all_stale_files(self):
+        """Missing, changed and matching listings are distinguished deterministically."""
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary)
+            expected = {"a.swift": "let a = 1\n", "b.swift": "let b = 2\n"}
+            with patch("documentation_examples.snapshots", return_value=expected):
+                self.assertEqual(documentation_examples.synchronize(repository), ["a.swift", "b.swift"])
+                self.assertEqual(list(repository.iterdir()), [])
+                self.assertEqual(documentation_examples.synchronize(repository, write=True), ["a.swift", "b.swift"])
+                self.assertEqual(documentation_examples.synchronize(repository), [])
+                resource = repository / "Sources/DiscordKit/DiscordKit.docc/Resources/Examples/a.swift"
+                resource.write_text("let a = 3\n")
+                self.assertEqual(documentation_examples.synchronize(repository), ["a.swift"])
+                self.assertEqual(resource.read_text(), "let a = 3\n")
+
+    def test_tutorial_sources_require_every_named_example(self):
+        """An absent origin is an error rather than a silently dropped tutorial."""
+        with tempfile.TemporaryDirectory() as temporary:
+            with self.assertRaises(OSError):
+                documentation_examples.snapshots(Path(temporary))
+
+    def test_tutorial_comment_rewrite_preserves_line_boundaries(self):
+        """A label at a comment's end must not absorb the next executable line."""
+        self.assertEqual(documentation_examples.displayed_source('/// Phase 12\nlet value = 1\n'),
+                         '/// \nlet value = 1\n')
+
+    def test_obsolete_swift_snapshots_fail_check_and_are_removed_only_on_write(self):
+        """Retired listings cannot remain current; unrelated resource kinds survive."""
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary)
+            resources = repository / "Sources/DiscordKit/DiscordKit.docc/Resources/Examples"
+            resources.mkdir(parents=True)
+            stale = resources / "Retired.swift.txt"
+            stale.write_text("old listing")
+            guide = resources / "README.md"
+            guide.write_text("Authored resource guidance")
+            with patch("documentation_examples.snapshots", return_value={}):
+                self.assertEqual(documentation_examples.synchronize(repository), [stale.name])
+                self.assertEqual(stale.read_text(), "old listing")
+                self.assertEqual(documentation_examples.synchronize(repository, write=True), [stale.name])
+                self.assertFalse(stale.exists())
+                self.assertEqual(documentation_examples.synchronize(repository), [])
+                self.assertEqual(guide.read_text(), "Authored resource guidance")
+
+    def test_failed_conversion_discards_previous_and_partial_archives(self):
+        """A conversion failure cannot leave an older successful page or merge behind."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            output = root / "output"
+            output.mkdir()
+            for name in ["A.doccarchive", "DiscordKitLibrary.doccarchive"]:
+                archive = output / name
+                archive.mkdir()
+                (archive / "old-page.json").write_text("previous success")
+            (output / "build-report.json").write_text('{"mergeStatus":"succeeded"}')
+
+            def failed_conversion(command, **options):
+                """Simulate DocC writing partial output before rejecting the catalog."""
+                archive = Path(command[command.index("--output-dir") + 1])
+                archive.mkdir()
+                (archive / "partial.json").write_text("incomplete")
+                return subprocess.CompletedProcess(command, 1)
+
+            arguments = ["build_docc.py", "--repository", str(root), "--output", str(output), "--docc", "docc"]
+            with patch("sys.argv", arguments), patch("build_docc.public_modules", return_value=["A"]), \
+                 patch("build_docc.module_graphs", return_value=[]), \
+                 patch("build_docc.subprocess.run", side_effect=failed_conversion):
+                with self.assertRaisesRegex(SystemExit, "conversion failed"):
+                    build_docc.main()
+            report = json.loads((output / "build-report.json").read_text())
+            self.assertEqual(report["failedModules"], ["A"])
+            self.assertEqual(report["archiveCount"], 0)
+            self.assertEqual(report["mergeStatus"], "skipped")
+            self.assertIsNone(report["mergedArchive"])
+            self.assertFalse((output / "A.doccarchive").exists())
+            self.assertFalse((output / "DiscordKitLibrary.doccarchive").exists())
+
+    def test_failed_merge_updates_report_and_discards_partial_merged_output(self):
+        """Independent archives remain valid while the failed merged result is absent."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            output = root / "output"
+            output.mkdir()
+            merged = output / "DiscordKitLibrary.doccarchive"
+            merged.mkdir()
+            (merged / "old-page.json").write_text("previous success")
+            (output / "build-report.json").write_text('{"mergeStatus":"succeeded"}')
+
+            def convert_then_fail_merge(command, **options):
+                """Write a valid independent archive, then fail after partial merge output."""
+                if command[1] == "merge":
+                    merged.mkdir()
+                    (merged / "partial.json").write_text("incomplete")
+                    raise subprocess.CalledProcessError(1, command)
+                archive = Path(command[command.index("--output-dir") + 1])
+                archive.mkdir()
+                (archive / "current-page.json").write_text("current conversion")
+                return subprocess.CompletedProcess(command, 0)
+
+            arguments = ["build_docc.py", "--repository", str(root), "--output", str(output), "--docc", "docc"]
+            with patch("sys.argv", arguments), patch("build_docc.public_modules", return_value=["A"]), \
+                 patch("build_docc.module_graphs", return_value=[]), \
+                 patch("build_docc.subprocess.run", side_effect=convert_then_fail_merge):
+                with self.assertRaises(subprocess.CalledProcessError):
+                    build_docc.main()
+            report = json.loads((output / "build-report.json").read_text())
+            self.assertEqual(report["failedModules"], [])
+            self.assertEqual(report["archiveCount"], 1)
+            self.assertEqual(report["mergeStatus"], "failed")
+            self.assertIsNone(report["mergedArchive"])
+            self.assertFalse(merged.exists())
+            self.assertTrue((output / "A.doccarchive/current-page.json").is_file())
 
     def test_apple_device_simulator_targets_and_concurrency(self):
         """Every device/simulator minimum is explicit and source paths remain one argument."""

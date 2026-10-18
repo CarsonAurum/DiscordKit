@@ -1,0 +1,56 @@
+@Tutorial(time: 25) {
+    @Intro(title: "Supervise a bot and its events") {
+        Subscribe before starting supervised Gateway work and await shutdown with the injected resource owners.
+
+        Read a complete bot composition with explicit intents, shared authority and an optional cache projection. Build it without running. A later configured run connects to Discord, receives READY, performs a typed user read and shuts down.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Application-owned lifecycle composes independent domain products, transport contracts and injected adapters.")
+    }
+
+    @Section(title: "Work through the GatewayBot example") {
+        @ContentAndMedia {
+            Open the [source package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/GatewayBot) in your checkout. The listings are synchronized with the original example files. Preserve the directory layout when building the supplied package.
+        }
+        @Steps {
+            @Step {
+                **Select bot products.** Build with `swift build --package-path Examples/GatewayBot`. The package explicitly selects client, cache, Gateway, HTTP, transport and concrete adapters. Its optional cache selection is a consumer decision.
+
+                @Code(name: "GatewayBot-Package.swift", file: "GatewayBot-Package.swift.txt")
+            }
+            @Step {
+                **Configure identity, intents and budgets.** Read the bot token/public bot ID guard and the creation of ClientResourceBudget, ClientAuthority and the shard lease store. Only the guilds intent is requested. Privileged data needs the appropriate portal configuration and approvals; adding shards does not increase REST quotas.
+
+                @Code(name: "GatewayBot.swift", file: "GatewayBot.swift.txt")
+            }
+            @Step {
+                **Subscribe before run.** Find hub.subscribe() before the structured task group starts client.run(). One task supervises the client; another consumes events. Treat gap or overflow signals as a need to resynchronize scoped observations. The cache holds partial projections and is not permission authority.
+
+                @Code(name: "GatewayBot.swift", file: "GatewayBot.swift.txt")
+            }
+            @Step {
+                **End with awaited shutdown.** Trace READY through the service read and client.shutdown(). The cleanup closure closes the cache, rate coordinator and adapters. The error path also requests shutdown and the task group cancels remaining work. Use the product guides for multi-worker shared authorities and platform lifecycle policy.
+
+                @Code(name: "GatewayBot.swift", file: "GatewayBot.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            When should the application subscribe to events?
+
+            @Choice(isCorrect: true) {
+                Before starting the event producer.
+                @Justification {
+                    Bounded delivery does not promise an unlimited historical backlog. Subscribe before run and handle freshness changes.
+                }
+            }
+            @Choice(isCorrect: false) {
+                After READY, because earlier events are always retained.
+                @Justification {
+                    Bounded delivery does not promise an unlimited historical backlog. Subscribe before run and handle freshness changes.
+                }
+            }
+        }
+    }
+}
