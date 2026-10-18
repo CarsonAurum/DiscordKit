@@ -95,3 +95,12 @@ The [12B execution record](phase-12b-execution.plan.md) and [MLS guide](../../Do
 now describe implemented MLS key establishment. The table above records the initial
 release boundary, rather than the current implementation. Independent cryptographic
 review and production qualification remain open; 12C media integration has not advanced.
+
+## Phase 12C continuation (2026-10-18)
+
+The [12C execution record](phase-12c-execution.plan.md) and [DAVE guide](../../Docs/DAVE.md)
+now describe implemented DAVE signaling/MLS coordination, sender ratchets,
+codec-aware frame protection and ephemeral identity verification. The initial
+release table and 12B continuation above remain historical. Independent crypto
+review, complete-client/live interoperability and platform/device qualification
+remain open, together with 12D supervised network/media ownership and 12E providers.

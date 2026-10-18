@@ -11,5 +11,7 @@ let package = Package(
         .product(name: "DiscordVoiceCodecs", package: "DiscordKit"),
         .product(name: "DiscordVoiceCrypto", package: "DiscordKit"),
         .product(name: "DiscordMLS", package: "DiscordKit"),
+        .product(name: "DiscordDAVE", package: "DiscordKit"),
+        .product(name: "DiscordModels", package: "DiscordKit"),
     ], swiftSettings: [.enableUpcomingFeature("ApproachableConcurrency"), .defaultIsolation(nil)])]
 )

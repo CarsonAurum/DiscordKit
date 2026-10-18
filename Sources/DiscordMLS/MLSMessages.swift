@@ -211,6 +211,15 @@ struct MLSPublicMessage: Sendable {
     /// - Throws: Unsupported version, invalid message/profile, or malformed wire errors.
     static func decode(_ data: Data) throws -> Self {
         var reader = try MLSReader(data)
+        let result = try decode(&reader)
+        try reader.requireEnd(); return result
+    }
+
+    /// Consumes exactly one self-delimiting public MLSMessage from a delivery vector.
+    /// - Parameter reader: Bounded cursor, advanced through this message only.
+    /// - Returns: Unauthenticated content; its containing group must authenticate it.
+    /// - Throws: Unsupported framing, oversized fields, or malformed content. No state is changed.
+    static func decode(_ reader: inout MLSReader) throws -> Self {
         guard try reader.readUInt16() == 1 else { throw MLSError.unsupportedVersion }
         guard try reader.readUInt16() == 1 else { throw MLSError.invalidCommit }
         let groupID = try reader.readVector(); let epoch = try reader.readUInt64()
@@ -227,6 +236,6 @@ struct MLSPublicMessage: Sendable {
         if case .member = sender { result.membershipTag = try reader.readVector() }
         guard result.signature.count <= 80, result.confirmationTag.count <= 32,
               result.membershipTag.count <= 32 else { throw MLSError.malformedEncoding }
-        try reader.requireEnd(); return result
+        return result
     }
 }

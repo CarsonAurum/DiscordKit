@@ -77,6 +77,16 @@ with pinned provenance. They do not become runtime dependencies or require consu
 build-time downloads. Independent crypto review, complete-client interoperability
 and other-platform/minimum-OS runtime qualification remain separate gates.
 
+Phase 12C adds independently adopted [DiscordDAVE](DAVE.md), selecting
+Voice/MLS/VoiceCrypto/Core/Transport plus the existing Crypto and CryptoExtras
+products. CryptoExtras supplies public scrypt for version-zero verification
+fingerprints, and VoiceCrypto supplies its existing truncated-tag adapter. Voice
+and VoiceCrypto do not select DAVE/MLS. No package version, resolved pin, platform
+minimum, external MLS/codec runtime or native Discord SDK is added. Official
+libdave sources are pinned algorithm evidence only; the local codec oracle compiles
+temporary development sources and is neither vendored nor linked by consumer builds.
+Independent crypto/backend review and complete-client/live qualification remain open.
+
 The foundational targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
 explicit newer Apple availability; it does not raise the runtime product minima

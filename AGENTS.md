@@ -67,7 +67,7 @@ see `Docs/Voice.md`. They implement bounded PCM processing/streaming/clocks/paci
 continuous linear/bandlimited resampling, statistical speech activity, ordinary Opus
 framing/entropy, mono/stereo SILK/CELT/hybrid coding, ordinary mode transitions and PLC/CNG/FEC,
 transport AEAD and pure Voice v8/RTP/discovery/control components. They do not yet
-provide perceptually qualified full codec policies, DAVE media integration or supervised network sessions. The Apple
+provide perceptually qualified full codec policies or supervised network sessions. The Apple
 platform adapter adds audio I/O, macOS input/output UIDs and supported preferred-input routing;
 Windows/Android audio and hardware qualification remain open.
 Construction starts no I/O. External crypto review, codec/MLS interoperability,
@@ -78,8 +78,18 @@ wire, basic credentials, signed key packages, TreeKEM, key/secret trees, epoch
 exporters and the restricted group-handshake profile required by DAVE v1; see
 `Docs/MLS.md`. It selects only Swift Crypto and owns no transport or device I/O.
 Trusted participant identity/key associations and the expected external sender
-are application-supplied. DAVE media integration, independent crypto review,
+are application-supplied. Independent crypto review,
 complete-client interoperability and live Discord qualification remain separate.
+
+Part 12C adds independently adopted DiscordDAVE for authenticated Voice/MLS
+transition coordination, sender ratchets, codec-aware encoded-frame encryption,
+bounded replay/verification and ephemeral human verification; see `Docs/DAVE.md`.
+DAVE depends on Voice/MLS/VoiceCrypto/Core/Transport and existing Crypto/CryptoExtras;
+Voice and VoiceCrypto remain independent of MLS/DAVE. Construction starts no tasks,
+sockets, devices or persistence. Trusted external sender/participant membership,
+shared signing identity and monotonic clocks are injected. Downgrade fails closed.
+Independent crypto review, complete-client/live interoperability, platform/device
+qualification and 12D supervised network/duplex evidence remain open.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -103,6 +113,8 @@ complete-client interoperability and live Discord qualification remain separate.
 - `Sources/DiscordMLS/`: independently adopted MLS 1.0/ciphersuite-2 key establishment,
   ratchet trees and restricted DAVE-profile group handshakes; no transport/media ownership.
 - `Sources/DiscordVoice/`: deterministic voice framing/control/RTP components; no client ownership.
+- `Sources/DiscordDAVE/`: exact-session Voice/MLS signaling ownership, sender ratchets,
+  codec-aware frame transforms and bounded ephemeral verification; no transport/device I/O.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -195,6 +207,12 @@ For documentation-only changes, review the diff; a build is not required.
 For media/voice changes, also build and run the offline `Examples/VoiceBot` package.
 Preserve its graph without HTTP/Gateway/Client/Cache/OAuth or concrete adapters.
 Run published primitive vectors and malformed/tamper/replay/counter/queue tests.
+For DAVE changes, keep the product independently adopted over Voice/MLS; do not add
+upward dependencies from Voice/VoiceCrypto or HTTP/Gateway/Client/Cache/OAuth/Kit.
+Test authenticated signaling, candidate selection/recovery, epoch/counter ownership,
+bounded attempts/replay/expiry and codec-specific framing. Keep signing identity
+shared across related sessions while recovery replaces HPKE/init keys. Complete
+frames are transformed before RTP packetization and after depacketization.
 The local encoded-packet round trip does not satisfy the full codec/MLS/DAVE,
 device, authorized Discord or ten-minute duplex gates in `Docs/Voice.md`.
 

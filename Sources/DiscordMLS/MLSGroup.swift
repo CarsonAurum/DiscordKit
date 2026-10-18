@@ -100,7 +100,9 @@ struct MLSEpochState: Sendable, CustomStringConvertible, CustomDebugStringConver
 /// Single-use ownership of a fresh published KeyPackage and its private keys.
 ///
 /// Actor identity prevents accidental value copies from accepting the same Welcome
-/// twice. Successful group creation/join consumes all private material atomically.
+/// twice. Successful default group creation or joining consumes private material
+/// atomically. Creation with `retainForWelcome: true` preserves the package for a
+/// competing creator's Welcome; the caller must close the unused candidate/package.
 /// A rejected Welcome does not consume the package; explicit close discards it.
 /// Keys use Swift Crypto's CSPRNG. No sockets, devices, tasks or persistence are used.
 /// `Data`/Crypto do not promise physical memory erasure; never persist or log secrets.
@@ -110,14 +112,29 @@ public actor MLSKeyPackageOwner: CustomStringConvertible, CustomDebugStringConve
     private var signingKey: Data?
     private var leafKey: Data?
     private var initKey: Data?
+    private var hasCreatedGroup = false
 
     /// Generates a fresh suite-2 package for the authenticated local Discord identity.
-    /// - Parameter userID: Nonzero local snowflake encoded as eight big-endian bytes.
-    /// - Throws: Credential/signature/key-generation errors. DAVE's full-range
-    ///   lifetime is used; publication and authentication belong to the caller.
-    public init(userID: UInt64) throws {
+    /// - Parameters:
+    ///   - userID: Nonzero local snowflake encoded as eight big-endian bytes.
+    ///   - signaturePrivateKey: Optional 32-byte P-256 raw signing private key.
+    ///     Supply the same identity key for all related active DAVE media sessions
+    ///     and replacement packages after recovery; nil generates a new identity.
+    ///     Leaf encryption and initialization keys are always freshly generated.
+    ///     The caller owns identity-key lifetime and secure storage; this owner
+    ///     retains an independent copy only until package consumption or close.
+    /// - Throws: Credential/signature/key-generation errors, including Crypto's
+    ///   rejection of malformed or out-of-range private key material. DAVE's
+    ///   full-range lifetime is used; publication and authentication belong to the
+    ///   caller. Construction starts no tasks, I/O or persistence.
+    public init(userID: UInt64, signaturePrivateKey: Data? = nil) throws {
         let credential = try MLSCredential.discord(userID: userID)
-        let signing = P256.Signing.PrivateKey(compactRepresentable: false)
+        let signing: P256.Signing.PrivateKey
+        if let signaturePrivateKey {
+            signing = try P256.Signing.PrivateKey(rawRepresentation: signaturePrivateKey)
+        } else {
+            signing = P256.Signing.PrivateKey(compactRepresentable: false)
+        }
         let leaf = P256.KeyAgreement.PrivateKey(compactRepresentable: false)
         let initial = P256.KeyAgreement.PrivateKey(compactRepresentable: false)
         self.keyPackage = try MLSKeyPackage.generate(identity: credential.identity, signaturePrivateKey: signing.rawRepresentation,
@@ -125,16 +142,20 @@ public actor MLSKeyPackageOwner: CustomStringConvertible, CustomDebugStringConve
         self.userID = userID; signingKey = signing.rawRepresentation; leafKey = leaf.rawRepresentation; initKey = initial.rawRepresentation
     }
 
-    /// Creates epoch zero, consuming the package only after complete local validation.
+    /// Creates at most one epoch-zero candidate after complete local validation.
     /// - Parameters:
     ///   - groupID: Unique application group ID, 1...255 bytes; caller must prevent reuse.
     ///   - policy: Trusted external sender and membership/resource policy containing this user.
+    ///   - retainForWelcome: Defaults false, consuming this package on creation. True retains
+    ///     its original keys for a competing creator's Welcome during DAVE initialization.
+    ///     The owner must close the losing candidate before joining, or close this package
+    ///     when its own candidate wins. A second create call always fails.
     /// - Returns: Inert independent group owner with a fresh random epoch secret.
     /// - Throws: `closed` after prior consumption, cancellation before work, or invalid policy/context.
     ///   The actor performs no suspension or external effects; failed creation preserves keys.
-    public func createGroup(groupID: Data, policy: MLSGroupPolicy) throws -> MLSGroup {
+    public func createGroup(groupID: Data, policy: MLSGroupPolicy, retainForWelcome: Bool = false) throws -> MLSGroup {
         try Task.checkCancellation()
-        guard let signingKey, let leafKey, initKey != nil else { throw MLSError.closed }
+        guard !hasCreatedGroup, let signingKey, let leafKey, initKey != nil else { throw MLSError.closed }
         guard policy.expectedParticipants.contains(userID) else { throw MLSError.invalidCredential }
         let tree = try MLSRatchetTree(leaf: keyPackage.leafNode, maximumMembers: policy.maximumMembers)
         let context = try MLSGroupContext(groupID: groupID, epoch: 0, treeHash: tree.treeHash(),
@@ -144,7 +165,9 @@ public actor MLSKeyPackageOwner: CustomStringConvertible, CustomDebugStringConve
         let state = try MLSEpochState(context: context, tree: tree, ownLeaf: 0, privateKeys: [0: leafKey],
             keys: MLSEpochKeys(schedule), interimTranscript: mlsInterimTranscript(confirmed: Data(), confirmation: confirmation))
         let group = MLSGroup(state: state, signingKey: signingKey, userID: userID, policy: policy)
-        close(); return group
+        hasCreatedGroup = true
+        if !retainForWelcome { close() }
+        return group
     }
 
     /// Validates and consumes an addressed Welcome into a new independent group.
@@ -248,6 +271,24 @@ public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, Cu
         MLSGroupSnapshot(epoch: state?.context.epoch, memberCount: state?.tree.memberCount ?? 0,
             pendingProposalCount: proposals.count, pendingProposalBytes: proposalBytes,
             hasTentativeCommit: pending != nil, isClosed: state == nil)
+    }
+
+    /// Retrieves authenticated live member identity keys for media and human verification.
+    /// - Returns: Nonzero Discord user IDs mapped to exact P-256 public signing keys,
+    ///   including the local member. Epoch zero is excluded because it is not established.
+    /// - Throws: `closed`, cancellation, `wrongEpoch` at epoch zero, or invalid credential.
+    ///   This explicit sensitive projection performs no I/O and must not be logged.
+    public func memberIdentities() throws -> [UInt64: Data] {
+        try Task.checkCancellation()
+        guard let state else { throw MLSError.closed }
+        guard state.context.epoch > 0 else { throw MLSError.wrongEpoch }
+        var identities: [UInt64: Data] = [:]
+        for index in 0..<state.tree.leafCount {
+            if let leaf = state.tree.leaf(at: UInt32(index)) {
+                identities[try Self.participantID(leaf.credential)] = leaf.signatureKey
+            }
+        }
+        return identities
     }
 
     /// Replaces trusted session membership and drops any tentative commit based on it.

@@ -9,9 +9,11 @@ Cache, OAuth, media, codec, device or network-adapter product. Construction star
 no tasks, timers, sockets or other I/O. The implementation and test fixtures are
 committed; consumer builds fetch no specifications or test vectors.
 
-This product supplies MLS key establishment. DAVE media-frame transformations,
-sender verification UI, Voice Gateway transition ownership and supervised network
-sessions remain separate integration work. See [voice ownership and remaining
+This product supplies MLS key establishment. The independently adopted
+[DAVE product](DAVE.md) now composes it with Voice signaling, sender ratchets,
+encoded-frame transforms and ephemeral verification; MLS itself retains no
+Voice/media dependency. Sender verification UI and supervised network sessions
+remain separate integration work. See [voice ownership and remaining
 qualification gates](Voice.md) and [dependency policy](Dependencies.md).
 
 ## Protocol and scope
@@ -85,8 +87,9 @@ contain the complete 32-byte confirmed transcript hash.
 
 The product owns no delivery retries. Keep the caller's group/session generation
 associated with every submitted or received operation, and do not replay an
-ambiguous commit as a fresh mutation. The DAVE/Voice integration must coordinate
-approved epoch transitions with media key installation and teardown.
+ambiguous commit as a fresh mutation. `DAVEProtocolSession` coordinates approved
+epoch transitions with media key installation and teardown when explicitly adopted;
+independent MLS callers retain that responsibility themselves.
 
 ## Actor API and lifecycle
 
@@ -96,7 +99,12 @@ published as `keyPackage.encoded(messageWrapped: true)`. The actor retains priva
 key material until one successful `createGroup(groupID:policy:)` or
 `join(welcome:expectedGroupID:policy:)`. A failed or cancelled admission preserves
 the package for a corrected authenticated input. Success consumes the owner;
-another create/join then throws `closed`. `close()` discards an unused package
+another create/join then throws `closed`. The explicit `retainForWelcome: true`
+option permits a provisional initial group while preserving the invitation keys
+until delivery-service selection chooses a Commit or Welcome; selecting a later
+Commit closes the unused invitation owner. DAVE uses an injected shared signing
+private key across related media sessions and fresh HPKE/init keys for recovery.
+The default remains consuming single-owner creation. `close()` discards an unused package
 explicitly and can be repeated.
 
 The creator uses `createGroup` for a fresh unique group ID and policy containing
@@ -214,7 +222,7 @@ for the historical fixture checks; authenticity remains required.
 Synthetic local peers and published vectors do not establish interoperability
 with a live Discord voice deployment, an independent complete MLS client, all
 supported platforms or all deployment minima. External crypto review, complete
-DAVE media integration, approved Discord smoke tests, device qualification and
+complete DAVE-client interoperability, approved Discord smoke tests, device qualification and
 ten-minute hardware duplex remain release gates. Protocol component support does
 not make those gates pass implicitly.
 

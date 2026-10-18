@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "sources": [
+    {
+      "name": "libdave-codec-utils",
+      "url": "https://raw.githubusercontent.com/discord/libdave/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/cpp/src/codec_utils.cpp",
+      "sha256": "4e3b5bcbf522da6123fe7537f93f8e16040841157613a570718435b91b53fa62",
+      "bytes": 17600,
+      "verifiedOn": "2026-10-18",
+      "revision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169"
+    },
+    {
+      "name": "libdave-cryptor-manager",
+      "url": "https://raw.githubusercontent.com/discord/libdave/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/cpp/src/cryptor_manager.cpp",
+      "sha256": "1835ab2bee87795f94a3a5bc58a0ab69a9bfe92d6792d3fe873ed0331cfdac8b",
+      "bytes": 6633,
+      "verifiedOn": "2026-10-18",
+      "revision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169"
+    },
+    {
+      "name": "libdave-key-ratchet",
+      "url": "https://raw.githubusercontent.com/discord/libdave/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/cpp/src/mls_key_ratchet.cpp",
+      "sha256": "ef0ea3baf69efba25840c0534ea748238da0cdee2d40fb038aea1dd049e50664",
+      "bytes": 1268,
+      "verifiedOn": "2026-10-18",
+      "revision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169"
+    },
+    {
+      "name": "libdave-mls-session",
+      "url": "https://raw.githubusercontent.com/discord/libdave/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/cpp/src/mls/session.cpp",
+      "sha256": "14ea9a4c2e376b1b277622e47e3a187579474fefce9d93c1a205319294280d70",
+      "bytes": 28780,
+      "verifiedOn": "2026-10-18",
+      "revision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169"
+    },
+    {
+      "name": "dave",
+      "url": "https://daveprotocol.com/",
+      "sha256": "bb1d5eb46b6b63589cf5f03bf6fd0aca9fbef1730d2ae833fecfd264c27ed09c",
+      "bytes": 124412,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "voice-connections",
+      "url": "https://docs.discord.com/developers/topics/voice-connections.md",
+      "sha256": "7daad5ac1df7dac9f46328fbd37c8bcf1aa9804f8bffc1bf768004d05ceabbba",
+      "bytes": 35065,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "libdave-c-api",
+      "url": "https://raw.githubusercontent.com/discord/libdave/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/cpp/src/bindings_capi.cpp",
+      "sha256": "ce3e08b9aff2307b857bef961a9a0171d0d6e474ccd397e72a842afbce458c5f",
+      "bytes": 21532,
+      "verifiedOn": "2026-10-18",
+      "revision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169"
+    },
+    {
+      "name": "libdave-wasm",
+      "url": "https://raw.githubusercontent.com/discord/libdave/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/cpp/src/bindings_wasm.cpp",
+      "sha256": "3b78916e08c2f9f85fb0de0ebe4708507754d04debf362d5be32d1e830fa082e",
+      "bytes": 13603,
+      "verifiedOn": "2026-10-18",
+      "revision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169"
+    },
+    {
+      "name": "libdave-typescript-sample",
+      "url": "https://raw.githubusercontent.com/discord/libdave/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/samples/typescript/DaveSessionManager.ts",
+      "sha256": "7653ea29a512d13aed2adff4d6d0797037101e2a4f490b08ae641148968da87c",
+      "bytes": 7839,
+      "verifiedOn": "2026-10-18",
+      "revision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169"
+    }
+  ],
+  "notes": "Official upstream bytes fetched on 2026-10-18. libdave sources are pinned to the GitHub API main-branch commit returned during verification. DAVE v1.1 whitepaper describes protocol version 1 media; upstream announcement/effective dates for grouped algorithms are unknown. Discord Voice Gateway v8 and current changelog were reviewed separately. No authenticated Discord requests or live media qualification. C/WASM bindings expose helper bytes directly; the TypeScript sample leaves actual Voice sending to its host, so these sources do not prove complete on-wire framing or a mismatch."
+}

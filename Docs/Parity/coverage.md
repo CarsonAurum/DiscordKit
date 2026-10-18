@@ -297,3 +297,15 @@ vectors supplement local actor membership/epoch tests. See [MLS](../MLS.md),
 [the review packet](../MLSCryptoReview.md). Independent crypto review remains open;
 no DAVE media backend, live Discord interoperability or complete voice qualification
 is inferred from this support. Historical release tables above remain historical.
+
+## Part 12C DAVE update (2026-10-18)
+
+The independently adopted DiscordDAVE product adds the negotiated v1 signaling,
+MLS coordination, sender ratchets, complete-frame transforms for six codecs and
+ephemeral identity verification described in [DAVE](../DAVE.md). Reviewed mappings
+remain partial. The pinned C++ codec oracle, independent Node/OpenSSL media vector,
+Python scrypt fingerprint vector and synthetic membership/transition tests qualify
+local component behavior. The [dated change](changes/2026-10-18-phase12c-dave.md)
+records opcode-26 integration evidence limits, fail-closed H264 restrictions and
+independent crypto review/full-client/live/platform gates. Supervised network voice
+and video signaling/packetization remain later roadmap work.

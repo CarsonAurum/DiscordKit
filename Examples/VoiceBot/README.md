@@ -19,6 +19,14 @@ a trusted external Add, tentative Commit and encrypted Welcome. Both owners must
 agree on explicit exporter bytes before cleanup; keys are never printed. The external
 signing scalar is a public test fixture. See [MLS](../../Docs/MLS.md) for audit limits.
 
+The DAVE demonstration then delivers synthetic authenticated Voice membership,
+external-sender and proposal controls, constructs competing Commit/Welcome candidates,
+selects the remote Welcome and checks Ready before Execute enables sending. Two
+local members protect and recover complete Opus, H265 and VP8 encoded frames;
+H265 normalization is checked across synthetic frame splitting/reassembly. Tampered
+and replayed media are rejected, and every MLS/cipher owner is closed. This does
+not run RTP video packetizers or compare against an independent complete client.
+
 It also drains synthetic PCM through the bounded
 AsyncSequence/windowed-sinc resampler and checks exactly 1,920 output frames with a
 sample clock, then checks silence rejection by statistical VAD. It separately
@@ -38,10 +46,10 @@ Normal builds use only the owned Swift codec, never native libopus.
 
 The selected product graph excludes HTTP, Gateway, Client, Cache, OAuth,
 Interactions, Commands, NIO and concrete network/device adapters. It includes
-Core/Models/Transport plus Media/VoiceCodecs/VoiceCrypto/MLS and the existing Swift
+Core/Models/Transport plus Media/VoiceCodecs/VoiceCrypto/MLS/DAVE and the existing Swift
 Crypto/CryptoExtras graph. See [Voice](../../Docs/Voice.md) for ownership and limits.
 
-This Phase 12 consumer has no DAVE media backend, supervised network session,
+This Phase 12 consumer has no supervised network session,
 microphone/playback adapter or perceptual/realtime qualification. Discord
 requires DAVE for eligible live sessions; this offline example cannot join one.
 It is not the roadmap's ten-minute duplex or authorized Discord smoke qualification.

@@ -104,7 +104,7 @@ state. A new actor initialized with the same key would reset counters and is
 forbidden; replacement and restart require fresh keys. These transport rules do
 not establish DAVE media-ratchet ownership or a general fleet-wide usage bound.
 
-## Truncated GCM usage profile for the future DAVE owner
+## Truncated GCM usage profile and DAVE ownership
 
 `TruncatedAESGCM` supplies an experimental eight-byte-tag adapter. Its `open`
 obtains a private candidate using AES block permutation, reseals that candidate
@@ -122,22 +122,75 @@ per key across all instances. Attempts include authentication failures, not just
 accepted frames. The table is an upper operational constraint, not a security
 audit or a claim that every use of 64-bit tags is acceptable.
 
-For the future DAVE media owner, use a deliberately smaller initial review
-profile: combined ciphertext plus AAD at most `2^15` bytes, no more than `2^20`
-encryptions and `2^20` verification attempts per sender key, unique 96-bit nonces,
-and key replacement before any limit is exceeded. Count an attempt before
-cryptography; failed verification must not restore that budget. Share limits
-across every decoder retaining the same key, bound old-generation retention,
-reject counter wrap and retire a key after state loss. These are proposed review
-limits, not enforced DAVE support in Phase 12B. A reviewer must assess recipient
-fanout and the aggregate forgery opportunity across all participants/epochs;
-independent receiver-local counters alone do not enforce an all-instances limit.
+Phase 12C now implements the independent [DAVE owner](DAVE.md). Its enforced
+combined ciphertext-plus-AAD cap is `2^19` bytes (default `2^14`). Its enforced
+per-sender/per-generation total authenticated-decryption cap is `2^26`, matching
+Appendix C Table 2's `2^19` row, and its separate failed-verification cap is
+`2^17`. Applications may reduce these limits. Every actual AEAD attempt consumes
+the total allowance before cryptography, and a failed tag consumes the failure
+allowance. Malformed/replayed input rejected before AEAD consumes no cryptographic
+attempt. The earlier Phase 12B proposed review profile was not an approved policy;
+these current enforced bounds likewise remain subject to external review.
 
-Do not provide a packet-level authentication oracle through replies or sensitive
-diagnostics. Admission rate limits, authentication-failure policy, nonce allocation,
-media transform framing and sender ratchets belong to the DAVE owner in Phase 12C.
-Until those controls and external review exist, the stateless truncated primitive
-must not be presented as a production DAVE media backend.
+One `DAVEFrameCipher` actor owns each sender/exporter domain. Its counter spans
+audio/video and consumes a fresh nonce even when an H26x collision requires another
+encryption attempt. The generation changes every `2^24` positions; the absolute
+counter cannot exceed `2^56-1`, and generation encoding cannot wrap UInt32. Media
+nonces are eight zero bytes plus the synchronization UInt32 in little-endian
+order, under the generation-specific key. A new owner must never restart counters
+under an existing exporter domain. Recovery creates fresh MLS/HPKE material;
+logical teardown prevents the previous owner from resuming transmission.
+
+The session tries at most pending, active and one retired epoch for a sender.
+Candidate-local replay, expiry, forward-gap or quota rejection cannot select an
+epoch and therefore cannot prevent another distinct candidate from authenticating.
+Each attempted candidate retains its own budget/replay state, and failed
+authentication cannot advance its canonical ratchet. Old generations/epochs are
+bounded in count and expire after at most ten injected monotonic seconds. There
+are no automatic network replies or packet-level error messages from the media
+transform. The caller must keep sanitized errors out of sensitive diagnostics and
+coordinate account-wide admission/resource limits.
+
+These limits apply to the local key owner. Duplicating receive owners or retaining
+the same key on many recipients requires aggregate accounting and review of the
+all-instances NIST constraint, recipient fanout and forgery opportunity across
+participants/epochs. Independent receiver-local counters are not proof of that
+fleet-wide condition. The stateless truncated primitive and the new protocol
+owner remain unqualified for production until external review establishes an
+approved operating profile.
+
+## DAVE protocol composition review status
+
+The [verified source record](Parity/phase12c-current-sources.json) pins the official
+DAVE whitepaper, current Voice documentation/changelog and libdave commit
+`8de72b1f8a2ac3c5a5270755bb8091a62e3c6169`. The owned implementation binds exact
+Voice identity/context, authenticated expected membership and the trusted external
+sender; coordinates selected Commit/Welcome before media epoch activation; retains
+the shared signing identity across fresh-package recovery; and rejects protocol
+zero or unsupported downgrades. Codec-aware sending and codec-independent receiving
+share authenticated clear-range framing, with no ordinary plaintext passthrough.
+The exact SFU `F8 FF FE` exception requires explicit audio context/admission.
+
+AES-GCM is not key committing. The
+[official media-ciphersuite discussion](https://daveprotocol.com/#media-ciphersuite)
+identifies the known sophisticated-participant attack in which a crafted frame can
+authenticate to different plaintexts under different retained keys during a
+transition. Multiple epoch candidates inherit that protocol property; local tests
+do not remove it or establish a stronger key-commitment guarantee.
+
+Opcode 26 follows the whitepaper's MLSMessage-wrapped KeyPackage. Pinned libdave
+`Session::GetMarshalledKeyPackage` returns a bare TLS KeyPackage at its library API
+boundary; this alone does not establish its complete Voice wire encoding or prove
+a mismatch. Complete-peer/service framing remains unverified. The implementation
+follows normative published framing without probing alternate encodings or replaying
+a mutation; synthetic peers using the same framing cannot supply independent
+complete-client interoperability evidence.
+
+Independent Python HMAC/scrypt answers, a Node/OpenSSL AES-GCM media vector and
+[exact pinned C++/Swift codec comparisons](Parity/phase12c-codec-oracle.json) check
+algorithm bytes. They do not constitute independent protocol review, a full
+libdave client handshake, compiler timing analysis, platform/device evidence or
+approved Discord smoke. No reviewer, audit report or production approval is claimed.
 
 ## Memory, diagnostics and timing
 
@@ -175,7 +228,9 @@ or private candidate processing into a useful oracle.
 5. Independently evaluate `TruncatedAESGCM.open` equivalence, constant-time tag
    handling in optimized compiler output, data-dependent error timing, scratch
    plaintext lifetime and per-key/fanout usage accounting. Enforce the approved
-   profile in the eventual DAVE owner before enabling production use.
+   operating profile and aggregate constraints in the implemented DAVE owner before
+   enabling production use. Include simultaneous pending/active/retired candidates,
+   counter/generation wrap, codec collision retries, transition teardown and state loss.
 6. Verify negative-case and independent interoperability evidence on each
    supported backend. Record reviewer, scope, exact commit, findings, remediation
    and residual limits. Component fixture success alone is insufficient.

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "libdaveRevision": "8de72b1f8a2ac3c5a5270755bb8091a62e3c6169",
+  "oracle": "Unmodified pinned cpp/src/codec_utils.cpp and cpp/src/utils/leb128.cpp compiled with clang++ -std=c++17. Minimal owned ArrayView/OutboundFrameProcessor/logger adapters collect normalized bytes and coalesced ranges. The Swift runner invokes the production DAVECodecTransform. Exact output equality passed for all vectors.",
+  "qualificationBoundary": "Local deterministic codec transformation comparison only; no complete libdave build, independent media peer, RTP packetizer, decoder, browser, hardware or Discord service qualification. Strict malformed/unsupported H264 rejection and normalization of AV1 trailing filtered OBUs are additional owned regression cases.",
+  "vectors": [
+    {
+      "codec": "opus",
+      "inputHex": "f8aa55",
+      "normalizedHex": "f8aa55",
+      "clearRanges": []
+    },
+    {
+      "codec": "vp8",
+      "inputHex": "01998877",
+      "normalizedHex": "01998877",
+      "clearRanges": [
+        {
+          "offset": 0,
+          "length": 1
+        }
+      ]
+    },
+    {
+      "codec": "vp8",
+      "inputHex": "00010203040506070809aabb",
+      "normalizedHex": "00010203040506070809aabb",
+      "clearRanges": [
+        {
+          "offset": 0,
+          "length": 10
+        }
+      ]
+    },
+    {
+      "codec": "vp9",
+      "inputHex": "000001ff",
+      "normalizedHex": "000001ff",
+      "clearRanges": []
+    },
+    {
+      "codec": "h264",
+      "inputHex": "0000016764aa0000000165e09900000161e08877",
+      "normalizedHex": "000000016764aa0000000165e0990000000161e08877",
+      "clearRanges": [
+        {
+          "offset": 0,
+          "length": 13
+        },
+        {
+          "offset": 14,
+          "length": 6
+        }
+      ]
+    },
+    {
+      "codec": "h264",
+      "inputHex": "000000016742c00d8c8d40d0fbc900f08846a00000000168ce3c800000000165b8fafafa",
+      "normalizedHex": "000000016742c00d8c8d40d0fbc900f08846a00000000168ce3c800000000165b8fafafa",
+      "clearRanges": [
+        {
+          "offset": 0,
+          "length": 33
+        }
+      ]
+    },
+    {
+      "codec": "h265",
+      "inputHex": "0000014001aa0000013e01bb000000010201cc",
+      "normalizedHex": "000000014001aa000000013e01bb000000010201cc",
+      "clearRanges": [
+        {
+          "offset": 0,
+          "length": 13
+        },
+        {
+          "offset": 14,
+          "length": 6
+        }
+      ]
+    },
+    {
+      "codec": "av1",
+      "inputHex": "12000e288200a1a24201bb328100c1",
+      "normalizedHex": "0e2802a1a230c1",
+      "clearRanges": [
+        {
+          "offset": 0,
+          "length": 3
+        },
+        {
+          "offset": 5,
+          "length": 1
+        }
+      ]
+    }
+  ]
+}

@@ -32,7 +32,9 @@ owns audio I/O and supported explicit device routing;
 native device qualification and Windows/Android implementations remain open.
 Encoding analysis and platform qualification remain bounded. Phase 12B adds
 independent [MLS 1.0/ciphersuite-2 key establishment and DAVE-profile group handshakes](Docs/MLS.md).
-DAVE media integration and running voice sessions remain subsequent work;
+Phase 12C adds independently adopted [DAVE signaling, encoded-frame protection
+and human verification](Docs/DAVE.md). Independent crypto review and complete-client/live
+interoperability remain open; supervised running voice sessions remain 12D work;
 native Social SDK and schema-blocked Social Commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -111,6 +113,8 @@ establish endpoint parity or qualify untested hosts. See the
   bounded media/codec/transport-crypto and pure voice protocol components.
 - `DiscordMLS`: independent MLS 1.0/ciphersuite-2 credentials, key establishment,
   ratchet trees, epoch exporters and the restricted group-handshake profile required by DAVE v1.
+- `DiscordDAVE`: independent Voice/MLS transition ownership, sender ratchets,
+  Opus/video frame transforms, bounded replay/verification and ephemeral human verification.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),
 [interaction contracts](Docs/Interactions.md), the [HTTP application example](Examples/HTTPApp/README.md),
@@ -119,8 +123,9 @@ See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/RE
 [Gateway lifecycle and event catalog](Docs/Gateway.md),
 [the bot consumer example](Examples/GatewayBot/README.md), and
 [transport ownership, budgets and qualification limits](Docs/Transport.md).
-See [MLS ownership, authentication and interoperability limits](Docs/MLS.md) for
-the separately adopted MLS product.
+See [MLS ownership, authentication and interoperability limits](Docs/MLS.md) and
+[DAVE session/media ownership and qualification limits](Docs/DAVE.md) for the
+separately adopted products. Their construction starts no tasks, sockets or device work.
 The independent [local load harness](Tools/DiscordKitLoadTests/README.md) records
 bounded cohort measurements; broad platform and Phase 2 qualification gates remain open.
 
@@ -148,6 +153,8 @@ other-platform runtime qualification remains recorded separately.
   subsequent Phase 12 work.
 - MLS can be adopted separately for authenticated group key establishment; callers
   supply trusted participant identity/key associations and authenticated delivery.
+- DAVE composes MLS and Voice over injected authenticated controls and clocks;
+  exact-session readiness and frame transforms do not create a running connection.
 - Platform and access restrictions produce explicit capability information.
 
 HTTP execution, the consumer client, sharded Gateway lifecycle, HTTP interactions and

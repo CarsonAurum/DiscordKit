@@ -77,10 +77,15 @@ inputs without a Gateway runtime dependency. VoiceCrypto uses Crypto/CryptoExtra
 Phase 12B adds independently adopted [MLS](MLS.md): owned MLS 1.0/ciphersuite-2
 wire, credentials, key establishment, ratchet trees, secret trees and the restricted
 group-handshake profile required by DAVE v1. MLS selects only Swift Crypto and
-starts no tasks or I/O. DAVE media integration and the supervised Voice→Gateway
-edge remain planned; no empty targets represent them. HTTP/Gateway/Client/Kit
-remain independent of voice and MLS. The VoiceCrypto→MLS edge in the intended
-graph below will be selected when its media integration is implemented.
+starts no tasks or I/O. Phase 12C adds independently adopted [DAVE](DAVE.md):
+authenticated Voice signaling/MLS coordination, sender ratchets, encoded-frame
+transforms and bounded ephemeral identity verification. DAVE selects Voice, MLS,
+VoiceCrypto, Core/Transport and existing Crypto/CryptoExtras. Voice and VoiceCrypto
+remain independent of MLS/DAVE, preserving adoption without a dependency cycle.
+The supervised Voice→Gateway edge remains planned for 12D; no empty target
+represents a running session. HTTP/Gateway/Client/Kit remain independent of voice,
+MLS and DAVE. Independent crypto review, complete-client/live interoperability,
+platform/device and ten-minute duplex qualification remain open.
 
 ## Product boundaries
 
@@ -121,7 +126,12 @@ flowchart TD
     DiscordVoice --> DiscordVoiceCrypto
     DiscordVoice --> DiscordVoiceCodecs
     DiscordVoice --> DiscordTransport
-    DiscordVoiceCrypto --> DiscordMLS
+    DiscordDAVE --> DiscordVoice
+    DiscordDAVE --> DiscordMLS
+    DiscordDAVE --> DiscordVoiceCrypto
+    DiscordDAVE --> DiscordCore
+    DiscordDAVE --> DiscordTransport
+    DiscordDAVE --> SwiftCrypto
     DiscordMLS --> SwiftCrypto
     DiscordKit --> DiscordClient
     DiscordKit --> DiscordCommands
@@ -168,6 +178,7 @@ normalize trusted interaction dispatches into the same context and response acto
 | Client/Kit | Supervised discovery/shard/ingestion composition, configuration, optional cache bridge, event access, diagnostics and typed services. |
 | Voice | Optional voice/media protocols; narrow Gateway control contracts rather than dependence on the facade. Crypto, MLS and codec work stays isolated. |
 | MLS | Independently adopted bounded MLS 1.0/ciphersuite-2 values, key establishment and DAVE-profile group handshakes. No transport, device, media or Gateway ownership; application authentication and delivery are injected. |
+| DAVE | Independently adopted Voice/MLS transition coordination, exact-session media readiness, sender ratchets, codec-aware frame protection and ephemeral verification. Authenticated controls, membership, trust and clocks are injected; no socket/device or supervised network ownership. |
 | Activities | Bounded host messaging, typed command/event catalog and reference-counted subscriptions over an injected Activity binding. Owned browser bridge validates source/origin; no iframe host is manufactured. |
 | Social | Distinct host, authentication and access contracts; missing wire definitions remain explicit blockers. |
 
