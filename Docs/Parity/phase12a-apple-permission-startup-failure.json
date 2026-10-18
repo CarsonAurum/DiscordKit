@@ -1,0 +1,50 @@
+{
+  "audioPath": "No device I/O",
+  "date": "2026-10-18T03:57:27Z",
+  "defaultRouteChanged": false,
+  "endpoints": [
+    {
+      "direction": "input",
+      "index": 0,
+      "isDefault": true,
+      "isSelectable": true,
+      "name": "MacBook Pro Microphone"
+    },
+    {
+      "direction": "output",
+      "index": 0,
+      "isDefault": true,
+      "isSelectable": true,
+      "name": "MacBook Pro Speakers"
+    },
+    {
+      "direction": "input",
+      "index": 1,
+      "isDefault": false,
+      "isSelectable": true,
+      "name": "Carson's iPhone  Microphone"
+    }
+  ],
+  "exclusions": [
+    "Windows/Android",
+    "Apple mobile devices",
+    "minimum-OS runtime",
+    "perceptual listening assessment",
+    "live Discord",
+    "network transport",
+    "automatic equivalence between route, unplug and interruption events"
+  ],
+  "failure": "nativeFailure",
+  "inputAvailable": true,
+  "mode": "duplex",
+  "nativeIOStarted": false,
+  "outputAvailable": true,
+  "passed": false,
+  "permissionAfter": "granted",
+  "permissionBefore": "undetermined",
+  "platform": "Version 27.0.1 (Build 26A434)",
+  "schemaVersion": 1,
+  "selectedDeviceRemoved": false,
+  "selectedInput": true,
+  "selectedOutput": true
+}

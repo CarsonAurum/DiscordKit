@@ -1,7 +1,9 @@
-// Energy probability tables and quantization adapted from libopus 1.6.1 celt/quant_bands.c and celt/laplace.c.
+// Energy probability tables, temporal masking and allocation trim adapted from
+// libopus 1.6.1 celt/quant_bands.c, celt/laplace.c and celt/celt_encoder.c.
 // Copyright (c) 2007-2008 CSIRO
-// Copyright (c) 2007-2009 Xiph.Org Foundation
-// Written by Jean-Marc Valin
+// Copyright (c) 2007-2010 Xiph.Org Foundation
+// Copyright (c) 2008 Gregory Maxwell
+// Written by Jean-Marc Valin and Gregory Maxwell
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 // - Redistributions of source code must retain the above copyright notice,
@@ -28,15 +30,29 @@ public enum CELTFrameEncoderError: Error, Sendable, Equatable {
     case invalidSamples, invalidFrameByteCount, entropyBudgetExceeded
 }
 
+/// Explicit selection of owned CELT analysis, independent of the physical byte budget.
+///
+/// `fixed` preserves the original deterministic long-block/neutral-trim decisions.
+/// `adaptive` uses temporal masking to select 2.5-ms transforms on strong onsets,
+/// rejects nearly pure low-frequency tones from that detector, and adapts allocation
+/// trim to available bitrate and spectral tilt. It does not reproduce libopus's
+/// encoder decisions, implement pitch prefilter search or establish perceptual quality.
+/// Both policies are synchronous, bounded and introduce no device or task ownership.
+public enum CELTEncoderAnalysisPolicy: Sendable, Equatable {
+    case fixed, adaptive
+}
+
 /// An ordinary owned CELT frame, excluding the enclosing Opus TOC/packing header.
 public struct CELTEncodedFrame: Sendable, Equatable {
     public let bytes: Data
     public let finalRange: UInt32
     public let bitsUsed: Int
     public let fractionalBitsUsed: Int
+    /// Actual admitted transient flag; false for 2.5-ms frames or insufficient prefix budget.
+    public let isTransient: Bool
 }
 
-/// A basic owned long-block CELT audio encoder with explicit bounded frame storage.
+/// An owned CELT audio encoder with explicit bounded storage and analysis policy.
 ///
 /// This encodes normalized PCM through preemphasis, low-overlap analysis, band
 /// normalization, envelope quantization, ordinary bit allocation and recursive
@@ -44,10 +60,12 @@ public struct CELTEncodedFrame: Sendable, Equatable {
 /// reproducing the reference encoder's perceptual decisions or compressed bytes.
 /// Frame duration, coded channels and upper band are fixed for one stream.
 ///
-/// The encoder deliberately selects long blocks, no pitch prefilter, normal
-/// spreading and ordinary allocation trim. It implements no transient detector,
-/// psychoacoustic rate/distortion search, VBR, DTX, FEC, PLC, SILK or hybrid
-/// orchestration. These limitations matter for quality and complete Opus claims.
+/// Fixed analysis selects long blocks and neutral allocation trim. Adaptive analysis
+/// adds masked onset detection, short-block MDCT/anti-collapse and bitrate/spectral
+/// tilt trim. Both select no pitch prefilter and normal spreading, and implement no
+/// complete psychoacoustic rate/distortion search, VBR, DTX, FEC, PLC or SILK ownership.
+/// Independent packet policies compose bitrate/DTX; perceptual qualification remains
+/// separate from syntax and numerical interoperability evidence.
 /// Construction starts no I/O/tasks; exclusive mutable access serializes calls.
 /// All input validation and processing are synchronous with bounded per-frame
 /// storage. Failed calls preserve the entire previous audio/energy/entropy state.
@@ -56,7 +74,10 @@ public struct CELTFrameEncoder: Sendable {
     public let channelCount: Int
     public let startBand: Int
     public let endBand: Int
-    private var analysis: CELTTransformStream
+    public let analysisPolicy: CELTEncoderAnalysisPolicy
+    private let longTransform: CELTTransform
+    private let shortTransform: CELTTransform
+    private var analysisHistory: [Float]
     private var preemphasisMemory: [Float]
     private var previousEnergies: [Float]
     private var seed: UInt32 = 0
@@ -71,16 +92,22 @@ public struct CELTFrameEncoder: Sendable {
     ///   - startBand: Inclusive lower band in `0...20`; default zero. Hybrid uses 17.
     ///   - endBand: Exclusive upper band in `1...21`; default 21. Standard Opus TOCs
     ///     use 13/17/19/21 for narrow/wide/superwide/full bandwidth respectively.
+    ///   - analysisPolicy: Fixed long-block choices by default, or adaptive onset/trim
+    ///     analysis. This choice is fixed for the stream and survives `reset()`.
     /// - Throws: `CELTTransformError` for invalid duration/channels, or
     ///   `CELTBitAllocationError.invalidBandRange` for an invalid upper band.
-    public init(frameSampleCount: Int, channelCount: Int = 1, startBand: Int = 0, endBand: Int = 21) throws {
+    public init(frameSampleCount: Int, channelCount: Int = 1, startBand: Int = 0, endBand: Int = 21,
+                analysisPolicy: CELTEncoderAnalysisPolicy = .fixed) throws {
         let transform = try CELTTransform(frameSampleCount: frameSampleCount, channelCount: channelCount)
         _ = try CELTBitAllocation(frameSampleCount: frameSampleCount, channelCount: channelCount, startBand: startBand, endBand: endBand)
         self.frameSampleCount = frameSampleCount
         self.channelCount = channelCount
         self.startBand = startBand
         self.endBand = endBand
-        analysis = CELTTransformStream(transform: transform)
+        self.analysisPolicy = analysisPolicy
+        longTransform = transform
+        shortTransform = try CELTTransform(frameSampleCount: 120, channelCount: channelCount)
+        analysisHistory = Array(repeating: 0, count: 120 * channelCount)
         preemphasisMemory = Array(repeating: 0, count: channelCount)
         previousEnergies = Array(repeating: 0, count: channelCount * 21)
     }
@@ -89,7 +116,7 @@ public struct CELTFrameEncoder: Sendable {
     /// The next successful frame behaves as on a fresh stream with the same fixed
     /// format. Pending audio tails are discarded; callers own explicit draining.
     public mutating func reset() {
-        analysis.reset()
+        analysisHistory = Array(repeating: 0, count: 120 * channelCount)
         preemphasisMemory = Array(repeating: 0, count: channelCount)
         previousEnergies = Array(repeating: 0, count: channelCount * 21)
         seed = 0
@@ -133,6 +160,8 @@ public struct CELTFrameEncoder: Sendable {
     ///   for hybrid, and exact final range/bit accounting. Successful calls finalize
     ///   the caller's coder; no further syntax may be appended.
     /// - Throws: Input/storage/component errors, preserving both coder and stream.
+    ///   `entropyBudgetExceeded` also rejects an already exhausted shared prefix;
+    ///   this encoder does not silently drop PCM or advance silent envelope history.
     ///   This synchronous operation owns bounded histories and starts no I/O or tasks.
     public mutating func encode(_ samples: [Float], into encoder: inout OpusRangeEncoder,
                                 intra: Bool = false) throws -> CELTEncodedFrame {
@@ -149,7 +178,7 @@ public struct CELTFrameEncoder: Sendable {
         return result
     }
 
-    /// Composes complete long-block CELT syntax on a private stream copy.
+    /// Composes complete CELT syntax using admitted long/short analysis on a private copy.
     /// - Parameters:
     ///   - samples: Admitted normalized interleaved PCM for the fixed stream format.
     ///   - encoder: Active shared arithmetic interval with admitted physical storage.
@@ -168,17 +197,30 @@ public struct CELTFrameEncoder: Sendable {
                 preemphasisMemory[channel] = samples[index]
             }
         }
-        let spectrum = try analysis.analyze(preemphasized).map { $0 * 2 }
-        let envelope = normalize(spectrum)
         let frameByteCount = encoder.frameByteCount
         let header = try CELTFrameHeader(frameSampleCount: frameSampleCount,
                                          channelCount: channelCount, startBand: startBand, endBand: endBand)
-        _ = try header.encodePrefix(into: &encoder)
+        let window = analysisHistory + preemphasized
+        let remainingBits = max(0, frameByteCount * 8 - encoder.bitsUsed)
+        // Short-block allocation requires enough authority for each channel/block;
+        // low-budget frames retain the conservative long transform instead.
+        let transient = analysisPolicy == .adaptive && frameSampleCount > 120
+            && remainingBits >= 32 + frameSampleCount / 120 * 16 * channelCount
+            && detectTransient(window)
+        let prefix = try header.encodePrefix(isTransient: transient, into: &encoder)
+        guard !prefix.silence else { throw CELTFrameEncoderError.entropyBudgetExceeded }
+        let spectrum = try analyze(window, isTransient: prefix.isTransient)
+        analysisHistory = Array(preemphasized.suffix(120 * channelCount))
+        let envelope = normalize(spectrum)
         let quantizer = try CELTEnergyQuantizer(frameSampleCount: frameSampleCount,
             channelCount: channelCount, startBand: startBand, endBand: endBand)
         var energy = try quantizer.encodeCoarse(target: envelope.logEnergies,
             previous: previousEnergies, intra: intra, into: &encoder)
-        let fields = try header.encodeAfterCoarse(isTransient: false, into: &encoder)
+        let trim = analysisPolicy == .adaptive
+            ? allocationTrim(logEnergies: envelope.logEnergies, availableBits: remainingBits,
+                             isTransient: prefix.isTransient) : 5
+        let fields = try header.encodeAfterCoarse(isTransient: prefix.isTransient,
+                                                  allocationTrim: trim, into: &encoder)
         let allocator = try CELTBitAllocation(frameSampleCount: frameSampleCount,
             channelCount: channelCount, startBand: startBand, endBand: endBand, allocationTrim: fields.allocationTrim)
         let allocation = try allocator.encode(totalEighthBits: fields.allocationEighthBits,
@@ -186,10 +228,12 @@ public struct CELTFrameEncoder: Sendable {
         energy = try quantizer.encodeFine(energy, bitCounts: allocation.fineEnergyBits, into: &encoder)
         let shapes = try CELTShapeFrameCoding(frameSampleCount: frameSampleCount,
             channelCount: channelCount, startBand: startBand, endBand: endBand,
+            transient: prefix.isTransient,
             timeFrequencyChanges: fields.timeFrequencyChanges, spreading: fields.spreading)
         _ = try shapes.encode(envelope.coefficients, allocation: allocation,
-            totalEighthBits: frameByteCount * 64, seed: seed,
+            totalEighthBits: frameByteCount * 64 - (fields.antiCollapseReserved ? 8 : 0), seed: seed,
             bandEnergies: envelope.amplitudes, into: &encoder)
+        if fields.antiCollapseReserved { try encoder.encodeRawBits(1, count: 1) }
         energy = try quantizer.encodeFinal(energy, fineBitCounts: allocation.fineEnergyBits,
             priorities: allocation.finePriorities, remainingBits: max(0, frameByteCount * 8 - encoder.bitsUsed),
             into: &encoder)
@@ -201,7 +245,148 @@ public struct CELTFrameEncoder: Sendable {
         }
         seed = encoder.finalRange
         return CELTEncodedFrame(bytes: bytes, finalRange: encoder.finalRange,
-            bitsUsed: encoder.bitsUsed, fractionalBitsUsed: encoder.fractionalBitsUsed)
+            bitsUsed: encoder.bitsUsed, fractionalBitsUsed: encoder.fractionalBitsUsed,
+            isTransient: prefix.isTransient)
+    }
+
+    /// Analyzes the admitted block layout with one common, bounded overlap history.
+    /// - Parameters:
+    ///   - window: Validated half-scaled interleaved preemphasis history plus this frame.
+    ///   - isTransient: Actual entropy-admitted short-block choice; false for LM=0.
+    /// - Returns: Restored full-scale interleaved coefficients. Short blocks use
+    ///   frequency-major/block-minor order, matching RFC 6716 section 4.3.7.
+    /// - Throws: Transform validation errors; the public caller discards partial state.
+    private func analyze(_ window: [Float], isTransient: Bool) throws -> [Float] {
+        guard isTransient else { return try longTransform.forward(window).map { $0 * 2 } }
+        let blocks = frameSampleCount / 120
+        var spectrum = Array(repeating: Float(0), count: frameSampleCount * channelCount)
+        for block in 0..<blocks {
+            let offset = block * 120 * channelCount
+            let coefficients = try shortTransform.forward(Array(window[offset..<(offset + 240 * channelCount)]))
+            for bin in 0..<120 {
+                for channel in 0..<channelCount {
+                    spectrum[(bin * blocks + block) * channelCount + channel] = coefficients[bin * channelCount + channel] * 2
+                }
+            }
+        }
+        return spectrum
+    }
+
+    /// Selects strong temporal onsets using the reference float masking model.
+    /// - Parameter window: Admitted interleaved preemphasized overlap/current frame.
+    /// - Returns: True when any channel exceeds the masking threshold. Near-silent
+    ///   channels and near-pure tones below 200Hz do not trigger. This uses bounded
+    ///   O(frame samples * channels) scratch/work and retains no additional history.
+    /// The detector does not claim reference encoder identity: full tonality analysis,
+    /// weak hybrid transients and psychoacoustic corpus calibration remain separate.
+    private func detectTransient(_ window: [Float]) -> Bool {
+        let inverse: [Int] = [
+            255,255,156,110,86,70,59,51,45,40,37,33,31,28,26,25,
+            23,22,21,20,19,18,17,16,16,15,15,14,13,13,12,12,
+            12,12,11,11,11,10,10,10,9,9,9,9,9,9,8,8,
+            8,8,8,7,7,7,7,7,7,6,6,6,6,6,6,6,
+            6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,
+            5,5,5,5,5,4,4,4,4,4,4,4,4,4,4,4,
+            4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,
+            3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,
+        ]
+        let length = window.count / channelCount
+        for channel in 0..<channelCount {
+            let signal = stride(from: channel, to: window.count, by: channelCount).map { Double(window[$0]) }
+            if isLowFrequencyTone(signal) { continue }
+            var filtered = Array(repeating: Double(0), count: length)
+            var memory0: Double = 0
+            var memory1: Double = 0
+            for index in 0..<length {
+                let value = signal[index]
+                let output = memory0 + value
+                let previous = memory0
+                memory0 = memory0 - value + 0.5 * memory1
+                memory1 = value - previous
+                if index >= 12 { filtered[index] = output }
+            }
+            var energies = Array(repeating: Double(0), count: length / 2)
+            memory0 = 0
+            var total: Double = 0
+            for index in energies.indices {
+                let energy = filtered[index * 2] * filtered[index * 2]
+                    + filtered[index * 2 + 1] * filtered[index * 2 + 1]
+                total += energy
+                memory0 = energy + 0.9375 * memory0
+                energies[index] = 0.0625 * memory0
+            }
+            guard total > 1e-12 else { continue }
+            memory0 = 0
+            var maximum: Double = 0
+            for index in energies.indices.reversed() {
+                memory0 = energies[index] + 0.875 * memory0
+                energies[index] = 0.125 * memory0
+                maximum = max(maximum, energies[index])
+            }
+            let mean = sqrt(total * maximum * 0.5 * Double(energies.count))
+            let normalization = Double(energies.count) / (1e-30 + mean)
+            var unmask = 0
+            for index in stride(from: 12, to: energies.count - 5, by: 4) {
+                let bucket = Int(min(127, max(0, floor(64 * normalization * (energies[index] + 1e-30)))))
+                unmask += inverse[bucket]
+            }
+            let metric = 64 * unmask * 4 / (6 * (energies.count - 17))
+            if metric > 200 { return true }
+        }
+        return false
+    }
+
+    /// Rejects near-pure low tones which a short masking window can confuse with onsets.
+    /// - Parameter signal: One admitted bounded preemphasized channel with at least 240 samples.
+    /// - Returns: True when a stable second-order sinusoidal predictor explains all but
+    ///   1e-7 of signal energy and its fitted frequency is below 200Hz. Constants also
+    ///   qualify. Mixed music, noisy speech and discontinuities normally fail the fit.
+    /// The least-squares calculation is synchronous O(N), with no retained state.
+    private func isLowFrequencyTone(_ signal: [Double]) -> Bool {
+        var correlation: Double = 0
+        var power: Double = 0
+        var signalPower: Double = 0
+        for index in 2..<signal.count {
+            correlation += signal[index - 1] * (signal[index] + signal[index - 2])
+            power += signal[index - 1] * signal[index - 1]
+            signalPower += signal[index] * signal[index]
+        }
+        guard power > 1e-15 else { return false }
+        let coefficient = correlation / power
+        guard coefficient >= 2 * cos(2 * .pi * 200 / 48_000), coefficient <= 2.00001 else { return false }
+        var residual: Double = 0
+        for index in 2..<signal.count {
+            let error = signal[index] + signal[index - 2] - coefficient * signal[index - 1]
+            residual += error * error
+        }
+        return residual <= signalPower * 1e-7
+    }
+
+    /// Adapts ordinary allocation tilt to available rate and mean-relative spectral slope.
+    /// - Parameters:
+    ///   - logEnergies: Admitted channel-major 21-band log2 envelopes.
+    ///   - availableBits: Remaining physical bit authority at the prefix boundary,
+    ///     excluding preceding hybrid syntax; this method never changes output size.
+    ///   - isTransient: Actual admitted short-block choice; lowers trim by one on onsets.
+    /// - Returns: A validated trim in `0...10`, with neutral high-rate base five and
+    ///   low-rate base four. Spectral slope changes the base by at most two. The
+    ///   bounded heuristic follows the reference's rate/tilt direction without
+    ///   claiming its stereo/tonality/surround optimization or perceived quality.
+    private func allocationTrim(logEnergies: [Float], availableBits: Int, isTransient: Bool) -> Int {
+        let bitrate = Double(availableBits) * 48_000 / Double(frameSampleCount)
+        let base = 4 + min(1, max(0, (bitrate - 64_000) / 16_000))
+        let count = endBand - startBand
+        var slope: Double = 0
+        if count > 1 {
+            for channel in 0..<channelCount {
+                for band in startBand..<(endBand - 1) {
+                    slope += Double(logEnergies[channel * 21 + band]) * Double(2 + 2 * (band - startBand) - count)
+                }
+            }
+            slope /= Double(channelCount * (count - 1) * 6)
+        }
+        let trim = base - min(2, max(-2, slope)) - (isTransient ? 1 : 0)
+        return min(10, max(0, Int(trim.rounded())))
     }
 
     /// Computes ordinary 21-band normalized channel-major shapes and mean-relative envelopes.

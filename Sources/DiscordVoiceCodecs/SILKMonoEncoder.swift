@@ -44,6 +44,10 @@ public struct SILKEncodedPacket: Sendable, Equatable {
 /// all 32 first-stage NLSF vectors, chooses scalar gain from the residual energy,
 /// selects real voiced pitch/five-tap LTP codebooks from correlated LPC residuals,
 /// and quantizes seeded excitation against exact integer LPC/LTP synthesis feedback.
+/// If voiced syntax cannot fit after its bounded gain search, retries that frame
+/// with ordinary unvoiced prediction rather than exceeding the byte/bit cap.
+/// A final seven-cost scalar rate-distortion search can select sparse unvoiced
+/// excitation when nearest-sample feedback still exceeds the allocation.
 /// The resulting Opus code-zero packet contains ordinary interoperable voiced,
 /// unvoiced or inactive SILK syntax at 8/12/16 kHz and ten/twenty milliseconds.
 /// Spectral residual indices are zero and interpolation is disabled. Stereo,
@@ -77,7 +81,9 @@ public struct SILKMonoEncoder: Sendable {
     ///   - sampleRate: Exactly 8,000, 12,000 or 16,000 Hz PCM16 input rate.
     ///   - frameDurationMilliseconds: Exactly ten or twenty milliseconds.
     ///   - maximumPayloadBytes: Hard compressed payload cap in `16...1275`, default
-    ///     1,275. Larger gains are tried on budget exhaustion, with at most 64 trials.
+    ///     1,275. Larger gains are tried on budget exhaustion, with at most 64 trials
+    ///     per model, followed if needed by seven sparse unvoiced candidates:
+    ///     at most 135 total quantizations. This can trade fidelity for admission.
     ///     Extremely small caps can reject input rather than emit partial packets.
     ///   - enableInBandFEC: Default false. True retains one active frame and emits
     ///     it before the next packet as ordinary independent LBRR. This doubles
@@ -134,7 +140,7 @@ public struct SILKMonoEncoder: Sendable {
     /// - Throws: `invalidSampleCount` before analysis, `payloadBudgetExceeded` when no
     ///   gain fits the cap, or range/table/NLSF/framing errors. Failure changes no stream
     ///   history. No partial packet, fallback private format, task or I/O is produced.
-    /// - Complexity: O(32 * samples * LPC order + 64 * samples) worst-case bounded
+    /// - Complexity: O(32 * samples * LPC order + 135 * samples) worst-case bounded
     ///   analysis/quantization, plus bounded pitch/codebook analysis, with at most 320 samples and sixteen
     ///   LPC taps. This method
     ///   has no suspension point and makes no realtime deadline guarantee.
@@ -172,8 +178,15 @@ public struct SILKMonoEncoder: Sendable {
     ///   is `1...min(frameByteCount, maximumPayloadBytes) * 8`, `payloadBudgetExceeded`
     ///   if no gain fits, or range/parameter/pulse errors. Failed calls preserve both
     ///   this stream's complete synthesis history and the supplied entropy coder.
-    /// - Complexity: At most 64 bounded gain trials after spectral/pitch/codebook analysis, without
-    ///   suspension, shared mutable state, background work or external/native calls.
+    ///   A selected voiced model that exhausts its gain search retries the same PCM
+    ///   using ordinary unvoiced syntax; VAD remains active and requested LBRR remains.
+    ///   If ordinary gain admission still fails, seven increasing scalar excitation
+    ///   penalties trade waveform error for sparse unvoiced pulses at the initial
+    ///   unvoiced gain. These are legal audio quantizations, not missing frames.
+    ///   No samples are dropped and no byte/bit ceiling is raised by this fallback.
+    /// - Complexity: At most 135 bounded quantization trials after spectral/pitch/codebook
+    ///   analysis: up to 64 voiced, 64 unvoiced and seven rate-distortion candidates.
+    ///   There is no suspension, shared mutable state, background work or external/native call.
     public mutating func encodePayload(
         _ pcm: [Int16],
         to encoder: inout OpusRangeEncoder,
@@ -187,9 +200,49 @@ public struct SILKMonoEncoder: Sendable {
         let analysis = selectPredictor(pcm)
         let active = pcm.contains { $0 != 0 }
         let pitch = active ? selectPitch(pcm, coefficients: predictors[analysis.index], energy: analysis.energy) : nil
+        do {
+            return try encodeAnalyzed(pcm, analysis: analysis, pitch: pitch, to: &encoder, maximumBits: bitLimit)
+        } catch SILKMonoEncoderError.payloadBudgetExceeded {}
+        if pitch != nil {
+            do {
+                return try encodeAnalyzed(pcm, analysis: analysis, pitch: nil, to: &encoder, maximumBits: bitLimit)
+            } catch SILKMonoEncoderError.payloadBudgetExceeded {}
+        }
+        for penalty in [256.0, 4_096, 65_536, 1_048_576, 16_777_216, 268_435_456, 4_294_967_296] {
+            do {
+                return try encodeAnalyzed(pcm, analysis: analysis, pitch: nil, to: &encoder,
+                                           maximumBits: bitLimit, ratePenalty: penalty)
+            } catch SILKMonoEncoderError.payloadBudgetExceeded {}
+        }
+        throw SILKMonoEncoderError.payloadBudgetExceeded
+    }
+
+    /// Tries one fixed prediction model against a finite gain/entropy budget.
+    /// - Parameters:
+    ///   - pcm: Validated exact internal-rate PCM16 frame, without retained caller storage.
+    ///   - analysis: Previously selected spectral index and nonnegative residual energy.
+    ///   - pitch: Selected voiced LTP model, or nil for ordinary unvoiced/inactive syntax.
+    ///   - encoder: Caller-owned active entropy interval, copied for every gain candidate.
+    ///   - maximumBits: Validated total bit-use ceiling, including any caller prefix.
+    ///   - ratePenalty: Scalar error cost per absolute pulse, default zero. A positive
+    ///     fallback cost tries only the initial gain, including zero-pulse candidates;
+    ///     it must be finite/nonnegative and is never used with voiced prediction.
+    /// - Returns: The first gain that fits, with exact ordinary scalar reconstruction.
+    ///   Success commits only that candidate's synthesis, gain, analysis and requested
+    ///   preceding/current LBRR ownership. At most 64 gains are tried synchronously
+    ///   without a penalty, or one candidate with an explicit penalty.
+    /// - Throws: `payloadBudgetExceeded` when every gain exceeds the ceiling; range,
+    ///   parameter and pulse errors propagate. Every failure preserves the complete
+    ///   stream and supplied entropy, permitting another model to retry the same PCM
+    ///   without changed predictors, retained FEC or resource allocation outside a frame.
+    private mutating func encodeAnalyzed(
+        _ pcm: [Int16], analysis: (index: Int, energy: Double), pitch: SILKPitchAnalysis?,
+        to encoder: inout OpusRangeEncoder, maximumBits: Int, ratePenalty: Double = 0
+    ) throws -> SILKEncodedPayload {
+        let active = pcm.contains { $0 != 0 }
         let targetGain = sqrt((pitch?.energy ?? analysis.energy) / Double(sampleCount)) / 3
         let initialGain = gains.firstIndex { $0 >= targetGain } ?? 63
-        for gainIndex in initialGain..<64 {
+        for gainIndex in initialGain..<(ratePenalty > 0 ? initialGain + 1 : 64) {
             let parameters = try Self.reconstructParameters(
                 rate: sampleRate, duration: frameDurationMilliseconds, gain: gainIndex,
                 previousGain: previousGainIndex, spectralIndex: analysis.index, active: active, pitch: pitch
@@ -197,12 +250,12 @@ public struct SILKMonoEncoder: Sendable {
             let pulses = SILKFrameQuantization.quantize(
                 pcm, coefficients: predictors[analysis.index], parameters: parameters,
                 previousGainQ16: synthesis.previousGainQ16, shortTermHistoryQ14: synthesis.shortTermHistoryQ14,
-                outputHistory: synthesis.outputHistory
+                outputHistory: synthesis.outputHistory, ratePenalty: ratePenalty
             )
             do {
                 var entropy = encoder
                 try writePayload(parameters, pulses: pulses, to: &entropy)
-                guard entropy.bitsUsed <= bitLimit else { continue }
+                guard entropy.bitsUsed <= maximumBits else { continue }
                 // Reconstruct from a separate bounded stream, so a hybrid caller's
                 // preceding/following entropy never becomes synthesis state input.
                 var local = try OpusRangeEncoder(frameByteCount: 1_275)
@@ -260,8 +313,10 @@ public struct SILKMonoEncoder: Sendable {
     /// - Returns: Nil for weak, constant or uncorrelated input; otherwise a primary
     ///   pitch lag, common periodicity category and minimum-error tap vector for each
     ///   subframe. The target residual energy then drives gain/budget selection.
-    ///   Analysis searches the normative 2...18ms pitch interval and every quantized
-    ///   LTP vector. It is a deterministic bounded analysis policy, not the reference
+    ///   Analysis searches pitch lags from 2ms through one sample below 18ms and every quantized
+    ///   vector. The exclusive 18ms endpoint keeps the independent coarse lag index
+    ///   inside the 32-symbol pitch-lag codebook, matching libopus 1.6.1's `max_lag`.
+    ///   It is a deterministic bounded analysis policy, not the reference
     ///   multistage pitch estimator or perceptual rate/distortion optimization.
     private func selectPitch(_ pcm: [Int16], coefficients: [Int16], energy: Double) -> SILKPitchAnalysis? {
         let mean = pcm.reduce(0.0) { $0 + Double($1) } / Double(pcm.count)
@@ -282,7 +337,7 @@ public struct SILKMonoEncoder: Sendable {
         let minimumLag = sampleRate * 2 / 1_000
         var bestLag = minimumLag
         var bestCorrelation = 0.0
-        for lag in minimumLag...(sampleRate * 18 / 1_000) {
+        for lag in minimumLag..<(sampleRate * 18 / 1_000) {
             var correlation = 0.0
             var delayedEnergy = 0.0
             for index in memory..<input.count {

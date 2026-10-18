@@ -407,3 +407,57 @@ Both affected Swift interoperability tests passed. The late owned-hybrid LBRR
 fixture adds eight independently expected streams (16 selected recoveries), all
 passing strict 3e-6 PCM/range checks; the earlier full 1,825-test run is supplemented
 by this focused fixture test. No production source changed after the full run.
+
+## Focused encoder and Apple closure scope
+
+The user requested implementation, tests and a commit from clean `9c77799`,
+explicitly excluding Android/Windows platform implementations. The plan for this
+pass was to finish bounded encoder/DTX policies, measure speech/music and frame
+processing, exercise real Apple permission/routing/unplug/duplex, then rerun the
+regression and parity checks. Historical implementation and qualification records
+above remain unchanged. No advance to 12B or waiver of an unobserved gate follows.
+
+Implemented a fixed-format normalized-48kHz `OpusAudioEncoder`, exact fractional
+bitrate carry, atomic target updates and whole-operation rollback, hard packet
+caps and optional SILK FEC. RMS/hangover DTX continues analysis while suppressing
+transmission, with ordinary refreshes no farther than 400ms apart. Adaptive CELT
+uses masked onset analysis, actual short MDCTs, anti-collapse and rate/spectral
+trim. Independent fixed-analysis adopters retain their previous default.
+
+SILK now excludes the invalid 18ms pitch endpoint, minimizes arithmetic payload
+before ordinary external packet padding and tries bounded voiced/unvoiced/sparse
+quantization under the same hard ceiling. At most 135 candidates per channel/frame
+preserve requested FEC and exact decoder feedback; sparse excitation materially
+trades waveform fidelity for rate. Exhausted shared CELT intervals reject without
+advancing either entropy or signal state.
+
+Actual explicit-device startup exposed AVAudioEngine's shared duplex aggregate
+binding failure. Independent directional engines now disable the unused AudioUnit
+direction before binding and verify exact selection/liveness. Delayed healthy
+configuration notifications are ignored only after complete graph/format/binding
+readback; uncertain or genuine route/topology events still stop ownership. A
+configuration event cannot overwrite a pending required invalidation.
+
+The standalone Apple qualification package opens devices only under explicit
+operator consent, owns bounded capture/playback, records provenance/counts/timing/
+RSS and never records audio or contacts Discord. The native permission prompt,
+physical default-route switch and selected-AirPods removal were exercised with
+the operator. Interruption, minimum-OS and mobile runtime remain independent
+unverified gates. Callback accounting cannot qualify hardware render underruns.
+
+Final validation and the precise completion boundary are recorded in
+`Docs/Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md` and its
+linked machine-readable reports. Low-rate SILK speech quality remains limited;
+ordinary syntax, numerical agreement and local processing measurements do not
+establish perceptual acceptance or a production voice implementation.
+
+This pass passed the root build and 1,849 strict tests/228 suites/26 binaries,
+93 tooling Swift tests, 173 Python tests, 10 standalone qualification tests,
+offline VoiceBot, generation/inventory/parity, 28 independent encoder cases,
+8 LBRR/4 PLC recoveries and the complete 40,150-packet RFC8251 corpus. Physical
+macOS permission, route-change and selected-AirPods removal checks passed.
+The actual optimized 600s duplex failed with 33 playback rejections and five
+codec deadline misses despite 3.3ms p99. The admission bug was fixed with bounded
+waits and partial failure accounting, then rebuilt/tested; another device run
+awaits operator readiness. **The requested closure remains incomplete**, with
+that native gate, actual interruption and perceptual acceptance still open.

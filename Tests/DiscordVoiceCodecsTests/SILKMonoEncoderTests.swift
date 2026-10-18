@@ -4,6 +4,69 @@ import Testing
 
 @Suite("Owned conservative ordinary SILK PCM encoding")
 struct SILKMonoEncoderTests {
+    /// Zero scalar cost preserves ordinary encoder pulses exactly; a cost above
+    /// every possible PCM16 squared error deterministically admits zero excitation,
+    /// including when it lies outside the nearest five-pulse neighborhood.
+    @Test func sparseRateDistortionCandidateBounds() throws {
+        for rate in [8_000, 12_000, 16_000] {
+            for duration in [10, 20] {
+                var encoder = try SILKMonoEncoder(sampleRate: rate, frameDurationMilliseconds: duration)
+                let pcm = samples(count: encoder.sampleCount, rate: rate, pattern: 1)
+                let encoded = try encoder.encode(pcm)
+                let coefficients = try SILKNLSFCoefficients(q15: encoded.parameters.normalizedLSFsQ15).lpcQ12
+                let ordinary = SILKFrameQuantization.quantize(pcm, coefficients: coefficients,
+                    parameters: encoded.parameters, previousGainQ16: 65_536,
+                    shortTermHistoryQ14: Array(repeating: 0, count: 16),
+                    outputHistory: Array(repeating: 0, count: rate / 50))
+                #expect(ordinary == encoded.signedPulses)
+                let sparse = SILKFrameQuantization.quantize(pcm, coefficients: coefficients,
+                    parameters: encoded.parameters, previousGainQ16: 65_536,
+                    shortTermHistoryQ14: Array(repeating: 0, count: 16),
+                    outputHistory: Array(repeating: 0, count: rate / 50), ratePenalty: 4_294_967_296)
+                #expect(sparse.count == pcm.count && sparse.allSatisfy { $0 == 0 })
+            }
+        }
+    }
+
+    /// A clipped rising harmonic waveform exhausts voiced gain admission at the
+    /// sixth frame; ordinary unvoiced fallback fits the same 79-byte ceiling while
+    /// retaining exact decoder feedback, active VAD and independently owned state.
+    /// The synthesized formula is owned regression material, not a recorded corpus.
+    @Test func voicedBudgetUsesBoundedUnvoicedFallback() throws {
+        var encoder = try SILKMonoEncoder(sampleRate: 16_000)
+        var decoder = try SILKMonoDecoder(sampleRate: 16_000)
+        for frame in 0..<6 {
+            let pcm = (0..<320).map { index -> Int16 in
+                let t = Double(frame * 320 + index) / 16_000
+                let envelope = pow(max(0, sin(.pi * t.truncatingRemainder(dividingBy: 0.24) / 0.24)), 2)
+                let value = (1...8).reduce(0.0) { $0 + sin(2 * .pi * 100 * Double($1) * t) / Double($1) }
+                    * 28_000 * envelope
+                return Int16(clamping: Int(value.rounded()))
+            }
+            var unconstrained = encoder
+            var wide = try OpusRangeEncoder(frameByteCount: 1_275)
+            let preferred = try unconstrained.encodePayload(pcm, to: &wide)
+            var copied = encoder
+            var narrow = try OpusRangeEncoder(frameByteCount: 79)
+            let output = try encoder.encodePayload(pcm, to: &narrow)
+            var copiedEntropy = try OpusRangeEncoder(frameByteCount: 79)
+            #expect(try copied.encodePayload(pcm, to: &copiedEntropy) == output)
+            #expect(output.bitsUsed <= 632 && output.redundancy == nil)
+            if frame == 5 {
+                #expect(preferred.parameters.signalType == .voiced && preferred.bitsUsed > 632)
+                #expect(output.parameters.signalType == .unvoiced)
+            }
+            let count = max(2, (narrow.bitsUsed + 7) / 8)
+            let packet = try OpusPacket(Data([0x48]) + Data(try narrow.finalize().prefix(count)))
+            let decoded = try decoder.decode(packet).payloads[0]
+            #expect(decoded.voiceActivity == [true])
+            #expect(decoded.frames[0].parameters == output.parameters)
+            #expect(decoded.frames[0].pulses.signedPulses == output.signedPulses)
+            #expect(decoded.frames[0].pcm == output.reconstructedPCM)
+            #expect(decoded.finalRange == output.finalRange)
+        }
+    }
+
     /// Selects emitted LBRR for a genuinely missing active packet, then consumes the
     /// following ordinary packet. All rates/durations preserve exact reconstruction
     /// and independent entropy endpoints. Initial and inactive preceding frames omit

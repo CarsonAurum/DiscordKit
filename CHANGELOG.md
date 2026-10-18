@@ -6,6 +6,22 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Phase 12A encoder policies and Apple qualification
+
+- Added fixed-format SILK/CELT/hybrid encoder ownership with fractional bitrate
+  accounting, atomic target updates, hard packet caps and bounded RMS/hangover DTX.
+- Added adaptive CELT transient short blocks, anti-collapse and rate/spectral trim,
+  preserving the existing fixed-analysis defaults for independent adopters.
+- Fixed SILK padding interpreted as transition redundancy, the 18ms pitch-search
+  endpoint, voiced budget fallback and exhausted shared CELT interval admission.
+- Added independent adaptive fixtures, opt-in speech/music signal and frame-time
+  measurements, and an explicit native Apple permission/device/duplex harness.
+- Fixed explicit macOS input/output binding with independent directional engines;
+  retained fail-closed native invalidation while ignoring verified healthy setup
+  notifications, without allowing configuration noise to erase a required stop.
+- Windows/Android implementations are deferred by scope. Perceptual, native and
+  minimum-OS evidence remains bounded by the dated qualification record.
+
 ## 2026-10-17 — Phase 12A ordinary compressed-audio paths
 
 - Added owned ordinary CELT frame/packet encoding and decoding, including energies,

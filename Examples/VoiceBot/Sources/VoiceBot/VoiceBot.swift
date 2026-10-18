@@ -141,7 +141,7 @@ import DiscordVoiceCrypto
         guard zip(signal, reconstructed).allSatisfy({ abs($0 - $1) < 1e-12 }) else {
             throw ExampleFailure.invalidInvariant
         }
-        print("CELT transform/shape and SILK predictor components checked; complete Opus remains unimplemented.")
+        print("CELT transform/shape and SILK predictor components checked independently.")
     }
 
     /// Exercises the independently owned ordinary compressed-audio paths without native codecs.

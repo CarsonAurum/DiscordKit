@@ -70109,7 +70109,12 @@
         "symbol.12A.SILKStereoEncodedPacket",
         "symbol.12A.SILKStereoEncoder",
         "symbol.12A.SILKRedundantFrame",
-        "symbol.12A.OpusRangeCodingError"
+        "symbol.12A.OpusRangeCodingError",
+        "symbol.12A.OpusAudioEncoder",
+        "symbol.12A.OpusAudioEncoderError",
+        "symbol.12A.OpusAudioEncodedPacket",
+        "symbol.12A.OpusDTXPolicy",
+        "symbol.12A.CELTEncoderAnalysisPolicy"
       ],
       "evidenceIDs": [
         "evidence.12A.tocConfigurations",
@@ -70232,11 +70237,34 @@
         "evidence.12A.loss.CELTSynthesisTests.codedChannelConversionAndSwitches",
         "evidence.12A.loss.SILKMonoEncoderTests.emittedRedundancySelectionAndAtomicity",
         "evidence.12A.loss.SILKStereoEncoderTests.channelRedundancySelectionAndAtomicity",
-        "evidence.12A.loss.OpusHybridFECOracleTests.independentOwnedLBRRRecovery"
+        "evidence.12A.loss.OpusHybridFECOracleTests.independentOwnedLBRRRecovery",
+        "evidence.12A.policy.OpusAudioEncoderTests.ordinaryFormats",
+        "evidence.12A.policy.OpusAudioEncoderTests.silkPitchUpperEndpointRegression",
+        "evidence.12A.policy.OpusAudioEncoderTests.fractionalRateUpdateAndReset",
+        "evidence.12A.policy.OpusAudioEncoderTests.silkPaddingBudgetBoundaries",
+        "evidence.12A.policy.OpusAudioEncoderTests.dtxRefreshAndResumption",
+        "evidence.12A.policy.OpusAudioEncoderTests.dtxHangoverChannelsAndAtomicity",
+        "evidence.12A.policy.OpusAudioEncoderTests.silkBudgetRollback",
+        "evidence.12A.policy.OpusAudioEncoderTests.configurationAdmission",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.adaptivePacketsToOfficialDecoder",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.transientOnsetsAndOrdinaryRecovery",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.lowBudgetShortDurationSilenceAndNarrowBand",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.sustainedLowFrequencyTones",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.boundaryOnsetsAndSpectralTilt",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.rateAndSharedBudgetAllocationTrim",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.adaptiveRollbackCopyAndReset",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.exhaustedSharedPrefixRejectsWithoutAdvancingHistory",
+        "evidence.12A.policy.CELTEncoderAnalysisTests.packetAnalysisAndFinalRange",
+        "evidence.12A.policy.SILKMonoEncoderTests.sparseRateDistortionCandidateBounds",
+        "evidence.12A.policy.SILKMonoEncoderTests.voicedBudgetUsesBoundedUnvoicedFallback",
+        "evidence.12A.policy.AppleAudioDirectionalBindingTests.configurationReadbackDecision",
+        "evidence.12A.policy.AppleAudioDirectionalBindingTests.selectionOrderAndDefaultPreservation",
+        "evidence.12A.policy.AppleAudioDirectionalBindingTests.invalidDeviceAndFailureShortCircuit",
+        "evidence.12A.policy.AppleAudioTests.configurationCannotEraseRequiredInvalidation"
       ],
-      "notes": "Owned ordinary mono/stereo SILK/CELT/hybrid packets compose common range coding, generalized coded/output channels, internal-rate changes, transition redundancy/fades and explicit PLC/CNG/in-band FEC. Mono/stereo SILK and hybrid PCM encoders select real voiced pitch/LTP, exact synthesis-feedback excitation and optional prior-active-channel LBRR within bounded budgets; CELT encoding uses long blocks without perceptual VBR/transient/pitch analysis. Independent pinned libopus 1.6.1 comparisons distinguish exact SILK integer/entropy from tolerance-qualified floating audio. Official RFC8251 vector results, source fingerprints, encoder limits and remaining native gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-codec-loss-conformance.md. Portable media and synthetic-only VAD remain implemented. Apple native device qualification is open; Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; Voice v8/RTP 48,000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no MLS/DAVE, live voice, production, hardware or perceptual-quality claim.",
+      "notes": "Owned ordinary mono/stereo SILK/CELT/hybrid coding, unified mode transitions, PLC/CNG/FEC and official RFC8251 decoded-PCM evidence remain independently adopted. OpusAudioEncoder adds fixed-format normalized 48kHz ownership, fractional bitrate carry, atomic target changes, hard complete-packet caps, optional SILK LBRR and bounded RMS/hangover DTX with 400ms refresh. Adaptive CELT adds masked transient short blocks, anti-collapse and rate/spectral trim; fixed-analysis defaults remain compatible. SILK padding avoids false transition redundancy; pitch search excludes its 18ms upper endpoint; bounded gain/unvoiced/sparse rate-distortion search preserves hard budgets, with at most 135 quantizations per channel/frame and a documented low-rate speech fidelity limitation. Complete reference noise shaping/perceptual equivalence is not claimed. Independent adaptive fixtures and objective speech/music/frame diagnostics are documented in Docs/Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md. Apple explicit routing uses independent directional engines with exact readback and fail-closed lifecycle ownership; native qualification evidence is recorded separately. Windows/Android implementations are deferred by user scope. Added 2026-10-17; Voice v8/RTP 48000Hz unchanged; upstream announcement/effective dates unknown. No MLS/DAVE, live voice, production, broad hardware or perceptual MOS claim.",
       "manual": {
-        "behavior": "Owned ordinary mono/stereo SILK/CELT/hybrid packets compose common range coding, generalized coded/output channels, internal-rate changes, transition redundancy/fades and explicit PLC/CNG/in-band FEC. Mono/stereo SILK and hybrid PCM encoders select real voiced pitch/LTP, exact synthesis-feedback excitation and optional prior-active-channel LBRR within bounded budgets; CELT encoding uses long blocks without perceptual VBR/transient/pitch analysis. Independent pinned libopus 1.6.1 comparisons distinguish exact SILK integer/entropy from tolerance-qualified floating audio. Official RFC8251 vector results, source fingerprints, encoder limits and remaining native gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-codec-loss-conformance.md. Portable media and synthetic-only VAD remain implemented. Apple native device qualification is open; Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; Voice v8/RTP 48,000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no MLS/DAVE, live voice, production, hardware or perceptual-quality claim."
+        "behavior": "Owned ordinary mono/stereo SILK/CELT/hybrid coding, unified mode transitions, PLC/CNG/FEC and official RFC8251 decoded-PCM evidence remain independently adopted. OpusAudioEncoder adds fixed-format normalized 48kHz ownership, fractional bitrate carry, atomic target changes, hard complete-packet caps, optional SILK LBRR and bounded RMS/hangover DTX with 400ms refresh. Adaptive CELT adds masked transient short blocks, anti-collapse and rate/spectral trim; fixed-analysis defaults remain compatible. SILK padding avoids false transition redundancy; pitch search excludes its 18ms upper endpoint; bounded gain/unvoiced/sparse rate-distortion search preserves hard budgets, with at most 135 quantizations per channel/frame and a documented low-rate speech fidelity limitation. Complete reference noise shaping/perceptual equivalence is not claimed. Independent adaptive fixtures and objective speech/music/frame diagnostics are documented in Docs/Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md. Apple explicit routing uses independent directional engines with exact readback and fail-closed lifecycle ownership; native qualification evidence is recorded separately. Windows/Android implementations are deferred by user scope. Added 2026-10-17; Voice v8/RTP 48000Hz unchanged; upstream announcement/effective dates unknown. No MLS/DAVE, live voice, production, broad hardware or perceptual MOS claim."
       }
     }
   ],
@@ -90300,6 +90328,31 @@
       "id": "symbol.12A.OpusRangeCodingError",
       "path": "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift",
       "declaration": "public enum OpusRangeCodingError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusAudioEncoder",
+      "path": "Sources/DiscordVoiceCodecs/OpusAudioEncoder.swift",
+      "declaration": "public struct OpusAudioEncoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.OpusAudioEncoderError",
+      "path": "Sources/DiscordVoiceCodecs/OpusAudioEncoder.swift",
+      "declaration": "public enum OpusAudioEncoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusAudioEncodedPacket",
+      "path": "Sources/DiscordVoiceCodecs/OpusAudioEncoder.swift",
+      "declaration": "public struct OpusAudioEncodedPacket: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.OpusDTXPolicy",
+      "path": "Sources/DiscordVoiceCodecs/OpusAudioEncoder.swift",
+      "declaration": "public struct OpusDTXPolicy: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTEncoderAnalysisPolicy",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift",
+      "declaration": "public enum CELTEncoderAnalysisPolicy: Sendable, Equatable {"
     }
   ],
   "evidence": [
@@ -95637,6 +95690,121 @@
       "id": "evidence.12A.loss.OpusHybridFECOracleTests.independentOwnedLBRRRecovery",
       "path": "Tests/DiscordVoiceCodecsTests/OpusHybridFECOracleTests.swift",
       "anchor": "independentOwnedLBRRRecovery"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.ordinaryFormats",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "ordinaryFormats"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.silkPitchUpperEndpointRegression",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "silkPitchUpperEndpointRegression"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.fractionalRateUpdateAndReset",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "fractionalRateUpdateAndReset"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.silkPaddingBudgetBoundaries",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "silkPaddingBudgetBoundaries"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.dtxRefreshAndResumption",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "dtxRefreshAndResumption"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.dtxHangoverChannelsAndAtomicity",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "dtxHangoverChannelsAndAtomicity"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.silkBudgetRollback",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "silkBudgetRollback"
+    },
+    {
+      "id": "evidence.12A.policy.OpusAudioEncoderTests.configurationAdmission",
+      "path": "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+      "anchor": "configurationAdmission"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.adaptivePacketsToOfficialDecoder",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "adaptivePacketsToOfficialDecoder"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.transientOnsetsAndOrdinaryRecovery",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "transientOnsetsAndOrdinaryRecovery"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.lowBudgetShortDurationSilenceAndNarrowBand",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "lowBudgetShortDurationSilenceAndNarrowBand"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.sustainedLowFrequencyTones",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "sustainedLowFrequencyTones"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.boundaryOnsetsAndSpectralTilt",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "boundaryOnsetsAndSpectralTilt"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.rateAndSharedBudgetAllocationTrim",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "rateAndSharedBudgetAllocationTrim"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.adaptiveRollbackCopyAndReset",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "adaptiveRollbackCopyAndReset"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.exhaustedSharedPrefixRejectsWithoutAdvancingHistory",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "exhaustedSharedPrefixRejectsWithoutAdvancingHistory"
+    },
+    {
+      "id": "evidence.12A.policy.CELTEncoderAnalysisTests.packetAnalysisAndFinalRange",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+      "anchor": "packetAnalysisAndFinalRange"
+    },
+    {
+      "id": "evidence.12A.policy.SILKMonoEncoderTests.sparseRateDistortionCandidateBounds",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "sparseRateDistortionCandidateBounds"
+    },
+    {
+      "id": "evidence.12A.policy.SILKMonoEncoderTests.voicedBudgetUsesBoundedUnvoicedFallback",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoEncoderTests.swift",
+      "anchor": "voicedBudgetUsesBoundedUnvoicedFallback"
+    },
+    {
+      "id": "evidence.12A.policy.AppleAudioDirectionalBindingTests.configurationReadbackDecision",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioDirectionalBindingTests.swift",
+      "anchor": "configurationReadbackDecision"
+    },
+    {
+      "id": "evidence.12A.policy.AppleAudioDirectionalBindingTests.selectionOrderAndDefaultPreservation",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioDirectionalBindingTests.swift",
+      "anchor": "selectionOrderAndDefaultPreservation"
+    },
+    {
+      "id": "evidence.12A.policy.AppleAudioDirectionalBindingTests.invalidDeviceAndFailureShortCircuit",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioDirectionalBindingTests.swift",
+      "anchor": "invalidDeviceAndFailureShortCircuit"
+    },
+    {
+      "id": "evidence.12A.policy.AppleAudioTests.configurationCannotEraseRequiredInvalidation",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
+      "anchor": "configurationCannotEraseRequiredInvalidation"
     }
   ]
 }

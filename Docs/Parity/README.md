@@ -8,8 +8,10 @@ See the [dated record](changes/2026-10-17-voice-media.md) and
 The latest [codec/loss continuation](changes/2026-10-17-phase12a-codec-loss-conformance.md)
 records mono/stereo SILK, hybrid coding, unified ordinary mode transitions,
 PLC/CNG/FEC, independent compressed-audio comparisons and official vector evidence.
-Phase 12A remains incomplete while Windows/Android audio implementation and native
-device qualification remain open. Encoder analysis/quality limits remain explicit.
+The [encoder/native continuation](changes/2026-10-17-phase12a-encoder-native-qualification.md)
+adds bounded bitrate/DTX, adaptive CELT and reproducible signal/frame measurements.
+Windows/Android implementations are explicitly deferred for this closure request;
+native and perceptual qualification limits remain recorded separately.
 
 Baseline date: **2026-10-15**; implementation update **2026-10-16**. The initial
 HTTP/Gateway slice has three reviewed endpoint definitions: current-user and

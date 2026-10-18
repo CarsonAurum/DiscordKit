@@ -1,0 +1,101 @@
+{
+  "archiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "comparedSamples": 1596000,
+  "driverSHA256": "762a18a9751e02694a092583f4a78be701b737962d7b2877006d44c73c11764d",
+  "exact": [
+    "full-decoder final ranges both directions",
+    "physical byte counts",
+    "fixture byte identity"
+  ],
+  "excluded": [
+    "reference encoder byte identity",
+    "perceptual listening qualification",
+    "devices",
+    "real time"
+  ],
+  "fixedSequences": 36,
+  "fixture": {
+    "comparedSamples": 50400,
+    "frames": 30,
+    "maximumAbsoluteError": 2.4499999995430954e-07,
+    "nativeTransientFrames": 18,
+    "ownedTransientFrames": 18,
+    "path": "Tests/DiscordVoiceCodecsTests/CELTAdaptiveOracleFixtures.swift",
+    "postfilterFrames": 8,
+    "sha256": "a42f09a841f3cde71211f7850c06de028733614758d0ee6407ed3d08d6e8f40b",
+    "silenceFrames": 6,
+    "streams": 6
+  },
+  "frames": 1162,
+  "helperSources": {
+    "Tools/DiscordKitTools/scripts/verify_celt_frame_oracle.py": "ec38b054d0e073d962f3686c01f70d40f4049d5c06c7ab98292a00996afff60e",
+    "Tools/DiscordKitTools/scripts/verify_celt_header_oracle.py": "07370baf5a39827f258ac22f25027b7c5aa2d53086ca8f79b70fe23b1d6e8e8a",
+    "Tools/DiscordKitTools/scripts/verify_celt_pulse_oracle.py": "07f25cff4a459df6f75b57ccd1377b2d4143c9095521b37870d04efed0de9db5",
+    "Tools/DiscordKitTools/scripts/verify_celt_shape_oracle.py": "c3eab13db4211f69b2d24ffead57f8af9858bafbda904f38cbf489f10502c34b",
+    "Tools/DiscordKitTools/scripts/verify_celt_synthesis_oracle.py": "e7b69585091c7a2ed1c6d76437a762104283755187be922ae217aa3b7f0dd842",
+    "Tools/DiscordKitTools/scripts/verify_opus_range_oracle.py": "1ad6a365f8b7184370718a4f6b8cf3721d09c683a56ac6d065a1aa06536ac942"
+  },
+  "maximumAbsoluteError": 1.0130000000080353e-06,
+  "nativeTransientFrames": 685,
+  "ownedSources": {
+    "Sources/DiscordVoiceCodecs/CELTAllocationTables.swift": "2e264fd2ebfa0e69ef32cf393ab52e9d7473e4e35a89b2beed88a4ee9c326894",
+    "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift": "de91fa5930b1c285fc74f3229baa63a2347989a3b271ee03cdea3c6cb85813be",
+    "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift": "545af9e53ef2abb4ee19b745d381cc858b6f4fe6725bc066a0cf78420b92e98b",
+    "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift": "1b238b15095ac397a0a349d299ab1662e8b8c115d0e71609af5b799933a1d462",
+    "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift": "34b71434d4d363d7e3d344305bd3e73567870f0363ac31be03074b18f902abe3",
+    "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift": "d7807f6c6ed05e7ed57f9d9f634073fc53d24f3152dd055446ec6867289fb1fa",
+    "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift": "d86f05a805473ca41cc079de4e67cd780084d463212536385c235dcd44b11cf6",
+    "Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift": "859002144e888609728c362d87c16c7b7594d49e3fafa640581c7d7040d974ec",
+    "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
+    "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift": "f204727035942717114e65ceb8d98fac8cb17c137945eded3564e637ef964007",
+    "Sources/DiscordVoiceCodecs/CELTShapeTables.swift": "3c7fe7be7dbf01eba178d907542697976a09dc2391ed96c9aafdba20d9e8b74d",
+    "Sources/DiscordVoiceCodecs/CELTSynthesis.swift": "ee599d473f6aad1984c5dbf611fd784233d5e9b4c3614a41c8b08a0a9d022233",
+    "Sources/DiscordVoiceCodecs/CELTTransform.swift": "fec3dc376fead581a4b2a593c6247760692e4bb5dc5c518db4bba89a808762fd",
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "217be419f0f299f7126ba8cd9f999ee4bf16ed115135887e93fd4ca3ed0430a2"
+  },
+  "ownedTransientFrames": 553,
+  "postfilterFrames": 112,
+  "randomSequences": 256,
+  "referenceBuild": {
+    "configurationSHA256": "4d95928c5b4c8a2d502e20a4f221ed1fc50c58f05ab5b51a40f421975c81446b",
+    "configureArguments": [
+      "--disable-shared",
+      "--disable-extra-programs",
+      "--disable-doc",
+      "--disable-intrinsics",
+      "--disable-rtcd"
+    ],
+    "librarySHA256": "16c60e1bd6881250d88c853197cb6c689a3a2697b9583694145271a431635333",
+    "scalar": true
+  },
+  "referenceDriverSHA256": "58c61d5533bc82a38699fe42086b53f0c2d49baa5342d65c77991f3034467d47",
+  "releaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "scope": "adaptive CELT masked onset short-block and spectral/rate trim interoperability",
+  "seed": 67161219,
+  "sequences": 292,
+  "silenceFrames": 51,
+  "sourceURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "tolerance": {
+    "absoluteTimesStreamMaximum": 3e-06,
+    "relative": 8e-06
+  },
+  "upstreamSources": {
+    "celt/bands.c": "fc7ddcc7a46135c2cd89016025e4b96d30e9b514565610115467405d78d63ec6",
+    "celt/celt_decoder.c": "a53393c70ae917d39229f34bce2c16ada535807e095cad00a4580aee48c9bfdb",
+    "celt/celt_encoder.c": "5fa1a138c061cb4939141ff6704c33229e07168de72d9dcf071f17277829ced7",
+    "celt/kiss_fft.c": "0ff3c57ce9dededbf9925338808223ee8e164b5847f2b320da49b11bac4024d0",
+    "celt/mdct.c": "8a21116be9b1332926586f8f44af0e1afd9bb7e8a65614683f972654a0668dcb",
+    "celt/quant_bands.c": "bec6e7ac19ff02b83480c6ca6a01c084566781856a1e3442b7468bf25a4b937b",
+    "celt/rate.c": "f288c8b88882e6500ee5fbb9036eef1ee572e0301d28cd686061c815747a7b9e",
+    "celt/static_modes_float.h": "c3cf8439cdcf9281a5a0a66eefd5f9d0c82537c6f88e33b53ace9c9b3880f60c",
+    "celt/vq.c": "7f488e7ced4080d267e4ff44cb512861a47a49d45891277f4e898fe680dad0e5",
+    "src/opus.c": "1cee175636295bbd576ff384b77c31663b04fe09619598a452e067229205ade1",
+    "src/opus_decoder.c": "ddc60846096a83669aa33992481ce088eca791d6478ecdbf1e445a59d678779a",
+    "src/opus_encoder.c": "c9e0a841e60fb904c9918f9f9a82f744cefed0b55ea47d9d7027dd6b95ac2a2c"
+  },
+  "verifiedAt": "2026-10-18T04:10:02.626731+00:00",
+  "verifierSHA256": "05a640c409b338da4b569d9614867ed2472c10915fc427db53dce38d110118a7",
+  "version": "1.6.1"
+}

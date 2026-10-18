@@ -12,8 +12,11 @@ Apple audio ownership. The [codec/loss continuation](Parity/changes/2026-10-17-p
 adds mono/stereo SILK, shared-entropy hybrid coding, ordinary mode/channel/rate
 transitions, and explicit PLC/CNG/in-band FEC recovery. Encoders have deliberately
 bounded analysis and configuration; native platform and quality qualification
-remain separate. **The full 12A milestone remains incomplete** while required
-Windows/Android audio adapters and native device qualification are unavailable.
+remain separate. The [encoder and native qualification continuation](Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md)
+adds bounded bitrate/DTX ownership and adaptive CELT analysis. This closure request
+excludes Windows/Android implementations. Remaining qualification is recorded
+explicitly; neither that exclusion nor a numerical comparison implies perceptual,
+minimum-OS or all-Apple-device qualification.
 
 ## Products and ownership
 
@@ -161,6 +164,18 @@ composition without finalizing the interval between layers. Configuration,
 analysis and rate-control limitations are documented at the API; independent
 reference decoding establishes syntax and reconstruction, not perceptual quality.
 
+SILK rate admission tries at most 64 gains for the selected model, then up to 64
+unvoiced gains if voiced coding cannot fit. If ordinary gain admission fails, seven bounded
+scalar rate-distortion candidates favor sparse unvoiced pulses, including zero
+pulse indices, at the initial unvoiced gain. Work is capped at 135 quantizations
+per channel/frame. Every candidate retains the same input frame and VAD state,
+requested FEC obligation and exact decoder synthesis feedback. Failed admission
+preserves stream and caller entropy state; no retry increases the byte/bit cap.
+Sparse pulse indices remain ordinary encoded audio and can materially reduce
+waveform fidelity. The measured external speech excerpt at 32kbps mono produced
+4.61dB delay-aligned waveform SNR. This low-rate distortion remains a quality
+limitation; the numerical result supplies no perceptual acceptance claim.
+
 `CELTEnergyQuantizer`, `CELTFrameHeader` and `CELTBitAllocation` implement segmented
 prefix/TF/boost/trim syntax, predictive/coarse/fine/final energies, caps/interpolation,
 skips, stereo decisions and fine priorities. `CELTShapeCoding` adds recursive
@@ -171,9 +186,13 @@ sharing history across durations. Floating PCM is normalized by 32768 without cl
 
 `CELTFrameDecoder` composes the ordinary frame pipeline with atomic history
 replacement, coded/output channel conversion and hybrid start-band selection.
-`CELTFrameEncoder` supplies bounded long-block encoding from normalized 48-kHz
+`CELTFrameEncoder` supplies bounded encoding from normalized 48-kHz
 PCM: preemphasis, transform, band normalization, energy/allocation and shape coding.
-It selects no pitch prefilter/transient analysis or psychoacoustic VBR policy.
+Its default `.fixed` analysis preserves the existing long-block behavior. Opt-in
+`.adaptive` analysis selects short MDCTs for masked onsets, reserves anti-collapse
+and selects allocation trim from rate/spectral tilt. Low budgets retain long blocks;
+near-silent/low-frequency tonal input avoids spurious transient switching. Pitch
+prefilter search and reference psychoacoustic/noise-shaping equivalence are not supplied.
 `CELTPacketEncoder` supplies a single-frame TOC; `CELTPacketDecoder` accepts ordinary
 packing/padding and owns explicit loss. Periodic CELT PLC uses pitch and order-24
 LPC, falling back to shaped noise for long loss/high-band-only audio. Loss updates
@@ -199,6 +218,24 @@ It does not implement multistream/container framing, enhancement extensions,
 output gain or integer-output soft clipping. No network/device/task ownership is
 implicit. See the dated record for independent streams and official vector results.
 
+`OpusAudioEncoder` owns one explicit mode/bandwidth/layout/duration with normalized
+48kHz input. It selects adaptive CELT analysis and bandlimited SILK conversion;
+construction starts no tasks or I/O. Total codec bitrate includes TOC/packing,
+excludes network headers and carries fractional bytes exactly between frames.
+Changing the target clears only fractional carry. Caps never silently increase to
+fit content or FEC; an unencodable SILK budget fails without changing stream state.
+SILK uses minimum arithmetic storage plus standard packet padding, preventing
+unused physical payload from being interpreted as transition redundancy.
+
+Optional `OpusDTXPolicy` measures per-sample RMS without stereo cancellation, retains
+a bounded talkspurt hangover and transmits an ordinary refresh at most every 400ms.
+`shouldTransmit == false` permits omitting that interval's TOC-only placeholder;
+media time still advances and the receiver synthesizes PLC/CNG. Analysis continues
+during suppressed frames, so this saves bandwidth without promising CPU savings.
+CELT refresh/resumption requests independent energy prediction. The gate can suppress
+quiet wanted content and supplies no speech classifier. Automatic mode selection,
+perceptual encoder equivalence and hard realtime scheduling remain separate.
+
 Encoded video values retain opaque H.264/H.265/VP8/VP9/AV1, keyframe, dimension and
 optional spatial/temporal-layer metadata. Layer bounds are local storage policy,
 not inferred wire fields or negotiated capabilities. No
@@ -217,7 +254,10 @@ Capture uses the selected hardware rate and first one/two channels; portable
 resampling is explicit. Playback uses the configured format and selected output route.
 `availableDevices()` explicitly queries bounded immutable UID/name/direction metadata.
 macOS accepts exact CoreAudio input/output UIDs, resolving them again at start and
-checking actual AudioUnit binding. iOS/tvOS/visionOS accept available preferred-input
+checking actual AudioUnit binding. Explicit selection uses independent input/output
+engines, disabling each AudioUnit's unused direction before binding. This avoids
+AVAudioEngine's implicit duplex aggregate coupling; nil selections keep shared
+system-route ownership. iOS/tvOS/visionOS accept available preferred-input
 UIDs; cleanup restores only a preference the owner still controls. watchOS input and
 arbitrary non-macOS output UID selection fail explicitly because these public APIs
 cannot provide those controls. Nil UIDs retain system routing. Discovery starts no
@@ -230,11 +270,14 @@ reservation. No audio callback starts a Swift task. Callback locks/allocations m
 this adapter makes no hard realtime guarantee. Stop revokes callback admission,
 stops the engine and discards media. Always stop before abandoning the owner.
 
-Observed route/configuration/interruption/reset events stop/discard and require an
-explicit restart. Native notifications defer teardown outside the notification
-stack with a bounded coalesced invalidation. macOS also observes default-device
-changes. OS delivery is not a guaranteed privacy barrier against every route race;
-real hot-unplug/interruption/device qualification has not run. Selected device-alive
+Observed route/interruption/reset events stop/discard and require an explicit
+restart. A configuration notification can be ignored only while both owned graphs
+remain running, capture layout/rate/Float32 format is unchanged and selected native
+bindings remain alive and exact. Any failed query or mismatch stops ownership.
+Native notifications defer teardown outside the notification stack with a bounded
+coalesced invalidation; a benign configuration event cannot erase a pending stop.
+macOS also observes default-device changes. OS delivery is not a guaranteed privacy
+barrier against every route race. Selected device-alive
 and topology monitoring is bounded and released on stop. macOS additionally reads
 the selected devices' `DeviceIsAlive` flags after observer installation and again
 after engine startup. This rejects an unplug that occurred before the listener
@@ -246,9 +289,12 @@ The availability flag and observer ownership follow Apple's
 [DeviceIsAlive contract](https://developer.apple.com/documentation/coreaudio/kaudiodevicepropertydeviceisalive)
 and [listener registration contract](https://developer.apple.com/documentation/coreaudio/audioobjectaddpropertylistenerblock(_:_:_:_:)).
 These checks narrow startup races; they cannot guarantee hardware remains present
-after readback or supply real device qualification. Windows/Android
-capture/playback remain unimplemented. Linux accepts
-injected PCM. No test requests permission, opens a microphone or plays audio.
+after readback. Real macOS permission, route-change and selected-device hot-unplug
+observations are recorded in the [dated qualification record](Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md).
+Interruption, minimum-OS and mobile runtime checks remain separate. Windows/Android
+capture/playback remain deferred by the requested scope. Linux accepts injected PCM.
+Normal unit tests never request permission or open devices; the separate opt-in
+[qualification executable](../Tools/AppleAudioQualification/README.md) performs native I/O.
 
 ## Transport encryption and RTP
 
@@ -335,10 +381,14 @@ admission, independent compressed streams, loss/FEC comparisons and the complete
 official RFC 8251 corpus. Reports distinguish exact integer/entropy decisions from
 tolerance-qualified floating PCM and record the compiled source snapshots.
 
-MLS/DAVE interoperability, an owned supervised network/media pipeline,
-complete device routing/adapters and their qualification, non-macOS runtime and
-minimum-OS testing, authorized Discord voice smoke, a ten-minute lossless duplex run and per-frame p99 budgets
-remain open. No production voice, video, cross-platform or fleet-capacity claim
+The encoder-policy record includes objective speech/music diagnostics and measured
+frame p99 on this host. Low-rate SILK speech fidelity remains limited; numerical
+agreement supplies no perceptual acceptance. Native reports distinguish local
+capture/codec/playback accounting from unavailable hardware render-underrun telemetry.
+MLS/DAVE interoperability, an owned supervised network/media pipeline, complete
+platform/device qualification, non-macOS runtime and minimum-OS testing, authorized
+Discord voice smoke and demonstrated lossless hardware duplex remain open.
+No production voice, video, cross-platform or fleet-capacity claim
 follows from this release. See [source fingerprints](Parity/voice-media-current-sources.json),
 [chronological parity](Parity/changes/2026-10-17-voice-media.md) and
 [capability inventory](Parity/voice-media-capabilities.json).

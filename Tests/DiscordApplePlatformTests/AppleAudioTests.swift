@@ -360,6 +360,29 @@ struct AppleAudioTests {
         bridge.end()
     }
 
+    /// Benign configuration readback cannot overwrite a pending unconditional native stop in
+    /// either arrival order; all cases retain one deferred slot and the original stop callback.
+    /// - Parameters:
+    ///   - reason: Unconditional native route/interruption/reset/failure event to preserve.
+    ///   - configurationFirst: Whether a benign setup event also precedes the required stop.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test(arguments: [AppleAudioStopReason.routeChanged, .interruption, .mediaServicesReset, .failed], [false, true])
+    func configurationCannotEraseRequiredInvalidation(_ reason: AppleAudioStopReason,
+                                                      _ configurationFirst: Bool) {
+        let delivery = AudioTestDelivery()
+        let bridge = AppleAudioInvalidationBridge { action in delivery.enqueue(action) }
+        let generation = bridge.begin()
+        let required = AppleAudioCallbacks(capture: { _ in false }, stopped: { delivery.reasons.append($0) })
+        let benign = AppleAudioCallbacks(capture: { _ in false }, stopped: { _ in })
+        if configurationFirst { bridge.enqueue(.configurationChanged, callbacks: benign, generation: generation) }
+        bridge.enqueue(reason, callbacks: required, generation: generation)
+        for _ in 0..<10 { bridge.enqueue(.configurationChanged, callbacks: benign, generation: generation) }
+        #expect(delivery.pendingCount() == 1 && delivery.reasons.isEmpty)
+        delivery.runNext()
+        #expect(delivery.reasons == [reason] && delivery.pendingCount() == 0)
+        bridge.end()
+    }
+
     /// Synthetic planar/interleaved native buffers round-trip channels without device access.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test(arguments: [false, true])

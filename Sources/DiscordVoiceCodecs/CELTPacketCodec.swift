@@ -15,6 +15,9 @@ public struct CELTPacketEncoder: Sendable {
     public let frameSampleCount: Int
     public let channelCount: Int
     public let bandwidth: OpusBandwidth
+    public let analysisPolicy: CELTEncoderAnalysisPolicy
+    /// Final arithmetic range from the last successful frame, or zero before encoding/reset.
+    public private(set) var finalRange: UInt32 = 0
     private var encoder: CELTFrameEncoder
     private let toc: UInt8
 
@@ -24,8 +27,11 @@ public struct CELTPacketEncoder: Sendable {
     ///   - channelCount: Exactly one or two coded channels; default one.
     ///   - bandwidth: Narrow, wide, superwide or fullband; default fullband.
     ///     Mediumband has no CELT TOC and is explicitly rejected.
+    ///   - analysisPolicy: Fixed long-block/neutral trim by default; adaptive adds
+    ///     masked transient short blocks and bitrate/spectral tilt allocation.
     /// - Throws: `unsupportedBandwidth` or the frame encoder's format validation errors.
-    public init(frameSampleCount: Int, channelCount: Int = 1, bandwidth: OpusBandwidth = .fullband) throws {
+    public init(frameSampleCount: Int, channelCount: Int = 1, bandwidth: OpusBandwidth = .fullband,
+                analysisPolicy: CELTEncoderAnalysisPolicy = .fixed) throws {
         let band: Int
         let configurationBase: Int
         switch bandwidth {
@@ -35,10 +41,12 @@ public struct CELTPacketEncoder: Sendable {
         case .fullband: band = 21; configurationBase = 28
         case .mediumband: throw CELTPacketCodecError.unsupportedBandwidth
         }
-        encoder = try CELTFrameEncoder(frameSampleCount: frameSampleCount, channelCount: channelCount, endBand: band)
+        encoder = try CELTFrameEncoder(frameSampleCount: frameSampleCount, channelCount: channelCount,
+            endBand: band, analysisPolicy: analysisPolicy)
         self.frameSampleCount = frameSampleCount
         self.channelCount = channelCount
         self.bandwidth = bandwidth
+        self.analysisPolicy = analysisPolicy
         let duration = frameSampleCount == 120 ? 0 : (frameSampleCount == 240 ? 1 : (frameSampleCount == 480 ? 2 : 3))
         toc = UInt8((configurationBase + duration) << 3 | (channelCount == 2 ? 4 : 0))
     }
@@ -56,12 +64,16 @@ public struct CELTPacketEncoder: Sendable {
                                 intra: Bool = false) throws -> Data {
         guard (3...1_276).contains(packetByteCount) else { throw CELTPacketCodecError.invalidPacketByteCount }
         let frame = try encoder.encode(samples, frameByteCount: packetByteCount - 1, intra: intra)
+        finalRange = frame.finalRange
         return Data([toc]) + frame.bytes
     }
 
     /// Discards all analysis/prediction history while preserving the fixed TOC format.
     /// Pending audio tails are lost; callers explicitly drain or reset at discontinuities.
-    public mutating func reset() { encoder.reset() }
+    public mutating func reset() {
+        encoder.reset()
+        finalRange = 0
+    }
 }
 
 /// Caller-driven CELT-only Opus packet decoding with atomic multi-frame admission.

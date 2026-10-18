@@ -214,7 +214,9 @@ public extension AppleAudioBackend {
 ///
 /// The embedding app supplies NSMicrophoneUsageDescription and required sandbox entitlements.
 /// Query/request permission explicitly before capture start. Route changes and interruptions request
-/// stop and discard queued media, requiring explicit restart. Native notification delivery is
+/// stop and discard queued media, requiring explicit restart. macOS configuration notifications
+/// whose running graphs, capture format, exact bindings and liveness still match are benign delayed
+/// setup notifications; other observed configuration changes stop. Native notification delivery is
 /// asynchronous and cannot guarantee the absence of transient hardware rerouting. macOS UIDs
 /// select exact engine-local devices. AVAudioSession input preferences require app-wide session authority. Native codec processing and background entitlement ownership
 /// remain separate work. Call stop before abandoning the owner; deinitialization also stops.
@@ -540,6 +542,9 @@ private final class AppleAudioStorage: Sendable {
 /// https://developer.apple.com/documentation/avfaudio/responding-to-audio-route-changes.
 @MainActor private final class NativeAppleAudioBackend: AppleAudioBackend {
     private var engine: AVAudioEngine?
+    #if os(macOS)
+    private var separatePlaybackEngine: AVAudioEngine?
+    #endif
     private var player: AVAudioPlayerNode?
     private var playbackFormat: AVAudioFormat?
     private var tapInstalled = false
@@ -658,6 +663,8 @@ private final class AppleAudioStorage: Sendable {
     ///   macOS installs route/alive listeners before starting the graph and checks selected-device
     ///   liveness both before and after startup, so an earlier unobserved unplug fails closed even
     ///   when the AudioUnit retains its former device ID. Readback is not a hardware-presence guarantee.
+    ///   Explicit macOS duplex selection uses two direction-specific engines; a shared engine's
+    ///   single duplex unit cannot bind separately to input-only/output-only physical devices.
     func start(configuration: AppleAudioConfiguration, callbacks: AppleAudioCallbacks) throws -> PCMFormat? {
         guard engine == nil else { throw AppleAudioError.alreadyRunning }
         #if !os(macOS)
@@ -691,16 +698,24 @@ private final class AppleAudioStorage: Sendable {
         let native = AVAudioEngine()
         engine = native
         #if os(macOS)
+        let separateDirections = configuration.captureEnabled && configuration.playbackEnabled &&
+            (configuration.captureDeviceUID != nil || configuration.playbackDeviceUID != nil)
+        let outputNative = separateDirections ? AVAudioEngine() : native
+        if separateDirections { separatePlaybackEngine = outputNative }
         var selectedInputID: AudioDeviceID?
         var selectedOutputID: AudioDeviceID?
-        if let uid = configuration.captureDeviceUID {
-            selectedInputID = try selectDevice(uid: uid, direction: .input, node: native.inputNode)
+        if configuration.captureEnabled && (separateDirections || configuration.captureDeviceUID != nil) {
+            selectedInputID = try selectDevice(uid: configuration.captureDeviceUID,
+                                               direction: .input, node: native.inputNode)
         }
-        if let uid = configuration.playbackDeviceUID {
-            selectedOutputID = try selectDevice(uid: uid, direction: .output, node: native.outputNode)
+        if configuration.playbackEnabled && (separateDirections || configuration.playbackDeviceUID != nil) {
+            selectedOutputID = try selectDevice(uid: configuration.playbackDeviceUID,
+                                                direction: .output, node: outputNative.outputNode)
         }
-        let bindingProperties = NativeAppleAudioBoundDeviceProperties(engine: native)
+        let bindingProperties = NativeAppleAudioBoundDeviceProperties(inputEngine: native, outputEngine: outputNative)
         try AppleAudioHardwareBinding.verify(input: selectedInputID, output: selectedOutputID, using: bindingProperties)
+        #else
+        let outputNative = native
         #endif
         activeObserverGeneration = invalidation.begin()
         var captureFormat: PCMFormat?
@@ -741,17 +756,53 @@ private final class AppleAudioStorage: Sendable {
                 throw AppleAudioError.unavailableFormat
             }
             let player = AVAudioPlayerNode()
-            native.attach(player)
+            outputNative.attach(player)
             if #available(macOS 27, iOS 27, tvOS 27, watchOS 27, visionOS 27, *) {
-                try native.connectNode(player, to: native.mainMixerNode, format: format)
+                try outputNative.connectNode(player, to: outputNative.mainMixerNode, format: format)
             } else {
-                native.connect(player, to: native.mainMixerNode, format: format)
+                outputNative.connect(player, to: outputNative.mainMixerNode, format: format)
             }
             self.player = player
             playbackFormat = format
         }
+        #if os(macOS)
+        let configurationCallbacks = AppleAudioCallbacks(capture: callbacks.capture, stopped: {
+            [weak native, weak outputNative] reason in
+            guard let native, let outputNative else { callbacks.stopped(reason); return }
+            var observedCapture: PCMFormat?
+            if let expected = captureFormat {
+                let current = native.inputNode.outputFormat(forBus: 0)
+                if current.commonFormat == .pcmFormatFloat32,
+                   current.sampleRate.isFinite, current.sampleRate.rounded() == current.sampleRate,
+                   (8_000...192_000).contains(current.sampleRate),
+                   current.channelCount >= UInt32(expected.channelCount) {
+                    observedCapture = try? PCMFormat(sampleRate: Int(current.sampleRate),
+                                                     channelCount: expected.channelCount)
+                }
+            }
+            guard !AppleAudioConfigurationReadback.requiresStop(captureRunning: native.isRunning,
+                playbackRunning: !configuration.playbackEnabled || outputNative.isRunning,
+                expectedCapture: captureFormat, observedCapture: observedCapture) else {
+                callbacks.stopped(reason)
+                return
+            }
+            do {
+                try AppleAudioHardwareBinding.verify(input: selectedInputID, output: selectedOutputID,
+                    using: bindingProperties)
+                try AppleAudioDeviceLiveness.verify(input: selectedInputID, output: selectedOutputID,
+                    using: NativeAppleAudioDeviceLivenessProperties())
+            } catch { callbacks.stopped(reason) }
+        })
+        observe(name: .AVAudioEngineConfigurationChange, object: native,
+                reason: .configurationChanged, callbacks: configurationCallbacks)
+        if separateDirections {
+            observe(name: .AVAudioEngineConfigurationChange, object: outputNative,
+                    reason: .configurationChanged, callbacks: configurationCallbacks)
+        }
+        #else
         observe(name: .AVAudioEngineConfigurationChange, object: native,
                 reason: .configurationChanged, callbacks: callbacks)
+        #endif
         #if !os(macOS)
         let session = AVAudioSession.sharedInstance()
         observe(name: AVAudioSession.interruptionNotification, object: session,
@@ -771,6 +822,10 @@ private final class AppleAudioStorage: Sendable {
         native.prepare()
         try native.start()
         #if os(macOS)
+        if separateDirections {
+            outputNative.prepare()
+            try outputNative.start()
+        }
         try AppleAudioHardwareBinding.verify(input: selectedInputID, output: selectedOutputID, using: bindingProperties)
         try AppleAudioDeviceLiveness.verify(input: selectedInputID, output: selectedOutputID, using: liveness)
         #endif
@@ -811,6 +866,10 @@ private final class AppleAudioStorage: Sendable {
         if tapInstalled { engine?.inputNode.removeTap(onBus: 0) }
         tapInstalled = false
         engine?.stop()
+        #if os(macOS)
+        separatePlaybackEngine?.stop()
+        separatePlaybackEngine = nil
+        #endif
         engine = nil
         player = nil
         playbackFormat = nil
@@ -853,31 +912,31 @@ private final class AppleAudioStorage: Sendable {
     }
 
     #if os(macOS)
-    /// Selects an engine-local macOS input/output device without changing system defaults.
+    /// Configures a direction-specific engine and selects its exact physical device when requested.
     /// - Parameters:
-    ///   - uid: Exact configured local UID; disappearance never falls back to another device.
+    ///   - uid: Exact local UID or nil for this direction's system route; no explicit UID falls back.
     ///   - direction: Input/output stream eligibility to validate before touching the AudioUnit.
     ///   - node: Engine I/O node whose current device is changed before graph/tap setup.
-    /// - Returns: Resolved native ID for paired readback and selected-device alive monitoring.
+    /// - Returns: Explicit native ID for paired readback/liveness monitoring, or nil for default routing.
     /// - Throws: `deviceUnavailable` for missing UID/direction; `nativeFailure` for native rejection.
     ///   Both selected directions are verified together after selection and again after startup,
     ///   because selecting a second device or starting the engine may rebind an earlier node.
     ///   Selection never changes system-wide default properties.
-    private func selectDevice(uid: String, direction: AppleAudioDirection, node: AVAudioIONode) throws -> AudioDeviceID {
-        var identifier = try AppleAudioHardwareCatalog.deviceID(uid: uid, direction: direction,
-                                                               using: NativeAppleAudioHardwareProperties())
+    private func selectDevice(uid: String?, direction: AppleAudioDirection, node: AVAudioIONode) throws -> AudioDeviceID? {
+        let identifier = try uid.map {
+            try AppleAudioHardwareCatalog.deviceID(uid: $0, direction: direction,
+                                                   using: NativeAppleAudioHardwareProperties())
+        }
         if #available(macOS 27, *) {
             try node.withAudioUnit { unit in
-                guard let unit, AudioUnitSetProperty(unit, kAudioOutputUnitProperty_CurrentDevice,
-                    kAudioUnitScope_Global, 0, &identifier, UInt32(MemoryLayout<AudioDeviceID>.size)) == noErr else {
-                    throw AppleAudioError.nativeFailure
-                }
+                guard let unit else { throw AppleAudioError.nativeFailure }
+                try AppleAudioDirectionalBinding.configure(device: identifier, direction: direction,
+                    using: NativeAppleAudioDirectionalUnitProperties(unit: unit))
             }
         } else {
-            guard let unit = node.audioUnit, AudioUnitSetProperty(unit, kAudioOutputUnitProperty_CurrentDevice,
-                kAudioUnitScope_Global, 0, &identifier, UInt32(MemoryLayout<AudioDeviceID>.size)) == noErr else {
-                throw AppleAudioError.nativeFailure
-            }
+            guard let unit = node.audioUnit else { throw AppleAudioError.nativeFailure }
+            try AppleAudioDirectionalBinding.configure(device: identifier, direction: direction,
+                using: NativeAppleAudioDirectionalUnitProperties(unit: unit))
         }
         return identifier
     }
@@ -948,14 +1007,19 @@ final class AppleAudioInvalidationBridge: Sendable {
         }
     }
 
-    /// Replaces the single pending event, enqueuing at most one deferred delivery for a burst.
+    /// Coalesces one pending event, preserving an unconditional invalidation over setup notifications.
     /// - Parameters:
-    ///   - reason: Latest native invalidation reason; the newest current-generation reason wins.
+    ///   - reason: Latest native reason. New current-generation reasons replace older ones, except
+    ///     configurationChanged cannot overwrite a pending non-configuration invalidation. macOS
+    ///     configuration callbacks may ignore benign setup readback; route/interruption/reset events
+    ///     must retain their unconditional cleanup authority in either notification arrival order.
     ///   - callbacks: Current native session's MainActor invalidation callback.
     ///   - generation: Observer installation generation; stale events after restart are ignored.
     func enqueue(_ reason: AppleAudioStopReason, callbacks: AppleAudioCallbacks, generation: UUID) {
         let needsDelivery = lock.withLock { state in
             guard state.generation == generation else { return false }
+            if reason == .configurationChanged, let pending = state.pending,
+               pending.0 != .configurationChanged { return false }
             state.pending = (reason, callbacks)
             guard !state.deliveryScheduled else { return false }
             state.deliveryScheduled = true

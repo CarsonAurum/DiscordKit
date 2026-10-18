@@ -1,5 +1,6 @@
 #if canImport(AVFoundation) && canImport(os)
 import AVFoundation
+import DiscordMedia
 import Foundation
 #if os(macOS)
 import AudioToolbox
@@ -110,18 +111,25 @@ enum AppleAudioRouting {
 
 /// Native scoped AudioUnit property reader; constructing it does not query or create I/O nodes.
 @MainActor struct NativeAppleAudioBoundDeviceProperties: AppleAudioBoundDeviceProperties {
-    private let engine: AVAudioEngine
+    private let inputEngine: AVAudioEngine
+    private let outputEngine: AVAudioEngine
 
     /// Retains an already explicitly constructed engine for bounded current-device readback.
-    /// - Parameter engine: Engine owned by the active backend; no native operations run here.
-    init(engine: AVAudioEngine) { self.engine = engine }
+    /// - Parameters:
+    ///   - inputEngine: Capture graph owned by the backend; no native operations run here.
+    ///   - outputEngine: Playback graph, possibly identical for system routing. Explicit duplex
+    ///     routing uses independent graphs because the macOS engine's I/O nodes share one unit.
+    init(inputEngine: AVAudioEngine, outputEngine: AVAudioEngine) {
+        self.inputEngine = inputEngine
+        self.outputEngine = outputEngine
+    }
 
     /// Reads the requested node's actual device using the SDK's scoped API when available.
     /// - Parameter direction: Exact input/output node selected by the backend configuration.
     /// - Returns: The native currently bound device ID, including unknown when the unit reports it.
     /// - Throws: `nativeFailure` for an absent unit, native query failure or unexpected byte length.
     func currentDevice(direction: AppleAudioDirection) throws -> AudioDeviceID {
-        let node: AVAudioIONode = direction == .input ? engine.inputNode : engine.outputNode
+        let node: AVAudioIONode = direction == .input ? inputEngine.inputNode : outputEngine.outputNode
         if #available(macOS 27, *) {
             return try node.withAudioUnit { unit in try Self.read(unit) }
         } else {
@@ -141,6 +149,105 @@ enum AppleAudioRouting {
                                    0, &identifier, &size) == noErr,
               size == MemoryLayout<AudioDeviceID>.size else { throw AppleAudioError.nativeFailure }
         return identifier
+    }
+}
+
+/// Injectable inactive AudioUnit configuration; deterministic tests do not construct a native graph.
+@MainActor protocol AppleAudioDirectionalUnitProperties {
+    /// Uninitializes the inactive unit before changing enabled directions or its device binding.
+    /// - Throws: `nativeFailure` when the native unit rejects uninitialization.
+    func uninitialize() throws
+
+    /// Enables or disables exactly one hardware direction without changing global routes.
+    /// - Parameters:
+    ///   - direction: Input bus one/input scope, or output bus zero/output scope.
+    ///   - enabled: Whether that direction participates in the independent graph.
+    /// - Throws: `nativeFailure` when the unit rejects the I/O property change.
+    func setEnabled(_ enabled: Bool, direction: AppleAudioDirection) throws
+
+    /// Selects one exact physical device after its unused direction has been disabled.
+    /// - Parameter device: Nonzero selected native device ID, previously resolved from its UID.
+    /// - Throws: `nativeFailure` on native rejection; no fallback is permitted.
+    func selectDevice(_ device: AudioDeviceID) throws
+}
+
+/// Ordered setup for a direction-specific graph, including single-direction physical devices.
+@MainActor enum AppleAudioDirectionalBinding {
+    /// Disables the unused direction before assigning a physical device to an inactive AudioUnit.
+    ///
+    /// AVAudioEngine's macOS input/output nodes share one unit, normally bound to an implicit
+    /// aggregate. Selecting an input-only microphone or output-only speaker while both directions
+    /// are enabled fails with invalid-property-value. Explicit duplex selection therefore uses
+    /// two independently owned engines, with the unused direction disabled in each before binding.
+    /// - Parameters:
+    ///   - device: Exact selected physical ID, or nil to preserve this direction's system route.
+    ///   - direction: The sole active direction for this independent graph.
+    ///   - properties: Scoped native unit or deterministic fake, not retained.
+    /// - Throws: `deviceUnavailable` for an unknown explicit ID before any property access; native
+    ///   errors propagate immediately. The backend owns cleanup of the partially configured graph.
+    static func configure(device: AudioDeviceID?, direction: AppleAudioDirection,
+                          using properties: any AppleAudioDirectionalUnitProperties) throws {
+        guard device != AudioDeviceID(kAudioObjectUnknown) else { throw AppleAudioError.deviceUnavailable }
+        try properties.uninitialize()
+        try properties.setEnabled(false, direction: direction == .input ? .output : .input)
+        try properties.setEnabled(true, direction: direction)
+        if let device { try properties.selectDevice(device) }
+    }
+}
+
+/// Pure decision for delayed native graph notifications after explicit inactive-unit setup.
+enum AppleAudioConfigurationReadback {
+    /// Requires stop for a stopped graph or changed capture format, with no timing grace interval.
+    /// - Parameters:
+    ///   - captureRunning: Whether the capture/primary graph is still running.
+    ///   - playbackRunning: Whether the playback graph is still running; use true if disabled.
+    ///   - expectedCapture: Negotiated format, or nil for playback-only operation.
+    ///   - observedCapture: Current format, or nil when disabled/invalid/unavailable.
+    /// - Returns: Whether to invalidate after separately verifying exact device bindings/liveness.
+    ///   A running unchanged graph can emit a delayed notification from setup itself; ignoring that
+    ///   notification does not suppress native default-route, topology or device-alive observers.
+    static func requiresStop(captureRunning: Bool, playbackRunning: Bool,
+                             expectedCapture: PCMFormat?, observedCapture: PCMFormat?) -> Bool {
+        !captureRunning || !playbackRunning || expectedCapture != observedCapture
+    }
+}
+
+/// Callback-scoped inactive unit property operations; it never retains an engine or starts I/O.
+@MainActor struct NativeAppleAudioDirectionalUnitProperties: AppleAudioDirectionalUnitProperties {
+    private let unit: AudioUnit
+
+    /// Stores a nonnil AudioUnit only for the caller's scoped native-unit callback.
+    /// - Parameter unit: Inactive unit owned by an AVAudioEngine, never retained beyond its callback.
+    init(unit: AudioUnit) { self.unit = unit }
+
+    /// Uninitializes before the engine's subsequent prepare/start owns initialization again.
+    /// - Throws: `nativeFailure` when the inactive native unit rejects the call.
+    func uninitialize() throws {
+        guard AudioUnitUninitialize(unit) == noErr else { throw AppleAudioError.nativeFailure }
+    }
+
+    /// Configures the documented HAL input/output enable scope and bus.
+    /// - Parameters:
+    ///   - enabled: UInt32 zero or one passed to the hardware I/O property.
+    ///   - direction: Input uses input scope/bus one; output uses output scope/bus zero.
+    /// - Throws: `nativeFailure` when the unit rejects the fixed-size property.
+    func setEnabled(_ enabled: Bool, direction: AppleAudioDirection) throws {
+        var value: UInt32 = enabled ? 1 : 0
+        let scope = direction == .input ? kAudioUnitScope_Input : kAudioUnitScope_Output
+        let bus: AudioUnitElement = direction == .input ? 1 : 0
+        guard AudioUnitSetProperty(unit, kAudioOutputUnitProperty_EnableIO, scope, bus,
+            &value, UInt32(MemoryLayout<UInt32>.size)) == noErr else { throw AppleAudioError.nativeFailure }
+    }
+
+    /// Binds only this inactive unit to a validated exact physical device.
+    /// - Parameter device: Current native ID; this does not write global default-device properties.
+    /// - Throws: `nativeFailure` for native rejection, including disconnected device races.
+    func selectDevice(_ device: AudioDeviceID) throws {
+        var identifier = device
+        guard AudioUnitSetProperty(unit, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global,
+            0, &identifier, UInt32(MemoryLayout<AudioDeviceID>.size)) == noErr else {
+            throw AppleAudioError.nativeFailure
+        }
     }
 }
 

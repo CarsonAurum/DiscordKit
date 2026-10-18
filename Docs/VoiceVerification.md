@@ -55,6 +55,7 @@ Each command accepts `--source-archive` and an optional `--report` destination:
 | verify_celt_plc_oracle.py | Raw periodic/noise PLC, pitch/LPC state, loss duration, envelopes and RNG |
 | verify_celt_packet_loss_oracle.py | Actual compressed CELT reception, withheld packets, burst loss, duration/bandwidth changes and recovery |
 | verify_celt_synthesis_oracle.py | Denormalization/IMDCT, overlap/postfilter/deemphasis and coded/output channel conversion |
+| verify_celt_adaptive_oracle.py | Owned masked-transient short blocks, anti-collapse and rate/spectral trim, independently decoded by scalar libopus |
 
 Existing entropy, codebook, transform, energy, allocation, shape, frame and packet
 verifiers remain independently useful. Run each script's `--help` for reference
@@ -75,3 +76,62 @@ The [native availability audit](Parity/phase12a-native-platform-audit.json) reco
 actual missing Windows/Android Swift libraries and audio SDK headers on this host,
 plus concrete WASAPI and AAudio/JNI implementation prerequisites. It does not count
 an injected backend or a failed compile probe as a native audio implementation.
+
+## Encoder policy and signal measurements
+
+`verify_opus_encoder_policy.py` builds an immutable optimized owned source snapshot
+and a separately supplied pinned scalar libopus decoder. It checks encoded final
+ranges, independent complete PCM, bounded allocations and DTX refreshes. It records
+sequential encode/decode p50/p99 with ten warmup frames followed by a reset; these
+sample measurements do not guarantee deadlines on another host or under device load.
+
+```sh
+python3 Tools/DiscordKitTools/scripts/verify_opus_encoder_policy.py \
+  --source-archive /path/to/opus-1.6.1.tar.gz \
+  --speech-wav /path/to/speech_orig.wav --music-wav /path/to/music_orig.wav \
+  --report /tmp/encoder-policy.json
+```
+
+WAV inputs are optional external 48kHz PCM16 mono/stereo. At most the first five
+seconds plus an explicit 60ms silent tail are measured. Inputs remain external;
+reports retain fingerprints. The recorded sample run uses the unmodified speech
+and music originals linked by the [official Opus examples](https://opus-codec.org/examples/):
+[speech](https://media.xiph.org/opus/samples/examples/speech_orig.wav) and
+[music](https://media.xiph.org/opus/samples/examples/music_orig.wav). No conversion
+is applied. Synthetic vowel/unvoiced, chord/percussion and DTX signals run separately.
+
+Unscaled waveform SNR follows bounded delay alignment and remains a diagnostic.
+There is no invented MOS/pass threshold, trained speech accuracy or listening-panel
+claim. Independent PCM tolerance is tight before suppression; PLC/recovery uses
+an explicitly wider sequence-scaled bound after the first suppressed interval.
+The Apple qualification executable is separate from normal tests; see its README
+for native permission/device actions and the exact measured versus unmeasured gates.
+
+Four additional FEC-plus-DTX streams cover wideband SILK and fullband hybrid in
+mono/stereo at fixed 20ms duration, using finite total targets of 256kbps mono and
+384kbps stereo. They preserve the existing ordinary synthetic/external cases.
+Each added stream first receives an independent ordinary native decode, then
+replays the same encoded packets while omitting source frames 2, 10 and 52.
+Recovery from the following packet must select actual LBRR before suppression
+and on talkspurt resumption; the omitted suppressed interval must use PLC with
+no LBRR. The following packet is subsequently decoded normally. The report keeps
+selected LBRR and suppressed PLC counts separate and compares complete recovery
+PCM and final ranges against the same operations in pinned libopus. Its
+`opus_packet_has_lbrr` inspection independently confirms selected/absent LBRR. These
+selected loss cases do not establish complete FEC/loss behavior, low-bitrate
+quality or waveform identity to the omitted ordinary decode. Recovery replay
+timings are excluded from the ordinary sequential encode/decode benchmark.
+
+Adaptive CELT fixture reproduction is nonwriting by default:
+
+```sh
+python3 Tools/DiscordKitTools/scripts/verify_celt_adaptive_oracle.py \
+  --source-archive /path/to/opus-1.6.1.tar.gz \
+  --report /tmp/celt-adaptive.json
+```
+
+The verifier compares its six committed independent fixture streams byte for byte.
+Only `--write-fixtures` replaces them; review the complete generated diff before
+accepting such a change. The [Apple runner guide](../Tools/AppleAudioQualification/README.md)
+describes separate real-device commands, source/binary provenance, native fault
+observations and the limits of callback and RSS accounting.

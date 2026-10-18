@@ -143,7 +143,7 @@
         "Tests/DiscordVoiceCodecsTests/CELTFrameHeaderTests.swift",
         "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift"
       ],
-      "remainingGates": "Owned ordinary and hybrid-band CELT decode, spectral channel conversion, periodic/noise PLC and post-loss energy recovery. Exact compressed arithmetic; floating synthesis/PLC tolerance-qualified against pinned scalar reference. Basic encoder omits perceptual VBR/transient/pitch decisions; numerical stress tolerances are report-specific and do not imply bit-exact float PCM."
+      "remainingGates": "Owned ordinary and hybrid-band CELT decode, spectral channel conversion, periodic/noise PLC and post-loss energy recovery. Exact compressed arithmetic; floating synthesis/PLC tolerance-qualified against pinned scalar reference. Adaptive encoder selects short transients and rate/spectral trim but omits reference psychoacoustic VBR/pitch prefilter search; numerical stress tolerances are report-specific and do not imply bit-exact float PCM."
     },
     {
       "id": "opus-encoder-decoder",
@@ -166,7 +166,8 @@
         "Sources/DiscordVoiceCodecs/SILKFrameQuantization.swift",
         "Sources/DiscordVoiceCodecs/CELTSynthesis.swift",
         "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift",
-        "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift"
+        "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift",
+        "Sources/DiscordVoiceCodecs/OpusAudioEncoder.swift"
       ],
       "evidence": [
         "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
@@ -186,9 +187,12 @@
         "Tests/DiscordVoiceCodecsTests/CELTChannelConversionTests.swift",
         "Tests/DiscordVoiceCodecsTests/OpusMalformedAudioTests.swift",
         "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
-        "Tests/DiscordVoiceCodecsTests/OpusHybridFECOracleTests.swift"
+        "Tests/DiscordVoiceCodecsTests/OpusHybridFECOracleTests.swift",
+        "Tests/DiscordVoiceCodecsTests/OpusAudioEncoderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTEncoderAnalysisTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTAdaptiveOracleFixtures.swift"
       ],
-      "remainingGates": "Ordinary 48kHz mono/stereo SILK/CELT/hybrid decoding, coded/output channel and rate changes, transition redundancy/fades, explicit PLC/CNG and subsequent-packet FEC. Conservative fixed-format SILK/hybrid PCM encoders and long-block CELT encoder have bounded analysis/rate policies; voiced pitch/LTP and optional encoder LBRR are implemented; perceptual/noise-shaping/transient/VBR/DTX qualification remains separate. No multistream, container, enhancement-extension, output-gain or integer soft-clip API. Official full-vector evidence and exact scope are in phase12a-opus-conformance-validation.json; device and realtime qualification remain open."
+      "remainingGates": "Ordinary mono/stereo SILK/CELT/hybrid coding with fixed-format bitrate/DTX owner, adaptive transient/trim and optional SILK FEC. Bit budgets can reject content atomically; no cap overshoot or silent FEC omission. Independent adaptive/official decoder-vector and objective speech/music/frame evidence is recorded separately. No automatic mode selection, reference delayed-decision shaping, perceptual MOS, broad corpus/minimum-OS/device or hard realtime guarantee; no multistream/container/enhancement-extension/gain/softclip API."
     },
     {
       "id": "transport-aead",
@@ -275,9 +279,10 @@
       "evidence": [
         "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
         "Tests/DiscordApplePlatformTests/AppleAudioDevicesTests.swift",
-        "Tests/DiscordApplePlatformTests/AppleAudioRoutesTests.swift"
+        "Tests/DiscordApplePlatformTests/AppleAudioRoutesTests.swift",
+        "Tests/DiscordApplePlatformTests/AppleAudioDirectionalBindingTests.swift"
       ],
-      "remainingGates": "Apple engine capture/playback, explicit macOS input/output UID selection, iOS/tvOS/visionOS preferred-input selection, bounded metadata/queues and observed lifecycle cleanup implemented. watchOS preferred input and arbitrary non-macOS output selection explicitly unsupported. Deterministic backend/property tests and selected-module cross-SDK compilation only; no permission/device/route/hot-unplug runtime qualification. Windows/Android adapters remain unimplemented. Linux PCM remains injected. Selected macOS liveness is checked after observer installation and engine start; failed listener installation rolls back atomically. These narrow startup races without guaranteeing device presence after readback."
+      "remainingGates": "Apple native capture/playback, explicit macOS input/output UIDs via independent directional engines, supported preferred-input routes, exact binding/liveness readback and fail-closed observed changes. Native permission/route/unplug/duplex evidence and exclusions are recorded in the dated encoder-native qualification record; no all-Apple-device/minimum-OS or native-underrun guarantee follows from callbacks. watchOS preferred input and arbitrary nonmacOS output UIDs remain explicit public API limits. Windows/Android implementations are deferred by user scope; Linux PCM remains injected."
     },
     {
       "id": "video-codecs-transforms",
@@ -298,7 +303,8 @@
       "status": "unsupported",
       "implementation": [],
       "evidence": [],
-      "remainingGates": "Official ordinary RFC8251 48kHz decoded-PCM corpus and independent compressed/loss/FEC comparisons are reported separately with exact scope. External crypto audit, MLS/DAVE conformance, per-platform native tests, perceptual encoding quality, authorized Discord smoke, ten-minute lossless duplex and frame-budget/RSS evidence remain open."
+      "remainingGates": "Official ordinary RFC8251 48kHz decoded-PCM corpus, independent adaptive/encoded/loss/FEC streams and selected speech/music/frame-time measurements are recorded separately. Real macOS permission, route-change, selected-device removal and local duplex accounting have separate reports; native render-underrun telemetry, true interruption, minimum-OS/mobile runtime and perceptual acceptance remain unqualified. Low-rate SILK speech fidelity is limited. External crypto audit, MLS/DAVE conformance, authorized Discord smoke and complete platform/device qualification remain open; Windows/Android implementations are deferred by user scope."
     }
-  ]
+  ],
+  "phase12AClosureScope": "Portable and Apple implementations; Windows/Android implementations explicitly deferred by user. Native, perceptual and runtime evidence remains separately bounded."
 }

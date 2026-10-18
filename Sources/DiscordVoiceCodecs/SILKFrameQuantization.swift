@@ -30,7 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 ///
 /// Analysis supplies stable LPC and already dequantized independent-frame indices.
 /// This helper retains no history: it derives LPC/LTP state from the encoder's
-/// decoder and searches five neighboring excitation pulses per target sample.
+/// decoder and searches five neighboring excitation pulses per target sample,
+/// optionally including zero under an explicit scalar rate-distortion penalty.
 /// Exact rewhitening, gain normalization, random signs, wrapping and PCM rounding
 /// keep quantization synchronized with ordinary decoders for voiced/unvoiced input.
 /// It does not implement the reference perceptual delayed-decision NSQ policy.
@@ -45,15 +46,22 @@ enum SILKFrameQuantization {
     ///   - previousGainQ16: Decoder's preceding strictly positive scalar gain.
     ///   - shortTermHistoryQ14: Decoder's sixteen normalized LPC history values.
     ///   - outputHistory: Decoder's preceding twenty milliseconds of internal PCM16.
+    ///   - ratePenalty: Nonnegative finite squared-PCM-error cost per absolute pulse,
+    ///     default zero for nearest-sample quantization. Positive costs also admit
+    ///     zero as a candidate, trading sample error for sparse ordinary excitation.
+    ///     The encoder supplies one of seven bounded fallback costs; no bit guarantee
+    ///     is inferred here, because final entropy admission remains its authority.
     /// - Returns: Exactly one bounded signed pulse in `-127...127` per target sample.
     ///   Every candidate is evaluated after the same integer rounding and saturation
-    ///   as the decoder. Ties choose the lower pulse deterministically. No caller
+    ///   as the decoder. Ties retain the first candidate: neighboring pulses are
+    ///   considered in ascending order before an optional separately admitted zero. No caller
     ///   state is modified; successful final decoding owns persistent reconstruction.
-    /// - Complexity: O(samples * (LPC order + five candidates + five LTP taps)),
+    /// - Complexity: O(samples * (LPC order + at most six candidates + five LTP taps)),
     ///   with bounded arrays for at most 320 target samples; no tasks or I/O occur.
     static func quantize(
         _ pcm: [Int16], coefficients: [Int16], parameters: SILKFrameParameters,
-        previousGainQ16: Int32, shortTermHistoryQ14: [Int32], outputHistory: [Int16]
+        previousGainQ16: Int32, shortTermHistoryQ14: [Int32], outputHistory: [Int16],
+        ratePenalty: Double = 0
     ) -> [Int16] {
         let subframeCount = parameters.gainsQ16.count
         let subframeLength = pcm.count / subframeCount
@@ -120,8 +128,11 @@ enum SILKFrameQuantization {
                 var bestPulse = center
                 var bestResidual: Int32 = 0
                 var bestSynthesis: Int32 = 0
-                var bestError = Int64.max
-                for pulse in max(-127, center - 2)...min(127, center + 2) {
+                var bestError = Double.infinity
+                let candidates = max(-127, center - 2)...min(127, center + 2)
+                let includeZero = ratePenalty > 0 && !candidates.contains(0)
+                for candidate in 0..<(candidates.count + (includeZero ? 1 : 0)) {
+                    let pulse = candidate < candidates.count ? candidates.lowerBound + candidate : 0
                     let level = Int32(pulse * 256 - (pulse > 0 ? 20 : (pulse < 0 ? -20 : 0))) + offset
                     let excitation = (negative ? -level : level) &* 64
                     let residual = excitation &+ longTermPrediction
@@ -129,7 +140,7 @@ enum SILKFrameQuantization {
                     let scaled = SILKFrameMath.multiplyWW(synthesis, gainQ10)
                     let reconstructed = Int16(clamping: SILKFrameMath.rounded(scaled, by: 8))
                     let difference = Int64(target) - Int64(reconstructed)
-                    let error = difference * difference
+                    let error = Double(difference * difference) + ratePenalty * Double(abs(pulse))
                     if error < bestError {
                         bestError = error
                         bestPulse = pulse

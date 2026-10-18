@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+    <key>CFBundleIdentifier</key><string>dev.discordkit.AppleAudioQualification</string>
+    <key>CFBundleName</key><string>DiscordKit Apple audio qualification</string>
+    <key>NSMicrophoneUsageDescription</key><string>Run an explicitly requested local microphone and playback qualification. Audio is processed in memory and is never recorded or transmitted.</string>
+</dict></plist>
