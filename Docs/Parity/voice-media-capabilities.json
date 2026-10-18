@@ -1,11 +1,12 @@
 {
   "schemaVersion": 1,
-  "verifiedOn": "2026-10-17",
+  "verifiedOn": "2026-10-18",
   "protocolVersions": {
     "voice": "8",
     "rtp": "2",
     "opus": "RFC6716 with RFC8251 updates",
-    "dave": "not implemented"
+    "dave": "not implemented",
+    "mls": "1.0 ciphersuite 2 (DAVE v1 profile)"
   },
   "phaseComplete": false,
   "capabilities": [
@@ -220,10 +221,31 @@
     },
     {
       "id": "mls",
-      "status": "unsupported",
-      "implementation": [],
-      "evidence": [],
-      "remainingGates": "MLS1.0/ciphersuite2 binary structures, TreeKEM, key schedule, signatures, proposals/commits/Welcome, membership/authentication and recovery are unimplemented."
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordMLS/MLSCredentials.swift",
+        "Sources/DiscordMLS/MLSCrypto.swift",
+        "Sources/DiscordMLS/MLSGroup.swift",
+        "Sources/DiscordMLS/MLSMessages.swift",
+        "Sources/DiscordMLS/MLSSecretTree.swift",
+        "Sources/DiscordMLS/MLSTree.swift",
+        "Sources/DiscordMLS/MLSWelcome.swift",
+        "Sources/DiscordMLS/MLSWire.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+        "Tests/DiscordMLSTests/MLSCryptoTests.swift",
+        "Tests/DiscordMLSTests/MLSFramingTests.swift",
+        "Tests/DiscordMLSTests/MLSGroupTests.swift",
+        "Tests/DiscordMLSTests/MLSMessagesTests.swift",
+        "Tests/DiscordMLSTests/MLSPassiveInteropTests.swift",
+        "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+        "Tests/DiscordMLSTests/MLSRemoteCommitTests.swift",
+        "Tests/DiscordMLSTests/MLSTreeTests.swift",
+        "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
+        "Tests/DiscordMLSTests/MLSWireTests.swift"
+      ],
+      "remainingGates": "Owned DAVE-v1 MLS key-establishment implementation with pinned published component and no-PSK passive Welcome vectors plus local multi-member lifecycle tests. Independent external cryptographic review, per-platform/backend and authorized Discord qualification remain open. DAVE signaling, sender media ratchets and codec transforms remain 12C, supervised sessions 12D. No production support claim."
     },
     {
       "id": "dave",

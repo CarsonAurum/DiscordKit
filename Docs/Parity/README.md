@@ -12,6 +12,9 @@ The [encoder/native continuation](changes/2026-10-17-phase12a-encoder-native-qua
 adds bounded bitrate/DTX, adaptive CELT and reproducible signal/frame measurements.
 Windows/Android implementations are explicitly deferred for this closure request;
 native and perceptual qualification limits remain recorded separately.
+The [Phase 12B MLS continuation](changes/2026-10-18-phase12b-mls.md) adds a fourth
+partial reviewed group for independent MLS key establishment, with published
+interoperability vectors and an explicit external cryptographic review gate.
 
 Baseline date: **2026-10-15**; implementation update **2026-10-16**. The initial
 HTTP/Gateway slice has three reviewed endpoint definitions: current-user and

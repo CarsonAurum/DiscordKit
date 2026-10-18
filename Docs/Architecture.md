@@ -1,6 +1,6 @@
 # Architecture and API conventions
 
-Status: adopted design, updated 2026-10-17. `DiscordBits`, `DiscordCore` and
+Status: adopted design, updated 2026-10-18. `DiscordBits`, `DiscordCore` and
 `DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
 Core aliases. Part 2 adds independently injected Foundation/NIO adapters, Unix IPC
 and Apple lifecycle ownership. Part 3 adds [HTTP execution](HTTP.md), partial Models
@@ -74,8 +74,13 @@ comparisons, never by product or ordinary test linkage. Encoder analysis limits 
 the remaining native adapter gates are recorded in the voice capability inventory.
 Voice uses Core/Models/Transport plus those media products; existing Gateway dispatch models supply narrow join
 inputs without a Gateway runtime dependency. VoiceCrypto uses Crypto/CryptoExtras.
-The MLS/DAVE and supervised Voice→Gateway edges below remain planned; no empty
-targets represent them. HTTP/Gateway/Client/Kit remain independent of voice.
+Phase 12B adds independently adopted [MLS](MLS.md): owned MLS 1.0/ciphersuite-2
+wire, credentials, key establishment, ratchet trees, secret trees and the restricted
+group-handshake profile required by DAVE v1. MLS selects only Swift Crypto and
+starts no tasks or I/O. DAVE media integration and the supervised Voice→Gateway
+edge remain planned; no empty targets represent them. HTTP/Gateway/Client/Kit
+remain independent of voice and MLS. The VoiceCrypto→MLS edge in the intended
+graph below will be selected when its media integration is implemented.
 
 ## Product boundaries
 
@@ -117,6 +122,7 @@ flowchart TD
     DiscordVoice --> DiscordVoiceCodecs
     DiscordVoice --> DiscordTransport
     DiscordVoiceCrypto --> DiscordMLS
+    DiscordMLS --> SwiftCrypto
     DiscordKit --> DiscordClient
     DiscordKit --> DiscordCommands
     DiscordKit --> DiscordOAuth
@@ -161,6 +167,7 @@ normalize trusted interaction dispatches into the same context and response acto
 | CertifiedDevices | Prioritized full-array device publication through injected local HTTP or RPC, with native device identifiers supplied by the host. No native audio-device discovery or media capture. |
 | Client/Kit | Supervised discovery/shard/ingestion composition, configuration, optional cache bridge, event access, diagnostics and typed services. |
 | Voice | Optional voice/media protocols; narrow Gateway control contracts rather than dependence on the facade. Crypto, MLS and codec work stays isolated. |
+| MLS | Independently adopted bounded MLS 1.0/ciphersuite-2 values, key establishment and DAVE-profile group handshakes. No transport, device, media or Gateway ownership; application authentication and delivery are injected. |
 | Activities | Bounded host messaging, typed command/event catalog and reference-counted subscriptions over an injected Activity binding. Owned browser bridge validates source/origin; no iframe host is manufactured. |
 | Social | Distinct host, authentication and access contracts; missing wire definitions remain explicit blockers. |
 

@@ -67,11 +67,19 @@ see `Docs/Voice.md`. They implement bounded PCM processing/streaming/clocks/paci
 continuous linear/bandlimited resampling, statistical speech activity, ordinary Opus
 framing/entropy, mono/stereo SILK/CELT/hybrid coding, ordinary mode transitions and PLC/CNG/FEC,
 transport AEAD and pure Voice v8/RTP/discovery/control components. They do not yet
-provide perceptually qualified full codec policies, MLS/DAVE or supervised network sessions. The Apple
+provide perceptually qualified full codec policies, DAVE media integration or supervised network sessions. The Apple
 platform adapter adds audio I/O, macOS input/output UIDs and supported preferred-input routing;
 Windows/Android audio and hardware qualification remain open.
 Construction starts no I/O. External crypto review, codec/MLS interoperability,
 per-platform device qualification and ten-minute duplex evidence remain open.
+
+Part 12B adds independently adopted DiscordMLS with owned MLS 1.0/ciphersuite-2
+wire, basic credentials, signed key packages, TreeKEM, key/secret trees, epoch
+exporters and the restricted group-handshake profile required by DAVE v1; see
+`Docs/MLS.md`. It selects only Swift Crypto and owns no transport or device I/O.
+Trusted participant identity/key associations and the expected external sender
+are application-supplied. DAVE media integration, independent crypto review,
+complete-client interoperability and live Discord qualification remain separate.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -92,6 +100,8 @@ per-platform device qualification and ten-minute duplex evidence remain open.
 - `Sources/DiscordActivities/`: independent Activity protocol/client/catalog over Core/Transport.
 - `Sources/DiscordMedia/`, `Sources/DiscordVoiceCodecs/`, `Sources/DiscordVoiceCrypto/`:
   bounded portable media, Opus packet/entropy structure and experimental voice crypto primitives.
+- `Sources/DiscordMLS/`: independently adopted MLS 1.0/ciphersuite-2 key establishment,
+  ratchet trees and restricted DAVE-profile group handshakes; no transport/media ownership.
 - `Sources/DiscordVoice/`: deterministic voice framing/control/RTP components; no client ownership.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.

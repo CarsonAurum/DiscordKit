@@ -285,3 +285,15 @@ three desktop hosts and owned Windows named-pipe I/O remain open. Deprecated
 WebSocket approval, differing published port bounds, missing clear-presence schema
 and relationship-scope spelling remain explicit. Shortcut-array and decimal-telemetry
 compatibility follow the published examples without claiming upstream correction.
+
+## Part 12B MLS update (2026-10-18)
+
+The independent DiscordMLS product implements the DAVE-v1 MLS 1.0/ciphersuite-2
+key-establishment profile. One partial reviewed group maps seven previously
+unimplemented voice-document sections to actual symbols and test anchors.
+Published primitive, schedule, tree, TreeKEM, transcript and no-PSK passive Welcome
+vectors supplement local actor membership/epoch tests. See [MLS](../MLS.md),
+[the dated change](changes/2026-10-18-phase12b-mls.md) and
+[the review packet](../MLSCryptoReview.md). Independent crypto review remains open;
+no DAVE media backend, live Discord interoperability or complete voice qualification
+is inferred from this support. Historical release tables above remain historical.

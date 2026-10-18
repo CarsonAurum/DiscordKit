@@ -1,0 +1,26 @@
+{
+  "crypto-basics": {
+    "url": "https://raw.githubusercontent.com/mlswg/mls-implementations/2034fe72e0c805a683ba76165660c834f2a8142a/test-vectors/crypto-basics.json",
+    "upstream_sha256": "17cfcf89af9f51d0f2aa7af77f6f9ec99376a039214b6d42a6f11646b83e8c29",
+    "fixture_sha256": "11120a4a88ae10c0217751ac6f32b6fac0df1625929b3feef63e9d6fc175ce13",
+    "filter": "cipher_suite == 2",
+    "cases": 1,
+    "verified": "2026-10-17"
+  },
+  "key-schedule": {
+    "url": "https://raw.githubusercontent.com/mlswg/mls-implementations/2034fe72e0c805a683ba76165660c834f2a8142a/test-vectors/key-schedule.json",
+    "upstream_sha256": "05aa9a68bd2538ace72d8c53375984cc728ef62220ebf314df675708546d97a7",
+    "fixture_sha256": "c00784abbe0f56bd1af8454baff7ff97c74d7a664341805e08c707547ba6f05c",
+    "filter": "cipher_suite == 2",
+    "cases": 1,
+    "verified": "2026-10-17"
+  },
+  "secret-tree": {
+    "url": "https://raw.githubusercontent.com/mlswg/mls-implementations/2034fe72e0c805a683ba76165660c834f2a8142a/test-vectors/secret-tree.json",
+    "upstream_sha256": "08f92e6272452e2c832e32d38e16cf0c4aa28967e47d3842c60bc354c6b67a94",
+    "fixture_sha256": "7cbd096150f3051bd44599edee4dae6d8527aee34755ebd066c8635e4c769c7f",
+    "filter": "cipher_suite == 2",
+    "cases": 3,
+    "verified": "2026-10-17"
+  }
+}

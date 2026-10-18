@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "sources": [
+    {
+      "name": "mls-rfc9420",
+      "url": "https://www.rfc-editor.org/rfc/rfc9420.txt",
+      "sha256": "251ab11076c43fd4b8dc080a068a8caaf55e2fc5e6aa61d4274961627f32624b",
+      "bytes": 299103,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "hpke-rfc9180",
+      "url": "https://www.rfc-editor.org/rfc/rfc9180.txt",
+      "sha256": "f45a8b7c30231b26d668b1e8168074e5ab514b174d656b67e859895117f1f8f6",
+      "bytes": 192749,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "dave",
+      "url": "https://daveprotocol.com/",
+      "sha256": "bb1d5eb46b6b63589cf5f03bf6fd0aca9fbef1730d2ae833fecfd264c27ed09c",
+      "bytes": 124412,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "voice-connections",
+      "url": "https://docs.discord.com/developers/topics/voice-connections.md",
+      "sha256": "7daad5ac1df7dac9f46328fbd37c8bcf1aa9804f8bffc1bf768004d05ceabbba",
+      "bytes": 35065,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "bytes": 308684,
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    }
+  ],
+  "notes": "MLS RFC 9420 published July 2023; HPKE RFC 9180 published February 2022. DAVE grouped introduction/effective dates unknown. Discord non-E2EE enforcement dated 2026-03-01 is separate from local support. Swift Crypto remains pinned 5.0.1; primitive and fixture provenance is recorded under Tests/DiscordMLSTests/Fixtures. No live Discord calls."
+}

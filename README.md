@@ -30,8 +30,9 @@ with independent [portable media and voice protocol components](Docs/Voice.md):
 bounded PCM/DSP, Opus framing/entropy, mono/stereo SILK/CELT/hybrid coding, ordinary packet decoding with explicit loss/FEC recovery, transport AEAD, RTP and pure voice control reducers. The Apple adapter
 owns audio I/O and supported explicit device routing;
 native device qualification and Windows/Android implementations remain open.
-Encoding analysis and platform qualification remain bounded; MLS/DAVE and running
-voice sessions remain unimplemented;
+Encoding analysis and platform qualification remain bounded. Phase 12B adds
+independent [MLS 1.0/ciphersuite-2 key establishment and DAVE-profile group handshakes](Docs/MLS.md).
+DAVE media integration and running voice sessions remain subsequent work;
 native Social SDK and schema-blocked Social Commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -106,6 +107,10 @@ establish endpoint parity or qualify untested hosts. See the
   sparse merging, stale-fetch fences and arbitrary-width permission resolution.
 - `DiscordClient`: task-free configuration, supervised discovery/shards/ingestion, typed
   service access, diagnostics and idempotent awaited shutdown.
+- `DiscordMedia`, `DiscordVoiceCodecs`, `DiscordVoiceCrypto`, `DiscordVoice`: independent
+  bounded media/codec/transport-crypto and pure voice protocol components.
+- `DiscordMLS`: independent MLS 1.0/ciphersuite-2 credentials, key establishment,
+  ratchet trees, epoch exporters and the restricted group-handshake profile required by DAVE v1.
 
 See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/README.md),
 [interaction contracts](Docs/Interactions.md), the [HTTP application example](Examples/HTTPApp/README.md),
@@ -114,6 +119,8 @@ See [HTTP execution](Docs/HTTP.md), the [REST-only example](Examples/RESTOnly/RE
 [Gateway lifecycle and event catalog](Docs/Gateway.md),
 [the bot consumer example](Examples/GatewayBot/README.md), and
 [transport ownership, budgets and qualification limits](Docs/Transport.md).
+See [MLS ownership, authentication and interoperability limits](Docs/MLS.md) for
+the separately adopted MLS product.
 The independent [local load harness](Tools/DiscordKitLoadTests/README.md) records
 bounded cohort measurements; broad platform and Phase 2 qualification gates remain open.
 
@@ -139,6 +146,8 @@ other-platform runtime qualification remains recorded separately.
 - Optional voice products expose bounded streaming media, framing/entropy/crypto
   primitives and pure control reducers; supervised join/frame/leave sessions remain
   subsequent Phase 12 work.
+- MLS can be adopted separately for authenticated group key establishment; callers
+  supply trusted participant identity/key associations and authenticated delivery.
 - Platform and access restrictions produce explicit capability information.
 
 HTTP execution, the consumer client, sharded Gateway lifecycle, HTTP interactions and

@@ -14,7 +14,12 @@ fixed **test fixture**, never a real session key. The receiver owns no sends.
 There are no Discord requests, joins, permissions or background production tasks.
 Root Swift Testing suites exercise the same components and failure paths.
 
-Before that transport example, it drains synthetic PCM through the bounded
+Before that transport example, it establishes a two-member synthetic MLS group via
+a trusted external Add, tentative Commit and encrypted Welcome. Both owners must
+agree on explicit exporter bytes before cleanup; keys are never printed. The external
+signing scalar is a public test fixture. See [MLS](../../Docs/MLS.md) for audit limits.
+
+It also drains synthetic PCM through the bounded
 AsyncSequence/windowed-sinc resampler and checks exactly 1,920 output frames with a
 sample clock, then checks silence rejection by statistical VAD. It separately
 round-trips synthetic entropy and CELT pulse-codebook symbols. Those symbols do not
@@ -33,10 +38,10 @@ Normal builds use only the owned Swift codec, never native libopus.
 
 The selected product graph excludes HTTP, Gateway, Client, Cache, OAuth,
 Interactions, Commands, NIO and concrete network/device adapters. It includes
-Core/Models/Transport plus Media/VoiceCodecs/VoiceCrypto and the existing Swift
+Core/Models/Transport plus Media/VoiceCodecs/VoiceCrypto/MLS and the existing Swift
 Crypto/CryptoExtras graph. See [Voice](../../Docs/Voice.md) for ownership and limits.
 
-This Phase 12 consumer has no MLS/DAVE backend, supervised network session,
+This Phase 12 consumer has no DAVE media backend, supervised network session,
 microphone/playback adapter or perceptual/realtime qualification. Discord
 requires DAVE for eligible live sessions; this offline example cannot join one.
 It is not the roadmap's ten-minute duplex or authorized Discord smoke qualification.

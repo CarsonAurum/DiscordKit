@@ -3,7 +3,8 @@
 Verified and locally added **2026-10-17**. This is the first release of the
 multi-release [Part 12 plan](../.air/plans/phase-12-execution.plan.md), with four
 independently adopted products. **Complete Discord voice is not implemented.**
-No `VoiceSession`/`VoiceManager`, MLS group or DAVE backend is shipped yet. Apple system-route capture/playback is independently
+No `VoiceSession`/`VoiceManager` or DAVE media backend is shipped yet. The independent
+[Phase 12B MLS product](MLS.md) now supplies bounded group key establishment. Apple system-route capture/playback is independently
 available through `DiscordApplePlatform`; device qualification remains open.
 
 The subsequent [12A execution](../.air/plans/phase-12a-execution.plan.md) adds
@@ -364,7 +365,8 @@ backend is included. DAVE version zero fails closed.
 
 Discord's [E2EE requirement](https://docs.discord.com/developers/topics/voice-connections#end-to-end-encryption-dave-protocol)
 took effect for eligible conversations **2026-03-01**. Transport encryption cannot
-replace DAVE. MLS 1.0/ciphersuite 2, sender ratchets, frame transformations and
+replace DAVE. [MLS 1.0/ciphersuite 2 key establishment](MLS.md) is independently
+implemented; DAVE signaling integration, sender ratchets, frame transformations and
 identity verification remain required work. Unknown introduction/announcement
 dates are recorded as unknown; local implementation dates are separate.
 
@@ -385,7 +387,8 @@ The encoder-policy record includes objective speech/music diagnostics and measur
 frame p99 on this host. Low-rate SILK speech fidelity remains limited; numerical
 agreement supplies no perceptual acceptance. Native reports distinguish local
 capture/codec/playback accounting from unavailable hardware render-underrun telemetry.
-MLS/DAVE interoperability, an owned supervised network/media pipeline, complete
+Independent MLS component/passive-Welcome vectors and local group tests are recorded
+in [MLS](MLS.md). External crypto review, complete DAVE interoperability, an owned supervised network/media pipeline, complete
 platform/device qualification, non-macOS runtime and minimum-OS testing, authorized
 Discord voice smoke and demonstrated lossless hardware duplex remain open.
 No production voice, video, cross-platform or fleet-capacity claim

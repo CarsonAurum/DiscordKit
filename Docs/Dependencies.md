@@ -1,6 +1,6 @@
 # Dependency policy and qualification
 
-Updated: 2026-10-17. Part 2 adds approved Apple SwiftNIO/TLS dependencies only
+Updated: 2026-10-18. Part 2 adds approved Apple SwiftNIO/TLS dependencies only
 to the concrete NIO/Unix adapters. Bits, Core, Transport, DiscordKit and Foundation
 products do not import or link NIO. Separate development probes retain their
 independent exact graphs. Runtime qualification remains capability/host-specific;
@@ -63,6 +63,19 @@ the temporary reference library as well as individual reference routines. Their
 fixtures are development evidence, never a runtime dependency.
 Published AEAD/AES vector tests establish local primitive behavior, not an external
 crypto audit or MLS/DAVE interoperability. See [Voice](Voice.md).
+
+Phase 12B adds independently adopted [DiscordMLS](MLS.md), selecting only the
+existing Swift Crypto product. Owned Swift implements MLS framing, labeled
+derivations, HPKE base-mode composition and restricted group-handshake policy using
+public P-256, SHA-256/HMAC/HKDF and AES-GCM APIs. It imports neither CryptoExtras
+nor an external MLS library. Package requirements, resolved versions and platform
+minima remain unchanged. On Apple hosts this uses the existing platform CryptoKit
+backend; other-host native Crypto dependencies retain their conditional graph.
+No undocumented cryptographic backend symbol or Discord native SDK is used.
+Historical public MLS working-group vectors are development-only test resources,
+with pinned provenance. They do not become runtime dependencies or require consumer
+build-time downloads. Independent crypto review, complete-client interoperability
+and other-platform/minimum-OS runtime qualification remain separate gates.
 
 The foundational targets use the Swift standard library and Foundation. The internal
 test-support clock uses the standard `Synchronization` module's `Mutex` with
@@ -146,7 +159,8 @@ applicable license and attribution notices when distributing those components.
 This identifies reviewed files rather than certifying a complete redistribution
 audit: selected binaries' complete native-component attribution requirements remain
 to be reviewed for distribution. The Part 8 addition below records the selected
-Crypto product; CryptoExtras remains a development-probe dependency only.
+Crypto product. Part 12 subsequently selects CryptoExtras for the experimental
+truncated-tag adapter described above; MLS selects only Crypto.
 
 ## Requirements, resolved pins and provenance
 

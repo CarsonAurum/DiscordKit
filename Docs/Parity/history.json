@@ -1093,6 +1093,47 @@
       ],
       "details": "changes/2026-10-17-voice-media.md",
       "remainingGates": "../Voice.md"
+    },
+    {
+      "id": "2026-10-18-phase12b-mls",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "added",
+      "previousBehavior": "No MLS implementation; transport AEAD and experimental truncated AES-GCM only.",
+      "currentBehavior": "Independent experimental MLS 1.0 suite2 DAVE-v1 key-establishment profile, pinned published conformance vectors and bounded actor-owned public group handshakes. External crypto review and DAVE media/session integration remain open.",
+      "affectedSymbols": [
+        "MLSWriter",
+        "MLSReader",
+        "MLSCipherSuite2",
+        "MLSKeyPackage",
+        "MLSKeySchedule",
+        "MLSSecretTree",
+        "MLSRatchetTree",
+        "MLSKeyPackageOwner",
+        "MLSGroup"
+      ],
+      "affectedPayloads": "MLS 1.0 suite2 basic credentials, signed leaves/key packages, external Add/Remove proposals, referenced public commits, TreeKEM update paths, inline-tree Welcome and GroupInfo; no DAVE opcode/media transforms.",
+      "breakingChanges": [],
+      "migration": "Additively select DiscordMLS. Bind the trusted external sender and participants from authenticated session state; explicitly create or consume a single-use key package, select tentative commits and close/reset owners. No dependency version changes.",
+      "sources": [
+        "https://www.rfc-editor.org/rfc/rfc9420.txt",
+        "https://www.rfc-editor.org/rfc/rfc9180.txt",
+        "https://daveprotocol.com/",
+        "https://docs.discord.com/developers/topics/voice-connections.md",
+        "https://docs.discord.com/developers/change-log.md"
+      ],
+      "details": "changes/2026-10-18-phase12b-mls.md",
+      "remainingGates": "../MLSCryptoReview.md"
     }
   ]
 }

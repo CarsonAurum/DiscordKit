@@ -14,10 +14,11 @@ import DiscordVoiceCrypto
     /// It also checks conservative stereo SILK/hybrid encoding and CELT loss/recovery.
     /// Full codec conformance and native device qualification remain separate.
     /// Uses a fixed, public test-only key that must never be used for real media. No network,
-    /// device, authentication, DAVE context or background task is created. The two cipher
+    /// device, authenticated service, DAVE media context or background task is created. The two cipher
     /// instances model one sender and one receive-only peer, never two sending nonce owners.
     /// - Throws: Validation/authentication errors, including any round-trip invariant failure.
     static func main() async throws {
+        try await demonstrateMLS()
         try await demonstratePortableMedia()
         try demonstrateEntropyCoding()
         try demonstrateCodecComponents()
@@ -45,7 +46,7 @@ import DiscordVoiceCrypto
             }
             guard playout.bufferedBytes == 0 else { throw VoicePacketError.capacityExceeded }
             print("Five synthetic Opus packets authenticated and drained across RTP rollover.")
-            print("Offline transport example only; MLS/DAVE and live voice sessions remain unimplemented.")
+            print("Offline MLS/transport example only; DAVE media and live voice sessions remain unimplemented.")
             await sender.close()
             await receiver.close()
         } catch {

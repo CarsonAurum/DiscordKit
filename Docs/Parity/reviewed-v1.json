@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "verifiedOn": "2026-10-17",
+  "verifiedOn": "2026-10-18",
   "maxAgeDays": 30,
   "sources": [
     {
@@ -70266,6 +70266,130 @@
       "manual": {
         "behavior": "Owned ordinary mono/stereo SILK/CELT/hybrid coding, unified mode transitions, PLC/CNG/FEC and official RFC8251 decoded-PCM evidence remain independently adopted. OpusAudioEncoder adds fixed-format normalized 48kHz ownership, fractional bitrate carry, atomic target changes, hard complete-packet caps, optional SILK LBRR and bounded RMS/hangover DTX with 400ms refresh. Adaptive CELT adds masked transient short blocks, anti-collapse and rate/spectral trim; fixed-analysis defaults remain compatible. SILK padding avoids false transition redundancy; pitch search excludes its 18ms upper endpoint; bounded gain/unvoiced/sparse rate-distortion search preserves hard budgets, with at most 135 quantizations per channel/frame and a documented low-rate speech fidelity limitation. Complete reference noise shaping/perceptual equivalence is not claimed. Independent adaptive fixtures and objective speech/music/frame diagnostics are documented in Docs/Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md. Apple explicit routing uses independent directional engines with exact readback and fail-closed lifecycle ownership; native qualification evidence is recorded separately. Windows/Android implementations are deferred by user scope. Added 2026-10-17; Voice v8/RTP 48000Hz unchanged; upstream announcement/effective dates unknown. No MLS/DAVE, live voice, production, broad hardware or perceptual MOS claim."
       }
+    },
+    {
+      "id": "manual.12B.MLSKeyEstablishment",
+      "kind": "manual",
+      "name": "MLSKeyEstablishment",
+      "sourceID": "developers/topics/voice-connections",
+      "upstreamIDs": [
+        "d-9531702b8f8ad438ec6fe1b2",
+        "d-b9072ed2316a22f65576fd23",
+        "d-4a59c627856882b03e02fae8",
+        "d-d7152b110fbdd347e1cc1818",
+        "d-d3163a90b93b8ea66036e6e9",
+        "d-01cadaf9bcce94f5af872ec9",
+        "d-bc1a476cc76b02486b89038b"
+      ],
+      "status": "partial",
+      "supportSince": "2026-10-18",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.12B.MLSCredential",
+        "symbol.12B.MLSLifetime",
+        "symbol.12B.MLSCapabilities",
+        "symbol.12B.MLSLeafNodeSource",
+        "symbol.12B.MLSLeafNode",
+        "symbol.12B.MLSKeyPackage",
+        "symbol.12B.MLSExternalSender",
+        "symbol.12B.MLSCipherSuite2",
+        "symbol.12B.MLSHPKEKeyPair",
+        "symbol.12B.MLSHPKECiphertext",
+        "symbol.12B.MLSKeySchedule",
+        "symbol.12B.MLSGroupPolicy",
+        "symbol.12B.MLSTentativeCommit",
+        "symbol.12B.MLSGroupSnapshot",
+        "symbol.12B.MLSCommitOutcome",
+        "symbol.12B.MLSKeyPackageOwner",
+        "symbol.12B.MLSGroup",
+        "symbol.12B.MLSProposal",
+        "symbol.12B.MLSRatchetKey",
+        "symbol.12B.MLSSecretTree",
+        "symbol.12B.MLSTreeMath",
+        "symbol.12B.MLSParentNode",
+        "symbol.12B.MLSNode",
+        "symbol.12B.MLSUpdatePathNode",
+        "symbol.12B.MLSUpdatePath",
+        "symbol.12B.MLSPathSecrets",
+        "symbol.12B.MLSGeneratedUpdate",
+        "symbol.12B.MLSRatchetTree",
+        "symbol.12B.MLSError",
+        "symbol.12B.MLSWriter",
+        "symbol.12B.MLSReader",
+        "symbol.12B.MLSExtension",
+        "symbol.12B.MLSGroupContext"
+      ],
+      "evidenceIDs": [
+        "evidence.12B.MLSCredentialsTests.credentialEncodingAndIdentity",
+        "evidence.12B.MLSCredentialsTests.capabilitiesValidation",
+        "evidence.12B.MLSCredentialsTests.requiredCapabilities",
+        "evidence.12B.MLSCredentialsTests.packageRoundTripAndReference",
+        "evidence.12B.MLSCredentialsTests.lifetimePolicies",
+        "evidence.12B.MLSCredentialsTests.sourceSignatureBinding",
+        "evidence.12B.MLSCredentialsTests.leafStructuralFailures",
+        "evidence.12B.MLSCredentialsTests.signedExtensionCapabilities",
+        "evidence.12B.MLSCredentialsTests.leafSourceAndSignatureBoundaries",
+        "evidence.12B.MLSCredentialsTests.signatureTampering",
+        "evidence.12B.MLSCredentialsTests.packageMalformedAndTruncated",
+        "evidence.12B.MLSCredentialsTests.publishedWorkingGroupKeyPackages",
+        "evidence.12B.MLSCredentialsTests.publishedWorkingGroupContexts",
+        "evidence.12B.MLSCredentialsTests.externalSenderEncoding",
+        "evidence.12B.MLSCryptoTests.publishedCryptoBasics",
+        "evidence.12B.MLSCryptoTests.publishedKeySchedule",
+        "evidence.12B.MLSCryptoTests.publishedSecretTree",
+        "evidence.12B.MLSCryptoTests.signatureAndHPKEFailures",
+        "evidence.12B.MLSCryptoTests.symmetricAndBounds",
+        "evidence.12B.MLSCryptoTests.secretTreeReorderingAndBounds",
+        "evidence.12B.MLSFramingTests.canonicalProposalReferenceBytes",
+        "evidence.12B.MLSFramingTests.externalProposalAuthentication",
+        "evidence.12B.MLSFramingTests.senderAndProposalSelectors",
+        "evidence.12B.MLSFramingTests.commitReferenceEncodingAndValidation",
+        "evidence.12B.MLSFramingTests.memberSignatureMACAndTranscriptBoundaries",
+        "evidence.12B.MLSFramingTests.malformedPublicFrames",
+        "evidence.12B.MLSGroupTests.membershipEpochsConcurrentSelectionAndReplacement",
+        "evidence.12B.MLSGroupTests.authenticatedProposalAdmissionRevocationAndBounds",
+        "evidence.12B.MLSGroupTests.duplicateMembersInitialIsolationAndRemoteTampering",
+        "evidence.12B.MLSMessagesTests.publishedTranscriptHashes",
+        "evidence.12B.MLSMessagesTests.malformedMessageBoundaries",
+        "evidence.12B.MLSPassiveInteropTests.publishedPassiveWelcomes",
+        "evidence.12B.MLSPolicyTests.policyResourceBounds",
+        "evidence.12B.MLSPolicyTests.exactExternalSenderContext",
+        "evidence.12B.MLSPolicyTests.strictDAVELeafPolicy",
+        "evidence.12B.MLSPolicyTests.ownerConsumptionAndClosure",
+        "evidence.12B.MLSPolicyTests.cancellationBeforeAdmission",
+        "evidence.12B.MLSPolicyTests.proposalAuthenticationAndIdentity",
+        "evidence.12B.MLSPolicyTests.proposalCapacityWithoutEviction",
+        "evidence.12B.MLSPolicyTests.participantAndRevocationFences",
+        "evidence.12B.MLSPolicyTests.exporterBoundsAndOwnership",
+        "evidence.12B.MLSPolicyTests.correctedWelcomeAndFreshPackageRecovery",
+        "evidence.12B.MLSRemoteCommitTests.remoteWinnerAndAuthenticatedFailures",
+        "evidence.12B.MLSRemoteCommitTests.remoteAddWithoutPath",
+        "evidence.12B.MLSRemoteCommitTests.removalOnlyShrinksToSingleton",
+        "evidence.12B.MLSTreeTests.publishedTreeMath",
+        "evidence.12B.MLSTreeTests.publishedTreeValidation",
+        "evidence.12B.MLSTreeTests.publishedTreeKEM",
+        "evidence.12B.MLSTreeTests.proposalOperationsAndBounds",
+        "evidence.12B.MLSTreeTests.generatedUpdateAndTampering",
+        "evidence.12B.MLSTreeTests.pathWireAndSingletonBoundaries",
+        "evidence.12B.MLSWelcomeTests.welcomeStructuralBoundaries",
+        "evidence.12B.MLSWelcomeTests.welcomeSecretsBoundariesAndRedaction",
+        "evidence.12B.MLSWelcomeTests.groupInfoStructuralBoundaries",
+        "evidence.12B.MLSWelcomeTests.privatePathCoverageAndAncestorBounds",
+        "evidence.12B.MLSWelcomeTests.missingWelcomePathPreservesPackage",
+        "evidence.12B.MLSWireTests.scalarRoundTrips",
+        "evidence.12B.MLSWireTests.vectorLengthBoundaries",
+        "evidence.12B.MLSWireTests.malformedVector",
+        "evidence.12B.MLSWireTests.truncatedScalarsAndRawReads",
+        "evidence.12B.MLSWireTests.budgetsAndSlicedInput",
+        "evidence.12B.MLSWireTests.extensionRoundTripsAndBounds",
+        "evidence.12B.MLSWireTests.contextRoundTrips",
+        "evidence.12B.MLSWireTests.contextInvalidFields"
+      ],
+      "notes": "MLS 1.0 ciphersuite 2 DAVE-v1 key-establishment profile: bounded canonical wire, basic identities, signed leaves/key packages, P256 HPKE, key schedule/secret tree, tree and parent hashes, TreeKEM, authenticated external Add/Remove, referenced public commits, inline-tree Welcome, tentative epoch selection, removal/recovery and exporters. Construction starts no I/O or tasks. Published independent MLSWG vectors and local multi-member tests are evidence; generic no-PSK passive fixtures bypass Discord-specific identity/profile policy. DAVE signaling/media ratchets/transforms and live Discord integration remain Parts 12C/12D. Independent cryptographic review and cross-platform/minimum-OS qualification remain open; experimental partial support, no production or complete voice claim. Verified 2026-10-18; locally added 2026-10-18. Upstream announcement/effective dates for the grouped MLS profile are unknown. See Docs/MLS.md and Docs/MLSCryptoReview.md.",
+      "manual": {
+        "behavior": "MLS 1.0 ciphersuite 2 DAVE-v1 key-establishment profile: bounded canonical wire, basic identities, signed leaves/key packages, P256 HPKE, key schedule/secret tree, tree and parent hashes, TreeKEM, authenticated external Add/Remove, referenced public commits, inline-tree Welcome, tentative epoch selection, removal/recovery and exporters. Construction starts no I/O or tasks. Published independent MLSWG vectors and local multi-member tests are evidence; generic no-PSK passive fixtures bypass Discord-specific identity/profile policy. DAVE signaling/media ratchets/transforms and live Discord integration remain Parts 12C/12D. Independent cryptographic review and cross-platform/minimum-OS qualification remain open; experimental partial support, no production or complete voice claim. Verified 2026-10-18; locally added 2026-10-18. Upstream announcement/effective dates for the grouped MLS profile are unknown. See Docs/MLS.md and Docs/MLSCryptoReview.md."
+      }
     }
   ],
   "symbols": [
@@ -90353,6 +90477,171 @@
       "id": "symbol.12A.CELTEncoderAnalysisPolicy",
       "path": "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift",
       "declaration": "public enum CELTEncoderAnalysisPolicy: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSCredential",
+      "path": "Sources/DiscordMLS/MLSCredentials.swift",
+      "declaration": "public struct MLSCredential: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSLifetime",
+      "path": "Sources/DiscordMLS/MLSCredentials.swift",
+      "declaration": "public struct MLSLifetime: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSCapabilities",
+      "path": "Sources/DiscordMLS/MLSCredentials.swift",
+      "declaration": "public struct MLSCapabilities: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSLeafNodeSource",
+      "path": "Sources/DiscordMLS/MLSCredentials.swift",
+      "declaration": "public enum MLSLeafNodeSource: UInt8, Sendable { case keyPackage = 1, update = 2, commit = 3 }"
+    },
+    {
+      "id": "symbol.12B.MLSLeafNode",
+      "path": "Sources/DiscordMLS/MLSCredentials.swift",
+      "declaration": "public struct MLSLeafNode: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSKeyPackage",
+      "path": "Sources/DiscordMLS/MLSCredentials.swift",
+      "declaration": "public struct MLSKeyPackage: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSExternalSender",
+      "path": "Sources/DiscordMLS/MLSCredentials.swift",
+      "declaration": "public struct MLSExternalSender: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSCipherSuite2",
+      "path": "Sources/DiscordMLS/MLSCrypto.swift",
+      "declaration": "public enum MLSCipherSuite2 {"
+    },
+    {
+      "id": "symbol.12B.MLSHPKEKeyPair",
+      "path": "Sources/DiscordMLS/MLSCrypto.swift",
+      "declaration": "public struct MLSHPKEKeyPair: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSHPKECiphertext",
+      "path": "Sources/DiscordMLS/MLSCrypto.swift",
+      "declaration": "public struct MLSHPKECiphertext: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSKeySchedule",
+      "path": "Sources/DiscordMLS/MLSCrypto.swift",
+      "declaration": "public struct MLSKeySchedule: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSGroupPolicy",
+      "path": "Sources/DiscordMLS/MLSGroup.swift",
+      "declaration": "public struct MLSGroupPolicy: Sendable {"
+    },
+    {
+      "id": "symbol.12B.MLSTentativeCommit",
+      "path": "Sources/DiscordMLS/MLSGroup.swift",
+      "declaration": "public struct MLSTentativeCommit: Sendable {"
+    },
+    {
+      "id": "symbol.12B.MLSGroupSnapshot",
+      "path": "Sources/DiscordMLS/MLSGroup.swift",
+      "declaration": "public struct MLSGroupSnapshot: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSCommitOutcome",
+      "path": "Sources/DiscordMLS/MLSGroup.swift",
+      "declaration": "public enum MLSCommitOutcome: Sendable, Equatable { case advanced, removed }"
+    },
+    {
+      "id": "symbol.12B.MLSKeyPackageOwner",
+      "path": "Sources/DiscordMLS/MLSGroup.swift",
+      "declaration": "public actor MLSKeyPackageOwner: CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSGroup",
+      "path": "Sources/DiscordMLS/MLSGroup.swift",
+      "declaration": "public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSProposal",
+      "path": "Sources/DiscordMLS/MLSMessages.swift",
+      "declaration": "public enum MLSProposal: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSRatchetKey",
+      "path": "Sources/DiscordMLS/MLSSecretTree.swift",
+      "declaration": "public struct MLSRatchetKey: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSSecretTree",
+      "path": "Sources/DiscordMLS/MLSSecretTree.swift",
+      "declaration": "public struct MLSSecretTree: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSTreeMath",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public enum MLSTreeMath {"
+    },
+    {
+      "id": "symbol.12B.MLSParentNode",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public struct MLSParentNode: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSNode",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public enum MLSNode: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSUpdatePathNode",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public struct MLSUpdatePathNode: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSUpdatePath",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public struct MLSUpdatePath: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSPathSecrets",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public struct MLSPathSecrets: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSGeneratedUpdate",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public struct MLSGeneratedUpdate: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.12B.MLSRatchetTree",
+      "path": "Sources/DiscordMLS/MLSTree.swift",
+      "declaration": "public struct MLSRatchetTree: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSError",
+      "path": "Sources/DiscordMLS/MLSWire.swift",
+      "declaration": "public enum MLSError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSWriter",
+      "path": "Sources/DiscordMLS/MLSWire.swift",
+      "declaration": "public struct MLSWriter: Sendable {"
+    },
+    {
+      "id": "symbol.12B.MLSReader",
+      "path": "Sources/DiscordMLS/MLSWire.swift",
+      "declaration": "public struct MLSReader: Sendable {"
+    },
+    {
+      "id": "symbol.12B.MLSExtension",
+      "path": "Sources/DiscordMLS/MLSWire.swift",
+      "declaration": "public struct MLSExtension: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12B.MLSGroupContext",
+      "path": "Sources/DiscordMLS/MLSWire.swift",
+      "declaration": "public struct MLSGroupContext: Sendable, Equatable {"
     }
   ],
   "evidence": [
@@ -95805,6 +96094,326 @@
       "id": "evidence.12A.policy.AppleAudioTests.configurationCannotEraseRequiredInvalidation",
       "path": "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
       "anchor": "configurationCannotEraseRequiredInvalidation"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.credentialEncodingAndIdentity",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "credentialEncodingAndIdentity"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.capabilitiesValidation",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "capabilitiesValidation"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.requiredCapabilities",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "requiredCapabilities"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.packageRoundTripAndReference",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "packageRoundTripAndReference"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.lifetimePolicies",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "lifetimePolicies"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.sourceSignatureBinding",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "sourceSignatureBinding"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.leafStructuralFailures",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "leafStructuralFailures"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.signedExtensionCapabilities",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "signedExtensionCapabilities"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.leafSourceAndSignatureBoundaries",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "leafSourceAndSignatureBoundaries"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.signatureTampering",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "signatureTampering"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.packageMalformedAndTruncated",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "packageMalformedAndTruncated"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.publishedWorkingGroupKeyPackages",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "publishedWorkingGroupKeyPackages"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.publishedWorkingGroupContexts",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "publishedWorkingGroupContexts"
+    },
+    {
+      "id": "evidence.12B.MLSCredentialsTests.externalSenderEncoding",
+      "path": "Tests/DiscordMLSTests/MLSCredentialsTests.swift",
+      "anchor": "externalSenderEncoding"
+    },
+    {
+      "id": "evidence.12B.MLSCryptoTests.publishedCryptoBasics",
+      "path": "Tests/DiscordMLSTests/MLSCryptoTests.swift",
+      "anchor": "publishedCryptoBasics"
+    },
+    {
+      "id": "evidence.12B.MLSCryptoTests.publishedKeySchedule",
+      "path": "Tests/DiscordMLSTests/MLSCryptoTests.swift",
+      "anchor": "publishedKeySchedule"
+    },
+    {
+      "id": "evidence.12B.MLSCryptoTests.publishedSecretTree",
+      "path": "Tests/DiscordMLSTests/MLSCryptoTests.swift",
+      "anchor": "publishedSecretTree"
+    },
+    {
+      "id": "evidence.12B.MLSCryptoTests.signatureAndHPKEFailures",
+      "path": "Tests/DiscordMLSTests/MLSCryptoTests.swift",
+      "anchor": "signatureAndHPKEFailures"
+    },
+    {
+      "id": "evidence.12B.MLSCryptoTests.symmetricAndBounds",
+      "path": "Tests/DiscordMLSTests/MLSCryptoTests.swift",
+      "anchor": "symmetricAndBounds"
+    },
+    {
+      "id": "evidence.12B.MLSCryptoTests.secretTreeReorderingAndBounds",
+      "path": "Tests/DiscordMLSTests/MLSCryptoTests.swift",
+      "anchor": "secretTreeReorderingAndBounds"
+    },
+    {
+      "id": "evidence.12B.MLSFramingTests.canonicalProposalReferenceBytes",
+      "path": "Tests/DiscordMLSTests/MLSFramingTests.swift",
+      "anchor": "canonicalProposalReferenceBytes"
+    },
+    {
+      "id": "evidence.12B.MLSFramingTests.externalProposalAuthentication",
+      "path": "Tests/DiscordMLSTests/MLSFramingTests.swift",
+      "anchor": "externalProposalAuthentication"
+    },
+    {
+      "id": "evidence.12B.MLSFramingTests.senderAndProposalSelectors",
+      "path": "Tests/DiscordMLSTests/MLSFramingTests.swift",
+      "anchor": "senderAndProposalSelectors"
+    },
+    {
+      "id": "evidence.12B.MLSFramingTests.commitReferenceEncodingAndValidation",
+      "path": "Tests/DiscordMLSTests/MLSFramingTests.swift",
+      "anchor": "commitReferenceEncodingAndValidation"
+    },
+    {
+      "id": "evidence.12B.MLSFramingTests.memberSignatureMACAndTranscriptBoundaries",
+      "path": "Tests/DiscordMLSTests/MLSFramingTests.swift",
+      "anchor": "memberSignatureMACAndTranscriptBoundaries"
+    },
+    {
+      "id": "evidence.12B.MLSFramingTests.malformedPublicFrames",
+      "path": "Tests/DiscordMLSTests/MLSFramingTests.swift",
+      "anchor": "malformedPublicFrames"
+    },
+    {
+      "id": "evidence.12B.MLSGroupTests.membershipEpochsConcurrentSelectionAndReplacement",
+      "path": "Tests/DiscordMLSTests/MLSGroupTests.swift",
+      "anchor": "membershipEpochsConcurrentSelectionAndReplacement"
+    },
+    {
+      "id": "evidence.12B.MLSGroupTests.authenticatedProposalAdmissionRevocationAndBounds",
+      "path": "Tests/DiscordMLSTests/MLSGroupTests.swift",
+      "anchor": "authenticatedProposalAdmissionRevocationAndBounds"
+    },
+    {
+      "id": "evidence.12B.MLSGroupTests.duplicateMembersInitialIsolationAndRemoteTampering",
+      "path": "Tests/DiscordMLSTests/MLSGroupTests.swift",
+      "anchor": "duplicateMembersInitialIsolationAndRemoteTampering"
+    },
+    {
+      "id": "evidence.12B.MLSMessagesTests.publishedTranscriptHashes",
+      "path": "Tests/DiscordMLSTests/MLSMessagesTests.swift",
+      "anchor": "publishedTranscriptHashes"
+    },
+    {
+      "id": "evidence.12B.MLSMessagesTests.malformedMessageBoundaries",
+      "path": "Tests/DiscordMLSTests/MLSMessagesTests.swift",
+      "anchor": "malformedMessageBoundaries"
+    },
+    {
+      "id": "evidence.12B.MLSPassiveInteropTests.publishedPassiveWelcomes",
+      "path": "Tests/DiscordMLSTests/MLSPassiveInteropTests.swift",
+      "anchor": "publishedPassiveWelcomes"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.policyResourceBounds",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "policyResourceBounds"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.exactExternalSenderContext",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "exactExternalSenderContext"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.strictDAVELeafPolicy",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "strictDAVELeafPolicy"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.ownerConsumptionAndClosure",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "ownerConsumptionAndClosure"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.cancellationBeforeAdmission",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "cancellationBeforeAdmission"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.proposalAuthenticationAndIdentity",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "proposalAuthenticationAndIdentity"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.proposalCapacityWithoutEviction",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "proposalCapacityWithoutEviction"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.participantAndRevocationFences",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "participantAndRevocationFences"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.exporterBoundsAndOwnership",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "exporterBoundsAndOwnership"
+    },
+    {
+      "id": "evidence.12B.MLSPolicyTests.correctedWelcomeAndFreshPackageRecovery",
+      "path": "Tests/DiscordMLSTests/MLSPolicyTests.swift",
+      "anchor": "correctedWelcomeAndFreshPackageRecovery"
+    },
+    {
+      "id": "evidence.12B.MLSRemoteCommitTests.remoteWinnerAndAuthenticatedFailures",
+      "path": "Tests/DiscordMLSTests/MLSRemoteCommitTests.swift",
+      "anchor": "remoteWinnerAndAuthenticatedFailures"
+    },
+    {
+      "id": "evidence.12B.MLSRemoteCommitTests.remoteAddWithoutPath",
+      "path": "Tests/DiscordMLSTests/MLSRemoteCommitTests.swift",
+      "anchor": "remoteAddWithoutPath"
+    },
+    {
+      "id": "evidence.12B.MLSRemoteCommitTests.removalOnlyShrinksToSingleton",
+      "path": "Tests/DiscordMLSTests/MLSRemoteCommitTests.swift",
+      "anchor": "removalOnlyShrinksToSingleton"
+    },
+    {
+      "id": "evidence.12B.MLSTreeTests.publishedTreeMath",
+      "path": "Tests/DiscordMLSTests/MLSTreeTests.swift",
+      "anchor": "publishedTreeMath"
+    },
+    {
+      "id": "evidence.12B.MLSTreeTests.publishedTreeValidation",
+      "path": "Tests/DiscordMLSTests/MLSTreeTests.swift",
+      "anchor": "publishedTreeValidation"
+    },
+    {
+      "id": "evidence.12B.MLSTreeTests.publishedTreeKEM",
+      "path": "Tests/DiscordMLSTests/MLSTreeTests.swift",
+      "anchor": "publishedTreeKEM"
+    },
+    {
+      "id": "evidence.12B.MLSTreeTests.proposalOperationsAndBounds",
+      "path": "Tests/DiscordMLSTests/MLSTreeTests.swift",
+      "anchor": "proposalOperationsAndBounds"
+    },
+    {
+      "id": "evidence.12B.MLSTreeTests.generatedUpdateAndTampering",
+      "path": "Tests/DiscordMLSTests/MLSTreeTests.swift",
+      "anchor": "generatedUpdateAndTampering"
+    },
+    {
+      "id": "evidence.12B.MLSTreeTests.pathWireAndSingletonBoundaries",
+      "path": "Tests/DiscordMLSTests/MLSTreeTests.swift",
+      "anchor": "pathWireAndSingletonBoundaries"
+    },
+    {
+      "id": "evidence.12B.MLSWelcomeTests.welcomeStructuralBoundaries",
+      "path": "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
+      "anchor": "welcomeStructuralBoundaries"
+    },
+    {
+      "id": "evidence.12B.MLSWelcomeTests.welcomeSecretsBoundariesAndRedaction",
+      "path": "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
+      "anchor": "welcomeSecretsBoundariesAndRedaction"
+    },
+    {
+      "id": "evidence.12B.MLSWelcomeTests.groupInfoStructuralBoundaries",
+      "path": "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
+      "anchor": "groupInfoStructuralBoundaries"
+    },
+    {
+      "id": "evidence.12B.MLSWelcomeTests.privatePathCoverageAndAncestorBounds",
+      "path": "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
+      "anchor": "privatePathCoverageAndAncestorBounds"
+    },
+    {
+      "id": "evidence.12B.MLSWelcomeTests.missingWelcomePathPreservesPackage",
+      "path": "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
+      "anchor": "missingWelcomePathPreservesPackage"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.scalarRoundTrips",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "scalarRoundTrips"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.vectorLengthBoundaries",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "vectorLengthBoundaries"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.malformedVector",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "malformedVector"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.truncatedScalarsAndRawReads",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "truncatedScalarsAndRawReads"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.budgetsAndSlicedInput",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "budgetsAndSlicedInput"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.extensionRoundTripsAndBounds",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "extensionRoundTripsAndBounds"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.contextRoundTrips",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "contextRoundTrips"
+    },
+    {
+      "id": "evidence.12B.MLSWireTests.contextInvalidFields",
+      "path": "Tests/DiscordMLSTests/MLSWireTests.swift",
+      "anchor": "contextInvalidFields"
     }
   ]
 }

@@ -88,3 +88,10 @@ required isolated writable caches and host build access. Validation used
 `--disable-sandbox` with those caches; no live Discord service or device was used.
 The codec, cryptographic audit, MLS/DAVE, session, platform and hardware gates above
 remain open despite the passing local checks.
+
+## Phase 12B continuation (2026-10-18)
+
+The [12B execution record](phase-12b-execution.plan.md) and [MLS guide](../../Docs/MLS.md)
+now describe implemented MLS key establishment. The table above records the initial
+release boundary, rather than the current implementation. Independent cryptographic
+review and production qualification remain open; 12C media integration has not advanced.
