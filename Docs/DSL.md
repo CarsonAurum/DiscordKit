@@ -7,8 +7,9 @@ metadata description. The only direct dependencies are `DiscordCore` and
 
 The shared product implements structural authoring and validation. Part 15B adds
 [typed arguments and command lowering](CommandDSL.md) through the separately
-selected `DiscordCommandDSL` product. Macros, response builders, policies, HTTP
-hosts and Gateway execution remain later
+selected `DiscordCommandDSL` product. The separate [macro package](MacroDSL.md)
+adds authoring syntax; [typed response ownership and HTTP applications](CommandResponses.md)
+compose existing runtime owners. Message/component builders, policies and Gateway execution remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 An application can use the raw contribution API now to validate its own finite
 metadata catalog, without pretending that a custom kind implements a Discord API.

@@ -12,12 +12,20 @@ explicit exclusions; it does not grant platform, live Discord or crypto approval
 python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
 ```
 
-This command evaluates the actual root and nine independent consumer manifests
-using `swift package dump-package`, with temporary writable caches. It compares
+This command evaluates the actual root and ten independent consumer manifests
+using `swift package dump-package`, with temporary writable caches. Part 15D adds
+the independent DSLCommands consumer, including its explicitly selected separate
+macro product. It compares
 the complete shipped target DAG, direct package requirements, product roots,
 source roots and resolved Apple package identities/URLs against the reviewed
 `Tools/DiscordKitTools/release-policy.json`. Every resolved pin needs a concrete
 revision; package version updates still require normal dependency review.
+
+Other consumers continue to select only the local runtime checkout. Extra local
+authoring paths and external products require a per-consumer allowlist, exact
+manifest version requirements and reviewed URLs. Their selected authoring runtime
+closure participates in the same isolation audit; a macro package cannot hide a
+forbidden runtime product from the consumer's graph.
 
 The audit inspects actual Swift imports in every conditional compilation branch,
 including scoped and escaped identifiers. It masks comments, nested string
@@ -53,7 +61,9 @@ macOS arm64. It establishes a starting point; there is no earlier public baselin
 against which to establish historical compatibility. This candidate is neither a
 published release nor a tag. The current `0.15.0` candidate adds the independent
 shared-declaration and typed-command products for Parts 15A/15B, plus the separately
-compiled Part 15C macro authoring package. The root runtime API is compared
+compiled Part 15C macro authoring package. Part 15D adds typed response adapters
+and signed HTTP command application composition with explicit synchronization.
+The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before
 1.0), including declarations in a new module; inspect the detailed comparison to
@@ -107,7 +117,8 @@ python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
 ```
 
 The current report covers shared declarations, typed argument decoding, command
-lowering, separate macro authoring and only checks actually recorded for the current
+lowering, separate macro authoring, response ownership, signed HTTP composition and
+only checks actually recorded for the current
 checkpoint. The macro package is audited separately from the root runtime API graphs;
 its public macro signatures are checked through compiled external consumers. Validate the
 historical `phase14-report.json` separately;

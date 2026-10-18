@@ -1348,6 +1348,53 @@
       ],
       "details": "changes/phase15c-macros.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-phase15d-command-responses",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.15.0 candidate; unpublished; typed command responses and signed HTTP application milestone",
+      "localCommit": "unknown",
+      "changeType": "authoring_and_owned_http_composition",
+      "previousBehavior": "Part 15C compiled macro-authored manual slash handlers; consumers explicitly composed signed ingress, routing, response acknowledgement and registration.",
+      "currentBehavior": "DiscordCommandDSL adds separate typed immediate/deferred and existing manual handler contracts, restricted redacted contexts, validated JSON response values and lowering through the existing unique responder. CommandApplication composes signed ingress and bounded routing/listener ownership, rejects competing auto-defer and exposes only explicit synchronization through the existing reconciler. The independent macro-authored DSLCommands consumer defaults to a synthetic signed offline exchange.",
+      "affectedSymbols": [
+        "SlashCommandHandler",
+        "DeferredSlashCommandHandler",
+        "ManualSlashCommandHandler",
+        "CommandContext",
+        "DeferredCommandContext",
+        "MessageResponse",
+        "DeferredMessageResponse",
+        "CommandResponseVisibility",
+        "SlashCommand",
+        "CommandApplication",
+        "CommandApplicationError",
+        "SlashCommand macro"
+      ],
+      "affectedPayloads": "Existing API v10 type-4 initial messages, type-5 deferred channel messages and PATCH original-response edits; unchanged wire schemas, deadlines, visibility, independent acknowledgement admission and signed ingress. No new permission, intent, endpoint, event or opcode support.",
+      "breakingChanges": [],
+      "migration": "Existing manual handlers require no change. Opt into the immediate or deferred protocol, return the validated response value and leave acknowledgement to the adapter. Explicitly select HTTP/Transport where imported; inject shared ingress/admission and concrete listener at the composition root. Do not configure application auto-defer. Registration remains a separate explicit synchronize call; Gateway hosts, message builders and 15E+ remain later milestones.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/application-commands",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://docs.swift.org/latest/documentation/the-swift-programming-language/concurrency/"
+      ],
+      "details": "changes/phase15d-command-responses.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

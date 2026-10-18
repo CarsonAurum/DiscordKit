@@ -3,9 +3,12 @@
 Phase 15 is delivered as independently usable milestones. **15A** implements the
 shared structural foundation in `DiscordDSL`; **15B** adds typed argument decoding
 and explicit slash-command lowering in `DiscordCommandDSL`. **15C** adds the separate
-`DiscordDSLMacros` authoring package with compiled parity and external fixtures. These statuses do not
+`DiscordDSLMacros` authoring package with compiled parity and external fixtures.
+**15D** adds typed immediate/deferred responses, manual ownership and a signed HTTP
+command application. These statuses do not
 imply that the complete bot authoring experience is available. See
-[shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md) and
+[shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md),
+[response ownership and HTTP applications](CommandResponses.md) and
 [architecture](Architecture.md) for the implemented APIs and product boundaries.
 
 | Milestone | Status | Scope |
@@ -13,7 +16,7 @@ imply that the complete bot authoring experience is available. See
 | 15A | Implemented | Protocol/module composition, result builders, stable explicit identities, source diagnostics and bounded deterministic descriptions. |
 | 15B | Implemented | Typed argument schemas/decoding, manual slash handlers, exact existing-command adapters and lowering to existing command definitions/routes. |
 | 15C | Implemented | Separate authoring macro package, source diagnostics, compiled expansion parity and external positive/negative compile fixtures. |
-| 15D | Planned | Immediate/deferred/manual response ownership and independently adopted HTTP command application. |
+| 15D | Implemented | Typed immediate/deferred and manual response ownership, signed HTTP command application, explicit reconciliation and independent offline/listener consumer. |
 | 15E | Planned | Validated message/component builders and safe typed interpolation. |
 | 15F | Planned | Remaining command families, explicit registration and reconciliation. |
 | 15G | Planned | Bounded policies, middleware and named/operator composition. |
@@ -30,7 +33,10 @@ them or owning a runtime. 15B compiles retained command contributions to existin
 Compilation starts no tasks or handler execution; invoking that router uses existing
 interaction response ownership. Bot products will reuse the existing client
 implementation, while existing products keep their independent adoption graphs.
-The macro package remains a separate consumer of runtime products, with no compiler
+15D composes the existing signed HTTP application and bounded router. Explicit
+`synchronize` owns registration; construction and ordinary `run` never
+register commands. Typed handlers cannot access the raw responder; manual handlers
+retain that explicit escape hatch. The macro package remains a separate consumer of runtime products, with no compiler
 plugin or SwiftSyntax dependency in the shared product.
 
 Structural admission limits describe finite compilation resources. They do not

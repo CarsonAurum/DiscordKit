@@ -1,8 +1,9 @@
 # DiscordDSLMacros
 
 Part 15C's optional authoring package supplies `@CommandArguments`, `@Option` and
-`@SlashCommand`. It generates the existing typed argument schemas and manual
-slash-command contributions. The runtime products never depend on this package,
+`@SlashCommand`. It generates the existing typed argument schemas and slash-command
+contributions. Part 15D preserves explicit immediate, deferred and manual response
+contracts. The runtime products never depend on this package,
 its compiler plugin or SwiftSyntax.
 
 Use Swift 6.4 or newer. The compiler-host dependency is pinned exactly to
@@ -27,9 +28,16 @@ their conformance. It never resolves imported source files or evaluates defaults
 
 Construction, expansion and compilation start no tasks, I/O, registration or
 handler execution. Explicit schema access performs existing synchronous validation.
-Handlers supply an explicit `Arguments` typealias and `execute(_:arguments:)`;
-the existing responder still owns manual acknowledgement and completion. Response
-policies and application hosting remain Part 15D.
+Handlers supply an explicit `Arguments` typealias and `execute(_:arguments:)`.
+Directly inherit `SlashCommandHandler` for `CommandContext` and `MessageResponse`,
+or `DeferredSlashCommandHandler` for `DeferredCommandContext` and
+`DeferredMessageResponse`. Typed contexts expose immutable invocation data while
+the runtime adapter owns acknowledgement and completion. Explicit
+`ManualSlashCommandHandler`, or omitting all family names for compatibility,
+retains manual responder access and a `Void` result. Select exactly one family;
+the macro does not inspect imported protocol refinements. The independently
+adopted HTTP application is described in the root command guide. Message builders
+and broader response families remain later milestones.
 
 Run from the repository root:
 

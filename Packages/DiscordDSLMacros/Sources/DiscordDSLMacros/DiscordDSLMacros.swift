@@ -23,10 +23,14 @@ public macro CommandArguments() = #externalMacro(module: "DiscordDSLMacrosPlugin
 @attached(peer)
 public macro Option(name: String? = nil, description: String) = #externalMacro(module: "DiscordDSLMacrosPlugin", type: "OptionMacro")
 
-/// Synthesizes metadata and a contribution factory for an explicitly manual slash-command handler.
-/// The nongeneric struct supplies `typealias Arguments` and `execute(_:arguments:) async throws`.
-/// Its existing responder retains acknowledgement, cancellation and completion ownership; the macro
-/// never sends or defers a response and starts no tasks, registration, network or device work.
+/// Synthesizes metadata and a contribution factory for one explicit slash-command response family.
+/// A nongeneric struct supplies `typealias Arguments` and `execute(_:arguments:) async throws`.
+/// Explicit `SlashCommandHandler` inheritance selects the typed immediate contract; explicit
+/// `DeferredSlashCommandHandler` inheritance selects typed defer-before-work and original-edit
+/// completion. Explicit `ManualSlashCommandHandler`, or omission of all three family names,
+/// preserves manual responder ownership. Spell exactly one supported family directly; imported
+/// protocol refinements are not resolved by the macro. Swift checks the selected execute signature.
+/// The macro itself never responds, defers or starts tasks, registration, network or device work.
 /// - Parameters:
 ///   - name: Literal root slash-command name; 1...32 lowercase Unicode scalars under runtime rules.
 ///   - description: Literal registration explanation containing 1...100 Unicode scalars.

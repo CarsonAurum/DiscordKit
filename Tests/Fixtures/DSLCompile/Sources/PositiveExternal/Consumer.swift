@@ -48,3 +48,52 @@ public func makeExternalContribution() throws -> DiscordCommandDSL.SlashCommand<
 public func decodeExternalToken(options: [InteractionCommandOption]) throws -> ExternalToken {
     try ConsumerArguments.schema.decode(options: options, commandName: "external").token
 }
+
+/// An explicit immediate protocol preserves typed response ownership instead of adding manual conformance.
+@SlashCommand("immediate", description: "External immediate consumer")
+public struct ImmediateConsumer: DiscordCommandDSL.SlashCommandHandler {
+    public typealias Arguments = ConsumerArguments
+
+    /// Returns one validated message while type-checking immutable typed-context fields from another package.
+    /// - Parameters:
+    ///   - context: Normalized snapshot with no raw response owner.
+    ///   - arguments: Fresh validated compiler-generated invocation values.
+    /// - Returns: One immediate message, using the existing message model without builders or implicit I/O.
+    /// - Throws: Existing local message validation errors; fixture compilation never executes the handler.
+    public func execute(_ context: CommandContext, arguments: Arguments) async throws -> MessageResponse {
+        _ = context.deliveryMode
+        _ = context.interaction.id
+        return try MessageResponse(InteractionMessageCreate(content: .value(arguments.person)))
+    }
+}
+
+/// An explicit deferred protocol keeps defer and original-edit ownership inside the runtime adapter.
+@SlashCommand("deferred", description: "External deferred consumer")
+public struct DeferredConsumer: DeferredSlashCommandHandler {
+    public typealias Arguments = ConsumerArguments
+
+    /// Selects immutable initial visibility without invoking user work or acknowledgement mechanics.
+    public var responseVisibility: CommandResponseVisibility { .ephemeral }
+
+    /// Returns a partial original edit through the distinct typed completion family.
+    /// - Parameters:
+    ///   - context: Snapshot supplied after the runtime adapter confirms its deferred acknowledgement.
+    ///   - arguments: Complete fresh arguments decoded before that acknowledgement.
+    /// - Returns: One validated original edit; no follow-up or second initial response can be represented.
+    /// - Throws: Existing local edit validation errors; fixture compilation starts no work.
+    public func execute(_ context: DeferredCommandContext, arguments: Arguments) async throws -> DeferredMessageResponse {
+        _ = context.deliveryMode
+        _ = context.interaction.id
+        return try DeferredMessageResponse(InteractionMessageEdit(content: .value(arguments.person)))
+    }
+}
+
+/// Type-checks both generated typed-family contribution factories from outside the macro package.
+/// - Returns: Definitions from two validated inert contributions; no execution or registration occurs.
+/// - Throws: Existing schema, metadata or default-value validation errors.
+public func typedExternalContributions() throws -> [String] {
+    let source = DefinitionSourceLocation(fileID: "External.swift", line: 1, column: 1)
+    let immediate: DiscordCommandDSL.SlashCommand<ImmediateConsumer> = try ImmediateConsumer().contribution(id: "immediate", source: source)
+    let deferred: DiscordCommandDSL.SlashCommand<DeferredConsumer> = try DeferredConsumer().contribution(id: "deferred", source: source)
+    return [immediate.definition.request.name, deferred.definition.request.name]
+}

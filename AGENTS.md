@@ -136,6 +136,15 @@ Part 15C adds the separate `Packages/DiscordDSLMacros` authoring package for
 external diagnostic fixtures. Runtime products remain independent of compiler plugins
 and SwiftSyntax. Manual response ownership remains unchanged; see `Docs/MacroDSL.md`.
 
+Part 15D adds typed immediate/deferred response handlers, restricted command contexts,
+validated JSON message responses and `CommandApplication` over the existing signed HTTP
+application/router. Initial response admission remains independent. Construction and
+ordinary listener execution register no commands; synchronization is explicit.
+The independent `Examples/DSLCommands` uses a macro-authored command in a synthetic
+signed offline exchange, with listener ownership only when explicitly requested.
+Message/component builders, policies and Gateway hosts remain later milestones;
+see `Docs/CommandResponses.md`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -165,7 +174,8 @@ and SwiftSyntax. Manual response ownership remains unchanged; see `Docs/MacroDSL
 - `Sources/DiscordDSL/`: inert structural module composition and finite validated
   descriptions over Core/Models only; no runtime, macro or concrete-adapter ownership.
 - `Sources/DiscordCommandDSL/`: finite typed arguments and manual slash-command lowering
-  over existing Commands/Interactions; no host, macro or registration ownership.
+  over existing Commands/Interactions and HTTP/Transport; signed HTTP composition,
+  explicit synchronization and no Gateway/client or concrete-adapter ownership.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -282,13 +292,14 @@ count/depth/text limits, duplicate identities, unsupported capabilities, determi
 builder order and zero execution of injected work. Pure descriptions are authoring-layer
 evidence; they do not qualify command/event execution, macros, live Discord or capacity.
 
-For command DSL changes, preserve its DSL/Core/Models/Commands/Interactions graph
+For command DSL changes, preserve its DSL/Core/Models/Commands/Interactions/HTTP/Transport graph
 without Gateway/Client/Cache or concrete adapters. Run root build/tests, callable
 documentation, graph/import isolation and API/DocC checks; build `Examples/HTTPApp`
 and the offline `Examples/CommandsApp`. Verify direct-versus-DSL definitions/routes,
 strict option/resolved-resource decoding, fresh argument state per invocation,
-compile-time zero execution and bounded cancellation-aware router ownership. Macros,
-response families, hosts and DSL capacity qualification remain separate.
+compile-time zero execution and bounded cancellation-aware router ownership. Macro
+compilation, message/component builders, Gateway hosts and DSL capacity qualification
+retain separate gates.
 
 For macro authoring changes, run `swift test --package-path Packages/DiscordDSLMacros`,
 `python3 Tools/ci/dsl_compile_fixtures.py` and its Python tests. Preserve the downstream
@@ -296,6 +307,17 @@ macro-package graph, Swift 6.4-compatible exact SwiftSyntax pin, generated calla
 documentation and genuine external positive/negative compile fixtures. Text expansion
 alone does not establish parity. Run documentation/graph audits and root build/tests;
 manual response ownership and the remaining DSL milestones retain separate gates.
+
+For response/HTTP command application changes, also build/test `Examples/DSLCommands`
+and run its explicit offline mode. Preserve immediate/deferred/manual separation,
+complete argument/envelope admission before acknowledgement, one initial response,
+deferred completion through edit-original, expiry/uncertainty/cancellation behavior,
+and rejection of competing application auto-defer. Construction and ordinary run must
+make zero registration requests; explicit synchronization retains the existing managed
+name policy and partial outcomes. The selected graph may use HTTP/Transport but must
+exclude Gateway/Client/Cache, concrete adapters and compiler plugins from the runtime
+product. Synthetic signed HTTP and trusted normalized contexts do not qualify live
+Discord or a Gateway application host. Message builders and 15E+ remain separate.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

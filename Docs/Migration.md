@@ -1,6 +1,6 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C. The
+The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C/15D. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
@@ -45,8 +45,14 @@ for those existing capabilities until the corresponding authoring milestone ship
 Use `ManualSlashCommandHandler` with the existing `InteractionContext.responder`
 for explicit response ownership. Part 15C optionally replaces schema/metadata
 boilerplate with the separate [macro package](MacroDSL.md), retaining the same
-protocols and decoders. Typed response builders and supervised HTTP/Gateway
-applications remain later milestones. See [the guide](CommandDSL.md)
+protocols and decoders. Part 15D adds opt-in `SlashCommandHandler` and
+`DeferredSlashCommandHandler` contracts; change `execute` to accept the restricted
+typed context and return `MessageResponse` or `DeferredMessageResponse`. The adapter
+owns acknowledgement and edit-original completion. Manual handlers need no changes.
+Use `CommandApplication` for signed HTTP composition and call `synchronize` separately
+when registration is intended. Do not configure application auto-defer alongside it.
+Message/component builders and Gateway hosts remain later milestones. See
+[response ownership](CommandResponses.md) and [the guide](CommandDSL.md)
 for argument presence, limits, diagnostics and the custom-code contract.
 
 ## Upstream protocol changes

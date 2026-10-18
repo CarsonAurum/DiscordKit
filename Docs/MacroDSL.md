@@ -85,13 +85,17 @@ refer to an author-defined computed member; that code must remain finite and ine
 just like a custom codec. Syntactic admission does not sandbox application Swift. Use explicit Part 15B
 schemas for unsupported forms or advanced metadata rather than relying on reflection.
 
-`@SlashCommand` generates `SlashCommandMetadata`, manual handler conformance and
+`@SlashCommand` generates `SlashCommandMetadata`, handler conformance and
 `contribution(id:source:)` plumbing. It references the handler's `Arguments`
 protocol instead of inspecting that type. The behavior stays in `execute`; the
 Swift compiler checks its signature, Sendable captures and every generated codec
-use. This milestone preserves manual response ownership. Typed immediate/deferred
-responses, response builders and independently owned HTTP applications are 15D and
-later milestones.
+use. In Part 15D, explicitly conform to `SlashCommandHandler` for an immediate
+`MessageResponse`, `DeferredSlashCommandHandler` for acknowledged-before-execution
+`DeferredMessageResponse`, or `ManualSlashCommandHandler` for raw responder ownership.
+Omitting the family preserves the original manual default. The macro factory uses
+the same `SlashCommand` runtime adapters as handwritten code; it does not create
+another response owner. See [response modes and HTTP applications](CommandResponses.md).
+Message/component builders and other command families remain later milestones.
 
 ## Verification and scope
 

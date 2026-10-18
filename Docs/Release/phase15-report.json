@@ -18,131 +18,126 @@
       "scope": "Current debug root build with strict direct-dependency imports; no optimized-build rerun.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "root-tests",
       "status": "passed",
-      "scope": "2,171 strict tests in 268 suites across 31 root targets; synthetic invocations and approved local sockets only.",
+      "scope": "2,196 strict tests in 272 suites across 31 root targets; synthetic invocations and approved local loopback sockets only.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "tooling",
       "status": "passed",
-      "scope": "104 Swift tooling tests, 225 Python tooling tests and 40 CI Python tests; 20 real macro expansion/execution tests and 15 external compiler fixtures.",
+      "scope": "104 Swift tooling tests, 228 Python tooling tests and 40 CI Python tests; 24 compiled macro tests in three suites and 19 genuine external compiler fixtures.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "inventory",
       "status": "passed",
-      "scope": "18,137 discovery entries, 280 sources and existing reviewed classifications validated.",
+      "scope": "18,137 discovery entries, 280 sources, 934 reviewed definitions and existing classifications validated.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "generation",
       "status": "passed",
-      "scope": "Five generated artifacts remain byte-identical; reviewed wire definitions unchanged.",
+      "scope": "Five generated artifacts remain byte-identical; reviewed wire definitions are unchanged.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "parity",
       "status": "passed",
-      "scope": "Current offline parity validation and append-only authoring-only macro history.",
+      "scope": "Current offline parity validation and append-only response/HTTP authoring composition history; no new wire support classifications.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "declaration-docs",
       "status": "passed",
-      "scope": "698 Swift files, 7,591 explicit callables including macros; zero missing comments. Presence remains syntactic evidence.",
+      "scope": "713 Swift files and 7,714 explicit callables including macros/tests; zero missing comments. Presence remains syntactic evidence.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "docc",
       "status": "passed",
-      "scope": "30 runtime archives and one separate macro archive converted/merged with strict diagnostics; navigation and 22 listings checked; guide snippet typechecked with real plugin.",
+      "scope": "30 runtime archives and one separate macro archive converted/merged with strict diagnostics; navigation and 22 synchronized listings checked.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "product-isolation",
       "status": "passed",
-      "scope": "30 runtime targets/products, nine independent consumers, exact separate macro package/import/pin audit. Runtime products remain independent of plugins and SwiftSyntax.",
+      "scope": "30 runtime targets/products, ten independent consumer manifests and the exact separate macro package/import/pin audit. Runtime products remain independent of compiler plugins and SwiftSyntax.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "api-baseline",
       "status": "passed",
-      "scope": "30-module runtime 0.15.0 vs frozen 0.14.0: 338 earlier additions, no existing changed/removed symbols. Separate first macro API snapshot contains three declarations and is not a historical compatibility baseline.",
+      "scope": "30-module runtime 0.15.0 candidate vs frozen 0.14.0: 392 additions, zero existing changed/removed symbols or removed relationships. Separate current macro API comparison preserves all three public declarations.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
-        },
-        {
-          "path": "Docs/Release/phase15c-macros-api.json",
-          "sha256": "124b1be0260619e913fd4f5706aefc34dc9c2bb2e8aab9b24317e607114bc888",
-          "scope": "First macro public API snapshot."
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "examples",
       "status": "passed",
-      "scope": "All nine existing independent consumer packages built with strict imports; external macro fixtures compiled. No authenticated execution.",
+      "scope": "Affected HTTPApp and CommandsApp independently built with strict imports; DSLCommands built/tested and ran its signed offline exchange; external macro consumers compiled. Other consumer build results remain historical.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "browser",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current browser qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current browser qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current browser qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current browser qualification is claimed.",
       "excludedClaims": [
         "browser"
       ]
@@ -150,8 +145,8 @@
     {
       "id": "social-catalog",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current social-catalog qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current social-catalog qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current social-catalog qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current social-catalog qualification is claimed.",
       "excludedClaims": [
         "social-catalog"
       ]
@@ -159,8 +154,8 @@
     {
       "id": "local-load",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current local-load qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current local-load qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current local-load qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current local-load qualification is claimed.",
       "excludedClaims": [
         "local-load"
       ]
@@ -168,8 +163,8 @@
     {
       "id": "fixed-working-set-soak",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current fixed-working-set-soak qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current fixed-working-set-soak qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current fixed-working-set-soak qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current fixed-working-set-soak qualification is claimed.",
       "excludedClaims": [
         "fixed-working-set-soak"
       ]
@@ -177,19 +172,19 @@
     {
       "id": "macos",
       "status": "passed",
-      "scope": "Local Swift 6.4/macOS arm64 build/tests and offline macro execution only; no device or other SDK qualification.",
+      "scope": "Local Swift 6.4/macOS arm64 build/tests, synthetic signed HTTP exchange and compiled macro execution only; no device or other-platform qualification.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15c-validation.json",
-          "sha256": "1054f0d74d495e9a8bfb5a8f296771fe0c1ccacdebe4105e80e63992aee45a04"
+          "path": "Docs/Release/phase15d-validation.json",
+          "sha256": "3031757cdb4c303e03be96d1e0d7b869b9b231ef97fc292a6f7d3010f2461263"
         }
       ]
     },
     {
       "id": "linux",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current linux qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current linux qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current linux qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current linux qualification is claimed.",
       "excludedClaims": [
         "linux"
       ]
@@ -197,8 +192,8 @@
     {
       "id": "windows",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current windows qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current windows qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current windows qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current windows qualification is claimed.",
       "excludedClaims": [
         "windows"
       ]
@@ -206,8 +201,8 @@
     {
       "id": "apple-simulators",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current apple-simulators qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current apple-simulators qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current apple-simulators qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current apple-simulators qualification is claimed.",
       "excludedClaims": [
         "apple-simulators"
       ]
@@ -215,8 +210,8 @@
     {
       "id": "apple-devices",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current apple-devices qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current apple-devices qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current apple-devices qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current apple-devices qualification is claimed.",
       "excludedClaims": [
         "apple-devices"
       ]
@@ -224,8 +219,8 @@
     {
       "id": "android-cross-build",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current android-cross-build qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current android-cross-build qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current android-cross-build qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current android-cross-build qualification is claimed.",
       "excludedClaims": [
         "android-cross-build"
       ]
@@ -233,8 +228,8 @@
     {
       "id": "android-runtime",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current android-runtime qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current android-runtime qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current android-runtime qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current android-runtime qualification is claimed.",
       "excludedClaims": [
         "android-runtime"
       ]
@@ -242,8 +237,8 @@
     {
       "id": "live-discord",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current live-discord qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current live-discord qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current live-discord qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current live-discord qualification is claimed.",
       "excludedClaims": [
         "live-discord"
       ]
@@ -251,8 +246,8 @@
     {
       "id": "hardware",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current hardware qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current hardware qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current hardware qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current hardware qualification is claimed.",
       "excludedClaims": [
         "hardware"
       ]
@@ -260,8 +255,8 @@
     {
       "id": "independent-crypto-review",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current independent-crypto-review qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current independent-crypto-review qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current independent-crypto-review qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current independent-crypto-review qualification is claimed.",
       "excludedClaims": [
         "independent-crypto-review"
       ]
@@ -269,8 +264,8 @@
     {
       "id": "codec-interop",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current codec-interop qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current codec-interop qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current codec-interop qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current codec-interop qualification is claimed.",
       "excludedClaims": [
         "codec-interop"
       ]
@@ -278,8 +273,8 @@
     {
       "id": "semantic-documentation",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current semantic-documentation qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current semantic-documentation qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current semantic-documentation qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current semantic-documentation qualification is claimed.",
       "excludedClaims": [
         "semantic-documentation"
       ]
@@ -287,8 +282,8 @@
     {
       "id": "api-other-platforms",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current api-other-platforms qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current api-other-platforms qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current api-other-platforms qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current api-other-platforms qualification is claimed.",
       "excludedClaims": [
         "api-other-platforms"
       ]
@@ -296,8 +291,8 @@
     {
       "id": "upstream-collection",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current upstream-collection qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current upstream-collection qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current upstream-collection qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current upstream-collection qualification is claimed.",
       "excludedClaims": [
         "upstream-collection"
       ]
@@ -305,8 +300,8 @@
     {
       "id": "zero-resource-growth",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current zero-resource-growth qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current zero-resource-growth qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current zero-resource-growth qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current zero-resource-growth qualification is claimed.",
       "excludedClaims": [
         "zero-resource-growth"
       ]
@@ -314,8 +309,8 @@
     {
       "id": "performance-regression",
       "status": "unverified",
-      "scope": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current performance-regression qualification is claimed.",
-      "reason": "Not established by Part 15C's local macro authoring checks; historical evidence remains separate and no current performance-regression qualification is claimed.",
+      "scope": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current performance-regression qualification is claimed.",
+      "reason": "Not established by Part 15D's local command response/HTTP composition checks; historical evidence remains separate and no current performance-regression qualification is claimed.",
       "excludedClaims": [
         "performance-regression"
       ]
@@ -323,8 +318,8 @@
   ],
   "claims": [
     {
-      "id": "shared-typed-and-local-macro-authoring-milestones",
-      "description": "Parts 15A/15B/15C only: finite modules, typed decoding/manual root slash lowering and optional separate compiler macros; local compiled parity, source diagnostics, external codecs and Sendable fixtures. No response policy or application host ownership is added.",
+      "id": "shared-typed-macro-response-and-local-http-authoring-milestones",
+      "description": "Parts 15A-15D only: finite modules, strict typed decoding/root slash lowering, optional separate macros, typed immediate/deferred and manual response ownership, signed HTTP application composition with explicit synchronization. Construction and ordinary run perform zero command registration. Evidence is local/offline and does not certify the full Phase 15 roadmap.",
       "checkIDs": [
         "api-baseline",
         "declaration-docs",
@@ -349,9 +344,11 @@
     "historical-API-compatibility",
     "full-phase15-certification",
     "dsl-gateway-event-execution",
-    "dsl-http-gateway-hosts",
-    "dsl-typed-response-policies",
     "dsl-macro-other-toolchains-platforms",
-    "dsl-benchmark-capacity"
+    "dsl-benchmark-capacity",
+    "dsl-gateway-hosts",
+    "dsl-message-component-builders",
+    "dsl-general-policies",
+    "dsl-live-registration-qualification"
   ]
 }

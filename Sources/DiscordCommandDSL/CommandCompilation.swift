@@ -38,7 +38,7 @@ public protocol CommandContribution: DefinitionContribution {
         get
     }
     var route: CommandRoute {
-        /// Returns its exact manual route without invoking the retained handler.
+        /// Returns its exact response-family route without invoking the retained handler.
         get
     }
 }
@@ -75,7 +75,7 @@ public struct CompiledCommands: Sendable {
 }
 
 /// Synchronous command lowering over the shared structural collector. No reflection, macro,
-/// network work, handler invocation, registration or response policy is introduced here.
+/// network work, handler invocation, registration or response-policy execution is introduced here.
 public enum CommandCompilation {
     public static let contributionKind = "discord.slash-command"
 

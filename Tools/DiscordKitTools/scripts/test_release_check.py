@@ -119,6 +119,77 @@ class ReleaseChecks(unittest.TestCase):
         with self.assertRaises(ValueError):
             audit.local_file(self.root, "escape")
 
+    def consumer_authoring_fixture(self):
+        """Create an explicitly reviewed example selecting a local macro product and existing Crypto."""
+        relative, _, _ = self.authoring_fixture()
+        source = self.root / "Examples/Consumer/Sources/App/App.swift"
+        source.parent.mkdir(parents=True)
+        source.write_text("import A\nimport Authoring\nimport Crypto")
+        manifest = {"dependencies": [
+            {"fileSystem": [{"path": str(self.root)}]},
+            {"fileSystem": [{"path": str(self.root / relative)}]},
+            {"sourceControl": [{"identity": "swift-crypto", "location": {"remote": [{"urlString": self.policy["externalPackages"]["swift-crypto"]}]}, "requirement": {"range": [{"lowerBound": "5.0.1", "upperBound": "6.0.0"}]}}]},
+        ], "targets": [{"name": "App", "type": "executable", "dependencies": [
+            {"product": ["A", "DiscordKit", None, None]},
+            {"product": ["Authoring", "Authoring", None, None]},
+            {"product": ["Crypto", "swift-crypto", None, None]},
+        ]}]}
+        self.policy["consumers"] = {"Examples/Consumer": {
+            "targets": {"App": ["Authoring/Authoring", "DiscordKit/A", "swift-crypto/Crypto"]},
+            "forbidden": [], "authoringPackages": {"Authoring": relative},
+            "externalProducts": {"swift-crypto": ["Crypto"]},
+            "directRequirements": {"swift-crypto": {"range": [{"lowerBound": "5.0.1", "upperBound": "6.0.0"}]}},
+        }}
+        return manifest
+
+    def test_consumer_explicit_authoring_and_crypto_preserve_runtime_isolation(self):
+        """Reviewed authoring selection contributes its transitive root runtime to the isolation audit."""
+        manifest = self.consumer_authoring_fixture()
+        result = audit.validate_consumer(self.root, "Examples/Consumer", manifest, self.policy)
+        self.assertEqual(result["selectedProducts"], ["A"])
+        self.assertEqual(result["reachableTargets"], ["A", "B"])
+        manifest["targets"][0]["dependencies"].pop(0)
+        self.policy["consumers"]["Examples/Consumer"]["targets"]["App"].remove("DiscordKit/A")
+        (self.root / "Examples/Consumer/Sources/App/App.swift").write_text("import Authoring\nimport Crypto")
+        self.policy["consumers"]["Examples/Consumer"]["forbidden"] = ["B"]
+        with self.assertRaisesRegex(ValueError, "isolation"):
+            audit.validate_consumer(self.root, "Examples/Consumer", manifest, self.policy)
+
+    def test_consumer_additional_packages_require_exact_reviewed_paths_urls_and_versions(self):
+        """Missing, duplicate, escaped and unreviewed packages cannot widen the selected example graph."""
+        original = self.consumer_authoring_fixture()
+        mutations = [
+            lambda m: m["dependencies"][1]["fileSystem"][0].update(path=str(self.root.parent)),
+            lambda m: m["dependencies"].append(copy.deepcopy(m["dependencies"][0])),
+            lambda m: m["dependencies"].pop(),
+            lambda m: m["dependencies"][2]["sourceControl"][0].update(identity="unknown"),
+            lambda m: m["dependencies"][2]["sourceControl"][0]["location"]["remote"][0].update(urlString="https://example.invalid/fork"),
+            lambda m: m["dependencies"][2]["sourceControl"][0].update(requirement={"exact": ["6.0.0"]}),
+            lambda m: m["dependencies"].append(copy.deepcopy(m["dependencies"][2])),
+            lambda m: m["dependencies"].append({"registry": []}),
+        ]
+        for mutation in mutations:
+            manifest = copy.deepcopy(original)
+            mutation(manifest)
+            with self.subTest(manifest=manifest), self.assertRaises(ValueError):
+                audit.validate_consumer(self.root, "Examples/Consumer", manifest, self.policy)
+
+    def test_consumer_unknown_authoring_or_external_products_fail_closed(self):
+        """Policy target roots do not bypass separately reviewed macro/product membership."""
+        original = self.consumer_authoring_fixture()
+        for index, replacement in ((1, ["OtherMacro", "Authoring", None, None]),
+                                   (2, ["CryptoExtras", "swift-crypto", None, None]),
+                                   (0, ["A", "UnknownPackage", None, None])):
+            manifest = copy.deepcopy(original)
+            manifest["targets"][0]["dependencies"][index]["product"] = replacement
+            graph = {"App": audit.manifest_dependencies(manifest["targets"][0])}
+            self.policy["consumers"]["Examples/Consumer"]["targets"] = graph
+            with self.subTest(product=replacement), self.assertRaisesRegex(ValueError, "unknown"):
+                audit.validate_consumer(self.root, "Examples/Consumer", manifest, self.policy)
+        self.policy["consumers"]["Examples/Consumer"]["authoringPackages"] = {"Authoring": "Packages/Missing"}
+        with self.assertRaisesRegex(ValueError, "unaudited"):
+            audit.validate_consumer(self.root, "Examples/Consumer", original, self.policy)
+
     def authoring_fixture(self):
         """Create a separate plugin package whose generated runtime declarations select A only."""
         relative = "Packages/Authoring"

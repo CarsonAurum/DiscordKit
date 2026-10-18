@@ -44,6 +44,10 @@ FIXTURES = (
     Fixture("DuplicateOptions", ("duplicate Discord option name",)),
     Fixture("UnsupportedOptionMetadata", ("@Option requires a valid literal name",)),
     Fixture("MissingArgumentsAlias", ("@SlashCommand requires an explicit Arguments typealias",)),
+    Fixture("ImmediateResponderAccess", ("CommandContext", "has no member 'responder'")),
+    Fixture("DeferredResponderAccess", ("DeferredCommandContext", "has no member 'responder'")),
+    Fixture("WrongResponseFamily", ("does not conform", "SlashCommandHandler", "MessageResponse")),
+    Fixture("MultipleResponseFamilies", ("@SlashCommand requires exactly one immediate, deferred or manual handler family",)),
 )
 
 

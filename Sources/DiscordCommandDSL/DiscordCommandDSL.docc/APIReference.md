@@ -17,6 +17,11 @@ Browse the public types and operations provided by DiscordCommandDSL.
 - ``DiscordCommandDSL/StringArgumentChoice``
 - ``DiscordCommandDSL/UserReference``
 
+### Command Application
+
+- ``DiscordCommandDSL/CommandApplication``
+- ``DiscordCommandDSL/CommandApplicationError``
+
 ### Command Arguments
 
 - ``DiscordCommandDSL/AnyArgumentOption``
@@ -35,12 +40,25 @@ Browse the public types and operations provided by DiscordCommandDSL.
 - ``DiscordCommandDSL/CommandContribution``
 - ``DiscordCommandDSL/CompiledCommands``
 
+### Command Context
+
+- ``DiscordCommandDSL/CommandContext``
+- ``DiscordCommandDSL/DeferredCommandContext``
+
 ### Command Handlers
 
+- ``DiscordCommandDSL/DeferredSlashCommandHandler``
 - ``DiscordCommandDSL/ExistingSlashCommand``
 - ``DiscordCommandDSL/ManualSlashCommandHandler``
 - ``DiscordCommandDSL/SlashCommand``
+- ``DiscordCommandDSL/SlashCommandHandler``
 - ``DiscordCommandDSL/SlashCommandMetadata``
+
+### Command Responses
+
+- ``DiscordCommandDSL/CommandResponseVisibility``
+- ``DiscordCommandDSL/DeferredMessageResponse``
+- ``DiscordCommandDSL/MessageResponse``
 
 ### Extensions to standard library types
 

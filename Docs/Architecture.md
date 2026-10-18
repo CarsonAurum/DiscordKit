@@ -116,8 +116,12 @@ slash handlers to existing command definitions/routes; `makeRouter` explicitly c
 the existing bounded router. Response ownership stays with Interactions. Neither
 existing products nor the shared DSL acquire upward dependencies. Part 15C's separate
 [macro package](MacroDSL.md) consumes these runtime products; only its host plugin
-selects SwiftSyntax 604.0.0. Existing runtime graphs remain macro free. Policies,
-message builders and HTTP/Gateway hosts remain later
+selects SwiftSyntax 604.0.0. Part 15D adds typed immediate/deferred response adapters
+and a signed HTTP `CommandApplication` over the existing application/router, adding
+direct HTTP/Transport imports. Initial response admission remains independent and
+command synchronization is explicit. Constructors and ordinary run register nothing;
+the host injects and owns concrete ingress. Existing runtime graphs remain macro free.
+Policies, message/component builders and Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 
 ## Product boundaries
@@ -142,6 +146,8 @@ flowchart TD
     DiscordCommandDSL --> DiscordModels
     DiscordCommandDSL --> DiscordCommands
     DiscordCommandDSL --> DiscordInteractions
+    DiscordCommandDSL --> DiscordHTTP
+    DiscordCommandDSL --> DiscordTransport
     DiscordTransport --> DiscordCore
     DiscordHTTP --> DiscordModels
     DiscordHTTP --> DiscordTransport

@@ -320,15 +320,38 @@ def validate_consumer(repository, relative, manifest, policy):
     Only non-test consumer targets form the delivered example graph. Their exact
     dependency roots are reviewed, all source compile branches are inspected, and
     their selected root product closures must avoid explicitly excluded products.
-    Consumer dependencies may only reference this checkout; no external runtime
-    or a second package identity can hide within a standalone example manifest.
+    Consumers default to this checkout alone. Explicit per-consumer policy may
+    additionally select an already audited local authoring package and reviewed
+    external products, with exact package paths, URLs and version requirements.
+    Authoring-selected runtime closures also participate in isolation checks.
     """
     require(relative in policy.get("consumers", {}), "Unknown example consumer")
     expected = policy["consumers"][relative]
-    dependencies = manifest.get("dependencies", [])
-    require(len(dependencies) == 1 and set(dependencies[0]) == {"fileSystem"}, "Consumer must use only the local DiscordKit package")
-    references = dependencies[0]["fileSystem"]
-    require(len(references) == 1 and Path(references[0]["path"]).resolve() == repository.resolve(), "Consumer package does not reference this checkout")
+    local_packages = {"discordkit": repository.resolve()}
+    authoring_packages = {}
+    for identity, path in expected.get("authoringPackages", {}).items():
+        require(path in policy.get("authoringPackages", {}), "Consumer selects unaudited authoring package")
+        package_root = (repository / path).resolve()
+        require(package_root.is_relative_to(repository.resolve()) and package_root.is_dir(), "Unsafe consumer authoring package path")
+        require(identity.lower() not in local_packages, "Duplicate consumer package identity")
+        local_packages[identity.lower()] = package_root
+        authoring_packages[identity.lower()] = policy["authoringPackages"][path]
+    paths, requirements = [], {}
+    for dependency in manifest.get("dependencies", []):
+        require(len(dependency) == 1, "Ambiguous consumer package dependency")
+        if "fileSystem" in dependency:
+            paths.extend(Path(item["path"]).resolve() for item in dependency["fileSystem"])
+        else:
+            require(set(dependency) == {"sourceControl"}, "Unsupported consumer package dependency")
+            for item in dependency["sourceControl"]:
+                identity = item["identity"]
+                require(identity not in requirements, "Duplicate consumer external package")
+                require(identity in expected.get("externalProducts", {}) and identity in policy["externalPackages"], "Unreviewed consumer external package")
+                remote = item["location"].get("remote", [])
+                require(len(remote) == 1 and remote[0]["urlString"] == policy["externalPackages"][identity], "Consumer package URL mismatch")
+                requirements[identity] = item.get("requirement")
+    require(len(paths) == len(local_packages) and set(paths) == set(local_packages.values()), "Consumer package does not reference this checkout and exact reviewed local packages")
+    require(requirements == expected.get("directRequirements", {}), "Consumer package requirements changed")
     targets = {target["name"]: target for target in manifest["targets"] if target.get("type") != "test"}
     graph = {name: manifest_dependencies(target) for name, target in targets.items()}
     require(graph == expected["targets"], f"Consumer dependency roots changed: {relative}")
@@ -338,8 +361,16 @@ def validate_consumer(repository, relative, manifest, policy):
         for dependency in graph[name]:
             if "/" in dependency:
                 package, product = dependency.split("/", 1)
-                require(package.lower() == "discordkit" and product in policy["products"], "Consumer selects unknown external product")
-                root_products.add(product)
+                if package.lower() == "discordkit":
+                    require(product in policy["products"], "Consumer selects unknown root product")
+                    root_products.add(product)
+                elif package.lower() in authoring_packages:
+                    authoring = authoring_packages[package.lower()]
+                    require(product in authoring["products"], "Consumer selects unknown authoring product")
+                    reached = closure(authoring["targets"], authoring["products"][product])
+                    root_products.update(value.split("/", 1)[1] for value in reached if value.lower().startswith("discordkit/"))
+                else:
+                    require(package in requirements and product in expected.get("externalProducts", {}).get(package, []), "Consumer selects unknown external product")
             else:
                 require(dependency in targets, "Consumer has unknown local target")
         relative_source = target.get("path", f"Sources/{name}")

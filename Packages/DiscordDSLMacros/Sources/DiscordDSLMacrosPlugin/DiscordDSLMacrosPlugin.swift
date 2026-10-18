@@ -141,6 +141,16 @@ private enum AuthoringSyntax {
         } ?? false
     }
 
+    /// Finds the supported explicitly spelled slash-handler response contracts without symbol lookup.
+    /// - Parameter declaration: Original handler struct, including optional module-qualified inheritance.
+    /// - Returns: Matching family names in stable order. No match retains the established manual default;
+    ///   more than one requires an author diagnostic because response ownership must be exclusive.
+    static func handlerFamilies(_ declaration: StructDeclSyntax) -> [String] {
+        ["SlashCommandHandler", "DeferredSlashCommandHandler", "ManualSlashCommandHandler"].filter {
+            inherits(declaration, $0)
+        }
+    }
+
     /// Validates the macro's supported root declaration and reserved generated names.
     /// - Parameters:
     ///   - declaration: Attached declaration group.
@@ -355,13 +365,13 @@ public struct OptionMacro: PeerMacro {
     }
 }
 
-/// Generates only manual slash metadata, conformance and an explicit contribution factory.
+/// Generates slash metadata and an explicit factory while preserving one author-selected response family.
 public struct SlashCommandMacro: MemberMacro, ExtensionMacro {
     /// Validates finite metadata and emits documented inert members; execute remains author-owned.
     /// - Parameters:
     ///   - node: Attribute containing literal root name and description.
     ///   - declaration: Nongeneric handler struct with explicit Arguments and execute implementation.
-    ///   - protocols: Compiler-requested conformances; manual response ownership remains unchanged.
+    ///   - protocols: Compiler-requested conformances; explicit typed or manual contracts remain unchanged.
     ///   - context: Compiler diagnostics and location authority.
     /// - Returns: Command metadata plus a throwing explicit-source contribution factory, or none on error.
     /// - Throws: Syntax construction errors are propagated; author errors are emitted as diagnostics.
@@ -383,15 +393,19 @@ public struct SlashCommandMacro: MemberMacro, ExtensionMacro {
             AuthoringSyntax.diagnose(context, node, "missing-arguments", "@SlashCommand requires an explicit Arguments typealias conforming to CommandArguments")
             return []
         }
+        guard AuthoringSyntax.handlerFamilies(structure).count <= 1 else {
+            AuthoringSyntax.diagnose(context, node, "multiple-handler-families", "@SlashCommand requires exactly one immediate, deferred or manual handler family")
+            return []
+        }
         let access = structure.modifiers.first(where: { ["public", "package"].contains($0.name.text) }).map { $0.name.text + " " } ?? ""
         return [DeclSyntax(stringLiteral: """
-        /// Finite API v10 registration metadata; reading it never invokes the manual handler.
+        /// Finite API v10 registration metadata; reading it never invokes the selected handler.
         \(access)var command: DiscordCommandDSL.SlashCommandMetadata {
             /// Returns immutable author metadata without tasks, I/O or response ownership changes.
             get { DiscordCommandDSL.SlashCommandMetadata(name: \(nameExpression), description: \(descriptionExpression)) }
         }
         """), DeclSyntax(stringLiteral: """
-        /// Validates and retains this manual slash handler without executing, registering or responding.
+        /// Validates and retains this slash handler without executing, registering or responding.
         /// - Parameters:
         ///   - id: Explicit stable declaration identity; admitted by structural compilation.
         ///   - source: Author coordinate for bounded schema and command diagnostics.
@@ -403,20 +417,20 @@ public struct SlashCommandMacro: MemberMacro, ExtensionMacro {
         """)]
     }
 
-    /// Adds the manual runtime handler protocol without introducing response policies or host work.
+    /// Preserves explicit typed/manual contracts and adds the manual protocol only when none is named.
     /// - Parameters:
     ///   - node: Original slash attribute.
     ///   - declaration: Original struct inspected for syntactic conformance duplication.
     ///   - type: Compiler-qualified extended type, including enclosing scopes.
     ///   - protocols: Compiler-requested conformances, unused because explicit inheritance is preserved.
     ///   - context: Compiler expansion authority; no diagnostics are duplicated in this role.
-    /// - Returns: A single empty manual-handler extension, or none when already declared/unsupported.
+    /// - Returns: A single empty manual-handler extension, or none for an explicit family/unsupported root.
     /// - Throws: SwiftSyntax construction errors, propagated to the compiler.
     public static func expansion(of node: AttributeSyntax, attachedTo declaration: some DeclGroupSyntax,
                                  providingExtensionsOf type: some TypeSyntaxProtocol, conformingTo protocols: [TypeSyntax],
                                  in context: some MacroExpansionContext) throws -> [ExtensionDeclSyntax] {
         guard let structure = declaration.as(StructDeclSyntax.self), structure.genericParameterClause == nil,
-              !AuthoringSyntax.inherits(structure, "ManualSlashCommandHandler") else { return [] }
+              AuthoringSyntax.handlerFamilies(structure).isEmpty else { return [] }
         return [try ExtensionDeclSyntax("extension \(type): DiscordCommandDSL.ManualSlashCommandHandler {}")]
     }
 }

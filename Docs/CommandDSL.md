@@ -1,14 +1,17 @@
 # Typed command authoring
 
 Part 15B adds the independently adopted `DiscordCommandDSL` product over
-DSL/Core/Models/Commands/Interactions. A handwritten argument schema drives both
+DSL/Core/Models/Commands/Interactions, with HTTP/Transport for application composition.
+A handwritten argument schema drives both
 validated registration options and strict invocation decoding. Finite module
 compilation produces existing `CommandDefinition` and `CommandRoute` values.
 Construction and compilation start no tasks, I/O, registration or handler execution.
 
-The implemented family is root slash commands with leaf options and explicit manual
-response ownership. Macros, subcommands/groups, autocomplete, other command families,
-response builders/policies and supervised HTTP/Gateway hosts remain later
+The implemented family is root slash commands with leaf options. Part 15C adds
+optional [macro authoring](MacroDSL.md); Part 15D adds
+[immediate/deferred/manual response ownership and signed HTTP applications](CommandResponses.md).
+Subcommands/groups, autocomplete, other command families,
+message/component builders, policies and Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md). Existing low-level APIs
 remain independently usable for their broader implemented surfaces.
 

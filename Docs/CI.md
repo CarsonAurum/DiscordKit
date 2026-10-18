@@ -13,7 +13,7 @@ Hosted macOS 26/Ubuntu 24.04 jobs install Swift 6.4.1, build/test the root, test
 tooling/load packages and Python helpers, run browser bridge tests, validate
 documentation presence/inventory/generation/parity/Social catalog, audit the actual
 manifest/import DAG, validate release/maintenance records, and build every consumer.
-CommandsApp/ActivityHost tests and CommandsApp/VoiceBot/SocialApp offline runs are
+CommandsApp/DSLCommands/ActivityHost tests and CommandsApp/DSLCommands/VoiceBot/SocialApp offline runs are
 explicit. Credential-bearing examples are built only.
 
 Parts 15A and 15B add independently selected `DiscordDSL` and `DiscordCommandDSL`
@@ -21,9 +21,13 @@ products and their root tests. CI compares the current `0.15.0` authoring candid
 `0.14.0` API baseline, validates both historical and current reports, and discovers
 the public DocC modules from the manifest. The current candidate covers shared
 declarations, typed argument decoding, explicit command lowering and Part 15C's
-separate macro authoring package. CI tests its compiled expansions and external
+separate macro authoring package. Part 15D adds typed immediate/deferred/manual
+responses and signed HTTP application composition with explicit synchronization.
+The independent DSLCommands consumer runs its synthetic signed exchange in explicit
+offline mode; listener startup and registration are never part of routine CI.
+CI tests compiled macro expansions and external
 positive/negative fixtures, including Sendable checks and a cross-module codec.
-Response builders and supervised HTTP/Gateway hosts remain planned. Workflow
+Message/component builders, policies and Gateway hosts remain planned. Workflow
 definitions do not establish a passed platform run.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to

@@ -1,6 +1,6 @@
 # ``DiscordCommandDSL``
 
-Compile typed argument schemas and manual slash handlers into existing command definitions and routes.
+Compile typed slash handlers into existing definitions and routes, with explicit response and HTTP ownership.
 
 ## Overview
 
@@ -12,9 +12,19 @@ finite typed option schemas and strict invocation-local decoding. A
 bounded-router factory. ``ExistingSlashCommand`` supports incremental adoption of
 validated low-level root slash definitions/routes without adding typed decoding.
 
+Part 15D adds ``SlashCommandHandler`` and ``DeferredSlashCommandHandler`` with
+restricted ``CommandContext`` and ``DeferredCommandContext`` snapshots. Immediate
+handlers return ``MessageResponse`` for one initial reply. Deferred handlers are
+acknowledged before user work and return ``DeferredMessageResponse`` for
+edit-original completion. ``ManualSlashCommandHandler`` retains the raw responder.
+``CommandApplication`` composes the existing signed HTTP owner and bounded router;
+it never registers commands during construction or ordinary serving. Its explicit
+``CommandApplication/synchronize(using:deadline:)`` adopts the existing reconciler.
+
 Construction and compilation perform no registration, network work, task startup
 or handler execution. Router invocation retains existing interaction response
-ownership: handlers explicitly use their supplied responder and honor cancellation.
+ownership: typed adapters transmit returned responses; manual handlers explicitly use
+their supplied responder. Cancellation and delivery uncertainty propagate without replay.
 Partial resolved references remain local observations; no hydration or authorization
 is inferred. Schemas preserve missing/null/value distinctions and validate complete
 input before constructing one fresh argument value. Schema metadata retains ordered
@@ -23,9 +33,10 @@ coordinates; admitted text bounds cover that metadata. Defaults are author-visib
 metadata, while executable captures and their memory size are outside those bounds.
 
 Select this library independently. Existing products and the Core/Models-only shared
-DSL retain their adoption graphs. Macros, response builders, subcommands/autocomplete,
-other command families, policies and HTTP/Gateway hosts remain later milestones.
-Local compilation/tests do not qualify live Discord, platforms, macros or capacity.
+DSL retain their adoption graphs. The runtime selects no compiler plugin; optional
+macro authoring lives in its separate package. Message/component builders,
+subcommands/autocomplete, other command families, policies and Gateway hosts remain
+later milestones. Local tests do not qualify live Discord, platforms or capacity.
 
 ## Topics
 
@@ -49,15 +60,27 @@ Local compilation/tests do not qualify live Discord, platforms, macros or capaci
 - ``MentionableReference``
 - ``AttachmentReference``
 
-### Manual commands and compilation
+### Commands and compilation
 
 - ``ManualSlashCommandHandler``
+- ``SlashCommandHandler``
+- ``DeferredSlashCommandHandler``
 - ``SlashCommandMetadata``
 - ``SlashCommand``
 - ``ExistingSlashCommand``
 - ``CommandContribution``
 - ``CommandCompilation``
 - ``CompiledCommands``
+
+### Response ownership and HTTP applications
+
+- ``CommandContext``
+- ``DeferredCommandContext``
+- ``MessageResponse``
+- ``DeferredMessageResponse``
+- ``CommandResponseVisibility``
+- ``CommandApplication``
+- ``CommandApplicationError``
 
 ### Bounded diagnostics
 

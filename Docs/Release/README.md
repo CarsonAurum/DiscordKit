@@ -1,12 +1,13 @@
 # Release certification
 
 The current **0.15.0 authoring candidate** covers [shared declarations](../DSL.md),
-[typed command lowering](../CommandDSL.md) and [macro authoring](../MacroDSL.md)
-in Parts 15A/15B/15C. Its
-[machine report](phase15-report.json), [15A record](phase15a-validation.json) and
-[15B validation record](phase15b-validation.json) preserve their historical checks.
-The [15C validation record](phase15c-validation.json) states current checks and
-explicit exclusions. Response builders, HTTP/Gateway hosts and the remaining
+[typed command lowering](../CommandDSL.md), [macro authoring](../MacroDSL.md) and
+[typed responses/signed HTTP applications](../CommandResponses.md)
+in Parts 15A/15B/15C/15D. The [15A record](phase15a-validation.json),
+[15B record](phase15b-validation.json) and [15C record](phase15c-validation.json)
+preserve their historical checks. The current [machine report](phase15-report.json)
+and [15D validation record](phase15d-validation.json) state current checks and
+explicit exclusions. Message/component builders, policies, Gateway hosts and the remaining
 [DSL milestones](../DSLImplementationRoadmap.md) are still planned.
 
 The historical [0.14.0 candidate report](2026-10-18.md) and
@@ -33,8 +34,9 @@ An unchanged hash does not establish semantic coverage of unrelated documentatio
 
 Every runtime release carries workload, hardware, throughput, p50/p95/p99, CPU/RSS,
 request savings, overload/recovery and fixed-working-set 30-minute evidence. The
-[measurements](Measurements/environment.json) identify this checkpoint's finite
-synthetic runs. Reproduce greater-than-10% regressions three times on matching hardware
+[measurements](Measurements/environment.json) identify Phase 14's earlier finite
+synthetic runs. Part 15D adds no current throughput, RSS or soak qualification.
+Reproduce greater-than-10% regressions three times on matching hardware
 and workload before attributing them. Concurrent build/test activity and historical
 baselines do not provide such a controlled comparison. See [scalability](../Scalability.md).
 

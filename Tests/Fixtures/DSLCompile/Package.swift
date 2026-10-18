@@ -10,6 +10,7 @@ let consumers = [
     "MissingOption", "InferredType", "InitializedLet", "MultipleBindings", "DynamicDefault",
     "WrongDefaultType", "UnsupportedArgumentType", "NonSendableHandler", "DuplicateOptions",
     "UnsupportedOptionMetadata", "MissingArgumentsAlias",
+    "ImmediateResponderAccess", "DeferredResponderAccess", "WrongResponseFamily", "MultipleResponseFamilies",
 ]
 let runtime: [Target.Dependency] = [
     .product(name: "DiscordCommandDSL", package: "DiscordKit"),

@@ -29,11 +29,17 @@ executing them. Offline CI builds all nine and audits their selected dependency/
 Select `DiscordCommandDSL` and `DiscordDSL` explicitly for [typed command
 authoring](CommandDSL.md). Compilation produces existing validated registration
 definitions and exact routes. It does not register commands, verify ingress, bind
-a listener or choose a Gateway client; applications retain those explicit owners.
+a listener or choose a Gateway client. Part 15D's `CommandApplication` explicitly
+composes signed ingress and the bounded router. Inject the shared admission authority
+and an HTTP listener; `run` owns and closes that listener. Call `synchronize` separately
+for registration. Use [DSLCommands](../Examples/DSLCommands/README.md) in its default
+offline mode to exercise a signed exchange; `--listen` explicitly opts into listener
+ownership. See [response/application contracts](CommandResponses.md).
 For optional `@CommandArguments`/`@SlashCommand` authoring, select the separate
 [DiscordDSLMacros package](MacroDSL.md); the root package does not select its plugin.
 
-Only CommandsApp, VoiceBot, RPCApp, ActivityHost, OAuthApp and SocialApp are safe
+Only CommandsApp, DSLCommands in default/`--offline` mode, VoiceBot, RPCApp,
+ActivityHost, OAuthApp and SocialApp are safe
 offline demonstrations by design. RESTOnly/GatewayBot can use credentials when
 run; HTTPApp can bind a listener when configured. Routine CI builds these examples
 and runs only explicitly offline consumers.

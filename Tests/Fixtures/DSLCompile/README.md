@@ -5,7 +5,9 @@ and type-checks its generated members from a consumer package. `ExternalCodec` i
 separate compiled module. `PositiveExternal` imports its custom `ArgumentValue`,
 uses public generated argument/handler conformance, enum and optional arguments,
 literal and explicit-nil defaults, an explicitly renamed option, the contribution
-factory and a real generated-schema decode expression. No runtime reflection or
+factory and a real generated-schema decode expression. It also compiles explicit
+immediate/deferred handler protocols, typed contexts and response-family factories
+from outside the macro package. No runtime reflection or
 imported-source resolution is available to the macro.
 
 Run from the repository root:
@@ -29,11 +31,13 @@ The negative targets cover nonliteral/invalid command metadata, computed, inferr
 unmarked or multiply bound properties, initialized `let` defaults, dynamic or
 incompatible defaults, missing codec conformance, non-Sendable captured handler
 state, duplicate external option names, unsupported option metadata and a missing
-explicit argument alias. These are deliberately invalid Swift consumers, so a
+explicit argument alias. Part 15D adds forbidden responder access from immediate
+and deferred contexts, a wrong return family and incompatible explicit handler
+families. These are deliberately invalid Swift consumers, so a
 whole-package `swift build` is expected to fail; use the runner.
 
 The separate macro package's Swift Testing suite executes actual generated schemas
 and routes against handwritten implementations. This fixture package supplies
 external compilation evidence. Neither check claims live Discord qualification,
-application hosting, response policies, macro capacity measurements or complete
+authenticated hosted deployment, macro capacity measurements or complete
 Phase 15 support.

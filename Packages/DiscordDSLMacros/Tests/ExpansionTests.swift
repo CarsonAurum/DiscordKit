@@ -192,6 +192,42 @@ package struct PackageVisibleHandler {
             providingExtensionsOf: TypeSyntax(stringLiteral: "Greeting"), conformingTo: [], in: context).isEmpty)
     }
 
+    /// Explicit immediate, deferred and manual family spellings retain exactly their selected ownership.
+    /// Module qualification is syntactically recognized, and generated contribution factories stay inert.
+    /// - Parameter family: Supported directly inherited response contract, optionally module-qualified.
+    /// - Throws: Unexpected parsing or expansion failures fail the test.
+    @Test(arguments: ["SlashCommandHandler", "DeferredSlashCommandHandler", "ManualSlashCommandHandler",
+                      "DiscordCommandDSL.SlashCommandHandler", "DiscordCommandDSL.DeferredSlashCommandHandler"])
+    func explicitResponseFamilies(family: String) throws {
+        let (handler, marker) = try fixture("@SlashCommand(\"typed\", description: \"Typed family\") struct Handler: \(family) { typealias Arguments = Input }")
+        let context = BasicMacroExpansionContext()
+        let members = try SlashCommandMacro.expansion(of: marker, providingMembersOf: handler,
+            conformingTo: [], in: context)
+        #expect(members.count == 2)
+        #expect(members[1].description.contains("DiscordCommandDSL.SlashCommand<Self>"))
+        #expect(try SlashCommandMacro.expansion(of: marker, attachedTo: handler,
+            providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context).isEmpty)
+        #expect(context.diagnostics.isEmpty)
+    }
+
+    /// Multiple explicit response families cannot receive generated members or a fallback manual extension.
+    /// - Parameter families: Incompatible direct protocol inheritance, including all pairwise combinations.
+    /// - Throws: Unexpected parsing or expansion failures fail the test.
+    @Test(arguments: ["SlashCommandHandler, DeferredSlashCommandHandler",
+                      "SlashCommandHandler, ManualSlashCommandHandler",
+                      "DeferredSlashCommandHandler, ManualSlashCommandHandler"])
+    func incompatibleResponseFamilies(families: String) throws {
+        let (handler, marker) = try fixture("@SlashCommand(\"typed\", description: \"Typed family\") struct Handler: \(families) { typealias Arguments = Input }")
+        let context = BasicMacroExpansionContext()
+        #expect(try SlashCommandMacro.expansion(of: marker, providingMembersOf: handler,
+            conformingTo: [], in: context).isEmpty)
+        #expect(try SlashCommandMacro.expansion(of: marker, attachedTo: handler,
+            providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context).isEmpty)
+        #expect(context.diagnostics.contains {
+            $0.diagMessage.diagnosticID == .init(domain: "DiscordDSLMacros", id: "multiple-handler-families")
+        })
+    }
+
     /// Markers require their structural owner and slash handlers require an explicit argument alias.
     /// - Throws: Unexpected fixture parsing or expansion failures fail the test.
     @Test func standaloneMarkerAndMissingAlias() throws {

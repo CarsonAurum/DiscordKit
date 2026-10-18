@@ -4,7 +4,7 @@
   "nextReviewDue": "2026-10-25",
   "unclassifiedEntries": [],
   "historyPath": "Docs/Parity/history.json",
-  "reviewScope": "Affected release/HTTP transition sources and Part 15C command macro contracts; existing source records retained. Discovery status is not full semantic parity.",
+  "reviewScope": "Affected release/HTTP transition sources and Part 15D command response/HTTP composition contracts; earlier records retained. Discovery status is not full semantic parity.",
   "officialSources": [
     {
       "url": "https://docs.discord.com/developers/reference.md",
@@ -21,14 +21,14 @@
     {
       "url": "https://docs.discord.com/developers/interactions/application-commands.md",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15c.json",
-      "sha256": "c848996e21e215c2b01d1390d330a8b08fe3d265073a6a6f9f5a23fe8ecf293e"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15d.json",
+      "sha256": "4533e2e4aa9a09b3e900cc0066d8c803cfcdfa00ec3918bcb036dabebbf3a83b"
     },
     {
       "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15c.json",
-      "sha256": "c848996e21e215c2b01d1390d330a8b08fe3d265073a6a6f9f5a23fe8ecf293e"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15d.json",
+      "sha256": "4533e2e4aa9a09b3e900cc0066d8c803cfcdfa00ec3918bcb036dabebbf3a83b"
     }
   ],
   "transitions": [
