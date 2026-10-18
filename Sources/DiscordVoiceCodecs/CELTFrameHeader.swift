@@ -350,9 +350,24 @@ private struct CELTHeaderChoices {
 
 /// Private side-information coder boundary retaining exact frame and current bit authority.
 private protocol CELTHeaderCoding {
-    var bitsUsed: Int { get }
-    var fractionalBitsUsed: Int { get }
-    var frameBitCount: Int { get }
+    /// Current whole-bit entropy accounting used by bounded side-information admission.
+    var bitsUsed: Int {
+        /// Reads the current coder's whole-bit tell without consuming or emitting a symbol.
+        /// - Returns: The current nonnegative bit count, including range-coder accounting overhead.
+        get
+    }
+    /// Current one-eighth-bit entropy accounting used by fractional CELT allocation.
+    var fractionalBitsUsed: Int {
+        /// Reads fractional tell without advancing the coder or mutating its private working copy.
+        /// - Returns: The current nonnegative bit usage in units of one eighth of a bit.
+        get
+    }
+    /// Complete fixed entropy frame capacity, independent of the current coding position.
+    var frameBitCount: Int {
+        /// Reads the bounded frame's total capacity without inspecting or changing encoded symbols.
+        /// - Returns: The full frame size in bits, equal to its validated byte count multiplied by eight.
+        get
+    }
     /// Reads or writes one probability-weighted flag.
     /// - Parameters:
     ///   - desired: Encoder choice, ignored by the decoder.
@@ -372,8 +387,14 @@ private protocol CELTHeaderCoding {
 /// Private encoder adapter; public wrappers alone commit its completed state.
 private struct CELTHeaderEncoding: CELTHeaderCoding {
     var encoder: OpusRangeEncoder
+    /// Reads the encoder's current whole-bit tell without emitting symbols or committing its copy.
+    /// - Returns: Nonnegative whole-bit entropy accounting, including range-coder overhead.
     var bitsUsed: Int { encoder.bitsUsed }
+    /// Reads the encoder's current fractional tell without changing arithmetic-coding state.
+    /// - Returns: Nonnegative entropy usage in units of one eighth of a bit.
     var fractionalBitsUsed: Int { encoder.fractionalBitsUsed }
+    /// Reads the encoder's fixed frame capacity rather than its remaining allocation budget.
+    /// - Returns: Total bounded frame bytes multiplied by eight, in bits; no encoding state changes.
     var frameBitCount: Int { encoder.frameByteCount * 8 }
     /// Emits one explicit side-information flag.
     /// - Parameters:
@@ -400,8 +421,14 @@ private struct CELTHeaderEncoding: CELTHeaderCoding {
 /// Private decoder adapter; desired encoder values never influence a decoded field.
 private struct CELTHeaderDecoding: CELTHeaderCoding {
     var decoder: OpusRangeDecoder
+    /// Reads the decoder's current whole-bit tell without consuming symbols or committing its copy.
+    /// - Returns: Nonnegative whole-bit entropy accounting, including range-coder overhead.
     var bitsUsed: Int { decoder.bitsUsed }
+    /// Reads the decoder's current fractional tell without advancing arithmetic-coding state.
+    /// - Returns: Nonnegative entropy usage in units of one eighth of a bit.
     var fractionalBitsUsed: Int { decoder.fractionalBitsUsed }
+    /// Reads the complete bounded input frame capacity without consuming packet bytes.
+    /// - Returns: The immutable frame byte count multiplied by eight, in bits.
     var frameBitCount: Int { decoder.frame.count * 8 }
     /// Reads one exact probability-weighted side-information flag.
     /// - Parameters:

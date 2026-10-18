@@ -5,7 +5,12 @@ import Foundation
 /// Complete original fields and unknown numeric spellings are retained; ordinary diagnostics always redact them.
 public protocol ActivityPayload: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {
     /// Original complete object, including unknown keys and exact numeric lexemes.
-    var rawFields: [String: JSONValue] { get }
+    var rawFields: [String: JSONValue] {
+        /// Reads the immutable original Activity object without reparsing, I/O or redaction.
+        /// - Returns: All original keys and exact JSON number lexemes, including unknown fields.
+        ///   Callers must deliberately protect private payload data when inspecting this value.
+        get
+    }
 
     /// Validates a bounded subtree and initializes the typed immutable projection.
     /// - Parameter value: An object already parsed under the surrounding frame's resource limits.

@@ -6,7 +6,12 @@ import Foundation
 /// Unknown fields and numeric lexemes survive in `rawFields`; diagnostics always conceal payload contents.
 public protocol RPCPayload: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {
     /// Original complete object, including future keys, nullable values and exact JSON number spellings.
-    var rawFields: [String: JSONValue] { get }
+    var rawFields: [String: JSONValue] {
+        /// Reads the retained immutable RPC object synchronously without transport or parsing work.
+        /// - Returns: Original known and unknown fields, nulls and exact numeric spellings.
+        ///   Deliberate inspection bypasses diagnostic redaction; callers protect sensitive values.
+        get
+    }
 
     /// Validates one already-bounded RPC subtree and projects modeled fields.
     /// - Parameter value: Object parsed using JSONValue under caller-established whole-document limits.

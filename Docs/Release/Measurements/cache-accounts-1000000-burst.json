@@ -1,0 +1,187 @@
+{
+  "actualLoaderCalls": 32,
+  "afterShutdown": {
+    "cpuSeconds": 0.074403,
+    "liveAllocationBlocks": 1115,
+    "liveAllocationBytes": 154576,
+    "peakRSSBytes": 9388032,
+    "residentBytes": 9388032
+  },
+  "before": {
+    "cpuSeconds": 0.006162,
+    "liveAllocationBlocks": 1003,
+    "liveAllocationBytes": 108960,
+    "peakRSSBytes": 7585792,
+    "residentBytes": 7585792
+  },
+  "bufferedEventsAfterShutdown": 0,
+  "capacityRefusals": 1792,
+  "checkpoints": [
+    {
+      "accountedBytes": 0,
+      "completedRounds": 0,
+      "elapsedSeconds": 0,
+      "entries": 0,
+      "process": {
+        "cpuSeconds": 0.006162,
+        "liveAllocationBlocks": 1003,
+        "liveAllocationBytes": 108960,
+        "peakRSSBytes": 7585792,
+        "residentBytes": 7585792
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 1,
+      "elapsedSeconds": 0.007994292,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.015431,
+        "liveAllocationBlocks": 1113,
+        "liveAllocationBytes": 175136,
+        "peakRSSBytes": 9224192,
+        "residentBytes": 9224192
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 2,
+      "elapsedSeconds": 0.015872458,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.02443,
+        "liveAllocationBlocks": 1113,
+        "liveAllocationBytes": 175232,
+        "peakRSSBytes": 9273344,
+        "residentBytes": 9273344
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 3,
+      "elapsedSeconds": 0.02359275,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.033437,
+        "liveAllocationBlocks": 1114,
+        "liveAllocationBytes": 179552,
+        "peakRSSBytes": 9322496,
+        "residentBytes": 9322496
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 4,
+      "elapsedSeconds": 0.031066083,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.04199,
+        "liveAllocationBlocks": 1114,
+        "liveAllocationBytes": 179552,
+        "peakRSSBytes": 9322496,
+        "residentBytes": 9322496
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 5,
+      "elapsedSeconds": 0.038150625,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.050002,
+        "liveAllocationBlocks": 1114,
+        "liveAllocationBytes": 180000,
+        "peakRSSBytes": 9322496,
+        "residentBytes": 9322496
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 6,
+      "elapsedSeconds": 0.045385583,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.05823,
+        "liveAllocationBlocks": 1114,
+        "liveAllocationBytes": 180000,
+        "peakRSSBytes": 9355264,
+        "residentBytes": 9355264
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 7,
+      "elapsedSeconds": 0.052374292,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.066151,
+        "liveAllocationBlocks": 1114,
+        "liveAllocationBytes": 180000,
+        "peakRSSBytes": 9355264,
+        "residentBytes": 9355264
+      }
+    },
+    {
+      "accountedBytes": 4532,
+      "completedRounds": 8,
+      "elapsedSeconds": 0.059427,
+      "entries": 4,
+      "process": {
+        "cpuSeconds": 0.074258,
+        "liveAllocationBlocks": 1114,
+        "liveAllocationBytes": 180000,
+        "peakRSSBytes": 9371648,
+        "residentBytes": 9371648
+      }
+    },
+    {
+      "accountedBytes": 0,
+      "completedRounds": 8,
+      "elapsedSeconds": 0.059660958,
+      "entries": 0,
+      "process": {
+        "cpuSeconds": 0.074403,
+        "liveAllocationBlocks": 1115,
+        "liveAllocationBytes": 154576,
+        "peakRSSBytes": 9388032,
+        "residentBytes": 9388032
+      }
+    }
+  ],
+  "coalescedReads": 224,
+  "completedRefreshCalls": 256,
+  "completedRounds": 8,
+  "configuredRounds": 8,
+  "cpuSeconds": 0.068241,
+  "durationSeconds": 0.059660958,
+  "entriesAfterShutdown": 0,
+  "evictions": 128,
+  "expirations": 512,
+  "healthyBroadcastDeliveries": 24,
+  "logicalAccounts": 1000000,
+  "maximumAccountedBytes": 262144,
+  "maximumEntries": 64,
+  "notes": [
+    "Logical accounts are served end users; 1/2/4 selected opaque scopes share one local cache authority.",
+    "Fixed 20 keys per scope, at most 64 offered child tasks, zero sockets, credentials or distributed workers.",
+    "Accounted cache bytes exclude allocator/index/task overhead; ProcessSample reports actual process RSS separately.",
+    "Exact finite rounds exercise eviction, refresh overload, TTL, invalidation, recovery and isolated slow-subscriber overflow.",
+    "TTL uses explicitly advanced test time; measured wall duration alone describes soak length. No fleet or 30-minute qualification is inferred.",
+    "At most 121 process/accounted-cache checkpoints expose actual RSS and live heap history; duration mode runs minimum rounds and minimum actual wall time."
+  ],
+  "offeredRefreshCalls": 2048,
+  "peakAccountedBytes": 72512,
+  "peakBufferedEvents": 2,
+  "peakEntries": 64,
+  "peakRefreshes": 1,
+  "peakWaiters": 8,
+  "profile": "accounts-1000000",
+  "recoveryReads": 32,
+  "refreshesAfterShutdown": 0,
+  "scenario": "cache",
+  "selectedScopes": 4,
+  "slowSubscriberResynchronizations": 8,
+  "subscriptionsAfterShutdown": 0,
+  "waitersAfterShutdown": 0,
+  "workingSetKeysPerScope": 20
+}

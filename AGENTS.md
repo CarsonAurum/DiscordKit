@@ -107,6 +107,13 @@ adds the published confidential backend device grant with explicit bounded polli
 Construction starts no work. No native Discord runtime or guessed Social/Commerce wire
 is permitted; see `Docs/Social.md` and `Docs/Parity/phase13-social-catalog.json`.
 
+Part 14 adds release certification, DocC adoption/setup/migration guides, owned
+SwiftSyntax callable-documentation auditing, dependency/import/product isolation,
+public API/semver baselines, platform CI and weekly official-source review. See
+`Docs/Release/README.md`, `Docs/ReleaseTooling.md` and `Docs/CI.md`. The 0.14.0
+candidate is unpublished. Unverified platform/live/hardware/crypto/interop gates
+remain explicit exclusions, and syntactic presence never proves semantic completeness.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -221,6 +228,13 @@ Swift frames and simulated message hosts; approved Discord browser/mobile auth,
 participant and purchase smoke tests remain separate gates. Keep client secrets
 out of iframe/mobile code and verify entitlements through server-authoritative APIs.
 For documentation-only changes, review the diff; a build is not required.
+
+For release tooling, audit or example changes, run the relevant Swift/Python tests,
+the documentation presence audit, dependency/import graph audit, API comparison,
+DocC and independent examples. Validate both machine release and maintenance records
+with `release_check.py`; preserve append-only parity history and dated transition
+fixtures. See `Docs/ReleaseTooling.md` for exact commands. Cross-platform workflow
+definitions do not establish a passed run; update claims only from actual evidence.
 
 For media/voice changes, also build and run the offline `Examples/VoiceBot` package.
 Preserve its graph without HTTP/Gateway/Client/Cache/OAuth or concrete adapters.

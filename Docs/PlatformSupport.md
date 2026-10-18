@@ -1,5 +1,11 @@
 # Platform support and qualification
 
+Phase 14 adds [CI procedures](CI.md) for hosted macOS/Linux, Apple selected-module
+device/simulator compilation, and explicit Windows/Android infrastructure gates.
+These definitions establish no new platform runtime qualification. The
+[candidate report](Release/2026-10-18.md) records actual checks and excludes
+unrun platform, approved host, hardware, independent crypto and live Discord claims.
+
 Phase 13's [Social composition](Social.md) is locally tested on macOS arm64 with
 Swift 6.4. Public backend device authorization is distinct from a console runtime.
 The [Social catalog](Parity/phase13-social-catalog.json) records current iOS/Android

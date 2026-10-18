@@ -1,5 +1,15 @@
 # Dependency policy and qualification
 
+Phase 14 adds exact **swift-syntax 604.0.0** solely to the independent
+DiscordKitTools package for the owned SwiftSyntax/SwiftParser declaration audit.
+The [official release](https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0)
+was reverified 2026-10-18; this version matches Swift 6.4. Its tool lock pins
+revision `050f1a346fbbac0ca2cfb15a95274f7bd1cf0ccf`; upstream Apache-2.0 terms
+and notices remain applicable. No production product selects the tool,
+DocC plugin or SwiftSyntax. Root dependency pins remain unchanged. The
+[actual graph audit](ReleaseTooling.md) covers direct imports, target DAG,
+approved resolved packages and selected consumer product closures.
+
 Phase 13 adds no external dependency. The independent Social product composes existing
 Core/Models/Transport, HTTP/OAuth/GameServices/Commerce, RPC/Activities and Media.
 It selects neither concrete adapters nor Gateway/Client/Cache/Voice/MLS/DAVE, and no

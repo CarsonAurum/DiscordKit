@@ -15,6 +15,7 @@ struct ToolCommandTests {
         (["generate", "--check"], ToolAction.generateCheck),
         (["generate", "--write"], ToolAction.generateWrite),
         (["parity", "check"], ToolAction.parityCheck),
+        (["documentation", "audit"], ToolAction.documentationAudit),
     ])
     func parsesExplicitOperations(prefix: [String], expected: ToolAction) throws {
         let command = try ToolCommand.parse(arguments: prefix + ["--repository", ".", "--as-of", "2026-10-16"])
@@ -46,7 +47,7 @@ struct ToolCommandTests {
     /// - Throws: An unexpected error type fails the assertion.
     @Test(arguments: [
         [String](), ["inventory"], ["inventory", "validate"], ["parity", "check"],
-        ["documentation", "audit", "--repository", "."],
+        ["documentation", "audit", "--repository", ".", "--write"],
         ["dependencies", "audit", "--repository", "."],
         ["generate", "--repository", "."],
         ["generate", "--check", "--write", "--repository", "."],

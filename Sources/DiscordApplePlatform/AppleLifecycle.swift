@@ -122,7 +122,7 @@ public actor AppleLifecycle: TransportResource {
     /// their order. Active/inactive transitions preserve eligible foreground resources.
     /// Calling active after stopped explicitly begins a fresh adoption lifecycle.
     /// - Parameter newState: State supplied by the app's actual lifecycle integration.
-    /// - Returns: After all resources invalidated by this transition finish closing.
+    /// Completes after all resources invalidated by this transition finish closing.
     public func transition(to newState: AppleLifecycleState) async {
         while let pending = cleanupTask {
             await pending.1.value

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-10-18",
+  "nextReviewDue": "2026-10-25",
+  "unclassifiedEntries": [],
+  "historyPath": "Docs/Parity/history.json",
+  "reviewScope": "Affected release/HTTP transition sources, plus existing source records. Discovery status is not full semantic parity.",
+  "officialSources": [
+    {
+      "url": "https://docs.discord.com/developers/reference.md",
+      "verifiedOn": "2026-10-18",
+      "snapshotPath": "Docs/Release/sources/2026-10-18.json",
+      "sha256": "3c4cf51a1f78c1823d2e11493d5a0d592ee8c1cd0304b4a1bb73a985eff3af0b"
+    },
+    {
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "verifiedOn": "2026-10-18",
+      "snapshotPath": "Docs/Release/sources/2026-10-18.json",
+      "sha256": "3c4cf51a1f78c1823d2e11493d5a0d592ee8c1cd0304b4a1bb73a985eff3af0b"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "channel-obfuscation-http",
+      "announcedOn": "2026-08-12",
+      "effectiveOn": "2026-11-16",
+      "status": "future_effective",
+      "sourceURLs": [
+        "https://docs.discord.com/developers/change-log#channel-obfuscation-for-users-and-bots"
+      ],
+      "fixturePath": "Tests/Fixtures/Release/channel-obfuscation-2026-11-16.json",
+      "fixtureSHA256": "450b6ea902dcf584f232c35cf65ad28af41a77552cad777b5e82388a5fa93e13",
+      "currentBehavior": "Before 2026-11-16 HTTP guild channel lists may include inaccessible channels with metadata; visibility and permission are never inferred. Gateway obfuscation can be opted into independently.",
+      "futureBehavior": "From 2026-11-16 Discord omits channels lacking VIEW_CHANNEL from GET /guilds/{guild.id}/channels; missing rows do not imply deletion. HTTP has no early opt-in.",
+      "symbols": [
+        "GuildEndpoints.channels",
+        "Channel.isObfuscated",
+        "GatewayCapabilities.channelObfuscation",
+        "PermissionResolver"
+      ],
+      "testEvidence": [
+        "Tests/DiscordHTTPTests/ChannelTransitionTests.swift",
+        "Tests/DiscordCacheTests/PermissionResolverTests.swift",
+        "Tests/DiscordCacheTests/DiscordCacheTests.swift"
+      ]
+    }
+  ]
+}

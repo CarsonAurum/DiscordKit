@@ -2,7 +2,7 @@ import Foundation
 
 /// Explicit developer operations. Only `generateWrite` is allowed to change output files.
 enum ToolAction: Equatable, Sendable {
-    case inventoryValidate, generateCheck, generateWrite, parityCheck
+    case inventoryValidate, generateCheck, generateWrite, parityCheck, documentationAudit
 }
 
 /// A usage error distinguished from a failed validation by the executable's exit status.
@@ -23,6 +23,7 @@ struct ToolCommand: Sendable {
       DiscordKitTools generate --check --repository <directory> [--as-of YYYY-MM-DD]
       DiscordKitTools generate --write --repository <directory> [--as-of YYYY-MM-DD]
       DiscordKitTools parity check --repository <directory> [--as-of YYYY-MM-DD]
+      DiscordKitTools documentation audit --repository <directory> [--as-of YYYY-MM-DD]
     Validation and check commands never write files or access the network.
     """
 
@@ -35,6 +36,8 @@ struct ToolCommand: Sendable {
     ///   - arguments: Arguments after the executable name, including a nonempty repository path.
     ///   - currentDate: Clock injection for the default UTC audit day; defaults to the current date.
     ///     Historical `--as-of` dates select reproducible snapshot checks, not current certification.
+    ///     Documentation audits always inspect current source bytes; their accepted date option
+    ///     does not reconstruct historical files or establish semantic documentation coverage.
     /// - Returns: An immutable operation; relative repository paths resolve against the process directory.
     /// - Throws: `ToolUsageFailure` for absent, repeated, conflicting or unknown arguments, an
     ///   empty repository path, or an invalid calendar audit date. No repository state is changed.
@@ -46,6 +49,9 @@ struct ToolCommand: Sendable {
             options.removeFirst(2)
         } else if Array(options.prefix(2)) == ["parity", "check"] {
             operation = "parity"
+            options.removeFirst(2)
+        } else if Array(options.prefix(2)) == ["documentation", "audit"] {
+            operation = "documentation"
             options.removeFirst(2)
         } else if options.first == "generate" {
             operation = "generate"
@@ -85,7 +91,8 @@ struct ToolCommand: Sendable {
         }
         let formatter = dateFormatter()
         return ToolCommand(
-            action: mode ?? (operation == "inventory" ? .inventoryValidate : .parityCheck),
+            action: mode ?? (operation == "inventory" ? .inventoryValidate :
+                operation == "documentation" ? .documentationAudit : .parityCheck),
             repository: URL(fileURLWithPath: repositoryPath, isDirectory: true).standardizedFileURL,
             asOf: auditDate ?? formatter.string(from: currentDate)
         )
@@ -100,10 +107,21 @@ struct ToolCommand: Sendable {
     /// allowlist before changing any file. No operation contacts upstream services or
     /// invokes a compiler, test subprocess or consumer build plugin.
     /// - Returns: A newline-terminated human-readable report derived from validated records.
-    /// - Throws: Filesystem/JSON errors, inventory or parity validation errors, and
+    /// Documentation audits inspect owned source without requiring parity metadata; absent
+    /// comments and malformed Swift fail the operation. Documentation presence never establishes
+    /// semantic completeness, correctness, parameter/error coverage or source compatibility.
+    /// - Throws: Filesystem/JSON errors, inventory or parity validation errors,
+    ///   `DocumentationAuditFailure` for malformed source or missing comments, and
     ///   `GenerationFailure` for stale outputs or unsafe destinations. Generation writes
     ///   may partially complete if an I/O error occurs; resolve it and rerun `--check`.
     func execute() throws -> String {
+        if action == .documentationAudit {
+            let report = try DocumentationAudit.audit(repository: repository)
+            guard report.missing.isEmpty else {
+                throw DocumentationAuditFailure(description: report.render())
+            }
+            return report.render()
+        }
         let parityDirectory = repository.appending(path: "Docs/Parity", directoryHint: .isDirectory)
         let inventoryData = try Data(contentsOf: parityDirectory.appending(path: "inventory-v1.json"))
         let sourcesData = try Data(contentsOf: parityDirectory.appending(path: "sources-2026-10-15.json"))
@@ -133,6 +151,8 @@ struct ToolCommand: Sendable {
         case .parityCheck:
             _ = try Generator.run(repository: repository, reviewed: reviewed, check: true)
             return "Audit date: \(asOf).\n\n" + report.renderMarkdown()
+        case .documentationAudit:
+            preconditionFailure("Documentation audits return before parity metadata loading.")
         }
     }
 

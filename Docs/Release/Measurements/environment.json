@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "binarySHA256": "321cb1f4043288d2fa50abef67eaab533d7ebc0250bb1ac96544a52c6d3675ed",
+  "hardware": "Mac15,10",
+  "cpu": "Apple M3 Max",
+  "logicalCPUs": "14",
+  "os": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "qualification": "Finite synthetic HTTP/Gateway/cache and owned loopback transport scenarios. Logical account profiles are arithmetic populations, not live users, identities, or connections. Concurrent builds/tests may affect wall time. No controlled baseline regression or fleet capacity claim.",
+  "runs": [
+    {
+      "path": "Docs/Release/Measurements/cache-accounts-100-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "cache",
+        "--profile",
+        "accounts-100",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "86268c678c6f14cd122df76b66c801d84e14e2dccfe6dc9efd6dde459f73d0d0"
+    },
+    {
+      "path": "Docs/Release/Measurements/cache-accounts-100-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "cache",
+        "--profile",
+        "accounts-100"
+      ],
+      "exitCode": 0,
+      "sha256": "d27ff1cc911c941c12282c4f878dac9073fd5e47c40e9e36be25499f9b10314d"
+    },
+    {
+      "path": "Docs/Release/Measurements/cache-accounts-10000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "cache",
+        "--profile",
+        "accounts-10000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "7ef56218bca2ae40ac70a66546754b42620a000ce2c2e374d0c63e08c8bf92e5"
+    },
+    {
+      "path": "Docs/Release/Measurements/cache-accounts-10000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "cache",
+        "--profile",
+        "accounts-10000"
+      ],
+      "exitCode": 0,
+      "sha256": "080520baf706eb91d6985cc264dd0b758921ec10bc28662228b3ec9ea9ff11ae"
+    },
+    {
+      "path": "Docs/Release/Measurements/cache-accounts-1000000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "cache",
+        "--profile",
+        "accounts-1000000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "46f51cd22466324795c4b7e613178503321918368ee5d3cc43c562f89b60859f"
+    },
+    {
+      "path": "Docs/Release/Measurements/cache-accounts-1000000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "cache",
+        "--profile",
+        "accounts-1000000"
+      ],
+      "exitCode": 0,
+      "sha256": "8aca28af878f5abf8abd7b2187edb7eafabff29859a7573bb847f07600067bf9"
+    },
+    {
+      "path": "Docs/Release/Measurements/gateway-accounts-100-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "gateway",
+        "--profile",
+        "accounts-100",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "5cbd5eb5578973c032c8d223933ff8e2c7a2e2a023dc0830b4210b19d62961f4"
+    },
+    {
+      "path": "Docs/Release/Measurements/gateway-accounts-100-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "gateway",
+        "--profile",
+        "accounts-100"
+      ],
+      "exitCode": 0,
+      "sha256": "92c35f267991983eecd70771278f7cb8e04c68eb24bd0bc0d0a4b8f18475948d"
+    },
+    {
+      "path": "Docs/Release/Measurements/gateway-accounts-10000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "gateway",
+        "--profile",
+        "accounts-10000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "bbca1e063e52f6bcdab04fc2efccb1e351abfbceeaa113cf8c362292060a561d"
+    },
+    {
+      "path": "Docs/Release/Measurements/gateway-accounts-10000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "gateway",
+        "--profile",
+        "accounts-10000"
+      ],
+      "exitCode": 0,
+      "sha256": "6773a39503ba57dd2f931f477da37e0975df1f7a4e46b6848bf4fec9ee076f7f"
+    },
+    {
+      "path": "Docs/Release/Measurements/gateway-accounts-1000000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "gateway",
+        "--profile",
+        "accounts-1000000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "82dba8a25454d10b841d09af7755b2aba4f4699b4cbd29bc89b7862175c47899"
+    },
+    {
+      "path": "Docs/Release/Measurements/gateway-accounts-1000000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "gateway",
+        "--profile",
+        "accounts-1000000"
+      ],
+      "exitCode": 0,
+      "sha256": "d041b888fbf8b949b02f40641142efa4ea426c8efdb1968e896449ffca8f83b9"
+    },
+    {
+      "path": "Docs/Release/Measurements/http-accounts-100-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "http",
+        "--profile",
+        "accounts-100",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "6543fd1ca5662ee8c73d2af4dee76de3bdfd1e893a837ecb0cca29bc883cc955"
+    },
+    {
+      "path": "Docs/Release/Measurements/http-accounts-100-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "http",
+        "--profile",
+        "accounts-100"
+      ],
+      "exitCode": 0,
+      "sha256": "9ace784b5829791371ea5e5672dea4296b89c145834a43e5c2a7bf279a7db558"
+    },
+    {
+      "path": "Docs/Release/Measurements/http-accounts-10000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "http",
+        "--profile",
+        "accounts-10000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "171ddef4d3ff143527c44bb85f5fce25c526415a33d4cdbccd6d716c78b973d3"
+    },
+    {
+      "path": "Docs/Release/Measurements/http-accounts-10000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "http",
+        "--profile",
+        "accounts-10000"
+      ],
+      "exitCode": 0,
+      "sha256": "da687d4dfa21feed8309fe31d7fa9db98e4f65d9998852e221572601c86ecbae"
+    },
+    {
+      "path": "Docs/Release/Measurements/http-accounts-1000000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "http",
+        "--profile",
+        "accounts-1000000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "94128c8e72108673c56719f2111a1d2992f1ec1712b09592cb6361a2dfbdc7b9"
+    },
+    {
+      "path": "Docs/Release/Measurements/http-accounts-1000000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "http",
+        "--profile",
+        "accounts-1000000"
+      ],
+      "exitCode": 0,
+      "sha256": "75902e1b3c6fcc688d648648a66193f3bd5e128de4610d3671b5b83fcb7aaaed"
+    },
+    {
+      "path": "Docs/Release/Measurements/transport-accounts-100-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "transport",
+        "--profile",
+        "accounts-100",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "d0595e15cbbf443b51ee15c17f5bc344ed5518d941d13c9d759b15375c2a3460"
+    },
+    {
+      "path": "Docs/Release/Measurements/transport-accounts-100-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "transport",
+        "--profile",
+        "accounts-100"
+      ],
+      "exitCode": 0,
+      "sha256": "9ea224c407a3235085611df903d16a4edf33d6b92635062f7aa98cfea3c4d1bb"
+    },
+    {
+      "path": "Docs/Release/Measurements/transport-accounts-10000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "transport",
+        "--profile",
+        "accounts-10000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "3d970b62f485b9a5966f3ff7d541208e147bd5b63208918862a2f8854454c4b5"
+    },
+    {
+      "path": "Docs/Release/Measurements/transport-accounts-10000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "transport",
+        "--profile",
+        "accounts-10000"
+      ],
+      "exitCode": 0,
+      "sha256": "f8700bf2ab3414b67966646b173559772e91d19573b6bc6cc3260d404d98cc26"
+    },
+    {
+      "path": "Docs/Release/Measurements/transport-accounts-1000000-burst.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "transport",
+        "--profile",
+        "accounts-1000000",
+        "--burst"
+      ],
+      "exitCode": 0,
+      "sha256": "de9c0a2e0dd36a29829fa8150cf569a08ce9e5a61f06dc7cae092d968a027374"
+    },
+    {
+      "path": "Docs/Release/Measurements/transport-accounts-1000000-normal.json",
+      "command": [
+        "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+        "--scenario",
+        "transport",
+        "--profile",
+        "accounts-1000000"
+      ],
+      "exitCode": 0,
+      "sha256": "eb6036dd79e58a0310f924b19e52f7759439c2bfe4d37e4b8e7b2b187b568d7f"
+    }
+  ],
+  "soak": {
+    "path": "Docs/Release/Measurements/soak-accounts-1000000-1800s-burst.json",
+    "sha256": "26696db784043dc58dbf26a5e3423eecdb962a919c4c0371ef40b93be217e1b2",
+    "command": [
+      "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+      "--scenario",
+      "soak",
+      "--profile",
+      "accounts-1000000",
+      "--burst",
+      "--duration-seconds",
+      "1800"
+    ],
+    "exitCode": 0,
+    "qualification": "30-minute completion, bounded accounting, request reduction and final owned cleanup only; measured RSS increased 16384 bytes in final five minutes; zero-resource-growth qualification excluded."
+  }
+}

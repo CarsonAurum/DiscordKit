@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "scope": "Affected Phase 14 release/transition sources; existing resource source records retain their own dates. Raw remote response hashes are provenance, not full API semantic reclassification.",
+  "sources": [
+    {
+      "url": "https://docs.discord.com/developers/reference.md",
+      "verifiedOn": "2026-10-18",
+      "bytes": 36143,
+      "remoteSHA256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "semanticReview": "REST and Gateway latest available major version remains 10; all API origins stay explicitly versioned.",
+      "rawSnapshotCommitted": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "verifiedOn": "2026-10-18",
+      "bytes": 308684,
+      "remoteSHA256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "semanticReview": "Reviewed current changelog through OAuth iss on 2026-10-14. Existing phases cover recent typed additions. Channel obfuscation announced 2026-08-12 has Gateway opt-in now and HTTP omission effective 2026-11-16; no HTTP early opt-in.",
+      "rawSnapshotCommitted": false
+    }
+  ]
+}

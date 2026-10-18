@@ -1,5 +1,11 @@
 # Part 0 coverage and completion gates
 
+Phase 14 adds [release gates and maintenance](../Release/README.md), source-accurate
+declaration presence, product/import isolation, public API comparison, DocC/examples,
+CI and dated transition fixtures. Exact evidence and unverified exclusions are in
+[the release report](../Release/phase14-report.json). These checks do not promote
+historical discovery rows or close live/platform/hardware/semantic parity gaps.
+
 Phase 13 adds [owned Social providers](../Social.md), explicit confidential device
 authorization and bounded local state/audio behavior. Every discovered Social method
 declaration/callback and Commerce capability remains visible in the

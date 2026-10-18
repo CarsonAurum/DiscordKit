@@ -1,0 +1,117 @@
+name: Offline certification
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: offline-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  desktop:
+    name: Swift 6.4.1 / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-26, ubuntu-24.04]
+    env:
+      SWIFTNIO_STRICT: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: swift-actions/setup-swift@v3
+        with:
+          swift-version: '6.4.1'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Record compiler and host
+        run: swift --version
+      - name: Build and test root
+        run: |
+          swift build
+          swift test
+      - name: Test tooling, Python helpers and browser bridge
+        run: |
+          swift test --package-path Tools/DiscordKitTools
+          swift test --package-path Tools/DiscordKitLoadTests
+          python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'
+          python3 -m unittest discover -s Tools/DiscordKitLoadTests/scripts -p 'test_*.py'
+          python3 -m unittest discover -s Tools/ci -p 'test_*.py'
+          node --test Browser/DiscordActivityBridge/*.test.mjs
+      - name: Validate documentation, inventory, generation and parity
+        run: |
+          swift run --package-path Tools/DiscordKitTools DiscordKitTools documentation audit --repository .
+          swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository .
+          swift run --package-path Tools/DiscordKitTools DiscordKitTools generate --check --repository .
+          swift run --package-path Tools/DiscordKitTools DiscordKitTools parity check --repository .
+          python3 Tools/DiscordKitTools/scripts/verify_social_catalog.py
+          python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
+          python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase14-report.json
+          python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json
+      - name: Build independent consumers and test offline examples
+        run: |
+          for example in RESTOnly GatewayBot HTTPApp CommandsApp OAuthApp VoiceBot RPCApp ActivityHost SocialApp; do
+            swift build --package-path "Examples/$example" --explicit-target-dependency-import-check error
+          done
+          swift test --package-path Examples/CommandsApp
+          swift test --package-path Examples/ActivityHost
+          swift run --package-path Examples/CommandsApp
+          swift run --package-path Examples/VoiceBot VoiceBot
+          swift run --package-path Examples/SocialApp
+      - name: Compare scoped public API and convert all public DocC modules
+        if: runner.os == 'macOS'
+        run: |
+          swift package dump-symbol-graph --minimum-access-level public
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot --repository . --symbolgraphs .build/out/symbolgraph --version 0.14.0 --output .build/current-api.json
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline.json --candidate .build/current-api.json --version 0.14.0
+          python3 Tools/ci/build_docc.py
+      - name: Upload DocC archives and API evidence
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v7
+        with:
+          name: public-documentation-and-api
+          path: |
+            .build/documentation
+            .build/current-api.json
+          if-no-files-found: error
+          include-hidden-files: true
+      - name: Verify tracked generated source remains unchanged
+        run: git diff --exit-code
+
+  apple-compilation:
+    name: Apple minima / device and simulator modules
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Emit selected modules with installed Xcode SDKs
+        run: python3 Tools/ci/compile_apple.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: apple-selected-module-compilation
+          path: .build/apple-compile.json
+          if-no-files-found: error
+          include-hidden-files: true
+
+  infrastructure-gates:
+    name: Unverified platform and access gates
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Publish excluded qualification scope
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'REPORT'
+          Windows and Android require the separately dispatched platform workflow and configured self-hosted runners. Until actual results are reviewed, these hosts remain unverified.
+
+          Apple device/simulator jobs compile selected modules only. Physical devices, native routing, minimum-OS runtime, authorized Discord, independent crypto review and fleet capacity remain separate gates. Live REST smoke is manual and read-only. No job in this workflow receives Discord credentials.
+          REPORT

@@ -1,5 +1,10 @@
 # Parity inventory and chronological history
 
+Phase 14 adds [release certification](../Release/README.md), source/dependency/API
+audits and [dated HTTP channel-obfuscation transition evidence](../Release/maintenance.json).
+Future-effective behavior remains distinct from current support; history is append-only.
+The [candidate report](../Release/2026-10-18.md) names exact checks and excluded claims.
+
 Phase 13 adds [owned Social composition](../Social.md) and an exhaustive
 [SDK/Commerce/mobile release catalog](phase13-social-catalog.json), verified against
 current official references. Its local public equivalents are explicitly narrower

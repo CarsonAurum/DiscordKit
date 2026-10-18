@@ -1,0 +1,95 @@
+name: Manual platform and live qualification
+
+on:
+  workflow_dispatch:
+    inputs:
+      windows:
+        description: Run on configured trusted Windows Swift 6.4 runner
+        type: boolean
+        default: false
+      android:
+        description: Cross-build and run offline CommandsApp on configured Android host
+        type: boolean
+        default: false
+      live_rest:
+        description: Read current user/application using protected test bot credential
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    if: inputs.windows && vars.WINDOWS_CI_ENABLED == 'true'
+    runs-on: [self-hosted, Windows, X64, discordkit-swift64]
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Build and run offline suites
+        shell: pwsh
+        run: |
+          swift --version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          swift build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          swift test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          swift test --package-path Examples/CommandsApp
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  android:
+    if: inputs.android && vars.ANDROID_CI_ENABLED == 'true'
+    runs-on: [self-hosted, Linux, X64, discordkit-android-swift64]
+    timeout-minutes: 45
+    env:
+      ANDROID_SWIFT_SDK: ${{ vars.ANDROID_SWIFT_SDK }}
+      ANDROID_SERIAL: ${{ vars.ANDROID_SERIAL }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Cross-build and run exact offline consumer
+        run: python3 Tools/ci/qualify_android.py --swift-sdk "$ANDROID_SWIFT_SDK" --serial "$ANDROID_SERIAL"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android-offline-consumer-qualification
+          path: .build/android-qualification.json
+          if-no-files-found: error
+          include-hidden-files: true
+
+  live-rest:
+    if: inputs.live_rest
+    runs-on: macos-26
+    environment: discord-live-smoke
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: swift-actions/setup-swift@v3
+        with:
+          swift-version: '6.4.1'
+      - name: Build before using the protected credential
+        run: swift build --package-path Examples/RESTOnly
+      - name: Read test application's current user and application
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_SMOKE_BOT_TOKEN }}
+          DISCORD_SMOKE_APPLICATION_ID: ${{ vars.DISCORD_SMOKE_APPLICATION_ID }}
+        run: python3 Tools/ci/live_rest_smoke.py
+
+  qualification-summary:
+    if: always()
+    needs: [windows, android, live-rest]
+    runs-on: ubuntu-24.04
+    env:
+      WINDOWS_RESULT: ${{ needs.windows.result }}
+      ANDROID_RESULT: ${{ needs.android.result }}
+      LIVE_RESULT: ${{ needs.live-rest.result }}
+    steps:
+      - name: Publish executed versus unverified gates
+        run: |
+          printf 'Windows offline suite: %s\n\nAndroid offline consumer: %s\n\nLive read-only REST: %s\n\n' "$WINDOWS_RESULT" "$ANDROID_RESULT" "$LIVE_RESULT" >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' 'Skipped is unverified. Android results cover only the offline selected consumer. No physical Apple, native audio, complete Discord desktop, approved Activity host, full live media, cryptographic review or fleet qualification follows from these jobs.' >> "$GITHUB_STEP_SUMMARY"

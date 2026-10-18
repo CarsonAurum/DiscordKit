@@ -8,7 +8,12 @@ import Foundation
 /// current permissions, intent visibility, resource existence, or authorization to fetch URLs.
 public protocol MessageResponseValue: Sendable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {
     /// Complete original object, including unknown fields and exact numeric lexemes.
-    var rawFields: [String: JSONValue] { get }
+    var rawFields: [String: JSONValue] {
+        /// Reads the retained immutable message object without serialization, I/O or normalization.
+        /// - Returns: Complete original fields, including unknown values and exact number lexemes.
+        ///   Access does not establish permissions or freshness and does not redact sensitive content.
+        get
+    }
 
     /// Parses a complete object under explicit byte, depth and node limits.
     /// - Parameters:

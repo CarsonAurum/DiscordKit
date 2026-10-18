@@ -1183,6 +1183,44 @@
       ],
       "details": "changes/2026-10-18-phase13-social.md",
       "remainingGates": "phase13-social-catalog.json"
+    },
+    {
+      "id": "2026-10-18-phase14-release-certification",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "2026-08-12",
+      "upstreamEffectiveDate": "2026-11-16",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.14.0 candidate; unpublished",
+      "localCommit": "unknown",
+      "changeType": "release_certification_and_future_transition_fixture",
+      "previousBehavior": "Per-phase validation records and independent examples without a unified release certification, owned declaration audit, API baseline or cross-platform maintenance workflows. Channel omission was described but had no dated HTTP transition fixture.",
+      "currentBehavior": "Owned SwiftSyntax callable-documentation presence audit, actual dependency/import/isolation checks, semver API baseline, DocC/setup/migration guides, command/component consumer, CI and weekly upstream review, hash-bound release reports and dated future HTTP omission fixtures. Runtime filtering and protocol versions are unchanged.",
+      "affectedSymbols": [
+        "GuildEndpoints.channels",
+        "DocumentationAudit",
+        "ToolCommand",
+        "CommandsApp"
+      ],
+      "affectedPayloads": "Synthetic API v10 GET /guilds/{guild.id}/channels responses before and from 2026-11-16, including empty/restore cases and exact 64-bit IDs; no date-triggered local filtering.",
+      "breakingChanges": [],
+      "migration": "Adopt independent products as before. Treat HTTP omission as unknown visibility, not deletion. Use release certification, explicit exclusions and semantic version gates; no source migration required for this checkpoint.",
+      "sources": [
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log#channel-obfuscation-for-users-and-bots",
+        "https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0",
+        "https://docs.swift.org/latest/documentation/docc/"
+      ],
+      "details": "changes/2026-10-18-phase14-certification.md",
+      "remainingGates": "../Release/phase14-report.json"
     }
   ]
 }

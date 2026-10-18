@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "transitionID": "channel-obfuscation-http",
+  "announcedOn": "2026-08-12",
+  "effectiveOn": "2026-11-16",
+  "verifiedOn": "2026-10-18",
+  "source": "https://docs.discord.com/developers/change-log#channel-obfuscation-for-users-and-bots",
+  "fixtureKind": "synthetic documented transition; no live request",
+  "cases": [
+    {
+      "id": "before-http-effective-date",
+      "date": "2026-11-15",
+      "expectedPhase": "current",
+      "response": [
+        {"id": "9007199254740993", "type": 0, "name": "visible"},
+        {"id": "18446744073709551615", "type": 0, "name": "restricted"}
+      ],
+      "expectedIDs": ["9007199254740993", "18446744073709551615"]
+    },
+    {
+      "id": "http-effective-boundary",
+      "date": "2026-11-16",
+      "expectedPhase": "effective",
+      "response": [{"id": "9007199254740993", "type": 0, "name": "visible"}],
+      "expectedIDs": ["9007199254740993"]
+    },
+    {
+      "id": "all-channels-omitted",
+      "date": "2026-11-17",
+      "expectedPhase": "effective",
+      "response": [],
+      "expectedIDs": []
+    },
+    {
+      "id": "access-restored",
+      "date": "2026-11-18",
+      "expectedPhase": "effective",
+      "response": [
+        {"id": "9007199254740993", "type": 0, "name": "visible"},
+        {"id": "18446744073709551615", "type": 0, "name": "restricted"}
+      ],
+      "expectedIDs": ["9007199254740993", "18446744073709551615"]
+    }
+  ]
+}

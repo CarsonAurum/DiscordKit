@@ -60,7 +60,7 @@ let package = Package(
         .target(name: "DiscordCore", dependencies: ["DiscordBits"], swiftSettings: concurrencySettings),
         .target(name: "DiscordTransport", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
         .target(name: "DiscordModels", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
-        .target(name: "DiscordHTTP", dependencies: ["DiscordModels", "DiscordTransport"], swiftSettings: concurrencySettings),
+        .target(name: "DiscordHTTP", dependencies: ["DiscordCore", "DiscordModels", "DiscordTransport"], swiftSettings: concurrencySettings),
         .target(name: "DiscordGateway", dependencies: ["DiscordCore", "DiscordModels", "DiscordTransport", "DiscordHTTP"], swiftSettings: concurrencySettings),
         .target(name: "DiscordCache", dependencies: ["DiscordBits", "DiscordCore", "DiscordModels"], swiftSettings: concurrencySettings),
         .target(name: "DiscordClient", dependencies: ["DiscordCore", "DiscordModels", "DiscordHTTP", "DiscordGateway", "DiscordCache", "DiscordTransport"], swiftSettings: concurrencySettings),

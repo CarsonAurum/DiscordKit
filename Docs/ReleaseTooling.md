@@ -1,0 +1,141 @@
+# Release certification tools
+
+The Phase 14 tools are development-only Python standard-library programs. They
+perform local, nonwriting checks unless an API snapshot output is explicitly
+requested. Consumer packages do not run these scripts, fetch documentation or
+regenerate source. A validated report establishes evidence traceability and
+explicit exclusions; it does not grant platform, live Discord or crypto approval.
+
+## Dependency and independent-product audit
+
+```sh
+python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
+```
+
+This command evaluates the actual root and nine independent consumer manifests
+using `swift package dump-package`, with temporary writable caches. It compares
+the complete shipped target DAG, direct package requirements, product roots,
+source roots and resolved Apple package identities/URLs against the reviewed
+`Tools/DiscordKitTools/release-policy.json`. Every resolved pin needs a concrete
+revision; package version updates still require normal dependency review.
+
+The audit inspects actual Swift imports in every conditional compilation branch,
+including scoped and escaped identifiers. It masks comments, nested string
+interpolation, raw strings and regex literals. An imported module must be a
+direct declared dependency or an explicitly allowed system module. The lexical
+scan checks dependency boundaries rather than full Swift grammar. Compilation
+remains required, and unfamiliar valid syntax can require a scanner update.
+
+Root product closures and separately reviewed consumer product selections must
+avoid their forbidden modules. Test support cannot enter a public product. This
+checks the selected manifests and source boundaries in addition to compiling the
+examples; an umbrella build alone does not satisfy isolation. The audit found
+and corrected `DiscordHTTP`'s missing direct `DiscordCore` declaration: that
+module was already imported and transitively linked, so no runtime dependency or
+behavior was added.
+
+## Source API baselines and semantic versions
+
+```sh
+swift package dump-symbol-graph --minimum-access-level public
+python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
+  --repository . --symbolgraphs .build/out/symbolgraph \
+  --version 0.14.0 --output /tmp/discordkit-current-api.json
+python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
+  --baseline Docs/Release/api-baseline.json \
+  --candidate /tmp/discordkit-current-api.json --version 0.14.0
+```
+
+Use the symbolgraph directory printed by the installed SwiftPM toolchain if it
+differs. Compile the graphs with the same target/deployment scope as the baseline.
+The initial `0.14.0` baseline records 28 modules and 13,235 public/open symbols on
+macOS arm64. It establishes a starting point; there is no earlier public baseline
+against which to establish historical compatibility. This candidate is neither a
+published release nor a tag.
+
+Snapshots normalize all owned graph shards, including external-type extensions,
+and reject missing modules, conflicting duplicates and mixed platform scopes.
+They retain declaration/type/default spelling, access, generic/extension
+constraints, availability and relationship qualifiers. Source locations and
+documentation do not affect signatures. Each symbol and relationship occupies a
+compact JSON line so changes can be reviewed without enormous one-line diffs.
+
+Removal, signature/constraint/availability changes, relationship removal, new
+required protocol members and enum cases conservatively require a major version
+increment. Before `1.0.0`, these require a minor increment. Other source additions
+require a minor increment. Identical APIs permit a patch increment or the same
+version for candidate revalidation. Stable three-component versions are accepted;
+prerelease/build-metadata version policy is deliberately outside this checker.
+
+The comparison cannot prove behavioral or binary compatibility. Compiler/SDK
+updates may change synthesized declarations and require review. API changes on
+other operating systems, architectures and conditional compilation branches
+require separate compiler-produced baselines; the macOS snapshot does not
+qualify those surfaces. Local API migration and upstream protocol changes are
+tracked separately in release and parity history.
+
+## Machine-readable report and explicit exclusions
+
+```sh
+python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
+  --report Docs/Release/phase14-report.json
+```
+
+The schema-1 report identifies the candidate semantic version, verification date,
+explicit REST/Gateway/Voice/RPC/MLS/DAVE versions, every required gate, and the
+claims supported by passed gates. Each evidence object has a repository-relative
+`path` and exact lowercase SHA-256. Missing files, changed bytes, duplicate JSON
+keys, path traversal and escaped symlinks reject validation.
+
+A gate is `passed` only with scoped evidence. An unavailable gate is `unverified`
+with a reason and `excludedClaims` containing its own canonical gate ID. Every
+support claim names passed `checkIDs`; it cannot name an excluded claim or depend
+on an unavailable gate. `globalExclusions` also prohibits its named scopes from
+appearing as claims, even when a proposed claim references passed local gates.
+Missing/unknown gates and `failed` status reject the
+record. Failed checks must be corrected or accurately recorded as unverified and
+excluded; changing a status never turns failure evidence into a successful check.
+All-unverified records may describe no support claims, consistent with the
+roadmap's explicit-exclusion rule. Hashes prove exact local evidence membership,
+not that a process ran, its semantic accuracy or an independent attestation.
+
+## Weekly upstream review, history and dated transitions
+
+```sh
+python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . \
+  --record Docs/Release/maintenance.json
+```
+
+The review must be current, with its next deadline no more than seven days after
+the recorded review date. No unclassified upstream entries may remain. Official
+source rows bind the exact local review evidence; compact source metadata can
+retain the hash of fetched upstream bytes without redistributing full documents.
+The read-only maintenance workflow fetches upstream material separately and
+publishes differences for human review. These audits never auto-apply upstream
+changes to production source or claim full semantic review from a source hash.
+
+The policy freezes the exact canonical hashes and order of pre-Phase-14 history
+entries. New entries may be appended; historical edits/removals fail validation.
+This does not replace reviewing new history entries for complete source/date,
+symbol/payload, migration and release provenance.
+
+The mandatory `channel-obfuscation-http` fixture records the announced
+`2026-11-16` HTTP transition. At least the preceding day and exact effective day
+must be present, with current/effective classifications computed from dates.
+Future-effective behavior remains explicitly separate from currently active
+behavior. The fixture is hash-bound, source-linked and exercised by Swift HTTP
+regression tests. Use `--as-of YYYY-MM-DD` only to reproduce a historical review;
+it must never substitute for a fresh review before a new release.
+
+## Tests
+
+```sh
+python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'
+```
+
+Deterministic tests cover isolated and forbidden imports, lexing edge cases,
+manifest cycles, changed package/product boundaries, consumer graph selection,
+exact evidence/path safety, missing/failed gates, prohibited claims, weekly
+freshness, append-only history, transition dates, graph shards and conservative
+source semver. Root Swift, tooling, generation, parity, DocC, examples, browser,
+load and externally qualified platform checks remain separate release gates.

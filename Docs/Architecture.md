@@ -1,5 +1,11 @@
 # Architecture and API conventions
 
+Phase 14's [release tooling](ReleaseTooling.md) independently audits the actual
+manifest/import DAG and consumer isolation. SwiftSyntax is confined to the separate
+development package; public runtime products select no documentation tooling.
+The [release report](Release/2026-10-18.md) distinguishes compiled products from
+unverified platform capabilities and preserves the existing adoption boundaries.
+
 Status: adopted design, updated 2026-10-18. `DiscordBits`, `DiscordCore` and
 `DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
 Core aliases. Part 2 adds independently injected Foundation/NIO adapters, Unix IPC

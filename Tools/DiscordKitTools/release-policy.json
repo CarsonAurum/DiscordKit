@@ -1,0 +1,942 @@
+{
+  "consumers": {
+    "Examples/ActivityHost": {
+      "forbidden": [
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordGateway",
+        "DiscordKit"
+      ],
+      "targets": {
+        "ActivityBackend": [
+          "DiscordKit/DiscordCommerce",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordHTTP",
+          "DiscordKit/DiscordModels",
+          "DiscordKit/DiscordOAuth"
+        ],
+        "ActivityHost": [
+          "ActivityHostSupport"
+        ],
+        "ActivityHostSupport": [
+          "DiscordKit/DiscordActivities",
+          "DiscordKit/DiscordCore"
+        ]
+      }
+    },
+    "Examples/CommandsApp": {
+      "forbidden": [
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordGateway",
+        "DiscordKit"
+      ],
+      "targets": {
+        "CommandsApp": [
+          "DiscordKit/DiscordCommands",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordModels"
+        ]
+      }
+    },
+    "Examples/GatewayBot": {
+      "forbidden": [
+        "DiscordKit"
+      ],
+      "targets": {
+        "GatewayBot": [
+          "DiscordKit/DiscordCache",
+          "DiscordKit/DiscordClient",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordFoundationTransport",
+          "DiscordKit/DiscordGateway",
+          "DiscordKit/DiscordHTTP",
+          "DiscordKit/DiscordTransport"
+        ]
+      }
+    },
+    "Examples/HTTPApp": {
+      "forbidden": [
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordGateway",
+        "DiscordKit"
+      ],
+      "targets": {
+        "HTTPApp": [
+          "DiscordKit/DiscordCommands",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordInteractions",
+          "DiscordKit/DiscordModels",
+          "DiscordKit/DiscordNIOTransport",
+          "DiscordKit/DiscordTransport"
+        ]
+      }
+    },
+    "Examples/OAuthApp": {
+      "forbidden": [
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordGateway",
+        "DiscordKit"
+      ],
+      "targets": {
+        "OAuthApp": [
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordOAuth"
+        ]
+      }
+    },
+    "Examples/RESTOnly": {
+      "forbidden": [
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordGateway",
+        "DiscordKit"
+      ],
+      "targets": {
+        "RESTOnly": [
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordFoundationTransport",
+          "DiscordKit/DiscordHTTP"
+        ]
+      }
+    },
+    "Examples/RPCApp": {
+      "forbidden": [
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordCommands",
+        "DiscordGateway",
+        "DiscordHTTP",
+        "DiscordInteractions",
+        "DiscordKit",
+        "DiscordOAuth"
+      ],
+      "targets": {
+        "RPCApp": [
+          "DiscordKit/DiscordCertifiedDevices",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordRPC",
+          "DiscordKit/DiscordTransport"
+        ]
+      }
+    },
+    "Examples/SocialApp": {
+      "forbidden": [
+        "DiscordApplePlatform",
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordDAVE",
+        "DiscordFoundationTransport",
+        "DiscordGateway",
+        "DiscordKit",
+        "DiscordMLS",
+        "DiscordNIOTransport",
+        "DiscordUnixPlatform",
+        "DiscordVoice"
+      ],
+      "targets": {
+        "SocialApp": [
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordMedia",
+          "DiscordKit/DiscordSocial"
+        ]
+      }
+    },
+    "Examples/VoiceBot": {
+      "forbidden": [
+        "DiscordApplePlatform",
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordFoundationTransport",
+        "DiscordGateway",
+        "DiscordHTTP",
+        "DiscordKit",
+        "DiscordNIOTransport",
+        "DiscordOAuth",
+        "DiscordUnixPlatform"
+      ],
+      "targets": {
+        "VoiceBot": [
+          "DiscordKit/DiscordDAVE",
+          "DiscordKit/DiscordMLS",
+          "DiscordKit/DiscordMedia",
+          "DiscordKit/DiscordModels",
+          "DiscordKit/DiscordVoice",
+          "DiscordKit/DiscordVoiceCodecs",
+          "DiscordKit/DiscordVoiceCrypto"
+        ]
+      }
+    }
+  },
+  "directRequirements": {
+    "swift-crypto": {
+      "range": [
+        {
+          "lowerBound": "5.0.1",
+          "upperBound": "6.0.0"
+        }
+      ]
+    },
+    "swift-nio": {
+      "range": [
+        {
+          "lowerBound": "2.104.0",
+          "upperBound": "3.0.0"
+        }
+      ]
+    },
+    "swift-nio-ssl": {
+      "range": [
+        {
+          "lowerBound": "2.37.5",
+          "upperBound": "3.0.0"
+        }
+      ]
+    }
+  },
+  "externalPackages": {
+    "swift-asn1": "https://github.com/apple/swift-asn1.git",
+    "swift-atomics": "https://github.com/apple/swift-atomics.git",
+    "swift-collections": "https://github.com/apple/swift-collections.git",
+    "swift-crypto": "https://github.com/apple/swift-crypto.git",
+    "swift-nio": "https://github.com/apple/swift-nio.git",
+    "swift-nio-ssl": "https://github.com/apple/swift-nio-ssl.git",
+    "swift-system": "https://github.com/apple/swift-system.git"
+  },
+  "historyPrefix": [
+    {
+      "id": "2026-10-15-part-0-baseline",
+      "sha256": "7fc947ed26b82742ef739ad10d880eb8d149117e06e944b45fc4b760fee420ee"
+    },
+    {
+      "id": "2026-10-15-part-1-foundations",
+      "sha256": "63c48168d0b1b3394b0eff8a8d4788d044f085aea1ce52e00bf925f1376da36c"
+    },
+    {
+      "id": "2026-10-15-part-2-transports",
+      "sha256": "3237c4877204c2aa61cf4eef47b90c1664468637e62dfbbaa31746940bcca739"
+    },
+    {
+      "id": "2026-10-16-part-3-http-early-gateway",
+      "sha256": "9233b4ca5a25249ce529bf8c719b5f8e95ba71efd730140f267ede0078353199"
+    },
+    {
+      "id": "2026-10-16-part-4-reviewed-generation",
+      "sha256": "69dc61fe2b6c5666a2215b0f32817a0e4826d15b9808562aed557ce07b9dd8d1"
+    },
+    {
+      "id": "2026-10-16-part-5a-messages-polls",
+      "sha256": "169e2398917d7edc356603c1a8fa5bf65e89215f6bb254ea29f459664ce82dad"
+    },
+    {
+      "id": "2026-10-16-part-5b-channels",
+      "sha256": "f55f81e90524be8a36b49f9df3106001724a13af3e1ca9f92d4e4ff90c949728"
+    },
+    {
+      "id": "2026-10-16-part-5c-guilds",
+      "sha256": "0f75a073c6d89dfedacfa18aa7551fd477dcaeb86c50a3091635e52a74a03b44"
+    },
+    {
+      "id": "2026-10-16-part-5d-moderation",
+      "sha256": "76c20576280cb5c2fd5caf367965978f0964c2d0ae485f9b7b41af9ca958aee2"
+    },
+    {
+      "id": "2026-10-16-part-5e-expressions",
+      "sha256": "5def121422ef0eb12792f47eb281d556f28ce238711ecdb30700c2a686f4811e"
+    },
+    {
+      "id": "2026-10-16-part-5f-discovery-events",
+      "sha256": "c8dcd67f40f3180c7a35e48f802debf1f031648d6847c80a886be19c1638da01"
+    },
+    {
+      "id": "2026-10-16-part-5g-applications-users",
+      "sha256": "e1c2ff7ca5d57729f382bc65c1cddc8351572a988f4838bdda7d34434830fffa"
+    },
+    {
+      "id": "2026-10-16-webhooks-interactions-voice",
+      "sha256": "74b3f150aa64d5b003c9d52e4b1824575c178a0ad3220e98b0d8b698ec41cc3e"
+    },
+    {
+      "id": "2026-10-16-monetization",
+      "sha256": "f1e45286e4b9ca1920a6b6d9c76f4b7d26267742e9e4d2c6b493cd563e04afe9"
+    },
+    {
+      "id": "2026-10-16-social-game",
+      "sha256": "f8beec6bceee2a0cde1983c8f05206535e4c6e3facee85eea21d3a73403fd90a"
+    },
+    {
+      "id": "2026-10-16-gateway-catalog",
+      "sha256": "e901f968d3b9b31450a4adb7e0c7a21dde23dd4f5803643b024f8ee98bd60a40"
+    },
+    {
+      "id": "2026-10-16-consumer-runtime",
+      "sha256": "b71d1b29ec1758d30501f5601341aa3793239a6970d735f3f2274c45c7dfad25"
+    },
+    {
+      "id": "2026-10-17-interaction-runtime",
+      "sha256": "df8816e3ee22cbaea9eb5c4542e4fbe10cee9962ba938601a42d518aef7d6795"
+    },
+    {
+      "id": "2026-10-17-oauth-game-commerce",
+      "sha256": "69a8b6009efb569edfa125f45423469bd3f611f43b3bfc50f83500a561756dae"
+    },
+    {
+      "id": "2026-10-17-rpc-devices",
+      "sha256": "8d21f2614242d150f8857eb5b1a51195dbaf2c6e1ba0f64cf957bf722a8b830e"
+    },
+    {
+      "id": "2026-10-17-part-11-activities",
+      "sha256": "03142fb1a6d0f9fcd044c7b5f306986ac4ba1c5e6b68be387fca17acef86e097"
+    },
+    {
+      "id": "2026-10-17-part-12-voice-media-foundations",
+      "sha256": "e9f488db00008ea2bdc1249678b812703b7198d9e6dc3e6e9c7ec5bcd20e1b45"
+    },
+    {
+      "id": "2026-10-18-phase12b-mls",
+      "sha256": "02e1b5c27c08a5440555e945c24afa3a7382e216a4af30203dd2f6787559bc75"
+    },
+    {
+      "id": "2026-10-18-phase13-social",
+      "sha256": "a78467c05aac3d80f76ffe3e2099fb37971316b93958137364642e2d078c7c8e"
+    }
+  ],
+  "isolation": {
+    "DiscordActivities": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordApplePlatform": [
+      "DiscordTestSupport"
+    ],
+    "DiscordBits": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordCache": [
+      "DiscordApplePlatform",
+      "DiscordFoundationTransport",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordCertifiedDevices": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordClient": [
+      "DiscordApplePlatform",
+      "DiscordFoundationTransport",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordCommands": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordCommerce": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordCore": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordDAVE": [
+      "DiscordApplePlatform",
+      "DiscordFoundationTransport",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordFoundationTransport": [
+      "DiscordTestSupport"
+    ],
+    "DiscordGameServices": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordGateway": [
+      "DiscordApplePlatform",
+      "DiscordFoundationTransport",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordHTTP": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordInteractions": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordKit": [
+      "DiscordApplePlatform",
+      "DiscordDAVE",
+      "DiscordFoundationTransport",
+      "DiscordMLS",
+      "DiscordNIOTransport",
+      "DiscordSocial",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform",
+      "DiscordVoice"
+    ],
+    "DiscordMLS": [
+      "DiscordActivities",
+      "DiscordApplePlatform",
+      "DiscordBits",
+      "DiscordCache",
+      "DiscordCertifiedDevices",
+      "DiscordClient",
+      "DiscordCommands",
+      "DiscordCommerce",
+      "DiscordCore",
+      "DiscordDAVE",
+      "DiscordFoundationTransport",
+      "DiscordGameServices",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordInteractions",
+      "DiscordKit",
+      "DiscordMedia",
+      "DiscordModels",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordRPC",
+      "DiscordSocial",
+      "DiscordTestSupport",
+      "DiscordTransport",
+      "DiscordUnixPlatform",
+      "DiscordVoice",
+      "DiscordVoiceCodecs",
+      "DiscordVoiceCrypto"
+    ],
+    "DiscordMedia": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordDAVE",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordKit",
+      "DiscordMLS",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordModels": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordNIOTransport": [
+      "DiscordTestSupport"
+    ],
+    "DiscordOAuth": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordRPC": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordSocial": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordDAVE",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordMLS",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform",
+      "DiscordVoice"
+    ],
+    "DiscordTransport": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordNIOTransport",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordUnixPlatform": [
+      "DiscordTestSupport"
+    ],
+    "DiscordVoice": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordDAVE",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordKit",
+      "DiscordMLS",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordVoiceCodecs": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordDAVE",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordKit",
+      "DiscordMLS",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ],
+    "DiscordVoiceCrypto": [
+      "DiscordApplePlatform",
+      "DiscordCache",
+      "DiscordClient",
+      "DiscordDAVE",
+      "DiscordFoundationTransport",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordKit",
+      "DiscordMLS",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform"
+    ]
+  },
+  "products": {
+    "DiscordActivities": [
+      "DiscordActivities"
+    ],
+    "DiscordApplePlatform": [
+      "DiscordApplePlatform"
+    ],
+    "DiscordBits": [
+      "DiscordBits"
+    ],
+    "DiscordCache": [
+      "DiscordCache"
+    ],
+    "DiscordCertifiedDevices": [
+      "DiscordCertifiedDevices"
+    ],
+    "DiscordClient": [
+      "DiscordClient"
+    ],
+    "DiscordCommands": [
+      "DiscordCommands"
+    ],
+    "DiscordCommerce": [
+      "DiscordCommerce"
+    ],
+    "DiscordCore": [
+      "DiscordCore"
+    ],
+    "DiscordDAVE": [
+      "DiscordDAVE"
+    ],
+    "DiscordFoundationTransport": [
+      "DiscordFoundationTransport"
+    ],
+    "DiscordGameServices": [
+      "DiscordGameServices"
+    ],
+    "DiscordGateway": [
+      "DiscordGateway"
+    ],
+    "DiscordHTTP": [
+      "DiscordHTTP"
+    ],
+    "DiscordInteractions": [
+      "DiscordInteractions"
+    ],
+    "DiscordKit": [
+      "DiscordKit"
+    ],
+    "DiscordMLS": [
+      "DiscordMLS"
+    ],
+    "DiscordMedia": [
+      "DiscordMedia"
+    ],
+    "DiscordModels": [
+      "DiscordModels"
+    ],
+    "DiscordNIOTransport": [
+      "DiscordNIOTransport"
+    ],
+    "DiscordOAuth": [
+      "DiscordOAuth"
+    ],
+    "DiscordRPC": [
+      "DiscordRPC"
+    ],
+    "DiscordSocial": [
+      "DiscordSocial"
+    ],
+    "DiscordTransport": [
+      "DiscordTransport"
+    ],
+    "DiscordUnixPlatform": [
+      "DiscordUnixPlatform"
+    ],
+    "DiscordVoice": [
+      "DiscordVoice"
+    ],
+    "DiscordVoiceCodecs": [
+      "DiscordVoiceCodecs"
+    ],
+    "DiscordVoiceCrypto": [
+      "DiscordVoiceCrypto"
+    ]
+  },
+  "protocols": {
+    "DAVE": "1",
+    "Gateway": "10",
+    "MLS": "1.0",
+    "REST": "10",
+    "RPC": "1",
+    "Voice": "8"
+  },
+  "requiredCheckIDs": [
+    "root-build",
+    "root-tests",
+    "tooling",
+    "inventory",
+    "generation",
+    "parity",
+    "declaration-docs",
+    "docc",
+    "product-isolation",
+    "api-baseline",
+    "examples",
+    "browser",
+    "social-catalog",
+    "local-load",
+    "fixed-working-set-soak",
+    "macos",
+    "linux",
+    "windows",
+    "apple-simulators",
+    "apple-devices",
+    "android-cross-build",
+    "android-runtime",
+    "live-discord",
+    "hardware",
+    "independent-crypto-review",
+    "codec-interop",
+    "semantic-documentation",
+    "api-other-platforms",
+    "upstream-collection",
+    "zero-resource-growth",
+    "performance-regression"
+  ],
+  "reviewedOn": "2026-10-18",
+  "schemaVersion": 1,
+  "systemImports": [
+    "Foundation"
+  ],
+  "targetPaths": {
+    "DiscordActivities": "Sources/DiscordActivities",
+    "DiscordApplePlatform": "Sources/DiscordApplePlatform",
+    "DiscordBits": "Sources/DiscordBits",
+    "DiscordCache": "Sources/DiscordCache",
+    "DiscordCertifiedDevices": "Sources/DiscordCertifiedDevices",
+    "DiscordClient": "Sources/DiscordClient",
+    "DiscordCommands": "Sources/DiscordCommands",
+    "DiscordCommerce": "Sources/DiscordCommerce",
+    "DiscordCore": "Sources/DiscordCore",
+    "DiscordDAVE": "Sources/DiscordDAVE",
+    "DiscordFoundationTransport": "Sources/DiscordFoundationTransport",
+    "DiscordGameServices": "Sources/DiscordGameServices",
+    "DiscordGateway": "Sources/DiscordGateway",
+    "DiscordHTTP": "Sources/DiscordHTTP",
+    "DiscordInteractions": "Sources/DiscordInteractions",
+    "DiscordKit": "Sources/DiscordKit",
+    "DiscordMLS": "Sources/DiscordMLS",
+    "DiscordMedia": "Sources/DiscordMedia",
+    "DiscordModels": "Sources/DiscordModels",
+    "DiscordNIOTransport": "Sources/DiscordNIOTransport",
+    "DiscordOAuth": "Sources/DiscordOAuth",
+    "DiscordRPC": "Sources/DiscordRPC",
+    "DiscordSocial": "Sources/DiscordSocial",
+    "DiscordTransport": "Sources/DiscordTransport",
+    "DiscordUnixPlatform": "Sources/DiscordUnixPlatform",
+    "DiscordVoice": "Sources/DiscordVoice",
+    "DiscordVoiceCodecs": "Sources/DiscordVoiceCodecs",
+    "DiscordVoiceCrypto": "Sources/DiscordVoiceCrypto"
+  },
+  "targetSystemImports": {
+    "DiscordApplePlatform": [
+      "AVFoundation",
+      "AudioToolbox",
+      "CoreAudio",
+      "os"
+    ],
+    "DiscordFoundationTransport": [
+      "FoundationNetworking",
+      "os"
+    ]
+  },
+  "targets": {
+    "DiscordActivities": [
+      "DiscordCore",
+      "DiscordTransport"
+    ],
+    "DiscordApplePlatform": [
+      "DiscordCore",
+      "DiscordMedia",
+      "DiscordTransport"
+    ],
+    "DiscordBits": [],
+    "DiscordCache": [
+      "DiscordBits",
+      "DiscordCore",
+      "DiscordModels"
+    ],
+    "DiscordCertifiedDevices": [
+      "DiscordCore",
+      "DiscordRPC",
+      "DiscordTransport"
+    ],
+    "DiscordClient": [
+      "DiscordCache",
+      "DiscordCore",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordModels",
+      "DiscordTransport"
+    ],
+    "DiscordCommands": [
+      "DiscordCore",
+      "DiscordHTTP",
+      "DiscordInteractions",
+      "DiscordModels"
+    ],
+    "DiscordCommerce": [
+      "DiscordCore",
+      "DiscordHTTP",
+      "DiscordModels",
+      "DiscordTransport"
+    ],
+    "DiscordCore": [
+      "DiscordBits"
+    ],
+    "DiscordDAVE": [
+      "DiscordCore",
+      "DiscordMLS",
+      "DiscordTransport",
+      "DiscordVoice",
+      "DiscordVoiceCrypto",
+      "swift-crypto/Crypto",
+      "swift-crypto/CryptoExtras"
+    ],
+    "DiscordFoundationTransport": [
+      "DiscordTransport"
+    ],
+    "DiscordGameServices": [
+      "DiscordCore",
+      "DiscordHTTP",
+      "DiscordModels",
+      "DiscordOAuth",
+      "DiscordTransport"
+    ],
+    "DiscordGateway": [
+      "DiscordCore",
+      "DiscordHTTP",
+      "DiscordModels",
+      "DiscordTransport"
+    ],
+    "DiscordHTTP": [
+      "DiscordCore",
+      "DiscordModels",
+      "DiscordTransport"
+    ],
+    "DiscordInteractions": [
+      "DiscordCore",
+      "DiscordHTTP",
+      "DiscordModels",
+      "DiscordTransport",
+      "swift-crypto/Crypto"
+    ],
+    "DiscordKit": [
+      "DiscordClient",
+      "DiscordCommands",
+      "DiscordCommerce",
+      "DiscordCore",
+      "DiscordGameServices",
+      "DiscordGateway",
+      "DiscordInteractions",
+      "DiscordOAuth",
+      "DiscordTransport"
+    ],
+    "DiscordMLS": [
+      "swift-crypto/Crypto"
+    ],
+    "DiscordMedia": [],
+    "DiscordModels": [
+      "DiscordCore"
+    ],
+    "DiscordNIOTransport": [
+      "DiscordTransport",
+      "swift-nio-ssl/NIOSSL",
+      "swift-nio/NIOConcurrencyHelpers",
+      "swift-nio/NIOCore",
+      "swift-nio/NIOHTTP1",
+      "swift-nio/NIOPosix",
+      "swift-nio/NIOWebSocket"
+    ],
+    "DiscordOAuth": [
+      "DiscordCore",
+      "DiscordHTTP",
+      "DiscordModels",
+      "DiscordTransport",
+      "swift-crypto/Crypto"
+    ],
+    "DiscordRPC": [
+      "DiscordCore",
+      "DiscordTransport"
+    ],
+    "DiscordSocial": [
+      "DiscordActivities",
+      "DiscordCommerce",
+      "DiscordCore",
+      "DiscordGameServices",
+      "DiscordHTTP",
+      "DiscordMedia",
+      "DiscordModels",
+      "DiscordOAuth",
+      "DiscordRPC",
+      "DiscordTransport"
+    ],
+    "DiscordTransport": [
+      "DiscordCore"
+    ],
+    "DiscordUnixPlatform": [
+      "DiscordTransport",
+      "swift-nio/NIOConcurrencyHelpers",
+      "swift-nio/NIOCore",
+      "swift-nio/NIOPosix"
+    ],
+    "DiscordVoice": [
+      "DiscordCore",
+      "DiscordMedia",
+      "DiscordModels",
+      "DiscordTransport",
+      "DiscordVoiceCodecs",
+      "DiscordVoiceCrypto"
+    ],
+    "DiscordVoiceCodecs": [
+      "DiscordMedia"
+    ],
+    "DiscordVoiceCrypto": [
+      "swift-crypto/Crypto",
+      "swift-crypto/CryptoExtras"
+    ]
+  }
+}

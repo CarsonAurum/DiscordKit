@@ -40,6 +40,14 @@ Phase 13 adds an independently adopted [owned Social client](Docs/Social.md), ty
 HTTP/RPC/Activity providers, bounded local state/audio controls and explicit device
 authorization. Native Social protocols and schema-blocked Commerce remain visible blockers.
 
+Phase 14 adds [release certification](Docs/Release/README.md), DocC adoption guides,
+an owned declaration-documentation audit, product/import isolation and API/semver
+checks, cross-platform CI and weekly upstream maintenance. The
+[0.14.0 candidate report](Docs/Release/2026-10-18.md) records exact local evidence
+and all excluded platform/live/hardware claims. Start with [setup](Docs/Setup.md),
+[migration](Docs/Migration.md) and the offline
+[commands/components consumer](Examples/CommandsApp/README.md).
+
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
 [reviewed generation and parity checks](Docs/Generation.md).

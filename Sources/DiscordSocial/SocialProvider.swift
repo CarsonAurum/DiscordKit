@@ -55,7 +55,12 @@ public struct SocialPresence: Sendable, Equatable, CustomStringConvertible, Cust
 public protocol SocialProfileProvider<ProviderClock>: Sendable {
     associatedtype ProviderClock: Clock where ProviderClock.Duration == Duration
     /// Exact scopes and host prerequisites; this declaration performs no I/O.
-    var profileRequirements: SocialProviderRequirements { get }
+    var profileRequirements: SocialProviderRequirements {
+        /// Reads the provider's declared profile prerequisites without performing authorization or I/O.
+        /// - Returns: Required scopes and host capabilities for consent coordination; the declaration
+        ///   does not prove that the current account has granted scopes or that a host is available.
+        get
+    }
     /// Reads the authenticated user's profile using the documented v10 `/users/@me` route.
     /// - Parameter context: Monotonic deadline/cancellation shared with the owning client.
     /// - Returns: Complete implemented `User` projection; no identity or scope is inferred.
@@ -67,7 +72,12 @@ public protocol SocialProfileProvider<ProviderClock>: Sendable {
 public protocol SocialPresenceProvider<ProviderClock>: Sendable {
     associatedtype ProviderClock: Clock where ProviderClock.Duration == Duration
     /// Exact approved scopes and qualified host needed for this provider.
-    var presenceRequirements: SocialProviderRequirements { get }
+    var presenceRequirements: SocialProviderRequirements {
+        /// Reads the provider's declared presence prerequisites without mutating presence or starting work.
+        /// - Returns: Required approved scopes and host capabilities; actual consent and host
+        ///   availability must still be checked before the owning client admits a mutation.
+        get
+    }
     /// Writes one bounded presence; mutation failures are never automatically replayed.
     /// - Parameters:
     ///   - presence: Common display fields; host-specific limitations must fail explicitly.

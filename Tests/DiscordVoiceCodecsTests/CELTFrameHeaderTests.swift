@@ -204,11 +204,15 @@ private struct HeaderFixture: Decodable {
     struct Prefix: Decodable {
         let silence: Bool; let period: Int; let gainIndex: Int; let tapset: Int; let transient: Bool
         let bits: Int; let frac: Int; let range: UInt32
+        /// Groups the reference prefix's entropy snapshot without altering decoded fixture state.
+        /// - Returns: Whole bits, eighth-bit usage and arithmetic range in assertion argument order.
         var entropy: (Int, Int, UInt32) { (bits, frac, range) }
     }
     struct Suffix: Decodable {
         let tf: [Int]; let spread: Int; let offsets: [Int]; let trim: Int; let allocation: Int; let anti: Bool
         let bits: Int; let frac: Int; let range: UInt32
+        /// Groups the reference suffix's entropy snapshot without altering decoded fixture state.
+        /// - Returns: Whole bits, eighth-bit usage and arithmetic range in assertion argument order.
         var entropy: (Int, Int, UInt32) { (bits, frac, range) }
     }
     struct State: Decodable { let prefix: Prefix; let suffix: Suffix? }
