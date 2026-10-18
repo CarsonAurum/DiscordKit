@@ -118,6 +118,34 @@ struct DocumentationAuditTests {
         #expect(try DocumentationAudit.scan(source: "", path: "Empty.swift").isEmpty)
     }
 
+    /// Inventories macro declaration comments and recursively audits the downstream authoring package.
+    /// The plugin and tests remain owned source even though runtime products do not depend on them.
+    /// - Throws: Isolated fixture writes, parsing or auditing failures fail this regression test.
+    @Test func auditsSeparateMacroPackageAndMacroDeclarations() throws {
+        let fixture = try DocumentationFixture()
+        defer { fixture.cleanup() }
+        try fixture.write("Packages/DiscordDSLMacros/Package.swift", "// Separate authoring package.")
+        try fixture.write("Packages/DiscordDSLMacros/Sources/DiscordDSLMacros/Macros.swift", """
+        /// Documents the authoring declaration.
+        @attached(member, names: arbitrary)
+        public macro Arguments() = #externalMacro(module: "Plugin", type: "ArgumentsMacro")
+        @attached(peer)
+        macro Undocumented() = #externalMacro(module: "Plugin", type: "MissingMacro")
+        """)
+        try fixture.write("Packages/DiscordDSLMacros/Sources/DiscordDSLMacrosPlugin/Plugin.swift",
+                          "/// Expands syntax without running user code.\nfunc expand() {}")
+        try fixture.write("Packages/DiscordDSLMacros/Tests/Tests.swift",
+                          "/// Verifies generated syntax.\n@Test func expansion() {}")
+        try fixture.write("Packages/DiscordDSLMacros/.build/checkouts/Foreign.swift", "func invalid(")
+        let command = try ToolCommand.parse(arguments: ["documentation", "audit", "--repository", fixture.root.path])
+        let report = try DocumentationAudit.audit(repository: fixture.root)
+        #expect(report.files == 5)
+        #expect(report.declarations.map(\.name) == ["Arguments", "Undocumented", "expand", "expansion"])
+        #expect(report.missing.map(\.kind) == ["macro"])
+        #expect(report.missing.first?.path == "Packages/DiscordDSLMacros/Sources/DiscordDSLMacros/Macros.swift")
+        #expect(throws: DocumentationAuditFailure.self) { try command.execute() }
+    }
+
     /// Refuses parser recovery as passing evidence for incomplete or malformed declarations.
     /// - Parameter source: Invalid Swift syntax that must fail before returning declaration evidence.
     @Test(arguments: ["func incomplete(", "struct MissingBrace {", "func f() { let = }"])

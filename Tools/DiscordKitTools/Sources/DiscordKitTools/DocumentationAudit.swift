@@ -31,7 +31,8 @@ struct DocumentationAuditReport: Equatable, Sendable {
         }
         return ([
             "Documentation presence audit: \(files) Swift files; \(declarations.count) explicit callable declarations; \(missing.count) missing comments.",
-            "Scope includes functions, operators, initializers, deinitializers, subscripts, explicit accessors, shorthand getters, protocol requirements and tests at every access level.",
+            "Scope includes functions, macro declarations, operators, initializers, deinitializers, subscripts, explicit accessors, shorthand getters, protocol requirements and tests at every access level.",
+            "Owned separate packages, including Packages/DiscordDSLMacros authoring, plugin and test source, are audited recursively; fetched and build directories are excluded.",
             "Presence is syntactic evidence only; semantic completeness and correctness require human review.",
         ] + failures).joined(separator: "\n") + "\n"
     }
@@ -79,7 +80,8 @@ enum DocumentationAudit {
     ///
     /// The root must contain a package manifest. Build/cache/VCS/dependency directories are
     /// excluded by exact directory name; checked-in generated Swift and separate example,
-    /// tooling, test and fixture packages remain in scope. Any unreadable file, traversal
+    /// tooling, test and fixture packages remain in scope, including the separate
+    /// `Packages/DiscordDSLMacros` authoring library, compiler plugin and tests. Any unreadable file, traversal
     /// failure, invalid UTF-8 or parse error fails the operation instead of skipping evidence.
     /// - Parameter repository: Existing file URL of the repository root, not a symlink.
     /// - Returns: Path-sorted file results, with source order retained within each file.
@@ -147,6 +149,14 @@ private final class DocumentationVisitor: SyntaxVisitor {
     /// - Returns: Child traversal, preserving nested local functions and accessors.
     override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
         record(node, kind: "function", name: node.name.text)
+        return .visitChildren
+    }
+
+    /// Records public authoring macros without expanding them or invoking their compiler plugin.
+    /// - Parameter node: Explicit attached or freestanding macro declaration at any access level.
+    /// - Returns: Child traversal, retaining source-accurate diagnostics and declaration order.
+    override func visit(_ node: MacroDeclSyntax) -> SyntaxVisitorContinueKind {
+        record(node, kind: "macro", name: node.name.text)
         return .visitChildren
     }
 

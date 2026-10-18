@@ -165,6 +165,8 @@ def readable_name(name):
 
 def reference_group(symbol, module, use_source_groups):
     """Choose source-domain navigation for large catalogs and kind for small ones."""
+    if symbol["kind"]["identifier"] == "swift.macro":
+        return "Authoring macros"
     kind = TYPE_KINDS.get(symbol["kind"]["identifier"], "Functions and variables")
     if not use_source_groups:
         return kind

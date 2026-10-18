@@ -53,8 +53,9 @@ Phase 15A adds an independently adopted [Swift module authoring foundation](Docs
 module identities, source diagnostics and structural bounds. Construction and compilation
 start no tasks or I/O. Part 15B adds independently adopted
 [typed command authoring](Docs/CommandDSL.md): typed argument schemas/decoding, manual
-slash handlers and explicit lowering to existing command definitions/routes. Macros,
-response builders and HTTP/Gateway hosts remain later
+slash handlers and explicit lowering to existing command definitions/routes. Part 15C
+adds a separate [macro authoring package](Docs/MacroDSL.md) with compiled parity and
+external diagnostic fixtures. Response builders and HTTP/Gateway hosts remain later
 [DSL milestones](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for

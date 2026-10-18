@@ -262,6 +262,11 @@ def validate_graph(repository, manifest, policy, resolved):
     require(products == policy["products"], "Product roots differ from reviewed policy")
     expected = policy["targets"]
     shipped = set().union(*(closure(graph, roots) for roots in products.values()))
+    authoring_targets = {name for package in policy.get("authoringPackages", {}).values()
+                         for name in package["targets"]}
+    require(not shipped.intersection(authoring_targets)
+            and not any(name.lower().startswith("swift-syntax/") for name in shipped),
+            "Runtime products must not depend on authoring macros or SwiftSyntax")
     local_shipped = {name for name in shipped if "/" not in name}
     require(local_shipped == set(expected), "Shipped target membership changed")
     imports_count = files_count = 0
@@ -351,6 +356,84 @@ def validate_consumer(repository, relative, manifest, policy):
     selected = set().union(*(closure(policy["targets"], policy["products"][product]) for product in root_products))
     require(not selected.intersection(expected["forbidden"]), f"Consumer isolation violation: {relative}")
     return {"targets": len(targets), "sourceFiles": source_files, "selectedProducts": sorted(root_products), "reachableTargets": sorted(name for name in selected if "/" not in name)}
+
+
+def validate_authoring_package(repository, relative, manifest, policy, resolved):
+    """Audit the downstream compiler package, including plugin/tests and exact host-tool pins.
+
+    The only filesystem package must be this runtime checkout. Other direct
+    packages require reviewed URLs and exact manifest requirements. Every target,
+    including tests, has reviewed direct imports, type and source location; the
+    compiler plugin cannot select runtime products. The resolved package set is
+    the root's reviewed closure plus the explicitly pinned authoring dependencies.
+    This is graph/source evidence, not compiler or platform qualification.
+    """
+    require(relative in policy.get("authoringPackages", {}), "Unknown authoring package")
+    expected = policy["authoringPackages"][relative]
+    package_root = (repository / relative).resolve()
+    require(package_root.is_relative_to(repository.resolve()) and package_root.is_dir(), "Unsafe authoring package path")
+    targets = {target["name"]: target for target in manifest["targets"]}
+    require(len(targets) == len(manifest["targets"]), "Duplicate authoring target")
+    graph = {name: manifest_dependencies(target) for name, target in targets.items()}
+    require(graph == expected["targets"], "Authoring target dependencies changed")
+    products = {product["name"]: sorted(product["targets"]) for product in manifest["products"]}
+    require(len(products) == len(manifest["products"]) and products == expected["products"], "Authoring products changed")
+    require(all("library" in product["type"] for product in manifest["products"]), "Authoring product must be a library")
+    paths = []
+    requirements = {}
+    for dependency in manifest.get("dependencies", []):
+        require(len(dependency) == 1, "Ambiguous authoring package dependency")
+        if "fileSystem" in dependency:
+            paths.extend(Path(item["path"]).resolve() for item in dependency["fileSystem"])
+        else:
+            require(set(dependency) == {"sourceControl"}, "Unsupported authoring package dependency")
+            for item in dependency["sourceControl"]:
+                identity = item["identity"]
+                require(identity not in requirements, "Duplicate authoring package identity")
+                require(identity in expected["externalPackages"], "Unreviewed authoring package identity")
+                remote = item["location"].get("remote", [])
+                require(len(remote) == 1 and remote[0]["urlString"] == expected["externalPackages"][identity], "Authoring package URL mismatch")
+                requirements[identity] = item.get("requirement")
+    require(paths == [repository.resolve()], "Authoring package must reference only this runtime checkout")
+    require(requirements == expected["directRequirements"], "Authoring package requirements changed")
+    pins = resolved.get("pins", [])
+    packages = dict(policy["externalPackages"], **expected["externalPackages"])
+    identities = [pin["identity"] for pin in pins]
+    require(len(identities) == len(set(identities)) and set(identities) == set(packages), "Authoring resolved package membership changed")
+    for pin in pins:
+        require(pin.get("kind") == "remoteSourceControl" and pin.get("location") == packages[pin["identity"]], "Authoring resolved package URL or kind changed")
+        require(re.fullmatch(r"[0-9a-f]{40}", pin.get("state", {}).get("revision", "")), "Missing authoring resolved revision")
+        if pin["identity"] in expected["directRequirements"]:
+            require(expected["directRequirements"][pin["identity"]] == {"exact": [pin.get("state", {}).get("version")]}, "Authoring resolved version differs from exact requirement")
+    selected = set()
+    source_files = 0
+    for name, target in targets.items():
+        require(target.get("type") == expected["targetTypes"][name], "Authoring target type changed")
+        relative_source = target.get("path", f"Sources/{name}")
+        require(relative_source == expected["targetPaths"][name], "Authoring target source path changed")
+        source_root = (package_root / relative_source).resolve()
+        require(source_root.is_relative_to(package_root) and source_root.is_dir(), "Unsafe authoring source path")
+        for dependency in graph[name]:
+            if "/" in dependency:
+                identity, product = dependency.split("/", 1)
+                if identity.lower() == "discordkit":
+                    require(target.get("type") != "macro", "Compiler plugin must not depend on runtime products")
+                    require(product in policy["products"], "Unknown authoring runtime product")
+                    selected.update(closure(policy["targets"], policy["products"][product]))
+                else:
+                    require(identity in expected["externalPackages"], "Unknown authoring external product")
+        allowed = {value.split("/")[-1] for value in graph[name]}
+        allowed.update(policy["systemImports"])
+        allowed.update(expected.get("targetSystemImports", {}).get(name, []))
+        for source in source_root.rglob("*.swift"):
+            require(source.resolve().is_relative_to(source_root), "Authoring source symlink escapes target")
+            imports = swift_imports(source.read_text())
+            require(not imports - allowed, f"Undeclared authoring import in {source.name}: {', '.join(sorted(imports - allowed))}")
+            source_files += 1
+    closure(graph, graph)
+    require(not selected.intersection(expected["forbiddenRuntimeTargets"]), "Authoring runtime selection violates isolation")
+    return {"products": len(products), "targets": len(targets), "sourceFiles": source_files,
+            "resolvedPackages": len(pins), "runtimeTargets": sorted(name for name in selected if "/" not in name)}
 
 
 def validate_report(repository, report, policy):
@@ -479,6 +562,11 @@ def main():
         if args.command == "graph":
             result = validate_graph(repository, dump_manifest(repository), policy, read_json(repository / "Package.resolved"))
             result["consumers"] = {relative: validate_consumer(repository, relative, dump_manifest(repository / relative), policy) for relative in sorted(policy.get("consumers", {}))}
+            if policy.get("authoringPackages"):
+                result["authoringPackages"] = {relative: validate_authoring_package(
+                    repository, relative, dump_manifest(repository / relative), policy,
+                    read_json(local_file(repository, relative + "/Package.resolved")))
+                    for relative in sorted(policy["authoringPackages"])}
         elif args.command == "report":
             result = validate_report(repository, read_json(local_file(repository, args.report)), policy)
         else:

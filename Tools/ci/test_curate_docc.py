@@ -32,6 +32,20 @@ def member(child, parent, kind="memberOf"):
 class ReferenceCurationTests(unittest.TestCase):
     """Keep all authored navigation complete without claiming foreign API ownership."""
 
+    def test_separate_authoring_macros_receive_navigation_without_type_pages(self):
+        """Public attached macro declarations link by compiler identity in their own catalog."""
+        module = "DiscordDSLMacros"
+        macros = [symbol(name, "swift.macro", module=module, source="CommandMacros.swift")
+                  for name in ["SlashCommand(_:description:)", "Option(description:)", "CommandArguments()"]]
+        files, stats = curate_docc.reference_files(module, [graph(macros, module=module)])
+        self.assertEqual(stats["typePages"], 0)
+        self.assertEqual(stats["topLevelLinks"], 3)
+        self.assertEqual(set(files), {Path("APIReference.md")})
+        self.assertIn("### Authoring macros", files[Path("APIReference.md")])
+        for macro in macros:
+            self.assertIn("``DiscordDSLMacros/" + macro["pathComponents"][0] + "``", files[Path("APIReference.md")])
+        self.assertEqual((files, stats), curate_docc.reference_files(module, [graph(list(reversed(macros)), module=module)]))
+
     def test_stable_hash_matches_installed_docc_overload_identifiers(self):
         """Published DocC paths use folded FNV-1, not Python's randomized hash."""
         self.assertEqual(curate_docc.stable_symbol_hash(

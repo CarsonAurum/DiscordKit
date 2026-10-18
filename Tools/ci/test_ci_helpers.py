@@ -54,6 +54,24 @@ class CIHelpersTests(unittest.TestCase):
             self.assertEqual(build_docc.public_modules(Path("a repository")), ["A", "B"])
             self.assertTrue(run.call_args.kwargs["check"])
 
+    def test_separate_macro_package_public_module_and_catalog_scope(self):
+        """Only the authoring library is documented; its compiler plugin and tests remain outside public graphs."""
+        result = type("Result", (), {"stdout": json.dumps({"products": [
+            {"name": "DiscordDSLMacros", "type": {"library": ["automatic"]}, "targets": ["DiscordDSLMacros"]}],
+            "targets": [{"name": "DiscordDSLMacrosPlugin", "type": "macro"},
+                        {"name": "DiscordDSLMacrosTests", "type": "test"}]})})()
+        with tempfile.TemporaryDirectory() as temporary:
+            package = Path(temporary) / "Packages/DiscordDSLMacros"
+            catalog = package / "Sources/DiscordDSLMacros/DiscordDSLMacros.docc"
+            catalog.mkdir(parents=True)
+            with patch("build_docc.subprocess.run", return_value=result) as run:
+                self.assertEqual(build_docc.public_modules(package), ["DiscordDSLMacros"])
+                self.assertIn(str(package), run.call_args.args[0])
+            command = build_docc.conversion_command("docc", package, Path("out"),
+                "DiscordDSLMacros", Path("graphs"))
+            self.assertIn(str(catalog), command)
+            self.assertNotIn("DiscordDSLMacrosPlugin", command)
+
     def test_docc_dependencies_and_merge_preserve_paths_and_all_archives(self):
         """Cross-module resolution and global navigation use argument arrays."""
         archives = [Path("output with spaces/A.doccarchive"), Path("output/B.doccarchive")]

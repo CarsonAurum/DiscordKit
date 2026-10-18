@@ -131,6 +131,11 @@ I/O, registration or handler execution. Explicit router invocation uses existing
 interaction ownership. Macros, response builders/policies and HTTP/Gateway hosts
 remain later milestones; see `Docs/CommandDSL.md`.
 
+Part 15C adds the separate `Packages/DiscordDSLMacros` authoring package for
+`@CommandArguments`, `@Option` and `@SlashCommand`, compiled execution parity and
+external diagnostic fixtures. Runtime products remain independent of compiler plugins
+and SwiftSyntax. Manual response ownership remains unchanged; see `Docs/MacroDSL.md`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -284,6 +289,13 @@ and the offline `Examples/CommandsApp`. Verify direct-versus-DSL definitions/rou
 strict option/resolved-resource decoding, fresh argument state per invocation,
 compile-time zero execution and bounded cancellation-aware router ownership. Macros,
 response families, hosts and DSL capacity qualification remain separate.
+
+For macro authoring changes, run `swift test --package-path Packages/DiscordDSLMacros`,
+`python3 Tools/ci/dsl_compile_fixtures.py` and its Python tests. Preserve the downstream
+macro-package graph, Swift 6.4-compatible exact SwiftSyntax pin, generated callable
+documentation and genuine external positive/negative compile fixtures. Text expansion
+alone does not establish parity. Run documentation/graph audits and root build/tests;
+manual response ownership and the remaining DSL milestones retain separate gates.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

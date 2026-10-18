@@ -1,0 +1,14 @@
+{
+  "schemaVersion":1,
+  "version":"0.15.0",
+  "platform":{"architecture":"arm64","operatingSystem":{"minimumVersion":{"major":13,"minor":0},"name":"macosx"},"vendor":"apple"},
+  "qualification":"source_api_snapshot_only",
+  "modules":{
+    "DiscordDSLMacros":{"relationships":[
+    ],"symbols":{
+      "s:16DiscordDSLMacros12SlashCommand_11descriptionySS_SStcfm":{"kind":"swift.macro","path":["SlashCommand(_:description:)"],"signatureSHA256":"c6aac800bbac6fae0d627c139e8331333b4fa075a0cd373d5f19ffc75b4e4669"},
+      "s:16DiscordDSLMacros16CommandArgumentsyycfm":{"kind":"swift.macro","path":["CommandArguments()"],"signatureSHA256":"69f83d6f248c5fe055c30d2abe7dfe2ec621e8ead6490f9717232c643b910952"},
+      "s:16DiscordDSLMacros6Option4name11descriptionySSSg_SStcfm":{"kind":"swift.macro","path":["Option(name:description:)"],"signatureSHA256":"fddaf46d739976eb3ddab0d78931a51566107aac6dc2267dde4b7c452982dfad"}
+    }}
+  }
+}

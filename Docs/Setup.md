@@ -30,6 +30,8 @@ Select `DiscordCommandDSL` and `DiscordDSL` explicitly for [typed command
 authoring](CommandDSL.md). Compilation produces existing validated registration
 definitions and exact routes. It does not register commands, verify ingress, bind
 a listener or choose a Gateway client; applications retain those explicit owners.
+For optional `@CommandArguments`/`@SlashCommand` authoring, select the separate
+[DiscordDSLMacros package](MacroDSL.md); the root package does not select its plugin.
 
 Only CommandsApp, VoiceBot, RPCApp, ActivityHost, OAuthApp and SocialApp are safe
 offline demonstrations by design. RESTOnly/GatewayBot can use credentials when

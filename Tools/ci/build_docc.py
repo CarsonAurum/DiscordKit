@@ -15,7 +15,12 @@ from pathlib import Path
 
 
 def public_modules(repository):
-    """Read actual root library product targets from SwiftPM's parsed manifest."""
+    """Read the selected package's library product targets, excluding plugins and tests.
+
+    The same entry point serves the runtime root and the independently selected
+    authoring macro package; neither directory names nor transitive dependencies
+    can add a public module to the conversion scope.
+    """
     result = subprocess.run(["swift", "package", "--disable-sandbox", "--package-path", str(repository),
                              "dump-package"], check=True, capture_output=True, text=True)
     return sorted({target for product in json.loads(result.stdout)["products"]

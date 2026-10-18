@@ -74,6 +74,24 @@ def snapshot(directory, expected_modules, version):
     return {"schemaVersion": 1, "version": version, "platform": json.loads(next(iter(platforms))), "qualification": "source_api_snapshot_only", "modules": dict(sorted(modules.items()))}
 
 
+def snapshot_modules(policy, authoring_package=None):
+    """Select exact reviewed public runtime or downstream authoring modules.
+
+    A separate authoring snapshot contains only library product roots; compiler
+    plugins and tests remain outside the public source-API contract. Unknown
+    packages and invalid policy roots fail rather than silently narrowing scope.
+    Omitting the package retains the existing complete runtime target policy.
+    """
+    if authoring_package is None:
+        return set(policy["targets"])
+    require(authoring_package in policy.get("authoringPackages", {}), "Unknown authoring package API scope")
+    package = policy["authoringPackages"][authoring_package]
+    modules = {name for roots in package["products"].values() for name in roots}
+    require(modules and all(package["targetTypes"].get(name) == "regular" for name in modules),
+            "Authoring API products must select regular library modules")
+    return modules
+
+
 def validate_snapshot(value):
     """Validate normalized snapshot shape, including exact symbol hashes and duplicate edges."""
     require(value.get("schemaVersion") == 1 and value.get("qualification") == "source_api_snapshot_only", "Unsupported API snapshot")
@@ -168,6 +186,7 @@ def main():
     parser.add_argument("command", choices=["snapshot", "check"])
     parser.add_argument("--repository", type=Path, default=Path(__file__).resolve().parents[3])
     parser.add_argument("--symbolgraphs", type=Path)
+    parser.add_argument("--authoring-package", help="Snapshot one separate package from the root release policy")
     parser.add_argument("--version", required=True)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--baseline", type=Path)
@@ -177,7 +196,7 @@ def main():
         if args.command == "snapshot":
             require(args.symbolgraphs and args.output, "snapshot requires --symbolgraphs and --output")
             policy = read_json(local_file(args.repository.resolve(), "Tools/DiscordKitTools/release-policy.json"))
-            result = snapshot(args.symbolgraphs, set(policy["targets"]), args.version)
+            result = snapshot(args.symbolgraphs, snapshot_modules(policy, args.authoring_package), args.version)
             write_snapshot(args.output, result)
             print(json.dumps({"modules": len(result["modules"]), "symbols": sum(len(module["symbols"]) for module in result["modules"].values()), "version": args.version}, sort_keys=True))
         else:

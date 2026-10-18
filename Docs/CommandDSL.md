@@ -167,4 +167,6 @@ unchanged discovery support classifications. See [the dated history](Parity/chan
 
 Deterministic local tests cover definitions/routes, argument edge cases and synthetic
 router invocations. They do not establish authorized live Discord behavior, platform
-qualification, macro expansion compatibility, full Phase 15 completion or capacity.
+qualification, full Phase 15 completion or capacity. Part 15C adds optional
+[macro authoring](MacroDSL.md) in a separate package, with its own compiled
+expansion/diagnostic evidence; this runtime product remains macro free.

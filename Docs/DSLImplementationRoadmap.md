@@ -2,16 +2,17 @@
 
 Phase 15 is delivered as independently usable milestones. **15A** implements the
 shared structural foundation in `DiscordDSL`; **15B** adds typed argument decoding
-and explicit slash-command lowering in `DiscordCommandDSL`. These statuses do not
+and explicit slash-command lowering in `DiscordCommandDSL`. **15C** adds the separate
+`DiscordDSLMacros` authoring package with compiled parity and external fixtures. These statuses do not
 imply that the complete bot authoring experience is available. See
-[shared declarations](DSL.md), [typed commands](CommandDSL.md) and
+[shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md) and
 [architecture](Architecture.md) for the implemented APIs and product boundaries.
 
 | Milestone | Status | Scope |
 | --- | --- | --- |
 | 15A | Implemented | Protocol/module composition, result builders, stable explicit identities, source diagnostics and bounded deterministic descriptions. |
 | 15B | Implemented | Typed argument schemas/decoding, manual slash handlers, exact existing-command adapters and lowering to existing command definitions/routes. |
-| 15C | Planned | Separate authoring macro package, diagnostics and compiled expansion parity. |
+| 15C | Implemented | Separate authoring macro package, source diagnostics, compiled expansion parity and external positive/negative compile fixtures. |
 | 15D | Planned | Immediate/deferred/manual response ownership and independently adopted HTTP command application. |
 | 15E | Planned | Validated message/component builders and safe typed interpolation. |
 | 15F | Planned | Remaining command families, explicit registration and reconciliation. |

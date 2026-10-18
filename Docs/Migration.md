@@ -1,6 +1,6 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A/15B. The
+The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
@@ -43,8 +43,10 @@ wrap them in `ExistingSlashCommand`. This adapter performs no typed decoding and
 rejects unsupported families, nesting and autocomplete. Keep full low-level APIs
 for those existing capabilities until the corresponding authoring milestone ships.
 Use `ManualSlashCommandHandler` with the existing `InteractionContext.responder`
-for explicit response ownership; macros, typed response builders and supervised
-HTTP/Gateway applications remain later milestones. See [the guide](CommandDSL.md)
+for explicit response ownership. Part 15C optionally replaces schema/metadata
+boilerplate with the separate [macro package](MacroDSL.md), retaining the same
+protocols and decoders. Typed response builders and supervised HTTP/Gateway
+applications remain later milestones. See [the guide](CommandDSL.md)
 for argument presence, limits, diagnostics and the custom-code contract.
 
 ## Upstream protocol changes

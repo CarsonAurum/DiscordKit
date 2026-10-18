@@ -114,7 +114,9 @@ registration or event execution. Part 15B adds independently selected
 DSL/Core/Models/Commands/Interactions. It compiles finite argument schemas and manual
 slash handlers to existing command definitions/routes; `makeRouter` explicitly creates
 the existing bounded router. Response ownership stays with Interactions. Neither
-existing products nor the shared DSL acquire upward dependencies. Macros, policies,
+existing products nor the shared DSL acquire upward dependencies. Part 15C's separate
+[macro package](MacroDSL.md) consumes these runtime products; only its host plugin
+selects SwiftSyntax 604.0.0. Existing runtime graphs remain macro free. Policies,
 message builders and HTTP/Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 

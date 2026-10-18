@@ -39,6 +39,10 @@ jobs:
         run: |
           swift build
           swift test
+      - name: Test separate authoring macros and external compile fixtures
+        run: |
+          swift test --package-path Packages/DiscordDSLMacros --explicit-target-dependency-import-check error
+          python3 Tools/ci/dsl_compile_fixtures.py --repository .
       - name: Test tooling, Python helpers and browser bridge
         run: |
           swift test --package-path Tools/DiscordKitTools
@@ -55,7 +59,7 @@ jobs:
           swift run --package-path Tools/DiscordKitTools DiscordKitTools parity check --repository .
           python3 Tools/DiscordKitTools/scripts/verify_social_catalog.py
           python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
-          # Keep historical hash-bound certification distinct from the current 15A candidate.
+          # Keep historical hash-bound certification distinct from the current Phase 15 candidate.
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase14-report.json
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15-report.json
           python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json
@@ -78,6 +82,10 @@ jobs:
           python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot --repository . --symbolgraphs .build/out/symbolgraph --version 0.15.0 --output .build/current-api.json
           python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline.json --candidate .build/current-api.json --version 0.15.0
           python3 Tools/ci/build_docc.py
+          swift package --package-path Packages/DiscordDSLMacros dump-symbol-graph --minimum-access-level public
+          python3 Tools/ci/curate_docc.py --repository Packages/DiscordDSLMacros --symbolgraphs Packages/DiscordDSLMacros/.build/out/symbolgraph --check
+          python3 Tools/ci/build_docc.py --repository Packages/DiscordDSLMacros --symbolgraphs Packages/DiscordDSLMacros/.build/out/symbolgraph --output .build/documentation-macros
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot --repository . --authoring-package Packages/DiscordDSLMacros --symbolgraphs Packages/DiscordDSLMacros/.build/out/symbolgraph --version 0.15.0 --output .build/current-macros-api.json
       - name: Upload DocC archives and API evidence
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v7
@@ -86,6 +94,8 @@ jobs:
           path: |
             .build/documentation
             .build/current-api.json
+            .build/documentation-macros
+            .build/current-macros-api.json
           if-no-files-found: error
           include-hidden-files: true
       - name: Verify tracked generated source remains unchanged

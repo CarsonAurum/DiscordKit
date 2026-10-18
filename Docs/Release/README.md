@@ -1,10 +1,12 @@
 # Release certification
 
-The current **0.15.0 authoring candidate** covers [shared declarations](../DSL.md)
-and [typed command lowering](../CommandDSL.md) in Parts 15A/15B. Its
+The current **0.15.0 authoring candidate** covers [shared declarations](../DSL.md),
+[typed command lowering](../CommandDSL.md) and [macro authoring](../MacroDSL.md)
+in Parts 15A/15B/15C. Its
 [machine report](phase15-report.json), [15A record](phase15a-validation.json) and
-[15B validation record](phase15b-validation.json) state the checks actually run and
-explicit exclusions. Macros, response builders, HTTP/Gateway hosts and the remaining
+[15B validation record](phase15b-validation.json) preserve their historical checks.
+The [15C validation record](phase15c-validation.json) states current checks and
+explicit exclusions. Response builders, HTTP/Gateway hosts and the remaining
 [DSL milestones](../DSLImplementationRoadmap.md) are still planned.
 
 The historical [0.14.0 candidate report](2026-10-18.md) and

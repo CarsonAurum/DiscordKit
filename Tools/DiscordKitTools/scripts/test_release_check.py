@@ -119,6 +119,112 @@ class ReleaseChecks(unittest.TestCase):
         with self.assertRaises(ValueError):
             audit.local_file(self.root, "escape")
 
+    def authoring_fixture(self):
+        """Create a separate plugin package whose generated runtime declarations select A only."""
+        relative = "Packages/Authoring"
+        directory = self.root / relative
+        for path, text in {"Sources/Authoring/Authoring.swift": "import A",
+                           "Sources/Plugin/Plugin.swift": "import SwiftSyntax",
+                           "Tests/Tests.swift": "import Testing\nimport Authoring"}.items():
+            source = directory / path
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_text(text)
+        manifest = {"products": [{"name": "Authoring", "targets": ["Authoring"], "type": {"library": ["automatic"]}}],
+                    "targets": [
+                        {"name": "Authoring", "type": "regular", "dependencies": [{"byName": ["Plugin", None]}, {"product": ["A", "DiscordKit", None, None]}]},
+                        {"name": "Plugin", "type": "macro", "dependencies": [{"product": ["SwiftSyntax", "swift-syntax", None, None]}]},
+                        {"name": "AuthoringTests", "type": "test", "path": "Tests", "dependencies": [{"byName": ["Authoring", None]}]},
+                    ], "dependencies": [
+                        {"fileSystem": [{"path": str(self.root)}]},
+                        {"sourceControl": [{"identity": "swift-syntax", "location": {"remote": [{"urlString": "https://github.com/swiftlang/swift-syntax.git"}]}, "requirement": {"exact": ["604.0.0"]}}]},
+                    ]}
+        self.policy["authoringPackages"] = {relative: {
+            "products": {"Authoring": ["Authoring"]},
+            "targets": {"Authoring": ["DiscordKit/A", "Plugin"], "Plugin": ["swift-syntax/SwiftSyntax"], "AuthoringTests": ["Authoring"]},
+            "targetTypes": {"Authoring": "regular", "Plugin": "macro", "AuthoringTests": "test"},
+            "targetPaths": {"Authoring": "Sources/Authoring", "Plugin": "Sources/Plugin", "AuthoringTests": "Tests"},
+            "targetSystemImports": {"AuthoringTests": ["Testing"]},
+            "externalPackages": {"swift-syntax": "https://github.com/swiftlang/swift-syntax.git"},
+            "directRequirements": {"swift-syntax": {"exact": ["604.0.0"]}}, "forbiddenRuntimeTargets": [],
+        }}
+        resolved = copy.deepcopy(self.resolved)
+        resolved["pins"].append({"identity": "swift-syntax", "kind": "remoteSourceControl",
+                                 "location": "https://github.com/swiftlang/swift-syntax.git",
+                                 "state": {"version": "604.0.0", "revision": "b" * 40}})
+        return relative, manifest, resolved
+
+    def test_separate_authoring_package_checks_plugin_tests_and_runtime_closure(self):
+        """Downstream authoring adds compiler tools while retaining the exact root runtime closure."""
+        relative, manifest, resolved = self.authoring_fixture()
+        result = audit.validate_authoring_package(self.root, relative, manifest, self.policy, resolved)
+        self.assertEqual(result, {"products": 1, "targets": 3, "sourceFiles": 3,
+                                  "resolvedPackages": 2, "runtimeTargets": ["A", "B"]})
+        self.policy["authoringPackages"][relative]["forbiddenRuntimeTargets"] = ["B"]
+        with self.assertRaisesRegex(ValueError, "isolation"):
+            audit.validate_authoring_package(self.root, relative, manifest, self.policy, resolved)
+
+    def test_runtime_products_never_select_compiler_dependencies(self):
+        """Adding a reviewed-looking SwiftSyntax edge cannot introduce compiler tools into runtime products."""
+        self.authoring_fixture()
+        self.manifest["targets"][0]["dependencies"].append({"product": ["SwiftSyntax", "swift-syntax", None, None]})
+        self.policy["targets"]["A"].append("swift-syntax/SwiftSyntax")
+        with self.assertRaisesRegex(ValueError, "Runtime products must not depend"):
+            self.graph()
+
+    def test_authoring_direct_package_and_pin_changes_fail_closed(self):
+        """Wrong runtime checkout, SwiftSyntax requirement, URL, version and resolved set all reject."""
+        relative, manifest, resolved = self.authoring_fixture()
+        mutations = [
+            lambda m, r: m["dependencies"][0]["fileSystem"][0].update(path=str(self.root.parent)),
+            lambda m, r: m["dependencies"][1]["sourceControl"][0].update(requirement={"exact": ["605.0.0"]}),
+            lambda m, r: m["dependencies"][1]["sourceControl"][0]["location"]["remote"][0].update(urlString="https://example.invalid/fork"),
+            lambda m, r: r["pins"][-1]["state"].update(version="605.0.0"),
+            lambda m, r: r["pins"][-1]["state"].update(revision="main"),
+            lambda m, r: r["pins"].pop(),
+            lambda m, r: r["pins"].append(copy.deepcopy(r["pins"][-1])),
+        ]
+        for index, change in enumerate(mutations):
+            candidate, pins = copy.deepcopy(manifest), copy.deepcopy(resolved)
+            change(candidate, pins)
+            with self.subTest(index=index), self.assertRaises(ValueError):
+                audit.validate_authoring_package(self.root, relative, candidate, self.policy, pins)
+
+    def test_authoring_target_product_and_source_changes_reject(self):
+        """Target topology, target kind, published plugin roots and source redirection need explicit review."""
+        relative, manifest, resolved = self.authoring_fixture()
+        mutations = [
+            lambda m: m["targets"][0]["dependencies"].append({"product": ["B", "DiscordKit", None, None]}),
+            lambda m: m["targets"][1].update(type="regular"),
+            lambda m: m["targets"][2].update(path="../other-tests"),
+            lambda m: m["products"][0].update(targets=["Plugin"]),
+            lambda m: m["products"][0].update(type={"executable": None}),
+        ]
+        for index, change in enumerate(mutations):
+            candidate = copy.deepcopy(manifest)
+            change(candidate)
+            with self.subTest(index=index), self.assertRaises(ValueError):
+                audit.validate_authoring_package(self.root, relative, candidate, self.policy, resolved)
+
+    def test_authoring_import_scope_includes_inactive_plugin_and_test_code(self):
+        """Inactive branches and test targets cannot hide undeclared imports or escaping source links."""
+        relative, manifest, resolved = self.authoring_fixture()
+        source = self.root / relative / "Tests/Tests.swift"
+        source.write_text("#if os(Imaginary)\nimport SwiftSyntax\n#endif")
+        with self.assertRaisesRegex(ValueError, "Undeclared authoring import"):
+            audit.validate_authoring_package(self.root, relative, manifest, self.policy, resolved)
+        source.unlink()
+        source.symlink_to(self.root / "Sources/A/A.swift")
+        with self.assertRaisesRegex(ValueError, "symlink escapes"):
+            audit.validate_authoring_package(self.root, relative, manifest, self.policy, resolved)
+
+    def test_compiler_plugin_cannot_select_runtime_even_if_reviewed_policy_adds_edge(self):
+        """A plugin operates on syntax rather than importing runtime implementation products."""
+        relative, manifest, resolved = self.authoring_fixture()
+        manifest["targets"][1]["dependencies"].append({"product": ["A", "DiscordKit", None, None]})
+        self.policy["authoringPackages"][relative]["targets"]["Plugin"] = ["DiscordKit/A", "swift-syntax/SwiftSyntax"]
+        with self.assertRaisesRegex(ValueError, "Compiler plugin must not depend"):
+            audit.validate_authoring_package(self.root, relative, manifest, self.policy, resolved)
+
     def test_duplicate_json_keys_and_stale_evidence(self):
         """Ambiguous overwritten evidence and changed bytes reject validation."""
         path = self.root / "duplicate.json"

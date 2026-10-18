@@ -25,6 +25,7 @@ struct ToolCommand: Sendable {
       DiscordKitTools parity check --repository <directory> [--as-of YYYY-MM-DD]
       DiscordKitTools documentation audit --repository <directory> [--as-of YYYY-MM-DD]
     Validation and check commands never write files or access the network.
+    Documentation auditing includes owned separate packages and authoring macro declarations.
     """
 
     /// Parses a single supported operation without silently enabling generation writes.
@@ -108,7 +109,9 @@ struct ToolCommand: Sendable {
     /// invokes a compiler, test subprocess or consumer build plugin.
     /// - Returns: A newline-terminated human-readable report derived from validated records.
     /// Documentation audits inspect owned source without requiring parity metadata; absent
-    /// comments and malformed Swift fail the operation. Documentation presence never establishes
+    /// comments and malformed Swift fail the operation. Separate authoring packages, their
+    /// compiler plugins and tests are included recursively, without executing macro expansion.
+    /// Documentation presence never establishes
     /// semantic completeness, correctness, parameter/error coverage or source compatibility.
     /// - Throws: Filesystem/JSON errors, inventory or parity validation errors,
     ///   `DocumentationAuditFailure` for malformed source or missing comments, and

@@ -1318,6 +1318,36 @@
       ],
       "details": "changes/phase15b-command-dsl.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "phase15c-macros",
+      "upstreamVersion": "REST/Gateway v10; unchanged",
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.15.0 candidate; unpublished; separate macro authoring milestone",
+      "localCommit": "unknown",
+      "changeType": "authoring_only",
+      "previousBehavior": "Part 15B supplied explicit schemas, invocation decoding and manual slash contributions.",
+      "currentBehavior": "Separate DiscordDSLMacros generates typed schemas, fresh aggregate construction, manual slash metadata and contribution plumbing through existing runtime protocols. Real compiled parity and external positive/negative fixtures preserve decoding, diagnostics, custom codec and Sendable contracts.",
+      "affectedSymbols": [
+        "CommandArguments macro",
+        "Option macro",
+        "SlashCommand macro"
+      ],
+      "affectedPayloads": "No wire change; generated code reuses existing API v10 registration and interaction decoding.",
+      "breakingChanges": [],
+      "migration": "Optionally select the separate macro product plus existing runtime products. Preserve explicit manual response, registration and host ownership; handwritten equivalents remain supported.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/application-commands",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0"
+      ],
+      "details": "changes/phase15c-macros.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

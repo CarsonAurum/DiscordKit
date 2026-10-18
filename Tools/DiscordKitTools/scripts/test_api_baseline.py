@@ -12,6 +12,23 @@ import api_baseline as api
 class APIBaselineTests(unittest.TestCase):
     """Test graph shards, source-significant fingerprints and breaking/additive version admission."""
 
+    def test_reviewed_separate_authoring_api_scope_excludes_plugin_and_tests(self):
+        """Root and macro snapshots keep independently reviewed complete module sets."""
+        policy = {"targets": {"Runtime": []}, "authoringPackages": {"Packages/Macros": {
+            "products": {"Macros": ["Authoring"]},
+            "targets": {"Authoring": ["Plugin"], "Plugin": [], "Tests": ["Authoring"]},
+            "targetTypes": {"Authoring": "regular", "Plugin": "macro", "Tests": "test"},
+        }}}
+        self.assertEqual(api.snapshot_modules(policy), {"Runtime"})
+        self.assertEqual(api.snapshot_modules(policy, "Packages/Macros"), {"Authoring"})
+        with self.assertRaisesRegex(ValueError, "Unknown authoring"):
+            api.snapshot_modules(policy, "Packages/Missing")
+        for roots in ({}, {"Compiler": ["Plugin"]}, {"Tests": ["Tests"]}, {"Missing": ["Absent"]}):
+            candidate = copy.deepcopy(policy)
+            candidate["authoringPackages"]["Packages/Macros"]["products"] = roots
+            with self.subTest(roots=roots), self.assertRaisesRegex(ValueError, "regular library"):
+                api.snapshot_modules(candidate, "Packages/Macros")
+
     def setUp(self):
         """Construct an owned public symbol graph independently of the installed Swift compiler."""
         self.temporary = tempfile.TemporaryDirectory()

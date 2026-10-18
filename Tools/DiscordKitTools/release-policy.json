@@ -1,4 +1,82 @@
 {
+  "authoringPackages": {
+    "Packages/DiscordDSLMacros": {
+      "directRequirements": {
+        "swift-syntax": {
+          "exact": [
+            "604.0.0"
+          ]
+        }
+      },
+      "externalPackages": {
+        "swift-syntax": "https://github.com/swiftlang/swift-syntax.git"
+      },
+      "forbiddenRuntimeTargets": [
+        "DiscordActivities",
+        "DiscordApplePlatform",
+        "DiscordCache",
+        "DiscordClient",
+        "DiscordDAVE",
+        "DiscordFoundationTransport",
+        "DiscordGateway",
+        "DiscordKit",
+        "DiscordMLS",
+        "DiscordNIOTransport",
+        "DiscordOAuth",
+        "DiscordRPC",
+        "DiscordSocial",
+        "DiscordTestSupport",
+        "DiscordUnixPlatform",
+        "DiscordVoice"
+      ],
+      "products": {
+        "DiscordDSLMacros": [
+          "DiscordDSLMacros"
+        ]
+      },
+      "targetPaths": {
+        "DiscordDSLMacros": "Sources/DiscordDSLMacros",
+        "DiscordDSLMacrosPlugin": "Sources/DiscordDSLMacrosPlugin",
+        "DiscordDSLMacrosTests": "Tests"
+      },
+      "targetSystemImports": {
+        "DiscordDSLMacrosTests": [
+          "Testing"
+        ]
+      },
+      "targetTypes": {
+        "DiscordDSLMacros": "regular",
+        "DiscordDSLMacrosPlugin": "macro",
+        "DiscordDSLMacrosTests": "test"
+      },
+      "targets": {
+        "DiscordDSLMacros": [
+          "DiscordDSLMacrosPlugin",
+          "DiscordKit/DiscordCommandDSL"
+        ],
+        "DiscordDSLMacrosPlugin": [
+          "swift-syntax/SwiftCompilerPlugin",
+          "swift-syntax/SwiftDiagnostics",
+          "swift-syntax/SwiftSyntax",
+          "swift-syntax/SwiftSyntaxBuilder",
+          "swift-syntax/SwiftSyntaxMacros"
+        ],
+        "DiscordDSLMacrosTests": [
+          "DiscordDSLMacros",
+          "DiscordDSLMacrosPlugin",
+          "DiscordKit/DiscordCommandDSL",
+          "DiscordKit/DiscordCommands",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordDSL",
+          "DiscordKit/DiscordInteractions",
+          "DiscordKit/DiscordModels",
+          "swift-syntax/SwiftParser",
+          "swift-syntax/SwiftSyntax",
+          "swift-syntax/SwiftSyntaxMacroExpansion"
+        ]
+      }
+    }
+  },
   "consumers": {
     "Examples/ActivityHost": {
       "forbidden": [

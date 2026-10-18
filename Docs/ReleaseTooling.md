@@ -52,7 +52,8 @@ The initial `0.14.0` baseline records 28 modules and 13,235 public/open symbols 
 macOS arm64. It establishes a starting point; there is no earlier public baseline
 against which to establish historical compatibility. This candidate is neither a
 published release nor a tag. The current `0.15.0` candidate adds the independent
-shared-declaration and typed-command products for Parts 15A/15B and is compared
+shared-declaration and typed-command products for Parts 15A/15B, plus the separately
+compiled Part 15C macro authoring package. The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before
 1.0), including declarations in a new module; inspect the detailed comparison to
@@ -60,6 +61,22 @@ distinguish those additions from changes to existing APIs. The full Phase 15
 baseline is captured separately when its remaining milestones are implemented
 and reviewed; never rewrite the
 historical baseline to make a new API pass.
+
+Part 15C records the three public macro declarations in a separate snapshot; the
+compiler plugin and its tests do not become runtime API modules:
+
+```sh
+swift package --package-path Packages/DiscordDSLMacros dump-symbol-graph --minimum-access-level public
+python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
+  --repository . --authoring-package Packages/DiscordDSLMacros \
+  --symbolgraphs Packages/DiscordDSLMacros/.build/out/symbolgraph \
+  --version 0.15.0 --output /tmp/discordkit-current-macros-api.json
+```
+
+The macro package receives its own DocC conversion and curated reference pages.
+Keep its first full release baseline separate until Part 15L review; a first
+snapshot has no historical compatibility comparison. Compiled external fixtures
+check the actual macro signatures and generated behavior on the recorded toolchain.
 
 Snapshots normalize all owned graph shards, including external-type extensions,
 and reject missing modules, conflicting duplicates and mixed platform scopes.
@@ -90,7 +107,9 @@ python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
 ```
 
 The current report covers shared declarations, typed argument decoding, command
-lowering and only the checks actually recorded for those milestones. Validate the
+lowering, separate macro authoring and only checks actually recorded for the current
+checkpoint. The macro package is audited separately from the root runtime API graphs;
+its public macro signatures are checked through compiled external consumers. Validate the
 historical `phase14-report.json` separately;
 its frozen evidence describes that checkpoint rather than current source. Neither
 passing record implies that the remaining Phase 15 command/macro/runtime milestones

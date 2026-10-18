@@ -20,8 +20,11 @@ Parts 15A and 15B add independently selected `DiscordDSL` and `DiscordCommandDSL
 products and their root tests. CI compares the current `0.15.0` authoring candidate against the frozen
 `0.14.0` API baseline, validates both historical and current reports, and discovers
 the public DocC modules from the manifest. The current candidate covers shared
-declarations, typed argument decoding and explicit command lowering; macros, response
-builders and supervised HTTP/Gateway hosts remain planned.
+declarations, typed argument decoding, explicit command lowering and Part 15C's
+separate macro authoring package. CI tests its compiled expansions and external
+positive/negative fixtures, including Sendable checks and a cross-module codec.
+Response builders and supervised HTTP/Gateway hosts remain planned. Workflow
+definitions do not establish a passed platform run.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to
 arm64 macOS 13 module availability. If a runner architecture or platform scope
