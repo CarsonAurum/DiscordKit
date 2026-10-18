@@ -1,7 +1,8 @@
 # Compatibility and migration
 
-The Phase 14 milestone is version **0.14.0**, a prerelease development milestone.
-No tag or package publication is implied by the validation commit. Preserve the
+The current authoring candidate is **0.15.0**, covering Parts 15A/15B. The
+historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
+package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
 with ciphersuite **2**, and DAVE **v1** independently of the package version.
 
@@ -28,6 +29,23 @@ with the products your consumer needs, inject the shared authorities it owns,
 start work explicitly, and await closure. Values with `Field.absent`, `.null` and
 `.value` retain different update meanings. Unknown enum values and raw fields do
 not prove implemented support for the corresponding upstream feature.
+
+## Adopt typed command authoring
+
+Existing `DiscordCommands` consumers require no migration. Select `DiscordDSL`
+for structural modules and `DiscordCommandDSL` for typed argument decoding and
+manual root slash handlers. A `SlashCommand` contribution captures one schema and
+lowers it to existing `CommandDefinition`/`CommandRoute` values; inspect the
+compiled definitions before explicit reconciliation or registration.
+
+To adopt an existing root slash definition and exact matching route incrementally,
+wrap them in `ExistingSlashCommand`. This adapter performs no typed decoding and
+rejects unsupported families, nesting and autocomplete. Keep full low-level APIs
+for those existing capabilities until the corresponding authoring milestone ships.
+Use `ManualSlashCommandHandler` with the existing `InteractionContext.responder`
+for explicit response ownership; macros, typed response builders and supervised
+HTTP/Gateway applications remain later milestones. See [the guide](CommandDSL.md)
+for argument presence, limits, diagnostics and the custom-code contract.
 
 ## Upstream protocol changes
 

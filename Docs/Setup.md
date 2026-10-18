@@ -26,6 +26,11 @@ executing them. Offline CI builds all nine and audits their selected dependency/
 | Embedded Activity | [ActivityHost](../Examples/ActivityHost/README.md) | Enabled Activity, URL mapping, actual Discord host and separate HTTPS backend |
 | Public Social providers | [SocialApp](../Examples/SocialApp/README.md) | Explicit consent and provider-specific host/authority requirements |
 
+Select `DiscordCommandDSL` and `DiscordDSL` explicitly for [typed command
+authoring](CommandDSL.md). Compilation produces existing validated registration
+definitions and exact routes. It does not register commands, verify ingress, bind
+a listener or choose a Gateway client; applications retain those explicit owners.
+
 Only CommandsApp, VoiceBot, RPCApp, ActivityHost, OAuthApp and SocialApp are safe
 offline demonstrations by design. RESTOnly/GatewayBot can use credentials when
 run; HTTPApp can bind a listener when configured. Routine CI builds these examples

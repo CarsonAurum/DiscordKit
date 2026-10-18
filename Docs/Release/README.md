@@ -1,9 +1,10 @@
 # Release certification
 
-The current **0.15.0 shared-declarations candidate** covers [Part 15A](../DSL.md)
-only. Its [machine report](phase15-report.json) and
-[validation record](phase15a-validation.json) state the checks actually run and
-explicit exclusions. Typed commands, macros, HTTP/Gateway hosts and the remaining
+The current **0.15.0 authoring candidate** covers [shared declarations](../DSL.md)
+and [typed command lowering](../CommandDSL.md) in Parts 15A/15B. Its
+[machine report](phase15-report.json), [15A record](phase15a-validation.json) and
+[15B validation record](phase15b-validation.json) state the checks actually run and
+explicit exclusions. Macros, response builders, HTTP/Gateway hosts and the remaining
 [DSL milestones](../DSLImplementationRoadmap.md) are still planned.
 
 The historical [0.14.0 candidate report](2026-10-18.md) and

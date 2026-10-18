@@ -122,6 +122,15 @@ registration or handler execution. Command lowering/macros, response builders/po
 and HTTP/Gateway hosts remain later milestones; see `Docs/DSL.md` and
 `Docs/DSLImplementationRoadmap.md`.
 
+Part 15B adds independently adopted `DiscordCommandDSL`: finite typed argument schemas
+and strict per-invocation decoding, manual slash-command contributions, explicit
+validated-command adapters and deterministic lowering to existing command definitions
+and routes. It selects DSL/Core/Models/Commands/Interactions; existing products and
+shared DSL retain their independent graphs. Construction/compilation start no tasks,
+I/O, registration or handler execution. Explicit router invocation uses existing
+interaction ownership. Macros, response builders/policies and HTTP/Gateway hosts
+remain later milestones; see `Docs/CommandDSL.md`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -150,6 +159,8 @@ and HTTP/Gateway hosts remain later milestones; see `Docs/DSL.md` and
   observations and PCM controls; no upward dependency from existing products.
 - `Sources/DiscordDSL/`: inert structural module composition and finite validated
   descriptions over Core/Models only; no runtime, macro or concrete-adapter ownership.
+- `Sources/DiscordCommandDSL/`: finite typed arguments and manual slash-command lowering
+  over existing Commands/Interactions; no host, macro or registration ownership.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -265,6 +276,14 @@ callable documentation, graph/import isolation and scoped API/DocC checks. Test 
 count/depth/text limits, duplicate identities, unsupported capabilities, deterministic
 builder order and zero execution of injected work. Pure descriptions are authoring-layer
 evidence; they do not qualify command/event execution, macros, live Discord or capacity.
+
+For command DSL changes, preserve its DSL/Core/Models/Commands/Interactions graph
+without Gateway/Client/Cache or concrete adapters. Run root build/tests, callable
+documentation, graph/import isolation and API/DocC checks; build `Examples/HTTPApp`
+and the offline `Examples/CommandsApp`. Verify direct-versus-DSL definitions/routes,
+strict option/resolved-resource decoding, fresh argument state per invocation,
+compile-time zero execution and bounded cancellation-aware router ownership. Macros,
+response families, hosts and DSL capacity qualification remain separate.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

@@ -5,9 +5,11 @@ protocols and a result builder compose declarations into a reproducible, immutab
 metadata description. The only direct dependencies are `DiscordCore` and
 `DiscordModels`; existing products have no upward dependency on the DSL.
 
-The implemented scope is structural authoring and validation. Typed argument
-schemas, command lowering, macros, responses, policies, HTTP hosts and Gateway
-execution remain later [implementation milestones](DSLImplementationRoadmap.md).
+The shared product implements structural authoring and validation. Part 15B adds
+[typed arguments and command lowering](CommandDSL.md) through the separately
+selected `DiscordCommandDSL` product. Macros, response builders, policies, HTTP
+hosts and Gateway execution remain later
+[implementation milestones](DSLImplementationRoadmap.md).
 An application can use the raw contribution API now to validate its own finite
 metadata catalog, without pretending that a custom kind implements a Discord API.
 
@@ -65,9 +67,9 @@ Every builder group, even an empty one, participates in structural admission.
 Custom leaves conform to `DefinitionContribution` and expose one deterministic
 `RawDefinitionContribution` snapshot. Its default collection calls the shared
 collector admission path. `DefinitionPlan.contributions` retains the typed leaf
-values aligned with the immutable declaration description, allowing a future
-explicit downstream compiler to recover typed authoring information. Collection
-never invokes an execution method on those values.
+values aligned with the immutable declaration description, allowing an
+explicit downstream compiler such as `CommandCompilation` to recover typed authoring
+information. Collection never invokes an execution method on those values.
 
 Custom composites conform to `BotDefinition` and implement synchronous
 `collect(into:)`. Use `DefinitionCollector.withStructure(source:_:)` before

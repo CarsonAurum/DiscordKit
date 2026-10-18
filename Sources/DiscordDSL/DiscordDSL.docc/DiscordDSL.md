@@ -24,8 +24,9 @@ arbitrary Swift is not sandboxed. Structural bounds govern admitted compilation
 state rather than temporary allocations in caller code.
 
 This milestone adds no new Discord endpoint, event, permission, intent or wire
-schema support. Typed commands, macros, message/policy builders and HTTP/Gateway
-execution remain later milestones. The product selects no transport, client,
+schema support. Separately adopted `DiscordCommandDSL` adds typed arguments and
+manual slash-command lowering over this foundation. Macros, message/policy builders
+and HTTP/Gateway hosts remain later milestones. This shared product selects no transport, client,
 concrete adapter, compiler plugin or documentation tooling.
 
 ## Topics

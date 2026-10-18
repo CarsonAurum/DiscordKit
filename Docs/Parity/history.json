@@ -1263,6 +1263,61 @@
       ],
       "details": "changes/phase15-dsl.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-phase15b-command-dsl",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.15.0 candidate; unpublished; shared declarations and typed-command milestones",
+      "localCommit": "unknown",
+      "changeType": "authoring_and_local_decoding_only",
+      "previousBehavior": "Part 15A supplied structural declarations; consumers authored command registration options, routes and invocation decoding directly.",
+      "currentBehavior": "Independent DiscordCommandDSL adds finite typed argument schemas, strict fresh per-invocation decoding, scalar/default/choice/partial-reference codecs, manual root slash handlers, exact low-level adapters and deterministic lowering to existing validated definitions/routes with an explicit bounded router factory. Existing products and unchanged upstream classifications retain their boundaries.",
+      "affectedSymbols": [
+        "CommandArguments",
+        "CommandArgumentSchema",
+        "ArgumentOption",
+        "ArgumentValue",
+        "ArgumentDecoder",
+        "ArgumentDefault",
+        "StringArgumentChoice",
+        "UserReference",
+        "ChannelReference",
+        "RoleReference",
+        "MentionableReference",
+        "AttachmentReference",
+        "ManualSlashCommandHandler",
+        "SlashCommandMetadata",
+        "SlashCommand",
+        "ExistingSlashCommand",
+        "CommandContribution",
+        "CommandCompilation",
+        "CompiledCommands",
+        "ArgumentDiagnostic",
+        "CommandCompilationDiagnostic"
+      ],
+      "affectedPayloads": "Existing API v10 slash registration options and submitted interaction leaf/resolved data; local authoring descriptors, defaults and bounded diagnostics. No new endpoint, field, permission, intent, event or opcode support.",
+      "breakingChanges": [],
+      "migration": "Additively select DiscordCommandDSL and DiscordDSL. Adopt manual root slash handlers with one typed schema or explicitly adapt existing matching low-level definitions/routes; preserve explicit registration, trusted ingress, response ownership and router limits. Macros, typed response builders, policies and supervised HTTP/Gateway hosts remain later milestones.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/application-commands",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/phase15b-command-dsl.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

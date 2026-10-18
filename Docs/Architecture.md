@@ -109,8 +109,14 @@ Phase 15A adds independently adopted [shared authoring declarations](DSL.md) in
 have no upward DSL dependency. Synchronous module composition produces a finite,
 immutable description with stable explicit identities, source diagnostics and
 configurable structural admission limits. It owns no tasks, transport, command
-registration or event execution. Command lowering, macros, policies, message builders
-and HTTP/Gateway hosts remain later [implementation milestones](DSLImplementationRoadmap.md).
+registration or event execution. Part 15B adds independently selected
+[typed command authoring](CommandDSL.md) in `DiscordCommandDSL`, depending on
+DSL/Core/Models/Commands/Interactions. It compiles finite argument schemas and manual
+slash handlers to existing command definitions/routes; `makeRouter` explicitly creates
+the existing bounded router. Response ownership stays with Interactions. Neither
+existing products nor the shared DSL acquire upward dependencies. Macros, policies,
+message builders and HTTP/Gateway hosts remain later
+[implementation milestones](DSLImplementationRoadmap.md).
 
 ## Product boundaries
 
@@ -129,6 +135,11 @@ flowchart TD
     DiscordModels --> DiscordCore
     DiscordDSL --> DiscordCore
     DiscordDSL --> DiscordModels
+    DiscordCommandDSL --> DiscordDSL
+    DiscordCommandDSL --> DiscordCore
+    DiscordCommandDSL --> DiscordModels
+    DiscordCommandDSL --> DiscordCommands
+    DiscordCommandDSL --> DiscordInteractions
     DiscordTransport --> DiscordCore
     DiscordHTTP --> DiscordModels
     DiscordHTTP --> DiscordTransport

@@ -358,6 +358,36 @@
       "DiscordTestSupport",
       "DiscordUnixPlatform"
     ],
+    "DiscordCommandDSL": [
+      "DiscordActivities",
+      "DiscordApplePlatform",
+      "DiscordBotDSL",
+      "DiscordCache",
+      "DiscordCertifiedDevices",
+      "DiscordClient",
+      "DiscordCommerce",
+      "DiscordDAVE",
+      "DiscordDSLMacroPlugin",
+      "DiscordDSLMacros",
+      "DiscordFoundationTransport",
+      "DiscordGameServices",
+      "DiscordGateway",
+      "DiscordKit",
+      "DiscordKitTools",
+      "DiscordMLS",
+      "DiscordMedia",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordRPC",
+      "DiscordSocial",
+      "DiscordTestSupport",
+      "DiscordUnixPlatform",
+      "DiscordVoice",
+      "DiscordVoiceCodecs",
+      "DiscordVoiceCrypto",
+      "swift-syntax/SwiftCompilerPlugin",
+      "swift-syntax/SwiftSyntax"
+    ],
     "DiscordCommands": [
       "DiscordApplePlatform",
       "DiscordCache",
@@ -663,6 +693,9 @@
     "DiscordClient": [
       "DiscordClient"
     ],
+    "DiscordCommandDSL": [
+      "DiscordCommandDSL"
+    ],
     "DiscordCommands": [
       "DiscordCommands"
     ],
@@ -786,6 +819,7 @@
     "DiscordCache": "Sources/DiscordCache",
     "DiscordCertifiedDevices": "Sources/DiscordCertifiedDevices",
     "DiscordClient": "Sources/DiscordClient",
+    "DiscordCommandDSL": "Sources/DiscordCommandDSL",
     "DiscordCommands": "Sources/DiscordCommands",
     "DiscordCommerce": "Sources/DiscordCommerce",
     "DiscordCore": "Sources/DiscordCore",
@@ -850,6 +884,13 @@
       "DiscordHTTP",
       "DiscordModels",
       "DiscordTransport"
+    ],
+    "DiscordCommandDSL": [
+      "DiscordCommands",
+      "DiscordCore",
+      "DiscordDSL",
+      "DiscordInteractions",
+      "DiscordModels"
     ],
     "DiscordCommands": [
       "DiscordCore",

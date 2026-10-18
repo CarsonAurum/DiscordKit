@@ -1,5 +1,11 @@
 # Parity inventory and chronological history
 
+Parts 15A/15B add [shared module declarations](../DSL.md) and
+[typed command authoring](../CommandDSL.md). Their append-only history records
+local authoring APIs; unchanged Discord endpoint/event support classifications
+are not counted again. [The 15B entry](changes/phase15b-command-dsl.md) records
+strict leaf decoding, existing-command lowering and the remaining authoring gates.
+
 Phase 14 adds [release certification](../Release/README.md), source/dependency/API
 audits and [dated HTTP channel-obfuscation transition evidence](../Release/maintenance.json).
 Future-effective behavior remains distinct from current support; history is append-only.
