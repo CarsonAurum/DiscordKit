@@ -1,0 +1,46 @@
+{
+  "verifiedAt": "2026-10-18T00:55:19.050888+00:00",
+  "scope": "CELT energy component only",
+  "version": "1.6.1",
+  "releaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "sourceURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "archiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "seed": 6716432,
+  "randomCases": 2000,
+  "fixedCases": 33,
+  "totalCases": 2033,
+  "floatTolerance": 2e-05,
+  "exact": [
+    "encoded bytes",
+    "range",
+    "whole-bit accounting",
+    "intra selection"
+  ],
+  "compatibilityDecision": "One-bit encoder fallback clamps reconstruction to canonical decoder -1/0; unlike upstream helper for out-of-domain residuals.",
+  "oracleInputLimit": "Very scarce first-band reference residuals are canonical; Swift separately tests extreme one-bit residuals.",
+  "excluded": [
+    "full Opus codec",
+    "PLC/FEC",
+    "official decoded-PCM conformance",
+    "devices",
+    "realtime"
+  ],
+  "ownedSources": {
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00",
+    "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift": "1b238b15095ac397a0a349d299ab1662e8b8c115d0e71609af5b799933a1d462"
+  },
+  "upstreamSources": {
+    "celt/quant_bands.c": "bec6e7ac19ff02b83480c6ca6a01c084566781856a1e3442b7468bf25a4b937b",
+    "celt/laplace.c": "6a33bdc5bf3a3350f51f92aafa281e4163fdffc88c9e7b0718f6eb770dc595e7",
+    "celt/entenc.c": "56e0843479ae5db15696125ba6ac3d0a0c26fa8b677d4d6bd457686865408572",
+    "celt/entdec.c": "f2d74695ceeb927210dcf76d653241ebdfd465a1c23128604640d218cdd93c38",
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208"
+  },
+  "fixture": {
+    "path": "Tests/DiscordVoiceCodecsTests/CELTEnergyOracleFixtures.swift",
+    "sha256": "18ab3b1902289a30b21a88f34dc048abbadd334a54e72a3739e86c0e7399db2a"
+  },
+  "verifierSHA256": "eb22bde4b2389c146b69dfa6870da07ac57f10b2df146dd18700802e69e127f6",
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)"
+}

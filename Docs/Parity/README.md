@@ -5,8 +5,9 @@ reviewed groups and a separate [capability inventory](voice-media-capabilities.j
 Primitive/framing tests do not establish codec, MLS/DAVE or live voice support.
 See the [dated record](changes/2026-10-17-voice-media.md) and
 [current source fingerprints](voice-media-current-sources.json).
-The latest [codec/routing continuation](changes/2026-10-17-phase12a-codec-routing.md)
-records CELT transform/band and SILK reconstruction components plus Apple UID routing.
+The latest [compressed-audio continuation](changes/2026-10-17-phase12a-compressed-audio.md)
+records owned ordinary CELT frame/packet coding, mono SILK decoding to 48-kHz PCM,
+independent compressed-audio interoperability and Apple startup-liveness hardening.
 Phase 12A remains incomplete; full codec and platform/device gates are unchanged.
 
 Baseline date: **2026-10-15**; implementation update **2026-10-16**. The initial

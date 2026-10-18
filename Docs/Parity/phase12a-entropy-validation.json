@@ -20,7 +20,7 @@
     1,
     79
   ],
-  "ownedSwiftSHA256": "7de89e9cd4f7a1e940305d89e70145f59672252a720addc67d72c4b2f0ccf9ed",
+  "ownedSwiftSHA256": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00",
   "pythonImplementation": "CPython",
   "pythonVersion": "3.14.0",
   "scope": "Entropy primitives only; no decoded PCM, SILK/CELT/hybrid, PLC/FEC or complete codec conformance",
@@ -33,5 +33,5 @@
   "stressCases": 2000,
   "swiftFixtureSHA256": "e45e062aff4480c004c1f10fc8869a30cf8e8961f6e49baaa6c00ff9aec4aebb",
   "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
-  "verifiedOn": "2026-10-17"
+  "verifiedOn": "2026-10-18"
 }

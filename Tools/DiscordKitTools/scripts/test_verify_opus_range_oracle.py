@@ -185,6 +185,7 @@ class OpusRangeOracleTests(unittest.TestCase):
         self.assertEqual(report["compared"], ["final frame bytes", "every-operation rng/ec_tell/ec_tell_frac",
                                              "owned decoded input values"])
         self.assertIn("no decoded PCM", report["scope"])
+        self.assertRegex(report["verifiedOn"], r"^\d{4}-\d{2}-\d{2}$")
 
     def test_main_rejects_bytes_states_decoding_and_output_count_mismatches(self):
         """Each claimed comparison is independently enforced; absent output is also rejected."""

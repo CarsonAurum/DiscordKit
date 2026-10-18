@@ -1,0 +1,45 @@
+{
+  "verifiedOn": "2026-10-18",
+  "scope": "SILK compressed pulse syntax only; no complete frame parameters, PCM codec conformance, hybrid, PLC/FEC, devices or realtime qualification",
+  "officialVersion": "1.6.1",
+  "officialReleaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "sourceArchiveURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "sourceArchiveByteCount": 10472813,
+  "sourceLicense": "Unmodified upstream COPYING retained during temporary compilation; normative table adaptation retains source notice",
+  "sourceLicenseSHA256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551",
+  "officialSourceSHA256": {
+    "silk/encode_pulses.c": "892ebd497ff473050344fbe5c9e03e3395fd6cbe07f33ee2770887ddd1b3f06f",
+    "silk/decode_pulses.c": "58560300a5a4ae0ee2291349a8667cce5ebb9054c4e5056aeed76e0fe2792f10",
+    "silk/shell_coder.c": "60b5a2786238f669eb48dc9a81c072707a11691be3a73029ceb643a6dee5d7dd",
+    "silk/code_signs.c": "becd3134a77e972d70e2845cf10ac4a597233040c37d58338ffe9085859660a2",
+    "silk/tables_pulses_per_block.c": "2fb238cd37048303f2dfa033b1e4c4d6decc427ba81c8eccacae5e19dc7b77fd",
+    "silk/tables_other.c": "07b309e991adab0496fe0a0622195c9b8c11c17290582fd39fe0b357ef7afa5d",
+    "celt/entenc.c": "56e0843479ae5db15696125ba6ac3d0a0c26fa8b677d4d6bd457686865408572",
+    "celt/entdec.c": "f2d74695ceeb927210dcf76d653241ebdfd465a1c23128604640d218cdd93c38",
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208"
+  },
+  "ownedSwiftSHA256": {
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00",
+    "Sources/DiscordVoiceCodecs/SILKExcitation.swift": "866a9851099d736644289e3d0c1f1eeea6a85cb7d727a5e8efde86bfce62b426",
+    "Sources/DiscordVoiceCodecs/SILKPulseTables.swift": "9f5382f4aa68c85753c5be06a573417687a2b0b34364aa90f36e93c694ddbb48",
+    "Sources/DiscordVoiceCodecs/SILKPulseCoding.swift": "9c50b18f1f8cfc9b896a8d04ff65c08a07d21ee7eed6f3e0928d8edd3ea4f1b8"
+  },
+  "fixtureSHA256": {
+    "Tests/DiscordVoiceCodecsTests/SILKPulseOracleFixtures.swift": "ce90ad64599e1a404a28c3746abf3a838528a6f2f4f55c4a5bcff10fb2be86b2"
+  },
+  "verifierSHA256": "b4304329fee6e5fdd7ef0100890ceac7d67353d1ec7443ec9afb1fd52715a6b0",
+  "pythonVersion": "3.14.0",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "swiftCompiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "host": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "seed": 67164278,
+  "fixtureCases": 11,
+  "boundaryEncodeCases": 150,
+  "randomEncodeCases": 1000,
+  "extendedDecodeCases": 132,
+  "arbitraryDecodeCases": 150,
+  "totalCases": 1443,
+  "comparison": "Exact rate, minimal entropy bytes, range, whole/eighth-bit accounting, signed pulses including padding; extended int16 inputs compare unmodified official decoder only",
+  "result": "passed"
+}

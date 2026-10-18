@@ -1,0 +1,35 @@
+{
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "compared": [
+    "exact Q12 coefficients",
+    "exact Q30 inverse gain",
+    "both SILK LPC orders",
+    "cosine interpolation",
+    "fitting and stability expansion",
+    "degenerate sorted frequencies"
+  ],
+  "comparedCases": 2030,
+  "fixedCases": 30,
+  "fixtureSHA256": "3a4f484c61bfa84dbaa5f2e8b37da7823f1585edf21839f4a050e252ec5daa48",
+  "officialReleaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "officialVersion": "1.6.1",
+  "oracleSourceSHA256": {
+    "silk/Inlines.h": "295558194c3b1778d5ced3b409ffcc011f0e5df3e25e2bcb8be28ef649ae9881",
+    "silk/LPC_fit.c": "27e0d8a40024c0d6532705792c7278a3ca280e408da71993efeb485fd8f03ea6",
+    "silk/LPC_inv_pred_gain.c": "c2cc22922cd31554eaa8920ac31238a901139b9cb7964621f6f5f49bedd2b720",
+    "silk/NLSF2A.c": "ce17793880db88d7247596f30415f86ceda690e2ea289a6eff27f2665bc8633c",
+    "silk/bwexpander_32.c": "695726d8e425b68ecd9e2af47fef31246066c01303f6d37dffba709462584474",
+    "silk/table_LSF_cos.c": "9cae32dfdc4ab45e5f288a4fd74cf8bb5dace19c651ec54b6c064024434d52c2"
+  },
+  "ownedSourceSHA256": {
+    "Sources/DiscordVoiceCodecs/SILKNLSF.swift": "e0bae50faee701b7f169f7d1c083d207cdb87817ce3b62924cbf065748773afb"
+  },
+  "randomCases": 2000,
+  "scope": "Fixed-point SILK NLSF conversion and LPC gain only; no full codec or decoded-PCM conformance",
+  "seed": 67167515,
+  "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "sourceArchiveURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+  "verifiedOn": "2026-10-18",
+  "verifierSHA256": "99e2095f6416fb136276884589c62fe42401786ed4db6e9fce5abda85ca0f7f7"
+}

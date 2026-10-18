@@ -56,7 +56,7 @@
         "Tests/DiscordVoiceCodecsTests/OpusRangeCodingTests.swift",
         "Tests/DiscordVoiceCodecsTests/OpusRangeOracleFixtures.swift"
       ],
-      "remainingGates": "Owned bounded range coding only, compared with pinned official libopus entropy outputs. No SILK/CELT/hybrid syntax or PCM reconstruction/encoding; full RFC8251 conformance remains open."
+      "remainingGates": "Owned bounded range coding with up to257-symbol models and pinned official entropy comparisons. Independently adopted SILK/CELT stages compose with it; primitive agreement alone does not establish complete RFC8251 codec conformance."
     },
     {
       "id": "celt-pulse-codebook",
@@ -67,7 +67,7 @@
       "evidence": [
         "Tests/DiscordVoiceCodecsTests/CELTPulseCodebookTests.swift"
       ],
-      "remainingGates": "Exact bounded RFC6716 signed pulse enumeration/entropy with forty independent fixtures. Band search/spreading and transform primitives are recorded separately; recursive splitting/allocation, full codec PCM and PLC/FEC remain absent."
+      "remainingGates": "Exact bounded RFC6716 signed pulse enumeration/entropy. Recursive shape coding composes multiple admitted codebooks; the primitive alone has no audio, allocation or loss policy."
     },
     {
       "id": "silk-reconstruction",
@@ -75,26 +75,40 @@
       "implementation": [
         "Sources/DiscordVoiceCodecs/SILKLinearPrediction.swift",
         "Sources/DiscordVoiceCodecs/SILKLongTermPrediction.swift",
-        "Sources/DiscordVoiceCodecs/SILKExcitation.swift"
+        "Sources/DiscordVoiceCodecs/SILKExcitation.swift",
+        "Sources/DiscordVoiceCodecs/SILKPulseCoding.swift",
+        "Sources/DiscordVoiceCodecs/SILKPulseTables.swift",
+        "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift",
+        "Sources/DiscordVoiceCodecs/SILKParameterTables.swift",
+        "Sources/DiscordVoiceCodecs/SILKNLSF.swift",
+        "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift"
       ],
       "evidence": [
         "Tests/DiscordVoiceCodecsTests/SILKLinearPredictionTests.swift",
         "Tests/DiscordVoiceCodecsTests/SILKLongTermPredictionTests.swift",
-        "Tests/DiscordVoiceCodecsTests/SILKExcitationTests.swift"
+        "Tests/DiscordVoiceCodecsTests/SILKExcitationTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKPulseCodingTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKFrameParameterTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKNLSFTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKFrameDecoderTests.swift"
       ],
-      "remainingGates": "Owned validated LPC/streaming analysis/synthesis, five-tap voiced LTP and Q23 excitation reconstruction. Callers supply decoded parameters and rewhitened history; NLSF/pitch/pulse entropy, encoder analysis/quantization, stereo/rate conversion and full codec remain unimplemented."
+      "remainingGates": "Owned pulse/shell/sign entropy, gain/NLSF/pitch/LTP parameters, fixed-point NLSF conversion/interpolation/stability and no-loss compressed channel-to-PCM16 reconstruction. Exact official integer PCM/history/entropy comparisons across successive frames. No encoder analysis/quantization, stereo, PLC/FEC or complete hybrid codec."
     },
     {
       "id": "celt-band-shape",
       "status": "partial",
       "implementation": [
-        "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift"
+        "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift",
+        "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift",
+        "Sources/DiscordVoiceCodecs/CELTShapeTables.swift"
       ],
       "evidence": [
         "Tests/DiscordVoiceCodecsTests/CELTBandQuantizerTests.swift",
-        "Tests/DiscordVoiceCodecsTests/CELTBandOracleFixtures.swift"
+        "Tests/DiscordVoiceCodecsTests/CELTBandOracleFixtures.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTShapeCodingTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTShapeFrameCodingTests.swift"
       ],
-      "remainingGates": "Owned projected/greedy pulse search, four spreading levels,1/2/4/8 short blocks, collapse mask, normalized reconstruction and entropy composition.2016 independent component cases; recursive splitting rejected. No allocation/energy/stereo/anti-collapse/full codec."
+      "remainingGates": "Owned recursive mono/stereo/intensity shape coding, theta, TF/Haar, folding/noise, shared all-band allocation balance and anti-collapse. Independent bytes/entropy/masks/seed comparisons and tolerance-qualified spectral comparisons. Complete encoder quality, hybrid/mode transitions and loss recovery remain separate."
     },
     {
       "id": "celt-transform",
@@ -106,14 +120,43 @@
         "Tests/DiscordVoiceCodecsTests/CELTTransformTests.swift",
         "Tests/DiscordVoiceCodecsTests/CELTTransformOracleFixtures.swift"
       ],
-      "remainingGates": "Owned mixed-radix FFT, low-overlap CELT MDCT/IMDCT and streaming 120-sample history at four frame sizes in mono/stereo. Independent float libopus component vectors only; no transient/stereo/band codec, PLC/FEC or full decoded-PCM conformance."
+      "remainingGates": "Owned mixed-radix low-overlap CELT MDCT/IMDCT at four frame sizes in mono/stereo. CELTSynthesis separately composes transient/long windows, denormalization, pitch postfilter and deemphasis. Float comparison is tolerance-qualified; no universal realtime/perceptual claim."
+    },
+    {
+      "id": "celt-envelope-allocation-synthesis",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift",
+        "Sources/DiscordVoiceCodecs/CELTAllocationTables.swift",
+        "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift",
+        "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift",
+        "Sources/DiscordVoiceCodecs/CELTSynthesis.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/CELTEnergyQuantizerTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTBitAllocationTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTFrameHeaderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift"
+      ],
+      "remainingGates": "Owned segmented headers, coarse/fine/final energies, bit allocation/skips/stereo, denormalization, variable-duration transient overlap, pitch postfilters and deemphasis. Exact entropy/integer decisions; floating PCM tolerance-qualified against pinned scalar reference. No perceptual analysis, PLC/FEC, complete hybrid or full official conformance claim."
     },
     {
       "id": "opus-encoder-decoder",
-      "status": "unsupported",
-      "implementation": [],
-      "evidence": [],
-      "remainingGates": "Range coder prerequisite implemented separately. SILK/CELT/hybrid, official decoded-PCM conformance and PLC/FEC remain unimplemented."
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift",
+        "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift",
+        "Sources/DiscordVoiceCodecs/CELTPacketCodec.swift",
+        "Sources/DiscordVoiceCodecs/SILKMonoDecoder.swift",
+        "Sources/DiscordVoiceCodecs/SILKMonoPacketDecoder.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKMonoDecoderTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTFrameOracleTests.swift"
+      ],
+      "remainingGates": "Ordinary CELT long-block PCM encoding and ordinary no-loss frame/packet decoding; mono SILK-only decoding to48kPCM16 at fixed internal8/12/16kHz rate. No full SILK/hybrid encoding, SILK stereo/rate changes, hybrid/mode transitions, redundant-frame mixing, PLC/FEC/DTX or official full decoded-PCM conformance. Basic CELT encoder has no perceptual VBR/transient/pitch analysis. Zero/one-byte CELT and empty SILK loss frames reject explicitly."
     },
     {
       "id": "transport-aead",
@@ -194,13 +237,15 @@
       "status": "partial",
       "implementation": [
         "Sources/DiscordApplePlatform/AppleAudio.swift",
-        "Sources/DiscordApplePlatform/AppleAudioDevices.swift"
+        "Sources/DiscordApplePlatform/AppleAudioDevices.swift",
+        "Sources/DiscordApplePlatform/AppleAudioRoutes.swift"
       ],
       "evidence": [
         "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
-        "Tests/DiscordApplePlatformTests/AppleAudioDevicesTests.swift"
+        "Tests/DiscordApplePlatformTests/AppleAudioDevicesTests.swift",
+        "Tests/DiscordApplePlatformTests/AppleAudioRoutesTests.swift"
       ],
-      "remainingGates": "Apple engine capture/playback, explicit macOS input/output UID selection, iOS/tvOS/visionOS preferred-input selection, bounded metadata/queues and observed lifecycle cleanup implemented. watchOS preferred input and arbitrary non-macOS output selection explicitly unsupported. Deterministic backend/property tests and selected-module cross-SDK compilation only; no permission/device/route/hot-unplug runtime qualification. Windows/Android adapters remain unimplemented. Linux PCM remains injected."
+      "remainingGates": "Apple engine capture/playback, explicit macOS input/output UID selection, iOS/tvOS/visionOS preferred-input selection, bounded metadata/queues and observed lifecycle cleanup implemented. watchOS preferred input and arbitrary non-macOS output selection explicitly unsupported. Deterministic backend/property tests and selected-module cross-SDK compilation only; no permission/device/route/hot-unplug runtime qualification. Windows/Android adapters remain unimplemented. Linux PCM remains injected. Selected macOS liveness is checked after observer installation and engine start; failed listener installation rolls back atomically. These narrow startup races without guaranteeing device presence after readback."
     },
     {
       "id": "video-codecs-transforms",

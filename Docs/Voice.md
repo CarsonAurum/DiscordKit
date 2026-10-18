@@ -3,24 +3,25 @@
 Verified and locally added **2026-10-17**. This is the first release of the
 multi-release [Part 12 plan](../.air/plans/phase-12-execution.plan.md), with four
 independently adopted products. **Complete Discord voice is not implemented.**
-No `VoiceSession`/`VoiceManager`, owned Opus encoder/decoder, MLS group, DAVE
+No `VoiceSession`/`VoiceManager`, complete Opus codec, MLS group or DAVE
 backend is shipped yet. Apple system-route capture/playback is independently
 available through `DiscordApplePlatform`; device qualification remains open.
 
 The subsequent [12A execution](../.air/plans/phase-12a-execution.plan.md) adds
-streaming media, owned Opus entropy/pulse coding, bandlimited resampling,
-statistical speech detection and native Apple audio ownership. Its latest
-[codec/routing continuation](Parity/changes/2026-10-17-phase12a-codec-routing.md)
-adds CELT transforms/band quantization, SILK prediction/excitation and explicit
-Apple device selection. **The full 12A
-milestone remains incomplete**: the range coder cannot encode or reconstruct SILK/CELT audio.
+streaming media, bandlimited resampling, statistical speech detection and native
+Apple audio ownership. The latest
+[compressed-audio continuation](Parity/changes/2026-10-17-phase12a-compressed-audio.md)
+composes owned CELT frame/packet encoding and decoding, and ordinary mono SILK
+packet decoding to 48-kHz PCM. **The full 12A milestone remains incomplete**:
+SILK/hybrid encoding, complete mode transitions/loss recovery, official full-codec
+conformance and Windows/Android device adapters remain required.
 
 ## Products and ownership
 
 | Product | Implemented behavior | Dependency boundary |
 | --- | --- | --- |
 | DiscordMedia | Rational/sample clocks, caller-driven pacing, bounded PCM/audio/video values, PCM16 conversion, gain/mixing, linear/windowed-sinc resampling, RMS/statistical speech detection, polling and terminal-aware async queues | Foundation; no codecs/network/platform capture |
-| DiscordVoiceCodecs | Owned Opus framing/entropy, CELT pulse search/spreading/MDCT/overlap, SILK LPC/LTP/excitation primitives with independent oracle fixtures | Media; no native Opus library or complete SILK/CELT audio encoder/decoder |
+| DiscordVoiceCodecs | Owned Opus framing/entropy, ordinary CELT frame/packet coding and mono SILK packet decoding, with independent component and compressed-audio fixtures | Media; no native Opus runtime; complete SILK/hybrid encoder/decoder, mode transitions and loss recovery remain open |
 | DiscordVoiceCrypto | XChaCha20-Poly1305, owned HChaCha20, public AES256-GCM, experimental truncated AES128-GCM adapter and actor-owned RTP-size packet protection | Existing Swift Crypto and its public CryptoExtras product |
 | DiscordApplePlatform | Apple engine capture/playback, bounded queues, permission/session ownership, explicit supported device selection and observed-route invalidation | Media/Core/Transport; native AVFoundation/CoreAudio only in this adapter |
 | DiscordVoice | Bounded Voice v8 JSON/binary frames/opcodes, pure handshake/heartbeat/resume reducer, main-Gateway join rendezvous, discovery, RTP framing, Opus packetization and reorder window | Core/Models/Transport and the three media products; no Client/Gateway/facade ownership |
@@ -88,16 +89,19 @@ and verified erratum 4853 with exact contexts, fixed frames up to 1,275 bytes an
 finite coding-call budgets. Operations include uniform/raw splits, carry/termination,
 specified zero extension and legal raw/read-ahead overlap. Six independent official
 libopus 1.6.1 fixtures compare bytes and per-operation range/bit state. This supplies
-no SILK/CELT/hybrid syntax or PCM processing. Frame failures are terminal. See the
+no audio syntax by itself; the codec stages below compose with it. Probability
+models admit up to 257 symbols for the widest CELT theta context. Frame coder
+failures are terminal; complete-frame owners use private copies to preserve stream
+history on failure. See the
 [dated media/entropy record](Parity/changes/2026-10-17-phase12a-media-entropy.md).
 
 `CELTPulseCodebook` implements RFC 6716 section 4.3.4.2 signed integer pulse
 ranking/unranking and uniform entropy composition. Bounds are 1...176 dimensions,
 0...128 pulses and at most UInt32.max codewords; oversized codebooks require
-future recursive band splitting. Forty official libopus codeword fixtures and an
+the recursive shape coder below. Forty official libopus codeword fixtures and an
 opt-in seeded oracle compare integer vectors, indices, counts and entropy output.
-This codebook supplies no band allocation or decoded audio; the separately
-adopted quantizer and transform below compose with its integer/entropy contract.
+This codebook supplies no band allocation or decoded audio by itself; separately
+adopted quantizers and frame codecs compose with its integer/entropy contract.
 See the [continuation record](Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md).
 
 `CELTBandQuantizer` adds projected/greedy shape search, all four spreading levels,
@@ -113,8 +117,9 @@ libopus BSD attribution for adapted search/rotation algorithms.
 uses bounded O(N log N) work/O(N) storage and Double arithmetic internally.
 `CELTTransformStream` owns separate analysis/synthesis histories; unquantized
 round trips have exactly 120 samples of delay. Reset discards both tails; explicit
-zero input flushes them. There is no transient decision, pre/de-emphasis or band
-codec. Official scalar float comparisons are tolerance-qualified, not bit-exact.
+zero input flushes them. The transform itself makes no transient decision and
+performs no pre/de-emphasis; the frame codec composes those stages separately.
+Official scalar float comparisons are tolerance-qualified, not bit-exact.
 
 `SILKLinearPredictionCoefficients` validates already quantized order-ten/sixteen
 Q12 coefficients with conservative floating-point reflection/gain checks.
@@ -122,9 +127,46 @@ Q12 coefficients with conservative floating-point reflection/gain checks.
 `SILKLongTermSynthesisFilter` adds causal five-tap voiced prediction at 8/12/16kHz.
 Callers own gain/rewhitening and parameter transitions. `SILKExcitationReconstructor`
 implements all six offset combinations, signed pulse adjustment and exact Q23
-excitation/seed updates. These bounded pieces contain no SILK parameter entropy,
-NLSF conversion, encoder parameter search, stereo/rate orchestration or full codec.
-Independent component checks do not establish official decoded-PCM conformance.
+excitation/seed updates. These remain independently adopted primitives; the channel
+and packet decoders below own their parameter and state transitions.
+
+`SILKPulseCoding` implements rate-level selection, shell splitting, escape/LSB
+planes and sign contexts, including mediumband 10ms padding and ten LSB planes.
+`SILKFrameParameterDecoder` reads type/gain, NLSF residuals/stabilization, pitch,
+LTP and seed syntax. `SILKNLSFCoefficients` performs fixed-point NLSF-to-LPC
+conversion, interpolation, fitting and inverse-gain stability. `SILKFrameDecoder`
+composes these into ordinary no-loss 8/12/16-kHz PCM16 with gain scaling, rewhitening
+and persistent LPC/output history. Independent comparisons check exact integer
+PCM, entropy and history across successive frames.
+
+`SILKMonoDecoder` adds mono SILK payload/Opus packet decoding at a fixed internal
+NB/MB/WB rate. It consumes VAD/LBRR headers, skips redundant syntax, handles
+10/20/40/60ms payloads and every ordinary packing form, and produces exact-duration
+48-kHz PCM16 through owned allpass/FIR resampling and mono alignment. Duration
+changes retain history. LBRR flags report availability; no missing audio is recovered.
+Stereo, internal-rate changes, PLC/CNG after loss, SILK encoding and hybrid are absent.
+Empty loss/DTX payloads reject explicitly. SILK's normative entropy zero extension
+can accept damaged/truncated nonempty payloads; decoding is not authentication.
+
+`CELTEnergyQuantizer`, `CELTFrameHeader` and `CELTBitAllocation` implement segmented
+prefix/TF/boost/trim syntax, predictive/coarse/fine/final energies, caps/interpolation,
+skips, stereo decisions and fine priorities. `CELTShapeCoding` adds recursive
+splitting, theta/stereo/intensity, TF/Haar, folding/noise and bounded PVQ leaves.
+`CELTShapeFrameCoding` owns all-band balance/folding and anti-collapse. `CELTSynthesis`
+adds denormalization, short/long overlap, delayed pitch postfilters and deemphasis,
+sharing history across durations. Floating PCM is normalized by 32768 without clipping.
+
+`CELTFrameDecoder` composes the complete ordinary CELT frame pipeline with atomic
+history replacement. `CELTFrameEncoder` supplies a basic long-block encoder from
+normalized 48-kHz PCM: preemphasis, transform, band normalization, energy/allocation
+and shape coding. It selects no pitch prefilter/transient analysis and provides no
+psychoacoustic VBR/DTX/FEC quality policy. `CELTPacketEncoder` adds a standard
+single-frame TOC; `CELTPacketDecoder` accepts all ordinary packing/padding forms,
+with fixed channels and variable duration/bandwidth. Failed multi-frame packets
+advance no history. Zero/one-byte frames require an unimplemented loss policy.
+There is no SILK/hybrid transition, PLC/FEC or multistream support. Component and
+selected compressed-frame interoperability checks do not establish official full
+RFC 8251 decoded-PCM conformance, universal quality or realtime frame-budget qualification.
 
 Encoded video values retain opaque H.264/H.265/VP8/VP9/AV1, keyframe, dimension and
 optional spatial/temporal-layer metadata. Layer bounds are local storage policy,
@@ -162,7 +204,18 @@ explicit restart. Native notifications defer teardown outside the notification
 stack with a bounded coalesced invalidation. macOS also observes default-device
 changes. OS delivery is not a guaranteed privacy barrier against every route race;
 real hot-unplug/interruption/device qualification has not run. Selected device-alive
-and topology monitoring is bounded and released on stop. Windows/Android
+and topology monitoring is bounded and released on stop. macOS additionally reads
+the selected devices' `DeviceIsAlive` flags after observer installation and again
+after engine startup. This rejects an unplug that occurred before the listener
+was installed even if the AudioUnit still reports the same bound ID. A shared
+duplex device is queried once per checkpoint; there is no default-device fallback.
+Listener installation is atomic: a failed registration removes every earlier
+registration in reverse order, and late callbacks remain generation-fenced.
+The availability flag and observer ownership follow Apple's
+[DeviceIsAlive contract](https://developer.apple.com/documentation/coreaudio/kaudiodevicepropertydeviceisalive)
+and [listener registration contract](https://developer.apple.com/documentation/coreaudio/audioobjectaddpropertylistenerblock(_:_:_:_:)).
+These checks narrow startup races; they cannot guarantee hardware remains present
+after readback or supply real device qualification. Windows/Android
 capture/playback remain unimplemented. Linux accepts
 injected PCM. No test requests permission, opens a microphone or plays audio.
 

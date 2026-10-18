@@ -20,6 +20,12 @@ source at the package deployment minima. This is selected-module compile evidenc
 it does not qualify native device I/O or the complete package graph on those hosts.
 The [routing continuation report](Parity/phase12a-routing-compile-validation.json)
 repeats these 25 module emissions for the explicit routing implementation.
+The [liveness/listener continuation report](Parity/phase12a-device-liveness-compile-validation.json)
+repeats them with selected-device availability readback and tested partial-observer
+rollback. Deterministic Apple tests use synthetic devices/listeners; they do not
+request permission or access a microphone/output. `swift sdk list` currently reports
+no installed Swift SDK bundles on this host; only the Xcode Apple SDKs are available
+for this qualification. There is no Windows/Android native host/device result.
 See the [compile evidence](Parity/phase12a-apple-compile-validation.json).
 Phase 9 [OAuth](OAuth.md) and [public game/entitlement helpers](Phase9ServiceContracts.md)
 have local deterministic coverage. The injected browser adapter does not qualify OS

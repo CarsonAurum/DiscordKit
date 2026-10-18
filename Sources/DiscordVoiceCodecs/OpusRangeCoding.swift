@@ -18,9 +18,10 @@ public enum OpusRangeCodingError: Error, Sendable, Equatable {
     case unusableState
 }
 
-/// Immutable frequency counts for at most 256 symbols, retaining the exact total frequency.
+/// Immutable frequency counts for at most 257 symbols, retaining the exact total frequency.
 ///
 /// RFC 6716 contexts with proportional counts but different totals are not interchangeable.
+/// The 257-symbol bound admits CELT's maximum triangular stereo/theta context.
 /// Zero-frequency symbols are retained in their original positions and cannot be encoded.
 /// This value owns its table, performs no I/O, and is safe to share across independent coders.
 public struct OpusProbabilityModel: Sendable, Equatable {
@@ -32,10 +33,10 @@ public struct OpusProbabilityModel: Sendable, Equatable {
 
     /// Validates an exact context without rescaling or dropping impossible symbols.
     /// Copies the live elements into dense storage, discarding any oversized caller reservation.
-    /// - Parameter frequencies: One through 256 counts whose positive sum is at most 65,535.
+    /// - Parameter frequencies: One through 257 counts whose positive sum is at most 65,535.
     /// - Throws: `invalidProbabilityModel` for an empty/oversized table or invalid sum.
     public init(frequencies: [UInt32]) throws {
-        guard !frequencies.isEmpty, frequencies.count <= 256 else {
+        guard !frequencies.isEmpty, frequencies.count <= 257 else {
             throw OpusRangeCodingError.invalidProbabilityModel
         }
         var cumulative: [UInt32] = [0]
@@ -53,13 +54,13 @@ public struct OpusProbabilityModel: Sendable, Equatable {
 
     /// Converts an RFC 6716 inverse-CDF table into an exact frequency context.
     /// - Parameters:
-    ///   - inverseCDF: One through 256 nonincreasing values, ending in zero. The first
+    ///   - inverseCDF: One through 257 nonincreasing values, ending in zero. The first
     ///     value must be smaller than `2^precision`; equal adjacent values retain an
     ///     impossible symbol. A leading impossible symbol cannot use this representation.
     ///   - precision: Total-frequency exponent in `1...8`, defaulting to eight.
     /// - Throws: `invalidProbabilityModel` for invalid precision, ordering or termination.
     public init(inverseCDF: [UInt8], precision: Int = 8) throws {
-        guard (1...8).contains(precision), !inverseCDF.isEmpty, inverseCDF.count <= 256,
+        guard (1...8).contains(precision), !inverseCDF.isEmpty, inverseCDF.count <= 257,
               inverseCDF.last == 0 else { throw OpusRangeCodingError.invalidProbabilityModel }
         var previous: UInt32 = 1 << precision
         guard UInt32(inverseCDF[0]) < previous else {

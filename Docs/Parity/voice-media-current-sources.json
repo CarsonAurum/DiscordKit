@@ -99,7 +99,7 @@
       "bytes": 10472813,
       "verifiedOn": "2026-10-17",
       "revision": "1.6.1",
-      "purpose": "Development-only independent entropy oracle; six committed fixtures and opt-in differential verification. No runtime linkage, vendoring or full decoded-PCM codec conformance."
+      "purpose": "Development-only independent entropy, SILK/CELT component and ordinary compressed-audio oracle, with literal fixtures and opt-in differential verification. No runtime linkage or native codec vendoring; selected ordinary paths do not establish full decoded-PCM codec conformance."
     }
   ]
 }

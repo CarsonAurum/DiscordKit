@@ -67,16 +67,42 @@ struct OpusRangeCodingTests {
         #expect(try encoder.finalize() == Data([0]))
     }
 
+    /// Exercises all 257 symbols needed by the maximum CELT theta context and retains zero
+    /// frequencies in a 257-entry inverse CDF. The extra symbol must be a real encodable
+    /// index, with matching final range/accounting; the following invalid-model test checks
+    /// that 258 entries remain rejected. No whole-codec conformance is implied.
+    @Test func maximumThetaProbabilityContext() throws {
+        let model = try OpusProbabilityModel(frequencies: Array(repeating: 1, count: 257))
+        #expect(model.total == 257 && model.frequencies.count == 257)
+        var encoder = try OpusRangeEncoder(frameByteCount: 512)
+        for symbol in 0...256 { try encoder.encodeSymbol(symbol, model: model) }
+        let range = encoder.finalRange
+        let usage = encoder.fractionalBitsUsed
+        var decoder = try OpusRangeDecoder(frame: encoder.finalize())
+        for symbol in 0...256 { #expect(try decoder.decodeSymbol(model: model) == symbol) }
+        #expect(decoder.finalRange == range && decoder.fractionalBitsUsed == usage)
+        let inverse = try OpusProbabilityModel(inverseCDF: Array(repeating: 255, count: 256) + [0])
+        #expect(inverse.frequencies == [1] + Array(repeating: 0, count: 255) + [255])
+        var sparseEncoder = try OpusRangeEncoder(frameByteCount: 4)
+        try sparseEncoder.encodeSymbol(256, model: inverse)
+        #expect(throws: OpusRangeCodingError.invalidSymbol) {
+            try sparseEncoder.encodeSymbol(255, model: inverse)
+        }
+        #expect(sparseEncoder.operationCount == 1)
+        var sparseDecoder = try OpusRangeDecoder(frame: sparseEncoder.finalize())
+        #expect(try sparseDecoder.decodeSymbol(model: inverse) == 256)
+    }
+
     /// Covers every malformed probability-table category without allocating unbounded context state.
     @Test func invalidProbabilityModels() {
-        let tables: [[UInt32]] = [[], [0], [0, 0], [65_536], [.max], [65_535, 1], Array(repeating: 1, count: 257)]
+        let tables: [[UInt32]] = [[], [0], [0, 0], [65_536], [.max], [65_535, 1], Array(repeating: 1, count: 258)]
         for table in tables {
             #expect(throws: OpusRangeCodingError.invalidProbabilityModel) {
                 try OpusProbabilityModel(frequencies: table)
             }
         }
         let inverseTables: [([UInt8], Int)] = [([], 8), ([0], 0), ([0], 9), ([1], 8),
-            ([4, 0], 2), ([1, 2, 0], 8), (Array(repeating: 0, count: 257), 8)]
+            ([4, 0], 2), ([1, 2, 0], 8), (Array(repeating: 0, count: 258), 8)]
         for (table, precision) in inverseTables {
             #expect(throws: OpusRangeCodingError.invalidProbabilityModel) {
                 try OpusProbabilityModel(inverseCDF: table, precision: precision)

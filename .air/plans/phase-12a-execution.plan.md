@@ -228,3 +228,86 @@ arm64 macOS 27 / Apple Swift 6.4. This is component evidence, not full 12A compl
 
 The full codec, PLC/FEC, conformance, Windows/Android adapters and hardware/corpus/
 realtime gates listed above remain required. **12A is not complete.**
+
+
+## Compressed audio implementation continuation
+
+The next request is again **finish Phase 12A in full**, including implementation,
+validation and a commit. The working tree was clean at `b6f82ad`. The entire
+completion gate above remains in force; none of the following component work
+changes the meaning of that gate or advances 12B.
+
+1. Implement ordinary CELT coarse/fine/final energy syntax, allocation/reservations,
+   recursive mono/stereo shape syntax and frame-header contexts. Preserve exact
+   integer entropy decisions and independently compare against pinned libopus.
+2. Implement complete SILK pulse entropy, frame-parameter contexts, stabilized
+   NLSF reconstruction and exact fixed-point NLSF-to-LPC conversion. Compose
+   channel reconstruction where the scalar predictor/history contracts are known.
+3. Close the Apple selected-device startup liveness race and test atomic observer
+   installation rollback, concurrent callbacks, restart fencing and teardown.
+4. Extend the bounded probability model to 257 entries for the maximum triangular
+   theta context. Retest prior entropy/PVQ/band outputs after that shared change.
+5. Validate each complete implementation using independent fixtures and seeded
+   differential checks, then run root build/strict tests, the offline example,
+   tooling/Python tests, explicit generation, inventory/parity and staged scope
+   checks. Record full-codec and hardware gates separately from passing components.
+
+Windows/Android SDK bundles, hosts and devices are unavailable on this macOS
+host. No microphone, speaker, permission prompt or Discord call is used by
+deterministic validation. Native host qualification cannot be inferred from
+cross-SDK compilation. Full encoder/decoder composition, mode transitions,
+PLC/FEC and official decoded-PCM conformance remain tracked until implemented
+and independently passed.
+
+### Compressed-audio result and final validation
+
+Implemented ordinary CELT frame/packet encoding and decoding, including complete
+header/energy/allocation/shape/synthesis composition and atomic packed-frame
+admission. The basic encoder selects long blocks, normal spreading and explicit
+storage; it provides no perceptual VBR/transient/pitch analysis. Implemented mono
+SILK packet decoding through exact 48-kHz PCM16, VAD/LBRR skipping, all ordinary
+packing forms and owned resampling at a fixed internal NB/MB/WB rate. Duration
+changes preserve history. The Apple startup race and atomic observer rollback
+are covered by injected property/listener tests.
+
+Validated locally **2026-10-17** (machine reports use actual UTC **2026-10-18**):
+
+- Root build passed; final complete `SWIFTNIO_STRICT=1 swift test` passed **1,774
+  tests in 211 suites across 26 targets**, including **93 new test methods**.
+  Permitted host access was used for existing loopback/Unix adapter tests after
+  sandbox-only bind failures; no Discord or audio-device calls occurred.
+- Tools passed **93 tests in 7 suites**; hermetic Python discovery passed **124
+  tests**. Explicit regeneration changed two reviewed documentation artifacts;
+  all five artifacts then passed nonwriting byte identity. Inventory/parity passed
+  with 18,137 discovery records, 280 sources, 931 reviewed definitions and 249
+  mapped implemented endpoints. These offline counts do not establish API parity.
+- Fresh pinned scalar libopus comparison passed **1,036 CELT sequences / 4,086
+  frames / 5,746,560 PCM samples**, in both directions, with exact final ranges
+  and maximum absolute float PCM error **8.38e-7**. It exercised 2,636 transient,
+  201 silence and 373 postfilter frames. This is ordinary-path interoperability,
+  not the official full conformance corpus or perceptual qualification.
+- Mono SILK comparison passed **133 streams / 1,055 packets / 1,721,760 exact
+  PCM16 samples**, including **325 skipped redundant frames**, all rates/durations,
+  packing, silence and successive duration changes. Redundancy was not recovered.
+- Independent component checks passed pulse 1,443, parameters 2,414, NLSF 2,030,
+  channel synthesis 1,393 frames, energy 2,033, allocation 2,097 (plus 2,097 unrelated
+  decoded frames), headers 2,078 (plus 2,078 unrelated frames), recursive shapes
+  6,058, all-band/anti-collapse 1,070 and synthesis 8,943 frames. Shared entropy,
+  PVQ and band oracles were rerun after the 257-symbol extension. Current reports
+  fingerprint owned sources/fixtures/verifiers; previous Apple reports remain historical.
+- Apple liveness/routing and its dependency graph passed **25 selected-module
+  emissions** at the five minimum Apple SDK targets. This remains compile-only;
+  device, permission, hot-unplug and minimum-OS runtime qualification did not run.
+- VoiceBot built and ran offline: 1,920 filtered PCM frames, actual owned CELT
+  packets yielding 2,880 samples, a reference SILK packet yielding 480 exact samples,
+  and five authenticated RTP rollover packets. Its independent graph and package
+  pins are unchanged. No native codec runtime or package dependency was introduced.
+- Independent cross-reviews checked bounds, history/atomicity, entropy, malformed
+  input, API/docs and evidence claims. They clarified actual silence-header bit
+  accounting versus the reference's virtual EOF advance; final ranges/PCM agree.
+
+**12A is still incomplete.** Required work includes full SILK/hybrid encoding,
+SILK stereo/internal-rate changes, hybrid/mode transitions/redundant mixing,
+PLC/CNG-after-loss/FEC/DTX, official complete decoded-PCM conformance and quality/
+realtime qualification. Windows/Android audio adapters and all native device
+qualification remain open. No scope gate was waived and 12B has not advanced.

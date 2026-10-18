@@ -9,8 +9,9 @@ import DiscordVoiceCrypto
     /// Round-trips synthetic Opus silence through RTP-size protection and a bounded reorder queue.
     /// First checks a bounded bandlimited PCM/resampling timeline, silence activity decisions,
     /// independent synthetic entropy/pulse-codebook symbols, CELT transform/band shapes
-    /// and SILK predictor analysis/synthesis;
-    /// these checks neither encode nor decode SILK/CELT audio.
+    /// and SILK predictor analysis/synthesis. It then encodes/decodes actual ordinary
+    /// CELT packets and reconstructs a committed reference SILK packet to exact PCM.
+    /// Complete SILK/hybrid coding and loss recovery remain outside this example.
     /// Uses a fixed, public test-only key that must never be used for real media. No network,
     /// device, authentication, DAVE context or background task is created. The two cipher
     /// instances model one sender and one receive-only peer, never two sending nonce owners.
@@ -19,6 +20,7 @@ import DiscordVoiceCrypto
         try await demonstratePortableMedia()
         try demonstrateEntropyCoding()
         try demonstrateCodecComponents()
+        try demonstrateCompressedAudio()
         let key = Data(0..<32)
         let sender = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
         let receiver = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
@@ -138,6 +140,53 @@ import DiscordVoiceCrypto
             throw ExampleFailure.invalidInvariant
         }
         print("CELT transform/shape and SILK predictor components checked; complete Opus remains unimplemented.")
+    }
+
+    /// Exercises the independently owned ordinary compressed-audio paths without native codecs.
+    /// Three synthetic mono 20ms CELT frames are encoded with 161-byte Opus packet budgets
+    /// and decoded in order. A separate synthetic NB SILK packet and complete expected PCM
+    /// fingerprint originate from unmodified official libopus1.6.1 through the opt-in
+    /// mono oracle. The public FNV fingerprint is an example invariant, not authentication.
+    /// - Throws: Codec/framing errors or any PCM count/value/reference invariant failure.
+    /// No audio is recorded, played, transmitted or decoded through a system codec.
+    private static func demonstrateCompressedAudio() throws {
+        var encoder = try CELTPacketEncoder(frameSampleCount: 960)
+        var decoder = try CELTPacketDecoder()
+        var sampleCount = 0
+        var energy: Double = 0
+        for frame in 0..<3 {
+            let source = (0..<960).map { sample in
+                Float(0.2 * sin(2 * Double.pi * 440 * Double(frame * 960 + sample) / 48_000))
+            }
+            let bytes = try encoder.encode(source, packetByteCount: 161)
+            let packet = try OpusPacket(bytes)
+            let decoded = try decoder.decode(bytes)
+            guard packet.mode == .celt, packet.sampleCount == 960, bytes.count == 161,
+                  decoded.count == 1, decoded[0].samples.count == 960,
+                  decoded[0].samples.allSatisfy(\.isFinite), decoded[0].finalRange != 0 else {
+                throw ExampleFailure.invalidInvariant
+            }
+            sampleCount += decoded[0].samples.count
+            energy += decoded[0].samples.reduce(0) { $0 + Double($1) * Double($1) }
+        }
+        guard sampleCount == 2_880, energy > 1 else { throw ExampleFailure.invalidInvariant }
+
+        let reference = Data([0, 129, 212, 108, 89, 46, 165, 239, 228, 150,
+                              168, 83, 126, 156, 68, 45, 176, 89, 247, 128])
+        var silk = try SILKMonoDecoder(sampleRate: 8_000)
+        let decoded = try silk.decode(OpusPacket(reference))
+        var fingerprint: UInt64 = 14_695_981_039_346_656_037
+        for sample in decoded.pcm48k {
+            let bits = UInt16(bitPattern: sample)
+            fingerprint = (fingerprint ^ UInt64(bits & 255)) &* 1_099_511_628_211
+            fingerprint = (fingerprint ^ UInt64(bits >> 8)) &* 1_099_511_628_211
+        }
+        guard decoded.pcm48k.count == 480, fingerprint == 0xba5d8977468a4cfe,
+              decoded.payloads.count == 1, decoded.payloads[0].finalRange == 1_960_804_352 else {
+            throw ExampleFailure.invalidInvariant
+        }
+        print("Owned CELT packets produced 2,880 PCM samples; reference SILK packet matched 480 exact 48-kHz samples.")
+        print("Ordinary no-loss codec paths only; complete SILK/hybrid, PLC/FEC and live voice remain open.")
     }
 
     /// Example-local invariant failures, without treating an entropy round trip as voice support.

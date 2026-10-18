@@ -1,0 +1,55 @@
+{
+  "verifiedAt": "2026-10-18T00:43:34.544467+00:00",
+  "scope": "ordinary CELT quant_all_bands and anti_collapse components",
+  "version": "1.6.1",
+  "releaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "sourceURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "archiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "seed": 6716435,
+  "randomCases": 1000,
+  "fixedCases": 70,
+  "totalCases": 1070,
+  "floatTolerance": 5e-05,
+  "exact": [
+    "bytes",
+    "final ranges",
+    "whole/fractional bits",
+    "collapse masks",
+    "seed"
+  ],
+  "excluded": [
+    "optional encoder stereo theta RDO",
+    "full Opus codec",
+    "PLC/FEC",
+    "decoded-PCM conformance",
+    "hardware/realtime"
+  ],
+  "ownedSources": {
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00",
+    "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
+    "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift": "de91fa5930b1c285fc74f3229baa63a2347989a3b271ee03cdea3c6cb85813be",
+    "Sources/DiscordVoiceCodecs/CELTAllocationTables.swift": "2e264fd2ebfa0e69ef32cf393ab52e9d7473e4e35a89b2beed88a4ee9c326894",
+    "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift": "545af9e53ef2abb4ee19b745d381cc858b6f4fe6725bc066a0cf78420b92e98b",
+    "Sources/DiscordVoiceCodecs/CELTShapeTables.swift": "3c7fe7be7dbf01eba178d907542697976a09dc2391ed96c9aafdba20d9e8b74d",
+    "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift": "f204727035942717114e65ceb8d98fac8cb17c137945eded3564e637ef964007"
+  },
+  "upstreamSources": {
+    "celt/bands.c": "fc7ddcc7a46135c2cd89016025e4b96d30e9b514565610115467405d78d63ec6",
+    "celt/vq.c": "7f488e7ced4080d267e4ff44cb512861a47a49d45891277f4e898fe680dad0e5",
+    "celt/rate.h": "7bc335949f2e6e7d4e28c23681c4fc6f3c99733848deb7d1a24e908431f0d8a6",
+    "celt/mathops.h": "79bf06946bf6ab97e6eb933193bcc654d0a7503132044c22714d7cdcc22ba22f",
+    "celt/mathops.c": "25199450cc613fc9784add776204dc81d12478fde0d00c746fb1ac62ba85c10e",
+    "celt/static_modes_float.h": "c3cf8439cdcf9281a5a0a66eefd5f9d0c82537c6f88e33b53ace9c9b3880f60c",
+    "celt/cwrs.c": "6579428627c7cbdc5de0e977bd81559f1e75cc7dd620bcb29ef7b4770ae13e44",
+    "celt/entenc.c": "56e0843479ae5db15696125ba6ac3d0a0c26fa8b677d4d6bd457686865408572",
+    "celt/entdec.c": "f2d74695ceeb927210dcf76d653241ebdfd465a1c23128604640d218cdd93c38",
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208"
+  },
+  "fixture": {
+    "path": "Tests/DiscordVoiceCodecsTests/CELTShapeFrameOracleFixtures.swift",
+    "sha256": "c3904c4e18d3237fb8124fb3d74a1989b9f69412021014ab11a12969cb2b9efc"
+  },
+  "verifierSHA256": "fc14da0ff42f7aa46d8db317b96b20389dc72725dfb7e4f0fb4a2efd6019946f",
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)"
+}

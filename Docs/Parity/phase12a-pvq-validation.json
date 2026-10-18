@@ -70,7 +70,7 @@
   ],
   "ownedSwiftSHA256": {
     "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
-    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "7de89e9cd4f7a1e940305d89e70145f59672252a720addc67d72c4b2f0ccf9ed"
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00"
   },
   "pulseCountBounds": [
     1,
@@ -89,5 +89,5 @@
   "swiftFixturePath": "Tests/DiscordVoiceCodecsTests/CELTPulseCodebookTests.swift",
   "swiftFixtureSHA256": "236bd23b0c41375b7dc5ad1b9bace0f1892f5046d27808d7760dd06f53f7a0cd",
   "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
-  "verifiedOn": "2026-10-17"
+  "verifiedOn": "2026-10-18"
 }

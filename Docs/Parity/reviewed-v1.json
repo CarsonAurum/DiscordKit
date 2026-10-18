@@ -39850,7 +39850,7 @@
       ],
       "notes": "API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
       "manual": {
-        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group → subcommand → leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in ±(2^53-1), numbers in ±2^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
+        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group \u2192 subcommand \u2192 leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in \u00b1(2^53-1), numbers in \u00b12^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
         "fields": [
           {
             "wireName": "type",
@@ -70040,7 +70040,51 @@
         "symbol.12A.SILKShortTermFilter",
         "symbol.12A.SILKLongTermSynthesisFilter",
         "symbol.12A.SILKExcitationReconstructor",
-        "symbol.12A.AppleAudioEndpoint"
+        "symbol.12A.AppleAudioEndpoint",
+        "symbol.12A.CELTBitAllocationError",
+        "symbol.12A.CELTBitAllocationResult",
+        "symbol.12A.CELTBitAllocation",
+        "symbol.12A.CELTEnergyQuantizerError",
+        "symbol.12A.CELTEnergyEncoding",
+        "symbol.12A.CELTCoarseEnergyDecoding",
+        "symbol.12A.CELTEnergyQuantizer",
+        "symbol.12A.CELTFrameDecoderError",
+        "symbol.12A.CELTDecodedFrame",
+        "symbol.12A.CELTFrameDecoder",
+        "symbol.12A.CELTFrameEncoderError",
+        "symbol.12A.CELTEncodedFrame",
+        "symbol.12A.CELTFrameEncoder",
+        "symbol.12A.CELTFrameHeaderError",
+        "symbol.12A.CELTPostfilterParameters",
+        "symbol.12A.CELTFramePrefix",
+        "symbol.12A.CELTFrameAllocationHeader",
+        "symbol.12A.CELTFrameHeader",
+        "symbol.12A.CELTPacketCodecError",
+        "symbol.12A.CELTPacketEncoder",
+        "symbol.12A.CELTPacketDecoder",
+        "symbol.12A.CELTShapeCodingError",
+        "symbol.12A.CELTShapeCodingResult",
+        "symbol.12A.CELTShapeCoding",
+        "symbol.12A.CELTShapeFrameResult",
+        "symbol.12A.CELTShapeFrameCoding",
+        "symbol.12A.CELTSynthesisError",
+        "symbol.12A.CELTSynthesis",
+        "symbol.12A.SILKDecodedFrame",
+        "symbol.12A.SILKFrameDecoder",
+        "symbol.12A.SILKFrameParameterError",
+        "symbol.12A.SILKParameterCoding",
+        "symbol.12A.SILKFrameParameters",
+        "symbol.12A.SILKDecodedExcitation",
+        "symbol.12A.SILKFrameParameterDecoder",
+        "symbol.12A.SILKMonoDecoderError",
+        "symbol.12A.SILKDecodedPayload",
+        "symbol.12A.SILKMonoDecoder",
+        "symbol.12A.SILKDecodedPacket",
+        "symbol.12A.SILKNLSFError",
+        "symbol.12A.SILKNLSFCoefficients",
+        "symbol.12A.SILKPulseCodingError",
+        "symbol.12A.SILKPulseFrame",
+        "symbol.12A.SILKPulseCoding"
       ],
       "evidenceIDs": [
         "evidence.12A.tocConfigurations",
@@ -70076,11 +70120,28 @@
         "evidence.12A.appleCatalogLimits",
         "evidence.12A.officialFloatTransform",
         "evidence.12A.transformOverlapDelay",
-        "evidence.12A.officialExcitation"
+        "evidence.12A.officialExcitation",
+        "evidence.12A.compressed.SILKPulseCodingTests",
+        "evidence.12A.compressed.SILKFrameParameterTests",
+        "evidence.12A.compressed.SILKNLSFTests",
+        "evidence.12A.compressed.SILKFrameDecoderTests",
+        "evidence.12A.compressed.SILKMonoDecoderTests",
+        "evidence.12A.compressed.CELTEnergyQuantizerTests",
+        "evidence.12A.compressed.CELTBitAllocationTests",
+        "evidence.12A.compressed.CELTFrameHeaderTests",
+        "evidence.12A.compressed.CELTShapeCodingTests",
+        "evidence.12A.compressed.CELTShapeFrameCodingTests",
+        "evidence.12A.compressed.CELTSynthesisTests",
+        "evidence.12A.compressed.CELTFrameCodecTests",
+        "evidence.12A.livenessRejectsEarlierUnplugAndStartupDisconnection",
+        "evidence.12A.observationPartialFailureRollbackAndRetry",
+        "evidence.12A.compressed.officialEncoderToOwnedDecoder",
+        "evidence.12A.compressed.ownedEncoderToOfficialDecoder",
+        "evidence.12A.compressed.independentNativePacketsAndBandwidthDurationChanges"
       ],
-      "notes": "Owned RFC6716 ordinary framing/entropy/pulse codebooks now compose with bounded CELT low-overlap MDCT/IMDCT, single-band pulse search/spreading/normalization and SILK LPC/LTP/excitation reconstruction primitives. Independent libopus1.6.1 component fixtures and seeded verification do not establish a complete audio codec. Portable PCM queues/clocks/pacing/resampling and synthetic-only speech VAD remain implemented. ApplePlatform adds explicit macOS input/output UIDs, iOS/tvOS/visionOS preferred inputs and bounded device metadata/route cleanup; watchOS input and non-macOS output selection are explicitly unsupported by these APIs. Native device runtime and Windows/Android adapters remain unqualified or unimplemented. Full SILK/CELT/hybrid compressed syntax, energy/allocation/splitting/stereo/mode transitions, encoder analysis, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; continuation and full12A gates: Docs/Parity/changes/2026-10-17-phase12a-codec-routing.md. Existing Voicev8/RTP48000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no full-codec, live voice, production or cross-platform claim.",
+      "notes": "Owned RFC6716 framing/entropy now composes ordinary CELT frame/packet encoding and decoding and mono SILK packet decoding to 48-kHz PCM16. CELT includes segmented headers, energy/allocation, recursive mono/stereo/intensity shapes, all-band folding/anti-collapse and transient/pitch/deemphasis synthesis. Basic CELT encoding selects long blocks without perceptual VBR/transient/pitch analysis. SILK includes shell/pulse/sign contexts, gain/NLSF/pitch/LTP parameters, fixed-point NLSF conversion, persistent channel synthesis, mono alignment and allpass/FIR resampling at fixed internal 8/12/16-kHz; VAD/LBRR headers are consumed and redundancy skipped without FEC recovery. Independent pinned libopus 1.6.1 component and ordinary compressed-audio comparisons distinguish exact integer/entropy from tolerance-qualified float PCM. Atomic frame/packet failure and independently copied histories are tested. Portable media and synthetic-only VAD remain implemented. Apple device liveness checks after observer install/start and atomic listener rollback narrow startup races; native hardware qualification remains open. Full SILK/hybrid encoding, SILK stereo/rate changes, hybrid/mode transitions, redundant mixing, PLC/FEC/DTX and official full decoded-PCM conformance remain absent. Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; behavior/evidence/gates: Docs/Parity/changes/2026-10-17-phase12a-compressed-audio.md. Voice v8/RTP 48,000 Hz unchanged; upstream announcement/effective dates unknown. Phase 12A remains incomplete; no complete codec, live voice, production or broad platform claim.",
       "manual": {
-        "behavior": "Owned RFC6716 ordinary framing/entropy/pulse codebooks now compose with bounded CELT low-overlap MDCT/IMDCT, single-band pulse search/spreading/normalization and SILK LPC/LTP/excitation reconstruction primitives. Independent libopus1.6.1 component fixtures and seeded verification do not establish a complete audio codec. Portable PCM queues/clocks/pacing/resampling and synthetic-only speech VAD remain implemented. ApplePlatform adds explicit macOS input/output UIDs, iOS/tvOS/visionOS preferred inputs and bounded device metadata/route cleanup; watchOS input and non-macOS output selection are explicitly unsupported by these APIs. Native device runtime and Windows/Android adapters remain unqualified or unimplemented. Full SILK/CELT/hybrid compressed syntax, energy/allocation/splitting/stereo/mode transitions, encoder analysis, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; continuation and full12A gates: Docs/Parity/changes/2026-10-17-phase12a-codec-routing.md. Existing Voicev8/RTP48000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no full-codec, live voice, production or cross-platform claim."
+        "behavior": "Owned RFC6716 framing/entropy now composes ordinary CELT frame/packet encoding and decoding and mono SILK packet decoding to 48-kHz PCM16. CELT includes segmented headers, energy/allocation, recursive mono/stereo/intensity shapes, all-band folding/anti-collapse and transient/pitch/deemphasis synthesis. Basic CELT encoding selects long blocks without perceptual VBR/transient/pitch analysis. SILK includes shell/pulse/sign contexts, gain/NLSF/pitch/LTP parameters, fixed-point NLSF conversion, persistent channel synthesis, mono alignment and allpass/FIR resampling at fixed internal 8/12/16-kHz; VAD/LBRR headers are consumed and redundancy skipped without FEC recovery. Independent pinned libopus 1.6.1 component and ordinary compressed-audio comparisons distinguish exact integer/entropy from tolerance-qualified float PCM. Atomic frame/packet failure and independently copied histories are tested. Portable media and synthetic-only VAD remain implemented. Apple device liveness checks after observer install/start and atomic listener rollback narrow startup races; native hardware qualification remains open. Full SILK/hybrid encoding, SILK stereo/rate changes, hybrid/mode transitions, redundant mixing, PLC/FEC/DTX and official full decoded-PCM conformance remain absent. Windows/Android audio adapters remain unimplemented. Video labels remain metadata only. Added 2026-10-17; behavior/evidence/gates: Docs/Parity/changes/2026-10-17-phase12a-compressed-audio.md. Voice v8/RTP 48,000 Hz unchanged; upstream announcement/effective dates unknown. Phase 12A remains incomplete; no complete codec, live voice, production or broad platform claim."
       }
     }
   ],
@@ -89799,6 +89860,226 @@
       "id": "symbol.12A.AppleAudioEndpoint",
       "path": "Sources/DiscordApplePlatform/AppleAudioDevices.swift",
       "declaration": "public struct AppleAudioEndpoint: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTBitAllocationError",
+      "path": "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift",
+      "declaration": "public enum CELTBitAllocationError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTBitAllocationResult",
+      "path": "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift",
+      "declaration": "public struct CELTBitAllocationResult: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTBitAllocation",
+      "path": "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift",
+      "declaration": "public struct CELTBitAllocation: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTEnergyQuantizerError",
+      "path": "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift",
+      "declaration": "public enum CELTEnergyQuantizerError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTEnergyEncoding",
+      "path": "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift",
+      "declaration": "public struct CELTEnergyEncoding: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTCoarseEnergyDecoding",
+      "path": "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift",
+      "declaration": "public struct CELTCoarseEnergyDecoding: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTEnergyQuantizer",
+      "path": "Sources/DiscordVoiceCodecs/CELTEnergyQuantizer.swift",
+      "declaration": "public struct CELTEnergyQuantizer: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTFrameDecoderError",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift",
+      "declaration": "public enum CELTFrameDecoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTDecodedFrame",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift",
+      "declaration": "public struct CELTDecodedFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTFrameDecoder",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameDecoder.swift",
+      "declaration": "public struct CELTFrameDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTFrameEncoderError",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift",
+      "declaration": "public enum CELTFrameEncoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTEncodedFrame",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift",
+      "declaration": "public struct CELTEncodedFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTFrameEncoder",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift",
+      "declaration": "public struct CELTFrameEncoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTFrameHeaderError",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift",
+      "declaration": "public enum CELTFrameHeaderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTPostfilterParameters",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift",
+      "declaration": "public struct CELTPostfilterParameters: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTFramePrefix",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift",
+      "declaration": "public struct CELTFramePrefix: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTFrameAllocationHeader",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift",
+      "declaration": "public struct CELTFrameAllocationHeader: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTFrameHeader",
+      "path": "Sources/DiscordVoiceCodecs/CELTFrameHeader.swift",
+      "declaration": "public struct CELTFrameHeader: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTPacketCodecError",
+      "path": "Sources/DiscordVoiceCodecs/CELTPacketCodec.swift",
+      "declaration": "public enum CELTPacketCodecError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTPacketEncoder",
+      "path": "Sources/DiscordVoiceCodecs/CELTPacketCodec.swift",
+      "declaration": "public struct CELTPacketEncoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTPacketDecoder",
+      "path": "Sources/DiscordVoiceCodecs/CELTPacketCodec.swift",
+      "declaration": "public struct CELTPacketDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTShapeCodingError",
+      "path": "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift",
+      "declaration": "public enum CELTShapeCodingError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTShapeCodingResult",
+      "path": "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift",
+      "declaration": "public struct CELTShapeCodingResult: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTShapeCoding",
+      "path": "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift",
+      "declaration": "public struct CELTShapeCoding: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTShapeFrameResult",
+      "path": "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift",
+      "declaration": "public struct CELTShapeFrameResult: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTShapeFrameCoding",
+      "path": "Sources/DiscordVoiceCodecs/CELTShapeCoding.swift",
+      "declaration": "public struct CELTShapeFrameCoding: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTSynthesisError",
+      "path": "Sources/DiscordVoiceCodecs/CELTSynthesis.swift",
+      "declaration": "public enum CELTSynthesisError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.CELTSynthesis",
+      "path": "Sources/DiscordVoiceCodecs/CELTSynthesis.swift",
+      "declaration": "public struct CELTSynthesis: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKDecodedFrame",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift",
+      "declaration": "public struct SILKDecodedFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKFrameDecoder",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameDecoder.swift",
+      "declaration": "public struct SILKFrameDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKFrameParameterError",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift",
+      "declaration": "public enum SILKFrameParameterError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKParameterCoding",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift",
+      "declaration": "public enum SILKParameterCoding: Int, Sendable, CaseIterable {"
+    },
+    {
+      "id": "symbol.12A.SILKFrameParameters",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift",
+      "declaration": "public struct SILKFrameParameters: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKDecodedExcitation",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift",
+      "declaration": "public struct SILKDecodedExcitation: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKFrameParameterDecoder",
+      "path": "Sources/DiscordVoiceCodecs/SILKFrameParameters.swift",
+      "declaration": "public struct SILKFrameParameterDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKMonoDecoderError",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoDecoder.swift",
+      "declaration": "public enum SILKMonoDecoderError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKDecodedPayload",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoDecoder.swift",
+      "declaration": "public struct SILKDecodedPayload: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKMonoDecoder",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoDecoder.swift",
+      "declaration": "public struct SILKMonoDecoder: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKDecodedPacket",
+      "path": "Sources/DiscordVoiceCodecs/SILKMonoPacketDecoder.swift",
+      "declaration": "public struct SILKDecodedPacket: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKNLSFError",
+      "path": "Sources/DiscordVoiceCodecs/SILKNLSF.swift",
+      "declaration": "public enum SILKNLSFError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKNLSFCoefficients",
+      "path": "Sources/DiscordVoiceCodecs/SILKNLSF.swift",
+      "declaration": "public struct SILKNLSFCoefficients: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKPulseCodingError",
+      "path": "Sources/DiscordVoiceCodecs/SILKPulseCoding.swift",
+      "declaration": "public enum SILKPulseCodingError: Error, Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKPulseFrame",
+      "path": "Sources/DiscordVoiceCodecs/SILKPulseCoding.swift",
+      "declaration": "public struct SILKPulseFrame: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKPulseCoding",
+      "path": "Sources/DiscordVoiceCodecs/SILKPulseCoding.swift",
+      "declaration": "public enum SILKPulseCoding {"
     }
   ],
   "evidence": [
@@ -94701,6 +94982,91 @@
       "id": "evidence.12A.officialExcitation",
       "path": "Tests/DiscordVoiceCodecsTests/SILKExcitationTests.swift",
       "anchor": "officialExcitationFixtures"
+    },
+    {
+      "id": "evidence.12A.compressed.SILKPulseCodingTests",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKPulseCodingTests.swift",
+      "anchor": "officialPulseFrames"
+    },
+    {
+      "id": "evidence.12A.compressed.SILKFrameParameterTests",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKFrameParameterTests.swift",
+      "anchor": "officialCompleteChannelFrames"
+    },
+    {
+      "id": "evidence.12A.compressed.SILKNLSFTests",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKNLSFTests.swift",
+      "anchor": "officialScalarConversionAndGain"
+    },
+    {
+      "id": "evidence.12A.compressed.SILKFrameDecoderTests",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKFrameDecoderTests.swift",
+      "anchor": "officialScalarPCMStreams"
+    },
+    {
+      "id": "evidence.12A.compressed.SILKMonoDecoderTests",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKMonoDecoderTests.swift",
+      "anchor": "independentPacketPCM"
+    },
+    {
+      "id": "evidence.12A.compressed.CELTEnergyQuantizerTests",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTEnergyQuantizerTests.swift",
+      "anchor": "officialEnergyOracle"
+    },
+    {
+      "id": "evidence.12A.compressed.CELTBitAllocationTests",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTBitAllocationTests.swift",
+      "anchor": "officialAllocationAndArbitraryDecoderFixtures"
+    },
+    {
+      "id": "evidence.12A.compressed.CELTFrameHeaderTests",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameHeaderTests.swift",
+      "anchor": "independentHeaderAndArbitraryDecoderFixtures"
+    },
+    {
+      "id": "evidence.12A.compressed.CELTShapeCodingTests",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTShapeCodingTests.swift",
+      "anchor": "officialRecursiveShapeOracle"
+    },
+    {
+      "id": "evidence.12A.compressed.CELTShapeFrameCodingTests",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTShapeFrameCodingTests.swift",
+      "anchor": "officialAllBandAndAntiCollapseOracle"
+    },
+    {
+      "id": "evidence.12A.compressed.CELTSynthesisTests",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTSynthesisTests.swift",
+      "anchor": "independentMultiframeSignalVectors"
+    },
+    {
+      "id": "evidence.12A.compressed.CELTFrameCodecTests",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameCodecTests.swift",
+      "anchor": "ordinaryModesChannelsAndBandwidths"
+    },
+    {
+      "id": "evidence.12A.livenessRejectsEarlierUnplugAndStartupDisconnection",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioRoutesTests.swift",
+      "anchor": "livenessRejectsEarlierUnplugAndStartupDisconnection"
+    },
+    {
+      "id": "evidence.12A.observationPartialFailureRollbackAndRetry",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioRoutesTests.swift",
+      "anchor": "observationPartialFailureRollbackAndRetry"
+    },
+    {
+      "id": "evidence.12A.compressed.officialEncoderToOwnedDecoder",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameOracleTests.swift",
+      "anchor": "officialEncoderToOwnedDecoder"
+    },
+    {
+      "id": "evidence.12A.compressed.ownedEncoderToOfficialDecoder",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTFrameOracleTests.swift",
+      "anchor": "ownedEncoderToOfficialDecoder"
+    },
+    {
+      "id": "evidence.12A.compressed.independentNativePacketsAndBandwidthDurationChanges",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTPacketCodecTests.swift",
+      "anchor": "independentNativePacketsAndBandwidthDurationChanges"
     }
   ]
 }

@@ -53,10 +53,14 @@ Current source/manifest hashes are in [voice sources](Parity/voice-media-current
 Phase 12A adds no package dependency: entropy, pulse codebooks and DSP are owned
 Swift. ApplePlatform selects Media plus system AVFoundation/CoreAudio for the
 explicit Apple audio adapter. Portable products never select that adapter.
-CELT band search/rotation includes its upstream BSD attribution in the owned Swift
-source; the transform FFT is independently implemented. No native codec runtime
-or table source is vendored. Opt-in development verifiers compile separately supplied official libopus source
-in temporary storage; no product or normal test build downloads, vendors or links it.
+Owned Swift adaptations of normative SILK/CELT tables and algorithms retain the
+applicable Skype/Xiph/CSIRO BSD notices in their source files; preserve these notices
+in source and binary redistributions. The transform FFT is independently implemented.
+No native codec runtime or C implementation is vendored. Opt-in development verifiers
+compile separately supplied official libopus source in temporary storage; no product
+or normal test build downloads, vendors or links it. Full-frame verifiers may build
+the temporary reference library as well as individual reference routines. Their
+fixtures are development evidence, never a runtime dependency.
 Published AEAD/AES vector tests establish local primitive behavior, not an external
 crypto audit or MLS/DAVE interoperability. See [Voice](Voice.md).
 

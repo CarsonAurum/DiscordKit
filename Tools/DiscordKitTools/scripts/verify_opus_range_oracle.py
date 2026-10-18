@@ -23,6 +23,7 @@ SILK/CELT/hybrid, PLC/FEC, complete Opus conformance or Discord voice readiness.
 """
 
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -324,6 +325,7 @@ def main():
                 raise RuntimeError(json.dumps({"mismatchCase": index, "seed": args.seed,
                     "input": input_value, "expected": oracle, "actual": actual}))
         report = {
+            "verifiedOn": datetime.now(timezone.utc).date().isoformat(),
             "scope": "Entropy primitives only; no decoded PCM, SILK/CELT/hybrid, PLC/FEC or complete codec conformance",
             "officialVersion": VERSION, "officialReleaseURL": RELEASE_URL, "sourceArchiveURL": SOURCE_URL,
             "sourceArchiveSHA256": ARCHIVE_SHA256, "sourceArchiveByteCount": ARCHIVE_BYTE_COUNT,

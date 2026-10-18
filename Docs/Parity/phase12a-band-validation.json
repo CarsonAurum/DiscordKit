@@ -25,7 +25,7 @@
   "ownedSourceSHA256": {
     "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift": "de91fa5930b1c285fc74f3229baa63a2347989a3b271ee03cdea3c6cb85813be",
     "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
-    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "7de89e9cd4f7a1e940305d89e70145f59672252a720addc67d72c4b2f0ccf9ed"
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00"
   },
   "randomCases": 2000,
   "scope": "CELT single-band pulse search/spreading/entropy only; no full codec or decoded-PCM conformance",
@@ -33,6 +33,6 @@
   "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
   "sourceArchiveURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
   "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
-  "verifiedOn": "2026-10-17",
+  "verifiedOn": "2026-10-18",
   "verifierSHA256": "72844ab785888bbf4d1bfc942cb821a4c104d5600dd643e685a06bc07da11404"
 }

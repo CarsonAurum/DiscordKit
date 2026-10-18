@@ -6,6 +6,23 @@ per-operation support belong in the [parity records](Docs/Parity/README.md).
 Unknown upstream dates must remain unknown; a local commit date is not evidence
 of when Discord introduced a feature.
 
+## 2026-10-17 — Phase 12A ordinary compressed-audio paths
+
+- Added owned ordinary CELT frame/packet encoding and decoding, including energies,
+  headers/allocation, recursive stereo shapes, all-band folding/anti-collapse and
+  transient/overlap/pitch/deemphasis synthesis. The encoder uses basic long-block
+  analysis with explicit storage budgets; perceptual VBR/quality policy remains open.
+- Added exact SILK pulse/parameter/NLSF reconstruction and persistent no-loss channel
+  synthesis, plus mono NB/MB/WB packet decoding with VAD/LBRR skipping, all ordinary
+  packing forms and owned 48-kHz resampling. Full SILK/hybrid encoding is absent.
+- Hardened Apple selected-device startup liveness and atomic listener rollback.
+  Extended bounded entropy contexts to 257 symbols for CELT theta coding.
+- Added independent native interoperability fixtures/verifiers, comprehensive Swift
+  and hermetic Python tests, offline compressed-audio examples and updated parity.
+- Phase 12A remains incomplete: SILK stereo/rate changes, full SILK/hybrid coding,
+  mode transitions, PLC/FEC/DTX, official full-codec conformance, Windows/Android
+  adapters, hardware and realtime qualification remain required. No live voice claim.
+
 ## 2026-10-17 — Phase 12A DSP, Apple audio and CELT pulse prerequisites
 
 - Added bounded streaming windowed-sinc resampling with exact phase/counts and

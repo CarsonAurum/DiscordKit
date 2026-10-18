@@ -65,7 +65,7 @@ no standalone browser/native container creates a Discord Activity host.
 Part 12 starts with independent Media, VoiceCodecs, VoiceCrypto and Voice products;
 see `Docs/Voice.md`. They implement bounded PCM processing/streaming/clocks/pacing,
 continuous linear/bandlimited resampling, statistical speech activity, ordinary Opus
-framing/entropy, CELT pulse search/spreading/transforms and SILK LPC/LTP/excitation,
+framing/entropy, ordinary CELT frame/packet coding and mono SILK packet decoding,
 transport AEAD and pure Voice v8/RTP/discovery/control components. They do not yet
 provide complete Opus codecs, MLS/DAVE or supervised network sessions. The Apple
 platform adapter adds audio I/O, macOS input/output UIDs and supported preferred-input routing;

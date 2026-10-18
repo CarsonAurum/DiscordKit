@@ -553,7 +553,7 @@ private final class AppleAudioStorage: Sendable {
     #endif
     private let invalidation = AppleAudioInvalidationBridge()
     #if os(macOS)
-    private var routeObservers: [(AudioObjectID, AudioObjectPropertyAddress, AudioObjectPropertyListenerBlock)] = []
+    private let routeObservation = AppleAudioRouteObservation(properties: NativeAppleAudioRouteListenerProperties())
     #endif
 
     /// Creates an inert backend; AVAudioEngine and native sessions are deferred until explicit start.
@@ -655,6 +655,9 @@ private final class AppleAudioStorage: Sendable {
     /// - Returns: Actual hardware-rate capture layout, or nil for playback-only use.
     /// - Throws: Native engine/session errors, `unavailableFormat`, `deviceUnavailable` or
     ///   `unsupportedDeviceSelection`; caller invokes stop to release partial device/session ownership.
+    ///   macOS installs route/alive listeners before starting the graph and checks selected-device
+    ///   liveness both before and after startup, so an earlier unobserved unplug fails closed even
+    ///   when the AudioUnit retains its former device ID. Readback is not a hardware-presence guarantee.
     func start(configuration: AppleAudioConfiguration, callbacks: AppleAudioCallbacks) throws -> PCMFormat? {
         guard engine == nil else { throw AppleAudioError.alreadyRunning }
         #if !os(macOS)
@@ -758,21 +761,18 @@ private final class AppleAudioStorage: Sendable {
         observe(name: AVAudioSession.mediaServicesWereResetNotification, object: session,
                 reason: .mediaServicesReset, callbacks: callbacks)
         #else
-        if configuration.captureEnabled && configuration.captureDeviceUID == nil {
-            try observeRoute(selector: kAudioHardwarePropertyDefaultInputDevice, callbacks: callbacks)
-        }
-        if configuration.playbackEnabled && configuration.playbackDeviceUID == nil {
-            try observeRoute(selector: kAudioHardwarePropertyDefaultOutputDevice, callbacks: callbacks)
-        }
-        try observeRoute(selector: kAudioHardwarePropertyDevices, callbacks: callbacks)
-        for identifier in Set([selectedInputID, selectedOutputID].compactMap { $0 }) {
-            try observeRoute(selector: kAudioDevicePropertyDeviceIsAlive, object: identifier, callbacks: callbacks)
-        }
+        guard let observerGeneration = activeObserverGeneration else { throw AppleAudioError.notRunning }
+        try routeObservation.begin(input: selectedInputID, output: selectedOutputID,
+            captureEnabled: configuration.captureEnabled, playbackEnabled: configuration.playbackEnabled,
+            invalidation: invalidation, callbacks: callbacks, generation: observerGeneration)
+        let liveness = NativeAppleAudioDeviceLivenessProperties()
+        try AppleAudioDeviceLiveness.verify(input: selectedInputID, output: selectedOutputID, using: liveness)
         #endif
         native.prepare()
         try native.start()
         #if os(macOS)
         try AppleAudioHardwareBinding.verify(input: selectedInputID, output: selectedOutputID, using: bindingProperties)
+        try AppleAudioDeviceLiveness.verify(input: selectedInputID, output: selectedOutputID, using: liveness)
         #endif
         if #available(macOS 27, iOS 27, tvOS 27, watchOS 27, visionOS 27, *) {
             try player?.playAudio()
@@ -795,6 +795,8 @@ private final class AppleAudioStorage: Sendable {
 
     /// Removes observers/tap, stops the engine and deactivates only a session activated by this owner.
     /// Repeated calls are harmless, and completion callbacks only release already-revoked accounting.
+    /// macOS invalidation authority is revoked before all exact listener identities are removed in
+    /// reverse installation order; late native callbacks cannot stop a replacement generation.
     /// A preferred input is restored only while this owner still owns that preference; a host-selected
     /// replacement is preserved. A disconnected previous port is replaced by the system preference.
     func stop() {
@@ -803,11 +805,7 @@ private final class AppleAudioStorage: Sendable {
         for observer in observers { NotificationCenter.default.removeObserver(observer) }
         observers.removeAll(keepingCapacity: false)
         #if os(macOS)
-        for (object, storedAddress, listener) in routeObservers {
-            var address = storedAddress
-            AudioObjectRemovePropertyListenerBlock(object, &address, .global(), listener)
-        }
-        routeObservers.removeAll(keepingCapacity: false)
+        routeObservation.stop()
         #endif
         player?.stop()
         if tapInstalled { engine?.inputNode.removeTap(onBus: 0) }
@@ -884,27 +882,6 @@ private final class AppleAudioStorage: Sendable {
         return identifier
     }
 
-    /// Monitors default routes and the bounded global device list, including same-format unplug events.
-    /// - Parameters:
-    ///   - selector: Default input/output, device-list or selected-device alive property.
-    ///   - object: System object by default, or an exact selected device for alive-state monitoring.
-    ///   - callbacks: Generation-fenced lifecycle callback set.
-    /// - Throws: `nativeFailure` if CoreAudio cannot install a route listener; start then cleans up.
-    private func observeRoute(selector: AudioObjectPropertySelector,
-                              object: AudioObjectID = AudioObjectID(kAudioObjectSystemObject),
-                              callbacks: AppleAudioCallbacks) throws {
-        var address = AudioObjectPropertyAddress(mSelector: selector, mScope: kAudioObjectPropertyScopeGlobal,
-                                                 mElement: kAudioObjectPropertyElementMain)
-        guard let generation = activeObserverGeneration else { throw AppleAudioError.notRunning }
-        let invalidation = invalidation
-        let listener: AudioObjectPropertyListenerBlock = { _, _ in
-            invalidation.enqueue(.routeChanged, callbacks: callbacks, generation: generation)
-        }
-        guard AudioObjectAddPropertyListenerBlock(object, &address, .global(), listener) == noErr else {
-            throw AppleAudioError.nativeFailure
-        }
-        routeObservers.append((object, address, listener))
-    }
     #endif
 
     /// Copies native tap delivery in bounded chunks, never retaining the AVAudioPCMBuffer.

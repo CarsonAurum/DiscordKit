@@ -1,0 +1,53 @@
+{
+  "verifiedAt": "2026-10-18T00:25:04.585958+00:00",
+  "scope": "CELT ordinary allocation component only",
+  "version": "1.6.1",
+  "releaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "sourceURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "archiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "seed": 6716433,
+  "randomCases": 2000,
+  "fixedCases": 97,
+  "totalCases": 2097,
+  "arbitraryDecodeCases": 2097,
+  "exact": [
+    "caps",
+    "shape eighth-bits",
+    "fine precision/priorities",
+    "balance",
+    "coded/intensity boundaries",
+    "dual stereo",
+    "encoded bytes",
+    "range",
+    "whole/eighth-bit accounting"
+  ],
+  "excluded": [
+    "custom modes/extensions",
+    "full Opus codec",
+    "PLC/FEC",
+    "decoded-PCM conformance",
+    "devices",
+    "realtime"
+  ],
+  "ownedSources": {
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "0e221e118d02db28796e12da84b3ace496ce3c2ed5ceadb978954981a14a5c00",
+    "Sources/DiscordVoiceCodecs/CELTAllocationTables.swift": "2e264fd2ebfa0e69ef32cf393ab52e9d7473e4e35a89b2beed88a4ee9c326894",
+    "Sources/DiscordVoiceCodecs/CELTBitAllocation.swift": "545af9e53ef2abb4ee19b745d381cc858b6f4fe6725bc066a0cf78420b92e98b"
+  },
+  "upstreamSources": {
+    "celt/rate.c": "f288c8b88882e6500ee5fbb9036eef1ee572e0301d28cd686061c815747a7b9e",
+    "celt/modes.c": "03e61ddf326812e4d0d7c00067319af74e1cc5653e2c9551e5a322cad1f73480",
+    "celt/static_modes_float.h": "c3cf8439cdcf9281a5a0a66eefd5f9d0c82537c6f88e33b53ace9c9b3880f60c",
+    "celt/celt.c": "d3c1b484c4d895bceda7c543534fc607bf4c6e2b1ca4b080dee8a5b8433a95d9",
+    "celt/entenc.c": "56e0843479ae5db15696125ba6ac3d0a0c26fa8b677d4d6bd457686865408572",
+    "celt/entdec.c": "f2d74695ceeb927210dcf76d653241ebdfd465a1c23128604640d218cdd93c38",
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208"
+  },
+  "fixture": {
+    "path": "Tests/DiscordVoiceCodecsTests/CELTAllocationOracleFixtures.swift",
+    "sha256": "18086f48d38b8908602660bacd657f4e672f1bcd0341debf72f58a38b48203ae"
+  },
+  "verifierSHA256": "d7336d1775c14012dfa5795f0777bf678546bb2cfe766bbffe7a54290acc1687",
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)"
+}
