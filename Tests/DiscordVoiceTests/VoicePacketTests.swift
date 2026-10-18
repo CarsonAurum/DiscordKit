@@ -73,7 +73,9 @@ import DiscordVoiceCrypto
         let last = try RTPPacket(sequence: .max, timestamp: 0, ssrc: 9, payload: Data([1]))
         let zero = try RTPPacket(sequence: 0, timestamp: 960, ssrc: 9, payload: Data([2]))
         try buffer.insert(zero)
+        #expect(buffer.peek() == nil)
         try buffer.insert(last)
+        #expect(buffer.peek() == last)
         #expect(buffer.bufferedBytes == 26)
         #expect(throws: VoicePacketError.duplicateOrLate) { try buffer.insert(zero) }
         let wrong = try RTPPacket(sequence: 1, timestamp: 0, ssrc: 8, payload: Data())
@@ -81,9 +83,11 @@ import DiscordVoiceCrypto
         let full = try RTPPacket(sequence: 1, timestamp: 1920, ssrc: 9, payload: Data())
         #expect(throws: VoicePacketError.capacityExceeded) { try buffer.insert(full) }
         #expect(buffer.pop() == .packet(last))
+        #expect(buffer.peek() == zero)
         #expect(buffer.pop() == .packet(zero))
         #expect(buffer.pop() == .missing(sequence: 1))
         #expect(buffer.bufferedBytes == 0)
+        #expect(buffer.peek() == nil)
         #expect(throws: VoicePacketError.duplicateOrLate) { try buffer.insert(full) }
         let distant = try RTPPacket(sequence: 5, timestamp: 0, ssrc: 9, payload: Data())
         #expect(throws: VoicePacketError.capacityExceeded) { try buffer.insert(distant) }

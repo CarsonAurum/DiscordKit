@@ -82,8 +82,10 @@ authenticated Voice signaling/MLS coordination, sender ratchets, encoded-frame
 transforms and bounded ephemeral identity verification. DAVE selects Voice, MLS,
 VoiceCrypto, Core/Transport and existing Crypto/CryptoExtras. Voice and VoiceCrypto
 remain independent of MLS/DAVE, preserving adoption without a dependency cycle.
-The supervised Voice→Gateway edge remains planned for 12D; no empty target
-represents a running session. HTTP/Gateway/Client/Kit remain independent of voice,
+Phase 12D adds [supervised voice sessions](VoiceSessions.md) with an injected
+main-Gateway opcode-4 sender; Voice imports no Gateway or client facade.
+The DAVE adapter implements Voice's injected E2EE interface, preserving DAVE -> Voice.
+HTTP/Gateway/Client/Kit remain independent of voice,
 MLS and DAVE. Independent crypto review, complete-client/live interoperability,
 platform/device and ten-minute duplex qualification remain open.
 

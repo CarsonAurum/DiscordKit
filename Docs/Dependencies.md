@@ -311,3 +311,13 @@ REST-only consumers still select HTTP without Crypto or Gateway. No authenticate
 example execution, other-host native Crypto build, physical-device result or
 voice/MLS interoperability is established by these checks. Existing NIO/TLS pins
 are unchanged; see [the interaction guide](Interactions.md) for the implemented scope.
+
+## Phase 12D supervised composition (2026-10-18)
+
+[Supervised voice](VoiceSessions.md) adds no package dependency or product. Voice
+composes existing Core/Models/Transport/Media/VoiceCodecs/VoiceCrypto; DAVE supplies
+an adapter over its existing Voice/MLS graph. Main-Gateway commands are injected
+and do not introduce a Gateway/Client/HTTP/facade edge. The separate localhost
+qualification tool explicitly selects the existing NIO adapter; ordinary VoiceBot
+remains adapter-free. The MLS delivery decoder is bounded structural wire splitting,
+with authentication still owned by the receiving MLS/DAVE session.

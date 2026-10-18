@@ -132,8 +132,8 @@ let package = Package(
         .testTarget(name: "DiscordVoiceCodecsTests", dependencies: ["DiscordVoiceCodecs", "DiscordMedia"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordVoiceCryptoTests", dependencies: ["DiscordVoiceCrypto", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordMLSTests", dependencies: ["DiscordMLS", .product(name: "Crypto", package: "swift-crypto")], resources: [.copy("Fixtures")], swiftSettings: concurrencySettings),
-        .testTarget(name: "DiscordDAVETests", dependencies: ["DiscordDAVE", "DiscordMLS", "DiscordVoice", "DiscordCore", "DiscordModels", "DiscordTransport", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
-        .testTarget(name: "DiscordVoiceTests", dependencies: ["DiscordVoice", "DiscordVoiceCodecs", "DiscordVoiceCrypto", "DiscordCore", "DiscordModels", "DiscordTransport"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordDAVETests", dependencies: ["DiscordDAVE", "DiscordMLS", "DiscordVoice", "DiscordMedia", "DiscordVoiceCodecs", "DiscordVoiceCrypto", "DiscordTestSupport", "DiscordCore", "DiscordModels", "DiscordTransport", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordVoiceTests", dependencies: ["DiscordVoice", "DiscordVoiceCodecs", "DiscordVoiceCrypto", "DiscordMedia", "DiscordCore", "DiscordModels", "DiscordTransport", "DiscordTestSupport"], swiftSettings: concurrencySettings),
         .testTarget(
             name: "DiscordTransportTests",
             dependencies: ["DiscordTransport", "DiscordTestSupport"],

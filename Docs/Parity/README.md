@@ -213,3 +213,7 @@ for explicit regeneration and source review requirements.
 Full-catalog implementation, documentation audits and dependency-audit CLI commands
 remain future work. Unknown commands fail with usage status 64; validation failures
 exit 1. `generate` requires an explicit `--check` or `--write` flag.
+
+The [Phase 12D session continuation](changes/2026-10-18-phase12d-sessions.md)
+adds supervised control and bounded media composition. See the
+[validation record](phase12d-validation.json) for exact local qualification limits.

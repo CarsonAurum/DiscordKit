@@ -191,6 +191,30 @@ public struct VoiceGatewaySessionState: Sendable, CustomStringConvertible, Custo
         pendingHeartbeatNonce = nil; heartbeatIntervalMilliseconds = nil
     }
 
+    /// Revokes media authorization on an authenticated membership change without losing transport state.
+    /// Calling this while already suspended or during initial handshake is harmless. A closed or
+    /// reconnecting owner remains in its current phase; it never becomes ready through this method.
+    /// Heartbeat debt, server sequence, transport selection and negotiated version are retained.
+    /// The actual DAVE owner must revalidate membership/epoch before `authorizeMedia(using:)` succeeds.
+    /// - Throws: `closed` after terminal cleanup; no other phase or counter is modified on failure.
+    public mutating func suspendMedia() throws {
+        guard phase != .closed else { throw VoiceControlFailure.closed }
+        if phase == .ready { phase = .awaitingE2EE }
+    }
+
+    /// Merges a backend-authorized copy without overwriting control state advanced during suspension.
+    /// - Parameter authorized: Same exact session/version reducer returned by the injected backend.
+    /// - Throws: `e2eeUnavailable` for a wrong identity, version, mode or nonready copy;
+    ///   `invalidTransition` unless this current reducer is still awaiting E2EE. Success changes
+    ///   only phase, preserving current heartbeat debt, interval and last-arrival sequence.
+    mutating func acceptAuthorization(from authorized: Self) throws {
+        guard phase == .awaitingE2EE else { throw VoiceControlFailure.invalidTransition }
+        guard authorized.phase == .ready, authorized.credentials.identity == credentials.identity,
+              authorized.negotiatedDAVEVersion == negotiatedDAVEVersion,
+              authorized.selectedMode == selectedMode else { throw VoiceControlFailure.e2eeUnavailable }
+        phase = .ready
+    }
+
     /// Authorizes media only after an injected backend verifies real DAVE epoch/membership state.
     /// - Parameter context: A backend matching this exact guild/account/channel/session/generation
     ///   identity and negotiated protocol context. A matching generation alone is insufficient.
@@ -226,12 +250,16 @@ public struct VoiceGatewaySessionState: Sendable, CustomStringConvertible, Custo
     /// - Throws: Sanitized control/transition failures; a rejected frame never updates sequence.
     private mutating func consume(_ frame: VoiceGatewayFrame) throws -> VoiceGatewayEffect {
         if (21...31).contains(frame.opcode) {
-            guard phase == .ready || phase == .awaitingE2EE else { throw VoiceControlFailure.invalidTransition }
-            phase = .awaitingE2EE
+            guard phase == .ready || phase == .awaitingE2EE || phase == .identifying ||
+                  phase == .awaitingProtocolSelection || phase == .awaitingSessionDescription else {
+                throw VoiceControlFailure.invalidTransition
+            }
+            if phase == .ready { phase = .awaitingE2EE }
             if case .json(.object(let object)) = frame.payload, let value = object["protocol_version"] {
                 guard case .number(let number) = value, let version = UInt16(number.rawValue),
                       version > 0 else { throw VoiceControlFailure.e2eeRequired }
-                guard version == negotiatedDAVEVersion else { throw VoiceControlFailure.e2eeUnavailable }
+                guard version <= maximumDAVEProtocolVersion,
+                      negotiatedDAVEVersion == nil || version == negotiatedDAVEVersion else { throw VoiceControlFailure.e2eeUnavailable }
             }
             return .processE2EE(frame)
         }

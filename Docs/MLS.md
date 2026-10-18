@@ -12,8 +12,9 @@ committed; consumer builds fetch no specifications or test vectors.
 This product supplies MLS key establishment. The independently adopted
 [DAVE product](DAVE.md) now composes it with Voice signaling, sender ratchets,
 encoded-frame transforms and ephemeral verification; MLS itself retains no
-Voice/media dependency. Sender verification UI and supervised network sessions
-remain separate integration work. See [voice ownership and remaining
+Voice/media dependency. Sender verification UI remains application-owned;
+[supervised network sessions](VoiceSessions.md) are independently adopted through
+Voice and DAVE. See [voice ownership and remaining
 qualification gates](Voice.md) and [dependency policy](Dependencies.md).
 
 ## Protocol and scope

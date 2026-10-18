@@ -34,7 +34,8 @@ Encoding analysis and platform qualification remain bounded. Phase 12B adds
 independent [MLS 1.0/ciphersuite-2 key establishment and DAVE-profile group handshakes](Docs/MLS.md).
 Phase 12C adds independently adopted [DAVE signaling, encoded-frame protection
 and human verification](Docs/DAVE.md). Independent crypto review and complete-client/live
-interoperability remain open; supervised running voice sessions remain 12D work;
+interoperability remain open. [Phase 12D](Docs/VoiceSessions.md) adds supervised per-guild
+voice sessions, bounded PCM/Opus pipelines and an independently composed DAVE adapter;
 native Social SDK and schema-blocked Social Commerce remain later work.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -149,8 +150,8 @@ other-platform runtime qualification remains recorded separately.
   binding; backend OAuth and entitlement verification retain independent ownership.
 - Commands and routers provide conveniences over complete typed requests.
 - Optional voice products expose bounded streaming media, framing/entropy/crypto
-  primitives and pure control reducers; supervised join/frame/leave sessions remain
-  subsequent Phase 12 work.
+  primitives, control reducers and supervised per-guild join/frame/leave sessions
+  with injected Gateway, secure signaling and network/device authorities.
 - MLS can be adopted separately for authenticated group key establishment; callers
   supply trusted participant identity/key associations and authenticated delivery.
 - DAVE composes MLS and Voice over injected authenticated controls and clocks;

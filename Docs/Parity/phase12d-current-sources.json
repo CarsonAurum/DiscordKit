@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "sources": [
+    {
+      "name": "voice-connections",
+      "url": "https://docs.discord.com/developers/topics/voice-connections.md",
+      "bytes": 35065,
+      "sha256": "7daad5ac1df7dac9f46328fbd37c8bcf1aa9804f8bffc1bf768004d05ceabbba",
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "voice-opcodes-close-codes",
+      "url": "https://docs.discord.com/developers/topics/opcodes-and-status-codes.md",
+      "bytes": 26845,
+      "sha256": "8c541ff7c62a5688a4348713f77ad9e0d25b2a07ae9ac5caf741c151824f4da7",
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "change-log",
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "bytes": 308684,
+      "sha256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    },
+    {
+      "name": "dave",
+      "url": "https://daveprotocol.com/",
+      "bytes": 124412,
+      "sha256": "bb1d5eb46b6b63589cf5f03bf6fd0aca9fbef1730d2ae833fecfd264c27ed09c",
+      "verifiedOn": "2026-10-18",
+      "revision": "unknown"
+    }
+  ],
+  "notes": "Official current Voice v8, heartbeat/resume, discovery, Speaking, close-code and DAVE requirements reviewed. These public requests used no Discord authentication. Grouped upstream introduction dates remain unknown; DAVE enforcement 2026-03-01 is separate from local implementation."
+}

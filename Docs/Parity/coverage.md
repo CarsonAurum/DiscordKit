@@ -309,3 +309,12 @@ local component behavior. The [dated change](changes/2026-10-18-phase12c-dave.md
 records opcode-26 integration evidence limits, fail-closed H264 restrictions and
 independent crypto review/full-client/live/platform gates. Supervised network voice
 and video signaling/packetization remain later roadmap work.
+
+## Part 12D supervised voice update (2026-10-18)
+
+[The dated change](changes/2026-10-18-phase12d-sessions.md) adds bounded manager/
+session ownership, current Voice v8 control/discovery/resume, authenticated SSRC
+routing and paced PCM/encoded Opus through actual DAVE and transport AEAD. The
+[capability inventory](voice-media-capabilities.json) remains partial for full
+release qualification; local/virtual/localhost evidence is separately bounded
+from live Discord, independent complete-client, cryptographic and device gates.

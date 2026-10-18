@@ -245,7 +245,7 @@
         "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
         "Tests/DiscordMLSTests/MLSWireTests.swift"
       ],
-      "remainingGates": "Owned DAVE-v1 MLS key-establishment implementation with pinned published component and no-PSK passive Welcome vectors plus local multi-member lifecycle tests. Independent external cryptographic review, per-platform/backend and authorized Discord qualification remain open. Phase 12C independently implements DAVE signaling/media/verification; supervised sessions remain 12D. No production support claim."
+      "remainingGates": "Owned DAVE-v1 MLS key-establishment implementation with pinned published component and no-PSK passive Welcome vectors plus local multi-member lifecycle tests. Independent external cryptographic review, per-platform/backend and authorized Discord qualification remain open. Phase 12C independently implements DAVE signaling/media/verification; Phase 12D now supplies supervised sessions. No production support claim."
     },
     {
       "id": "dave",
@@ -269,7 +269,7 @@
         "Tests/DiscordDAVETests/DAVEVerificationTests.swift",
         "Docs/Parity/phase12c-codec-oracle.json"
       ],
-      "remainingGates": "DAVE negotiated wire version 1, Voice Gateway v8, whitepaper revision 1.1.4 verified 2026-10-18. Independent DiscordDAVE owns bounded binary signaling, exact external sender and authenticated membership, MLS candidate selection/Welcome, ready/execute transitions, stable signing identity with fresh-package recovery, per-sender MLS-style ratchets, AES128-GCM eight-byte tags, bounded clear ranges, nonce/replay/verification limits and ten-second old-key retention. Complete-frame transforms cover Opus, VP8, VP9, H264 ordinary slices, H265 and AV1; unsupported H264 VCL forms fail closed. Ephemeral pairwise scrypt fingerprints and display codes require explicit human confirmation. Construction starts no I/O/tasks. Local synthetic peers, pinned C++ codec oracle and independent media/fingerprint vectors establish only the implemented algorithms. Opcode 26 follows the documented MLSMessage wrapper. Pinned libdave exposes a bare KeyPackage at its library API boundary, which does not establish complete Voice wire framing; complete-peer interoperability remains unverified. Independent crypto review, full-client interoperability, supervised Voice sessions, live Discord/device/platform and production qualification remain open. Grouped upstream introduction/announcement dates are unknown; E2EE enforcement is separately dated 2026-03-01. Locally added 2026-10-18; see Docs/DAVE.md and Docs/Parity/phase12c-current-sources.json."
+      "remainingGates": "DAVE negotiated wire version 1, Voice Gateway v8, whitepaper revision 1.1.4 verified 2026-10-18. Independent DiscordDAVE owns bounded binary signaling, exact external sender and authenticated membership, MLS candidate selection/Welcome, ready/execute transitions, stable signing identity with fresh-package recovery, per-sender MLS-style ratchets, AES128-GCM eight-byte tags, bounded clear ranges, nonce/replay/verification limits and ten-second old-key retention. Complete-frame transforms cover Opus, VP8, VP9, H264 ordinary slices, H265 and AV1; unsupported H264 VCL forms fail closed. Ephemeral pairwise scrypt fingerprints and display codes require explicit human confirmation. Construction starts no I/O/tasks. Local synthetic peers, pinned C++ codec oracle and independent media/fingerprint vectors establish only the implemented algorithms. Opcode 26 follows the documented MLSMessage wrapper. Pinned libdave exposes a bare KeyPackage at its library API boundary, which does not establish complete Voice wire framing; complete-peer interoperability remains unverified. Independent crypto review, full-client interoperability, live Discord/device/platform and production qualification remain open. Grouped upstream introduction/announcement dates are unknown; E2EE enforcement is separately dated 2026-03-01. Locally added 2026-10-18; see Docs/DAVE.md and Docs/Parity/phase12c-current-sources.json."
     },
     {
       "id": "voice-control",
@@ -284,7 +284,7 @@
         "Tests/DiscordVoiceTests/VoiceRendezvousTests.swift",
         "Tests/DiscordVoiceTests/VoiceStateMachineTests.swift"
       ],
-      "remainingGates": "Pure Voicev8 reducers and local generation fence. No timers, sockets or supervised Voice manager; experimental independent DiscordDAVE composes MLS/media."
+      "remainingGates": "Voice v8 pure reducer and independently composed supervised manager/session are implemented. Authorized Discord, full-client interoperability, independent review and platform qualification remain open."
     },
     {
       "id": "rtp-discovery-jitter",
@@ -298,14 +298,24 @@
       "evidence": [
         "Tests/DiscordVoiceTests/VoicePacketTests.swift"
       ],
-      "remainingGates": "Bounded RTPv2/extensions/padding,74-byte discovery, Opus counters/silence and caller-paced reorder. No socket ownership or PLC."
+      "remainingGates": "Bounded RTP/discovery/jitter now composed with owned UDP supervision and caller-paced per-source PLC. Live/service/device qualification remains open."
     },
     {
       "id": "supervised-session-pipeline",
-      "status": "unsupported",
-      "implementation": [],
-      "evidence": [],
-      "remainingGates": "Per-guild network ownership, deadlines/cancellation/retry, SSRC/user mapping, DAVE pipelines and playback/recording are unimplemented."
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoice/VoiceManager.swift",
+        "Sources/DiscordVoice/VoiceSession.swift",
+        "Sources/DiscordVoice/VoiceMediaPipeline.swift",
+        "Sources/DiscordDAVE/VoiceSessionDAVE.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceTests/VoiceManagerTests.swift",
+        "Tests/DiscordVoiceTests/VoiceSessionTests.swift",
+        "Tests/DiscordVoiceTests/VoiceMediaPipelineTests.swift",
+        "Tests/DiscordDAVETests/VoiceSessionDAVETests.swift"
+      ],
+      "remainingGates": "Implemented bounded per-guild supervision, join/move/leave and credential replacement, heartbeat/resume/discovery, SSRC mapping, PCM/encoded Opus, complete-frame DAVE/RTP/AEAD, jitter/PLC, receive/playback/recording and cleanup. Local synthetic and localhost UDP evidence is separate from authorized Discord, complete-client interoperability, independent crypto review and native device/platform qualification. See Phase12D validation."
     },
     {
       "id": "native-audio-devices",

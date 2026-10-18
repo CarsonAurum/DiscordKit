@@ -21,9 +21,10 @@ bytes, hashes and verification dates. Upstream grouped algorithm introduction an
 effective dates are unknown; the local implementation date is separate.
 
 This is an implemented protocol backend, with local deterministic and independent
-algorithm evidence. Independent cryptographic review, complete-client/live Discord
-interoperability, hardware/platform qualification and the supervised network session
-remain open. It does not implement the roadmap's full running voice or video product.
+algorithm evidence. [Phase 12D supervised sessions](VoiceSessions.md) now compose
+this backend with network/media ownership. Independent cryptographic review,
+complete-client/live Discord interoperability and hardware/platform qualification
+remain open. The roadmap's full qualified voice and video product remains incomplete.
 
 ## Dependency and ownership boundaries
 
@@ -48,9 +49,10 @@ flowchart LR
 
 DAVE transforms one complete encoded frame before packetization and after
 depacketization. An RTP fragment cannot be substituted for a frame. Voice v8
-socket ownership, heartbeat scheduling, SSRC-to-user routing, network retry and
-rejoin deadlines, audio capture/playback and video packetization remain the
-supervised-session/codec-provider work in phases 12D/12E. The offline
+socket ownership, heartbeat scheduling, SSRC-to-user routing and network retry/
+rejoin deadlines now belong to [Phase 12D supervised sessions](VoiceSessions.md).
+Audio capture/playback remains in injected platform adapters; complete video
+packetization/provider work remains in 12E. The offline
 [VoiceBot consumer](../Examples/VoiceBot/README.md) performs no Discord join.
 
 ## Session admission and signaling
@@ -240,3 +242,12 @@ timing review, complete-client interoperability, real Discord handshakes, approv
 media smoke, per-platform/minimum-OS device results and ten-minute hardware duplex
 remain open. Swift value storage provides logical key teardown without guaranteeing
 physical memory erasure. No local result establishes production or fleet capacity.
+
+## Phase 12D composition
+
+`DAVEVoiceSession` now implements Voice's injected session/frame protocols with
+bounded control-priority admission and authenticated SSRC/account routing. It
+serializes actual signaling and media calls without bypassing the protocol
+actor's overlap guards. The shared signing identity, trusted external sender and
+monotonic clock remain application supplied. See [VoiceSessions.md](VoiceSessions.md)
+for ownership, cancellation and validation boundaries.

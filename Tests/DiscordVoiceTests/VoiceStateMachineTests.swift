@@ -337,4 +337,38 @@ struct VoiceStateMachineTests {
         #expect(throws: VoiceControlFailure.closed) { try state.receive(unknown) }
         #expect(throws: VoiceControlFailure.invalidTransition) { try state.heartbeat(nonce: 1) }
     }
+
+    /// Async readiness may finish after a heartbeat was sent; merging must preserve live debt/sequence.
+    @Test func authorizationMergePreservesAdvancedControlState() throws {
+        var current = try negotiated(), authorized = current
+        try authorized.authorizeMedia(using: SyntheticVoiceReadiness(expectedVersion: 1, expectedIdentity: credentials().identity))
+        _ = try current.heartbeat(nonce: 123)
+        _ = try current.receive(frame(240, .null, sequence: 321))
+        try current.acceptAuthorization(from: authorized)
+        #expect(current.phase == .ready && current.pendingHeartbeatNonce == 123)
+        #expect(current.lastSequence == 321 && current.heartbeatIntervalMilliseconds == 41_250)
+        #expect(try current.receive(frame(6, .object(["t": voiceControlNumber(123)]))) == .none)
+        #expect(current.pendingHeartbeatNonce == nil)
+        try current.suspendMedia(); try current.suspendMedia()
+        #expect(current.phase == .awaitingE2EE && current.lastSequence == 321)
+        try current.acceptAuthorization(from: authorized)
+        #expect(current.phase == .ready)
+        #expect(throws: VoiceControlFailure.invalidTransition) { try current.acceptAuthorization(from: authorized) }
+    }
+
+    /// Authorization copies require the same exact session/version and may never reopen closed state.
+    @Test func authorizationMergeRejectsWrongIdentityAndUnreadyCopy() throws {
+        var current = try negotiated()
+        #expect(throws: VoiceControlFailure.e2eeUnavailable) { try current.acceptAuthorization(from: current) }
+        var foreign = try VoiceGatewaySessionState(credentials: credentials(sessionID: "foreign-session"), maximumDAVEProtocolVersion: 1)
+        _ = try foreign.receive(hello()); _ = try foreign.receive(ready())
+        _ = try foreign.selectProtocol(address: "203.0.113.1", port: 65_535)
+        _ = try foreign.receive(description())
+        try foreign.authorizeMedia(using: SyntheticVoiceReadiness(expectedVersion: 1,
+            expectedIdentity: credentials(sessionID: "foreign-session").identity))
+        #expect(throws: VoiceControlFailure.e2eeUnavailable) { try current.acceptAuthorization(from: foreign) }
+        current.close()
+        #expect(throws: VoiceControlFailure.closed) { try current.suspendMedia() }
+        #expect(throws: VoiceControlFailure.invalidTransition) { try current.acceptAuthorization(from: foreign) }
+    }
 }

@@ -62,6 +62,15 @@ public struct VoiceJitterBuffer: Sendable {
         return .missing(sequence: sequence)
     }
 
+    /// Examines the expected authenticated packet without advancing its sequence slot.
+    /// - Returns: The packet at `nextSequence`, or nil when that sequence has not arrived.
+    ///   Future packets remain retained. A media scheduler can compare RTP timestamps and
+    ///   fill a DTX interval before consuming its next transmitted packet. No state changes,
+    ///   asynchronous work or payload copies occur; lookup is bounded by the finite window.
+    public func peek() -> RTPPacket? {
+        packets[nextSequence]
+    }
+
     /// Releases all retained media and optionally reanchors sequence ordering.
     /// - Parameter nextSequence: New expected sequence, or nil to retain the current cursor.
     ///   This is a local stream reset; it must not reset cryptographic replay/nonce state.

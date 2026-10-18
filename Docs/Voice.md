@@ -3,11 +3,12 @@
 Verified and locally added **2026-10-17**. This is the first release of the
 multi-release [Part 12 plan](../.air/plans/phase-12-execution.plan.md), with four
 independently adopted products. **Complete Discord voice is not implemented.**
-No supervised `VoiceSession`/`VoiceManager` is shipped yet. The independent
+[Phase 12D supervised sessions](VoiceSessions.md) now provide `VoiceSession`,
+`VoiceManager` and bounded network/media ownership. The independent
 [Phase 12B MLS product](MLS.md) supplies bounded group key establishment, and
 [Phase 12C DAVE](DAVE.md) now supplies signaling coordination, sender ratchets,
 codec-aware encoded-frame protection and ephemeral verification. These are
-explicitly composed protocol owners; 12D network/media supervision remains open.
+explicitly composed protocol owners; authorized Discord and full device qualification remain open.
 Apple system-route capture/playback is independently
 available through `DiscordApplePlatform`; device qualification remains open.
 
@@ -31,7 +32,7 @@ minimum-OS or all-Apple-device qualification.
 | DiscordVoiceCodecs | Owned Opus framing/entropy, mono/stereo SILK/CELT/hybrid coding, unified ordinary decoding, mode transitions and explicit PLC/CNG/FEC | Media; no native Opus runtime; conservative encoding analysis, ordinary packets and 48-kHz decoder output |
 | DiscordVoiceCrypto | XChaCha20-Poly1305, owned HChaCha20, public AES256-GCM, experimental truncated AES128-GCM adapter and actor-owned RTP-size packet protection | Existing Swift Crypto and its public CryptoExtras product |
 | DiscordApplePlatform | Apple engine capture/playback, bounded queues, permission/session ownership, explicit supported device selection and observed-route invalidation | Media/Core/Transport; native AVFoundation/CoreAudio only in this adapter |
-| DiscordVoice | Bounded Voice v8 JSON/binary frames/opcodes, pure handshake/heartbeat/resume reducer, main-Gateway join rendezvous, discovery, RTP framing, Opus packetization and reorder window | Core/Models/Transport and the three media products; no Client/Gateway/facade ownership |
+| DiscordVoice | Bounded Voice v8 JSON/binary frames/opcodes, pure handshake/heartbeat/resume reducer, main-Gateway join rendezvous, discovery, RTP framing, Opus packetization and reorder window | Core/Models/Transport and the three media products; injected main-Gateway control and bounded supervised sessions; no Client/Gateway/facade import |
 | DiscordMLS | MLS 1.0/ciphersuite-2 key establishment and restricted DAVE-profile group handshakes | Existing Swift Crypto; no Voice/media/network ownership |
 | DiscordDAVE | Authenticated Voice/MLS transition coordination, sender ratchets, codec-aware frame encryption, bounded replay/verification and ephemeral human verification | Voice/MLS/VoiceCrypto/Core/Transport and existing Crypto/CryptoExtras; no concrete network/device adapter |
 
@@ -369,7 +370,8 @@ identity plus generation. A matching generation alone cannot authorize another
 session. The independently adopted `DAVEProtocolSession` performs that binding
 through `authorizeGateway(_:)`; actual media must continue passing the actor's
 active-epoch/membership gates. Its constructor starts no network work and it does
-not implement 12D's supervised socket/session owner. DAVE version zero fails closed.
+not own sockets itself. [The supervised adapter/session](VoiceSessions.md) now supplies
+12D network/media ownership. DAVE version zero fails closed.
 
 Discord's [E2EE requirement](https://docs.discord.com/developers/topics/voice-connections#end-to-end-encryption-dave-protocol)
 took effect for eligible conversations **2026-03-01**. Transport encryption cannot
@@ -400,8 +402,8 @@ capture/codec/playback accounting from unavailable hardware render-underrun tele
 Independent MLS component/passive-Welcome vectors and local group tests are recorded
 in [MLS](MLS.md). Local DAVE signaling/media/verification evidence and its pinned
 C++/Swift codec oracle are described in [DAVE](DAVE.md). External crypto review,
-complete DAVE interoperability, an owned supervised network/media pipeline, complete
-platform/device qualification, non-macOS runtime and minimum-OS testing, authorized
+complete DAVE interoperability, complete platform/device qualification, non-macOS
+runtime and minimum-OS testing, authorized
 Discord voice smoke and demonstrated lossless hardware duplex remain open.
 No production voice, video, cross-platform or fleet-capacity claim
 follows from this release. See [source fingerprints](Parity/voice-media-current-sources.json),

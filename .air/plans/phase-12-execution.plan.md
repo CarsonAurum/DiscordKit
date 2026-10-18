@@ -104,3 +104,11 @@ codec-aware frame protection and ephemeral identity verification. The initial
 release table and 12B continuation above remain historical. Independent crypto
 review, complete-client/live interoperability and platform/device qualification
 remain open, together with 12D supervised network/media ownership and 12E providers.
+
+## Phase 12D continuation (2026-10-18)
+
+The [12D execution record](phase-12d-execution.plan.md) and
+[session guide](../../Docs/VoiceSessions.md) now describe supervised per-guild
+network/control/media ownership and independently composed DAVE. The earlier
+release table remains historical. Authorized live/independent-client/device
+qualification and external crypto review remain separate gates.

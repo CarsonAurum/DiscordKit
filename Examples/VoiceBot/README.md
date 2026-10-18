@@ -49,7 +49,8 @@ Interactions, Commands, NIO and concrete network/device adapters. It includes
 Core/Models/Transport plus Media/VoiceCodecs/VoiceCrypto/MLS/DAVE and the existing Swift
 Crypto/CryptoExtras graph. See [Voice](../../Docs/Voice.md) for ownership and limits.
 
-This Phase 12 consumer has no supervised network session,
+This offline consumer does not start the separately implemented
+[supervised network session](../../Docs/VoiceSessions.md),
 microphone/playback adapter or perceptual/realtime qualification. Discord
 requires DAVE for eligible live sessions; this offline example cannot join one.
 It is not the roadmap's ten-minute duplex or authorized Discord smoke qualification.

@@ -48,7 +48,7 @@ import DiscordVoiceCrypto
             }
             guard playout.bufferedBytes == 0 else { throw VoicePacketError.capacityExceeded }
             print("Five synthetic Opus packets authenticated and drained across RTP rollover.")
-            print("Offline MLS/DAVE/transport example only; live voice sessions remain unimplemented.")
+            print("Offline MLS/DAVE/transport example only; supervised sessions are independently adopted.")
             await sender.close()
             await receiver.close()
         } catch {

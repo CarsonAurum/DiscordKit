@@ -2,7 +2,7 @@
 
 Updated **2026-10-18**. The initial HTTP execution and minimal sharded Gateway
 slices and portable OAuth flows are implemented. Phase 12 adds locally tested
-[media/voice protocol components](Voice.md); full voice remains unimplemented.
+[media/voice protocol components](Voice.md); full live/device qualification remains open.
 The Apple adapter implements capture/playback with explicit permission, session,
 bounded queues and supported device selection: macOS input/output UIDs and
 iOS/tvOS/visionOS preferred inputs. watchOS preferred input and arbitrary non-macOS
@@ -13,8 +13,9 @@ evidence in [Voice](Voice.md). Independently adopted [MLS](MLS.md) and
 [DAVE](DAVE.md) now supply local group key establishment, signaling/media
 coordination, frame protection and ephemeral verification. Their local vector,
 synthetic-peer and codec-oracle results do not qualify other hosts, deployment
-minima or a complete client. There is no supervised live voice session or
-authorized Discord media smoke result; independent cryptographic review remains open.
+minima or a complete client. Phase 12D now implements
+[supervised voice sessions](VoiceSessions.md); authorized Discord media smoke and
+independent cryptographic review remain open.
 Crypto vector tests and synthetic packet round trips do not qualify devices,
 codec interoperability, other hosts, minimum OS versions or ten-minute duplex stability.
 

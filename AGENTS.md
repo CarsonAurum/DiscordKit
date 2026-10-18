@@ -91,6 +91,15 @@ shared signing identity and monotonic clocks are injected. Downgrade fails close
 Independent crypto review, complete-client/live interoperability, platform/device
 qualification and 12D supervised network/duplex evidence remain open.
 
+Part 12D adds supervised `VoiceSession`/`VoiceManager`, owned UDP discovery and
+heartbeat/resume lifetimes, bounded authenticated SSRC media routing, paced PCM/
+encoded Opus, jitter/PLC and playback/recording primitives. `DAVEVoiceSession`
+implements injected Voice interfaces while preserving DAVE -> Voice dependencies.
+Constructors remain inert; `run`/join own work and stop/leave close it. The separate
+local UDP qualification harness uses synthetic PCM and owned MLS/DAVE peers;
+authorized Discord, independent review and full device/platform qualification
+remain explicit gates. See `Docs/VoiceSessions.md`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
