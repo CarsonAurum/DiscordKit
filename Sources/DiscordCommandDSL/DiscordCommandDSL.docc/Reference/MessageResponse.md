@@ -5,6 +5,7 @@
 ### Creating a value
 
 - ``DiscordCommandDSL/MessageResponse/init(_:)``
+- ``DiscordCommandDSL/MessageResponse/init(visibility:allowedMentions:_:)``
 
 ### Instance properties
 

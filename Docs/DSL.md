@@ -9,7 +9,9 @@ The shared product implements structural authoring and validation. Part 15B adds
 [typed arguments and command lowering](CommandDSL.md) through the separately
 selected `DiscordCommandDSL` product. The separate [macro package](MacroDSL.md)
 adds authoring syntax; [typed response ownership and HTTP applications](CommandResponses.md)
-compose existing runtime owners. Message/component builders, policies and Gateway execution remain later
+compose existing runtime owners. Part 15E adds safe typed interpolation in this
+shared product and [validated message/component builders](MessageBuilders.md) in
+CommandDSL. Policies, broader command families and Gateway execution remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 An application can use the raw contribution API now to validate its own finite
 metadata catalog, without pretending that a custom kind implements a Discord API.

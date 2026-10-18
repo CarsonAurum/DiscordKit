@@ -34,8 +34,12 @@ metadata, while executable captures and their memory size are outside those boun
 
 Select this library independently. Existing products and the Core/Models-only shared
 DSL retain their adoption graphs. The runtime selects no compiler plugin; optional
-macro authoring lives in its separate package. Message/component builders,
-subcommands/autocomplete, other command families, policies and Gateway hosts remain
+macro authoring lives in its separate package. Part 15E adds builder initializers for
+``MessageResponse`` and ``DeferredMessageResponse`` with pure ``MessageBuilder`` and
+``ComponentBuilder`` authoring. Shared `DiscordDSL.MessageContent` supplies typed
+interpolation and explicit mention policy; existing payload validation remains
+authoritative.
+Subcommands/autocomplete, other command families, policies and Gateway hosts remain
 later milestones. Local tests do not qualify live Discord, platforms or capacity.
 
 ## Topics
@@ -81,6 +85,15 @@ later milestones. Local tests do not qualify live Discord, platforms or capacity
 - ``CommandResponseVisibility``
 - ``CommandApplication``
 - ``CommandApplicationError``
+
+### Message and component authoring
+
+- ``MessageBuilder``
+- ``ComponentBuilder``
+- ``Text``
+- ``Embed``
+- ``Components``
+- ``Component``
 
 ### Bounded diagnostics
 

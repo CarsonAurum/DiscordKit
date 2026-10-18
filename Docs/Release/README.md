@@ -1,13 +1,15 @@
 # Release certification
 
 The current **0.15.0 authoring candidate** covers [shared declarations](../DSL.md),
-[typed command lowering](../CommandDSL.md), [macro authoring](../MacroDSL.md) and
-[typed responses/signed HTTP applications](../CommandResponses.md)
-in Parts 15A/15B/15C/15D. The [15A record](phase15a-validation.json),
-[15B record](phase15b-validation.json) and [15C record](phase15c-validation.json)
-preserve their historical checks. The current [machine report](phase15-report.json)
-and [15D validation record](phase15d-validation.json) state current checks and
-explicit exclusions. Message/component builders, policies, Gateway hosts and the remaining
+[typed command lowering](../CommandDSL.md), [macro authoring](../MacroDSL.md),
+[typed responses/signed HTTP applications](../CommandResponses.md) and
+[message/component builders](../MessageBuilders.md)
+in Parts 15A/15B/15C/15D/15E. The [15A record](phase15a-validation.json),
+[15B record](phase15b-validation.json), [15C record](phase15c-validation.json) and
+[15D record](phase15d-validation.json) preserve their historical checks. The current
+[machine report](phase15-report.json)
+and [15E validation record](phase15e-validation.json) state current checks and
+explicit exclusions. Broader command families, policies, Gateway hosts and the remaining
 [DSL milestones](../DSLImplementationRoadmap.md) are still planned.
 
 The historical [0.14.0 candidate report](2026-10-18.md) and
@@ -35,7 +37,7 @@ An unchanged hash does not establish semantic coverage of unrelated documentatio
 Every runtime release carries workload, hardware, throughput, p50/p95/p99, CPU/RSS,
 request savings, overload/recovery and fixed-working-set 30-minute evidence. The
 [measurements](Measurements/environment.json) identify Phase 14's earlier finite
-synthetic runs. Part 15D adds no current throughput, RSS or soak qualification.
+synthetic runs. Parts 15D/15E add no current throughput, RSS or soak qualification.
 Reproduce greater-than-10% regressions three times on matching hardware
 and workload before attributing them. Concurrent build/test activity and historical
 baselines do not provide such a controlled comparison. See [scalability](../Scalability.md).

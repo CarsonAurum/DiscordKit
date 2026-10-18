@@ -142,8 +142,17 @@ application/router. Initial response admission remains independent. Construction
 ordinary listener execution register no commands; synchronization is explicit.
 The independent `Examples/DSLCommands` uses a macro-authored command in a synthetic
 signed offline exchange, with listener ownership only when explicitly requested.
-Message/component builders, policies and Gateway hosts remain later milestones;
+Policies, broader command families and Gateway hosts remain later milestones;
 see `Docs/CommandResponses.md`.
+
+Part 15E adds pure `MessageContent` authoring in `DiscordDSL`, with safe dynamic
+text interpolation, typed user/role/channel mentions and explicit mention allowlists.
+`DiscordCommandDSL` adds message/component builders and validated lowering to existing
+Models. Thin immediate/deferred builder adapters retain existing response ownership.
+Trusted literals/raw segments preserve markup; ordinary dynamic strings are escaped
+and mention-neutralized.
+Construction starts no tasks, registration or I/O; manual raw Models remain
+available. See `Docs/MessageBuilders.md`.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -298,7 +307,7 @@ documentation, graph/import isolation and API/DocC checks; build `Examples/HTTPA
 and the offline `Examples/CommandsApp`. Verify direct-versus-DSL definitions/routes,
 strict option/resolved-resource decoding, fresh argument state per invocation,
 compile-time zero execution and bounded cancellation-aware router ownership. Macro
-compilation, message/component builders, Gateway hosts and DSL capacity qualification
+compilation, broader command families, Gateway hosts and DSL capacity qualification
 retain separate gates.
 
 For macro authoring changes, run `swift test --package-path Packages/DiscordDSLMacros`,
@@ -317,7 +326,17 @@ make zero registration requests; explicit synchronization retains the existing m
 name policy and partial outcomes. The selected graph may use HTTP/Transport but must
 exclude Gateway/Client/Cache, concrete adapters and compiler plugins from the runtime
 product. Synthetic signed HTTP and trusted normalized contexts do not qualify live
-Discord or a Gateway application host. Message builders and 15E+ remain separate.
+Discord or a Gateway application host. Broader command families and 15F+ remain separate.
+
+For message/component builder changes, preserve shared content's Core/Models-only
+adoption, CommandDSL's existing dependency graph and command response ownership.
+Run root build/tests, callable documentation, graph and API/DocC checks, plus
+build/test/offline execution of `Examples/DSLCommands`.
+Verify exact direct-model payload parity, safe untrusted interpolation even when a
+typed allowlist contains the same ID, explicit raw/mention-policy opt-in, Unicode
+boundaries, structural bounds, empty output, field omission/null/value and illegal
+legacy/V2/component combinations. Keep existing payload validators authoritative;
+local JSON parity does not prove Discord rendering, notification delivery or capacity.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

@@ -25,9 +25,14 @@ state rather than temporary allocations in caller code.
 
 This milestone adds no new Discord endpoint, event, permission, intent or wire
 schema support. Separately adopted `DiscordCommandDSL` adds typed arguments and
-manual slash-command lowering over this foundation. Macros, message/policy builders
-and HTTP/Gateway hosts remain later milestones. This shared product selects no transport, client,
-concrete adapter, compiler plugin or documentation tooling.
+command lowering, typed responses and signed HTTP applications over this foundation.
+The separate macro package remains downstream. Part 15E adds ``MessageContent`` with
+safe typed mention interpolation; the separately selected CommandDSL adds pure
+message/component builders over existing validated Models. Explicit lowering rejects
+illegal layouts and limits before transmission; response ownership remains with
+Interactions. Broader command families, policies and Gateway hosts remain later
+milestones. This shared product selects no transport, client, concrete adapter,
+compiler plugin or documentation tooling.
 
 ## Topics
 
@@ -55,6 +60,12 @@ concrete adapter, compiler plugin or documentation tooling.
 - ``DefinitionLimits``
 - ``DefinitionDiagnostic``
 - ``DefinitionSourceLocation``
+
+### Message authoring
+
+- ``MessageContent``
+- ``RenderedMessageContent``
+- ``MessageContentError``
 
 ### Complete API reference
 

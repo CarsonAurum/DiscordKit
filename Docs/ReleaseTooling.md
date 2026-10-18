@@ -63,6 +63,9 @@ published release nor a tag. The current `0.15.0` candidate adds the independent
 shared-declaration and typed-command products for Parts 15A/15B, plus the separately
 compiled Part 15C macro authoring package. Part 15D adds typed response adapters
 and signed HTTP command application composition with explicit synchronization.
+Part 15E adds safe typed content interpolation in the shared DSL, plus pure
+CommandDSL message/component builders and thin validated response adapters, preserving
+the reviewed runtime dependency graphs.
 The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before

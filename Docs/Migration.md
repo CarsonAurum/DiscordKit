@@ -1,6 +1,6 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C/15D. The
+The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C/15D/15E. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
@@ -51,7 +51,13 @@ typed context and return `MessageResponse` or `DeferredMessageResponse`. The ada
 owns acknowledgement and edit-original completion. Manual handlers need no changes.
 Use `CommandApplication` for signed HTTP composition and call `synchronize` separately
 when registration is intended. Do not configure application auto-defer alongside it.
-Message/component builders and Gateway hosts remain later milestones. See
+Part 15E optionally replaces direct message construction with `Text`, `Embed` and
+`Components` inside a response builder. `MessageContent` escapes ordinary strings
+and admits mentions through typed interpolation; explicit raw segments retain
+caller-owned formatting and never enable broad parsing by themselves. Existing raw
+Models remain available. See [message builders](MessageBuilders.md) for field
+presence, validation and intentional mention policies. Broader command families and
+Gateway hosts remain later milestones. See
 [response ownership](CommandResponses.md) and [the guide](CommandDSL.md)
 for argument presence, limits, diagnostics and the custom-code contract.
 

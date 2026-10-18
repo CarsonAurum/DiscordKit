@@ -58,7 +58,9 @@ adds a separate [macro authoring package](Docs/MacroDSL.md) with compiled parity
 external diagnostic fixtures. Part 15D adds [typed response ownership and signed HTTP
 command applications](Docs/CommandResponses.md), with explicit command synchronization
 and an [independent offline consumer](Examples/DSLCommands/README.md).
-Message/component builders, policies and Gateway hosts remain later
+Part 15E adds [validated message/component builders](Docs/MessageBuilders.md), safe
+text interpolation and explicit mention allowlists over existing Models. Broader
+command families, policies and Gateway hosts remain later
 [DSL milestones](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -135,9 +137,11 @@ explains navigation generation, synchronized tutorial code, validation and hosti
 - `DiscordCommands`: complete typed command definitions, bounded exact routing and
   explicit canonical registration reconciliation.
 - `DiscordDSL`: synchronous module/result-builder composition, bounded structural
-  diagnostics and immutable deterministic descriptions; Core/Models dependencies only.
+  diagnostics, immutable descriptions and safe typed message content/mentions;
+  Core/Models dependencies only.
 - `DiscordCommandDSL`: typed argument schemas/decoding, immediate/deferred/manual slash
-  handlers, existing command lowering and signed HTTP application composition with explicit synchronization.
+  handlers, message/component builders, existing command lowering and signed HTTP
+  application composition with explicit synchronization.
 - `DiscordOAuth`: state/issuer-bound authorization, S256 PKCE, installation URLs,
   form-encoded token operations, injected browser presentation and bounded refresh ownership.
 - `DiscordGameServices`: documented provisional/merge/unmerge/publisher backend operations

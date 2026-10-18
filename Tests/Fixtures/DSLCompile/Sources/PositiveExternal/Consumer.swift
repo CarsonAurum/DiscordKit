@@ -58,12 +58,14 @@ public struct ImmediateConsumer: DiscordCommandDSL.SlashCommandHandler {
     /// - Parameters:
     ///   - context: Normalized snapshot with no raw response owner.
     ///   - arguments: Fresh validated compiler-generated invocation values.
-    /// - Returns: One immediate message, using the existing message model without builders or implicit I/O.
+    /// - Returns: One immediate builder message with escaped dynamic text and no implicit I/O.
     /// - Throws: Existing local message validation errors; fixture compilation never executes the handler.
     public func execute(_ context: CommandContext, arguments: Arguments) async throws -> MessageResponse {
         _ = context.deliveryMode
         _ = context.interaction.id
-        return try MessageResponse(InteractionMessageCreate(content: .value(arguments.person)))
+        return try MessageResponse {
+            Text("\(arguments.person)")
+        }
     }
 }
 
@@ -84,7 +86,9 @@ public struct DeferredConsumer: DeferredSlashCommandHandler {
     public func execute(_ context: DeferredCommandContext, arguments: Arguments) async throws -> DeferredMessageResponse {
         _ = context.deliveryMode
         _ = context.interaction.id
-        return try DeferredMessageResponse(InteractionMessageEdit(content: .value(arguments.person)))
+        return try DeferredMessageResponse {
+            Text("\(arguments.person)")
+        }
     }
 }
 

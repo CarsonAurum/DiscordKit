@@ -121,7 +121,12 @@ and a signed HTTP `CommandApplication` over the existing application/router, add
 direct HTTP/Transport imports. Initial response admission remains independent and
 command synchronization is explicit. Constructors and ordinary run register nothing;
 the host injects and owns concrete ingress. Existing runtime graphs remain macro free.
-Policies, message/component builders and Gateway hosts remain later
+Part 15E adds typed content interpolation to the Core/Models-only shared DSL,
+with pure message/component builders and thin immediate/deferred response adapters
+in CommandDSL. Existing payload validation owns layout, field presence and aggregate
+limits; explicit mention allowlists accompany rendered text. The builders own no
+transport, registration or handler lifetime. Policies, broader command families and
+Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 
 ## Product boundaries

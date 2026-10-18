@@ -63,7 +63,7 @@ let package = Package(
         .target(name: "DiscordTransport", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
         .target(name: "DiscordModels", dependencies: ["DiscordCore"], swiftSettings: concurrencySettings),
         .target(name: "DiscordDSL", dependencies: ["DiscordCore", "DiscordModels"], swiftSettings: concurrencySettings),
-        .testTarget(name: "DiscordDSLTests", dependencies: ["DiscordDSL", "DiscordCore"], swiftSettings: concurrencySettings),
+        .testTarget(name: "DiscordDSLTests", dependencies: ["DiscordDSL", "DiscordCore", "DiscordModels"], swiftSettings: concurrencySettings),
         .target(name: "DiscordCommandDSL", dependencies: ["DiscordDSL", "DiscordCommands", "DiscordInteractions", "DiscordModels", "DiscordCore", "DiscordHTTP", "DiscordTransport"], swiftSettings: concurrencySettings),
         .testTarget(name: "DiscordCommandDSLTests", dependencies: ["DiscordCommandDSL", "DiscordDSL", "DiscordCommands", "DiscordInteractions", "DiscordModels", "DiscordCore", "DiscordHTTP", "DiscordTransport", "DiscordTestSupport", .product(name: "Crypto", package: "swift-crypto")], swiftSettings: concurrencySettings),
         .target(name: "DiscordHTTP", dependencies: ["DiscordCore", "DiscordModels", "DiscordTransport"], swiftSettings: concurrencySettings),

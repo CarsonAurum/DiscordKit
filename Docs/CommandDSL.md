@@ -10,8 +10,9 @@ Construction and compilation start no tasks, I/O, registration or handler execut
 The implemented family is root slash commands with leaf options. Part 15C adds
 optional [macro authoring](MacroDSL.md); Part 15D adds
 [immediate/deferred/manual response ownership and signed HTTP applications](CommandResponses.md).
-Subcommands/groups, autocomplete, other command families,
-message/component builders, policies and Gateway hosts remain later
+Part 15E adds [message/component builders and safe typed content](MessageBuilders.md)
+with thin adapters to those response values. Subcommands/groups, autocomplete, other
+command families, policies and Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md). Existing low-level APIs
 remain independently usable for their broader implemented surfaces.
 

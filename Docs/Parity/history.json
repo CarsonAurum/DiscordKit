@@ -1395,6 +1395,54 @@
       ],
       "details": "changes/phase15d-command-responses.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-phase15e-message-builders",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.15.0 candidate; unpublished; pure message/component authoring milestone",
+      "localCommit": "unknown",
+      "changeType": "authoring_and_validated_payload_lowering_only",
+      "previousBehavior": "Part 15D typed handlers returned validated direct InteractionMessageCreate and InteractionMessageEdit models; applications manually authored text, allowed mentions, embeds and component trees.",
+      "currentBehavior": "DiscordDSL adds finite MessageContent templates with trusted literal/raw segments, escaped dynamic text, typed user/role/channel references and narrow allowed-mentions synthesis, while DiscordCommandDSL adds typed message/embed/component builders over existing Models. Explicit lowering preserves field presence and uses existing payload validation; thin CommandDSL initializers adapt builders to the established immediate/deferred response owners. Raw model construction remains supported.",
+      "affectedSymbols": [
+        "MessageContent",
+        "RenderedMessageContent",
+        "MessageContentError",
+        "MessageBuilder",
+        "ComponentBuilder",
+        "Text",
+        "Embed",
+        "Components",
+        "Component",
+        "MessageResponse",
+        "DeferredMessageResponse"
+      ],
+      "affectedPayloads": "Existing API v10 message content, embeds, allowed_mentions and legacy/Components V2 payloads, type-4 initial messages and PATCH original-response edits. No new endpoint, field, permission, intent, event, opcode, upload transport or notification guarantee.",
+      "breakingChanges": [],
+      "migration": "Existing raw Models and typed/manual handlers require no changes. Optionally select DiscordDSL content and builders; pass untrusted strings through ordinary interpolation or MessageContent(String), preserve trusted formatting only through literals or explicit raw segments, and use typed mention opt-ins. Validate the full built payload before the existing responder transmits it. Broader command families, policies, Gateway hosts and 15F+ remain separate.",
+      "sources": [
+        "https://docs.discord.com/developers/resources/message",
+        "https://docs.discord.com/developers/components/reference",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log",
+        "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0228-fix-expressiblebystringinterpolation.md",
+        "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md"
+      ],
+      "details": "changes/phase15e-message-builders.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

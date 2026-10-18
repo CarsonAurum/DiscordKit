@@ -27,7 +27,9 @@ The independent DSLCommands consumer runs its synthetic signed exchange in expli
 offline mode; listener startup and registration are never part of routine CI.
 CI tests compiled macro expansions and external
 positive/negative fixtures, including Sendable checks and a cross-module codec.
-Message/component builders, policies and Gateway hosts remain planned. Workflow
+Part 15E adds safe text/typed-mention, layout and direct-payload-parity root suites,
+and the independent DSLCommands exchange now exercises a builder-authored response.
+Broader command families, policies and Gateway hosts remain planned. Workflow
 definitions do not establish a passed platform run.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to

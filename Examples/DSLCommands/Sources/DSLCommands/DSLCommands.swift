@@ -18,14 +18,16 @@ import Foundation
 struct Ping: SlashCommandHandler {
     typealias Arguments = PingArguments
 
-    /// Produces one explicit ephemeral message after complete invocation decoding.
+    /// Builds one explicit ephemeral message with mention parsing disabled after complete invocation decoding.
     /// - Parameters:
     ///   - context: Authenticated snapshot without raw responder access.
     ///   - arguments: Fresh empty arguments; no shared invocation state exists.
     /// - Returns: Validated pong message sent once by the immediate response adapter.
     /// - Throws: Message validation failures; cancellation/delivery are owned by the router/responder.
     func execute(_ context: CommandContext, arguments: Arguments) async throws -> MessageResponse {
-        try MessageResponse(InteractionMessageCreate(content: .value("Pong!"), flags: .value(.ephemeral)))
+        try MessageResponse(visibility: .ephemeral) {
+            Text("Pong!")
+        }
     }
 }
 
@@ -108,7 +110,7 @@ private actor OfflineResponder: HTTPResponder {
         responseCount += 1
         do {
             try context.check()
-            let expected = Data(#"{"type":4,"data":{"content":"Pong!","flags":64}}"#.utf8)
+            let expected = Data(#"{"type":4,"data":{"content":"Pong!","flags":64,"allowed_mentions":{"parse":[],"replied_user":false}}}"#.utf8)
             let bytes = try await ResponseBody.collect(response.body, maximumBytes: 1024)
             guard response.status == 200, try JSONValue.parse(bytes) == JSONValue.parse(expected) else {
                 throw DiscordError.transport(.invalidResponse)

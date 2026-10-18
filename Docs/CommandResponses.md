@@ -20,7 +20,9 @@ raw path token for deliberate application inspection; redacted formatting is not
 a secret-removal boundary. Returning a value gives
 the adapter the single transmission owner. `MessageResponse` validates an existing
 `InteractionMessageCreate`; `DeferredMessageResponse` validates an existing
-`InteractionMessageEdit`. Both are JSON-only; multipart upload ownership remains in
+`InteractionMessageEdit`. Part 15E also accepts
+[validated message/component builder closures](MessageBuilders.md) for both response
+families. Both are JSON-only; multipart upload ownership remains in
 the existing low-level APIs. Their constructors preserve omission/null/value behavior
 and existing payload validation. They cannot represent component update,
 autocomplete, modal, pong or other incompatible response kinds.
@@ -118,7 +120,7 @@ The independent [DSLCommands consumer](../Examples/DSLCommands/README.md) compil
 macro-authored `/ping` and exercises a synthetic Ed25519-signed HTTP exchange without
 credentials. Its explicit listener mode owns local ingress; it does not register
 commands. The example and response tests are offline evidence. Live Discord, other
-platforms, Gateway hosts, message/component builders, capacity and full Phase 15
+platforms, Gateway hosts, broader command families, capacity and full Phase 15
 certification remain separate [milestones](DSLImplementationRoadmap.md).
 
 Current response kinds, deadlines, ephemeral behavior and edit-original semantics

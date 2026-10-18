@@ -5,6 +5,7 @@
 ### Creating a value
 
 - ``DiscordCommandDSL/DeferredMessageResponse/init(_:)``
+- ``DiscordCommandDSL/DeferredMessageResponse/init(previousFlags:allowedMentions:_:)``
 
 ### Instance properties
 

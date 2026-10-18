@@ -7,7 +7,9 @@ uses public generated argument/handler conformance, enum and optional arguments,
 literal and explicit-nil defaults, an explicitly renamed option, the contribution
 factory and a real generated-schema decode expression. It also compiles explicit
 immediate/deferred handler protocols, typed contexts and response-family factories
-from outside the macro package. No runtime reflection or
+from outside the macro package. Part 15E also compiles immediate/deferred message
+builders with escaped dynamic string interpolation in those external handlers.
+No runtime reflection or
 imported-source resolution is available to the macro.
 
 Run from the repository root:

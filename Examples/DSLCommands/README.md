@@ -7,8 +7,9 @@ swift run --package-path Examples/DSLCommands DSLCommands --offline
 ```
 
 The example compiles actual `@CommandArguments` and `@SlashCommand` expansions,
-verifies Ed25519 ingress and asserts one ephemeral `Pong!` callback. The synthetic
-signing key is fixed test material. It never authenticates to Discord.
+verifies Ed25519 ingress and asserts one ephemeral builder-authored `Pong!` callback
+with an explicit empty mention-parse list and no reply-author notification. The
+synthetic signing key is fixed test material. It never authenticates to Discord.
 
 To opt into a local listener, supply your application ID and public verification
 key through `DISCORD_APPLICATION_ID` and `DISCORD_PUBLIC_KEY`, then run with

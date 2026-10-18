@@ -34,7 +34,8 @@ composes signed ingress and the bounded router. Inject the shared admission auth
 and an HTTP listener; `run` owns and closes that listener. Call `synchronize` separately
 for registration. Use [DSLCommands](../Examples/DSLCommands/README.md) in its default
 offline mode to exercise a signed exchange; `--listen` explicitly opts into listener
-ownership. See [response/application contracts](CommandResponses.md).
+ownership. Its response uses Part 15E's [message builder](MessageBuilders.md), with
+explicit mention suppression by default. See [response/application contracts](CommandResponses.md).
 For optional `@CommandArguments`/`@SlashCommand` authoring, select the separate
 [DiscordDSLMacros package](MacroDSL.md); the root package does not select its plugin.
 

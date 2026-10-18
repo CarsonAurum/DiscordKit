@@ -95,7 +95,9 @@ use. In Part 15D, explicitly conform to `SlashCommandHandler` for an immediate
 Omitting the family preserves the original manual default. The macro factory uses
 the same `SlashCommand` runtime adapters as handwritten code; it does not create
 another response owner. See [response modes and HTTP applications](CommandResponses.md).
-Message/component builders and other command families remain later milestones.
+Part 15E composes the same handlers with [message/component builders](MessageBuilders.md)
+without changing macro expansion or response ownership. Other command families remain
+later milestones.
 
 ## Verification and scope
 
