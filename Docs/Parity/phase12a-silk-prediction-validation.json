@@ -1,0 +1,46 @@
+{
+  "analysisAbsoluteTolerance": 2e-05,
+  "analysisRelativeTolerance": 2e-06,
+  "boundaryCases": 90,
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "comparedCases": 1116,
+  "driverSHA256": {
+    "c": "c4046c8f429783c5b9a30537c4f710f3f38c204215b216cd10a94e1632f663a3",
+    "swift": "124653f37b5c9263acde027af641839292d98763f5a14363bffb230fef3551e2"
+  },
+  "excitationComparison": "exact signed Q23 integers; final seed independently checked modulo 2^32",
+  "fixtureCount": 26,
+  "generator": "Python random.Random MT19937",
+  "inverseGainAbsoluteTolerance": 1e-07,
+  "inverseRecoveryTolerance": 1e-10,
+  "officialReleaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "officialSourceSHA256": {
+    "silk/LPC_analysis_filter.c": "5cd8edb8558515d477f7c65c4f597d15c68d65b6d90cc303965d317666821c23",
+    "silk/decode_core.c": "9bec65a48d32f0b4843eaaa02cd6b49b0e853186f47695ce3f3c178d4bd3452f",
+    "silk/float/LPC_analysis_filter_FLP.c": "5974dbec9c6bba9675e46200ebe784230e5051cf136cf033f518813fee9f84ce",
+    "silk/float/LPC_inv_pred_gain_FLP.c": "1a12491579190a3f424e4faa6b55b8ecfbf308683719dddbd3a1b42959374e1b",
+    "silk/tables_other.c": "07b309e991adab0496fe0a0622195c9b8c11c17290582fd39fe0b357ef7afa5d"
+  },
+  "officialVersion": "1.6.1",
+  "ownedSwiftSHA256": {
+    "Sources/DiscordVoiceCodecs/SILKExcitation.swift": "866a9851099d736644289e3d0c1f1eeea6a85cb7d727a5e8efde86bfce62b426",
+    "Sources/DiscordVoiceCodecs/SILKLinearPrediction.swift": "8434c07be5e41ef15e41b46894c1b65ee3781ff53c954c28265ceccedc5109bc"
+  },
+  "pythonImplementation": "CPython",
+  "pythonVersion": "3.14.0",
+  "scope": "SILK LPC analysis/inverse-gain and intermediate excitation primitives only; no compressed syntax, decoded PCM, complete codec conformance, hybrid, PLC/FEC or device qualification",
+  "seed": 67164279,
+  "sourceArchiveByteCount": 10472813,
+  "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "sourceArchiveURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "sourceLicense": "Unmodified upstream COPYING retained during temporary compilation",
+  "sourceLicenseSHA256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551",
+  "stressCases": 1000,
+  "swiftFixtureSHA256": {
+    "Tests/DiscordVoiceCodecsTests/SILKExcitationTests.swift": "7dd5fb087113ac1d5b08a5026dbc6fc3966e58ecbb78bea32dd526ffc7ccc3a9",
+    "Tests/DiscordVoiceCodecsTests/SILKLinearPredictionTests.swift": "47daf2e34935a4bdac7e315dbb41c378f463bc3c405edb5074734ed64837cace"
+  },
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "verifiedOn": "2026-10-17",
+  "verifierSHA256": "3a6247dffe957d0c4395df98c16e2bd796dabee5b2604f3dc99195f666f0e5ab"
+}

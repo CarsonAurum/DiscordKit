@@ -1,0 +1,38 @@
+{
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "coefficientAbsoluteTolerancePerGain": 2e-06,
+  "compared": [
+    "signed pulses",
+    "spreading levels 0...3",
+    "short blocks 1/2/4/8",
+    "collapse masks",
+    "entropy bytes",
+    "final arithmetic ranges",
+    "spectral reconstruction"
+  ],
+  "comparedCases": 2016,
+  "fixedCases": 16,
+  "fixtureSHA256": "e4fdae5fe1d136aa17ec9ed8a5e7d709b147c5d7e1e0cb392b3fb088863db9cd",
+  "officialReleaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "officialVersion": "1.6.1",
+  "oracleSourceSHA256": {
+    "celt/cwrs.c": "6579428627c7cbdc5de0e977bd81559f1e75cc7dd620bcb29ef7b4770ae13e44",
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208",
+    "celt/entdec.c": "f2d74695ceeb927210dcf76d653241ebdfd465a1c23128604640d218cdd93c38",
+    "celt/entenc.c": "56e0843479ae5db15696125ba6ac3d0a0c26fa8b677d4d6bd457686865408572",
+    "celt/vq.c": "7f488e7ced4080d267e4ff44cb512861a47a49d45891277f4e898fe680dad0e5"
+  },
+  "ownedSourceSHA256": {
+    "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift": "de91fa5930b1c285fc74f3229baa63a2347989a3b271ee03cdea3c6cb85813be",
+    "Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift": "3ba39df7a05f2f5d9387b932836bd3a1a24d1309c1b0fd500dfad7651cf29bc9",
+    "Sources/DiscordVoiceCodecs/OpusRangeCoding.swift": "7de89e9cd4f7a1e940305d89e70145f59672252a720addc67d72c4b2f0ccf9ed"
+  },
+  "randomCases": 2000,
+  "scope": "CELT single-band pulse search/spreading/entropy only; no full codec or decoded-PCM conformance",
+  "seed": 67164343,
+  "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "sourceArchiveURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+  "verifiedOn": "2026-10-17",
+  "verifierSHA256": "72844ab785888bbf4d1bfc942cb821a4c104d5600dd643e685a06bc07da11404"
+}

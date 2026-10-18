@@ -1,0 +1,79 @@
+{
+  "commandTemplate": "xcrun swiftc -target <target> -sdk <platform-sdk> -swift-version 6 -enable-upcoming-feature ApproachableConcurrency -default-isolation nonisolated -module-cache-path <temporary-cache> -I <temporary-modules> -parse-as-library -emit-module -module-name <module> -emit-module-path <temporary-modules>/<module>.swiftmodule <Sources/module/*.swift>",
+  "moduleEmissions": 25,
+  "modules": [
+    "DiscordBits",
+    "DiscordCore",
+    "DiscordTransport",
+    "DiscordMedia",
+    "DiscordApplePlatform"
+  ],
+  "platforms": [
+    {
+      "moduleCount": 5,
+      "sdk": "macosx",
+      "target": "arm64-apple-macos13.0"
+    },
+    {
+      "moduleCount": 5,
+      "sdk": "iphoneos",
+      "target": "arm64-apple-ios16.0"
+    },
+    {
+      "moduleCount": 5,
+      "sdk": "appletvos",
+      "target": "arm64-apple-tvos16.0"
+    },
+    {
+      "moduleCount": 5,
+      "sdk": "watchos",
+      "target": "arm64_32-apple-watchos9.0"
+    },
+    {
+      "moduleCount": 5,
+      "sdk": "xros",
+      "target": "arm64-apple-xros1.0"
+    }
+  ],
+  "scope": "Selected-module compile only; no hardware, permission, route, playback or minimum-OS runtime qualification",
+  "settings": [
+    "-swift-version 6",
+    "-enable-upcoming-feature ApproachableConcurrency",
+    "-default-isolation nonisolated"
+  ],
+  "sourceSHA256": {
+    "Sources/DiscordApplePlatform/AppleAudio.swift": "503044fa6bda295f235c09347455827595a176f3847b2dfd773864041b729a73",
+    "Sources/DiscordApplePlatform/AppleAudioDevices.swift": "b7620f7c0dfe0a1ef9d833a2c57bf028baf15b509aa025f7d052180819444065",
+    "Sources/DiscordApplePlatform/AppleLifecycle.swift": "12f60f3b34ae46f7c9deef61d4bdcf25e7660979a6be1ed528ced3ba9e2bdaf4",
+    "Sources/DiscordBits/UnsignedBitSet.swift": "0ee1bc57e5e60a54611d5454ee45a54a3d1c64b2649b5319548ec46aba0204f1",
+    "Sources/DiscordCore/Capabilities.swift": "6246e273919462f38c111abde8583ddaf0d0ff1cf49cee39560eb57d6fa9465d",
+    "Sources/DiscordCore/Credentials.swift": "0a3ddfb84abfe5cf2f1cf0842b15c3ecf911611d2894ebad80f9e8690169502b",
+    "Sources/DiscordCore/DiscordError.swift": "2b46ab96fe5598f959a6bfeab132e6792548804402751a19d5e761371011aaf2",
+    "Sources/DiscordCore/DiscordTimestamp.swift": "956843e3608707a4d1ffb3305a2f8dbb95d41ade2d2aa8a9423bb3c9ceaa8acb",
+    "Sources/DiscordCore/Field.swift": "fe508278ec65d9ca237682c19a2b5506a9e7e15cae05337876d39c77bba66969",
+    "Sources/DiscordCore/JSONValue.swift": "4c6d1dcbb5e170263f93e654d054b8e70c66868f784c20288d07217cdc1faf3a",
+    "Sources/DiscordCore/RawValue.swift": "b234cb1f8b47de4ea95fd1dcd04b81c4549fae00b82da52fdf9c65c882385670",
+    "Sources/DiscordCore/Redaction.swift": "a9157f728f92680eb78a7387fd265c22bd6b42bf82e07cff25c42b4e715a1d59",
+    "Sources/DiscordCore/Snowflake.swift": "592ed2c616d56121bed90213c0fc15d056e1877e25fca349c8e8768d5097a76b",
+    "Sources/DiscordMedia/MediaClock.swift": "0c5e64095e54a39df73e8948f77d002e7843a3c10afd5acf48bffdcef8a79d98",
+    "Sources/DiscordMedia/MediaDescriptors.swift": "6c3fed0cae1a2313eb44c6d2a95801bb2eb41b1d4a749558747f5634db3f6b21",
+    "Sources/DiscordMedia/MediaFrames.swift": "0dc2be2bcd306a97d6fb47a4f65dc447abb03d0d342511c9a2370181ac71a1c6",
+    "Sources/DiscordMedia/PCM.swift": "ae83b88cfee07074b18e7c59827f37a638f5915b25f9d57f6eec509c2f23f997",
+    "Sources/DiscordMedia/PCMBandlimitedResampler.swift": "14e17b75517198f89cef0ff1866aa76e6526ea1f0ae3cece22eb725ba96ce7b9",
+    "Sources/DiscordMedia/PCMFramePacer.swift": "75495bdb666e7925905314bade4ffae8495f89173f533b3949f953eabd8f935f",
+    "Sources/DiscordMedia/PCMFrameStream.swift": "db70bb76e8695f98e8ee227b919a0454e67ec67cafb0d80ac19477406134bf31",
+    "Sources/DiscordMedia/PCMSpeechActivityDetector.swift": "926ce853879c4e6a77737ef00f794cc0270147c422b156ae1308feed4ebc975f",
+    "Sources/DiscordMedia/PCMStreamingResampler.swift": "358cbada6ac79266c41415f527b093aed10ebe02e95c51a2c235d712b1787f31",
+    "Sources/DiscordTransport/BodyStream.swift": "41fdacba6ac848d98f93e99e4dded3e24cad3ce34c487cd81e4b93b2406f5e1c",
+    "Sources/DiscordTransport/ContinuousDeadline.swift": "f72c20bc5b4c535e1279051b9fce036ebf5a5dce2d44dc8a42e125fd3cfc631f",
+    "Sources/DiscordTransport/DatagramTransport.swift": "11e7931d84041f36374d05dfc6ea4459e1630e57170d6be83cbfc89bef81a3e8",
+    "Sources/DiscordTransport/HTTPIngress.swift": "ee0a9c59f31baf4b0e37ec3576b08445dd13afb05417f3ca623d69472f336fec",
+    "Sources/DiscordTransport/HTTPTransport.swift": "cd2393eef340b9d2d25ba3b6d6cb30727972fd04c60991fff75af16063c0f3b1",
+    "Sources/DiscordTransport/IPCTransport.swift": "d0fcda7fc68d333ff3f1205ea9a2910100e97e10a0f253672b816a1f621a20bb",
+    "Sources/DiscordTransport/Lifecycle.swift": "5b4431b26a0bc2dad9c9e5760dc66e9a5d509d81818310fa419b9ce09e871cb3",
+    "Sources/DiscordTransport/ShardOwnership.swift": "5be588321785d9198297808bee30e5c152fa0e36e32fb6af5608bb4c5b6d5670",
+    "Sources/DiscordTransport/WebSocketTransport.swift": "add9683aae0eaea5dabb1c3cd6d8532fadb2c1fc238be1a8d83fc221d828edc3"
+  },
+  "swiftVersion": "Apple Swift 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "verifiedOn": "2026-10-17"
+}

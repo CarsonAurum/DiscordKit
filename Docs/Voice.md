@@ -9,7 +9,10 @@ available through `DiscordApplePlatform`; device qualification remains open.
 
 The subsequent [12A execution](../.air/plans/phase-12a-execution.plan.md) adds
 streaming media, owned Opus entropy/pulse coding, bandlimited resampling,
-statistical speech detection and native Apple audio ownership. **The full 12A
+statistical speech detection and native Apple audio ownership. Its latest
+[codec/routing continuation](Parity/changes/2026-10-17-phase12a-codec-routing.md)
+adds CELT transforms/band quantization, SILK prediction/excitation and explicit
+Apple device selection. **The full 12A
 milestone remains incomplete**: the range coder cannot encode or reconstruct SILK/CELT audio.
 
 ## Products and ownership
@@ -17,9 +20,9 @@ milestone remains incomplete**: the range coder cannot encode or reconstruct SIL
 | Product | Implemented behavior | Dependency boundary |
 | --- | --- | --- |
 | DiscordMedia | Rational/sample clocks, caller-driven pacing, bounded PCM/audio/video values, PCM16 conversion, gain/mixing, linear/windowed-sinc resampling, RMS/statistical speech detection, polling and terminal-aware async queues | Foundation; no codecs/network/platform capture |
-| DiscordVoiceCodecs | Owned RFC 6716 ordinary Opus framing and bounded entropy encoder/decoder and exact CELT pulse codebooks with independent oracle fixtures | Media; no native Opus library or SILK/CELT audio encoder/decoder |
+| DiscordVoiceCodecs | Owned Opus framing/entropy, CELT pulse search/spreading/MDCT/overlap, SILK LPC/LTP/excitation primitives with independent oracle fixtures | Media; no native Opus library or complete SILK/CELT audio encoder/decoder |
 | DiscordVoiceCrypto | XChaCha20-Poly1305, owned HChaCha20, public AES256-GCM, experimental truncated AES128-GCM adapter and actor-owned RTP-size packet protection | Existing Swift Crypto and its public CryptoExtras product |
-| DiscordApplePlatform | Explicit Apple engine capture/playback, bounded callback queues, permission/session ownership and observed-route invalidation | Media/Core/Transport; native AVFoundation/CoreAudio only in this adapter |
+| DiscordApplePlatform | Apple engine capture/playback, bounded queues, permission/session ownership, explicit supported device selection and observed-route invalidation | Media/Core/Transport; native AVFoundation/CoreAudio only in this adapter |
 | DiscordVoice | Bounded Voice v8 JSON/binary frames/opcodes, pure handshake/heartbeat/resume reducer, main-Gateway join rendezvous, discovery, RTP framing, Opus packetization and reorder window | Core/Models/Transport and the three media products; no Client/Gateway/facade ownership |
 
 Constructors start no I/O or tasks. A caller drives each reducer, clock, transport
@@ -93,8 +96,35 @@ ranking/unranking and uniform entropy composition. Bounds are 1...176 dimensions
 0...128 pulses and at most UInt32.max codewords; oversized codebooks require
 future recursive band splitting. Forty official libopus codeword fixtures and an
 opt-in seeded oracle compare integer vectors, indices, counts and entropy output.
-This supplies no band allocation, quantizer search, transform or decoded audio.
+This codebook supplies no band allocation or decoded audio; the separately
+adopted quantizer and transform below compose with its integer/entropy contract.
 See the [continuation record](Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md).
+
+`CELTBandQuantizer` adds projected/greedy shape search, all four spreading levels,
+one/two/four/eight short blocks, pulse-domain collapse masks and normalized
+reconstruction. It composes one admitted codebook with the range coder; bands
+requiring recursive splitting remain rejected. Callers supply normalized bands,
+pulse allocation, gain and spreading. Shape results contain spectral values,
+not PCM or complete compressed audio frames. The source retains the applicable
+libopus BSD attribution for adapted search/rotation algorithms.
+
+`CELTTransform` adds all four 48kHz CELT frame sizes (120/240/480/960) and the
+120-sample low-overlap window. Its independently implemented mixed-radix FFT
+uses bounded O(N log N) work/O(N) storage and Double arithmetic internally.
+`CELTTransformStream` owns separate analysis/synthesis histories; unquantized
+round trips have exactly 120 samples of delay. Reset discards both tails; explicit
+zero input flushes them. There is no transient decision, pre/de-emphasis or band
+codec. Official scalar float comparisons are tolerance-qualified, not bit-exact.
+
+`SILKLinearPredictionCoefficients` validates already quantized order-ten/sixteen
+Q12 coefficients with conservative floating-point reflection/gain checks.
+`SILKShortTermFilter` performs streaming analysis or unclipped all-pole synthesis;
+`SILKLongTermSynthesisFilter` adds causal five-tap voiced prediction at 8/12/16kHz.
+Callers own gain/rewhitening and parameter transitions. `SILKExcitationReconstructor`
+implements all six offset combinations, signed pulse adjustment and exact Q23
+excitation/seed updates. These bounded pieces contain no SILK parameter entropy,
+NLSF conversion, encoder parameter search, stereo/rate orchestration or full codec.
+Independent component checks do not establish official decoded-PCM conformance.
 
 Encoded video values retain opaque H.264/H.265/VP8/VP9/AV1, keyframe, dimension and
 optional spatial/temporal-layer metadata. Layer bounds are local storage policy,
@@ -110,8 +140,15 @@ starts no tasks. Capture requires an explicit permission query/request and start
 apps supply microphone usage descriptions and sandbox entitlements. Playback-only
 adoption never prompts. Select host-managed shared session ownership or explicitly
 exclusive foreground session configuration. This supplies no background entitlement.
-Capture uses the hardware rate and first one/two channels; portable resampling is
-explicit. Playback uses the configured format and system output route.
+Capture uses the selected hardware rate and first one/two channels; portable
+resampling is explicit. Playback uses the configured format and selected output route.
+`availableDevices()` explicitly queries bounded immutable UID/name/direction metadata.
+macOS accepts exact CoreAudio input/output UIDs, resolving them again at start and
+checking actual AudioUnit binding. iOS/tvOS/visionOS accept available preferred-input
+UIDs; cleanup restores only a preference the owner still controls. watchOS input and
+arbitrary non-macOS output UID selection fail explicitly because these public APIs
+cannot provide those controls. Nil UIDs retain system routing. Discovery starts no
+engine or permission prompt, and device identifiers are never diagnostic labels.
 
 Input taps synchronously offer owned at-most-120ms PCM blocks to block/byte-bounded
 storage. Overflow drops new capture and saturates a drop counter. Playback reserves
@@ -124,8 +161,9 @@ Observed route/configuration/interruption/reset events stop/discard and require 
 explicit restart. Native notifications defer teardown outside the notification
 stack with a bounded coalesced invalidation. macOS also observes default-device
 changes. OS delivery is not a guaranteed privacy barrier against every route race;
-real hot-unplug/interruption/device qualification has not run. Arbitrary device UID
-selection and Windows/Android capture/playback remain unimplemented. Linux accepts
+real hot-unplug/interruption/device qualification has not run. Selected device-alive
+and topology monitoring is bounded and released on stop. Windows/Android
+capture/playback remain unimplemented. Linux accepts
 injected PCM. No test requests permission, opens a microphone or plays audio.
 
 ## Transport encryption and RTP

@@ -1,0 +1,59 @@
+{
+  "boundaryCases": 40,
+  "ccVersion": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "channelCounts": [
+    1,
+    2
+  ],
+  "compared": [
+    "every forward frequency bin",
+    "every zero-state inverse output sample",
+    "four complete committed float32 fixture pairs"
+  ],
+  "comparedCases": 244,
+  "fixtureCount": 4,
+  "forwardToleranceAbsoluteRelative": [
+    2e-06,
+    1e-06
+  ],
+  "frameSampleCounts": [
+    120,
+    240,
+    480,
+    960
+  ],
+  "generator": "Python random.Random MT19937",
+  "inverseToleranceAbsoluteRelative": [
+    0.0001,
+    3e-06
+  ],
+  "maximumAbsoluteError": {
+    "forward": 1.6000000013782767e-07,
+    "inverse": 4.9869999999785364e-05
+  },
+  "officialReleaseURL": "https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html",
+  "officialSourceSHA256": {
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208",
+    "celt/kiss_fft.c": "0ff3c57ce9dededbf9925338808223ee8e164b5847f2b320da49b11bac4024d0",
+    "celt/mdct.c": "8a21116be9b1332926586f8f44af0e1afd9bb7e8a65614683f972654a0668dcb"
+  },
+  "officialVersion": "1.6.1",
+  "overlapSampleCount": 120,
+  "ownedSwiftSHA256": {
+    "Sources/DiscordVoiceCodecs/CELTTransform.swift": "fec3dc376fead581a4b2a593c6247760692e4bb5dc5c518db4bba89a808762fd"
+  },
+  "pythonImplementation": "CPython",
+  "pythonVersion": "3.14.0",
+  "scope": "CELT transform primitives only; no compressed-packet, band decoder, SILK/hybrid, PLC/FEC, complete codec or Discord/device conformance",
+  "seed": 6716437,
+  "sourceArchiveByteCount": 10472813,
+  "sourceArchiveSHA256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  "sourceArchiveURL": "https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz",
+  "sourceLicense": "Unmodified upstream COPYING retained during temporary reference compilation",
+  "sourceLicenseSHA256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551",
+  "stressCases": 200,
+  "swiftFixturePath": "Tests/DiscordVoiceCodecsTests/CELTTransformOracleFixtures.swift",
+  "swiftFixtureSHA256": "5cb9de9dfa01cb6748ae34eceea9c5061f1c213d8d8c4abb8d2b102267cd17cb",
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+  "verifiedOn": "2026-10-17"
+}

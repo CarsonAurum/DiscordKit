@@ -67,7 +67,46 @@
       "evidence": [
         "Tests/DiscordVoiceCodecsTests/CELTPulseCodebookTests.swift"
       ],
-      "remainingGates": "Exact bounded RFC6716 signed pulse enumeration and entropy composition, forty independent libopus fixtures. No band splitting/allocation, shape search, spreading, MDCT, encoder/decoder PCM or PLC/FEC."
+      "remainingGates": "Exact bounded RFC6716 signed pulse enumeration/entropy with forty independent fixtures. Band search/spreading and transform primitives are recorded separately; recursive splitting/allocation, full codec PCM and PLC/FEC remain absent."
+    },
+    {
+      "id": "silk-reconstruction",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/SILKLinearPrediction.swift",
+        "Sources/DiscordVoiceCodecs/SILKLongTermPrediction.swift",
+        "Sources/DiscordVoiceCodecs/SILKExcitation.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/SILKLinearPredictionTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKLongTermPredictionTests.swift",
+        "Tests/DiscordVoiceCodecsTests/SILKExcitationTests.swift"
+      ],
+      "remainingGates": "Owned validated LPC/streaming analysis/synthesis, five-tap voiced LTP and Q23 excitation reconstruction. Callers supply decoded parameters and rewhitened history; NLSF/pitch/pulse entropy, encoder analysis/quantization, stereo/rate conversion and full codec remain unimplemented."
+    },
+    {
+      "id": "celt-band-shape",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/CELTBandQuantizerTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTBandOracleFixtures.swift"
+      ],
+      "remainingGates": "Owned projected/greedy pulse search, four spreading levels,1/2/4/8 short blocks, collapse mask, normalized reconstruction and entropy composition.2016 independent component cases; recursive splitting rejected. No allocation/energy/stereo/anti-collapse/full codec."
+    },
+    {
+      "id": "celt-transform",
+      "status": "partial",
+      "implementation": [
+        "Sources/DiscordVoiceCodecs/CELTTransform.swift"
+      ],
+      "evidence": [
+        "Tests/DiscordVoiceCodecsTests/CELTTransformTests.swift",
+        "Tests/DiscordVoiceCodecsTests/CELTTransformOracleFixtures.swift"
+      ],
+      "remainingGates": "Owned mixed-radix FFT, low-overlap CELT MDCT/IMDCT and streaming 120-sample history at four frame sizes in mono/stereo. Independent float libopus component vectors only; no transient/stereo/band codec, PLC/FEC or full decoded-PCM conformance."
     },
     {
       "id": "opus-encoder-decoder",
@@ -154,12 +193,14 @@
       "id": "native-audio-devices",
       "status": "partial",
       "implementation": [
-        "Sources/DiscordApplePlatform/AppleAudio.swift"
+        "Sources/DiscordApplePlatform/AppleAudio.swift",
+        "Sources/DiscordApplePlatform/AppleAudioDevices.swift"
       ],
       "evidence": [
-        "Tests/DiscordApplePlatformTests/AppleAudioTests.swift"
+        "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
+        "Tests/DiscordApplePlatformTests/AppleAudioDevicesTests.swift"
       ],
-      "remainingGates": "Apple AVAudioEngine/AVAudioPlayerNode system-route capture/playback, explicit permissions/session policy, bounded callback admission and observed route/configuration/interruption cleanup implemented. Deterministic injected backend and native-buffer conversion only; no microphone/playback/device runtime qualification. Explicit arbitrary device UID selection and Windows/Android adapters unimplemented. Linux PCM remains injected."
+      "remainingGates": "Apple engine capture/playback, explicit macOS input/output UID selection, iOS/tvOS/visionOS preferred-input selection, bounded metadata/queues and observed lifecycle cleanup implemented. watchOS preferred input and arbitrary non-macOS output selection explicitly unsupported. Deterministic backend/property tests and selected-module cross-SDK compilation only; no permission/device/route/hot-unplug runtime qualification. Windows/Android adapters remain unimplemented. Linux PCM remains injected."
     },
     {
       "id": "video-codecs-transforms",

@@ -8,7 +8,8 @@ import DiscordVoiceCrypto
 @main struct VoiceBot {
     /// Round-trips synthetic Opus silence through RTP-size protection and a bounded reorder queue.
     /// First checks a bounded bandlimited PCM/resampling timeline, silence activity decisions,
-    /// and independent synthetic entropy/pulse-codebook symbols;
+    /// independent synthetic entropy/pulse-codebook symbols, CELT transform/band shapes
+    /// and SILK predictor analysis/synthesis;
     /// these checks neither encode nor decode SILK/CELT audio.
     /// Uses a fixed, public test-only key that must never be used for real media. No network,
     /// device, authentication, DAVE context or background task is created. The two cipher
@@ -17,6 +18,7 @@ import DiscordVoiceCrypto
     static func main() async throws {
         try await demonstratePortableMedia()
         try demonstrateEntropyCoding()
+        try demonstrateCodecComponents()
         let key = Data(0..<32)
         let sender = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
         let receiver = try VoiceTransportCipher(mode: .aeadXChaCha20Poly1305RTPSize, key: key)
@@ -98,6 +100,44 @@ import DiscordVoiceCrypto
               try codebook.decode(from: &decoder) == pulses,
               decoder.finalRange == encoder.finalRange else { throw ExampleFailure.invalidInvariant }
         print("Synthetic entropy symbols match their final arithmetic range; no audio codec is implied.")
+    }
+
+    /// Exercises owned CELT analysis/overlap and one independently coded spectral band, then
+    /// validates SILK short-term analysis/synthesis. All coefficients/contexts are synthetic;
+    /// no complete compressed audio syntax, band allocation, SILK parameters or PLC is implied.
+    /// - Throws: Transform/predictor/entropy errors or any local reconstruction invariant failure.
+    private static func demonstrateCodecComponents() throws {
+        let transform = try CELTTransform(frameSampleCount: 240)
+        var stream = CELTTransformStream(transform: transform)
+        let source = (0..<240).map { Float(0.25 * sin(2 * Double.pi * 440 * Double($0) / 48_000)) }
+        let coefficients = try stream.analyze(source)
+        let first = try stream.synthesize(coefficients)
+        let trailingCoefficients = try stream.analyze(Array(repeating: 0, count: 240))
+        let tail = try stream.synthesize(trailingCoefficients)
+        let recovered = Array((first + tail).dropFirst(120).prefix(source.count))
+        guard zip(source, recovered).allSatisfy({ abs($0 - $1) < 1e-5 }) else {
+            throw ExampleFailure.invalidInvariant
+        }
+        let band = Array(coefficients.prefix(8))
+        let norm = sqrt(band.reduce(0.0) { $0 + Double($1) * Double($1) })
+        let normalized = band.map { Float(Double($0) / max(1e-15, norm)) }
+        let quantizer = try CELTBandQuantizer(dimensions: 8, pulseCount: 4)
+        var encoder = try OpusRangeEncoder(frameByteCount: 8)
+        let shape = try quantizer.encode(normalized, into: &encoder)
+        var decoder = try OpusRangeDecoder(frame: encoder.finalize())
+        guard try quantizer.decode(from: &decoder) == shape,
+              decoder.finalRange == encoder.finalRange else { throw ExampleFailure.invalidInvariant }
+
+        let predictor = try SILKLinearPredictionCoefficients(q12: [2048] + Array(repeating: 0, count: 9))
+        var analysis = try SILKShortTermFilter(direction: .analysis, coefficients: predictor)
+        var synthesis = try SILKShortTermFilter(direction: .synthesis, coefficients: predictor)
+        let signal = source.map(Double.init)
+        let residual = try analysis.process(signal)
+        let reconstructed = try synthesis.process(residual)
+        guard zip(signal, reconstructed).allSatisfy({ abs($0 - $1) < 1e-12 }) else {
+            throw ExampleFailure.invalidInvariant
+        }
+        print("CELT transform/shape and SILK predictor components checked; complete Opus remains unimplemented.")
     }
 
     /// Example-local invariant failures, without treating an entropy round trip as voice support.

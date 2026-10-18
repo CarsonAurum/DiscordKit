@@ -9,6 +9,16 @@ import os
 /// Deterministic native-boundary ownership and synthetic layout tests; never opens a device.
 @MainActor @Suite("Apple audio ownership")
 struct AppleAudioTests {
+    /// Existing injected backends report unsupported discovery without opening native hardware.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func defaultBackendDiscoveryIsExplicitlyUnsupported() throws {
+        let format = try PCMFormat(sampleRate: 48_000, channelCount: 1)
+        let backend = AudioTestBackend(format: format)
+        let device = AppleAudioDevice(configuration: try AppleAudioConfiguration(playbackFormat: format), backend: backend)
+        #expect(throws: AppleAudioError.unsupportedDeviceSelection) { try device.availableDevices() }
+        #expect(backend.startCount == 0 && backend.statusCount == 0 && backend.stopCount == 0)
+    }
+
     /// Invalid direction/channel/frame/budget values fail before any native backend is constructed.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func configurationValidation() throws {

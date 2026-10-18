@@ -27,8 +27,9 @@ Phase 11 adds the independent [Activity client and owned browser bridge](Docs/Ac
 with typed catalogs, bounded correlation/subscriptions and injected host integration.
 Approved Discord browser/mobile smoke qualification remains open. Phase 12 starts
 with independent [portable media and voice protocol components](Docs/Voice.md):
-bounded PCM/DSP, Opus framing/entropy/pulse codebooks, transport AEAD, RTP and pure
-voice control reducers. The Apple adapter owns explicit system-route audio I/O;
+bounded PCM/DSP, Opus framing/entropy, CELT transforms/band shapes, SILK prediction/
+excitation, transport AEAD, RTP and pure voice control reducers. The Apple adapter
+owns audio I/O and supported explicit device routing;
 native device qualification and Windows/Android implementations remain open.
 Complete Opus codecs, MLS/DAVE and running voice sessions remain unimplemented;
 native Social SDK and schema-blocked Social Commerce remain later work.

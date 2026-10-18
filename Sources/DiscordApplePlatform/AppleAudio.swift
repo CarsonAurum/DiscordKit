@@ -4,6 +4,7 @@ import DiscordMedia
 import Foundation
 import os
 #if os(macOS)
+import AudioToolbox
 import CoreAudio
 #endif
 
@@ -36,13 +37,16 @@ public enum AppleAudioError: Error, Sendable, Equatable {
     case invalidConfiguration, alreadyRunning, notRunning, permissionRequestInProgress
     case microphonePermissionRequired(AppleAudioPermission)
     case unavailableFormat, incompatibleFormat, queueFull, identifierExhausted, nativeFailure
+    case deviceUnavailable, unsupportedDeviceSelection
 }
 
 /// Bounded capture/playback policy; construction never queries or changes native devices.
 ///
 /// Capture retains the hardware rate and selects the first one or two input channels.
 /// Consumers explicitly resample for a codec. Playback uses the supplied format and the
-/// system output route. These settings do not enumerate or select an arbitrary device UID.
+/// selected output route. Explicit UIDs resolve again at start and never fall back to another device.
+/// macOS supports both directions; iOS/tvOS/visionOS select available inputs only. watchOS
+/// exposes route metadata but has no public preferred-input API and rejects explicit UIDs.
 public struct AppleAudioConfiguration: Sendable, Equatable {
     public let captureEnabled: Bool
     public let playbackEnabled: Bool
@@ -54,6 +58,8 @@ public struct AppleAudioConfiguration: Sendable, Equatable {
     public let maximumPlaybackBlocks: Int
     public let maximumPlaybackBytes: Int
     public let sessionPolicy: AppleAudioSessionPolicy
+    public let captureDeviceUID: String?
+    public let playbackDeviceUID: String?
 
     /// Validates independent queue budgets without requesting microphone permission or starting work.
     /// - Parameters:
@@ -69,13 +75,19 @@ public struct AppleAudioConfiguration: Sendable, Equatable {
     ///   - maximumPlaybackBytes: Native scheduled PCM payload limit in `1...67_108_864` bytes.
     ///   - sessionPolicy: Host ownership by default; exclusive foreground mode changes the shared
     ///     session on iOS/tvOS/watchOS/visionOS only, and never acquires background execution time.
-    /// - Throws: `AppleAudioError.invalidConfiguration` for invalid bounds or both directions disabled.
+    ///   - captureDeviceUID: Exact local CoreAudio/input-port UID, nil for the system route. At most
+    ///     1,024 UTF-8 bytes; a UID requires that direction enabled. Available inputs depend on session
+    ///     state; watchOS rejects explicit selection because its preferred-input API is unavailable.
+    ///   - playbackDeviceUID: Exact local CoreAudio UID, nil for the system route. Explicit output
+    ///     selection is macOS-only; other Apple platforms fail start with unsupportedDeviceSelection.
+    /// - Throws: `AppleAudioError.invalidConfiguration` for invalid bounds, UIDs or disabled directions.
     public init(captureEnabled: Bool = true, playbackEnabled: Bool = true,
                 captureChannelCount: Int = 1, captureBufferFrames: Int = 480,
                 playbackFormat: PCMFormat, maximumCaptureBlocks: Int = 8,
                 maximumCaptureBytes: Int = 1_048_576, maximumPlaybackBlocks: Int = 8,
                 maximumPlaybackBytes: Int = 1_048_576,
-                sessionPolicy: AppleAudioSessionPolicy = .hostManaged) throws {
+                sessionPolicy: AppleAudioSessionPolicy = .hostManaged,
+                captureDeviceUID: String? = nil, playbackDeviceUID: String? = nil) throws {
         guard captureEnabled || playbackEnabled, (1...2).contains(captureChannelCount),
               (1...4096).contains(captureBufferFrames),
               (1...4096).contains(maximumCaptureBlocks), (1...4096).contains(maximumPlaybackBlocks),
@@ -83,6 +95,12 @@ public struct AppleAudioConfiguration: Sendable, Equatable {
               (1...67_108_864).contains(maximumPlaybackBytes) else {
             throw AppleAudioError.invalidConfiguration
         }
+        guard captureDeviceUID == nil || (captureEnabled && AppleAudioRouting.validUID(captureDeviceUID!)),
+              playbackDeviceUID == nil || (playbackEnabled && AppleAudioRouting.validUID(playbackDeviceUID!)) else {
+            throw AppleAudioError.invalidConfiguration
+        }
+        self.captureDeviceUID = captureDeviceUID
+        self.playbackDeviceUID = playbackDeviceUID
         self.captureEnabled = captureEnabled
         self.playbackEnabled = playbackEnabled
         self.captureChannelCount = captureChannelCount
@@ -141,8 +159,15 @@ public struct AppleAudioCallbacks: Sendable {
 /// Implementations must not start work in their initializer. A failed start must tolerate an
 /// immediate stop. Playback completion may run on any thread, exactly once or after a later stop;
 /// generation fencing makes late callbacks harmless. Stop synchronously revokes callback admission
-/// and releases native devices. Implementations must not silently change the requested PCM format.
+/// and releases native devices. Implementations must honor exact configured UIDs or throw
+/// unsupportedDeviceSelection/deviceUnavailable; silent default fallback is forbidden. They must
+/// not silently change the requested PCM format.
 @MainActor public protocol AppleAudioBackend: AnyObject, Sendable {
+    /// Explicitly enumerates bounded endpoint metadata without activating/opening audio devices.
+    /// - Returns: At most 512 UID/direction entries; AVAudioSession outputs are current-route metadata only.
+    /// - Throws: A query failure; the owner redacts native errors. A snapshot can become stale immediately.
+    func availableDevices() throws -> [AppleAudioEndpoint]
+
     /// Reads current permission without a prompt or device access.
     /// - Returns: The currently observed microphone authorization state.
     func recordingPermission() -> AppleAudioPermission
@@ -171,6 +196,14 @@ public struct AppleAudioCallbacks: Sendable {
     func stop()
 }
 
+/// Default enumeration for existing injected backends that do not implement device discovery.
+public extension AppleAudioBackend {
+    /// Reports that this backend does not expose native device enumeration, without starting I/O.
+    /// - Returns: No value; conformers with native discovery override this implementation.
+    /// - Throws: Always `unsupportedDeviceSelection`.
+    func availableDevices() throws -> [AppleAudioEndpoint] { throw AppleAudioError.unsupportedDeviceSelection }
+}
+
 /// Explicit Apple capture/playback owner over a real or injected native backend.
 ///
 /// Construction starts no I/O, tasks, observers or permission prompt. Lifecycle and public calls
@@ -180,10 +213,11 @@ public struct AppleAudioCallbacks: Sendable {
 /// bounded payload/block budgets. Capture overflow drops the newest block; playback overflow fails.
 ///
 /// The embedding app supplies NSMicrophoneUsageDescription and required sandbox entitlements.
-/// Query/request permission explicitly before capture start. Route changes and interruptions stop
-/// and discard all queued media, preventing private headphone audio from moving to a speaker without
-/// an explicit start. Arbitrary device selection, native codec processing and background entitlement
-/// ownership remain separate work. Call stop before abandoning the owner; deinitialization also stops.
+/// Query/request permission explicitly before capture start. Route changes and interruptions request
+/// stop and discard queued media, requiring explicit restart. Native notification delivery is
+/// asynchronous and cannot guarantee the absence of transient hardware rerouting. macOS UIDs
+/// select exact engine-local devices. AVAudioSession input preferences require app-wide session authority. Native codec processing and background entitlement ownership
+/// remain separate work. Call stop before abandoning the owner; deinitialization also stops.
 @MainActor
 public final class AppleAudioDevice: PCMSource, PCMSink {
     public let configuration: AppleAudioConfiguration
@@ -216,6 +250,25 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
         backend.stop()
     }
 
+    /// Explicitly queries current endpoint metadata without opening audio or requesting permission.
+    ///
+    /// On AVAudioSession platforms, available inputs depend on the host-configured active category;
+    /// outputs describe only the current route and cannot be selected by UID. UIDs are local hardware
+    /// identifiers; store only when needed and do not use them as telemetry labels.
+    /// - Returns: At most 512 current endpoint entries; an empty list is valid when no route exists.
+    /// - Throws: Cancellation, unsupportedDeviceSelection, or redacted nativeFailure for query errors.
+    public func availableDevices() throws -> [AppleAudioEndpoint] {
+        try Task.checkCancellation()
+        do {
+            let devices = try backend.availableDevices()
+            guard devices.count <= 512 else { throw AppleAudioError.nativeFailure }
+            return devices
+        } catch {
+            if let known = error as? AppleAudioError { throw known }
+            throw AppleAudioError.nativeFailure
+        }
+    }
+
     /// Queries microphone status without prompting or starting an engine.
     /// - Returns: The native or injected permission state; playback-only adoption needs no grant.
     public func recordingPermission() -> AppleAudioPermission { backend.recordingPermission() }
@@ -237,10 +290,11 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
         return result
     }
 
-    /// Explicitly starts the system route after permission, with fresh generation-fenced callbacks.
+    /// Explicitly starts configured routes after permission, with fresh generation-fenced callbacks.
     /// - Returns: Actual capture format at the device rate, or nil for playback-only operation.
     /// - Throws: Cancellation before native access, `alreadyRunning`, `microphonePermissionRequired`,
-    ///   `identifierExhausted`, `unavailableFormat`, or redacted `nativeFailure`. Every native start
+    ///   `identifierExhausted`, `unavailableFormat`, `deviceUnavailable`,
+    ///   `unsupportedDeviceSelection`, or redacted `nativeFailure`. Every native start
     ///   failure stops the backend and clears all queue accounting before returning.
     @discardableResult public func start() throws -> PCMFormat? {
         try Task.checkCancellation()
@@ -492,9 +546,14 @@ private final class AppleAudioStorage: Sendable {
     private var observers: [NSObjectProtocol] = []
     private var activatedSession = false
     private var activeObserverGeneration: UUID?
+    #if !os(macOS) && !os(watchOS)
+    private var previousPreferredInput: AVAudioSessionPortDescription?
+    private var changedPreferredInput = false
+    private var selectedPreferredInputUID: String?
+    #endif
     private let invalidation = AppleAudioInvalidationBridge()
     #if os(macOS)
-    private var routeObservers: [(AudioObjectPropertyAddress, AudioObjectPropertyListenerBlock)] = []
+    private var routeObservers: [(AudioObjectID, AudioObjectPropertyAddress, AudioObjectPropertyListenerBlock)] = []
     #endif
 
     /// Creates an inert backend; AVAudioEngine and native sessions are deferred until explicit start.
@@ -502,6 +561,37 @@ private final class AppleAudioStorage: Sendable {
 
     /// Removes notification observers and native resources when explicit cleanup was omitted.
     isolated deinit { stop() }
+
+    /// Queries bounded system device/input-port metadata without an engine or permission prompt.
+    /// - Returns: CoreAudio selectable UIDs on macOS; available inputs and current outputs elsewhere.
+    /// - Throws: `nativeFailure` for excessive/invalid metadata or CoreAudio query failures.
+    func availableDevices() throws -> [AppleAudioEndpoint] {
+        do {
+            #if os(macOS)
+            return try AppleAudioHardwareCatalog.endpoints(using: NativeAppleAudioHardwareProperties())
+            #else
+            let session = AVAudioSession.sharedInstance()
+            let inputs = session.availableInputs ?? []
+            let route = session.currentRoute
+            guard inputs.count <= 256, route.outputs.count <= 256 else { throw AppleAudioError.nativeFailure }
+            let currentInputs = Set(route.inputs.map(\.uid))
+            #if os(watchOS)
+            let inputSelectable = false
+            #else
+            let inputSelectable = true
+            #endif
+            return try inputs.map {
+                try AppleAudioEndpoint(uid: $0.uid, name: $0.portName, direction: .input,
+                                       isDefault: currentInputs.contains($0.uid), isSelectable: inputSelectable)
+            } + route.outputs.map {
+                try AppleAudioEndpoint(uid: $0.uid, name: $0.portName, direction: .output,
+                                       isDefault: true, isSelectable: false)
+            }
+            #endif
+        } catch {
+            throw AppleAudioError.nativeFailure
+        }
+    }
 
     /// Reads authorization without touching an input node, ensuring start cannot implicitly prompt.
     /// - Returns: Native microphone authorization mapped to the portable permission state.
@@ -558,15 +648,20 @@ private final class AppleAudioStorage: Sendable {
         return recordingPermission()
     }
 
-    /// Builds and starts an engine against the current system input/output routes.
+    /// Builds and starts an engine against exact requested UIDs or the current system routes.
     /// - Parameters:
     ///   - configuration: Validated mono/stereo selection, playback format and session policy.
     ///   - callbacks: Bounded generation-fenced capture and lifecycle callbacks.
     /// - Returns: Actual hardware-rate capture layout, or nil for playback-only use.
-    /// - Throws: Native engine/session errors or `unavailableFormat`; caller invokes stop on failure.
+    /// - Throws: Native engine/session errors, `unavailableFormat`, `deviceUnavailable` or
+    ///   `unsupportedDeviceSelection`; caller invokes stop to release partial device/session ownership.
     func start(configuration: AppleAudioConfiguration, callbacks: AppleAudioCallbacks) throws -> PCMFormat? {
         guard engine == nil else { throw AppleAudioError.alreadyRunning }
         #if !os(macOS)
+        guard configuration.playbackDeviceUID == nil else { throw AppleAudioError.unsupportedDeviceSelection }
+        #if os(watchOS)
+        guard configuration.captureDeviceUID == nil else { throw AppleAudioError.unsupportedDeviceSelection }
+        #endif
         if configuration.sessionPolicy == .exclusiveForeground {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(configuration.captureEnabled ? .playAndRecord : .playback, mode: .default)
@@ -574,8 +669,36 @@ private final class AppleAudioStorage: Sendable {
             activatedSession = true
         }
         #endif
+        #if !os(macOS) && !os(watchOS)
+        if let uid = configuration.captureDeviceUID {
+            _ = try AppleAudioRouting.resolve(uid: uid, direction: .input, endpoints: availableDevices())
+            let session = AVAudioSession.sharedInstance()
+            guard let port = session.availableInputs?.first(where: { $0.uid == uid }) else {
+                throw AppleAudioError.deviceUnavailable
+            }
+            previousPreferredInput = session.preferredInput
+            changedPreferredInput = true
+            selectedPreferredInputUID = uid
+            try session.setPreferredInput(port)
+            guard session.currentRoute.inputs.contains(where: { $0.uid == uid }) else {
+                throw AppleAudioError.deviceUnavailable
+            }
+        }
+        #endif
         let native = AVAudioEngine()
         engine = native
+        #if os(macOS)
+        var selectedInputID: AudioDeviceID?
+        var selectedOutputID: AudioDeviceID?
+        if let uid = configuration.captureDeviceUID {
+            selectedInputID = try selectDevice(uid: uid, direction: .input, node: native.inputNode)
+        }
+        if let uid = configuration.playbackDeviceUID {
+            selectedOutputID = try selectDevice(uid: uid, direction: .output, node: native.outputNode)
+        }
+        let bindingProperties = NativeAppleAudioBoundDeviceProperties(engine: native)
+        try AppleAudioHardwareBinding.verify(input: selectedInputID, output: selectedOutputID, using: bindingProperties)
+        #endif
         activeObserverGeneration = invalidation.begin()
         var captureFormat: PCMFormat?
         if configuration.captureEnabled {
@@ -635,15 +758,22 @@ private final class AppleAudioStorage: Sendable {
         observe(name: AVAudioSession.mediaServicesWereResetNotification, object: session,
                 reason: .mediaServicesReset, callbacks: callbacks)
         #else
-        if configuration.captureEnabled {
+        if configuration.captureEnabled && configuration.captureDeviceUID == nil {
             try observeRoute(selector: kAudioHardwarePropertyDefaultInputDevice, callbacks: callbacks)
         }
-        if configuration.playbackEnabled {
+        if configuration.playbackEnabled && configuration.playbackDeviceUID == nil {
             try observeRoute(selector: kAudioHardwarePropertyDefaultOutputDevice, callbacks: callbacks)
+        }
+        try observeRoute(selector: kAudioHardwarePropertyDevices, callbacks: callbacks)
+        for identifier in Set([selectedInputID, selectedOutputID].compactMap { $0 }) {
+            try observeRoute(selector: kAudioDevicePropertyDeviceIsAlive, object: identifier, callbacks: callbacks)
         }
         #endif
         native.prepare()
         try native.start()
+        #if os(macOS)
+        try AppleAudioHardwareBinding.verify(input: selectedInputID, output: selectedOutputID, using: bindingProperties)
+        #endif
         if #available(macOS 27, iOS 27, tvOS 27, watchOS 27, visionOS 27, *) {
             try player?.playAudio()
         } else {
@@ -665,15 +795,17 @@ private final class AppleAudioStorage: Sendable {
 
     /// Removes observers/tap, stops the engine and deactivates only a session activated by this owner.
     /// Repeated calls are harmless, and completion callbacks only release already-revoked accounting.
+    /// A preferred input is restored only while this owner still owns that preference; a host-selected
+    /// replacement is preserved. A disconnected previous port is replaced by the system preference.
     func stop() {
         activeObserverGeneration = nil
         invalidation.end()
         for observer in observers { NotificationCenter.default.removeObserver(observer) }
         observers.removeAll(keepingCapacity: false)
         #if os(macOS)
-        for (storedAddress, listener) in routeObservers {
+        for (object, storedAddress, listener) in routeObservers {
             var address = storedAddress
-            AudioObjectRemovePropertyListenerBlock(AudioObjectID(kAudioObjectSystemObject), &address, .global(), listener)
+            AudioObjectRemovePropertyListenerBlock(object, &address, .global(), listener)
         }
         routeObservers.removeAll(keepingCapacity: false)
         #endif
@@ -684,6 +816,20 @@ private final class AppleAudioStorage: Sendable {
         engine = nil
         player = nil
         playbackFormat = nil
+        #if !os(macOS) && !os(watchOS)
+        if changedPreferredInput {
+            let session = AVAudioSession.sharedInstance()
+            if session.preferredInput?.uid == selectedPreferredInputUID {
+                let previous = previousPreferredInput.flatMap { port in
+                    session.availableInputs?.first { $0.uid == port.uid }
+                }
+                try? session.setPreferredInput(previous)
+            }
+        }
+        previousPreferredInput = nil
+        selectedPreferredInputUID = nil
+        changedPreferredInput = false
+        #endif
         #if !os(macOS)
         if activatedSession {
             try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
@@ -709,12 +855,44 @@ private final class AppleAudioStorage: Sendable {
     }
 
     #if os(macOS)
-    /// Monitors system-default device replacement even when hardware rate/channel counts stay equal.
+    /// Selects an engine-local macOS input/output device without changing system defaults.
     /// - Parameters:
-    ///   - selector: Default input/output property matching an enabled direction.
+    ///   - uid: Exact configured local UID; disappearance never falls back to another device.
+    ///   - direction: Input/output stream eligibility to validate before touching the AudioUnit.
+    ///   - node: Engine I/O node whose current device is changed before graph/tap setup.
+    /// - Returns: Resolved native ID for paired readback and selected-device alive monitoring.
+    /// - Throws: `deviceUnavailable` for missing UID/direction; `nativeFailure` for native rejection.
+    ///   Both selected directions are verified together after selection and again after startup,
+    ///   because selecting a second device or starting the engine may rebind an earlier node.
+    ///   Selection never changes system-wide default properties.
+    private func selectDevice(uid: String, direction: AppleAudioDirection, node: AVAudioIONode) throws -> AudioDeviceID {
+        var identifier = try AppleAudioHardwareCatalog.deviceID(uid: uid, direction: direction,
+                                                               using: NativeAppleAudioHardwareProperties())
+        if #available(macOS 27, *) {
+            try node.withAudioUnit { unit in
+                guard let unit, AudioUnitSetProperty(unit, kAudioOutputUnitProperty_CurrentDevice,
+                    kAudioUnitScope_Global, 0, &identifier, UInt32(MemoryLayout<AudioDeviceID>.size)) == noErr else {
+                    throw AppleAudioError.nativeFailure
+                }
+            }
+        } else {
+            guard let unit = node.audioUnit, AudioUnitSetProperty(unit, kAudioOutputUnitProperty_CurrentDevice,
+                kAudioUnitScope_Global, 0, &identifier, UInt32(MemoryLayout<AudioDeviceID>.size)) == noErr else {
+                throw AppleAudioError.nativeFailure
+            }
+        }
+        return identifier
+    }
+
+    /// Monitors default routes and the bounded global device list, including same-format unplug events.
+    /// - Parameters:
+    ///   - selector: Default input/output, device-list or selected-device alive property.
+    ///   - object: System object by default, or an exact selected device for alive-state monitoring.
     ///   - callbacks: Generation-fenced lifecycle callback set.
     /// - Throws: `nativeFailure` if CoreAudio cannot install a route listener; start then cleans up.
-    private func observeRoute(selector: AudioObjectPropertySelector, callbacks: AppleAudioCallbacks) throws {
+    private func observeRoute(selector: AudioObjectPropertySelector,
+                              object: AudioObjectID = AudioObjectID(kAudioObjectSystemObject),
+                              callbacks: AppleAudioCallbacks) throws {
         var address = AudioObjectPropertyAddress(mSelector: selector, mScope: kAudioObjectPropertyScopeGlobal,
                                                  mElement: kAudioObjectPropertyElementMain)
         guard let generation = activeObserverGeneration else { throw AppleAudioError.notRunning }
@@ -722,10 +900,10 @@ private final class AppleAudioStorage: Sendable {
         let listener: AudioObjectPropertyListenerBlock = { _, _ in
             invalidation.enqueue(.routeChanged, callbacks: callbacks, generation: generation)
         }
-        guard AudioObjectAddPropertyListenerBlock(AudioObjectID(kAudioObjectSystemObject), &address, .global(), listener) == noErr else {
+        guard AudioObjectAddPropertyListenerBlock(object, &address, .global(), listener) == noErr else {
             throw AppleAudioError.nativeFailure
         }
-        routeObservers.append((address, listener))
+        routeObservers.append((object, address, listener))
     }
     #endif
 

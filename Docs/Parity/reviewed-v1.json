@@ -70032,7 +70032,15 @@
         "symbol.12A.PCMBandlimitedResampler",
         "symbol.12A.PCMSpeechActivityDetector",
         "symbol.12A.CELTPulseCodebook",
-        "symbol.12A.AppleAudioDevice"
+        "symbol.12A.AppleAudioDevice",
+        "symbol.12A.CELTTransform",
+        "symbol.12A.CELTTransformStream",
+        "symbol.12A.CELTBandQuantizer",
+        "symbol.12A.SILKLinearPredictionCoefficients",
+        "symbol.12A.SILKShortTermFilter",
+        "symbol.12A.SILKLongTermSynthesisFilter",
+        "symbol.12A.SILKExcitationReconstructor",
+        "symbol.12A.AppleAudioEndpoint"
       ],
       "evidenceIDs": [
         "evidence.12A.tocConfigurations",
@@ -70059,11 +70067,20 @@
         "evidence.12A.officialCodewordFixtures",
         "evidence.12A.exhaustiveBijectionAndLargeBoundaries",
         "evidence.12A.captureBudgetsFormatAndFIFO",
-        "evidence.12A.lifecycleStopsAndExplicitRestart"
+        "evidence.12A.lifecycleStopsAndExplicitRestart",
+        "evidence.12A.officialBandOracle",
+        "evidence.12A.bandValidationAtomicity",
+        "evidence.12A.silkOfficialAnalysis",
+        "evidence.12A.silkLTPRecurrence",
+        "evidence.12A.explicitAppleDiscovery",
+        "evidence.12A.appleCatalogLimits",
+        "evidence.12A.officialFloatTransform",
+        "evidence.12A.transformOverlapDelay",
+        "evidence.12A.officialExcitation"
       ],
-      "notes": "Owned RFC6716 ordinary Opus framing, bounded entropy operations and exact CELT signed pulse-codebook ranking/unranking with independent libopus1.6.1 fixtures and seeded verification. Portable PCM processing/queues/clocks/pacing, continuous linear and finite Blackman-windowed-sinc resampling and adaptive multi-feature speech VAD are implemented. VAD accuracy evidence is synthetic; no corpus or realtime qualification. ApplePlatform separately implements system-route AVAudioEngine capture/playback, explicit permission/session ownership, bounded callback queues and observed route/interruption/configuration cleanup. Native device runtime, full routing/UID selection and Windows/Android adapters remain unqualified or unimplemented. SILK/CELT/hybrid full audio encoder/decoder, band splitting/allocation/transforms, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; chronological continuation and full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md. Existing Voicev8/RTP48000Hz are unchanged; upstream announcement/effective dates unknown. No complete Phase12A, live voice, production or cross-platform support claim.",
+      "notes": "Owned RFC6716 ordinary framing/entropy/pulse codebooks now compose with bounded CELT low-overlap MDCT/IMDCT, single-band pulse search/spreading/normalization and SILK LPC/LTP/excitation reconstruction primitives. Independent libopus1.6.1 component fixtures and seeded verification do not establish a complete audio codec. Portable PCM queues/clocks/pacing/resampling and synthetic-only speech VAD remain implemented. ApplePlatform adds explicit macOS input/output UIDs, iOS/tvOS/visionOS preferred inputs and bounded device metadata/route cleanup; watchOS input and non-macOS output selection are explicitly unsupported by these APIs. Native device runtime and Windows/Android adapters remain unqualified or unimplemented. Full SILK/CELT/hybrid compressed syntax, energy/allocation/splitting/stereo/mode transitions, encoder analysis, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; continuation and full12A gates: Docs/Parity/changes/2026-10-17-phase12a-codec-routing.md. Existing Voicev8/RTP48000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no full-codec, live voice, production or cross-platform claim.",
       "manual": {
-        "behavior": "Owned RFC6716 ordinary Opus framing, bounded entropy operations and exact CELT signed pulse-codebook ranking/unranking with independent libopus1.6.1 fixtures and seeded verification. Portable PCM processing/queues/clocks/pacing, continuous linear and finite Blackman-windowed-sinc resampling and adaptive multi-feature speech VAD are implemented. VAD accuracy evidence is synthetic; no corpus or realtime qualification. ApplePlatform separately implements system-route AVAudioEngine capture/playback, explicit permission/session ownership, bounded callback queues and observed route/interruption/configuration cleanup. Native device runtime, full routing/UID selection and Windows/Android adapters remain unqualified or unimplemented. SILK/CELT/hybrid full audio encoder/decoder, band splitting/allocation/transforms, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; chronological continuation and full12A gates are recorded in Docs/Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md. Existing Voicev8/RTP48000Hz are unchanged; upstream announcement/effective dates unknown. No complete Phase12A, live voice, production or cross-platform support claim."
+        "behavior": "Owned RFC6716 ordinary framing/entropy/pulse codebooks now compose with bounded CELT low-overlap MDCT/IMDCT, single-band pulse search/spreading/normalization and SILK LPC/LTP/excitation reconstruction primitives. Independent libopus1.6.1 component fixtures and seeded verification do not establish a complete audio codec. Portable PCM queues/clocks/pacing/resampling and synthetic-only speech VAD remain implemented. ApplePlatform adds explicit macOS input/output UIDs, iOS/tvOS/visionOS preferred inputs and bounded device metadata/route cleanup; watchOS input and non-macOS output selection are explicitly unsupported by these APIs. Native device runtime and Windows/Android adapters remain unqualified or unimplemented. Full SILK/CELT/hybrid compressed syntax, energy/allocation/splitting/stereo/mode transitions, encoder analysis, PLC/FEC and official decoded-PCM conformance remain absent. Video labels are metadata only. Added2026-10-17; continuation and full12A gates: Docs/Parity/changes/2026-10-17-phase12a-codec-routing.md. Existing Voicev8/RTP48000Hz unchanged; upstream announcement/effective dates unknown. Phase12A remains incomplete; no full-codec, live voice, production or cross-platform claim."
       }
     }
   ],
@@ -89742,6 +89759,46 @@
       "id": "symbol.12A.AppleAudioDevice",
       "path": "Sources/DiscordApplePlatform/AppleAudio.swift",
       "declaration": "public final class AppleAudioDevice: PCMSource, PCMSink {"
+    },
+    {
+      "id": "symbol.12A.CELTTransform",
+      "path": "Sources/DiscordVoiceCodecs/CELTTransform.swift",
+      "declaration": "public struct CELTTransform: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTTransformStream",
+      "path": "Sources/DiscordVoiceCodecs/CELTTransform.swift",
+      "declaration": "public struct CELTTransformStream: Sendable {"
+    },
+    {
+      "id": "symbol.12A.CELTBandQuantizer",
+      "path": "Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift",
+      "declaration": "public struct CELTBandQuantizer: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKLinearPredictionCoefficients",
+      "path": "Sources/DiscordVoiceCodecs/SILKLinearPrediction.swift",
+      "declaration": "public struct SILKLinearPredictionCoefficients: Sendable, Equatable {"
+    },
+    {
+      "id": "symbol.12A.SILKShortTermFilter",
+      "path": "Sources/DiscordVoiceCodecs/SILKLinearPrediction.swift",
+      "declaration": "public struct SILKShortTermFilter: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKLongTermSynthesisFilter",
+      "path": "Sources/DiscordVoiceCodecs/SILKLongTermPrediction.swift",
+      "declaration": "public struct SILKLongTermSynthesisFilter: Sendable {"
+    },
+    {
+      "id": "symbol.12A.SILKExcitationReconstructor",
+      "path": "Sources/DiscordVoiceCodecs/SILKExcitation.swift",
+      "declaration": "public struct SILKExcitationReconstructor: Sendable {"
+    },
+    {
+      "id": "symbol.12A.AppleAudioEndpoint",
+      "path": "Sources/DiscordApplePlatform/AppleAudioDevices.swift",
+      "declaration": "public struct AppleAudioEndpoint: Sendable, Equatable {"
     }
   ],
   "evidence": [
@@ -94599,6 +94656,51 @@
       "id": "evidence.12A.lifecycleStopsAndExplicitRestart",
       "path": "Tests/DiscordApplePlatformTests/AppleAudioTests.swift",
       "anchor": "lifecycleStopsAndExplicitRestart"
+    },
+    {
+      "id": "evidence.12A.officialBandOracle",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTBandQuantizerTests.swift",
+      "anchor": "officialBandOracle"
+    },
+    {
+      "id": "evidence.12A.bandValidationAtomicity",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTBandQuantizerTests.swift",
+      "anchor": "invalidGainPreservesEncoderAndDecoder"
+    },
+    {
+      "id": "evidence.12A.silkOfficialAnalysis",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKLinearPredictionTests.swift",
+      "anchor": "officialAnalysisFixtures"
+    },
+    {
+      "id": "evidence.12A.silkLTPRecurrence",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKLongTermPredictionTests.swift",
+      "anchor": "independentFullArrayRecurrenceAndUnvoiced"
+    },
+    {
+      "id": "evidence.12A.explicitAppleDiscovery",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioDevicesTests.swift",
+      "anchor": "explicitDiscoveryAndStartPolicy"
+    },
+    {
+      "id": "evidence.12A.appleCatalogLimits",
+      "path": "Tests/DiscordApplePlatformTests/AppleAudioDevicesTests.swift",
+      "anchor": "coreAudioCatalogMaximum"
+    },
+    {
+      "id": "evidence.12A.officialFloatTransform",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTTransformTests.swift",
+      "anchor": "officialFloatTransformFixtures"
+    },
+    {
+      "id": "evidence.12A.transformOverlapDelay",
+      "path": "Tests/DiscordVoiceCodecsTests/CELTTransformTests.swift",
+      "anchor": "streamingRoundTripAndDrain"
+    },
+    {
+      "id": "evidence.12A.officialExcitation",
+      "path": "Tests/DiscordVoiceCodecsTests/SILKExcitationTests.swift",
+      "anchor": "officialExcitationFixtures"
     }
   ]
 }

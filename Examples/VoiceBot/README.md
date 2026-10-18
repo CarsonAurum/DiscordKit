@@ -18,7 +18,10 @@ Before that transport example, it drains synthetic PCM through the bounded
 AsyncSequence/windowed-sinc resampler and checks exactly 1,920 output frames with a
 sample clock, then checks silence rejection by statistical VAD. It separately
 round-trips synthetic entropy and CELT pulse-codebook symbols. Those symbols do not
-form a complete SILK/CELT frame and are never sent as Opus.
+form a complete SILK/CELT frame and are never sent as Opus. A separate component
+demonstration checks the CELT transform's 120-sample overlap delay, entropy-codes
+one normalized band shape, and inverts SILK short-term predictor analysis/synthesis.
+Those pieces still do not form a complete audio encoder or decoder.
 
 The selected product graph excludes HTTP, Gateway, Client, Cache, OAuth,
 Interactions, Commands, NIO and concrete network/device adapters. It includes

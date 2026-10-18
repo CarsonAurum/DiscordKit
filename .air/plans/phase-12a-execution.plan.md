@@ -163,3 +163,68 @@ band allocation/splitting/transforms, PLC/FEC, official decoded-PCM conformance,
 complete device selection, Windows/Android adapters and per-host/hardware/corpus/
 realtime evidence. Cross-SDK compilation and synthetic fixtures do not close these
 requirements. **12B remains pending.**
+
+## Further codec and routing implementation
+
+The repeated request to finish **all of 12A** retains the original completion
+gate. The latest [dated record](../../Docs/Parity/changes/2026-10-17-phase12a-codec-routing.md)
+adds real codec components and explicit Apple routing; it does not close the
+remaining full-codec or per-platform/device requirements.
+
+1. Implement owned bounded low-overlap CELT MDCT/IMDCT and streaming overlap at
+   all four internal frame sizes, mono/stereo. **Implemented**, with independent
+   scalar libopus comparisons and exact unquantized 120-sample delay checks.
+2. Implement projected/greedy CELT pulse search, exponential spreading, short-block
+   occupancy and normalized entropy reconstruction. **Implemented** for admitted
+   single-codeword bands; recursive splitting remains open.
+3. Implement SILK LPC stability/analysis/synthesis, five-tap LTP and exact Q23
+   excitation/seed reconstruction. **Implemented** as independently adopted
+   primitives; full syntax, parameter quantization and orchestration remain open.
+4. Implement macOS exact UID input/output routing and supported mobile input
+   preferences with bounded discovery/readback/cleanup. **Implemented**; watchOS
+   preferred input and non-macOS arbitrary output selection are explicit public
+   API limitations. Actual device/permission/hot-unplug evidence remains open.
+5. Preserve the remaining SILK/CELT/hybrid, PLC/FEC, official decoded-PCM and
+   Windows/Android implementation gates. They are **not completed** by this
+   increment and cannot be inferred from passing component or cross-SDK tests.
+6. Validate root/tooling/example graphs, pinned independent oracles, generation,
+   parity and complete staged diff, then commit with the incomplete milestone
+   explicit. **No advance to 12B.**
+
+### Final validation of codec/routing components
+
+Validated **2026-10-17** local macOS time (tooling audit **2026-10-18 UTC**),
+arm64 macOS 27 / Apple Swift 6.4. This is component evidence, not full 12A completion.
+
+- Final root build passed. Complete `SWIFTNIO_STRICT=1 swift test` passed
+  **1,681 tests in 196 suites across 26 targets**, including **39 new methods**.
+  Required existing loopback/Unix tests passed with host access after sandbox-only
+  bind failures; fresh canonical temporary caches avoided a preexisting `/tmp`
+  versus `/private/tmp` module-cache collision. No production source fix was
+  inferred from those environment failures.
+- Tooling passed **93 tests in seven suites**. Python passed **53 tests**,
+  including 21 new hermetic component-verifier tests. Explicit regeneration changed
+  only two reviewed documentation artifacts; all five generated artifacts passed
+  byte-identity, inventory and parity checks. Offline inventory counts remain
+  18,137 discovery records, 280 sources, 931 reviewed definitions and 249 mapped
+  implemented endpoints, without a full API parity claim.
+- Official libopus component comparisons passed **2,016 band-shape**, **244
+  transform** and **1,116 SILK prediction/excitation** cases. Reports record
+  source/fixture/compiler/verifier fingerprints and exact/tolerance boundaries;
+  all current source fingerprints were checked. They do not establish official
+  full-codec decoded-PCM conformance. Existing entropy/PVQ code is unchanged.
+- The final Apple routing graph passed **25 selected-module SDK emissions**
+  at all five minimum Apple targets. **26 Apple audio methods** pass locally;
+  real device permissions, microphone/playback and route changes remain unrun.
+- VoiceBot built and ran offline, checking exact filtered duration, VAD, spectral
+  shape/entropy, 120-sample transform delay, predictor inversion and five encrypted
+  RTP rollover packets. Its selected graph still excludes HTTP/Gateway/Client/
+  Cache/OAuth/Commands/Interactions/concrete adapters. Package pins are unchanged.
+- Independent source/claims reviews checked math, bounds, atomicity and lifecycle.
+  They strengthened maximum excitation assertions, corrected occupancy wording,
+  and added paired native-device readback after both selection and startup to
+  detect coupled-node rebinding. Documentation links, JSON references, source
+  fingerprints and final whitespace/scope were reviewed.
+
+The full codec, PLC/FEC, conformance, Windows/Android adapters and hardware/corpus/
+realtime gates listed above remain required. **12A is not complete.**
