@@ -30,8 +30,10 @@ positive/negative fixtures, including Sendable checks and a cross-module codec.
 Part 15E adds safe text/typed-mention, layout and direct-payload-parity root suites,
 and the independent DSLCommands exchange now exercises a builder-authored response.
 Part 15F adds family routing/input/response and catalog reconciliation regressions,
-compiled family macros and external incompatible-response fixtures. Policies and
-Gateway hosts remain planned. Workflow
+compiled family macros and external incompatible-response fixtures. Part 15G adds
+policy ordering, rejection, cancellation and terminal-ownership tests. Part 15H adds
+typed Gateway event compilation, explicit intents, ordered bounded dispatch and the
+independent DSLEvents offline consumer. Supervised bot hosts remain in Part 15I. Workflow
 definitions do not establish a passed platform run.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to

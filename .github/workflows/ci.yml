@@ -65,14 +65,16 @@ jobs:
           python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json
       - name: Build independent consumers and test offline examples
         run: |
-          for example in RESTOnly GatewayBot HTTPApp CommandsApp DSLCommands OAuthApp VoiceBot RPCApp ActivityHost SocialApp; do
+          for example in RESTOnly GatewayBot HTTPApp CommandsApp DSLCommands DSLEvents OAuthApp VoiceBot RPCApp ActivityHost SocialApp; do
             swift build --package-path "Examples/$example" --explicit-target-dependency-import-check error
           done
           swift test --package-path Examples/CommandsApp
           swift test --package-path Examples/DSLCommands
+          swift test --package-path Examples/DSLEvents
           swift test --package-path Examples/ActivityHost
           swift run --package-path Examples/CommandsApp
           swift run --package-path Examples/DSLCommands DSLCommands --offline
+          swift run --package-path Examples/DSLEvents
           swift run --package-path Examples/VoiceBot VoiceBot
           swift run --package-path Examples/SocialApp
       - name: Compare scoped public API and convert all public DocC modules

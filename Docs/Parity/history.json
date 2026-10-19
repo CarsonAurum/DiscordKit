@@ -1534,6 +1534,46 @@
       ],
       "details": "changes/phase15g-command-policies.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-phase15h-gateway-event-modules",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "unpublished 0.15.0 candidate",
+      "localCommit": "unknown",
+      "changeType": "authoring_implementation",
+      "previousBehavior": "Protocol modules supported typed commands and policies; event consumers adopted Gateway subscriptions and dispatch directly.",
+      "currentBehavior": "Independent DiscordBotDSL compiles typed event modules with explicit intents, one default bounded subscription and finite independent groups over existing per-complete-shard dispatch. No client startup or command registration.",
+      "affectedSymbols": [
+        "GatewayEventHandler",
+        "GatewayEventSelector",
+        "GatewayHandlerRegistration",
+        "EventCompilation",
+        "CompiledEvents",
+        "GatewayEventPipelines"
+      ],
+      "affectedPayloads": "Existing Gateway v10 dispatch decoding only; no new event name, payload projection, intent bit, permission or discovery support classification.",
+      "breakingChanges": [],
+      "migration": "Existing consumers remain valid. Explicitly adopt DiscordBotDSL, declare stable handler identities and required intents, compile before I/O and own subscribe/run/cancel. Client supervision remains separate.",
+      "sources": [
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/events/gateway-events",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/phase15h-gateway-event-modules.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

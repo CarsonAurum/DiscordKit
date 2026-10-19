@@ -170,6 +170,13 @@ admission releases; existing response owners preserve deadlines and uncertainty.
 Construction starts no work; HTTP rate authorities remain unchanged. See
 `Docs/CommandPolicies.md`. Gateway hosts and capacity qualification remain later milestones.
 
+Part 15H adds independently adopted `DiscordBotDSL`: typed Gateway selectors/handlers,
+explicit intent validation, one default bounded subscription and finite independent
+event groups over the existing complete-shard dispatcher. Construction and compilation
+start no tasks, subscriptions, client startup or registration. Explicit subscribe/run
+owns only event pipelines; supervised client/interaction hosts remain Part 15I.
+See `Docs/GatewayEventModules.md`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -201,6 +208,8 @@ Construction starts no work; HTTP rate authorities remain unchanged. See
 - `Sources/DiscordCommandDSL/`: finite typed arguments and manual slash-command lowering
   over existing Commands/Interactions and HTTP/Transport; signed HTTP composition,
   explicit synchronization and no Gateway/client or concrete-adapter ownership.
+- `Sources/DiscordBotDSL/`: inert typed event compilation and explicit bounded Gateway
+  subscription/dispatcher composition over DSL/Gateway/Models/Core.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -367,6 +376,15 @@ input before policies, explicit rejection compatibility, shared admission overlo
 cancellation cleanup. Test one terminal execution, retained continuation closure and error
 translation without replay or fallback after partial side effects. Stateful keyed stores
 must inject finite count/TTL bounds; the built-in authority retains only a fixed active count.
+
+For Gateway event DSL changes, preserve existing shared/command product graphs and
+the event-only BotDSL graph. Run root build/tests, callable documentation, graph/import
+isolation, API/DocC and the independent DSLEvents offline consumer. Test declaration
+order, complete-shard serialization/cross-shard progress, explicit required intents,
+duplicate identities, raw/unknown/malformed dispatches, queue overflow, callback failure,
+finite independent groups and cancellation/setup cleanup. Build GatewayBot and run
+load cache/soak checks as required for event changes. This does not qualify a supervised
+bot application, live Discord or DSL handler capacity; Parts 15I-15L remain separate.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

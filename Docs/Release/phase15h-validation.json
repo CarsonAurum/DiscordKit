@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "milestone": "15H",
+  "candidateVersion": "0.15.0",
+  "verifiedOn": "2026-10-18",
+  "published": false,
+  "baseCommit": "4c103b02a359cdc629e58ab48145c2c24164f42d",
+  "environment": {
+    "platform": "local macOS arm64",
+    "compiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+    "target": "arm64-apple-macosx27.0.0",
+    "dateScope": "2026-10-18 America/Chicago; execution crosses 2026-10-19 UTC. Exact UTC measurement timestamps are retained.",
+    "caches": "Writable isolated compiler/SwiftPM caches and --disable-sandbox. Exact invocations recorded."
+  },
+  "implementationScope": [
+    "Independent event-only DiscordBotDSL over DSL/Gateway/Models/Core; existing product and command-only graphs unchanged.",
+    "Public typed protocol handlers/selectors, existing known/unknown decoder and deliberate raw-only escape; exact bounded structural/registration snapshots and explicit required-intent subset validation.",
+    "One default subscription across modules, declaration-order callbacks, existing complete-shard serialization/cross-shard progress and finite explicit independent groups.",
+    "Explicit subscribe/run/cancel ownership, single-use execution, partial setup rollback, original callback/selector/decode/overflow failures and joined cooperative cancellation without handler self-join.",
+    "Unknown-event normal/debug/reflection diagnostics redact payloads while explicit raw fields remain accessible.",
+    "Two independently compiled module types execute through one default subscription with direct payload parity and zero final counters. No client startup, interaction bridge, service adapter or automatic registration.",
+    "Existing cache/broadcast profiles and 30-minute soak rerun separately from DSL handler measurements; no DSL capacity qualification."
+  ],
+  "sourceEvidence": [
+    {
+      "path": "Docs/Release/sources/2026-10-18-phase15h.json",
+      "sha256": "b0c9d21f4043ebd948b842a0cf83154f3b69b115d534597756b32ab44679c992"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "Package.swift",
+      "sha256": "699c43a036278d765a8e999c2f5e06a64b87403a712d1c18a044ccb879440b5a"
+    },
+    {
+      "path": "Tools/DiscordKitTools/release-policy.json",
+      "sha256": "836f1e5ef9d41521b34544bba48403bd5e53a566bee6b41d68f3f16cc52ab583"
+    },
+    {
+      "path": "Sources/DiscordBotDSL/GatewayEventHandler.swift",
+      "sha256": "3cfb45effc5064e98d0135e2551894effde4a341e1f840f7f949cfb41795c021"
+    },
+    {
+      "path": "Sources/DiscordBotDSL/EventCompilation.swift",
+      "sha256": "3b8cf9906456ee3cef50a0cfafa1440cba63c0169c51f7322e90070a9706e906"
+    },
+    {
+      "path": "Tests/DiscordBotDSLTests/EventTests.swift",
+      "sha256": "3e22454eae5827efd4cb20f38a451513731e536664038d6a71ae106bc615f226"
+    },
+    {
+      "path": "Examples/DSLEvents/Package.swift",
+      "sha256": "0d60a2cd448a4324293722073b5e1e5207de9552c0b44546b4585c0c24940ad2"
+    },
+    {
+      "path": "Examples/DSLEvents/Package.resolved",
+      "sha256": "aef174e90a9ca49fe3e24c2872835f0b3c83cda82c4949a8e503f3bf20b8f31d"
+    },
+    {
+      "path": "Examples/DSLEvents/Sources/DSLEvents/DSLEvents.swift",
+      "sha256": "318d1b82ec9e930601427cffac9ff7920ae1815e5f2edd4550fc9846b8f64507"
+    },
+    {
+      "path": "Examples/DSLEvents/Tests/DSLEventsTests.swift",
+      "sha256": "11ed39e70bf8c7f1d13a95266970b922af64b1e415bfe1629cee3d9e2ed16eb3"
+    }
+  ],
+  "measurementEvidence": [
+    {
+      "path": "Docs/Release/Measurements/phase15h-cache-broadcast-soak.json",
+      "sha256": "66519f7beb68275b27b006f9f064e90ec17ac492cbbb3185743a057244d7d6cd"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15h-cache-broadcast-environment.json",
+      "sha256": "47dea8ef75aa17da080d379ce226c6de826dda294072aa2db3965a6aa244621e"
+    }
+  ],
+  "checks": [
+    {
+      "id": "root-build",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache swift build --disable-sandbox --cache-path /private/tmp/discordkit-15d-spm --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 3.1,
+      "logBytes": 470,
+      "logSHA256": "95b53f164a352ca7fce78d084772065154d550523ba2d2579c3b6faf2c1e342c",
+      "resultExcerpt": "Current local debug root build passed with strict direct-dependency imports."
+    },
+    {
+      "id": "root-tests",
+      "command": "env SWIFTNIO_STRICT=1 TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache swift test --disable-sandbox --cache-path /private/tmp/discordkit-15d-spm --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 70.4,
+      "logBytes": 1317091,
+      "logSHA256": "7c478d8b9eeb9d29424a036ca0f8d22a42bcbded783d8320223cfbf8ff7bd62f",
+      "resultExcerpt": "2,330 tests in 284 suites across 32 root test targets passed, including 25 event tests. Approved host access supports required local adapter loopback; no live Discord.",
+      "executionContext": "Approved host access for required local loopback adapter tests; no live Discord requests."
+    },
+    {
+      "id": "tools-tests",
+      "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-tools-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-tools-modules swift test --package-path Tools/DiscordKitTools --disable-sandbox --cache-path /private/tmp/discordkit-15d-spm",
+      "exitCode": 0,
+      "elapsedSeconds": 3.58,
+      "logBytes": 90211,
+      "logSHA256": "2b2bcdd1aeb11a693aa0ee9fefa9d1c6b05857ca89b18c9e886348cbd7441c8c",
+      "resultExcerpt": "dAndVariantRelationships(status:) with 5 test cases passed after 0.191 seconds.\n\u2714 Suite \"Reviewed event contracts\" passed after 0.374 seconds.\n\u2714 Test rejectsUnsafeMetadata(key:) with 6 test cases passed after 0.244 seconds.\n\u2714 Suite \"Handwritten field contracts\" passed after 0.388 seconds.\n\u2714 Test ordinaryCodableTemplatesCompileAndRoundTrip() passed after 1.110 seconds.\n\u2714 Suite \"Reviewed code generation\" passed after 1.110 seconds.\n\u2714 Test run with 104 tests in 8 suites passed after 1.110 seconds.\n"
+    },
+    {
+      "id": "tools-python",
+      "command": "python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'",
+      "exitCode": 0,
+      "elapsedSeconds": 5.13,
+      "logBytes": 328,
+      "logSHA256": "2c9bcbce7b0b39afd3c11c0bee5520ac21fa91eb9c07ae7ee69cb1c2f9d894c3",
+      "resultExcerpt": "....................................................................................................................................................................................................................................\n----------------------------------------------------------------------\nRan 228 tests in 5.031s\n\nOK\n"
+    },
+    {
+      "id": "ci-python",
+      "command": "python3 -m unittest discover -s Tools/ci -p 'test_*.py'",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1,
+      "logBytes": 139,
+      "logSHA256": "82aa9f49438486c7c4a1e2120fdf4e74e1d584ab6597cd6bccb8d20160c09ff4",
+      "resultExcerpt": "........................................\n----------------------------------------------------------------------\nRan 40 tests in 0.017s\n\nOK\n"
+    },
+    {
+      "id": "inventory",
+      "command": "Tools/DiscordKitTools/.build/out/Products/Debug/DiscordKitTools inventory validate --repository .",
+      "exitCode": 0,
+      "elapsedSeconds": 18.05,
+      "logBytes": 302,
+      "logSHA256": "90bb1b4549ceec7248fb156a21f71dd8483109cc4acbe375bdfa6246c24aee4d",
+      "resultExcerpt": "18,137 discovery entries, 280 sources and 934 reviewed definitions validated; no discovery support classification promoted."
+    },
+    {
+      "id": "generation",
+      "command": "Tools/DiscordKitTools/.build/out/Products/Debug/DiscordKitTools generate --check --repository .",
+      "exitCode": 0,
+      "elapsedSeconds": 18.18,
+      "logBytes": 73,
+      "logSHA256": "cf089492602e9e7015e5e9b096485ebd7e52eb8617d1453bbf67122cfca4732a",
+      "resultExcerpt": "Five generated wire artifacts remain byte-identical."
+    },
+    {
+      "id": "parity",
+      "command": "Tools/DiscordKitTools/.build/out/Products/Debug/DiscordKitTools parity check --repository .",
+      "exitCode": 0,
+      "elapsedSeconds": 17.89,
+      "logBytes": 1711,
+      "logSHA256": "35ba91d27a85e805d7ffbabface19142ea5f38ce7225b364e85af8e41c731de5",
+      "resultExcerpt": "Offline parity checks pass with append-only 15H authoring history; no new wire or model-parity support classification."
+    },
+    {
+      "id": "product-isolation",
+      "command": "python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .",
+      "exitCode": 0,
+      "elapsedSeconds": 11.12,
+      "logBytes": 4063,
+      "logSHA256": "9ad6c03ea387e3d9e65135eaedaa4d2963b6dd3dda72db31bf32a67322a988f2",
+      "resultExcerpt": "31 runtime products, 332 production Swift files and 724 imports audited. Eleven independent consumers and the separate authoring package preserve reviewed graphs. BotDSL directly selects DSL/Gateway/Models/Core only; no Client/Cache/Commands/Interactions/macros/adapters."
+    },
+    {
+      "id": "declaration-docs",
+      "command": "Tools/DiscordKitTools/.build/out/Products/Debug/DiscordKitTools documentation audit --repository .",
+      "exitCode": 0,
+      "elapsedSeconds": 41.2,
+      "logBytes": 559,
+      "logSHA256": "9a281c22fadbe9a981b2bcf729e17dfa59e44b3834900218f29030238ca5c7a9",
+      "resultExcerpt": "Documentation presence audit: 751 Swift files; 8356 explicit callable declarations; 0 missing comments. Presence is syntactic evidence; focused code review corrected unknown-event diagnostic redaction."
+    },
+    {
+      "id": "httpapp-build",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache swift build --package-path Examples/HTTPApp --disable-sandbox --cache-path /Users/carsonrau/Developer/DiscordKit/.build/dsl-compile-cache --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 4.86,
+      "logBytes": 463,
+      "logSHA256": "d232f4502524c5651d095c4ccc1d627cfa494c25c7dec13fcdd4d4090ac7227c",
+      "resultExcerpt": "warning: /Users/carsonrau/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.\nwarning: /Users/carsonrau/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.\nBuilding for debugging...\n[Computing dependencies]\n[Constructing description]\n[Pre-planning 1\u2009/\u20091227]\n[Planning deferred tasks]\n[4\u2009/\u20098] swift-nio-ssl_NIOSSL\nBuild complete! (1.59 sec)\n"
+    },
+    {
+      "id": "commandsapp-build",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache swift build --package-path Examples/CommandsApp --disable-sandbox --cache-path /Users/carsonrau/Developer/DiscordKit/.build/dsl-compile-cache --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 4.13,
+      "logBytes": 377,
+      "logSHA256": "4d7bd24cec0f73103615738f265881794e5ec2285c0a31bd9f63fe30caa8e4f1",
+      "resultExcerpt": "warning: /Users/carsonrau/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.\nwarning: /Users/carsonrau/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.\nBuilding for debugging...\n[Constructing description]\n[Planning deferred tasks]\nBuild complete! (0.77 sec)\n"
+    },
+    {
+      "id": "dslcommands-tests",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache swift test --disable-sandbox --build-system native --package-path Examples/DSLCommands --cache-path .build/cache --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 12.6,
+      "logBytes": 1645,
+      "logSHA256": "710d32e4dbe60827c6f6ac8eb6460f18df685177fe8cf2071b080f7e79bc49ce",
+      "resultExcerpt": "rary Version: 2084\n\u21b3 Target Platform: arm64e-apple-macos14.0\n\u25c7 Suite DSLCommandsTests started.\n\u25c7 Test signedOfflineFamilies() started.\n\u25c7 Test signedOfflinePing() started.\n\u25c7 Test signedOfflinePolicies() started.\n\u2714 Test signedOfflinePolicies() passed after 0.005 seconds.\n\u2714 Test signedOfflinePing() passed after 0.005 seconds.\n\u2714 Test signedOfflineFamilies() passed after 0.009 seconds.\n\u2714 Suite DSLCommandsTests passed after 0.009 seconds.\n\u2714 Test run with 3 tests in 1 suite passed after 0.009 seconds.\n"
+    },
+    {
+      "id": "dslevents-tests",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache swift test --package-path Examples/DSLEvents --disable-sandbox --cache-path /Users/carsonrau/Developer/DiscordKit/.build --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 4.9,
+      "logBytes": 1271,
+      "logSHA256": "a8a84279886946176daf8731556cd175afc429ac08a8633b1db5818a7b4c4c98",
+      "resultExcerpt": "\u25c7 Test typedModulesShareOnePipelineAndReleaseEveryOwner() started.\n\u25c7 Test cancellationBeforeAdmissionIsObservable() started.\n\u2714 Test cancellationBeforeAdmissionIsObservable() passed after 0.001 seconds.\n\u2714 Test typedModulesShareOnePipelineAndReleaseEveryOwner() passed after 0.001 seconds.\n\u2714 Test callbackFailureWakesWaiterAndJoinsPipeline() passed after 0.002 seconds.\n\u2714 Suite \"External typed Gateway modules\" passed after 0.002 seconds.\n\u2714 Test run with 3 tests in 1 suite passed after 0.002 seconds.\n"
+    },
+    {
+      "id": "dslevents-offline",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/Users/carsonrau/Developer/DiscordKit/.build/phase15d-clang-cache swift run --package-path Examples/DSLEvents --disable-sandbox --cache-path /Users/carsonrau/Developer/DiscordKit/.build --explicit-target-dependency-import-check error DSLEvents",
+      "exitCode": 0,
+      "elapsedSeconds": 2.32,
+      "logBytes": 447,
+      "logSHA256": "c848d19ec58cf5e3ba8c9c62834063f5ac5e35f8ae8f584f324c216487ca70fd",
+      "resultExcerpt": "warning: /Users/carsonrau/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.\nwarning: /Users/carsonrau/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.\nBuilding for debugging...\n[Using on-disk description]\nBuild complete! (0.63 sec)\nOffline Gateway DSL: welcome -> audit; one subscription; payload parity; zero owned resources.\n"
+    },
+    {
+      "id": "macros-tests",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache swift test --disable-sandbox --build-system native --package-path Packages/DiscordDSLMacros --cache-path .build/cache --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 12.26,
+      "logBytes": 20657,
+      "logSHA256": "a2aa244da5df41006764868f27d10d849cda71e6e09c4da9ce0b53af3ba9572a",
+      "resultExcerpt": "Test deferredResponseParity(gateway:ephemeral:) with 4 test cases passed after 0.037 seconds.\n\u2714 Suite ResponseParityTests passed after 0.038 seconds.\n\u2714 Test invocationParityAndFreshState(gateway:) with 2 test cases passed after 0.039 seconds.\n\u2714 Suite ExecutionParityTests passed after 0.039 seconds.\n\u2714 Test finiteDefaults(type:fallback:) with 6 test cases passed after 0.039 seconds.\n\u2714 Suite ExpansionTests passed after 0.039 seconds.\n\u2714 Test run with 31 tests in 4 suites passed after 0.040 seconds.\n"
+    },
+    {
+      "id": "compile-fixtures",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache python3 Tools/ci/dsl_compile_fixtures.py --repository . --cache-path .build/cache",
+      "exitCode": 0,
+      "elapsedSeconds": 69.96,
+      "logBytes": 1726,
+      "logSHA256": "f5a8f1f245755b2af4a568bd4367885d7c456c14e0b44694f1b8c40f9f6c8a79",
+      "resultExcerpt": "cted compiler diagnostics observed\nPASS MultipleUserResponseFamilies: expected compiler diagnostics observed\nPASS WrongContextMenuResponse: expected compiler diagnostics observed\nPASS DeferredModalSlashResponse: expected compiler diagnostics observed\nPASS WrongModalResponse: expected compiler diagnostics observed\nPASS WrongAutocompleteResponse: expected compiler diagnostics observed\nPASS WrongComponentResponse: expected compiler diagnostics observed\nExternal Swift compile fixtures: 26/26 passed\n"
+    },
+    {
+      "id": "symbolgraphs",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache swift package --disable-sandbox --cache-path /private/tmp/discordkit-15d-spm dump-symbol-graph --minimum-access-level public",
+      "exitCode": 0,
+      "elapsedSeconds": 18.59,
+      "logBytes": 6201,
+      "logSHA256": "767cade68371a2df873052ea7968ec8c59798673d41e14102037efda3074f0d2",
+      "resultExcerpt": "iscordUnixPlatform\n[588\u2009/\u2009652] DiscordUnixPlatform\n[591\u2009/\u2009648] DiscordUnixPlatform\n[591\u2009/\u2009648] NIO\n[596\u2009/\u2009644] NIOTLS\n[616\u2009/\u2009662] NIOHTTP1\n[617\u2009/\u2009662] NIOSSL\n[622\u2009/\u2009662] NIOHTTP1\n[625\u2009/\u2009658] NIOSSL\n[639\u2009/\u2009686] NIOSSL\n[642\u2009/\u2009686] NIOWebSocket\n[647\u2009/\u2009686] NIOWebSocket\n[655\u2009/\u2009682] NIOWebSocket\n[658\u2009/\u2009677] NIOSSL\n[661\u2009/\u2009672] NIOSSL\n[670\u2009/\u2009679] DiscordNIOTransport\n[672\u2009/\u2009675] DiscordNIOTransport\nBuild complete! (17.12 sec)\nFiles written to /Users/carsonrau/Developer/DiscordKit/.build/out/symbolgraph\n"
+    },
+    {
+      "id": "api-snapshot",
+      "command": "python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot --repository . --symbolgraphs .build/out/symbolgraph --version 0.15.0 --output .build/phase15h/current-api.json",
+      "exitCode": 0,
+      "elapsedSeconds": 0.69,
+      "logBytes": 55,
+      "logSHA256": "0407386f609a4275b1cd45d07d8088d3e3b232fbf1816a2e0d4efd1d984bacc5",
+      "resultExcerpt": "{\"modules\": 31, \"symbols\": 14146, \"version\": \"0.15.0\"}\n"
+    },
+    {
+      "id": "api-baseline",
+      "command": "python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline.json --candidate .build/phase15h/current-api.json --version 0.15.0",
+      "exitCode": 0,
+      "elapsedSeconds": 0.16,
+      "logBytes": 322766,
+      "logSHA256": "60468ac10f1a6735197775e06a634b9f36cc120620359e6ac873fb5c1153cc98",
+      "resultExcerpt": "Frozen 0.14.0 runtime comparison passed: 911 added, 0 changed, 0 removed symbols and 0 removed relationships. Pre-1.0 0.15.0 minor increment accepted; local unpublished 15G comparison adds exactly one module and 80 symbols, with no existing symbol/relationship changes."
+    },
+    {
+      "id": "api-15g-comparison",
+      "command": "python3 .build/phase15h/compare_api.py",
+      "exitCode": 0,
+      "elapsedSeconds": 0.09,
+      "logBytes": 233,
+      "logSHA256": "419b05c97ec6867f22742f75ccbd7424f7a2c4d50c26dfb5c2d3e2d008da5586",
+      "resultExcerpt": "{\"comparison\": \"Local unpublished 15G to 15H snapshot; no separate release semver increment claimed.\", \"newModule\": \"DiscordBotDSL\", \"newSymbols\": 80, \"addedExistingSymbols\": 0, \"changed\": 0, \"removed\": 0, \"removedRelationships\": 0}\n"
+    },
+    {
+      "id": "docc-navigation-check",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache python3 Tools/ci/curate_docc.py --check",
+      "exitCode": 0,
+      "elapsedSeconds": 1.28,
+      "logBytes": 4976,
+      "logSHA256": "d466a072356b10dc45adfa1c77da95dc71c57c877391f7dc9d3d04c81c9c65a1",
+      "resultExcerpt": "    {\n      \"module\": \"DiscordVoice\",\n      \"typePages\": 38,\n      \"memberLinks\": 291,\n      \"topLevelLinks\": 35,\n      \"externalExtensionLinks\": 0\n    },\n    {\n      \"module\": \"DiscordVoiceCodecs\",\n      \"typePages\": 99,\n      \"memberLinks\": 610,\n      \"topLevelLinks\": 98,\n      \"externalExtensionLinks\": 0\n    },\n    {\n      \"module\": \"DiscordVoiceCrypto\",\n      \"typePages\": 5,\n      \"memberLinks\": 27,\n      \"topLevelLinks\": 5,\n      \"externalExtensionLinks\": 0\n    }\n  ],\n  \"changedFiles\": 0\n}\n"
+    },
+    {
+      "id": "documentation-examples",
+      "command": "python3 Tools/ci/documentation_examples.py",
+      "exitCode": 0,
+      "elapsedSeconds": 0.04,
+      "logBytes": 34,
+      "logSHA256": "8e7a44a37b9576e9d7347563d731153a07bf206dac88a85b17e7edfb7026be6a",
+      "resultExcerpt": "Verified 22 DocC example listings\n"
+    },
+    {
+      "id": "docc",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache python3 Tools/ci/build_docc.py",
+      "exitCode": 0,
+      "elapsedSeconds": 24.16,
+      "logBytes": 454577,
+      "logSHA256": "b229d60307d494f88e09eda972099154de30d35d176ac467b8b9b21eb1159bd1",
+      "resultExcerpt": "31 runtime DocC archives converted with strict diagnostics; all generated navigation and 22 existing synchronized listings pass. The DSLEvents consumer is independently built/tested; no new tutorial listing or macro DocC qualification is claimed."
+    },
+    {
+      "id": "maintenance",
+      "command": "python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json",
+      "exitCode": 0,
+      "elapsedSeconds": 0.06,
+      "logBytes": 114,
+      "logSHA256": "09795211d9d9bd0dd851384eb5d26915dd9fa0a6db67cbc59740e9a1c63d3086",
+      "resultExcerpt": "{\"asOf\": \"2026-10-18\", \"nextReviewDue\": \"2026-10-25\", \"reviewedOn\": \"2026-10-18\", \"sources\": 6, \"transitions\": 1}\n"
+    },
+    {
+      "id": "load-tests",
+      "command": "env SWIFTNIO_STRICT=1 TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15h-load-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15h-load-module-cache swift test --package-path Tools/DiscordKitLoadTests --disable-sandbox --cache-path /private/tmp/discordkit-15d-spm --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 32.06,
+      "logBytes": 7830,
+      "logSHA256": "6517d80159eabc37fb7d6eaa468f6b17f4952b89e822ec6eedc9df77640dc739",
+      "resultExcerpt": "ed after 0.033 seconds.\n\u2714 Suite \"HTTP policy load harness\" passed after 0.033 seconds.\n\u2714 Test checkpointHistoryStaysBounded() passed after 0.195 seconds.\n\u2714 Test sustainedRawIngressPreservesCommandBudget() passed after 0.291 seconds.\n\u2714 Suite \"Gateway load harness\" passed after 0.291 seconds.\n\u2714 Test requestedWallDurationIsActuallyMeasured() passed after 1.002 seconds.\n\u2714 Suite \"Cache recovery load harness\" passed after 1.003 seconds.\n\u2714 Test run with 28 tests in 4 suites passed after 1.003 seconds.\n"
+    },
+    {
+      "id": "load-python",
+      "command": "python3 -m unittest discover -s Tools/DiscordKitLoadTests/scripts -p 'test_*.py'",
+      "exitCode": 0,
+      "elapsedSeconds": 1.1,
+      "logBytes": 111,
+      "logSHA256": "6dd65e5d5a12211f98ff7230b8ed453b00f2ce06ce310898b8522f9a8589d2ef",
+      "resultExcerpt": "............\n----------------------------------------------------------------------\nRan 12 tests in 1.021s\n\nOK\n"
+    },
+    {
+      "id": "gatewaybot-build",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15h-gateway-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15h-gateway-module-cache swift build --package-path Examples/GatewayBot --disable-sandbox --cache-path /private/tmp/discordkit-15d-spm --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 5.44,
+      "logBytes": 428,
+      "logSHA256": "a267d91affa823e87b8bc57fcff54230ab9191303ff1d38f433446528920291f",
+      "resultExcerpt": "warning: /Users/carsonrau/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.\nwarning: /Users/carsonrau/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.\nBuilding for debugging...\n[Computing dependencies]\n[Pre-planning 1\u2009/\u2009305]\n[Planning deferred tasks]\n[1\u2009/\u20098] DiscordClient\nBuild complete! (0.83 sec)\n"
+    },
+    {
+      "id": "cache-profiles",
+      "command": "python3 Tools/DiscordKitLoadTests/scripts/record_cache_baseline.py --executable Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests --output-dir .build/phase15h-load/cache-profiles",
+      "exitCode": 0,
+      "elapsedSeconds": 12.69,
+      "logBytes": 1189,
+      "logSHA256": "b9dad3ec44e809f9378680ab588a55d730c801a91e820ec4dd8441b1cbf68687",
+      "resultExcerpt": "00 burst: 512 rounds in 0.886s, 512 loaders for 4096 completed reads, 28672 refused\nsoak accounts-10000 normal: 512 rounds in 1.365s, 1024 loaders for 8192 completed reads, 8192 refused\nsoak accounts-10000 burst: 512 rounds in 1.850s, 1024 loaders for 8192 completed reads, 57344 refused\nsoak accounts-1000000 normal: 512 rounds in 3.053s, 2048 loaders for 16384 completed reads, 16384 refused\nsoak accounts-1000000 burst: 512 rounds in 4.289s, 2048 loaders for 16384 completed reads, 114688 refused\n"
+    },
+    {
+      "id": "load-release-build",
+      "command": "env TMPDIR=/private/tmp CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-15d-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/discordkit-15d-module-cache swift build -c release --package-path Tools/DiscordKitLoadTests --disable-sandbox --cache-path /private/tmp/discordkit-15d-spm --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "elapsedSeconds": 100.93,
+      "logBytes": 2739,
+      "logSHA256": "b09dd0647469f100581c84eca602a2a27488c1e65d54d631b05f367ad18a750f",
+      "resultExcerpt": "ecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>\n[172\u2009/\u2009203] DiscordHTTP\n[174\u2009/\u2009204] NIOHTTP1\n[179\u2009/\u2009208]\n[180\u2009/\u2009208] NIOSSL\n[182\u2009/\u2009204] NIOWebSocket\n[193\u2009/\u2009214] DiscordCache\n[196\u2009/\u2009210] DiscordNIOTransport\n[198\u2009/\u2009206] DiscordHTTP\n[203\u2009/\u2009209] DiscordGateway\n[207\u2009/\u2009209] DiscordKitLoadTests-product\n[209\u2009/\u2009211] DiscordKitLoadTests-product\n[211\u2009/\u2009211] DiscordKitLoadTests-product\n[212\u2009/\u2009213] DiscordKitLoadTests-product\nBuild complete! (99.16 sec)\n"
+    }
+  ],
+  "environmentLimitations": [
+    "The initial managed full suite denied existing Foundation/NIO/Unix local sockets; the complete final suite passed with approved host loopback access.",
+    "New independent example resolution used the existing local bare-repository cache and pinned revisions after restricted shell DNS; no dependency version was changed.",
+    "Official Gateway pages were reviewed with the web tool; no raw upstream-byte archive or full semantic audit is claimed.",
+    "The existing soak started before the event product was finished. All measured Swift files and the running executable remained unchanged; root Package.swift drift is explicit. Concurrent builds/tests mean throughput and RSS are not a controlled regression comparison."
+  ],
+  "productionQualified": false,
+  "remainingGates": [
+    "15I supervised bot application, client/service/interaction lifetime",
+    "15J complete external dependency and extension adoption",
+    "15K direct-versus-DSL measurements, DSL-specific soak and capacity",
+    "15L full Phase 15 release certification",
+    "Authorized live Discord, other platforms and minimum-OS/device qualification",
+    "Independent security review and existing protocol qualification exclusions"
+  ]
+}

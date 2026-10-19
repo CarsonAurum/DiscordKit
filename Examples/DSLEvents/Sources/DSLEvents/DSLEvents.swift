@@ -1,0 +1,232 @@
+import DiscordBotDSL
+import DiscordCore
+import DiscordDSL
+import DiscordGateway
+import DiscordModels
+import DiscordTransport
+
+/// Original bounded demo failures, containing no raw event data or application credentials.
+enum EventDemoFailure: Error, Equatable {
+    case unexpectedDispatch
+    case preexecution
+    case payloadMismatch
+    case callback
+    case incompleteDelivery
+    case cleanup
+}
+
+/// Atomic observations collected only after the pipeline task and subscriptions have been joined.
+struct EventDemoCleanup: Sendable {
+    let subscriptions: Int
+    let bufferedEvents: Int
+    let bufferedBytes: Int
+    let waitingConsumers: Int
+    let activeHandlers: Int
+    let waitingHandlers: Int
+
+    /// True only when every hub queue, consumer and aggregate handler permit has been released.
+    var isEmpty: Bool {
+        subscriptions == 0 && bufferedEvents == 0 && bufferedBytes == 0 && waitingConsumers == 0 &&
+            activeHandlers == 0 && waitingHandlers == 0
+    }
+}
+
+/// Inspectable offline evidence; successful local composition does not qualify a Discord connection.
+struct EventDemoResult: Sendable {
+    let labels: [String]
+    let callbacksBeforeRun: Int
+    let subscriptionsCreated: Int
+    let payloadParity: Bool
+    let cleanup: EventDemoCleanup
+}
+
+/// Owns application observations and a single bounded completion signal without a service locator.
+private actor EventTranscript {
+    private let expected: GatewayResumed
+    private let rawData: JSONValue
+    private let completion: AsyncThrowingStream<[String], any Error>.Continuation
+    private var labels: [String] = []
+
+    /// Stores immutable parity fixtures and one bounded completion continuation without starting work.
+    /// - Parameters:
+    ///   - expected: Existing direct-decoder projection used as the independent comparison value.
+    ///   - rawData: Original exact data, including future fields and a full-width number lexeme.
+    ///   - completion: One-element stream continuation; the second record yields once then finishes.
+    init(expected: GatewayResumed, rawData: JSONValue,
+        completion: AsyncThrowingStream<[String], any Error>.Continuation) {
+        self.expected = expected
+        self.rawData = rawData
+        self.completion = completion
+    }
+
+    /// Reports completed callbacks atomically for the inert construction/compilation assertion.
+    /// - Returns: The number of labels recorded, from zero through the two authored handlers.
+    func count() -> Int { labels.count }
+
+    /// Verifies typed/raw parity before recording one handler and completing the second invocation.
+    /// - Parameters:
+    ///   - label: Stable example-owned callback label, expected in module declaration order.
+    ///   - event: Existing `GatewayResumed` supplied through the custom typed selector.
+    ///   - context: Original synthetic event metadata for the same projection.
+    /// - Throws: `payloadMismatch` if typed decoding, lossless data or shard metadata differs.
+    ///   No partial label is recorded on parity failure and the supervised run propagates the error.
+    func record(_ label: String, event: GatewayResumed, context: GatewayEventContext) throws {
+        guard event == expected, context.rawEvent.data == rawData,
+              context.rawEvent.name == "RESUMED", context.rawEvent.sequence == 1,
+              context.rawEvent.shard.topologyGeneration == 7, context.rawEvent.socketGeneration == 3 else {
+            throw EventDemoFailure.payloadMismatch
+        }
+        labels.append(label)
+        if labels.count == 2 {
+            completion.yield(labels)
+            completion.finish()
+        }
+    }
+}
+
+/// Handwritten external protocol conformance with a custom selector and initializer-injected actor.
+private struct RecordResumed: GatewayEventHandler {
+    let handlerID: String
+    let transcript: EventTranscript
+    let fail: Bool
+
+    /// Selects only the existing `RESUMED` model; no intent or payload support is invented.
+    var selector: GatewayEventSelector<GatewayResumed> {
+        .init(id: "example.resumed") { dispatch in
+            guard case .resumed(let resumed) = dispatch else { return nil }
+            return resumed
+        }
+    }
+
+    /// Records one typed event using the injected service after explicit pipeline admission.
+    /// - Parameters:
+    ///   - event: Existing decoded resumed payload, retaining unknown raw fields.
+    ///   - context: Exact raw shard, sequence and connection generation from the same event.
+    /// - Throws: Optional fixture callback failure, parity failure or task cancellation; the owner
+    ///   must propagate errors, wake its completion waiter and await pipeline cleanup.
+    func handle(_ event: GatewayResumed, context: GatewayEventContext) async throws {
+        try Task.checkCancellation()
+        if fail { throw EventDemoFailure.callback }
+        try await transcript.record(handlerID, event: event, context: context)
+    }
+}
+
+/// First reusable module; its identity and dependencies are independent of the second module's type.
+private struct WelcomeEvents: BotModule {
+    let moduleID = "welcome-events"
+    let transcript: EventTranscript
+
+    /// Contributes one inert typed handler without allocating its own subscription or client.
+    @BotBuilder var body: some BotDefinition {
+        RecordResumed(handlerID: "welcome", transcript: transcript, fail: false)
+    }
+}
+
+/// Second reusable module, sharing only the explicitly injected transcript service.
+private struct AuditEvents: BotModule {
+    let moduleID = "audit-events"
+    let transcript: EventTranscript
+    let fail: Bool
+
+    /// Contributes the later callback to the same default group; construction executes no handler.
+    @BotBuilder var body: some BotDefinition {
+        RecordResumed(handlerID: "audit", transcript: transcript, fail: fail)
+    }
+}
+
+/// An independently compiled offline executable with no credentials, sockets or client lifecycle.
+@main enum DSLEvents {
+    /// Compiles two module types and observes one synthetic event through their shared subscription.
+    /// - Parameter failSecond: Test-only fault injection, default false; true makes the later handler
+    ///   fail before recording. This proves runtime failure wakes the completion waiter and joins work.
+    /// - Returns: Verified declaration order, inert preexecution, one subscription and zero final counters.
+    /// - Throws: Existing model/compilation/admission errors, cancellation or original callback errors.
+    ///   All post-subscription exits cancel and join the pipeline task before checking final ownership;
+    ///   `cleanup` replaces an error only if this example detects unreleased resources.
+    static func runOffline(failSecond: Bool = false) async throws -> EventDemoResult {
+        let data: JSONValue = .object([
+            "future_number": .number(try JSONNumber(rawValue: "18446744073709551615")),
+            "future_details": .object(["nullable": .null, "labels": .array([.string("retained")])])
+        ])
+        let raw = try GatewayEvent(shard: ShardIdentity(botID: .init(rawValue: 1),
+            topologyGeneration: 7, index: 0, count: 1), name: "RESUMED", sequence: 1,
+            data: data, socketGeneration: 3)
+        guard case .resumed(let direct) = try raw.decodeDispatch() else {
+            throw EventDemoFailure.unexpectedDispatch
+        }
+        let signal = AsyncThrowingStream<[String], any Error>.makeStream(bufferingPolicy: .bufferingOldest(1))
+        let transcript = EventTranscript(expected: direct, rawData: data, completion: signal.continuation)
+        let definitions = BotDefinitionGroup([
+            WelcomeEvents(transcript: transcript), AuditEvents(transcript: transcript, fail: failSecond)
+        ])
+        let compiled = try EventCompilation.compile(definitions, intents: [])
+        let hub = GatewayEventHub(configuration: try .init(maximumSubscriptions: 1))
+        let authority = try GatewayHandlerAuthority(maximumActiveHandlers: 1, maximumWaitingHandlers: 1)
+        let pipelines = try await compiled.subscribe(to: hub, configuration: .init(), authority: authority)
+        let beforeRun = await transcript.count()
+        let subscriptionCount = await hub.snapshot().subscriptions
+        guard beforeRun == 0, subscriptionCount == 1, pipelines.subscriptionCount == 1 else {
+            await pipelines.cancel()
+            await hub.finish()
+            throw EventDemoFailure.preexecution
+        }
+        // This explicitly owned task signals both normal and failed termination. A callback error
+        // must not leave the stream waiter suspended while its pipeline has already stopped.
+        let run = Task {
+            do {
+                try await pipelines.run()
+                signal.continuation.finish()
+            } catch {
+                signal.continuation.finish(throwing: error)
+                throw error
+            }
+        }
+        do {
+            await hub.publish(raw)
+            var iterator = signal.stream.makeAsyncIterator()
+            let received = try await iterator.next()
+            try Task.checkCancellation()
+            guard let labels = received, labels == ["welcome", "audit"] else {
+                throw EventDemoFailure.incompleteDelivery
+            }
+            await hub.finish()
+            try await run.value
+            let cleanup = await cleanupSnapshot(hub: hub, authority: authority)
+            guard cleanup.isEmpty else { throw EventDemoFailure.cleanup }
+            return .init(labels: labels, callbacksBeforeRun: beforeRun,
+                subscriptionsCreated: subscriptionCount, payloadParity: true, cleanup: cleanup)
+        } catch {
+            let original = error
+            run.cancel()
+            await pipelines.cancel()
+            await hub.finish()
+            _ = await run.result
+            guard await cleanupSnapshot(hub: hub, authority: authority).isEmpty else {
+                throw EventDemoFailure.cleanup
+            }
+            throw original
+        }
+    }
+
+    /// Captures both existing owners' final counters after callback work has been awaited.
+    /// - Parameters:
+    ///   - hub: Example-owned local hub whose subscriptions and queues should be empty.
+    ///   - authority: Shared aggregate callback owner whose permits and admission waiters should be zero.
+    /// - Returns: Nonsecret counter evidence; no event data or application identities are inspected.
+    private static func cleanupSnapshot(hub: GatewayEventHub,
+        authority: GatewayHandlerAuthority) async -> EventDemoCleanup {
+        let events = await hub.snapshot()
+        let handlers = await authority.snapshot()
+        return .init(subscriptions: events.subscriptions, bufferedEvents: events.bufferedEvents,
+            bufferedBytes: events.bufferedBytes, waitingConsumers: events.waitingConsumers,
+            activeHandlers: handlers.activeHandlers, waitingHandlers: handlers.waitingHandlers)
+    }
+
+    /// Runs the bounded offline demonstration once and prints only its verified nonsecret evidence.
+    /// - Throws: Original validation, callback, cancellation or cleanup failure; no credentials,
+    ///   environment reads, authenticated calls, sockets or external processes are used.
+    static func main() async throws {
+        let result = try await runOffline()
+        print("Offline Gateway DSL: \(result.labels.joined(separator: " -> ")); one subscription; payload parity; zero owned resources.")
+    }
+}

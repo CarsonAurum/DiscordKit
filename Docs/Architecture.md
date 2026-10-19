@@ -132,7 +132,13 @@ adds pure shared policy/middleware values and command execution adapters after c
 input admission. The existing Commands route owner provides synchronous preparation and
 execution interception without any DSL dependency. Injected concurrency authorities
 remain independent of HTTP rate limits. Policies create no tasks or I/O.
-Gateway hosts remain later
+Part 15H adds independently adopted [Gateway event modules](GatewayEventModules.md)
+in `DiscordBotDSL` over DSL/Gateway/Models/Core. It validates explicit intents,
+flattens modules to one default bounded subscription, and delegates complete-shard
+serialization and cross-shard concurrency to the existing dispatcher. Named independent
+groups opt into extra bounded subscriptions. Neither Client nor CommandDSL is required
+for this event-only milestone; their host/service composition remains in Part 15I.
+Supervised Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 
 ## Product boundaries
@@ -152,6 +158,10 @@ flowchart TD
     DiscordModels --> DiscordCore
     DiscordDSL --> DiscordCore
     DiscordDSL --> DiscordModels
+    DiscordBotDSL --> DiscordDSL
+    DiscordBotDSL --> DiscordGateway
+    DiscordBotDSL --> DiscordModels
+    DiscordBotDSL --> DiscordCore
     DiscordCommandDSL --> DiscordDSL
     DiscordCommandDSL --> DiscordCore
     DiscordCommandDSL --> DiscordModels

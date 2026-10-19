@@ -12,10 +12,10 @@ explicit exclusions; it does not grant platform, live Discord or crypto approval
 python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
 ```
 
-This command evaluates the actual root and ten independent consumer manifests
+This command evaluates the actual root and eleven independent consumer manifests
 using `swift package dump-package`, with temporary writable caches. Part 15D adds
 the independent DSLCommands consumer, including its explicitly selected separate
-macro product. It compares
+macro product. Part 15H adds the macro-free DSLEvents event consumer. It compares
 the complete shipped target DAG, direct package requirements, product roots,
 source roots and resolved Apple package identities/URLs against the reviewed
 `Tools/DiscordKitTools/release-policy.json`. Every resolved pin needs a concrete
@@ -70,7 +70,9 @@ finite exact-route catalogs and optional family macro authoring over the same gr
 Part 15G adds bounded policy/middleware composition, complete synchronous input
 preparation before execution interception, injected authorization/concurrency and
 explicit denial/error translation. Existing registration payloads and independent
-product graphs remain unchanged.
+product graphs remain unchanged. Part 15H adds the independent `DiscordBotDSL`
+event product with explicit intent and finite subscription ownership, without a
+Client or CommandDSL dependency. Its public API and DocC join the current candidate.
 The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before

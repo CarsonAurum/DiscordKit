@@ -1,16 +1,14 @@
 # Release certification
 
-The current **0.15.0 authoring candidate** covers [shared declarations](../DSL.md),
-[typed command lowering](../CommandDSL.md), [macro authoring](../MacroDSL.md),
-[typed responses/signed HTTP applications](../CommandResponses.md) and
-[message/component builders](../MessageBuilders.md) and [command families](../CommandFamilies.md)
-in Parts 15A/15B/15C/15D/15E/15F. The [15A record](phase15a-validation.json),
-[15B record](phase15b-validation.json), [15C record](phase15c-validation.json) and
-[15D record](phase15d-validation.json) and [15E record](phase15e-validation.json) preserve their historical checks. The current
-[machine report](phase15-report.json)
-and [15F validation record](phase15f-validation.json) state current checks and
-explicit exclusions. Policies, Gateway hosts and the remaining
-[DSL milestones](../DSLImplementationRoadmap.md) are still planned.
+The current **0.15.0 authoring candidate** covers Parts 15A-15H: [shared declarations](../DSL.md),
+[typed commands](../CommandDSL.md), [macros](../MacroDSL.md),
+[response ownership and signed HTTP](../CommandResponses.md),
+[message builders](../MessageBuilders.md), [command families](../CommandFamilies.md),
+[policies](../CommandPolicies.md) and [typed Gateway event modules](../GatewayEventModules.md).
+Earlier milestone validation records remain historical. The current
+[machine report](phase15-report.json) and [15H validation record](phase15h-validation.json)
+state current checks and explicit exclusions. Supervised bot hosts and the remaining
+[DSL milestones](../DSLImplementationRoadmap.md) retain separate implementation gates.
 
 The historical [0.14.0 candidate report](2026-10-18.md) and
 [machine-readable certification](phase14-report.json) retain their exact evidence
@@ -37,7 +35,10 @@ An unchanged hash does not establish semantic coverage of unrelated documentatio
 Every runtime release carries workload, hardware, throughput, p50/p95/p99, CPU/RSS,
 request savings, overload/recovery and fixed-working-set 30-minute evidence. The
 [measurements](Measurements/environment.json) identify Phase 14's earlier finite
-synthetic runs. Parts 15D/15E/15F add no current throughput, RSS or soak qualification.
+synthetic runs. Part 15H reruns the existing cache/broadcast profiles and 30-minute fixed-working-set
+soak. Those results cover that unchanged harness; they are not DSL handler execution,
+controlled performance regression or capacity evidence. Part 15K retains direct-versus-DSL
+handler measurements and DSL-specific soak qualification.
 Reproduce greater-than-10% regressions three times on matching hardware
 and workload before attributing them. Concurrent build/test activity and historical
 baselines do not provide such a controlled comparison. See [scalability](../Scalability.md).

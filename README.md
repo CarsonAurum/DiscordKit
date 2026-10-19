@@ -63,7 +63,9 @@ text interpolation and explicit mention allowlists over existing Models. Part 15
 [command families](Docs/CommandFamilies.md), partial autocomplete, exact component/modal
 routes and explicit catalog reconciliation. Part 15G adds [bounded policies and
 middleware](Docs/CommandPolicies.md), injected authorization and concurrency admission.
-Gateway hosts remain later
+Part 15H adds [typed Gateway event modules](Docs/GatewayEventModules.md), explicit
+intent validation and bounded ordered dispatch in the independent `DiscordBotDSL` product.
+Supervised Gateway hosts remain later
 [DSL milestones](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -145,6 +147,8 @@ explains navigation generation, synchronized tutorial code, validation and hosti
 - `DiscordCommandDSL`: typed argument schemas/decoding, immediate/deferred/manual slash
   handlers, message/component builders, existing command lowering and signed HTTP
   application composition with explicit synchronization.
+- `DiscordBotDSL`: typed Gateway selectors and protocol handlers, finite event compilation,
+  one default subscription and explicit bounded independent groups; no client startup.
 - `DiscordOAuth`: state/issuer-bound authorization, S256 PKCE, installation URLs,
   form-encoded token operations, injected browser presentation and bounded refresh ownership.
 - `DiscordGameServices`: documented provisional/merge/unmerge/publisher backend operations
