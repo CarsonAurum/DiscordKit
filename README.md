@@ -73,8 +73,12 @@ with separately adopted extension libraries and independent HTTP/Gateway consume
 Dependency validation precedes lazy body creation; namespaces preserve original
 metadata and wire routes. Part 15K adds [offline DSL measurements](Docs/DSLBenchmarks.md),
 with paired direct/DSL workloads, compiler costs and finite regression budgets.
-Production capacity and final release review remain separate
-[DSL gates](Docs/DSLImplementationRoadmap.md).
+Part 15L adds [design](Docs/DSLDesign.md), [adoption](Docs/DSLAdoption.md) and
+[migration](Docs/Migration.md) guides, twelve source-synchronized DocC tutorials,
+reviewed `0.15.0` API baselines and current scoped
+[release-candidate evidence](Docs/Release/README.md). The candidate remains
+unpublished and untagged; platform/live/device/crypto/interop and production-capacity
+qualification remain explicit exclusions.
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
@@ -108,7 +112,7 @@ establish endpoint parity or qualify untested hosts. See the
 
 ## Documentation
 
-The DocC catalogs cover all 28 public products, with task guides, nine tutorials,
+The DocC catalogs cover each public product, with task guides, twelve tutorials,
 an example cookbook and organized pages for every public type. Start with the
 [documentation contents](Sources/DiscordKit/DiscordKit.docc/TableOfContents.md)
 or [getting started](Sources/DiscordKit/DiscordKit.docc/GettingStarted.md).

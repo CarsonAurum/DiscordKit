@@ -11,6 +11,9 @@ Every example below has its own Swift package and imports its selected products 
 | Package | Learn | Execution behavior |
 | --- | --- | --- |
 | [CommandsApp](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/CommandsApp) | Slash definition, message validation, button custom ID, ephemeral/public tests | Offline; no credentials or I/O |
+| [DSLCommands](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/DSLCommands) | Macro/protocol commands, actor dependencies, policies, families and signed HTTP callbacks | Default/`--offline` uses synthetic signatures; explicit `--listen` binds loopback |
+| [DSLEvents](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/DSLEvents) | Custom typed selector, two ordered modules and bounded pipeline ownership | Offline synthetic dispatch; starts no client |
+| [DSLBot](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/DSLBot) | Independent extension modules, trusted client ingestion and joined runtime cleanup | Offline injected HTTP/WebSocket peers; no registration or sockets |
 | [RESTOnly](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/RESTOnly) | Foundation adapter, shared rate authority, typed reads, cleanup | With configured bot token, performs two real API reads |
 | [GatewayBot](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/GatewayBot) | Intents, authority, cache projection, subscription before run, shutdown | With configured bot credentials, connects to Discord |
 | [HTTPApp](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/HTTPApp) | Signed bytes, bounded listener/handlers, routing and initial reply | With configured ID/key, binds loopback listener |
@@ -46,4 +49,4 @@ VoiceBot contains separate MLS and DAVE demonstrations beside its media entry po
 
 ### Tutorial code snapshots
 
-Tutorial listings are synchronized snapshots of the source packages, including their supporting MLS/DAVE and Activity backend files. The documentation check detects changed or missing snapshots. The original examples remain the build/test authority; copying their directory-sensitive manifests into another folder requires adjusting the local package path.
+Tutorial listings are synchronized snapshots of the source packages, including their supporting MLS/DAVE, Activity backend and DSL policy/family/extension files. The command-module tutorial also displays the separately compiled extension library. The documentation check detects changed or missing snapshots. The original examples and extension package remain the build/test authority; copying directory-sensitive manifests into another folder requires adjusting the local package path.

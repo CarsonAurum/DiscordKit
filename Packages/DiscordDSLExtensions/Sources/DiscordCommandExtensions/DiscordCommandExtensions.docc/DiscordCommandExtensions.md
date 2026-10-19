@@ -24,6 +24,10 @@ remain separate qualification gates.
 
 ## Topics
 
+### Adopt reusable commands
+
+- <doc:SharingCommandModules>
+
 ### Complete public API
 
 - <doc:APIReference>

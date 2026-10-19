@@ -25,6 +25,14 @@ Read <doc:GettingStarted>, then open DiscordCore's value and JSON guides from <d
 4. Follow <doc:PrepareOAuth> for state, issuer and PKCE ownership.
 5. Read DiscordOAuth storage/refresh/device-polling guides and the GameServices/Commerce guides for backend account and entitlement policy.
 
+### Author reusable modules
+
+1. Read <doc:ModuleApplications> and complete <doc:AuthorCommandModules> for protocol/macro commands, response modes, injected actors and bounded policies.
+2. Follow <doc:ComposeGatewayModules> for typed selectors, explicit intents and ordered bounded pipelines.
+3. Follow <doc:HostAModuleBot> for trusted interactions, shared services and supervised startup/shutdown.
+4. Use the product guides for namespaces, validated dependencies, manual adapters and extension packages.
+5. Review <doc:TestingApplications>, <doc:Compatibility> and <doc:DeploymentState>; compilation and ordinary serving register nothing.
+
 ### Integrate a host
 
 1. Choose <doc:PrepareDesktopRPC> for the local desktop host or <doc:ComposeAnActivity> for a Discord-owned iframe.

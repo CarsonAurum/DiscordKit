@@ -1,0 +1,66 @@
+@Tutorial(time: 25) {
+    @Intro(title: "Author commands with protocols and macros") {
+        Compile a reusable command catalog and exercise signed HTTP response ownership with synthetic input.
+
+        Use Swift 6.4 and the existing DSLCommands package. Its default offline run needs no credentials, sockets or registration. The synchronized listings include the minimal macro command, handwritten protocol module, injected actor and policy examples.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "An application chooses authoring products and explicitly composes existing response and transport owners.")
+    }
+
+    @Section(title: "Build the independent command application") {
+        @ContentAndMedia {
+            Open the [DSLCommands package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/DSLCommands) in its existing checkout directory. Its relative dependencies select root runtime products, the optional macro package and a separate command-extension library.
+        }
+        @Steps {
+            @Step {
+                **Select authoring and runtime independently.** Inspect the manifest, then run `swift build --package-path Examples/DSLCommands`. The application chooses macros and a concrete listener; the CommandDSL runtime itself selects neither compiler plugins nor concrete adapters.
+
+                @Code(name: "DSLCommands-Package.swift", file: "DSLCommands-Package.swift.txt")
+            }
+            @Step {
+                **Read the minimal macro command.** PingArguments is an empty typed argument value. Ping directly conforms to SlashCommandHandler and returns one ephemeral MessageResponse containing Text("Pong!"). Its macro-generated contribution is installed in an explicitly identified Module and compiled once. Construction and compilation execute no handler.
+
+                @Code(name: "DSLCommands.swift", file: "DSLCommands.swift.txt")
+            }
+            @Step {
+                **Trace the handwritten protocol equivalent.** Read ExtensionArguments.schema, ExtensionCommand and ExtensionCommands in the independently compiled extension library. The schema creates fresh invocation values; the manual handler replies through the existing responder. This library selects no macro plugin. Immediate, deferred and manual handlers retain distinct response contracts.
+
+                @Code(name: "ExtensionCommands.swift", file: "ExtensionCommands.swift.txt")
+            }
+            @Step {
+                **Reuse the same actor dependency.** Read ExtensionExamples.run. An explicit namespace installs the module, and the policy/handler retain the same ExtensionCounter actor. Dependency validation is synchronous and local; compilation makes zero actor calls. Invocation awaits the injected actor through ordinary Swift isolation. Namespace identity never renames the command's wire route.
+
+                @Code(name: "ExtensionExamples.swift", file: "ExtensionExamples.swift.txt")
+            }
+            @Step {
+                **Apply bounded policies and ordered middleware.** Read PolicyExamples.catalog and run. The allow path enters audit, enters metrics, executes once, then exits in reverse order. Denial runs no middleware or handler. Both catalogs share one concurrency authority and leave zero active permits. Named then matches >>>; Boolean policy operators short circuit left-to-right.
+
+                @Code(name: "PolicyExamples.swift", file: "PolicyExamples.swift.txt")
+            }
+            @Step {
+                **Verify exact offline callbacks.** Run `swift test --package-path Examples/DSLCommands`, then `swift run --package-path Examples/DSLCommands DSLCommands --offline`. Trace genuine synthetic Ed25519 verification and exact callback assertions, including family-specific response kinds in FamilyExamples. Ordinary serving registers zero commands. Listener mode is an explicit separate choice; deployment owns HTTPS, credentials and registration review.
+
+                @Code(name: "FamilyExamples.swift", file: "FamilyExamples.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            When does this application register its compiled commands?
+
+            @Choice(isCorrect: true) {
+                Only when an explicit synchronization or registration owner is invoked.
+                @Justification {
+                    Construction, compilation and ordinary HTTP serving make zero registration requests. Review managed scope and partial outcomes before synchronization.
+                }
+            }
+            @Choice(isCorrect: false) {
+                Automatically when the module compiles or the listener starts.
+                @Justification {
+                    Compilation is inert and serving owns receipt and responses. Registration remains explicit.
+                }
+            }
+        }
+    }
+}

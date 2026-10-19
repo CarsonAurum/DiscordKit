@@ -1,6 +1,6 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A-15J. The
+The current authoring candidate is **0.15.0**, covering Parts 15A-15L. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
@@ -31,6 +31,11 @@ start work explicitly, and await closure. Values with `Field.absent`, `.null` an
 not prove implemented support for the corresponding upstream feature.
 
 ## Adopt typed command authoring
+
+Follow [the adoption guide](DSLAdoption.md) for a source-backed route from minimal
+protocol/macro commands to actor dependencies, policies and HTTP/Gateway hosts.
+The [design guide](DSLDesign.md) explains each layer's dependency and lifetime
+ownership. Existing direct consumers can adopt one route or module at a time.
 
 Existing `DiscordCommands` consumers require no migration. Select `DiscordDSL`
 for structural modules and `DiscordCommandDSL` for typed argument decoding and
@@ -114,6 +119,14 @@ not a live preproduction or post-effective Discord result. Reverify the official
 reviewed before that effective date.
 
 ## Evidence carried with releases
+
+The reviewed Phase 15 API uses separately named `0.15.0` root, macro and extension
+baselines. Preserve the `0.14.0` baseline and historical checkpoint reports;
+compare fresh compiler graphs to the old baseline for migration review and the
+new baseline for same-version stability. Candidate certification adds guides,
+tutorials, audits and scoped evidence; it does not require an existing runtime
+consumer to adopt DSL products or macros. See [release tooling](ReleaseTooling.md)
+for the exact comparisons and current report selection.
 
 Each release includes a machine-readable report and a readable companion identifying
 toolchain, protocols, source verification day, platform matrix, public API baseline,

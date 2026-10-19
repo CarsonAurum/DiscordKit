@@ -1700,6 +1700,46 @@
       ],
       "details": "changes/phase15k-dsl-measurements.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-part-15l-authoring-candidate",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "unpublished 0.15.0 candidate",
+      "localCommit": "unknown",
+      "changeType": "local_qualification",
+      "previousBehavior": "Parts 15A-15K have independently adopted authoring/runtime products and local measurements, with final adoption documentation and candidate baseline capture still open.",
+      "currentBehavior": "Part 15L adds design/adoption/migration guidance, independently compiled tutorial listings, emitted macro callable documentation checks, separately reviewed 0.15.0 root/macro/extension API baselines and current scoped local release certification. Historical reports and baselines remain unchanged.",
+      "affectedSymbols": [
+        "BotModule",
+        "CommandArguments",
+        "SlashCommandHandler",
+        "CommandApplication",
+        "BotRuntime",
+        "ModuleNamespace",
+        "DependentModule"
+      ],
+      "affectedPayloads": "Existing command definitions, normalized interactions and callbacks only; documentation/release tooling changes no Discord wire support classification.",
+      "breakingChanges": [],
+      "migration": "Existing direct API consumers need no migration. Explicitly select shared, command, bot and separate macro/extension products. Preserve response owners, shared aggregate authorities, explicit registration and supervised cleanup. The reviewed pre-1.0 minor candidate retains the historical 0.14.0 baseline.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/events/gateway-events#interaction-create"
+      ],
+      "details": "changes/phase15l-authoring-candidate.md",
+      "remainingGates": "../Release/phase15l-report.json"
     }
   ]
 }

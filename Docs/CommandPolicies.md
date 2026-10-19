@@ -119,6 +119,8 @@ blind retry middleware.
 
 Local tests cover named/operator behavior, skipped branches, bounds, malformed input,
 denial compatibility, shared overload, cancellation, continuation closure and partial
-effects. They do not establish Gateway host execution, live authorization services,
-live Discord, other platforms, benchmark capacity or complete Phase 15 certification.
-Those remain [later milestones](DSLImplementationRoadmap.md).
+effects. Gateway host composition has separate [bot application tests](BotApplications.md),
+and [local measurements](DSLBenchmarks.md) name their exact workload. Part 15L adds
+complete [adoption guidance](DSLAdoption.md) and scoped [release records](Release/README.md).
+Live authorization services, live Discord, other platforms and production capacity
+remain separately qualified gates.

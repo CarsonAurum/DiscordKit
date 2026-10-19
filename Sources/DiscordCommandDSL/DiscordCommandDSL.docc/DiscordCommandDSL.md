@@ -48,10 +48,14 @@ protocols retain legal callback kinds and the unique existing responder. Part 15
 ``CommandPolicies`` after complete input preparation, with ``CommandPolicy`` observations
 and injected authorization, ordered shared middleware, ``CommandConcurrencyAuthority``
 and explicit denial/error translation. ``CommandConcurrencyLimit`` supplies fixed-count,
-fail-fast local admission. Gateway hosts remain later milestones. Local tests do not
+fail-fast local admission. Separately selected BotDSL provides Gateway hosts. Local tests do not
 qualify live Discord, platforms or capacity.
 
 ## Topics
+
+### Adopt the authoring layer
+
+- <doc:AdoptingCommands>
 
 ### Typed arguments
 

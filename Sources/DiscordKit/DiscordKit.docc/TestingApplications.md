@@ -20,6 +20,12 @@ The public transport contracts let an application supply deterministic HTTP, Web
 
 When testing asynchronous code, assert cancellation cleanup, pending-count and byte accounting, concurrent caller ordering, duplicate/late response behavior and closure of owned resources. A scripted successful response alone does not test recovery.
 
+### Test compiled modules and their hosts
+
+Follow <doc:AuthorCommandModules>, <doc:ComposeGatewayModules> and <doc:HostAModuleBot> for independently compiled offline consumers. Test exact direct/DSL definitions and callback JSON, fresh argument values, absent/null/wrong-kind rejection, source diagnostics and structural bounds. Assert zero service/handler/registration effects during compilation, short-circuit policy behavior and zero owned counters after joined cancellation or failure. Macro external positive/negative fixtures prove real plugin compilation; expansion text alone does not establish runtime parity.
+
+Actor dependencies retain ordinary Swift isolation and the same application-owned reference across modules. Inject finite clocks/peers and reuse compiled schemas/routes across invocations. Keep separate handler/compiler measurements and cache/broadcast soak evidence with their actual workload, duration and host; offline results do not qualify a live fleet.
+
 ### Use local peers for framing and ownership
 
 Root tests include bounded loopback adapter peers. Browser tests simulate a postMessage host and verify exact source/origin checks and correlation. Activity backend tests exercise authenticated session and entitlement policy without an actual purchase:

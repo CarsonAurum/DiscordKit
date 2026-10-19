@@ -143,7 +143,32 @@ struct DocumentationAuditTests {
         #expect(report.declarations.map(\.name) == ["Arguments", "Undocumented", "expand", "expansion"])
         #expect(report.missing.map(\.kind) == ["macro"])
         #expect(report.missing.first?.path == "Packages/DiscordDSLMacros/Sources/DiscordDSLMacros/Macros.swift")
+        #expect(report.render().contains("Macro expansion is not executed by this audit"))
         #expect(throws: DocumentationAuditFailure.self) { try command.execute() }
+    }
+
+    /// Keeps each owned macro-package source tree in the CLI gate, independent of root runtime adoption.
+    /// Missing plugin or test comments must fail just as an undocumented public authoring declaration does.
+    /// - Parameter path: One authored file below the separate library, compiler plugin or test directory.
+    /// - Throws: Temporary fixture, source parsing or unexpected command failures fail this regression.
+    @Test(arguments: [
+        "Packages/DiscordDSLMacros/Sources/DiscordDSLMacros/Declarations.swift",
+        "Packages/DiscordDSLMacros/Sources/DiscordDSLMacrosPlugin/Plugin.swift",
+        "Packages/DiscordDSLMacros/Tests/ExpansionTests.swift",
+    ])
+    func gatesEveryMacroPackageSourceTree(path: String) throws {
+        let fixture = try DocumentationFixture()
+        defer { fixture.cleanup() }
+        try fixture.write("Packages/DiscordDSLMacros/Package.swift", "// Independently selected authoring package.")
+        try fixture.write(path, "private func missing() {}")
+        try fixture.write("Packages/DiscordDSLMacros/.swiftpm/Skipped.swift", "func incomplete(")
+        let command = try ToolCommand.parse(arguments: ["documentation", "audit", "--repository", fixture.root.path])
+        let report = try DocumentationAudit.audit(repository: fixture.root)
+        #expect(report.missing.map(\.path) == [path])
+        #expect(report.missing.map(\.name) == ["missing"])
+        #expect(throws: DocumentationAuditFailure.self) { try command.execute() }
+        try fixture.write(path, "/// Explains this owned authoring callable.\nprivate func present() {}")
+        #expect(try command.execute().contains("1 explicit callable declarations; 0 missing comments"))
     }
 
     /// Refuses parser recovery as passing evidence for incomplete or malformed declarations.

@@ -113,6 +113,37 @@ class CIHelpersTests(unittest.TestCase):
             with self.assertRaises(OSError):
                 documentation_examples.snapshots(Path(temporary))
 
+    def test_dsl_tutorials_include_independent_hosts_and_external_dependencies(self):
+        """Tutorial code is sourced from independently compiled consumers and libraries.
+
+        Removing an external dependency source must fail snapshot generation,
+        rather than leave a plausible but stale actor-injection tutorial.
+        """
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary)
+            for example in documentation_examples.EXAMPLES:
+                base = repository / "Examples" / example
+                source = base / "Sources" / example / f"{example}.swift"
+                source.parent.mkdir(parents=True)
+                source.write_text(f"// compiled {example}\n")
+                (base / "Package.swift").write_text(f"// package {example}\n")
+            for example, source in documentation_examples.SUPPORT:
+                path = repository / "Examples" / example / "Sources" / source
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"// support {path.name}\n")
+            for source in documentation_examples.PACKAGE_SUPPORT:
+                path = repository / source
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("actor TutorialDependency {}\n")
+            snapshots = documentation_examples.snapshots(repository)
+            for example in ("DSLCommands", "DSLEvents", "DSLBot"):
+                self.assertEqual(snapshots[f"{example}.swift.txt"], f"// compiled {example}\n")
+                self.assertIn(f"{example}-Package.swift.txt", snapshots)
+            self.assertEqual(snapshots["ExtensionCommands.swift.txt"], "actor TutorialDependency {}\n")
+            (repository / documentation_examples.PACKAGE_SUPPORT[0]).unlink()
+            with self.assertRaises(OSError):
+                documentation_examples.snapshots(repository)
+
     def test_tutorial_comment_rewrite_preserves_line_boundaries(self):
         """A label at a comment's end must not absorb the next executable line."""
         self.assertEqual(documentation_examples.displayed_source('/// Phase 12\nlet value = 1\n'),

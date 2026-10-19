@@ -1,0 +1,51 @@
+@Tutorial(time: 15) {
+    @Intro(title: "Compose bounded Gateway event modules") {
+        Deliver a typed synthetic dispatch through two modules with one explicitly owned subscription.
+
+        The independent DSLEvents package needs Swift 6.4 and no credentials, sockets, client startup or command registration. It exercises event compilation and pipeline ownership before adding a supervised bot host.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "Typed event modules consume bounded subscriptions through existing Gateway dispatch owners.")
+    }
+
+    @Section(title: "Compile and run the offline event pipeline") {
+        @ContentAndMedia {
+            Open the [DSLEvents package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/DSLEvents). Keep its original directory layout when building the synchronized source listings.
+        }
+        @Steps {
+            @Step {
+                **Select BotDSL explicitly.** Run `swift build --package-path Examples/DSLEvents`. The reviewed BotDSL graph includes Client and CommandDSL for supervised hosting, while this program executes only event pipelines. It selects no concrete adapter or compiler plugin.
+
+                @Code(name: "DSLEvents-Package.swift", file: "DSLEvents-Package.swift.txt")
+            }
+            @Step {
+                **Inspect typed selection and declaration order.** Find the public-protocol selector and the two identified modules. EventCompilation validates selected intents and finite admission before invoking any handler. Default modules share one subscription; same-shard callbacks retain declaration order. Independent groups require explicit finite configuration and provide no global ordering guarantee.
+
+                @Code(name: "DSLEvents.swift", file: "DSLEvents.swift.txt")
+            }
+            @Step {
+                **Run and join the owned pipelines.** Run `swift test --package-path Examples/DSLEvents`, then `swift run --package-path Examples/DSLEvents`. Trace subscribe, run, synthetic RESUMED publication and cleanup. Unknown fields remain exact observations; a synthetic event grants no interaction authenticity. Real clients, intents and recovery remain explicit host responsibilities.
+
+                @Code(name: "DSLEvents.swift", file: "DSLEvents.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            How many default subscriptions do two ordinary event modules need?
+
+            @Choice(isCorrect: true) {
+                One shared bounded subscription for the default event group.
+                @Justification {
+                    Module count does not create subscriptions or authority. Independent groups are explicitly selected and bounded.
+                }
+            }
+            @Choice(isCorrect: false) {
+                One automatically created subscription for each module.
+                @Justification {
+                    Compilation starts no subscriptions. Explicit pipeline admission creates the shared default subscription.
+                }
+            }
+        }
+    }
+}

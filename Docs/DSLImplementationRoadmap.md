@@ -16,8 +16,11 @@ bridge under the existing supervised client lifetime. **15J** adds explicit name
 installation, typed dependency validation and independent external extension consumers.
 **15K** adds an independent offline benchmark package, paired direct/DSL handler workloads,
 compiler-cost measurements, finite regression budgets and separate handler/cache soak evidence.
-These statuses do not
-imply that the complete bot authoring experience is available. See
+**15L** adds complete design/adoption/migration guides, synchronized independent
+example tutorials, compiler-curated public references and reviewed `0.15.0`
+API/release-candidate records. These statuses describe implemented local behavior;
+platform/live/device/crypto/interop and production-capacity qualifications remain
+explicit exclusions. See [design](DSLDesign.md), [adoption](DSLAdoption.md),
 [shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md),
 [response ownership and HTTP applications](CommandResponses.md),
 [message/component builders](MessageBuilders.md), [command families](CommandFamilies.md),
@@ -38,7 +41,7 @@ imply that the complete bot authoring experience is available. See
 | 15I | Implemented | Explicit BotApplication host construction, shared typed services, trusted Gateway interaction callbacks over HTTP and supervised client/pipeline lifetime. |
 | 15J | Implemented | Explicit namespaces, validated lazy typed dependencies and independently compiled public extension libraries reused by HTTP/Gateway consumers. |
 | 15K | Implemented locally | Reproducible direct/DSL handler and manual/macro compiler measurements, finite budgets and separate fixed-working-set handler/cache soak evidence. |
-| 15L | Planned | Complete DSL adoption/migration guides and full Phase 15 release certification. |
+| 15L | Implemented locally | Complete adoption/migration/DocC guides, independently compiled tutorial listings, reviewed 0.15.0 API baselines and current scoped release-candidate evidence; external qualification remains excluded. |
 
 15A's immutable descriptions can be inspected and compared offline. The description
 contains only metadata; the plan also retains typed contributions without executing
@@ -81,5 +84,7 @@ Voice, Social and OAuth interfaces can be injected without changing those graphs
 
 Structural admission limits describe finite compilation resources. They do not
 establish network throughput, bot population, live Discord interoperability or
-production capacity. Later milestones require their own implementation, tests,
-independent consumers and evidence before those behaviors are claimed.
+production capacity. Part 15L's [release records](Release/README.md) preserve the
+historical `0.14.0`/15K checkpoints and bind current validation to its actual source
+and artifacts. The candidate is unpublished and untagged. Passing local release
+checks does not close unrun external qualification gates.

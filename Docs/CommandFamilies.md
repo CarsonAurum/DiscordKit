@@ -121,8 +121,10 @@ exact-route metadata. Route count/text admission remains finite and one shared
 router supplies the aggregate concurrency bound. Captured user closures and injected
 services remain caller-owned; these limits establish no memory or throughput
 qualification. Part 15G adds [bounded policies and middleware](CommandPolicies.md).
-Gateway hosts, benchmarks and complete Phase 15 certification
-remain [later milestones](DSLImplementationRoadmap.md).
+Part 15I adds [Gateway hosts](BotApplications.md), Part 15K records
+[local measurements](DSLBenchmarks.md), and Part 15L supplies complete
+[adoption guidance](DSLAdoption.md) and scoped [release records](Release/README.md).
+Those records preserve live/platform and production-capacity exclusions.
 
 The reviewed [command reference](https://docs.discord.com/developers/interactions/application-commands),
 [interaction reference](https://docs.discord.com/developers/interactions/receiving-and-responding)

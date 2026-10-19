@@ -39,11 +39,15 @@ reusable local identities and ``DependentModule`` for lazy bodies over explicit
 ``ModuleDependencies``. Dependencies validate after module admission and before body
 creation. ``DefinitionIdentity`` retains exact namespace components without changing
 original metadata or wire route names. External extension libraries remain downstream;
-capacity measurements and complete DSL release certification remain later milestones.
+local measurements and release-candidate evidence remain separately scoped.
 This shared product selects no transport, client, concrete adapter,
 compiler plugin or documentation tooling.
 
 ## Topics
+
+### Adopt the authoring layer
+
+- <doc:AuthoringModules>
 
 ### Modules and structure
 

@@ -1,0 +1,40 @@
+import DiscordCommandDSL
+import DiscordCommandExtensions
+import DiscordCore
+import DiscordDSL
+
+/// The HTTP consumer imports its reusable command extension from an independently compiled package.
+enum ExtensionExamples {
+    /// Runs exact signed callbacks for the custom codec, low-level adapter and explicit policy denial.
+    /// - Returns: Successful authorization/execution counts from the exact injected actor instance.
+    /// - Throws: Dependency, compilation, signature, response or bounded-accounting validation failures.
+    static func run() async throws -> (authorizations: Int, executions: Int) {
+        let counter = ExtensionCounter()
+        let dependencies = ExtensionDependencies(counter: counter)
+        let module = try ExtensionCommands(id: "commands", dependencies: dependencies)
+        let commands = try CommandCompilation.compile(ModuleNamespace(id: "external") { module })
+            .applying(ExtensionCommands.policies(dependencies: dependencies))
+        let before = await counter.snapshot()
+        guard before.authorizations == 0, before.executions == 0 else { throw DiscordError.validation(.invalidValue) }
+        try await FamilyExamples.exchange(commands: commands, kind: 2,
+            data: #"{"id":"3","name":"extension","type":1,"options":[{"name":"code","type":3,"value":"ABC"}]}"#,
+            expected: #"{"type":4,"data":{"content":"Code: ABC","flags":64,"allowed_mentions":{"parse":[],"replied_user":false}}}"#)
+        try await FamilyExamples.exchange(commands: commands, kind: 2,
+            data: #"{"id":"3","name":"raw-extension","type":1}"#,
+            expected: #"{"type":4,"data":{"content":"Raw extension"}}"#)
+        let deniedCounter = ExtensionCounter(allowed: false)
+        let deniedDependencies = ExtensionDependencies(counter: deniedCounter)
+        let deniedModule = try ExtensionCommands(id: "commands", dependencies: deniedDependencies)
+        let denied = try CommandCompilation.compile(ModuleNamespace(id: "external") { deniedModule })
+            .applying(ExtensionCommands.policies(dependencies: deniedDependencies))
+        try await FamilyExamples.exchange(commands: denied, kind: 2,
+            data: #"{"id":"3","name":"extension","type":1,"options":[{"name":"code","type":3,"value":"ABC"}]}"#,
+            expected: #"{"type":4,"data":{"content":"Extension denied","flags":64,"allowed_mentions":{"parse":[],"replied_user":false}}}"#)
+        let evidence = await counter.snapshot(), deniedEvidence = await deniedCounter.snapshot()
+        guard evidence.authorizations == 2, evidence.executions == 2,
+              deniedEvidence.authorizations == 1, deniedEvidence.executions == 0 else {
+            throw DiscordError.validation(.invalidValue)
+        }
+        return evidence
+    }
+}

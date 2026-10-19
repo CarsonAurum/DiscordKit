@@ -154,8 +154,12 @@ on shared/command/bot products; root products never select that package. Applica
 Voice, Social and OAuth interfaces can be injected into typed dependency values
 without a DSL import or runtime service locator. Part 15K adds an independent
 [offline measurement package](DSLBenchmarks.md); runtime products select no benchmark
-or compiler-cost tooling. Part 15L retains final release certification. Local measurements
-do not establish production capacity.
+or compiler-cost tooling. Part 15L adds complete [design](DSLDesign.md),
+[adoption](DSLAdoption.md) and migration guidance, independent compiled tutorial
+listings, compiler-curated public DocC, reviewed `0.15.0` API baselines and scoped
+[release-candidate evidence](Release/README.md). Historical checkpoint records remain
+frozen. No publication or tag is implied, and local certification does not close
+external platform/live/device/crypto/interop or production-capacity gates.
 
 ## Product boundaries
 

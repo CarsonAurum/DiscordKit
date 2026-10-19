@@ -108,5 +108,6 @@ selected `DiscordBotExtensions` product. Namespaces scope structural identity;
 event handler IDs retain their existing global uniqueness and group behavior.
 Part 15K adds [paired direct/DSL command-handler measurements](DSLBenchmarks.md)
 and separate sustained-handler evidence. These do not measure Gateway event-host
-throughput. Part 15L retains final release certification. Local synthetic tests
-and named soak workloads do not qualify live Discord, other platforms or production capacity.
+throughput. Part 15L adds complete [adoption guidance](DSLAdoption.md) and scoped
+[release-candidate records](Release/README.md). Local synthetic tests and named
+soak workloads do not qualify live Discord, other platforms or production capacity.

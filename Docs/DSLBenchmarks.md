@@ -4,7 +4,8 @@ Part 15K supplies the independent development package
 [`DiscordDSLBenchmarks`](../Tools/DiscordDSLBenchmarks/README.md). Runtime products
 never depend on the benchmark, its compiler fixtures or its scripts. The package
 uses public APIs and synthetic interactions; no credentials or Discord calls are
-required. Part 15L retains complete Phase 15 release certification.
+required. Part 15L's [release records](Release/README.md) complete local authoring
+candidate certification while preserving external qualification exclusions.
 
 The implementation plan is to establish identical direct/DSL workloads, assert
 functional invariants before accepting timings, measure manual/macro compiler costs,

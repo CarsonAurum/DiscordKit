@@ -1,0 +1,56 @@
+@Tutorial(time: 25) {
+    @Intro(title: "Host modules with supervised startup and shutdown") {
+        Compose independent command and event extensions over the existing client and trusted interaction owners.
+
+        The DSLBot package uses injected HTTP and WebSocket peers, synthetic identity material and real client ingestion. Its offline run needs Swift 6.4, no Discord credentials or sockets, and makes zero registration requests.
+
+        @Image(source: "LibraryArchitecture.svg", alt: "An explicit composition root shares services and authorities across one supervised client and its module pipelines.")
+    }
+
+    @Section(title: "Run the independent protocol-module host") {
+        @ContentAndMedia {
+            Open the [DSLBot package](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/DSLBot). The synchronized source is a complete macro-free consumer of public extension libraries.
+        }
+        @Steps {
+            @Step {
+                **Inspect the explicit package graph.** Run `swift build --package-path Examples/DSLBot`. Command and event libraries are selected downstream. The application chooses BotDSL and existing service/transport contracts without a macro plugin, SwiftSyntax or a second Gateway runtime.
+
+                @Code(name: "DSLBot-Package.swift", file: "DSLBot-Package.swift.txt")
+            }
+            @Step {
+                **Construct services and share authorities.** Read the application factory and offline runner. The same injected actor supports command authorization and execution. Explicit startup, lease, handler, REST and resource authorities are retained across module installations. Initial HTTP response admission is independent of ordinary REST. Construction and compilation execute no callbacks or I/O.
+
+                @Code(name: "DSLBot.swift", file: "DSLBot.swift.txt")
+            }
+            @Step {
+                **Subscribe before starting the client.** Trace BotRuntime.run and the peer's Hello, READY and extension interaction sequence. Trusted interaction provenance enters through the client's ingestion boundary; ordinary public event-hub publication cannot authenticate it. The callback still travels through the existing HTTP response owner, with exact payload assertions and no registration.
+
+                @Code(name: "DSLBot.swift", file: "DSLBot.swift.txt")
+            }
+            @Step {
+                **Request stop from the handler and join outside it.** Run `swift test --package-path Examples/DSLBot`, then `swift run --package-path Examples/DSLBot DSLBot`. The peer's completion event calls nonjoining requestStop. The outer owner awaits client, event and interaction cleanup and asserts zero retained counters. A handler must not await shutdown that joins itself. Live deployment requires actual credentials, intents/approval, concrete adapters and externally shared authority where workers span processes.
+
+                @Code(name: "DSLBot.swift", file: "DSLBot.swift.txt")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            How should a running event handler stop this bot?
+
+            @Choice(isCorrect: true) {
+                Request nonjoining stop and let the external runtime owner await cleanup.
+                @Justification {
+                    The runtime joins its admitted handlers. A handler that joins its own shutdown cannot finish that cleanup.
+                }
+            }
+            @Choice(isCorrect: false) {
+                Await joining shutdown inside the handler before returning.
+                @Justification {
+                    Use requestStop inside handlers and await run or shutdown from an external owner.
+                }
+            }
+        }
+    }
+}

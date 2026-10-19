@@ -43,6 +43,10 @@ fixtures do not establish live Discord, platform or capacity qualification.
 
 ## Topics
 
+### Adopt macro authoring
+
+- <doc:AdoptingMacros>
+
 ### Authoring declarations
 
 - <doc:APIReference>

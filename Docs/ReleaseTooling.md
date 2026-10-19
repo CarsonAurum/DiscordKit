@@ -12,8 +12,9 @@ explicit exclusions; it does not grant platform, live Discord or crypto approval
 python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
 ```
 
-This command evaluates the actual root and twelve independent consumer manifests
-using `swift package dump-package`, with temporary writable caches. Part 15D adds
+This command evaluates the actual root, twelve independent example consumers and
+the independent DSL benchmark manifest using `swift package dump-package`, with
+temporary writable caches. Part 15D adds
 the independent DSLCommands consumer, including its explicitly selected separate
 macro product. Part 15H adds the macro-free DSLEvents event consumer. Part 15I adds
 the macro-free DSLBot supervised offline host consumer. Part 15J adds the separate
@@ -56,6 +57,9 @@ python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline.json \
   --candidate /tmp/discordkit-current-api.json --version 0.15.0
+python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
+  --baseline Docs/Release/api-baseline-0.15.0.json \
+  --candidate /tmp/discordkit-current-api.json --version 0.15.0
 ```
 
 Use the symbolgraph directory printed by the installed SwiftPM toolchain if it
@@ -87,18 +91,22 @@ modules; its public library products receive a separate API snapshot and DocC
 conversion. Runtime products do not acquire the package. Part 15K adds an independent
 [benchmark package](DSLBenchmarks.md), compiler-cost scripts and finite machine-specific
 regression budgets. Hard functional checks run independently of timing comparisons.
-Part 15L retains complete release certification.
+Part 15L captures separately named root, macro and extension `0.15.0` baselines
+after reviewing the Phase 15 API additions and the `0.14.0` comparison. It adds
+current candidate evidence without replacing the frozen checkpoint reports.
 The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before
 1.0), including declarations in a new module; inspect the detailed comparison to
-distinguish those additions from changes to existing APIs. The full Phase 15
-baseline is captured separately when its remaining milestones are implemented
-and reviewed; never rewrite the
+distinguish those additions from changes to existing APIs. The separately named
+`api-baseline-0.15.0.json` now fixes the reviewed Phase 15 root API. CI compares
+fresh compiler output to both versions: the `0.14.0` comparison describes the
+migration, while the same-version `0.15.0` comparison rejects added, removed or
+changed APIs until a new version and baseline receive review. Never rewrite a
 historical baseline to make a new API pass.
 
-Part 15C records the three public macro declarations in a separate snapshot; the
-compiler plugin and its tests do not become runtime API modules:
+The macro authoring declarations receive a separate snapshot, including Part 15F's
+context-menu macros; the compiler plugin and its tests do not become runtime API modules:
 
 ```sh
 swift package --package-path Packages/DiscordDSLMacros dump-symbol-graph --minimum-access-level public
@@ -106,11 +114,15 @@ python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
   --repository . --authoring-package Packages/DiscordDSLMacros \
   --symbolgraphs Packages/DiscordDSLMacros/.build/out/symbolgraph \
   --version 0.15.0 --output /tmp/discordkit-current-macros-api.json
+python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
+  --baseline Docs/Release/api-baseline-macros-0.15.0.json \
+  --candidate /tmp/discordkit-current-macros-api.json --version 0.15.0
 ```
 
 The macro package receives its own DocC conversion and curated reference pages.
-Keep its first full release baseline separate until Part 15L review; a first
-snapshot has no historical compatibility comparison. Compiled external fixtures
+Its reviewed `api-baseline-macros-0.15.0.json` contains only the authoring product,
+independently from the runtime API. This first macro baseline establishes no
+earlier historical compatibility. Compiled external fixtures
 check the actual macro signatures and generated behavior on the recorded toolchain.
 
 Part 15J uses the same separate-package snapshot mechanism for public extension
@@ -122,14 +134,18 @@ python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
   --repository . --authoring-package Packages/DiscordDSLExtensions \
   --symbolgraphs Packages/DiscordDSLExtensions/.build/out/symbolgraph \
   --version 0.15.0 --output /tmp/discordkit-current-extensions-api.json
+python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
+  --baseline Docs/Release/api-baseline-extensions-0.15.0.json \
+  --candidate /tmp/discordkit-current-extensions-api.json --version 0.15.0
 ```
 
 Build/test the package independently and run
 `python3 Tools/ci/dsl_extension_fixtures.py --repository .` for genuine external
 positive and missing/wrong dependency compile checks. Collect its two library
 products' curated DocC with the same separate-repository commands used for the
-macro package. Existing root public API comparisons remain unchanged; a separate
-first snapshot does not establish historical extension compatibility.
+macro package. `api-baseline-extensions-0.15.0.json` fixes their separately reviewed
+public API; this first extension baseline establishes no earlier historical
+extension compatibility.
 
 Snapshots normalize all owned graph shards, including external-type extensions,
 and reject missing modules, conflicting duplicates and mixed platform scopes.
@@ -151,25 +167,29 @@ other operating systems, architectures and conditional compilation branches
 require separate compiler-produced baselines; the macOS snapshot does not
 qualify those surfaces. Local API migration and upstream protocol changes are
 tracked separately in release and parity history.
+The Phase 15 baselines were emitted locally with Apple Swift 6.4, while hosted
+CI requests Swift 6.4.1. Actual hosted comparison results are required before
+claiming identical compiler output; a local pass is not evidence of a hosted run.
 
 ## Machine-readable report and explicit exclusions
 
 ```sh
 python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
-  --report Docs/Release/phase15-report.json
+  --report Docs/Release/phase15l-report.json
 ```
 
 The current report covers shared declarations, typed argument decoding, command
 lowering, separate macro authoring, response ownership, signed HTTP composition,
 event modules, supervised bot lifetime, trusted Gateway interaction composition,
-external namespace installation and validated typed dependency adoption.
+external namespace installation, validated typed dependency adoption, local
+benchmark/soak evidence, reviewed API baselines and release/adoption documentation.
 It includes only checks actually recorded for the current checkpoint. The macro
 package is audited separately from the root runtime API graphs;
 its public macro signatures are checked through compiled external consumers. Validate the
-historical `phase14-report.json` separately;
-its frozen evidence describes that checkpoint rather than current source. Neither
-passing record implies that the remaining Phase 15 command/macro/runtime milestones
-or external qualification gates have completed.
+historical `phase14-report.json` and `phase15-report.json` separately; their frozen
+evidence describes those checkpoints rather than the current release candidate.
+No passing record implies that excluded external qualification gates completed,
+or that a release was published or tagged.
 
 The schema-1 report identifies the candidate semantic version, verification date,
 explicit REST/Gateway/Voice/RPC/MLS/DAVE versions, every required gate, and the

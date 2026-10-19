@@ -34,5 +34,16 @@ with relative deadlines and conservative mutation invalidation.
 The selected product includes Client and CommandDSL without adding an upward
 dependency to existing products. Concrete adapters and compiler plugins remain
 application choices. See the repository's bot application/event guides and the
-independent DSLBot/DSLEvents offline consumers. Live Discord, platform qualification,
-DSL handler capacity and the remaining authoring milestones retain separate gates.
+independent DSLBot/DSLEvents offline consumers. Local benchmark and release-candidate
+records state their actual scope. Live Discord, platform qualification and
+production/fleet capacity retain separate gates.
+
+## Topics
+
+### Adopt the authoring layer
+
+- <doc:HostingModules>
+
+### Complete API reference
+
+- <doc:APIReference>

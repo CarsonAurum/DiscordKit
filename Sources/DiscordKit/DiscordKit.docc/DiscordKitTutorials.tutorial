@@ -1,6 +1,6 @@
 @Tutorials(name: "DiscordKit") {
     @Intro(title: "Build with DiscordKit") {
-        Learn the library through nine focused examples. Start with offline definitions and values, inspect network compositions without credentials, then explore consent-scoped hosts and synthetic media. Each tutorial connects an independently buildable package to its API and lifecycle contracts.
+        Learn the library through twelve focused examples. Start with offline definitions and modular authoring, inspect network compositions without credentials, then explore consent-scoped hosts and synthetic media. Each tutorial connects an independently buildable package to its API and lifecycle contracts.
 
         @Image(source: "LibraryArchitecture.svg", alt: "Independent library products compose under an application-owned lifecycle.")
     }
@@ -9,6 +9,12 @@
         @TutorialReference(tutorial: "doc:DefineACommand")
         @TutorialReference(tutorial: "doc:BuildARESTConsumer")
         @TutorialReference(tutorial: "doc:SuperviseABot")
+    }
+    @Chapter(name: "Modular commands and supervised applications") {
+        @Image(source: "LibraryArchitecture.svg", alt: "Authoring declarations compile independently before explicit HTTP or Gateway execution.")
+        @TutorialReference(tutorial: "doc:AuthorCommandModules")
+        @TutorialReference(tutorial: "doc:ComposeGatewayModules")
+        @TutorialReference(tutorial: "doc:HostAModuleBot")
     }
     @Chapter(name: "HTTP interactions and account authorization") {
         @Image(source: "LibraryArchitecture.svg", alt: "Values, protocols, domain products and injected adapters remain separately adopted.")

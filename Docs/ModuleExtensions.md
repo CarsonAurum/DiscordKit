@@ -156,7 +156,7 @@ reuse the application's aggregate credential, startup, lease, handler, REST and
 resource authorities across modules; module installation does not create quotas
 or authorize duplicate owners.
 
-## Evidence and remaining milestones
+## Evidence and qualification boundaries
 
 Run root build/tests, callable documentation, graph/import isolation, scoped public
 API and DocC checks, the independent extension package tests, and the affected
@@ -169,7 +169,7 @@ concrete adapters; adding an event extension is an explicit broader selection.
 These local and offline checks introduce no new Discord wire contract and establish
 no authorized live service, other platform, hardware or production capacity claim.
 Part 15K adds [local compile/runtime measurements](DSLBenchmarks.md), finite budgets
-and separate handler/cache soak evidence. Part 15L retains complete adoption/migration
-and final release certification. See
+and separate handler/cache soak evidence. Part 15L adds complete
+[adoption/migration guidance](DSLAdoption.md) and scoped [release records](Release/README.md). See
 the [implementation roadmap](DSLImplementationRoadmap.md) and
 [dated history](Parity/changes/phase15j-module-extensions.md).

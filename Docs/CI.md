@@ -18,7 +18,7 @@ explicit. Credential-bearing examples are built only.
 
 Parts 15A and 15B add independently selected `DiscordDSL` and `DiscordCommandDSL`
 products and their root tests. CI compares the current `0.15.0` authoring candidate against the frozen
-`0.14.0` API baseline, validates both historical and current reports, and discovers
+`0.14.0` and separately named `0.15.0` API baselines, validates historical and current reports, and discovers
 the public DocC modules from the manifest. The current candidate covers shared
 declarations, typed argument decoding, explicit command lowering and Part 15C's
 separate macro authoring package. Part 15D adds typed immediate/deferred/manual
@@ -45,19 +45,29 @@ its public API and DocC are collected independently from runtime and macro APIs.
 Part 15K adds independent benchmark Swift/Python tests and a small paired offline
 runtime smoke matrix. Full runtime/compiler measurements are explicit local qualification
 commands; compare numerical budgets only on matching hardware, toolchain and workload.
-Part 15L retains final release certification. Workflow definitions do not establish a
-passed platform run or production capacity.
+Part 15L selects `Docs/Release/phase15l-report.json` for the current release-candidate
+evidence and keeps the Phase 14 and 15K checkpoint reports intact and separately
+validated. It also checks freshly emitted macro and extension APIs against their
+separate `0.15.0` baselines. The root comparison retains the historical `0.14.0`
+migration check, then rejects same-version API drift against the reviewed `0.15.0`
+snapshot. None of these checks replaces running the current source validation or
+establishes a passed platform run, publication or production capacity.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to
 arm64 macOS 13 module availability. If a runner architecture or platform scope
 changes, the comparison must fail and receive review rather than resetting the
 baseline silently. Compiler/SDK changes can also produce conservative differences.
+The committed Phase 15 baselines were emitted locally with Apple Swift 6.4;
+hosted CI requests Swift 6.4.1. A workflow definition does not demonstrate that
+these toolchains emit identical signatures. Review actual same-version comparison
+results before accepting hosted compatibility; do not regenerate a baseline to
+hide compiler-driven differences.
 The macOS job emits public symbol graphs, compares the named platform API baseline,
 and converts every owned public library's DocC archive with warnings as errors,
 diagnostic analysis and experimental coverage. Each module receives its own primary
 and extension graphs. Every product has authored guides and curated individual
 type pages. The umbrella catalog supplies the package contents, learning paths,
-nine step-by-step tutorials and application recipes. Nonwriting checks reject
+twelve step-by-step tutorials and application recipes. Nonwriting checks reject
 drift in compiler-derived type/member navigation and tutorial example snapshots.
 The converter resolves cross-product links through local archive metadata and
 merges all products into one `DiscordKitLibrary.doccarchive` navigator.

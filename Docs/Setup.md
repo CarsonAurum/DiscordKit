@@ -22,12 +22,18 @@ dependency/import graphs.
 | Protocol-module Gateway host | [DSLBot](../Examples/DSLBot/README.md) | Offline synthetic host; inject real client dependencies and explicit intents for deployment |
 | Typed Gateway event modules | [DSLEvents](../Examples/DSLEvents/README.md) | Offline synthetic event delivery with explicit finite subscription ownership |
 | Signed HTTP application | [HTTPApp](../Examples/HTTPApp/README.md) | Public application ID/key, HTTPS forwarding and registered commands |
+| Macro/protocol command modules | [DSLCommands](../Examples/DSLCommands/README.md) | Default offline mode; explicit application ID/public key, HTTPS forwarding and reviewed synchronization for deployment |
 | Commands/components | [CommandsApp](../Examples/CommandsApp/README.md) | Offline composition; explicit registration and trusted receipt in deployment |
 | OAuth application | [OAuthApp](../Examples/OAuthApp/README.md) | Registered redirect, user scopes, injected browser and secure storage |
 | Voice components | [VoiceBot](../Examples/VoiceBot/README.md) | Offline synthetic demonstration; use supervised sessions for explicit network ownership |
 | Desktop RPC/devices | [RPCApp](../Examples/RPCApp/README.md) | Available desktop Discord, approved local user scopes and injected IPC |
 | Embedded Activity | [ActivityHost](../Examples/ActivityHost/README.md) | Enabled Activity, URL mapping, actual Discord host and separate HTTPS backend |
 | Public Social providers | [SocialApp](../Examples/SocialApp/README.md) | Explicit consent and provider-specific host/authority requirements |
+
+For the complete modular-authoring path, read [the adoption guide](DSLAdoption.md)
+and [design](DSLDesign.md). They connect minimal protocol/macro commands, actor
+dependencies, policies/operators, response modes, hosts and direct API adapters to
+independently compiled source packages and synchronized DocC tutorials.
 
 Select `DiscordCommandDSL` and `DiscordDSL` explicitly for [typed command
 authoring](CommandDSL.md). Compilation produces existing validated registration
@@ -129,4 +135,6 @@ review for accuracy.
 
 The [CI guide](CI.md) describes enabled jobs, infrastructure gates, and the optional
 manually invoked live read-only smoke. The [migration guide](Migration.md) separates
-local API changes from upstream protocol transitions.
+local API changes from upstream protocol transitions. The current `0.15.0`
+[release records](Release/README.md) retain exact local evidence and external
+exclusions; building or validating the guides publishes no package or documentation site.

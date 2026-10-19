@@ -68,6 +68,7 @@ The links below resolve across the independent archives when built with the repo
 
 ### Application recipes
 
+- <doc:ModuleApplications>
 - <doc:RESTOnly>
 - <doc:GatewayBots>
 - <doc:HTTPApplications>
@@ -77,6 +78,12 @@ The links below resolve across the independent archives when built with the repo
 - <doc:Activities>
 - <doc:SocialProviders>
 - <doc:VoiceApplications>
+
+### Modular authoring products
+
+- <doc:/DiscordDSL>
+- <doc:/DiscordCommandDSL>
+- <doc:/DiscordBotDSL>
 
 ### Testing, operations and maintenance
 

@@ -16,9 +16,10 @@ menus, autocomplete, components and modal submissions](CommandFamilies.md). Part
 [bounded policies and middleware](CommandPolicies.md). Part 15I supplies separately
 adopted [Gateway bot hosts](BotApplications.md); Part 15J adds
 [external module installation and typed dependencies](ModuleExtensions.md).
-Capacity and full release review remain later
-[implementation milestones](DSLImplementationRoadmap.md). Existing low-level APIs
-remain independently usable for their broader implemented surfaces.
+Part 15K records [local measurements](DSLBenchmarks.md); Part 15L adds complete
+[adoption guidance](DSLAdoption.md) and scoped [release records](Release/README.md).
+Production capacity and external qualification remain excluded. Existing low-level
+APIs remain independently usable for their broader implemented surfaces.
 
 ## Declare arguments once
 

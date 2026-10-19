@@ -146,7 +146,7 @@ valid durations set a deadline in the adapter's clock domain. This avoids mixing
 domains in shared handler dependencies. No schema reconstruction, implicit hydration,
 background refresh, registration or new rate authority is added by the adapter.
 
-## Validation and remaining milestones
+## Validation and qualification boundaries
 
 Root Swift Testing suites exercise startup/subscription order, inert construction,
 stop-before-run, startup cancellation, repeated shutdown, cancelled cleanup waiters,
@@ -163,6 +163,8 @@ fixed-working-set 30-minute soak requirement. Those measurements cover their nam
 harness and do not establish DSL handler capacity. Part 15J's independent extension
 package/consumer checks cover public external adoption. Part 15K adds separate
 [direct/DSL handler measurements and soak evidence](DSLBenchmarks.md). Part 15L
-retains final release review; local measurements do not establish capacity.
+adds complete [adoption guidance](DSLAdoption.md) and scoped
+[release-candidate records](Release/README.md); local measurements do not establish
+production capacity.
 Local synthetic peers do not qualify live Discord, other platforms, hardware,
 independent crypto review or production capacity.

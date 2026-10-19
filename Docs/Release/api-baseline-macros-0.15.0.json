@@ -1,0 +1,16 @@
+{
+  "schemaVersion":1,
+  "version":"0.15.0",
+  "platform":{"architecture":"arm64","operatingSystem":{"minimumVersion":{"major":13,"minor":0},"name":"macosx"},"vendor":"apple"},
+  "qualification":"source_api_snapshot_only",
+  "modules":{
+    "DiscordDSLMacros":{"relationships":[
+    ],"symbols":{
+      "s:16DiscordDSLMacros11UserCommandyySScfm":{"kind":"swift.macro","path":["UserCommand(_:)"],"signatureSHA256":"fcce7d7564f5d6a0b037b4205bb4531920a6854f2ebf7f527c0d60d2dc8ea28c"},
+      "s:16DiscordDSLMacros12SlashCommand_11descriptionySS_SStcfm":{"kind":"swift.macro","path":["SlashCommand(_:description:)"],"signatureSHA256":"8e65df0b8fbc37adb430866b5c73345f9c5b54a290dc44172490b298cba54824"},
+      "s:16DiscordDSLMacros14MessageCommandyySScfm":{"kind":"swift.macro","path":["MessageCommand(_:)"],"signatureSHA256":"6c0df090572832c553ce9bfc25d9f52259656f9344fbc535cbb68312ce229a03"},
+      "s:16DiscordDSLMacros16CommandArgumentsyycfm":{"kind":"swift.macro","path":["CommandArguments()"],"signatureSHA256":"69f83d6f248c5fe055c30d2abe7dfe2ec621e8ead6490f9717232c643b910952"},
+      "s:16DiscordDSLMacros6Option4name11descriptionySSSg_SStcfm":{"kind":"swift.macro","path":["Option(name:description:)"],"signatureSHA256":"fddaf46d739976eb3ddab0d78931a51566107aac6dc2267dde4b7c452982dfad"}
+    }}
+  }
+}

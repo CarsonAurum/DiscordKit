@@ -33,6 +33,7 @@ struct DocumentationAuditReport: Equatable, Sendable {
             "Documentation presence audit: \(files) Swift files; \(declarations.count) explicit callable declarations; \(missing.count) missing comments.",
             "Scope includes functions, macro declarations, operators, initializers, deinitializers, subscripts, explicit accessors, shorthand getters, protocol requirements and tests at every access level.",
             "Owned separate packages, including Packages/DiscordDSLMacros authoring, plugin and test source, are audited recursively; fetched and build directories are excluded.",
+            "Macro expansion is not executed by this audit; emitted callable documentation is checked separately by macro-package expansion fixtures.",
             "Presence is syntactic evidence only; semantic completeness and correctness require human review.",
         ] + failures).joined(separator: "\n") + "\n"
     }

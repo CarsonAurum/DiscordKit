@@ -23,6 +23,10 @@ over local injected peers. Live Discord, platforms and DSL capacity remain separ
 
 ## Topics
 
+### Adopt reusable events
+
+- <doc:SharingEventModules>
+
 ### Complete public API
 
 - <doc:APIReference>

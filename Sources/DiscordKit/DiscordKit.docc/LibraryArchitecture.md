@@ -19,6 +19,8 @@ DiscordModels provides wire values independently of transport execution. Discord
 | Typed REST operations | DiscordHTTP | Models, transport backend, shared rate authority |
 | Supervised bot | DiscordClient | Explicit intents, shard authority, optional Cache |
 | Signed HTTP interaction handler | DiscordInteractions | Commands, ingress listener, signing public key |
+| Reusable typed command modules | DiscordDSL / DiscordCommandDSL | Explicit HTTP host, response contract, optional separate macro package |
+| Supervised module bot | DiscordBotDSL | Existing Client, shared services/authorities and explicit intents |
 | OAuth account linking | DiscordOAuth | Browser presentation and transactional secure store |
 | Game backend or premium access | DiscordGameServices / DiscordCommerce | Backend credentials and server-derived policy |
 | Local Discord desktop | DiscordRPC | Injected connector, consent, optional CertifiedDevices |
@@ -33,6 +35,8 @@ Share credential rate limits and aggregate resource budgets across clients that 
 Cache observations and browser purchase responses do not authorize access. Missing data does not grant permissions. Unknown protocol values should remain observable and bounded rather than being converted into a known success state.
 
 ### Know the dependency boundaries
+
+Shared DSL selects Core/Models only. CommandDSL composes existing command/interaction owners while excluding Gateway/Client/Cache. BotDSL explicitly broadens adoption to the supervised client graph. Runtime products select no macro plugin or SwiftSyntax; extension libraries remain downstream choices. Declaration construction and compilation start no work, and ordinary serving registers no commands. Follow <doc:ModuleApplications> for the complete adoption path.
 
 Cache operates on scoped model projections without importing HTTP or Gateway. RPC and Activities can be adopted without the bot runtime. Voice and VoiceCrypto do not depend on MLS or DAVE; DAVE composes their interfaces with MLS. An Activity's confidential OAuth code exchange and entitlement verification belong in a separately deployed backend.
 

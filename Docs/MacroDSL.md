@@ -96,8 +96,8 @@ Omitting the family preserves the original manual default. The macro factory use
 the same `SlashCommand` runtime adapters as handwritten code; it does not create
 another response owner. See [response modes and HTTP applications](CommandResponses.md).
 Part 15E composes the same handlers with [message/component builders](MessageBuilders.md)
-without changing macro expansion or response ownership. Other command families remain
-later milestones.
+without changing macro expansion or response ownership. Part 15F adds
+[family-specific runtime and macro adapters](CommandFamilies.md).
 
 ## Verification and scope
 
@@ -122,4 +122,7 @@ and affected [Discord command contracts](https://docs.discord.com/developers/int
 were reviewed on **2026-10-18**. Exact review input hashes are recorded in
 [the source record](Release/sources/2026-10-18-phase15c.json). Local Swift 6.4/macOS
 build and synthetic parity evidence do not establish other toolchains/platforms,
-live Discord interoperability, capacity or complete Phase 15 support.
+live Discord interoperability or production capacity. Part 15L's
+[adoption guide](DSLAdoption.md) and [release records](Release/README.md) connect
+the independently compiled examples, generated callable-documentation checks and
+current scoped certification without closing those external gates.

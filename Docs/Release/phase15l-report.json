@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.15.0",
+  "verifiedOn": "2026-10-18",
+  "published": false,
+  "protocols": {
+    "REST": "10",
+    "Gateway": "10",
+    "Voice": "8",
+    "RPC": "1",
+    "MLS": "1.0",
+    "DAVE": "1"
+  },
+  "checks": [
+    {
+      "id": "root-build",
+      "status": "passed",
+      "scope": "Current local root debug build with SWIFTNIO_STRICT=1 passed.15L changes development tests/tooling and documentation; runtime behavior and manifests remain unchanged.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "root-tests",
+      "status": "passed",
+      "scope": "Complete host-access strict-NIO rerun:2367 tests across32 root targets passed with local Unix/loopback sockets. No Discord credentials or authenticated network requests.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "tooling",
+      "status": "passed",
+      "scope": "105 tooling Swift,34 macro Swift,229 tooling Python,45 CI Python,19 benchmark Python,26 external macro and3 typed-dependency fixtures passed. Actual emitted macro callables and all separate macro source subtrees are covered.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "passed",
+      "scope": "18137 entries,280 sources,934 reviewed definitions; zero unclassified discovery IDs. Current UTC audit2026-10-19; no support classification promoted.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "generation",
+      "status": "passed",
+      "scope": "Five generated artifacts byte-identical at current UTC audit2026-10-19; no reviewed wire definition changes.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "parity",
+      "status": "passed",
+      "scope": "Current inventory/parity validation passed. Authoring-candidate history appends only; historical reports and pre-Phase14 canonical history preserved.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "declaration-docs",
+      "status": "passed",
+      "scope": "778 Swift files,8578 explicit callables,zero missing comments; macro authoring/plugin/tests recursively included. Actual expansion callable comment/signature checks pass separately; semantic completeness excluded.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "docc",
+      "status": "passed",
+      "scope": "31 root,one macro andtwo extension public DocC archives converted with strict diagnostics and merged per package. Compiler-curated references match,32 source listings and12 independent example tutorials verified. No semantic-completeness claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "product-isolation",
+      "status": "passed",
+      "scope": "31 root products,13 independent consumers(including benchmark),two authoring packages pass exact graph/import audit. Existing independent runtime graphs unchanged; no compiler plugin or concrete adapter enters DSL runtime.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "api-baseline",
+      "status": "passed",
+      "scope": "Reviewed0.14.0->0.15.0 macOS comparison:1010 additions,zero changed/removed symbols,zero removed relationships. Captured separate root(14245 symbols),macro(5),extension(86)0.15 baselines; fresh same-version comparisons show no changes. No ABI/other-platform claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "status": "passed",
+      "scope": "All12 independent example packages built with explicit import checking; command/event/bot/Activity tests and six offline modes passed. Extension package6 tests and public compiler fixtures pass. Synthetic host evidence only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "status": "passed",
+      "scope": "All36 Node built-in simulated browser bridge/host/network tests passed; no actual Discord browser/mobile host qualification.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "social-catalog",
+      "status": "passed",
+      "scope": "743 entries structurally validated against735 baseline declarations;225 blocked,209 language-specific,309 partial. No support promotion or native SDK claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "local-load",
+      "status": "passed",
+      "scope": "Current28 load Swift,12 Python peer,9 benchmark Swift and19 benchmark Python functional tests passed. Historical15K paired/compiler/budget artifacts preserved with unchanged runtime/workload source identities. No new performance measurement or controlled regression claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "fixed-working-set-soak",
+      "status": "passed",
+      "scope": "Historical15K1800-second cache/broadcast and separate60-second-per-path handler evidence retained, with346 runtime/workload and6 cache source inputs verified unchanged. No fresh15L soak, whole-process zero-growth or production capacity claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "macos",
+      "status": "passed",
+      "scope": "Local Apple Swift6.4 macOS arm64 build/tests, independent consumers, scoped APIs and DocC only. Hosted Swift6.4.1, minimum-OS runtime,devices and other platforms not qualified.",
+      "evidence": [
+        {
+          "path": "Docs/Release/phase15l-validation.json",
+          "sha256": "9ea6cb8ff81c5400ebab8da648c368afaab2b1472d3d28c66a1ec446b17cf455"
+        }
+      ]
+    },
+    {
+      "id": "linux",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current linux qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current linux qualification is claimed.",
+      "excludedClaims": [
+        "linux"
+      ]
+    },
+    {
+      "id": "windows",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current windows qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current windows qualification is claimed.",
+      "excludedClaims": [
+        "windows"
+      ]
+    },
+    {
+      "id": "apple-simulators",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current apple-simulators qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current apple-simulators qualification is claimed.",
+      "excludedClaims": [
+        "apple-simulators"
+      ]
+    },
+    {
+      "id": "apple-devices",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current apple-devices qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current apple-devices qualification is claimed.",
+      "excludedClaims": [
+        "apple-devices"
+      ]
+    },
+    {
+      "id": "android-cross-build",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current android-cross-build qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current android-cross-build qualification is claimed.",
+      "excludedClaims": [
+        "android-cross-build"
+      ]
+    },
+    {
+      "id": "android-runtime",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current android-runtime qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current android-runtime qualification is claimed.",
+      "excludedClaims": [
+        "android-runtime"
+      ]
+    },
+    {
+      "id": "live-discord",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current live-discord qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current live-discord qualification is claimed.",
+      "excludedClaims": [
+        "live-discord"
+      ]
+    },
+    {
+      "id": "hardware",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current hardware qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current hardware qualification is claimed.",
+      "excludedClaims": [
+        "hardware"
+      ]
+    },
+    {
+      "id": "independent-crypto-review",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current independent-crypto-review qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current independent-crypto-review qualification is claimed.",
+      "excludedClaims": [
+        "independent-crypto-review"
+      ]
+    },
+    {
+      "id": "codec-interop",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current codec-interop qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current codec-interop qualification is claimed.",
+      "excludedClaims": [
+        "codec-interop"
+      ]
+    },
+    {
+      "id": "semantic-documentation",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current semantic-documentation qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current semantic-documentation qualification is claimed.",
+      "excludedClaims": [
+        "semantic-documentation"
+      ]
+    },
+    {
+      "id": "api-other-platforms",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current api-other-platforms qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current api-other-platforms qualification is claimed.",
+      "excludedClaims": [
+        "api-other-platforms"
+      ]
+    },
+    {
+      "id": "upstream-collection",
+      "status": "unverified",
+      "scope": "Not established by Part15L local macOS documentation/API/offline checks; no current upstream-collection qualification is claimed.",
+      "reason": "Not established by Part15L local macOS documentation/API/offline checks; no current upstream-collection qualification is claimed.",
+      "excludedClaims": [
+        "upstream-collection"
+      ]
+    },
+    {
+      "id": "zero-resource-growth",
+      "status": "unverified",
+      "scope": "Named functional counters return to zero; process RSS/live allocator observations and fixed-working-set runs do not establish entire-product zero resource growth.",
+      "reason": "Named functional counters return to zero; process RSS/live allocator observations and fixed-working-set runs do not establish entire-product zero resource growth.",
+      "excludedClaims": [
+        "zero-resource-growth"
+      ]
+    },
+    {
+      "id": "performance-regression",
+      "status": "unverified",
+      "scope": "First measured baseline and finite budgets exist, with a passing self-check. No previous-implementation comparison or three matching isolated runs establish controlled regression qualification.",
+      "reason": "First measured baseline and finite budgets exist, with a passing self-check. No previous-implementation comparison or three matching isolated runs establish controlled regression qualification.",
+      "excludedClaims": [
+        "performance-regression"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "phase15-local-authoring-release-candidate",
+      "description": "Parts15A-15L complete within named local implementation/documentation/API/consumer and preserved measurement scopes. Unpublished candidate; external qualification remains excluded.",
+      "checkIDs": [
+        "root-build",
+        "root-tests",
+        "tooling",
+        "inventory",
+        "generation",
+        "parity",
+        "declaration-docs",
+        "docc",
+        "product-isolation",
+        "api-baseline",
+        "examples",
+        "macos"
+      ]
+    },
+    {
+      "id": "simulated-browser-and-structural-social-regressions",
+      "description": "Only simulated browser regression tests and structural Social inventory validation; no actual Discord/native host support.",
+      "checkIDs": [
+        "browser",
+        "social-catalog"
+      ]
+    },
+    {
+      "id": "preserved-local-measurement-checkpoint",
+      "description": "Current functional load/benchmark tests and historical15K named timing/soak evidence with verified unchanged source identities. No new timing run or controlled performance/production claim.",
+      "checkIDs": [
+        "local-load",
+        "fixed-working-set-soak",
+        "macos"
+      ]
+    }
+  ],
+  "globalExclusions": [
+    "entire-platform-parity",
+    "production-qualification",
+    "fleet-capacity",
+    "binary-ABI",
+    "historical-API-compatibility",
+    "dsl-macro-other-toolchains-platforms",
+    "production-dsl-capacity",
+    "dsl-live-registration-qualification",
+    "dsl-distributed-coordinator-and-keyed-policy-store-implementation",
+    "unqualified-phase15-certification",
+    "complete-MLS-DAVE-client-interoperability",
+    "apple-minimum-OS-runtime",
+    "hosted-Swift-6.4.1-run"
+  ]
+}

@@ -22,6 +22,7 @@ Follow the tutorials for a guided walkthrough, use the recipes for a particular 
 
 ### Build an application
 
+- <doc:ModuleApplications>
 - <doc:RESTOnly>
 - <doc:GatewayBots>
 - <doc:HTTPApplications>

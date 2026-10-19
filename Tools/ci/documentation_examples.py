@@ -15,12 +15,19 @@ from pathlib import Path
 EXAMPLES = (
     "CommandsApp", "RESTOnly", "GatewayBot", "HTTPApp", "OAuthApp",
     "RPCApp", "ActivityHost", "SocialApp", "VoiceBot",
+    "DSLCommands", "DSLEvents", "DSLBot",
 )
 SUPPORT = (
     ("ActivityHost", "ActivityHostSupport/ActivityHostSession.swift"),
     ("ActivityHost", "ActivityBackend/ActivityBackend.swift"),
     ("VoiceBot", "VoiceBot/MLSExample.swift"),
     ("VoiceBot", "VoiceBot/DAVEExample.swift"),
+    ("DSLCommands", "DSLCommands/FamilyExamples.swift"),
+    ("DSLCommands", "DSLCommands/PolicyExamples.swift"),
+    ("DSLCommands", "DSLCommands/ExtensionExamples.swift"),
+)
+PACKAGE_SUPPORT = (
+    "Packages/DiscordDSLExtensions/Sources/DiscordCommandExtensions/ExtensionCommands.swift",
 )
 
 
@@ -51,6 +58,9 @@ def snapshots(repository):
         sources[f"{example}.swift.txt"] = displayed_source(source.read_text())
     for example, source in SUPPORT:
         path = repository / "Examples" / example / "Sources" / source
+        sources[path.name + ".txt"] = displayed_source(path.read_text())
+    for source in PACKAGE_SUPPORT:
+        path = repository / source
         sources[path.name + ".txt"] = displayed_source(path.read_text())
     return sources
 

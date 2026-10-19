@@ -119,7 +119,7 @@ contribution protocols, structural builders, stable explicit module IDs, source 
 and bounded deterministic declaration descriptions. It selects Core/Models only; existing
 products remain independent of the DSL. Construction and compilation start no tasks, I/O,
 registration or handler execution. Command lowering/macros, response builders/policies
-and HTTP/Gateway hosts remain later milestones; see `Docs/DSL.md` and
+and HTTP/Gateway hosts use the separately selected layers described below; see `Docs/DSL.md` and
 `Docs/DSLImplementationRoadmap.md`.
 
 Part 15B adds independently adopted `DiscordCommandDSL`: finite typed argument schemas
@@ -129,7 +129,7 @@ and routes. It selects DSL/Core/Models/Commands/Interactions; existing products 
 shared DSL retain their independent graphs. Construction/compilation start no tasks,
 I/O, registration or handler execution. Explicit router invocation uses existing
 interaction ownership. Macros, response builders/policies and HTTP/Gateway hosts
-remain later milestones; see `Docs/CommandDSL.md`.
+use the explicit layers described below; see `Docs/CommandDSL.md`.
 
 Part 15C adds the separate `Packages/DiscordDSLMacros` authoring package for
 `@CommandArguments`, `@Option` and `@SlashCommand`, compiled execution parity and
@@ -142,8 +142,8 @@ application/router. Initial response admission remains independent. Construction
 ordinary listener execution register no commands; synchronization is explicit.
 The independent `Examples/DSLCommands` uses a macro-authored command in a synthetic
 signed offline exchange, with listener ownership only when explicitly requested.
-Policies, broader command families and Gateway hosts remain later milestones;
-see `Docs/CommandResponses.md`.
+Policies, broader command families and Gateway hosts compose through the separate
+APIs described below; see `Docs/CommandResponses.md`.
 
 Part 15E adds pure `MessageContent` authoring in `DiscordDSL`, with safe dynamic
 text interpolation, typed user/role/channel mentions and explicit mention allowlists.
@@ -159,7 +159,7 @@ exact component/modal handlers and explicit compiled-catalog reconciliation over
 existing Commands/Interactions owners. Family response types keep autocomplete,
 modal opening, message updates and message replies separate. Construction and ordinary
 serving register nothing. Existing Models remain authoritative for supported fields;
-policies, Gateway hosts and capacity qualification remain later milestones. See
+policies and Gateway hosts retain their separate owners and qualification scope. See
 `Docs/CommandFamilies.md`.
 
 Part 15G adds bounded `InvocationPolicy`/`InvocationMiddleware` values in the shared
@@ -168,7 +168,7 @@ concurrency and rejection/error mapping. Complete typed input preparation preced
 policies and deferral. Middleware terminal execution is single-use and closes before
 admission releases; existing response owners preserve deadlines and uncertainty.
 Construction starts no work; HTTP rate authorities remain unchanged. See
-`Docs/CommandPolicies.md`. Gateway hosts and capacity qualification remain later milestones.
+`Docs/CommandPolicies.md`. Gateway hosts and local measurements retain separate evidence.
 
 Part 15H adds independently adopted `DiscordBotDSL`: typed Gateway selectors/handlers,
 explicit intent validation, one default bounded subscription and finite independent
@@ -197,7 +197,7 @@ adoption through independent HTTP/Gateway consumers. Existing runtime graphs rem
 unchanged; optional Voice/Social/OAuth interfaces are injected application choices.
 Construction and compilation start no tasks, I/O, registration or handler execution.
 See `Docs/ModuleExtensions.md`; local extension adoption does not qualify production
-capacity or final release certification.
+capacity or replace the separate release-candidate checks.
 
 Part 15K adds the independent `Tools/DiscordDSLBenchmarks` package for finite paired
 direct/DSL handler measurements, compiler costs with/without macros and explicit
@@ -205,6 +205,14 @@ regression budgets. Functional gates include cached schemas, bounded state, no i
 hydration/registration and zero owned cleanup counters. Existing cache/broadcast and
 new handler soak evidence remain separate. No runtime product selects this tooling;
 local measurements do not establish production or fleet capacity. See `Docs/DSLBenchmarks.md`.
+
+Part 15L adds complete design/adoption/migration guidance, independently compiled
+source-synchronized DocC tutorials, compiler-curated references, expanded macro
+callable-documentation auditing and reviewed root/macro/extension `0.15.0` API
+baselines. Current release evidence is separately named and preserves historical
+checkpoints. The candidate is unpublished and untagged; unrun platform/live/device/
+crypto/interop and production-capacity gates remain excluded. See `Docs/DSLAdoption.md`,
+`Docs/DSLDesign.md` and `Docs/Release/README.md`.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -417,7 +425,8 @@ order, complete-shard serialization/cross-shard progress, explicit required inte
 duplicate identities, raw/unknown/malformed dispatches, queue overflow, callback failure,
 finite independent groups and cancellation/setup cleanup. Build GatewayBot and run
 load cache/soak checks as required for event changes. Local tests do not qualify live
-Discord or DSL handler capacity; Parts 15K-15L remain separate.
+Discord or DSL handler capacity; Parts 15K-15L supply separately scoped measurement
+and release evidence.
 
 For bot application/interaction bridge changes, also build/test/run the independent
 DSLBot consumer offline. Keep raw shard ingestion exclusive to DiscordClient and
@@ -454,6 +463,17 @@ payload/concurrency/sample/invocation limits, cached schemas and zero cleanup
 ownership. Preserve the separate cache/broadcast 30-minute soak and new DSL handler
 soak evidence; report actual duration and measurement interference. Never infer
 production/fleet capacity from synthetic declaration counts or local throughput.
+
+For DSL adoption or release-candidate changes, keep tutorial listings synchronized
+with independently compiled example/extension sources through
+`Tools/ci/documentation_examples.py`; do not invent parallel uncompiled snippets.
+Audit root and macro-package callable documentation, test generated callable comments
+in macro expansion fixtures, and run compiler-produced reference curation/strict
+DocC for root/macro/extension packages. Compare fresh APIs to both the frozen
+`0.14.0` baseline and separately named reviewed `0.15.0` baselines. Validate current
+release/maintenance records, append parity history and preserve frozen checkpoint
+reports. Record actual source/toolchain/host/check scope and exclude unrun external
+qualification; a workflow definition or unchanged evidence date is no passed run.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

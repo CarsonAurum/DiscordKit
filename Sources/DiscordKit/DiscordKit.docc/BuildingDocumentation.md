@@ -15,7 +15,7 @@ python3 Tools/ci/documentation_examples.py
 python3 Tools/ci/build_docc.py
 ```
 
-Use the symbol graph directory printed by SwiftPM if it differs from the helper's default. The helper converts all 28 public library modules, preserving each module's primary and owned extension graphs. It enables warnings as errors, diagnostic analysis and public documentation coverage. The umbrella catalog resolves cross-product contents links against those archives. DocC then merges them into `.build/documentation/DiscordKitLibrary.doccarchive` with one library navigator.
+Use the symbol graph directory printed by SwiftPM if it differs from the helper's default. The helper converts each root public library module, preserving its primary and owned extension graphs. It enables warnings as errors, diagnostic analysis and public documentation coverage. The umbrella catalog resolves cross-product contents links against those archives. DocC then merges them into `.build/documentation/DiscordKitLibrary.doccarchive` with one library navigator. The macro and extension packages emit separate graphs and catalogs; validate those packages explicitly as described in the repository release-tooling guide.
 
 Open the merged archive in Xcode, or preview the umbrella catalog with the installed DocC command and the appropriate symbol graphs. For web hosting, use DocC's static-hosting output and configure the hosting base path for your deployment; generation does not publish or deploy a site.
 
@@ -23,7 +23,7 @@ Open the merged archive in Xcode, or preview the umbrella catalog with the insta
 
 Each product has a catalog alongside its Swift source. The module page curates authored guides and an APIReference article. Reference pages extend the matching symbols and group initializers, cases, properties, methods, nested types and other members while retaining inline declaration documentation. Source comments describe precise parameter, error, concurrency and ownership contracts; guides explain how the pieces compose.
 
-The umbrella catalog contains the package contents, learning paths, application recipes, operational guides, tutorial contents and nine tutorials. Tutorial code resources mirror the independent examples. They use text resource suffixes to keep displayed manifest/example listings separate from compiled target source.
+The umbrella catalog contains the package contents, learning paths, application recipes, operational guides, tutorial contents and twelve tutorials. Tutorial code resources mirror the independent examples and selected extension-library source. They use text resource suffixes to keep displayed manifest/example listings separate from compiled target source.
 
 ### Update a public API
 
