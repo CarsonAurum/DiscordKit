@@ -67,8 +67,8 @@ The route checks the trusted application-command envelope and complete argument
 schema before acknowledgement or handler work. Invalid options, wrong command
 identity, unsupported nesting and incompatible interaction kinds fail before user
 execution. This preflight does not infer authorization from registration defaults or
-partial resolved resources. Application authorization and broader policies remain
-separate work; the general policy DSL is Part 15G.
+partial resolved resources. Part 15G adds [explicit authorization, policies and middleware](CommandPolicies.md),
+with complete input admission before policy execution and deferral.
 
 The finite declaration fingerprint includes the response family and deferred
 visibility. Inspecting or comparing this metadata executes no handler or policy;

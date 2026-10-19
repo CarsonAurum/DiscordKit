@@ -35,4 +35,11 @@ The component and modal deliberately share an ID in separate namespaces. All tar
 IDs and keys are synthetic; the example constructs no registration client and never
 contacts Discord. Run the same offline mode or `swift test --package-path Examples/DSLCommands`.
 These checks establish local protocol composition only; live registration/rendering,
-other platforms, policies and Gateway hosts remain separate.
+other platforms and Gateway hosts remain separate.
+
+Part 15G's `PolicyExamples.swift` adds signed allow/deny exchanges with injected
+authorization, `audit >>> metrics` ordering and one shared fixed-count concurrency
+authority. Construction executes no service checks; denial sends an explicit ephemeral
+message before middleware/handler work. The example asserts exact successful traversal,
+denial effects and zero active permits after cleanup. See the
+[policy guide](../../Docs/CommandPolicies.md) for finite bounds, cancellation and response ownership.

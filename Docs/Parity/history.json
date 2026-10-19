@@ -1490,6 +1490,50 @@
       ],
       "details": "changes/phase15f-command-families.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "phase15g-command-policies",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.15.0 candidate; unpublished; policy and middleware authoring milestone",
+      "localCommit": "unknown",
+      "changeType": "authoring_and_existing_command_runtime_composition_only",
+      "previousBehavior": "Parts 15A-15F provided typed command families and existing response ownership; authorization and middleware were handwritten inside handlers.",
+      "currentBehavior": "Part 15G adds bounded named/operator policies and middleware, complete typed admission before execution interception, injected current authorization, shared finite concurrency, explicit denial callbacks and error translation without fallback or replay. Construction and policy adoption execute no work.",
+      "affectedSymbols": [
+        "InvocationPolicy",
+        "InvocationMiddleware",
+        "PolicyLimits",
+        "CommandPolicy",
+        "CommandPolicies",
+        "CommandConcurrencyAuthority",
+        "CommandConcurrencyLimit",
+        "CommandRejectionResponse",
+        "CompiledCommands",
+        "CommandRoute"
+      ],
+      "affectedPayloads": "Existing API v10 command registration/options, command/context-menu/autocomplete/component/modal interactions and callback kinds. No new endpoint, field, permission, intent or model-parity classification.",
+      "breakingChanges": [],
+      "migration": "Apply CommandPolicies explicitly to a compiled catalog or exact route subset. Reuse aggregate authorities. Low-level routes requiring admission before wrappers use init(key:prepare:). Existing handler and route initializers remain valid; remaining 15H-15L and external gates stay separate.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/application-commands",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/phase15g-command-policies.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

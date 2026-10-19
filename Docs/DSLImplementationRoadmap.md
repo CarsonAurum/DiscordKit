@@ -8,11 +8,14 @@ and explicit slash-command lowering in `DiscordCommandDSL`. **15C** adds the sep
 command application. **15E** adds validated message/component builders and safe typed
 interpolation over existing Models. **15F** adds command trees, typed context menus,
 partial autocomplete, exact component/modal handlers and explicit catalog reconciliation.
+**15G** adds bounded short-circuit policies, ordered middleware, injected authorization and
+concurrency admission with explicit rejection/error mapping.
 These statuses do not
 imply that the complete bot authoring experience is available. See
 [shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md),
 [response ownership and HTTP applications](CommandResponses.md),
-[message/component builders](MessageBuilders.md), [command families](CommandFamilies.md) and
+[message/component builders](MessageBuilders.md), [command families](CommandFamilies.md),
+[policies and middleware](CommandPolicies.md) and
 [architecture](Architecture.md) for the implemented APIs and product boundaries.
 
 | Milestone | Status | Scope |
@@ -23,7 +26,7 @@ imply that the complete bot authoring experience is available. See
 | 15D | Implemented | Typed immediate/deferred and manual response ownership, signed HTTP command application, explicit reconciliation and independent offline/listener consumer. |
 | 15E | Implemented | Validated text/embed/component builders, safe typed interpolation and explicit mention allowlists, with direct-payload parity and immediate/deferred response adapters. |
 | 15F | Implemented | Slash trees, typed context menus, partial autocomplete, exact component/modal handlers, legal response families and explicit change-only catalog reconciliation. |
-| 15G | Planned | Bounded policies, middleware and named/operator composition. |
+| 15G | Implemented | Bounded named/operator policies and middleware, guild/context checks, injected authorization/concurrency and explicit rejection/error mapping. |
 | 15H | Planned | Typed Gateway handlers over existing bounded subscriptions/dispatch. |
 | 15I | Planned | Bot application and supervised client/interaction lifetime. |
 | 15J | Planned | Independent external extensions, typed dependency validation and consumer adoption. |

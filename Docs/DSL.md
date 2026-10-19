@@ -12,7 +12,8 @@ adds authoring syntax; [typed response ownership and HTTP applications](CommandR
 compose existing runtime owners. Part 15E adds safe typed interpolation in this
 shared product and [validated message/component builders](MessageBuilders.md) in
 CommandDSL. Part 15F adds [command families](CommandFamilies.md) in CommandDSL.
-Policies and Gateway execution remain later
+Part 15G adds [bounded policies and middleware](CommandPolicies.md) in the shared
+product, with explicit command authorization/admission adapters. Gateway execution remains a later
 [implementation milestones](DSLImplementationRoadmap.md).
 An application can use the raw contribution API now to validate its own finite
 metadata catalog, without pretending that a custom kind implements a Discord API.

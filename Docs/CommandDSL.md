@@ -12,8 +12,8 @@ optional [macro authoring](MacroDSL.md); Part 15D adds
 [immediate/deferred/manual response ownership and signed HTTP applications](CommandResponses.md).
 Part 15E adds [message/component builders and safe typed content](MessageBuilders.md)
 with thin adapters to those response values. Part 15F adds [command trees, context
-menus, autocomplete, components and modal submissions](CommandFamilies.md). Policies
-and Gateway hosts remain later
+menus, autocomplete, components and modal submissions](CommandFamilies.md). Part 15G adds
+[bounded policies and middleware](CommandPolicies.md). Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md). Existing low-level APIs
 remain independently usable for their broader implemented surfaces.
 

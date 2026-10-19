@@ -90,6 +90,15 @@ Browse the public types and operations provided by DiscordCommandDSL.
 - ``DiscordCommandDSL/SlashCommandHandler``
 - ``DiscordCommandDSL/SlashCommandMetadata``
 
+### Command Policies
+
+- ``DiscordCommandDSL/CommandConcurrencyAuthority``
+- ``DiscordCommandDSL/CommandConcurrencyLimit``
+- ``DiscordCommandDSL/CommandPolicies``
+- ``DiscordCommandDSL/CommandPolicy``
+- ``DiscordCommandDSL/CommandPolicyError``
+- ``DiscordCommandDSL/CommandRejectionResponse``
+
 ### Command Responses
 
 - ``DiscordCommandDSL/CommandResponseVisibility``

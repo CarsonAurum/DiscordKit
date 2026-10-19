@@ -23,4 +23,14 @@ import Testing
         #expect(commands.routes.count == 7)
         try await FamilyExamples.run()
     }
+
+    /// Independent policy composition runs through genuine synthetic signed HTTP and exact callback checks.
+    /// The successful request records outer-left/inner-right entry and reverse exit; denial records only
+    /// current authorization and returns its explicit ephemeral callback before middleware or handler work.
+    /// - Throws: Authoring, signature, response parity, event order or shared-permit cleanup failures.
+    @Test func signedOfflinePolicies() async throws {
+        let evidence = try await PolicyExamples.run()
+        #expect(evidence.allowed == ["authorize", "audit enter", "metrics enter", "handler", "metrics exit", "audit exit"])
+        #expect(evidence.denied == ["authorize"])
+    }
 }

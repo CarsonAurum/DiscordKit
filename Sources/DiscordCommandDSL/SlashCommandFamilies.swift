@@ -9,7 +9,8 @@ import DiscordModels
 public struct SlashSubcommand: Sendable {
     internal let option: ApplicationCommandOptionCreate
     internal let metadata: JSONValue
-    private let execute: @Sendable (InteractionContext, [InteractionCommandOption], Field<InteractionResolvedData>, String) async throws -> Void
+    private let prepare: @Sendable (InteractionContext, [InteractionCommandOption], Field<InteractionResolvedData>, String)
+        throws -> @Sendable () async throws -> Void
 
     /// Captures manual subcommand behavior without decoding, acknowledgement or execution.
     /// - Parameters:
@@ -96,7 +97,8 @@ public struct SlashSubcommand: Sendable {
     ///   - schema: Captured complete argument schema; its constructor is retained without execution.
     ///   - policy: Deterministic inert response-family description.
     ///   - source: Diagnostic coordinate used for authoring errors.
-    ///   - execute: Caller-task response adapter, invoked only after successful complete decoding.
+    ///   - execute: Caller-task response adapter, invoked only after successful complete synchronous
+    ///     decoding and execution interception. Preparation captures fresh arguments without responding.
     /// - Throws: Invalid-command diagnostics for root-only settings or invalid leaf registration.
     private init<Arguments: CommandArguments>(command: SlashCommandMetadata,
         schema: CommandArgumentSchema<Arguments>, policy: JSONValue, source: DefinitionSourceLocation,
@@ -113,11 +115,11 @@ public struct SlashSubcommand: Sendable {
             throw CommandCompilationDiagnostic(code: .invalidCommand, commandName: command.name, source: source)
         }
         metadata = .object(["arguments": schema.metadata, "response": policy])
-        self.execute = { context, options, resolved, rootName in
+        prepare = { context, options, resolved, rootName in
             try Task.checkCancellation()
             let arguments = try schema.decode(options: options, resolved: resolved, commandName: rootName)
             try Task.checkCancellation()
-            try await execute(context, arguments)
+            return { try await execute(context, arguments) }
         }
     }
 
@@ -126,14 +128,15 @@ public struct SlashSubcommand: Sendable {
     ///   - name: Validated root slash name.
     ///   - path: One subcommand, or group followed by subcommand.
     ///   - source: Author coordinate for invalid invocation diagnostics.
-    /// - Returns: Inert existing router value; no handler work runs here.
+    /// - Returns: Inert existing router value. Its synchronous preparation validates the full path
+    ///   and typed arguments before execution wrappers can run; no handler work runs during construction.
     /// - Throws: Existing route factory validation for invalid path metadata.
     internal func route(name: String, path: [String], source: DefinitionSourceLocation) throws -> CommandRoute {
-        let execute = self.execute
-        return CommandRoute(key: try .command(name: name, path: path)) { context in
+        let prepare = self.prepare
+        return CommandRoute(key: try .command(name: name, path: path), prepare: { context in
             let input = try commandLeafInput(context, name: name, path: path, autocomplete: false, source: source)
-            try await execute(context, input.options, input.resolved, name)
-        }
+            return try prepare(context, input.options, input.resolved, name)
+        })
     }
 }
 

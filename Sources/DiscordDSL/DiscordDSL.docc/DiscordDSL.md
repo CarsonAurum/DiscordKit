@@ -30,8 +30,11 @@ The separate macro package remains downstream. Part 15E adds ``MessageContent`` 
 safe typed mention interpolation; the separately selected CommandDSL adds pure
 message/component builders over existing validated Models. Explicit lowering rejects
 illegal layouts and limits before transmission; response ownership remains with
-Interactions. Broader command families, policies and Gateway hosts remain later
-milestones. This shared product selects no transport, client, concrete adapter,
+Interactions. Part 15G adds ``InvocationPolicy`` and ``InvocationMiddleware`` with
+finite ``PolicyLimits``. Named and operator composition are inert; explicit evaluation
+uses caller-owned tasks and cancellation. Command-specific authorization/admission
+lives in the separately selected CommandDSL. Gateway hosts remain later milestones.
+This shared product selects no transport, client, concrete adapter,
 compiler plugin or documentation tooling.
 
 ## Topics
@@ -66,6 +69,13 @@ compiler plugin or documentation tooling.
 - ``MessageContent``
 - ``RenderedMessageContent``
 - ``MessageContentError``
+
+### Policies and middleware
+
+- ``InvocationPolicy``
+- ``InvocationMiddleware``
+- ``PolicyLimits``
+- ``PolicyCompositionError``
 
 ### Complete API reference
 

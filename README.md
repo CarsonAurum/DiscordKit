@@ -61,7 +61,9 @@ and an [independent offline consumer](Examples/DSLCommands/README.md).
 Part 15E adds [validated message/component builders](Docs/MessageBuilders.md), safe
 text interpolation and explicit mention allowlists over existing Models. Part 15F adds
 [command families](Docs/CommandFamilies.md), partial autocomplete, exact component/modal
-routes and explicit catalog reconciliation. Policies and Gateway hosts remain later
+routes and explicit catalog reconciliation. Part 15G adds [bounded policies and
+middleware](Docs/CommandPolicies.md), injected authorization and concurrency admission.
+Gateway hosts remain later
 [DSL milestones](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for

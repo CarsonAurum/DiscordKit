@@ -278,7 +278,8 @@ public struct SlashCommand<Handler: Sendable>: CommandContribution {
     ///   - source: Coordinate used to contextualize finite compilation/invocation diagnostics.
     ///   - schema: Finite synchronous schema factory invoked once now, never during routing.
     ///   - responsePolicy: Inert deterministic policy metadata, including fixed deferred visibility.
-    ///   - execute: Response-family adapter called only after complete validation and cancellation checks.
+    ///   - execute: Response-family adapter called only after complete synchronous validation,
+    ///     execution interception and cancellation checks. Preparation never acknowledges or invokes it.
     /// - Throws: Sanitized contextual schema or command metadata diagnostics; route creation performs no I/O.
     private init<Arguments: CommandArguments>(id: String, metadata: SlashCommandMetadata,
         source: DefinitionSourceLocation, schema makeSchema: () throws -> CommandArgumentSchema<Arguments>,
@@ -300,7 +301,7 @@ public struct SlashCommand<Handler: Sendable>: CommandContribution {
             throw CommandCompilationDiagnostic(code: .invalidCommand, commandName: metadata.name, source: source)
         }
         let name = metadata.name
-        route = CommandRoute(key: try .command(name: name)) { context in
+        route = CommandRoute(key: try .command(name: name), prepare: { context in
             try Task.checkCancellation()
             guard context.interaction.type.knownValue == .applicationCommand,
                   case .value(.command(let data)) = context.interaction.data,
@@ -316,8 +317,8 @@ public struct SlashCommand<Handler: Sendable>: CommandContribution {
             }
             let arguments = try schema.decode(options: options, resolved: data.resolved, commandName: name)
             try Task.checkCancellation()
-            try await execute(context, arguments)
-        }
+            return { try await execute(context, arguments) }
+        })
         declaration = RawDefinitionContribution(id: id, kind: CommandCompilation.contributionKind,
             payload: .object(["registration": definition.request.jsonValue(), "arguments": schema.metadata,
                 "response": responsePolicy]), source: source)

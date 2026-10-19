@@ -127,7 +127,11 @@ in CommandDSL. Existing payload validation owns layout, field presence and aggre
 limits; explicit mention allowlists accompany rendered text. The builders own no
 transport, registration or handler lifetime. Part 15F extends the same compiled catalog
 to command trees, typed context-menu targets, partial autocomplete and exact component/modal
-routes, retaining independent response families and the existing reconciler. Policies and
+routes, retaining independent response families and the existing reconciler. Part 15G
+adds pure shared policy/middleware values and command execution adapters after complete
+input admission. The existing Commands route owner provides synchronous preparation and
+execution interception without any DSL dependency. Injected concurrency authorities
+remain independent of HTTP rate limits. Policies create no tasks or I/O.
 Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 

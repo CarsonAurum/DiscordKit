@@ -64,8 +64,10 @@ struct Ping: SlashCommandHandler {
         } else {
             try await offline(commands)
             try await FamilyExamples.run()
+            _ = try await PolicyExamples.run()
             print("Offline macro /ping: signed HTTP 200, one ephemeral Pong!, zero registration requests.")
             print("Offline command families: grouped slash, context menus, autocomplete, component and modal callbacks verified.")
+            print("Offline policies: injected authorization, composed middleware order, shared concurrency and explicit denial verified.")
         }
     }
 

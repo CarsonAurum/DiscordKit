@@ -124,16 +124,25 @@ public struct CompiledCommands: Sendable {
     public let description: DefinitionDescription
     public let definitions: [CommandDefinition]
     public let routes: [CommandRoute]
+    /// Aggregate composition nodes adopted by explicit policy applications; declarations remain unchanged.
+    public let policyNodeCount: Int
+    /// Number of nested execution wrappers, bounded separately from each expression's depth.
+    public let policyDepth: Int
 
     /// Assembles validated lowering output after all contributions have passed admission.
     /// - Parameters:
     ///   - description: Bounded structural metadata in deterministic source order.
     ///   - definitions: Validated root registrations in declaration order.
     ///   - routes: Unique exact routes in declaration order, including route-only response families.
-    fileprivate init(description: DefinitionDescription, definitions: [CommandDefinition], routes: [CommandRoute]) {
+    ///   - policyNodeCount: Finite aggregate execution-policy nodes; default zero before explicit adoption.
+    ///   - policyDepth: Nested execution wrapper depth; default zero for an unmodified catalog.
+    internal init(description: DefinitionDescription, definitions: [CommandDefinition], routes: [CommandRoute],
+        policyNodeCount: Int = 0, policyDepth: Int = 0) {
         self.description = description
         self.definitions = definitions
         self.routes = routes
+        self.policyNodeCount = policyNodeCount
+        self.policyDepth = policyDepth
     }
 
     /// Creates an existing bounded router without starting tasks, registering or invoking handlers.

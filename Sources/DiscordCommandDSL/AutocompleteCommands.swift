@@ -177,6 +177,8 @@ public struct AutocompleteCommand<Handler: AutocompleteCommandHandler>: CommandF
     ///   - column: Caller column when source is nil; zero means unknown.
     /// - Throws: Existing key/schema validation or sanitized invalid-command diagnostics for incompatible
     ///   focus codecs, missing/duplicate descriptors or a descriptor without enabled autocomplete.
+    ///   At invocation, complete supplied-envelope and focused-value decoding occurs synchronously before
+    ///   execution wrappers. Invalid partial input neither executes policy work nor sends a callback.
     public init(id: String, name: String, path: [String] = [], option: ArgumentOption<Handler.Value>,
         options: [AnyArgumentOption]? = nil, handler: Handler, source: DefinitionSourceLocation? = nil,
         fileID: String = #fileID, line: UInt = #line, column: UInt = #column) throws {
@@ -190,7 +192,7 @@ public struct AutocompleteCommand<Handler: AutocompleteCommandHandler>: CommandF
         }
         _ = try ApplicationCommandCreate(name: name, description: "Autocomplete", options: options.map(\.registration))
         let key = try CommandRouteKey.autocomplete(name: name, path: path, focusedOption: option.name)
-        let route = CommandRoute(key: key) { context in
+        let route = CommandRoute(key: key, prepare: { context in
             try Task.checkCancellation()
             let leaves = try commandLeafInput(context, name: name, path: path, autocomplete: true, source: source)
             let input = try AutocompleteInput(options: leaves.options, descriptors: options,
@@ -199,10 +201,12 @@ public struct AutocompleteCommand<Handler: AutocompleteCommandHandler>: CommandF
                 throw ArgumentDiagnostic(code: .missingValue, commandName: name, source: source)
             }
             try Task.checkCancellation()
-            let response = try await handler.execute(CommandContext(context), input: input, value: value)
-            try Task.checkCancellation()
-            try await context.responder.respond(.autocomplete(response.choices.map(\.choice)))
-        }
+            return {
+                let response = try await handler.execute(CommandContext(context), input: input, value: value)
+                try Task.checkCancellation()
+                try await context.responder.respond(.autocomplete(response.choices.map(\.choice)))
+            }
+        })
         family = CommandFamily(routes: [route],
             autocompleteReferences: [.init(key: key, options: options.map(\.registration), source: source)])
         declaration = family.declaration(id: id, source: source)

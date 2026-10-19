@@ -139,7 +139,7 @@ public struct CommandRouteKey: Sendable, Hashable {
 public struct CommandRoute: Sendable {
     /// Exact validated key; registration does not imply a matching Discord registration exists.
     public let key: CommandRouteKey
-    fileprivate let handler: @Sendable (InteractionContext) async throws -> Void
+    fileprivate let prepare: @Sendable (InteractionContext) throws -> @Sendable () async throws -> Void
 
     /// Adopts a handler without executing it, registering a Discord command, or starting background work.
     /// - Parameters:
@@ -148,7 +148,38 @@ public struct CommandRoute: Sendable {
     ///     errors propagate unchanged and do not trigger an invented acknowledgment or auto-defer.
     ///     Configure explicit auto-defer through the interaction lifecycle when the selected kind permits it.
     public init(key: CommandRouteKey, handler: @escaping @Sendable (InteractionContext) async throws -> Void) {
-        self.key = key; self.handler = handler
+        self.init(key: key, prepare: { context in { try await handler(context) } })
+    }
+
+    /// Separates complete synchronous invocation admission from caller-task execution. Preparation
+    /// occurs after router admission and before any execution wrapper, without taking response ownership.
+    /// - Parameters:
+    ///   - key: Exact validated route identity; no registration or remote lookup occurs.
+    ///   - prepare: Cancellation-cooperative synchronous envelope/schema validation. Return a fresh
+    ///     Sendable operation capturing only this invocation's admitted values. Preparation must perform
+    ///     no acknowledgement, handler execution, tasks or I/O. Throwing prevents all execution wrappers.
+    ///     The returned operation owns the existing asynchronous handler and response behavior.
+    public init(key: CommandRouteKey,
+        prepare: @escaping @Sendable (InteractionContext) throws -> @Sendable () async throws -> Void) {
+        self.key = key
+        self.prepare = prepare
+    }
+
+    /// Intercepts admitted execution while preserving the original route's complete preparation.
+    /// Construction is inert; malformed invocation input throws before the wrapper is entered.
+    /// - Parameter wrapper: Caller-task behavior receiving the original context and freshly prepared
+    ///   execution. Invoke the operation at most once, or reject by returning/throwing without invoking
+    ///   it. Wrappers must honor cancellation; no task, retry, queue, acknowledgement or fallback is
+    ///   introduced. Repeated wrapping enters the most recently supplied wrapper first and unwinds
+    ///   through normal Swift return/error semantics. Captured application state remains caller-owned.
+    /// - Returns: A route with the same exact identity and synchronous validation, retaining this wrapper.
+    public func wrappingExecution(_ wrapper: @escaping @Sendable
+        (InteractionContext, @escaping @Sendable () async throws -> Void) async throws -> Void) -> CommandRoute {
+        let prepare = self.prepare
+        return CommandRoute(key: key, prepare: { context in
+            let execute = try prepare(context)
+            return { try await wrapper(context, execute) }
+        })
     }
 }
 
@@ -189,7 +220,9 @@ public actor CommandRouter {
     /// - Parameter context: Shared normalized interaction context, authenticated before routing. HTTP and Gateway
     ///   responses retain their distinct mechanics through its responder; this method does not acknowledge automatically.
     /// - Returns: True after a matched handler completes; false for unknown kinds, unmatched keys or ambiguous input paths.
-    /// - Throws: Cancellation before admission, limitExceeded at capacity, or the original handler error/cancellation.
+    /// - Throws: Cancellation before admission/execution, limitExceeded at capacity, or the original
+    ///   synchronous preparation, execution-wrapper or handler error/cancellation. Complete preparation
+    ///   precedes wrappers; a preparation failure invokes neither wrapper nor handler.
     ///   Every completion releases admission, including thrown errors. Suspension is reentrant and concurrency remains bounded.
     public func route(_ context: InteractionContext) async throws -> Bool {
         try Task.checkCancellation()
@@ -197,7 +230,9 @@ public actor CommandRouter {
         guard activeHandlers < maximumConcurrentHandlers else { throw DiscordError.validation(.limitExceeded) }
         activeHandlers += 1
         defer { activeHandlers -= 1 }
-        try await route.handler(context)
+        let execute = try route.prepare(context)
+        try Task.checkCancellation()
+        try await execute()
         return true
     }
 }

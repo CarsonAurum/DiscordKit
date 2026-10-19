@@ -6,10 +6,13 @@
 
 - ``DiscordCommandDSL/CompiledCommands/definitions``
 - ``DiscordCommandDSL/CompiledCommands/description``
+- ``DiscordCommandDSL/CompiledCommands/policyDepth``
+- ``DiscordCommandDSL/CompiledCommands/policyNodeCount``
 - ``DiscordCommandDSL/CompiledCommands/routes``
 
 ### Instance methods
 
+- ``DiscordCommandDSL/CompiledCommands/applying(_:to:)``
 - ``DiscordCommandDSL/CompiledCommands/makeRouter(maximumConcurrentHandlers:)``
 
 ## See Also

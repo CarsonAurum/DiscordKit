@@ -44,8 +44,12 @@ Part 15F adds ``SlashCommandTree``, ``UserCommand``, ``MessageCommand``,
 partial autocomplete and typed modal values retain separate admission contracts.
 ``CommandFamily`` catalogs account for exact routes, including route-only handlers;
 ``ExistingCommandFamily`` supports explicit low-level adoption. Family-specific response
-protocols retain legal callback kinds and the unique existing responder. Policies and
-Gateway hosts remain later milestones. Local tests do not qualify live Discord, platforms or capacity.
+protocols retain legal callback kinds and the unique existing responder. Part 15G adds
+``CommandPolicies`` after complete input preparation, with ``CommandPolicy`` observations
+and injected authorization, ordered shared middleware, ``CommandConcurrencyAuthority``
+and explicit denial/error translation. ``CommandConcurrencyLimit`` supplies fixed-count,
+fail-fast local admission. Gateway hosts remain later milestones. Local tests do not
+qualify live Discord, platforms or capacity.
 
 ## Topics
 
@@ -121,6 +125,15 @@ Gateway hosts remain later milestones. Local tests do not qualify live Discord, 
 - ``Embed``
 - ``Components``
 - ``Component``
+
+### Policies and admission
+
+- ``CommandPolicies``
+- ``CommandPolicy``
+- ``CommandPolicyError``
+- ``CommandRejectionResponse``
+- ``CommandConcurrencyAuthority``
+- ``CommandConcurrencyLimit``
 
 ### Bounded diagnostics
 

@@ -5,10 +5,15 @@
 ### Creating a value
 
 - ``DiscordCommands/CommandRoute/init(key:handler:)``
+- ``DiscordCommands/CommandRoute/init(key:prepare:)``
 
 ### Instance properties
 
 - ``DiscordCommands/CommandRoute/key``
+
+### Instance methods
+
+- ``DiscordCommands/CommandRoute/wrappingExecution(_:)``
 
 ## See Also
 

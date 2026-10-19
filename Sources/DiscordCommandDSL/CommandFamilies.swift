@@ -370,9 +370,12 @@ public struct MessageCommand<Handler: Sendable>: CommandFamilyContribution {
 ///   - type: Exactly the user or message family selected by the contribution.
 ///   - source: Bounded diagnostic coordinate.
 ///   - policy: Inert response policy recorded in structural metadata.
-///   - execute: Adapter called only after envelope validation and cancellation checks.
+///   - execute: Adapter called only after synchronous envelope/selected-target validation,
+///     execution interception and cancellation checks. Its pure target projection preserves typed output.
 /// - Returns: A finite family; registration and handler work remain explicitly invoked later.
-/// - Throws: Sanitized invalid-command diagnostics for malformed metadata.
+///   Route preparation admits all selected-target consistency before any execution wrapper can run.
+/// - Throws: Sanitized invalid-command diagnostics for malformed metadata. Invocation preparation
+///   propagates malformed envelope/target errors without running wrappers or acknowledging.
 private func contextMenuFamily(metadata: ContextMenuCommandMetadata, type: ApplicationCommandType,
     source: DefinitionSourceLocation, policy: JSONValue,
     execute: @escaping @Sendable (InteractionContext, InteractionCommandData) async throws -> Void) throws -> CommandFamily {
@@ -385,7 +388,7 @@ private func contextMenuFamily(metadata: ContextMenuCommandMetadata, type: Appli
         throw CommandCompilationDiagnostic(code: .invalidCommand, commandName: metadata.name, source: source)
     }
     let name = metadata.name
-    let route = CommandRoute(key: try .command(name: name, type: type)) { context in
+    let route = CommandRoute(key: try .command(name: name, type: type), prepare: { context in
         try Task.checkCancellation()
         guard context.interaction.type.knownValue == .applicationCommand,
               case .value(.command(let data)) = context.interaction.data,
@@ -398,8 +401,16 @@ private func contextMenuFamily(metadata: ContextMenuCommandMetadata, type: Appli
         case .value(let values) where values.isEmpty: break
         default: throw CommandCompilationDiagnostic(code: .invalidInvocation, commandName: name, source: source)
         }
-        try await execute(context, data)
-    }
+        // Target consistency belongs to complete admission, before any policy or middleware work.
+        // The response adapter retains its concrete target type and repeats this pure projection.
+        switch type {
+        case .user: _ = try contextMenuUserTarget(data)
+        case .message: _ = try contextMenuMessageTarget(data)
+        default: throw CommandCompilationDiagnostic(code: .invalidInvocation, commandName: name, source: source)
+        }
+        try Task.checkCancellation()
+        return { try await execute(context, data) }
+    })
     return CommandFamily(definitions: [definition], routes: [route], metadata: .object(["response": policy]))
 }
 
@@ -825,13 +836,14 @@ public struct ModalCommand<Handler: Sendable>: CommandFamilyContribution {
 ///   - componentType: Supported button/select kind expected by the typed handler.
 ///   - source: Bounded diagnostic coordinate retained without file access.
 ///   - policy: Deterministic response policy metadata.
-///   - execute: Caller-task adapter invoked after full component/source-message admission.
+///   - execute: Caller-task adapter invoked after full synchronous component/source-message admission
+///     and execution interception. Preparation never runs the handler or sends an acknowledgement.
 /// - Returns: Finite route-only family independent of modal IDs with the same text.
 /// - Throws: Invalid-value for invalid IDs or unsupported component kinds.
 private func componentFamily(customID: String, componentType: ComponentType, source: DefinitionSourceLocation,
     policy: JSONValue, execute: @escaping @Sendable (InteractionContext, ComponentInput) async throws -> Void) throws -> CommandFamily {
     guard [2, 3, 5, 6, 7, 8].contains(componentType.rawValue) else { throw DiscordError.validation(.invalidValue) }
-    let route = CommandRoute(key: try .component(customID: customID)) { context in
+    let route = CommandRoute(key: try .component(customID: customID), prepare: { context in
         try Task.checkCancellation()
         guard context.interaction.type.knownValue == .messageComponent,
               case .value(.component(let data)) = context.interaction.data, data.customID == customID,
@@ -840,8 +852,8 @@ private func componentFamily(customID: String, componentType: ComponentType, sou
         }
         let input = try ComponentInput(data, componentType: componentType)
         try Task.checkCancellation()
-        try await execute(context, input)
-    }
+        return { try await execute(context, input) }
+    })
     return CommandFamily(routes: [route], metadata: .object(["custom_id": .string(customID),
         "component_type": .number(try JSONNumber(rawValue: String(componentType.rawValue))), "response": policy]))
 }
@@ -853,13 +865,14 @@ private func componentFamily(customID: String, componentType: ComponentType, sou
 ///   - source: Bounded diagnostic coordinate.
 ///   - requiresMessage: Whether this response policy requires a source message before user work.
 ///   - policy: Deterministic explicit response-family metadata.
-///   - execute: Adapter invoked only after complete tree/schema/source-message admission.
+///   - execute: Adapter invoked only after complete synchronous tree/schema/source-message admission
+///     and execution interception. Preparation never acknowledges or executes user behavior.
 /// - Returns: An inert exact route and deterministic field description.
 /// - Throws: Invalid-value for invalid custom IDs; invocation decoding errors occur only during routing.
 private func modalFamily<Values: Sendable>(customID: String, schema: ModalSchema<Values>,
     source: DefinitionSourceLocation, requiresMessage: Bool, policy: JSONValue,
     execute: @escaping @Sendable (InteractionContext, Values) async throws -> Void) throws -> CommandFamily {
-    let route = CommandRoute(key: try .modal(customID: customID)) { context in
+    let route = CommandRoute(key: try .modal(customID: customID), prepare: { context in
         try Task.checkCancellation()
         guard context.interaction.type.knownValue == .modalSubmit,
               case .value(.modal(let data)) = context.interaction.data, data.customID == customID else {
@@ -870,8 +883,8 @@ private func modalFamily<Values: Sendable>(customID: String, schema: ModalSchema
         }
         let values = try schema.decode(data)
         try Task.checkCancellation()
-        try await execute(context, values)
-    }
+        return { try await execute(context, values) }
+    })
     return CommandFamily(routes: [route], metadata: .object(["custom_id": .string(customID),
         "fields": schema.metadata, "requires_message": .bool(requiresMessage), "response": policy]))
 }

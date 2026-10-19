@@ -162,6 +162,14 @@ serving register nothing. Existing Models remain authoritative for supported fie
 policies, Gateway hosts and capacity qualification remain later milestones. See
 `Docs/CommandFamilies.md`.
 
+Part 15G adds bounded `InvocationPolicy`/`InvocationMiddleware` values in the shared
+DSL and explicit command authorization, guild/context observations, injected aggregate
+concurrency and rejection/error mapping. Complete typed input preparation precedes
+policies and deferral. Middleware terminal execution is single-use and closes before
+admission releases; existing response owners preserve deadlines and uncertainty.
+Construction starts no work; HTTP rate authorities remain unchanged. See
+`Docs/CommandPolicies.md`. Gateway hosts and capacity qualification remain later milestones.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -352,6 +360,13 @@ focused partial autocomplete, typed context-menu targets, malformed modal/compon
 inputs, response compatibility and reconciliation no-op/change/partial outcomes.
 Preserve explicit application/scope/name/type management, unmanaged commands and
 no registration during construction or serving. Unknown upstream fields remain gaps.
+
+For policy/middleware changes, verify named/operator parity, left-to-right short circuiting,
+outer-left entry/reverse exit, finite node/depth and repeated application limits, malformed
+input before policies, explicit rejection compatibility, shared admission overload and
+cancellation cleanup. Test one terminal execution, retained continuation closure and error
+translation without replay or fallback after partial side effects. Stateful keyed stores
+must inject finite count/TTL bounds; the built-in authority retains only a fixed active count.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

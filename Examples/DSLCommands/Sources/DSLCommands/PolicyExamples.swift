@@ -1,0 +1,106 @@
+import DiscordCommandDSL
+import DiscordCore
+import DiscordDSL
+import DiscordModels
+
+/// A complete command using injected application services rather than registration permission defaults.
+private struct PolicyExampleCommand: SlashCommandHandler {
+    typealias Arguments = PingArguments
+    let command = SlashCommandMetadata(name: "policy", description: "Exercise explicit local policies")
+    let trace: PolicyExampleTrace
+
+    /// Records one authorized execution and returns the sole validated immediate callback.
+    /// - Parameters:
+    ///   - context: Authenticated immutable snapshot; no raw response authority is exposed.
+    ///   - arguments: Fresh complete empty arguments admitted before authorization or middleware.
+    /// - Returns: A fixed local message; the existing response adapter owns acknowledgement.
+    /// - Throws: Finite observation overflow or existing response validation failures.
+    func execute(_ context: CommandContext, arguments: Arguments) async throws -> MessageResponse {
+        try await trace.record("handler")
+        return try MessageResponse(InteractionMessageCreate(content: .value("Authorized")))
+    }
+}
+
+/// Synthetic signed HTTP composition with injected authorization, deterministic middleware ordering and
+/// one concurrency authority shared across independently constructed catalogs. No socket, registration
+/// client or Discord request is created; fixed event observations are capped independently of user input.
+enum PolicyExamples {
+    /// Executes a positive invocation and an explicit denial, checking callback payloads and exact effects.
+    /// Construction must execute no authorization, middleware or handler; denial must bypass all middleware
+    /// and handler work. Both catalogs share the same fail-fast authority and leave no active permit.
+    /// - Returns: Exact successful and denied event sequences, for independent consumer test assertions.
+    /// - Throws: Authoring, crypto/signature, HTTP routing, response mismatch, event overflow or cleanup errors.
+    static func run() async throws -> (allowed: [String], denied: [String]) {
+        let concurrency = try CommandConcurrencyLimit(maximumConcurrent: 1)
+        let allowedTrace = PolicyExampleTrace(), deniedTrace = PolicyExampleTrace()
+        let allowed = try catalog(authorized: true, trace: allowedTrace, concurrency: concurrency)
+        let denied = try catalog(authorized: false, trace: deniedTrace, concurrency: concurrency)
+        guard await allowedTrace.events.isEmpty, await deniedTrace.events.isEmpty,
+              await concurrency.activeCount == 0 else { throw DiscordError.validation(.invalidValue) }
+
+        let data = #"{"id":"3","name":"policy","type":1}"#
+        try await FamilyExamples.exchange(commands: allowed, kind: 2, data: data,
+            expected: #"{"type":4,"data":{"content":"Authorized"}}"#)
+        try await FamilyExamples.exchange(commands: denied, kind: 2, data: data,
+            expected: #"{"type":4,"data":{"content":"Denied","flags":64,"allowed_mentions":{"parse":[],"replied_user":false}}}"#)
+
+        let allowedEvents = await allowedTrace.events, deniedEvents = await deniedTrace.events
+        guard allowedEvents == ["authorize", "audit enter", "metrics enter", "handler", "metrics exit", "audit exit"],
+              deniedEvents == ["authorize"], await concurrency.activeCount == 0 else {
+            throw DiscordError.validation(.invalidValue)
+        }
+        return (allowedEvents, deniedEvents)
+    }
+
+    /// Captures explicit application authorization and wrapper composition without invoking either.
+    /// Registration/default permission observations never substitute for the injected current decision.
+    /// - Parameters:
+    ///   - authorized: Fixed synthetic authorization-service result, independent of the interaction's permissions.
+    ///   - trace: Independently bounded observations for this catalog's single offline invocation.
+    ///   - concurrency: Shared aggregate authority across catalogs; construction acquires no permit.
+    /// - Returns: One immutable root-command catalog with explicit ephemeral denial before handler work.
+    /// - Throws: Existing schema/registration/structural policy validation failures; no network I/O occurs.
+    private static func catalog(authorized: Bool, trace: PolicyExampleTrace,
+        concurrency: CommandConcurrencyLimit) throws -> CompiledCommands {
+        let authorization = CommandPolicy.authorized { _ in
+            try await trace.record("authorize")
+            return authorized
+        }
+        let audit = middleware("audit", trace: trace), metrics = middleware("metrics", trace: trace)
+        let policies = try CommandPolicies(limits: PolicyLimits(maximumNodes: 16, maximumDepth: 8),
+            requiring: authorization, middleware: audit >>> metrics, concurrency: concurrency,
+            onRejection: { _ in
+                .message(try MessageResponse(visibility: .ephemeral) { Text("Denied") })
+            })
+        let command = try SlashCommand(id: "example.policy", handler: PolicyExampleCommand(trace: trace))
+        return try CommandCompilation.compile(Module(id: "example.policy.module") { command }).applying(policies)
+    }
+
+    /// Creates an inert wrapper that records successful traversal around the existing response adapter.
+    /// The example's wrappers forward once and propagate errors without retry or fallback responses.
+    /// - Parameters:
+    ///   - label: Fixed audit/metrics label supplied by this example, never interaction data.
+    ///   - trace: Finite invocation-local observations, shared with injected authorization and handler work.
+    /// - Returns: Caller-task middleware; composition enters left first and exits right first on success.
+    private static func middleware(_ label: String, trace: PolicyExampleTrace)
+        -> InvocationMiddleware<CommandContext, Void> {
+        InvocationMiddleware { context, next in
+            try await trace.record("\(label) enter")
+            try await next(context)
+            try await trace.record("\(label) exit")
+        }
+    }
+}
+
+/// Eight fixed markers suffice for this finite synthetic invocation; overflow fails rather than growing.
+private actor PolicyExampleTrace {
+    private(set) var events: [String] = []
+
+    /// Records one bounded fixed author marker without retaining input, credentials or raw errors.
+    /// - Parameter event: One fixed authorization/middleware/handler label from this example.
+    /// - Throws: Existing limit-exceeded validation if an unexpected ninth effect occurs.
+    func record(_ event: String) throws {
+        guard events.count < 8 else { throw DiscordError.validation(.limitExceeded) }
+        events.append(event)
+    }
+}

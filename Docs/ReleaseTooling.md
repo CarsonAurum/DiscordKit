@@ -67,6 +67,10 @@ Part 15E adds safe typed content interpolation in the shared DSL, plus pure
 CommandDSL message/component builders and thin validated response adapters, preserving
 the reviewed runtime dependency graphs. Part 15F adds command-family protocols,
 finite exact-route catalogs and optional family macro authoring over the same graph.
+Part 15G adds bounded policy/middleware composition, complete synchronous input
+preparation before execution interception, injected authorization/concurrency and
+explicit denial/error translation. Existing registration payloads and independent
+product graphs remain unchanged.
 The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before
