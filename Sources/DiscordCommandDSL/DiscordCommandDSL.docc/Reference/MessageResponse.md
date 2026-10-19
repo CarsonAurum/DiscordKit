@@ -12,6 +12,7 @@
 - ``DiscordCommandDSL/MessageResponse/customMirror``
 - ``DiscordCommandDSL/MessageResponse/debugDescription``
 - ``DiscordCommandDSL/MessageResponse/description``
+- ``DiscordCommandDSL/MessageResponse/interactionResponse``
 - ``DiscordCommandDSL/MessageResponse/message``
 
 ## See Also

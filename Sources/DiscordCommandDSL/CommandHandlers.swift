@@ -68,6 +68,25 @@ public protocol SlashCommandHandler: Sendable {
     func execute(_ context: CommandContext, arguments: Arguments) async throws -> MessageResponse
 }
 
+/// A typed slash handler that opens one validated modal as its sole immediate callback.
+/// Complete arguments are admitted first; no defer, message or low-level response authority is exposed.
+public protocol ModalSlashCommandHandler: Sendable {
+    associatedtype Arguments: CommandArguments
+    var command: SlashCommandMetadata {
+        /// Returns immutable inert root or leaf registration metadata without I/O or user execution.
+        get
+    }
+
+    /// Produces one immediate modal after complete argument validation.
+    /// - Parameters:
+    ///   - context: Immutable normalized interaction without low-level response authority.
+    ///   - arguments: Fresh complete typed values; missing/null/malformed input has already failed.
+    /// - Returns: Validated modal callback; its later submit handler is a separate exact route.
+    /// - Throws: Application failure or cancellation, propagated without fallback or retry.
+    ///   User work must complete within the existing initial acknowledgement deadline.
+    func execute(_ context: CommandContext, arguments: Arguments) async throws -> ModalResponse
+}
+
 /// A root slash handler whose explicit public/ephemeral loading response is acknowledged before user work.
 /// Complete argument validation precedes acknowledgement; successful user work edits the deferred original.
 /// This policy never creates a follow-up, extends token life, retries an uncertain mutation or hides failure.
@@ -161,6 +180,35 @@ public struct SlashCommand<Handler: Sendable>: CommandContribution {
                 try Task.checkCancellation()
                 try await context.responder.reply(response.message)
             }
+    }
+
+    /// Captures an immediate modal response without executing handlers or opening UI locally.
+    /// - Parameters:
+    ///   - id: Explicit stable declaration identity, admitted during compilation.
+    ///   - handler: Inert modal-only typed behavior; schema and metadata are captured once.
+    ///   - source: Diagnostic coordinate retained without source-file access.
+    /// - Throws: Schema/metadata diagnostics. Invocation preserves one initial callback and propagates errors.
+    public init(id: String, handler: Handler, source: DefinitionSourceLocation) throws
+        where Handler: ModalSlashCommandHandler {
+        try self.init(id: id, metadata: handler.command, source: source, schema: { try Handler.Arguments.schema },
+            responsePolicy: .string("modal")) { context, arguments in
+                let response = try await handler.execute(CommandContext(context), arguments: arguments)
+                try Task.checkCancellation()
+                try await context.responder.respond(.modal(response.modal))
+            }
+    }
+
+    /// Captures a caller coordinate for typed immediate modal behavior.
+    /// - Parameters:
+    ///   - id: Stable declaration identity, admitted during structural compilation.
+    ///   - handler: Inert modal handler; construction starts no execution or acknowledgement.
+    ///   - fileID: Caller identifier retained without filesystem access.
+    ///   - line: Caller one-based line; zero means unavailable.
+    ///   - column: Caller one-based column; zero means unavailable.
+    /// - Throws: The same authoring diagnostics as explicit-source construction.
+    public init(id: String, handler: Handler, fileID: String = #fileID, line: UInt = #line,
+        column: UInt = #column) throws where Handler: ModalSlashCommandHandler {
+        try self.init(id: id, handler: handler, source: .init(fileID: fileID, line: line, column: column))
     }
 
     /// Captures explicit deferred-original completion without starting a timer or invoking the handler.
@@ -290,7 +338,7 @@ public struct ExistingSlashCommand: CommandContribution {
     ///   - route: Exact root command route with the same name/type as the registration.
     ///   - source: Diagnostic coordinate for invalid adapters and duplicate routes.
     /// - Throws: `CommandCompilationDiagnostic.invalidCommand` for another command kind, subcommand,
-    ///   autocomplete registration, or mismatched route. Later command families require their own adapters.
+    ///   autocomplete registration, or mismatched route. Structured command families require their own adapters.
     public init(id: String, definition: CommandDefinition, route: CommandRoute,
         source: DefinitionSourceLocation) throws {
         let name = definition.request.name

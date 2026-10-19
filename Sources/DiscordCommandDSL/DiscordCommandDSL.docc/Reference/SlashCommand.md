@@ -4,9 +4,11 @@
 
 ### Creating a value
 
+- ``DiscordCommandDSL/SlashCommand/init(id:handler:fileID:line:column:)-7kbis``
 - ``DiscordCommandDSL/SlashCommand/init(id:handler:fileID:line:column:)-2f1gp``
 - ``DiscordCommandDSL/SlashCommand/init(id:handler:fileID:line:column:)-51mjm``
 - ``DiscordCommandDSL/SlashCommand/init(id:handler:fileID:line:column:)-15jli``
+- ``DiscordCommandDSL/SlashCommand/init(id:handler:source:)-uane``
 - ``DiscordCommandDSL/SlashCommand/init(id:handler:source:)-5jhv8``
 - ``DiscordCommandDSL/SlashCommand/init(id:handler:source:)-11rlf``
 - ``DiscordCommandDSL/SlashCommand/init(id:handler:source:)-70bc2``

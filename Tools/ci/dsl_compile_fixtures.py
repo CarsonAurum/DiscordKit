@@ -48,6 +48,13 @@ FIXTURES = (
     Fixture("DeferredResponderAccess", ("DeferredCommandContext", "has no member 'responder'")),
     Fixture("WrongResponseFamily", ("does not conform", "SlashCommandHandler", "MessageResponse")),
     Fixture("MultipleResponseFamilies", ("@SlashCommand requires exactly one immediate, deferred or manual handler family",)),
+    Fixture("InvalidUserCommandMetadata", ("@UserCommand requires a 1...32 character literal name",)),
+    Fixture("MultipleUserResponseFamilies", ("@UserCommand requires exactly one immediate, deferred or manual user handler family",)),
+    Fixture("WrongContextMenuResponse", ("does not conform", "UserCommandHandler", "UpdateMessageResponse", "CommandInitialResponse")),
+    Fixture("DeferredModalSlashResponse", ("does not conform", "ModalSlashCommandHandler", "ModalResponse")),
+    Fixture("WrongModalResponse", ("does not conform", "ModalHandler", "ModalResponse", "ModalInitialResponse")),
+    Fixture("WrongAutocompleteResponse", ("does not conform", "AutocompleteCommandHandler", "AutocompleteResponse")),
+    Fixture("WrongComponentResponse", ("does not conform", "ComponentHandler", "DeferredMessageResponse", "ComponentInitialResponse")),
 )
 
 

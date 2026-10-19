@@ -1443,6 +1443,53 @@
       ],
       "details": "changes/phase15e-message-builders.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-phase15f-command-families",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "0.15.0 candidate; unpublished; command-family authoring milestone",
+      "localCommit": "unknown",
+      "changeType": "authoring_and_existing_command_runtime_composition_only",
+      "previousBehavior": "Parts 15A-15E offered typed root slash commands, optional macros, response ownership, signed HTTP composition and validated message builders; other command families required direct lower-level construction.",
+      "currentBehavior": "Part 15F adds finite slash trees, typed user/message context menus, partial autocomplete, exact component/modal handlers, family-specific response wrappers and complete catalog validation. Optional macros author context menus and grouped slash leaves. Explicit reconciliation reuses existing managed type/name pairs, preserves unmanaged registrations and reports partial outcomes. Zero-argument nested slash paths with omitted leaf options now route as empty arguments.",
+      "affectedSymbols": [
+        "CommandFamily",
+        "CommandFamilyContribution",
+        "ExistingCommandFamily",
+        "SlashSubcommand",
+        "SlashSubcommandGroup",
+        "SlashCommandTree",
+        "AutocompleteCommand",
+        "UserCommand",
+        "MessageCommand",
+        "ModalSchema",
+        "CommandRouteKey",
+        "CommandApplication"
+      ],
+      "affectedPayloads": "Existing API v10 command registration/options, command/context-menu/autocomplete/component/modal interactions and callback kinds. No new endpoint, field, permission, intent or model-parity classification.",
+      "breakingChanges": [],
+      "migration": "Existing root handlers remain valid. Add explicit typed family contributions to the same inert module, keep autocomplete partial arguments distinct from complete schemas and call synchronization separately. Existing raw Models/Commands remain independently adoptable. Policies, Gateway hosts and remaining 15G+ qualification stay separate.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/application-commands",
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/components/reference",
+        "https://docs.discord.com/developers/reference",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/phase15f-command-families.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

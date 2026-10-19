@@ -65,7 +65,8 @@ compiled Part 15C macro authoring package. Part 15D adds typed response adapters
 and signed HTTP command application composition with explicit synchronization.
 Part 15E adds safe typed content interpolation in the shared DSL, plus pure
 CommandDSL message/component builders and thin validated response adapters, preserving
-the reviewed runtime dependency graphs.
+the reviewed runtime dependency graphs. Part 15F adds command-family protocols,
+finite exact-route catalogs and optional family macro authoring over the same graph.
 The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before

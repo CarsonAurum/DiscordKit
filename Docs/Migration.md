@@ -1,6 +1,6 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C/15D/15E. The
+The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C/15D/15E/15F. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
@@ -40,8 +40,8 @@ compiled definitions before explicit reconciliation or registration.
 
 To adopt an existing root slash definition and exact matching route incrementally,
 wrap them in `ExistingSlashCommand`. This adapter performs no typed decoding and
-rejects unsupported families, nesting and autocomplete. Keep full low-level APIs
-for those existing capabilities until the corresponding authoring milestone ships.
+rejects unsupported families, nesting and autocomplete. Use `ExistingCommandFamily`
+for complete low-level catalogs or the typed family adapters introduced in Part 15F.
 Use `ManualSlashCommandHandler` with the existing `InteractionContext.responder`
 for explicit response ownership. Part 15C optionally replaces schema/metadata
 boilerplate with the separate [macro package](MacroDSL.md), retaining the same
@@ -56,8 +56,13 @@ Part 15E optionally replaces direct message construction with `Text`, `Embed` an
 and admits mentions through typed interpolation; explicit raw segments retain
 caller-owned formatting and never enable broad parsing by themselves. Existing raw
 Models remain available. See [message builders](MessageBuilders.md) for field
-presence, validation and intentional mention policies. Broader command families and
-Gateway hosts remain later milestones. See
+presence, validation and intentional mention policies. Part 15F adds optional
+[command-family adapters](CommandFamilies.md) without changing existing handlers.
+Use a command tree for nested slash paths and keep partial autocomplete distinct from
+complete invocation arguments. Context menus use typed partial targets; component and
+modal routes use separate exact-ID namespaces. Synchronization still manages only
+compiled name/type pairs and never deletes unmanaged commands. Policies and Gateway
+hosts remain later milestones. See
 [response ownership](CommandResponses.md) and [the guide](CommandDSL.md)
 for argument presence, limits, diagnostics and the custom-code contract.
 

@@ -1,6 +1,6 @@
 # ``DiscordCommandDSL``
 
-Compile typed slash handlers into existing definitions and routes, with explicit response and HTTP ownership.
+Compile typed command families into existing definitions and routes, with explicit response and HTTP ownership.
 
 ## Overview
 
@@ -39,8 +39,13 @@ macro authoring lives in its separate package. Part 15E adds builder initializer
 ``ComponentBuilder`` authoring. Shared `DiscordDSL.MessageContent` supplies typed
 interpolation and explicit mention policy; existing payload validation remains
 authoritative.
-Subcommands/autocomplete, other command families, policies and Gateway hosts remain
-later milestones. Local tests do not qualify live Discord, platforms or capacity.
+Part 15F adds ``SlashCommandTree``, ``UserCommand``, ``MessageCommand``,
+``AutocompleteCommand``, ``ComponentCommand`` and ``ModalCommand``. Complete arguments,
+partial autocomplete and typed modal values retain separate admission contracts.
+``CommandFamily`` catalogs account for exact routes, including route-only handlers;
+``ExistingCommandFamily`` supports explicit low-level adoption. Family-specific response
+protocols retain legal callback kinds and the unique existing responder. Policies and
+Gateway hosts remain later milestones. Local tests do not qualify live Discord, platforms or capacity.
 
 ## Topics
 
@@ -75,6 +80,28 @@ later milestones. Local tests do not qualify live Discord, platforms or capacity
 - ``CommandContribution``
 - ``CommandCompilation``
 - ``CompiledCommands``
+
+### Command families
+
+- ``CommandFamily``
+- ``CommandFamilyContribution``
+- ``ExistingCommandFamily``
+- ``SlashSubcommand``
+- ``SlashSubcommandGroup``
+- ``SlashCommandTree``
+- ``UserCommand``
+- ``MessageCommand``
+- ``MessageCommandTarget``
+- ``AutocompleteCommand``
+- ``AutocompleteInput``
+- ``AutocompleteResponse``
+- ``ComponentCommand``
+- ``ComponentInput``
+- ``ModalCommand``
+- ``ModalSchema``
+- ``ModalField``
+- ``ModalResponse``
+- ``UpdateMessageResponse``
 
 ### Response ownership and HTTP applications
 

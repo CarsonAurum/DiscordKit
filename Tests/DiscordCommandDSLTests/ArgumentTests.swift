@@ -155,6 +155,32 @@ private struct ObservedSchemaArgument: ArgumentValue {
 
 /// Complete manual-schema validation, kept serialized only for the explicit synchronous counter fixture.
 @Suite(.serialized, .timeLimit(.minutes(1))) struct ArgumentTests {
+    /// The pre-autocomplete initializer remains a usable function value with its exact original labels and arity.
+    /// Forwarding preserves localized metadata, fallback behavior, constraints and the caller's source coordinate.
+    /// - Throws: Unexpected descriptor, direct-model or invocation decoding errors fail the regression.
+    @Test func originalInitializerFunctionReference() throws {
+        let factory: (String, String, ArgumentDefault<String>, Field<[String: String]>,
+            Field<[String: String]>, [ChannelType]?, JSONNumber?, JSONNumber?, Int?, Int?, [String]?,
+            DefinitionSourceLocation?, String, UInt, UInt) throws -> ArgumentOption<String> =
+                ArgumentOption<String>.init(name:description:defaultValue:nameLocalizations:descriptionLocalizations:channelTypes:minValue:maxValue:minLength:maxLength:fileTypes:source:fileID:line:column:)
+        let option = try factory("query", "Query", .value("fallback"), .value(["de": "suche"]),
+            .value(["de": "Suche"]), nil, nil, nil, 1, 32, nil, nil, "LegacyCaller", 7, 3)
+        let direct = try ApplicationCommandOptionCreate(type: .string, name: "query", description: "Query",
+            nameLocalizations: .value(["de": "suche"]), descriptionLocalizations: .value(["de": "Suche"]),
+            required: false, minLength: 1, maxLength: 32)
+        #expect(option.registration.jsonValue() == direct.jsonValue())
+        #expect(option.source == DefinitionSourceLocation(fileID: "LegacyCaller", line: 7, column: 3))
+        let schema = try CommandArgumentSchema<String>(options: [option.erased]) { try $0.value(for: option) }
+        #expect(try schema.decode(options: [], commandName: "legacy") == "fallback")
+        #expect(try schema.decode(options: Self.options(#"[{"name":"query","type":3,"value":"explicit"}]"#),
+            commandName: "legacy") == "explicit")
+        let explicit = DefinitionSourceLocation(fileID: "Explicit", line: 11, column: 2)
+        let located = try factory("query", "Query", .none, .absent, .absent, nil, nil, nil,
+            nil, nil, nil, explicit, "IgnoredCaller", 99, 99)
+        #expect(located.source == explicit)
+        #expect(located.registration.required == true)
+    }
+
     /// Author order and inferred requiredness match direct registration, while omission remains distinct from defaulting.
     /// - Throws: Unexpected local descriptor/schema/parsing failures fail the test.
     @Test func orderedRegistrationAndDefaults() throws {

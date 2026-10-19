@@ -153,7 +153,8 @@ package struct PackageVisibleHandler {
         let context = BasicMacroExpansionContext()
         let members = try SlashCommandMacro.expansion(of: attribute, providingMembersOf: declaration, conformingTo: [], in: context)
         #expect(context.diagnostics.isEmpty)
-        #expect(members.count == 2)
+        #expect(members.count == 3)
+        #expect(members[2].description.contains("public func slashSubcommand() throws -> DiscordCommandDSL.SlashSubcommand"))
         #expect(members[0].description.contains("public var command: DiscordCommandDSL.SlashCommandMetadata"))
         #expect(members[0].description.contains("name: \"greet\", description: \"Greet one person\""))
         #expect(members[1].description.contains("source: DiscordDSL.DefinitionSourceLocation"))
@@ -162,6 +163,93 @@ package struct PackageVisibleHandler {
         let extensions = try SlashCommandMacro.expansion(of: attribute, attachedTo: declaration,
             providingExtensionsOf: TypeSyntax(stringLiteral: "Greeting"), conformingTo: [], in: context)
         #expect(extensions.map(\.trimmedDescription) == ["extension Greeting: DiscordCommandDSL.ManualSlashCommandHandler {}"])
+    }
+
+    /// Context menus preserve case/spaces, target kind, public factories and exclusive response ownership.
+    /// - Parameters:
+    ///   - family: Supported User or Message target kind selected by the package's macro declaration.
+    ///   - ownership: Empty for the manual default, or one explicit immediate/deferred/manual prefix.
+    /// - Throws: Unexpected syntax parsing or macro-construction errors fail the test.
+    @Test(arguments: ["User", "Message"], ["", "immediate", "deferred", "manual"])
+    func contextMenuExpansion(family: String, ownership: String) throws {
+        let protocolName = switch ownership {
+        case "immediate": "DiscordCommandDSL.\(family)CommandHandler"
+        case "deferred": "DiscordCommandDSL.Deferred\(family)CommandHandler"
+        case "manual": "DiscordCommandDSL.Manual\(family)CommandHandler"
+        default: ""
+        }
+        let inheritance = protocolName.isEmpty ? "" : ": \(protocolName)"
+        let (declaration, attribute) = try fixture("@\(family)Command(\"Inspect Target\") public struct Handler\(inheritance) {}")
+        let context = BasicMacroExpansionContext()
+        let members: [DeclSyntax]
+        let extensions: [ExtensionDeclSyntax]
+        if family == "User" {
+            members = try UserCommandMacro.expansion(of: attribute, providingMembersOf: declaration, conformingTo: [], in: context)
+            extensions = try UserCommandMacro.expansion(of: attribute, attachedTo: declaration,
+                providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context)
+        } else {
+            members = try MessageCommandMacro.expansion(of: attribute, providingMembersOf: declaration, conformingTo: [], in: context)
+            extensions = try MessageCommandMacro.expansion(of: attribute, attachedTo: declaration,
+                providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context)
+        }
+        #expect(context.diagnostics.isEmpty)
+        #expect(members.count == 2)
+        #expect(members[0].description.contains("public var command: DiscordCommandDSL.ContextMenuCommandMetadata"))
+        #expect(members[0].description.contains("ContextMenuCommandMetadata(name: \"Inspect Target\")"))
+        #expect(members[1].description.contains("public func contribution(id: String, source: DiscordDSL.DefinitionSourceLocation) throws -> DiscordCommandDSL.\(family)Command<Self>"))
+        #expect(members[1].description.contains("/// - Throws:"))
+        #expect(extensions.map(\.trimmedDescription) == (ownership.isEmpty
+            ? ["extension Handler: DiscordCommandDSL.Manual\(family)CommandHandler {}"] : []))
+    }
+
+    /// Context-menu authoring rejects dynamic/excessive names, collisions and competing response families.
+    /// - Parameters:
+    ///   - family: User or Message target macro selected for the fixture.
+    ///   - scenario: Invalid source suffix paired with the stable diagnostic suffix required from expansion.
+    /// - Throws: Unexpected fixture parsing or macro-expansion errors fail the test.
+    @Test(arguments: ["User", "Message"], [
+        ("(dynamic) struct Handler {}", "literal-metadata"),
+        ("(\"\") struct Handler {}", "literal-metadata"),
+        ("(\"" + String(repeating: "x", count: 33) + "\") struct Handler {}", "literal-metadata"),
+        ("(\"valid\") struct Handler<T> {}", "unsupported-declaration"),
+        ("(\"valid\") struct Handler { var command: Int { 0 } }", "reserved-member"),
+        ("(\"valid\") struct Handler: FAMILYCommandHandler, DeferredFAMILYCommandHandler {}", "multiple-handler-families"),
+        ("(\"valid\") struct Handler: DeferredFAMILYCommandHandler, ManualFAMILYCommandHandler {}", "multiple-handler-families"),
+    ])
+    func invalidContextMenuExpansion(family: String, scenario: (String, String)) throws {
+        let (source, diagnostic) = scenario
+        let spelling = source.replacingOccurrences(of: "FAMILY", with: family)
+        let (declaration, attribute) = try fixture("@\(family)Command\(spelling)")
+        let context = BasicMacroExpansionContext()
+        let members = family == "User"
+            ? try UserCommandMacro.expansion(of: attribute, providingMembersOf: declaration, conformingTo: [], in: context)
+            : try MessageCommandMacro.expansion(of: attribute, providingMembersOf: declaration, conformingTo: [], in: context)
+        #expect(members.isEmpty)
+        #expect(context.diagnostics.contains {
+            $0.diagMessage.diagnosticID == .init(domain: "DiscordDSLMacros", id: diagnostic)
+        })
+    }
+
+    /// Grouped-leaf factory names are reserved and unsupported context-menu extension roots remain inert.
+    /// - Throws: Unexpected local syntax parsing or expansion errors fail the test.
+    @Test func reservedGroupedFactoryAndUnsupportedMenuRoot() throws {
+        let (handler, attribute) = try fixture("@SlashCommand(\"greet\", description: \"Greeting\") struct Handler { typealias Arguments = Input; func slashSubcommand() {} }")
+        let context = BasicMacroExpansionContext()
+        #expect(try SlashCommandMacro.expansion(of: attribute, providingMembersOf: handler, conformingTo: [], in: context).isEmpty)
+        #expect(context.diagnostics.contains {
+            $0.diagMessage.diagnosticID == .init(domain: "DiscordDSLMacros", id: "reserved-member")
+        })
+        let (generic, marker) = try fixture("@UserCommand(\"Target\") struct Handler<T> {}")
+        #expect(try UserCommandMacro.expansion(of: marker, attachedTo: generic,
+            providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context).isEmpty)
+        #expect(try MessageCommandMacro.expansion(of: marker, attachedTo: generic,
+            providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context).isEmpty)
+        let tree = Parser.parse(source: "@UserCommand(\"Target\") class Handler {}")
+        let unsupported = try #require(tree.statements.first?.item.as(ClassDeclSyntax.self))
+        #expect(try UserCommandMacro.expansion(of: marker, attachedTo: unsupported,
+            providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context).isEmpty)
+        #expect(try MessageCommandMacro.expansion(of: marker, attachedTo: unsupported,
+            providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context).isEmpty)
     }
 
     /// Dynamic, empty, uppercase and excessive command metadata fail without generated route behavior.
@@ -196,14 +284,14 @@ package struct PackageVisibleHandler {
     /// Module qualification is syntactically recognized, and generated contribution factories stay inert.
     /// - Parameter family: Supported directly inherited response contract, optionally module-qualified.
     /// - Throws: Unexpected parsing or expansion failures fail the test.
-    @Test(arguments: ["SlashCommandHandler", "DeferredSlashCommandHandler", "ManualSlashCommandHandler",
+    @Test(arguments: ["SlashCommandHandler", "ModalSlashCommandHandler", "DeferredSlashCommandHandler", "ManualSlashCommandHandler",
                       "DiscordCommandDSL.SlashCommandHandler", "DiscordCommandDSL.DeferredSlashCommandHandler"])
     func explicitResponseFamilies(family: String) throws {
         let (handler, marker) = try fixture("@SlashCommand(\"typed\", description: \"Typed family\") struct Handler: \(family) { typealias Arguments = Input }")
         let context = BasicMacroExpansionContext()
         let members = try SlashCommandMacro.expansion(of: marker, providingMembersOf: handler,
             conformingTo: [], in: context)
-        #expect(members.count == 2)
+        #expect(members.count == 3)
         #expect(members[1].description.contains("DiscordCommandDSL.SlashCommand<Self>"))
         #expect(try SlashCommandMacro.expansion(of: marker, attachedTo: handler,
             providingExtensionsOf: TypeSyntax(stringLiteral: "Handler"), conformingTo: [], in: context).isEmpty)
@@ -215,7 +303,10 @@ package struct PackageVisibleHandler {
     /// - Throws: Unexpected parsing or expansion failures fail the test.
     @Test(arguments: ["SlashCommandHandler, DeferredSlashCommandHandler",
                       "SlashCommandHandler, ManualSlashCommandHandler",
-                      "DeferredSlashCommandHandler, ManualSlashCommandHandler"])
+                      "DeferredSlashCommandHandler, ManualSlashCommandHandler",
+                      "SlashCommandHandler, ModalSlashCommandHandler",
+                      "ModalSlashCommandHandler, DeferredSlashCommandHandler",
+                      "ModalSlashCommandHandler, ManualSlashCommandHandler"])
     func incompatibleResponseFamilies(families: String) throws {
         let (handler, marker) = try fixture("@SlashCommand(\"typed\", description: \"Typed family\") struct Handler: \(families) { typealias Arguments = Input }")
         let context = BasicMacroExpansionContext()

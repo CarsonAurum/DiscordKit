@@ -1,6 +1,6 @@
 # ``DiscordDSLMacros``
 
-Generate typed argument schemas and explicit response-family slash-command contributions using the
+Generate typed argument schemas, grouped slash leaves and typed context-menu contributions using the
 existing DiscordCommandDSL protocols.
 
 ## Overview
@@ -19,20 +19,27 @@ string literals without raw or multiline spelling, escapes or interpolation.
 
 Apply `@SlashCommand` to a nongeneric handler with an explicit `Arguments`
 typealias and an `execute(_:arguments:)` implementation. Directly inherit
-`SlashCommandHandler` for immediate `CommandContext`/`MessageResponse`, or
+`SlashCommandHandler` for immediate `CommandContext`/`MessageResponse`,
+`ModalSlashCommandHandler` for immediate `ModalResponse`, or
 `DeferredSlashCommandHandler` for `DeferredCommandContext`/`DeferredMessageResponse`.
 Typed contexts expose immutable invocation data; existing interaction responders
 retain acknowledgement and completion ownership in the runtime adapter. Explicit
-`ManualSlashCommandHandler`, or omitting all three family names for compatibility,
+`ManualSlashCommandHandler`, or omitting all supported family names for compatibility,
 retains manual responder access. Select one supported family directly; the macro
 does not resolve imported protocol refinements. Import DiscordDSL when using the
 generated contribution factory's explicit source location.
 
 Macro expansion emits declarations and diagnostics. It starts no tasks, I/O,
 registration or handler execution. Explicit schema access and command compilation
-perform existing synchronous validation. Message builders and broader response
-families remain later milestones. Local compiler and execution fixtures do not establish
-live Discord, platform or capacity qualification.
+perform existing synchronous validation. The generated `slashSubcommand()`
+factory retains the same handler for an explicit `SlashCommandTree`, including one supported subcommand-group level. `@UserCommand`
+and `@MessageCommand` generate context-menu metadata and factories with typed
+`UserReference` and `MessageCommandTarget` targets. Directly spell exactly one immediate,
+deferred or manual target-family protocol; without one, manual ownership is generated.
+Use the runtime protocols directly for autocomplete, exact-ID components and modal
+submissions. Supplied response wrappers keep legal callback families distinct; runtime
+adapters recheck callback kinds before responding. Local compiler and execution
+fixtures do not establish live Discord, platform or capacity qualification.
 
 ## Topics
 

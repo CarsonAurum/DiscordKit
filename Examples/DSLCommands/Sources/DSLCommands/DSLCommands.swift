@@ -63,7 +63,9 @@ struct Ping: SlashCommandHandler {
             try await application.run(listener: listener, context: TransportContext(clock: clock))
         } else {
             try await offline(commands)
+            try await FamilyExamples.run()
             print("Offline macro /ping: signed HTTP 200, one ephemeral Pong!, zero registration requests.")
+            print("Offline command families: grouped slash, context menus, autocomplete, component and modal callbacks verified.")
         }
     }
 

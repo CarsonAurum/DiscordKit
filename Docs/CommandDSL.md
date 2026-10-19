@@ -7,12 +7,13 @@ validated registration options and strict invocation decoding. Finite module
 compilation produces existing `CommandDefinition` and `CommandRoute` values.
 Construction and compilation start no tasks, I/O, registration or handler execution.
 
-The implemented family is root slash commands with leaf options. Part 15C adds
+Root slash commands retain their typed leaf schemas. Part 15C adds
 optional [macro authoring](MacroDSL.md); Part 15D adds
 [immediate/deferred/manual response ownership and signed HTTP applications](CommandResponses.md).
 Part 15E adds [message/component builders and safe typed content](MessageBuilders.md)
-with thin adapters to those response values. Subcommands/groups, autocomplete, other
-command families, policies and Gateway hosts remain later
+with thin adapters to those response values. Part 15F adds [command trees, context
+menus, autocomplete, components and modal submissions](CommandFamilies.md). Policies
+and Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md). Existing low-level APIs
 remain independently usable for their broader implemented surfaces.
 
@@ -126,8 +127,8 @@ router, and no mutation is retried or replayed.
 
 `ExistingSlashCommand(id:definition:route:source:)` is an explicit incremental
 adapter for a validated low-level root slash definition and its exact matching
-route. It performs no typed decoding. Other command kinds, nested subcommands,
-autocomplete and mismatched route identity fail authoring validation. External
+route. It performs no typed decoding and retains its original root-only contract.
+Part 15F adds `ExistingCommandFamily` for complete catalogs and exact routes. External
 extensions can conform to `CommandContribution`; their deterministic raw payload,
 validated definition and route must agree. Compilation validates those snapshots
 and rejects a raw metadata leaf that merely claims the slash-command kind.

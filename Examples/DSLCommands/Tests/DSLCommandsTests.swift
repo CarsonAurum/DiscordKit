@@ -14,4 +14,13 @@ import Testing
         #expect(commands.definitions.map(\.request.name) == ["ping"])
         for _ in 0..<2 { try await DSLCommands.offline(commands) }
     }
+    /// The independent consumer executes every family through signed HTTP with exact callback assertions.
+    /// Its catalog contains four registrations and seven routes; shared component/modal IDs remain distinct.
+    /// - Throws: Any catalog, signing, authentication, invocation or callback mismatch fails this test.
+    @Test func signedOfflineFamilies() async throws {
+        let commands = try FamilyExamples.catalog()
+        #expect(commands.definitions.count == 4)
+        #expect(commands.routes.count == 7)
+        try await FamilyExamples.run()
+    }
 }

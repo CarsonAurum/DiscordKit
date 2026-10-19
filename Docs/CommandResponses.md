@@ -120,7 +120,7 @@ The independent [DSLCommands consumer](../Examples/DSLCommands/README.md) compil
 macro-authored `/ping` and exercises a synthetic Ed25519-signed HTTP exchange without
 credentials. Its explicit listener mode owns local ingress; it does not register
 commands. The example and response tests are offline evidence. Live Discord, other
-platforms, Gateway hosts, broader command families, capacity and full Phase 15
+platforms, Gateway hosts, capacity and full Phase 15
 certification remain separate [milestones](DSLImplementationRoadmap.md).
 
 Current response kinds, deadlines, ephemeral behavior and edit-original semantics

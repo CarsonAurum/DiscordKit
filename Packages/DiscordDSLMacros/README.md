@@ -1,8 +1,9 @@
 # DiscordDSLMacros
 
 Part 15C's optional authoring package supplies `@CommandArguments`, `@Option` and
-`@SlashCommand`. It generates the existing typed argument schemas and slash-command
-contributions. Part 15D preserves explicit immediate, deferred and manual response
+`@SlashCommand`. Part 15F adds `@UserCommand`, `@MessageCommand` and generated
+`slashSubcommand()` factories for explicit slash trees. The package generates
+existing typed argument schemas and command contributions. Part 15D preserves explicit immediate, deferred and manual response
 contracts. The runtime products never depend on this package,
 its compiler plugin or SwiftSyntax.
 
@@ -30,14 +31,19 @@ Construction, expansion and compilation start no tasks, I/O, registration or
 handler execution. Explicit schema access performs existing synchronous validation.
 Handlers supply an explicit `Arguments` typealias and `execute(_:arguments:)`.
 Directly inherit `SlashCommandHandler` for `CommandContext` and `MessageResponse`,
-or `DeferredSlashCommandHandler` for `DeferredCommandContext` and
+`ModalSlashCommandHandler` for immediate `ModalResponse`, or
+`DeferredSlashCommandHandler` for `DeferredCommandContext` and
 `DeferredMessageResponse`. Typed contexts expose immutable invocation data while
 the runtime adapter owns acknowledgement and completion. Explicit
 `ManualSlashCommandHandler`, or omitting all family names for compatibility,
 retains manual responder access and a `Void` result. Select exactly one family;
 the macro does not inspect imported protocol refinements. The independently
-adopted HTTP application is described in the root command guide. Message builders
-and broader response families remain later milestones.
+adopted HTTP application is described in the root command guide. The generated
+`slashSubcommand()` factory adapts the same handler as a leaf in an explicit
+`SlashCommandTree`. Context menus select the corresponding
+User/Message immediate, deferred or manual protocol and retain typed targets.
+Autocomplete, exact-ID component and modal submission authors use the runtime
+protocols directly; their legal response families remain distinct.
 
 Run from the repository root:
 

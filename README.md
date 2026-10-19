@@ -59,8 +59,9 @@ external diagnostic fixtures. Part 15D adds [typed response ownership and signed
 command applications](Docs/CommandResponses.md), with explicit command synchronization
 and an [independent offline consumer](Examples/DSLCommands/README.md).
 Part 15E adds [validated message/component builders](Docs/MessageBuilders.md), safe
-text interpolation and explicit mention allowlists over existing Models. Broader
-command families, policies and Gateway hosts remain later
+text interpolation and explicit mention allowlists over existing Models. Part 15F adds
+[command families](Docs/CommandFamilies.md), partial autocomplete, exact component/modal
+routes and explicit catalog reconciliation. Policies and Gateway hosts remain later
 [DSL milestones](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for

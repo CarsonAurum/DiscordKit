@@ -70,6 +70,17 @@ public struct CommandRouteKey: Sendable, Hashable {
         return Self(kind: 5, commandType: 0, name: customID)
     }
 
+    /// Exact inert route identity for deterministic catalogs and retained-text admission.
+    /// The object contains the namespace, command discriminator, name, ordered path and optional
+    /// focused option. It includes author metadata only and never submitted interaction values.
+    public var metadata: JSONValue {
+        var fields: [String: JSONValue] = ["kind": .string(String(kind)),
+            "command_type": .string(String(commandType)), "name": .string(name),
+            "path": .array(path.map(JSONValue.string))]
+        if let focusedOption { fields["focused_option"] = .string(focusedOption) }
+        return .object(fields)
+    }
+
     /// Accounts retained variable-sized route text before router adoption.
     /// - Returns: UTF-8 name, path and focused-leaf bytes; fixed structure overhead is bounded by maximumRoutes.
     fileprivate func retainedTextBytes() -> Int { name.utf8.count + path.reduce(0) { $0 + $1.utf8.count } + (focusedOption?.utf8.count ?? 0) }
@@ -84,16 +95,25 @@ public struct CommandRouteKey: Sendable, Hashable {
         case (.applicationCommand, .command(let command)), (.applicationCommandAutocomplete, .command(let command)):
             guard let type = command.type.knownValue else { return nil }
             var path: [String] = [], options: [InteractionCommandOption]
-            if case .value(let supplied) = command.options { options = supplied } else { options = [] }
+            switch command.options {
+            case .absent: options = []
+            case .value(let supplied): options = supplied
+            case .null: return nil
+            }
             for depth in 0...2 {
                 guard options.count <= 25, Set(options.map(\.name)).count == options.count else { return nil }
                 let containers = options.filter { $0.type.knownValue == .subcommand || $0.type.knownValue == .subcommandGroup }
                 guard !containers.isEmpty else { break }
                 guard depth < 2, containers.count == 1, options.count == 1,
-                      let container = containers.first, container.focused != .value(true),
+                      let container = containers.first, container.focused == .absent, container.value == .absent,
                       (depth == 0 || container.type.knownValue == .subcommand),
-                      !(depth == 1 && path.count == 1 && options.first?.type.knownValue == .subcommandGroup),
-                      case .value(let children) = container.options else { return nil }
+                      !(depth == 1 && path.count == 1 && options.first?.type.knownValue == .subcommandGroup) else { return nil }
+                let children: [InteractionCommandOption]
+                switch container.options {
+                case .absent: children = []
+                case .value(let supplied): children = supplied
+                case .null: return nil
+                }
                 if container.type.knownValue == .subcommandGroup {
                     guard children.count == 1, children.first?.type.knownValue == .subcommand else { return nil }
                 } else if children.contains(where: { $0.type.knownValue == .subcommand || $0.type.knownValue == .subcommandGroup }) {

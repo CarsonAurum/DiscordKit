@@ -154,6 +154,14 @@ and mention-neutralized.
 Construction starts no tasks, registration or I/O; manual raw Models remain
 available. See `Docs/MessageBuilders.md`.
 
+Part 15F adds command trees, typed user/message context menus, partial autocomplete,
+exact component/modal handlers and explicit compiled-catalog reconciliation over the
+existing Commands/Interactions owners. Family response types keep autocomplete,
+modal opening, message updates and message replies separate. Construction and ordinary
+serving register nothing. Existing Models remain authoritative for supported fields;
+policies, Gateway hosts and capacity qualification remain later milestones. See
+`Docs/CommandFamilies.md`.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -337,6 +345,13 @@ typed allowlist contains the same ID, explicit raw/mention-policy opt-in, Unicod
 boundaries, structural bounds, empty output, field omission/null/value and illegal
 legacy/V2/component combinations. Keep existing payload validators authoritative;
 local JSON parity does not prove Discord rendering, notification delivery or capacity.
+
+For command-family changes, also run macro package tests and external compile fixtures,
+plus the independent DSLCommands family examples. Cover exact namespaces, group depth,
+focused partial autocomplete, typed context-menu targets, malformed modal/component
+inputs, response compatibility and reconciliation no-op/change/partial outcomes.
+Preserve explicit application/scope/name/type management, unmanaged commands and
+no registration during construction or serving. Unknown upstream fields remain gaps.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

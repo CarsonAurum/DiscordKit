@@ -5,6 +5,7 @@
 ### Type properties
 
 - ``DiscordCommandDSL/CommandCompilation/contributionKind``
+- ``DiscordCommandDSL/CommandCompilation/familyContributionKind``
 
 ### Type methods
 

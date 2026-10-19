@@ -26,3 +26,13 @@ by this application rather than by the runtime DSL product.
 
 The evidence is local/offline. Authorized Discord behavior, other platforms,
 deployment security and DSL capacity remain separately qualified gates.
+
+Part 15F's `FamilyExamples.swift` also executes a complete slash invocation, an empty
+nested group/subcommand, macro-authored user/message context menus, partial typed
+autocomplete, an exact-ID button and a label-wrapped typed modal submission. Every
+case passes genuine synthetic Ed25519 verification and checks exact callback JSON.
+The component and modal deliberately share an ID in separate namespaces. All target
+IDs and keys are synthetic; the example constructs no registration client and never
+contacts Discord. Run the same offline mode or `swift test --package-path Examples/DSLCommands`.
+These checks establish local protocol composition only; live registration/rendering,
+other platforms, policies and Gateway hosts remain separate.

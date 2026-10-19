@@ -6,11 +6,13 @@ and explicit slash-command lowering in `DiscordCommandDSL`. **15C** adds the sep
 `DiscordDSLMacros` authoring package with compiled parity and external fixtures.
 **15D** adds typed immediate/deferred responses, manual ownership and a signed HTTP
 command application. **15E** adds validated message/component builders and safe typed
-interpolation over existing Models. These statuses do not
+interpolation over existing Models. **15F** adds command trees, typed context menus,
+partial autocomplete, exact component/modal handlers and explicit catalog reconciliation.
+These statuses do not
 imply that the complete bot authoring experience is available. See
 [shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md),
 [response ownership and HTTP applications](CommandResponses.md),
-[message/component builders](MessageBuilders.md) and
+[message/component builders](MessageBuilders.md), [command families](CommandFamilies.md) and
 [architecture](Architecture.md) for the implemented APIs and product boundaries.
 
 | Milestone | Status | Scope |
@@ -20,7 +22,7 @@ imply that the complete bot authoring experience is available. See
 | 15C | Implemented | Separate authoring macro package, source diagnostics, compiled expansion parity and external positive/negative compile fixtures. |
 | 15D | Implemented | Typed immediate/deferred and manual response ownership, signed HTTP command application, explicit reconciliation and independent offline/listener consumer. |
 | 15E | Implemented | Validated text/embed/component builders, safe typed interpolation and explicit mention allowlists, with direct-payload parity and immediate/deferred response adapters. |
-| 15F | Planned | Remaining command families, explicit registration and reconciliation. |
+| 15F | Implemented | Slash trees, typed context menus, partial autocomplete, exact component/modal handlers, legal response families and explicit change-only catalog reconciliation. |
 | 15G | Planned | Bounded policies, middleware and named/operator composition. |
 | 15H | Planned | Typed Gateway handlers over existing bounded subscriptions/dispatch. |
 | 15I | Planned | Bot application and supervised client/interaction lifetime. |
@@ -43,7 +45,10 @@ plugin or SwiftSyntax dependency in the shared product. Part 15E adds shared pur
 content values and CommandDSL message/component builders with explicit validated
 lowering. Ordinary text is escaped and typed mentions synthesize narrow allowlists.
 Response builder overloads reuse the same immediate/deferred owners. Raw Models and
-field-presence semantics remain available.
+field-presence semantics remain available. Part 15F extends the compiled catalog to
+all currently supported command families and route-only interaction contributions.
+Initial-response constraints and complete-versus-partial decoding remain distinct;
+existing command reconciliation preserves unmanaged names and partial outcomes.
 
 Structural admission limits describe finite compilation resources. They do not
 establish network throughput, bot population, live Discord interoperability or

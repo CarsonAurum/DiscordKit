@@ -11,6 +11,7 @@ let consumers = [
     "WrongDefaultType", "UnsupportedArgumentType", "NonSendableHandler", "DuplicateOptions",
     "UnsupportedOptionMetadata", "MissingArgumentsAlias",
     "ImmediateResponderAccess", "DeferredResponderAccess", "WrongResponseFamily", "MultipleResponseFamilies",
+    "InvalidUserCommandMetadata", "MultipleUserResponseFamilies", "WrongContextMenuResponse", "WrongModalResponse", "DeferredModalSlashResponse", "WrongAutocompleteResponse", "WrongComponentResponse",
 ]
 let runtime: [Target.Dependency] = [
     .product(name: "DiscordCommandDSL", package: "DiscordKit"),

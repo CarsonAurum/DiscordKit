@@ -4,37 +4,37 @@
   "nextReviewDue": "2026-10-25",
   "unclassifiedEntries": [],
   "historyPath": "Docs/Parity/history.json",
-  "reviewScope": "Affected release/HTTP transition sources and Part 15E message/component authoring, safe typed interpolation and existing-model lowering contracts; earlier records retained. Discovery status is not full semantic parity.",
+  "reviewScope": "Affected release/HTTP transition sources and Part 15F command-family authoring, partial input, response compatibility and explicit reconciliation contracts; historical records retained. Discovery status is not full semantic parity.",
   "officialSources": [
     {
       "url": "https://docs.discord.com/developers/reference.md",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15e.json",
-      "sha256": "51e9aead1048fa9f5d9228eee7783d2a21c0b156f7e827d63250602601d43828"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
+      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
     },
     {
       "url": "https://docs.discord.com/developers/change-log.md",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15e.json",
-      "sha256": "51e9aead1048fa9f5d9228eee7783d2a21c0b156f7e827d63250602601d43828"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
+      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
     },
     {
       "url": "https://docs.discord.com/developers/interactions/application-commands.md",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15d.json",
-      "sha256": "4533e2e4aa9a09b3e900cc0066d8c803cfcdfa00ec3918bcb036dabebbf3a83b"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
+      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
     },
     {
       "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15e.json",
-      "sha256": "51e9aead1048fa9f5d9228eee7783d2a21c0b156f7e827d63250602601d43828"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
+      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
     },
     {
       "url": "https://docs.discord.com/developers/components/reference.md",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15e.json",
-      "sha256": "51e9aead1048fa9f5d9228eee7783d2a21c0b156f7e827d63250602601d43828"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
+      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
     },
     {
       "url": "https://docs.discord.com/developers/resources/message.md",

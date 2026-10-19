@@ -2,6 +2,10 @@
 
 ## Topics
 
+### Instance properties
+
+- ``DiscordCommands/CommandRouteKey/metadata``
+
 ### Type methods
 
 - ``DiscordCommands/CommandRouteKey/autocomplete(name:path:focusedOption:)``

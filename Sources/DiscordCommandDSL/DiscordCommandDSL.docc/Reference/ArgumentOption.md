@@ -4,6 +4,7 @@
 
 ### Creating a value
 
+- ``DiscordCommandDSL/ArgumentOption/init(name:description:defaultValue:nameLocalizations:descriptionLocalizations:channelTypes:minValue:maxValue:minLength:maxLength:fileTypes:autocomplete:source:fileID:line:column:)``
 - ``DiscordCommandDSL/ArgumentOption/init(name:description:defaultValue:nameLocalizations:descriptionLocalizations:channelTypes:minValue:maxValue:minLength:maxLength:fileTypes:source:fileID:line:column:)``
 
 ### Instance properties

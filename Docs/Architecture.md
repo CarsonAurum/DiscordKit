@@ -125,7 +125,9 @@ Part 15E adds typed content interpolation to the Core/Models-only shared DSL,
 with pure message/component builders and thin immediate/deferred response adapters
 in CommandDSL. Existing payload validation owns layout, field presence and aggregate
 limits; explicit mention allowlists accompany rendered text. The builders own no
-transport, registration or handler lifetime. Policies, broader command families and
+transport, registration or handler lifetime. Part 15F extends the same compiled catalog
+to command trees, typed context-menu targets, partial autocomplete and exact component/modal
+routes, retaining independent response families and the existing reconciler. Policies and
 Gateway hosts remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 

@@ -9,7 +9,7 @@ import DiscordTransport
 public enum CommandApplicationError: Error, Sendable, Equatable {
     /// DSL-managed response ownership cannot share an application-level automatic defer timer.
     case competingAutoDefer
-    /// A signed non-PING interaction did not match a compiled root slash route.
+    /// A signed non-PING interaction did not match a compiled exact interaction route.
     case unmatchedCommand
 }
 
@@ -25,7 +25,7 @@ public struct CommandApplication: Sendable {
     /// Validates a complete catalog and response ownership policy without executing handlers or I/O.
     /// - Parameters:
     ///   - applicationID: Expected signed interaction and command-registration owner.
-    ///   - commands: Previously compiled finite root slash catalog; declaration order is retained.
+    ///   - commands: Previously compiled finite command-family catalog; declaration order is retained.
     ///   - ingress: Caller-shared signature/replay/body/concurrency authority; no listener is opened.
     ///   - admission: Shared initial-response count/byte authority, independent of ordinary REST quotas.
     ///   - guildID: Explicit registration scope, nil for global. Dispatch still checks the application ID.

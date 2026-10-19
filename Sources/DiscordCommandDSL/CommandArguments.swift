@@ -108,6 +108,41 @@ public struct ArgumentOption<Value: ArgumentValue>: Sendable {
     /// Erases only the generic argument type while retaining its decoder and registration fingerprint.
     public var erased: AnyArgumentOption { storage }
 
+    /// Validates a typed leaf with autocomplete omitted, preserving the original initializer's exact signature.
+    /// This overload retains existing initializer function references and forwards caller coordinates unchanged.
+    /// Construction is synchronous and inert; only author-supplied codec validation may execute.
+    /// - Parameters:
+    ///   - name: Discord lowercase slash-option name, 1...32 Unicode scalars.
+    ///   - description: Explanation, 1...100 Unicode scalars.
+    ///   - defaultValue: Explicit fallback, default none. Optional nil is `.value(nil)` and differs from none.
+    ///   - nameLocalizations: Absent, null or complete localized name dictionary; default absent.
+    ///   - descriptionLocalizations: Absent, null or complete localized descriptions; default absent.
+    ///   - channelTypes: Optional distinct known channel filters; constrained channels require resolved type data.
+    ///   - minValue: Optional inclusive numeric minimum using exact registration lexeme validation.
+    ///   - maxValue: Optional inclusive numeric maximum, not less than the minimum.
+    ///   - minLength: Optional inclusive string minimum in Unicode scalars, within 0...6000.
+    ///   - maxLength: Optional inclusive string maximum in Unicode scalars, within 1...6000.
+    ///   - fileTypes: Optional attachment picker filters; host hints that do not validate file content.
+    ///   - source: Explicit author coordinate; nil captures fileID/line/column with a bounded file-label prefix.
+    ///   - fileID: Caller compiler file identifier when source is nil; no source file is opened.
+    ///   - line: Caller one-based source line when source is nil; zero indicates unavailable.
+    ///   - column: Caller one-based source column when source is nil; zero indicates unavailable.
+    /// - Throws: `ArgumentDiagnostic.invalidSchema` for invalid registration or codec choices, or
+    ///   `invalidDefault` for an incompatible fallback. Underlying codec errors and values are hidden.
+    public init(name: String, description: String, defaultValue: ArgumentDefault<Value> = .none,
+                nameLocalizations: Field<[String: String]> = .absent,
+                descriptionLocalizations: Field<[String: String]> = .absent,
+                channelTypes: [ChannelType]? = nil, minValue: JSONNumber? = nil,
+                maxValue: JSONNumber? = nil, minLength: Int? = nil, maxLength: Int? = nil,
+                fileTypes: [String]? = nil, source: DefinitionSourceLocation? = nil,
+                fileID: String = #fileID, line: UInt = #line, column: UInt = #column) throws {
+        try self.init(name: name, description: description, defaultValue: defaultValue,
+            nameLocalizations: nameLocalizations, descriptionLocalizations: descriptionLocalizations,
+            channelTypes: channelTypes, minValue: minValue, maxValue: maxValue,
+            minLength: minLength, maxLength: maxLength, fileTypes: fileTypes, autocomplete: nil,
+            source: source, fileID: fileID, line: line, column: column)
+    }
+
     /// Validates a typed leaf and its optional fallback synchronously, reusing the existing registration model.
     /// - Parameters:
     ///   - name: Discord lowercase slash-option name, 1...32 Unicode scalars.
@@ -121,6 +156,8 @@ public struct ArgumentOption<Value: ArgumentValue>: Sendable {
     ///   - minLength: Optional inclusive string minimum in Unicode scalars, within 0...6000.
     ///   - maxLength: Optional inclusive string maximum in Unicode scalars, within 1...6000.
     ///   - fileTypes: Optional attachment picker filters. These are host hints and do not validate file content.
+    ///   - autocomplete: Explicit optional flag for string/integer/number leaves; nil omits the field and
+    ///     true forbids codec choices. A separate autocomplete contribution owns partial invocation decoding.
     ///   - source: Explicit author coordinate; nil captures the caller using fileID/line/column.
     ///     Only a bounded scalar-aligned file-label prefix is retained.
     ///   - fileID: Caller compiler file identifier, used only when source is nil; no source file is opened.
@@ -129,15 +166,15 @@ public struct ArgumentOption<Value: ArgumentValue>: Sendable {
     /// - Throws: `ArgumentDiagnostic.invalidSchema` for invalid existing-model registration or codec choices,
     ///   or `invalidDefault` for an incompatible fallback. Underlying codec errors and fallback values are hidden.
     ///
-    /// Requiredness is inferred: only nonoptional values without defaults are required. Autocomplete and
-    /// structural options are reserved for later milestones. Custom codec code is synchronous author code,
+    /// Requiredness is inferred: only nonoptional values without defaults are required. Structural
+    /// options belong to explicit subcommands. Custom codec code is synchronous author code,
     /// must terminate and avoid side effects, and is not sandboxed by the DSL.
     public init(name: String, description: String, defaultValue: ArgumentDefault<Value> = .none,
                 nameLocalizations: Field<[String: String]> = .absent,
                 descriptionLocalizations: Field<[String: String]> = .absent,
                 channelTypes: [ChannelType]? = nil, minValue: JSONNumber? = nil,
                 maxValue: JSONNumber? = nil, minLength: Int? = nil, maxLength: Int? = nil,
-                fileTypes: [String]? = nil, source: DefinitionSourceLocation? = nil,
+                fileTypes: [String]? = nil, autocomplete: Bool?, source: DefinitionSourceLocation? = nil,
                 fileID: String = #fileID, line: UInt = #line, column: UInt = #column) throws {
         let boundedSource = argumentBoundedSource(source ?? .init(fileID: fileID, line: line, column: column))
         let registration: ApplicationCommandOptionCreate
@@ -168,7 +205,7 @@ public struct ArgumentOption<Value: ArgumentValue>: Sendable {
                 descriptionLocalizations: descriptionLocalizations, required: required,
                 choices: choices.isEmpty ? nil : choices, channelTypes: channelTypes,
                 minValue: minValue, maxValue: maxValue, minLength: minLength, maxLength: maxLength,
-                fileTypes: fileTypes)
+                autocomplete: autocomplete, fileTypes: fileTypes)
         } catch {
             throw ArgumentDiagnostic(code: .invalidSchema, optionName: name, source: boundedSource)
         }
@@ -207,7 +244,7 @@ public struct AnyArgumentOption: Sendable {
     public let registration: ApplicationCommandOptionCreate
     /// Bounded author coordinate associated with this exact descriptor.
     public let source: DefinitionSourceLocation
-    fileprivate let valueType: ObjectIdentifier
+    internal let valueType: ObjectIdentifier
     fileprivate let optional: Bool
     fileprivate let fallback: CachedArgument?
     fileprivate let decode: @Sendable (Field<JSONValue>, Field<InteractionResolvedData>) throws -> any Sendable
@@ -532,7 +569,7 @@ private func argumentValidate(_ field: Field<JSONValue>, registration: Applicati
 ///   - type: Known declared leaf kind; nil admits an explicitly ignored future kind's ordinary scalar shape.
 /// - Returns: Whether the scalar matches the kind and Discord numeric/string bounds. Snowflakes preserve
 ///   decimal leading zeros while requiring an exactly representable UInt64 identity; no hydration occurs.
-private func argumentWireShape(_ value: JSONValue, type: ApplicationCommandOptionType?) -> Bool {
+internal func argumentWireShape(_ value: JSONValue, type: ApplicationCommandOptionType?) -> Bool {
     switch (type, value) {
     case (.string?, .string(let text)), (nil, .string(let text)): return text.unicodeScalars.count <= 6000
     case (.boolean?, .bool), (nil, .bool): return true
