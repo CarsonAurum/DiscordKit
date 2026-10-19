@@ -152,8 +152,10 @@ Dependency validation occurs synchronously after module admission and before laz
 body creation. Separately selected `DiscordDSLExtensions` libraries depend downstream
 on shared/command/bot products; root products never select that package. Application-owned
 Voice, Social and OAuth interfaces can be injected into typed dependency values
-without a DSL import or runtime service locator. Parts 15K-15L retain their separate
-[implementation milestones](DSLImplementationRoadmap.md).
+without a DSL import or runtime service locator. Part 15K adds an independent
+[offline measurement package](DSLBenchmarks.md); runtime products select no benchmark
+or compiler-cost tooling. Part 15L retains final release certification. Local measurements
+do not establish production capacity.
 
 ## Product boundaries
 

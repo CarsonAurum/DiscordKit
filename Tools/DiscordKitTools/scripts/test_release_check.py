@@ -110,6 +110,31 @@ class ReleaseChecks(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "this checkout"):
             audit.validate_consumer(self.root, "Examples/Consumer", manifest, self.policy)
 
+    def test_consumer_system_imports_remain_scoped_and_validated(self):
+        """A reviewed platform gauge import is local to its target and rejects malformed policy."""
+        relative = "Tools/Benchmarks"
+        for name, source in (("App", "#if os(macOS)\nimport Darwin\n#endif"), ("Other", "import Foundation")):
+            path = self.root / relative / "Sources" / name / (name + ".swift")
+            path.parent.mkdir(parents=True)
+            path.write_text(source)
+        manifest = {"dependencies": [{"fileSystem": [{"path": str(self.root)}]}],
+                    "targets": [{"name": name, "type": "executable", "dependencies": []} for name in ("App", "Other")]}
+        entry = {"targets": {"App": [], "Other": []}, "forbidden": [], "targetSystemImports": {"App": ["Darwin"]}}
+        self.policy["consumers"] = {relative: entry}
+        self.assertEqual(audit.validate_consumer(self.root, relative, manifest, self.policy)["sourceFiles"], 2)
+        other = self.root / relative / "Sources/Other/Other.swift"
+        other.write_text("import Darwin")
+        with self.assertRaisesRegex(ValueError, "Undeclared consumer import"):
+            audit.validate_consumer(self.root, relative, manifest, self.policy)
+        other.write_text("import Foundation")
+        for value in ({"Missing": ["Darwin"]}, {"App": "Darwin"}, {"App": [None]}, [], {"App": [""]}, {"App": ["B"]}, {"App": ["DiscordClient"]}):
+            entry["targetSystemImports"] = value
+            with self.subTest(policy=value), self.assertRaisesRegex(ValueError, "system imports"):
+                audit.validate_consumer(self.root, relative, manifest, self.policy)
+        entry.pop("targetSystemImports")
+        with self.assertRaisesRegex(ValueError, "Undeclared consumer import"):
+            audit.validate_consumer(self.root, relative, manifest, self.policy)
+
     def test_evidence_paths_reject_escape_and_absolute(self):
         """Absolute, missing, traversal and symlink-escaped files never count as evidence."""
         for value in ("../evidence.txt", "/etc/passwd", "missing"):

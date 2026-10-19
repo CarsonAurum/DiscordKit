@@ -324,6 +324,10 @@ def validate_consumer(repository, relative, manifest, policy):
     additionally select an already audited local authoring package and reviewed
     external products, with exact package paths, URLs and version requirements.
     Authoring-selected runtime closures also participate in isolation checks.
+    Reviewed targetSystemImports admit platform measurement modules only in the
+    named consumer target; every inactive branch remains inspected. Only Darwin,
+    Glibc and the already reviewed global system modules are accepted. Unknown target
+    keys and malformed import allowlists fail before source import admission.
     """
     require(relative in policy.get("consumers", {}), "Unknown example consumer")
     expected = policy["consumers"][relative]
@@ -355,6 +359,12 @@ def validate_consumer(repository, relative, manifest, policy):
     targets = {target["name"]: target for target in manifest["targets"] if target.get("type") != "test"}
     graph = {name: manifest_dependencies(target) for name, target in targets.items()}
     require(graph == expected["targets"], f"Consumer dependency roots changed: {relative}")
+    system_imports = expected.get("targetSystemImports", {})
+    require(isinstance(system_imports, dict) and not set(system_imports) - set(targets),
+            "Consumer system imports name an unknown target")
+    permitted_system_imports = set(policy["systemImports"]) | {"Darwin", "Glibc"}
+    require(all(isinstance(values, list) and all(isinstance(value, str) and value in permitted_system_imports for value in values)
+                for values in system_imports.values()), "Malformed consumer system imports")
     root_products = set()
     source_files = 0
     for name, target in targets.items():
@@ -378,6 +388,7 @@ def validate_consumer(repository, relative, manifest, policy):
         source_root = (repository / relative / relative_source).resolve()
         require(source_root.is_relative_to(repository.resolve()) and source_root.is_dir(), "Missing consumer sources")
         allowed = {value.split("/")[-1] for value in graph[name]} | set(policy["systemImports"])
+        allowed.update(system_imports.get(name, []))
         for source in source_root.rglob("*.swift"):
             require(source.resolve().is_relative_to(source_root), "Consumer source symlink escapes target")
             imports = swift_imports(source.read_text())

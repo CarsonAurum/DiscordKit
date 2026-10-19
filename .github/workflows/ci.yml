@@ -55,6 +55,19 @@ jobs:
           python3 -m unittest discover -s Tools/DiscordKitLoadTests/scripts -p 'test_*.py'
           python3 -m unittest discover -s Tools/ci -p 'test_*.py'
           node --test Browser/DiscordActivityBridge/*.test.mjs
+      - name: Test independent DSL benchmark and finite offline smoke matrix
+        run: |
+          swift test --package-path Tools/DiscordDSLBenchmarks --explicit-target-dependency-import-check error
+          python3 -m unittest discover -s Tools/DiscordDSLBenchmarks/scripts -p 'test_*.py'
+          mkdir -p .build/dsl-measurements
+          swift run -c release --package-path Tools/DiscordDSLBenchmarks DiscordDSLBenchmarks --invocations 1000 --output .build/dsl-measurements/runtime-smoke.json
+      - name: Upload offline DSL smoke measurements
+        uses: actions/upload-artifact@v7
+        with:
+          name: dsl-smoke-${{ matrix.os }}
+          path: .build/dsl-measurements/runtime-smoke.json
+          if-no-files-found: error
+          include-hidden-files: true
       - name: Validate documentation, inventory, generation and parity
         run: |
           swift run --package-path Tools/DiscordKitTools DiscordKitTools documentation audit --repository .

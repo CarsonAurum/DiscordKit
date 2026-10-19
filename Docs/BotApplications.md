@@ -161,7 +161,8 @@ and DocC checks; build/test/run DSLBot offline and affected command/event consum
 Gateway/cache changes retain the existing local cache/broadcast profiles and
 fixed-working-set 30-minute soak requirement. Those measurements cover their named
 harness and do not establish DSL handler capacity. Part 15J's independent extension
-package/consumer checks cover public external adoption. Parts 15K-15L retain
-direct-versus-DSL measurements, DSL-specific soak evidence and final release review.
+package/consumer checks cover public external adoption. Part 15K adds separate
+[direct/DSL handler measurements and soak evidence](DSLBenchmarks.md). Part 15L
+retains final release review; local measurements do not establish capacity.
 Local synthetic peers do not qualify live Discord, other platforms, hardware,
 independent crypto review or production capacity.

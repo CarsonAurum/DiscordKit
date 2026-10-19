@@ -84,8 +84,10 @@ Part 15J adds namespace-qualified structural identities and validated lazy typed
 dependencies over the unchanged runtime graphs. The independent extension package
 uses only public APIs for custom codecs, policies, typed/raw commands and event
 modules; its public library products receive a separate API snapshot and DocC
-conversion. Runtime products do not acquire the package. Parts 15K-15L retain
-measurements and complete release certification.
+conversion. Runtime products do not acquire the package. Part 15K adds an independent
+[benchmark package](DSLBenchmarks.md), compiler-cost scripts and finite machine-specific
+regression budgets. Hard functional checks run independently of timing comparisons.
+Part 15L retains complete release certification.
 The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before

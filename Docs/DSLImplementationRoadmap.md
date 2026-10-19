@@ -14,14 +14,16 @@ event modules over existing bounded subscriptions and per-shard dispatch. **15I*
 an explicit bot application host, shared REST services and a trusted Gateway interaction
 bridge under the existing supervised client lifetime. **15J** adds explicit namespace
 installation, typed dependency validation and independent external extension consumers.
+**15K** adds an independent offline benchmark package, paired direct/DSL handler workloads,
+compiler-cost measurements, finite regression budgets and separate handler/cache soak evidence.
 These statuses do not
 imply that the complete bot authoring experience is available. See
 [shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md),
 [response ownership and HTTP applications](CommandResponses.md),
 [message/component builders](MessageBuilders.md), [command families](CommandFamilies.md),
 [policies and middleware](CommandPolicies.md), [Gateway event modules](GatewayEventModules.md),
-[supervised bot applications](BotApplications.md), [external modules and typed dependencies](ModuleExtensions.md) and
-[architecture](Architecture.md) for the implemented APIs and product boundaries.
+[supervised bot applications](BotApplications.md), [external modules and typed dependencies](ModuleExtensions.md),
+[offline measurements](DSLBenchmarks.md) and [architecture](Architecture.md) for the implemented APIs and product boundaries.
 
 | Milestone | Status | Scope |
 | --- | --- | --- |
@@ -35,7 +37,7 @@ imply that the complete bot authoring experience is available. See
 | 15H | Implemented | Typed selectors/handlers, explicit intent validation, one default subscription and bounded independent groups over existing per-shard dispatch. |
 | 15I | Implemented | Explicit BotApplication host construction, shared typed services, trusted Gateway interaction callbacks over HTTP and supervised client/pipeline lifetime. |
 | 15J | Implemented | Explicit namespaces, validated lazy typed dependencies and independently compiled public extension libraries reused by HTTP/Gateway consumers. |
-| 15K | Planned | Compile-time and direct-versus-DSL runtime measurements, finite budgets and DSL-specific soak evidence. |
+| 15K | Implemented locally | Reproducible direct/DSL handler and manual/macro compiler measurements, finite budgets and separate fixed-working-set handler/cache soak evidence. |
 | 15L | Planned | Complete DSL adoption/migration guides and full Phase 15 release certification. |
 
 15A's immutable descriptions can be inspected and compared offline. The description

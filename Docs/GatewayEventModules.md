@@ -106,6 +106,7 @@ Part 15J adds [independent extension libraries and typed dependency validation](
 including a custom typed selector and reusable event handlers in the separately
 selected `DiscordBotExtensions` product. Namespaces scope structural identity;
 event handler IDs retain their existing global uniqueness and group behavior.
-Parts 15K-15L retain DSL handler measurements, capacity/soak and final release
-certification. Local synthetic tests and the existing
-cache/broadcast soak do not qualify live Discord, other platforms or DSL capacity.
+Part 15K adds [paired direct/DSL command-handler measurements](DSLBenchmarks.md)
+and separate sustained-handler evidence. These do not measure Gateway event-host
+throughput. Part 15L retains final release certification. Local synthetic tests
+and named soak workloads do not qualify live Discord, other platforms or production capacity.

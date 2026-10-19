@@ -168,7 +168,8 @@ concrete adapters; adding an event extension is an explicit broader selection.
 
 These local and offline checks introduce no new Discord wire contract and establish
 no authorized live service, other platform, hardware or production capacity claim.
-Part 15K retains compile/runtime measurements and DSL-specific soak qualification;
-Part 15L retains complete adoption/migration and final release certification. See
+Part 15K adds [local compile/runtime measurements](DSLBenchmarks.md), finite budgets
+and separate handler/cache soak evidence. Part 15L retains complete adoption/migration
+and final release certification. See
 the [implementation roadmap](DSLImplementationRoadmap.md) and
 [dated history](Parity/changes/phase15j-module-extensions.md).

@@ -196,7 +196,15 @@ The separate `Packages/DiscordDSLExtensions` package demonstrates public externa
 adoption through independent HTTP/Gateway consumers. Existing runtime graphs remain
 unchanged; optional Voice/Social/OAuth interfaces are injected application choices.
 Construction and compilation start no tasks, I/O, registration or handler execution.
-See `Docs/ModuleExtensions.md`; Parts 15K-15L retain capacity and final release gates.
+See `Docs/ModuleExtensions.md`; local extension adoption does not qualify production
+capacity or final release certification.
+
+Part 15K adds the independent `Tools/DiscordDSLBenchmarks` package for finite paired
+direct/DSL handler measurements, compiler costs with/without macros and explicit
+regression budgets. Functional gates include cached schemas, bounded state, no implicit
+hydration/registration and zero owned cleanup counters. Existing cache/broadcast and
+new handler soak evidence remain separate. No runtime product selects this tooling;
+local measurements do not establish production or fleet capacity. See `Docs/DSLBenchmarks.md`.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -437,6 +445,15 @@ and zero construction/compilation execution. External compile fixtures must reje
 missing/wrong typed dependencies. Reuse injected aggregate authorities and preserve
 existing command/event route uniqueness and response/lifetime ownership. Local
 extension tests do not qualify capacity, optional service support or live Discord.
+
+For DSL benchmark changes, run the independent `Tools/DiscordDSLBenchmarks` Swift
+and Python tests, release default paired matrix and compiler-cost matrix. Record
+observations before deriving numerical budgets, then validate the complete report
+against those budgets on matching hardware/toolchain/workload. Exercise finite
+payload/concurrency/sample/invocation limits, cached schemas and zero cleanup
+ownership. Preserve the separate cache/broadcast 30-minute soak and new DSL handler
+soak evidence; report actual duration and measurement interference. Never infer
+production/fleet capacity from synthetic declaration counts or local throughput.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

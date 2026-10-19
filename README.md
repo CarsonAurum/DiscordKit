@@ -71,8 +71,10 @@ existing client and bounded pipelines; construction and ordinary execution regis
 nothing. Part 15J adds [external module namespaces and typed dependencies](Docs/ModuleExtensions.md),
 with separately adopted extension libraries and independent HTTP/Gateway consumers.
 Dependency validation precedes lazy body creation; namespaces preserve original
-metadata and wire routes. Capacity qualification and final release review remain later
-[DSL milestones](Docs/DSLImplementationRoadmap.md).
+metadata and wire routes. Part 15K adds [offline DSL measurements](Docs/DSLBenchmarks.md),
+with paired direct/DSL workloads, compiler costs and finite regression budgets.
+Production capacity and final release review remain separate
+[DSL gates](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see

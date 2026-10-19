@@ -431,6 +431,49 @@
           "DiscordKit/DiscordVoiceCrypto"
         ]
       }
+    },
+    "Tools/DiscordDSLBenchmarks": {
+      "forbidden": [
+        "DiscordActivities",
+        "DiscordApplePlatform",
+        "DiscordBotDSL",
+        "DiscordCache",
+        "DiscordCertifiedDevices",
+        "DiscordClient",
+        "DiscordCommerce",
+        "DiscordDAVE",
+        "DiscordFoundationTransport",
+        "DiscordGameServices",
+        "DiscordGateway",
+        "DiscordKit",
+        "DiscordMLS",
+        "DiscordMedia",
+        "DiscordNIOTransport",
+        "DiscordOAuth",
+        "DiscordRPC",
+        "DiscordSocial",
+        "DiscordTestSupport",
+        "DiscordUnixPlatform",
+        "DiscordVoice",
+        "DiscordVoiceCodecs",
+        "DiscordVoiceCrypto"
+      ],
+      "targets": {
+        "DiscordDSLBenchmarks": [
+          "DiscordKit/DiscordCommandDSL",
+          "DiscordKit/DiscordCommands",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordDSL",
+          "DiscordKit/DiscordInteractions",
+          "DiscordKit/DiscordModels"
+        ]
+      },
+      "targetSystemImports": {
+        "DiscordDSLBenchmarks": [
+          "Darwin",
+          "Glibc"
+        ]
+      }
     }
   },
   "directRequirements": {

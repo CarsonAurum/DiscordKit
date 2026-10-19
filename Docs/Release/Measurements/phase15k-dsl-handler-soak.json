@@ -1,0 +1,1396 @@
+{
+  "configuration" : {
+    "concurrency" : 8,
+    "handlerCounts" : [
+      1000
+    ],
+    "invocations" : 1000000,
+    "minimumDurationSeconds" : 60,
+    "payloadBytes" : 64,
+    "sampleLimit" : 10000
+  },
+  "environment" : {
+    "architecture" : "arm64",
+    "compiler" : "swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+    "hardwareModel" : "Mac15,10",
+    "operatingSystem" : "Version 27.0.1 (Build 26A434)",
+    "physicalMemoryBytes" : 38654705664,
+    "processorCount" : 14
+  },
+  "qualification" : [
+    "Local synthetic normalized HTTP contexts; no signature verification, network, Discord, Gateway host or fleet-capacity qualification.",
+    "Each declared handler has one retained schema and one fixed interaction snapshot; each invocation creates a fresh response owner and typed arguments.",
+    "Direct and DSL paths share the real typed decoder, handler, router and response ownership; the direct route is handwritten and the DSL route uses SlashCommand and CommandCompilation.",
+    "Plan compilation includes authoring, schema capture, lowering and router admission; it excludes fixed input parsing, sink creation and consumer compiler time measured by the separate build script. Process snapshots include the fixture population.",
+    "Latency is a bounded prefix of end-to-end route invocations including fresh responder construction and exact initial callback validation; throughput covers every invocation and joined worker round.",
+    "The process runs direct then DSL for each declared count; allocator\/runtime warmup, prior workloads and process peaks can affect later observations. RSS\/malloc gauges are process-wide, not isolated retained-plan sizes or cumulative allocation events.",
+    "Accounted state reports retained input\/author JSON byte counts and configured cardinality caps, not exact heap allocation size. Current RSS and live allocation gauges are best-effort platform observations.",
+    "No REST client, registration reconciler, hydration provider, transport or listener is constructed; only the initial offline callback sink is configured. Implicit REST request counts are structurally zero.",
+    "Duration-floor runs repeat the fixed population up to a hard 100-million invocation ceiling; existing cache\/broadcast soak and handler execution evidence remain separate."
+  ],
+  "schemaVersion" : 1,
+  "workloads" : [
+    {
+      "accountedState" : {
+        "declaredHandlers" : 1000,
+        "fixedInteractionCount" : 1000,
+        "fixedInteractionJSONBytes" : 348676,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 0,
+        "registrationJSONBytes" : 179890,
+        "retainedSchemas" : 1000,
+        "routeMetadataJSONBytes" : 58890
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 145.19263,
+        "liveAllocationBlocks" : 63489,
+        "liveAllocationBytes" : 5890176,
+        "peakRSSBytes" : 32374784,
+        "residentBytes" : 32342016
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 145.190304,
+        "liveAllocationBlocks" : 111858,
+        "liveAllocationBytes" : 14835504,
+        "peakRSSBytes" : 32374784,
+        "residentBytes" : 32342016
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 0.094292,
+        "liveAllocationBlocks" : 53329,
+        "liveAllocationBytes" : 9330976,
+        "peakRSSBytes" : 24281088,
+        "residentBytes" : 24281088
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 0.006159,
+        "liveAllocationBlocks" : 1597,
+        "liveAllocationBytes" : 162208,
+        "peakRSSBytes" : 8765440,
+        "residentBytes" : 8765440
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 3121728,
+        "handlers" : 3121728,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 60.019611333,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 1000,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 3121728,
+      "invocationsPerSecond" : 52011.7996546174,
+      "latency" : {
+        "p50Milliseconds" : 0.159042,
+        "p95Milliseconds" : 0.19875,
+        "p99Milliseconds" : 0.21775,
+        "sampleCount" : 10000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 8192,
+          "elapsedSeconds" : 0.165707,
+          "process" : {
+            "cpuSeconds" : 0.475421,
+            "liveAllocationBlocks" : 83033,
+            "liveAllocationBytes" : 12932560,
+            "peakRSSBytes" : 28983296,
+            "residentBytes" : 28983296
+          }
+        },
+        {
+          "completedInvocations" : 65536,
+          "elapsedSeconds" : 1.246193208,
+          "process" : {
+            "cpuSeconds" : 3.088612,
+            "liveAllocationBlocks" : 104437,
+            "liveAllocationBytes" : 14365456,
+            "peakRSSBytes" : 30982144,
+            "residentBytes" : 30982144
+          }
+        },
+        {
+          "completedInvocations" : 122880,
+          "elapsedSeconds" : 2.339340417,
+          "process" : {
+            "cpuSeconds" : 5.737791,
+            "liveAllocationBlocks" : 104813,
+            "liveAllocationBytes" : 14351872,
+            "peakRSSBytes" : 31080448,
+            "residentBytes" : 31080448
+          }
+        },
+        {
+          "completedInvocations" : 180224,
+          "elapsedSeconds" : 3.434486667,
+          "process" : {
+            "cpuSeconds" : 8.378945,
+            "liveAllocationBlocks" : 108094,
+            "liveAllocationBytes" : 14738240,
+            "peakRSSBytes" : 31342592,
+            "residentBytes" : 31342592
+          }
+        },
+        {
+          "completedInvocations" : 237568,
+          "elapsedSeconds" : 4.5377097079999995,
+          "process" : {
+            "cpuSeconds" : 11.034661,
+            "liveAllocationBlocks" : 111494,
+            "liveAllocationBytes" : 14761600,
+            "peakRSSBytes" : 31801344,
+            "residentBytes" : 31801344
+          }
+        },
+        {
+          "completedInvocations" : 294912,
+          "elapsedSeconds" : 5.600967417,
+          "process" : {
+            "cpuSeconds" : 13.580545,
+            "liveAllocationBlocks" : 115281,
+            "liveAllocationBytes" : 15060800,
+            "peakRSSBytes" : 31981568,
+            "residentBytes" : 31981568
+          }
+        },
+        {
+          "completedInvocations" : 352256,
+          "elapsedSeconds" : 6.677868125,
+          "process" : {
+            "cpuSeconds" : 16.189224,
+            "liveAllocationBlocks" : 115417,
+            "liveAllocationBytes" : 15134032,
+            "peakRSSBytes" : 31981568,
+            "residentBytes" : 31981568
+          }
+        },
+        {
+          "completedInvocations" : 409600,
+          "elapsedSeconds" : 7.758566875,
+          "process" : {
+            "cpuSeconds" : 18.823874,
+            "liveAllocationBlocks" : 114493,
+            "liveAllocationBytes" : 15042496,
+            "peakRSSBytes" : 31981568,
+            "residentBytes" : 31981568
+          }
+        },
+        {
+          "completedInvocations" : 466944,
+          "elapsedSeconds" : 8.837833792,
+          "process" : {
+            "cpuSeconds" : 21.451463,
+            "liveAllocationBlocks" : 115511,
+            "liveAllocationBytes" : 15124432,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31997952
+          }
+        },
+        {
+          "completedInvocations" : 524288,
+          "elapsedSeconds" : 9.916308625,
+          "process" : {
+            "cpuSeconds" : 24.067061,
+            "liveAllocationBlocks" : 114511,
+            "liveAllocationBytes" : 15036832,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31997952
+          }
+        },
+        {
+          "completedInvocations" : 581632,
+          "elapsedSeconds" : 10.989856667,
+          "process" : {
+            "cpuSeconds" : 26.682332,
+            "liveAllocationBlocks" : 114295,
+            "liveAllocationBytes" : 15035088,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31997952
+          }
+        },
+        {
+          "completedInvocations" : 638976,
+          "elapsedSeconds" : 12.05953125,
+          "process" : {
+            "cpuSeconds" : 29.286977,
+            "liveAllocationBlocks" : 114730,
+            "liveAllocationBytes" : 15052336,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31997952
+          }
+        },
+        {
+          "completedInvocations" : 696320,
+          "elapsedSeconds" : 13.136075917,
+          "process" : {
+            "cpuSeconds" : 31.913044,
+            "liveAllocationBlocks" : 111404,
+            "liveAllocationBytes" : 14854128,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 753664,
+          "elapsedSeconds" : 14.216612792,
+          "process" : {
+            "cpuSeconds" : 34.546711,
+            "liveAllocationBlocks" : 109357,
+            "liveAllocationBytes" : 14663072,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 811008,
+          "elapsedSeconds" : 15.320094292,
+          "process" : {
+            "cpuSeconds" : 37.231664,
+            "liveAllocationBlocks" : 110979,
+            "liveAllocationBytes" : 14766560,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 868352,
+          "elapsedSeconds" : 16.439854208,
+          "process" : {
+            "cpuSeconds" : 39.938761,
+            "liveAllocationBlocks" : 110482,
+            "liveAllocationBytes" : 14745664,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 925696,
+          "elapsedSeconds" : 17.548357917,
+          "process" : {
+            "cpuSeconds" : 42.614189,
+            "liveAllocationBlocks" : 109913,
+            "liveAllocationBytes" : 14716320,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 983040,
+          "elapsedSeconds" : 18.658156042,
+          "process" : {
+            "cpuSeconds" : 45.290468,
+            "liveAllocationBlocks" : 110517,
+            "liveAllocationBytes" : 14749040,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 1040960,
+          "elapsedSeconds" : 19.775826083,
+          "process" : {
+            "cpuSeconds" : 47.986843,
+            "liveAllocationBlocks" : 110616,
+            "liveAllocationBytes" : 14737760,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 1098304,
+          "elapsedSeconds" : 20.853524625,
+          "process" : {
+            "cpuSeconds" : 50.591516,
+            "liveAllocationBlocks" : 110111,
+            "liveAllocationBytes" : 14719168,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 1155648,
+          "elapsedSeconds" : 21.969720625,
+          "process" : {
+            "cpuSeconds" : 53.280337,
+            "liveAllocationBlocks" : 110187,
+            "liveAllocationBytes" : 14761920,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31965184
+          }
+        },
+        {
+          "completedInvocations" : 1212992,
+          "elapsedSeconds" : 23.078127458,
+          "process" : {
+            "cpuSeconds" : 55.943127,
+            "liveAllocationBlocks" : 111562,
+            "liveAllocationBytes" : 14779424,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31981568
+          }
+        },
+        {
+          "completedInvocations" : 1270336,
+          "elapsedSeconds" : 24.192404542,
+          "process" : {
+            "cpuSeconds" : 58.611663,
+            "liveAllocationBlocks" : 112434,
+            "liveAllocationBytes" : 14907232,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31981568
+          }
+        },
+        {
+          "completedInvocations" : 1327680,
+          "elapsedSeconds" : 25.311727333,
+          "process" : {
+            "cpuSeconds" : 61.289908,
+            "liveAllocationBlocks" : 111696,
+            "liveAllocationBytes" : 14766496,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31981568
+          }
+        },
+        {
+          "completedInvocations" : 1385024,
+          "elapsedSeconds" : 26.422800125,
+          "process" : {
+            "cpuSeconds" : 63.971318,
+            "liveAllocationBlocks" : 112985,
+            "liveAllocationBytes" : 14834528,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31981568
+          }
+        },
+        {
+          "completedInvocations" : 1442368,
+          "elapsedSeconds" : 27.52620725,
+          "process" : {
+            "cpuSeconds" : 66.617538,
+            "liveAllocationBlocks" : 113980,
+            "liveAllocationBytes" : 14980768,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31997952
+          }
+        },
+        {
+          "completedInvocations" : 1499712,
+          "elapsedSeconds" : 28.626751417,
+          "process" : {
+            "cpuSeconds" : 69.240207,
+            "liveAllocationBlocks" : 113389,
+            "liveAllocationBytes" : 14934672,
+            "peakRSSBytes" : 31997952,
+            "residentBytes" : 31997952
+          }
+        },
+        {
+          "completedInvocations" : 1557056,
+          "elapsedSeconds" : 29.740226208,
+          "process" : {
+            "cpuSeconds" : 71.917657,
+            "liveAllocationBlocks" : 113040,
+            "liveAllocationBytes" : 14908336,
+            "peakRSSBytes" : 32014336,
+            "residentBytes" : 32014336
+          }
+        },
+        {
+          "completedInvocations" : 1614400,
+          "elapsedSeconds" : 30.807808125,
+          "process" : {
+            "cpuSeconds" : 74.492098,
+            "liveAllocationBlocks" : 117635,
+            "liveAllocationBytes" : 15181856,
+            "peakRSSBytes" : 32276480,
+            "residentBytes" : 32276480
+          }
+        },
+        {
+          "completedInvocations" : 1671744,
+          "elapsedSeconds" : 31.9006385,
+          "process" : {
+            "cpuSeconds" : 77.131302,
+            "liveAllocationBlocks" : 118983,
+            "liveAllocationBytes" : 15262544,
+            "peakRSSBytes" : 32342016,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 1729088,
+          "elapsedSeconds" : 32.97434025,
+          "process" : {
+            "cpuSeconds" : 79.725399,
+            "liveAllocationBlocks" : 118613,
+            "liveAllocationBytes" : 15247440,
+            "peakRSSBytes" : 32358400,
+            "residentBytes" : 32358400
+          }
+        },
+        {
+          "completedInvocations" : 1786432,
+          "elapsedSeconds" : 34.047987292,
+          "process" : {
+            "cpuSeconds" : 82.326977,
+            "liveAllocationBlocks" : 118343,
+            "liveAllocationBytes" : 15233568,
+            "peakRSSBytes" : 32358400,
+            "residentBytes" : 32358400
+          }
+        },
+        {
+          "completedInvocations" : 1843776,
+          "elapsedSeconds" : 35.170287125,
+          "process" : {
+            "cpuSeconds" : 85.038241,
+            "liveAllocationBlocks" : 118572,
+            "liveAllocationBytes" : 15282672,
+            "peakRSSBytes" : 32358400,
+            "residentBytes" : 32358400
+          }
+        },
+        {
+          "completedInvocations" : 1901120,
+          "elapsedSeconds" : 36.283862458,
+          "process" : {
+            "cpuSeconds" : 87.743266,
+            "liveAllocationBlocks" : 119140,
+            "liveAllocationBytes" : 15303552,
+            "peakRSSBytes" : 32358400,
+            "residentBytes" : 32358400
+          }
+        },
+        {
+          "completedInvocations" : 1958464,
+          "elapsedSeconds" : 37.414986417,
+          "process" : {
+            "cpuSeconds" : 90.489432,
+            "liveAllocationBlocks" : 113941,
+            "liveAllocationBytes" : 14919120,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 2015808,
+          "elapsedSeconds" : 38.533444625,
+          "process" : {
+            "cpuSeconds" : 93.207461,
+            "liveAllocationBlocks" : 110231,
+            "liveAllocationBytes" : 14747680,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2073152,
+          "elapsedSeconds" : 39.658160875,
+          "process" : {
+            "cpuSeconds" : 95.931119,
+            "liveAllocationBlocks" : 110753,
+            "liveAllocationBytes" : 14782496,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2130496,
+          "elapsedSeconds" : 40.774426542,
+          "process" : {
+            "cpuSeconds" : 98.645634,
+            "liveAllocationBlocks" : 110283,
+            "liveAllocationBytes" : 14727072,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2187840,
+          "elapsedSeconds" : 41.89579875,
+          "process" : {
+            "cpuSeconds" : 101.368216,
+            "liveAllocationBlocks" : 110157,
+            "liveAllocationBytes" : 14707552,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2245184,
+          "elapsedSeconds" : 43.028247958,
+          "process" : {
+            "cpuSeconds" : 104.135926,
+            "liveAllocationBlocks" : 110922,
+            "liveAllocationBytes" : 14807088,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2302528,
+          "elapsedSeconds" : 44.142952042,
+          "process" : {
+            "cpuSeconds" : 106.846572,
+            "liveAllocationBlocks" : 109980,
+            "liveAllocationBytes" : 14698064,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2359872,
+          "elapsedSeconds" : 45.254221625,
+          "process" : {
+            "cpuSeconds" : 109.525344,
+            "liveAllocationBlocks" : 110593,
+            "liveAllocationBytes" : 14731776,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2417216,
+          "elapsedSeconds" : 46.364569125,
+          "process" : {
+            "cpuSeconds" : 112.17679,
+            "liveAllocationBlocks" : 110833,
+            "liveAllocationBytes" : 14747936,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2474560,
+          "elapsedSeconds" : 47.463588667,
+          "process" : {
+            "cpuSeconds" : 114.842108,
+            "liveAllocationBlocks" : 110222,
+            "liveAllocationBytes" : 14699408,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2531904,
+          "elapsedSeconds" : 48.595335083,
+          "process" : {
+            "cpuSeconds" : 117.580727,
+            "liveAllocationBlocks" : 110108,
+            "liveAllocationBytes" : 14698960,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2589248,
+          "elapsedSeconds" : 49.705070208,
+          "process" : {
+            "cpuSeconds" : 120.24684,
+            "liveAllocationBlocks" : 111490,
+            "liveAllocationBytes" : 14807664,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2646592,
+          "elapsedSeconds" : 50.810767542,
+          "process" : {
+            "cpuSeconds" : 122.943765,
+            "liveAllocationBlocks" : 112134,
+            "liveAllocationBytes" : 14862768,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32325632
+          }
+        },
+        {
+          "completedInvocations" : 2703936,
+          "elapsedSeconds" : 51.91717625,
+          "process" : {
+            "cpuSeconds" : 125.604517,
+            "liveAllocationBlocks" : 112423,
+            "liveAllocationBytes" : 14886128,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 2761280,
+          "elapsedSeconds" : 53.024873958,
+          "process" : {
+            "cpuSeconds" : 128.267432,
+            "liveAllocationBlocks" : 111581,
+            "liveAllocationBytes" : 14788928,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 2818624,
+          "elapsedSeconds" : 54.143612958,
+          "process" : {
+            "cpuSeconds" : 130.962451,
+            "liveAllocationBlocks" : 112513,
+            "liveAllocationBytes" : 14838176,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 2875968,
+          "elapsedSeconds" : 55.253881875,
+          "process" : {
+            "cpuSeconds" : 133.63535,
+            "liveAllocationBlocks" : 111106,
+            "liveAllocationBytes" : 14805680,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 2933312,
+          "elapsedSeconds" : 56.375909083,
+          "process" : {
+            "cpuSeconds" : 136.350326,
+            "liveAllocationBlocks" : 111400,
+            "liveAllocationBytes" : 14799824,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 2990656,
+          "elapsedSeconds" : 57.479935583,
+          "process" : {
+            "cpuSeconds" : 139.026456,
+            "liveAllocationBlocks" : 111942,
+            "liveAllocationBytes" : 14822272,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 3048000,
+          "elapsedSeconds" : 58.598857375,
+          "process" : {
+            "cpuSeconds" : 141.736436,
+            "liveAllocationBlocks" : 111242,
+            "liveAllocationBytes" : 14797696,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        },
+        {
+          "completedInvocations" : 3105344,
+          "elapsedSeconds" : 59.706453125,
+          "process" : {
+            "cpuSeconds" : 144.426632,
+            "liveAllocationBlocks" : 112715,
+            "liveAllocationBytes" : 14903408,
+            "peakRSSBytes" : 32374784,
+            "residentBytes" : 32342016
+          }
+        }
+      ],
+      "mode" : "direct",
+      "planCompilationMilliseconds" : 36.374916999999996,
+      "schemaBuilds" : 1000,
+      "schemasAfterInvocations" : 1000
+    },
+    {
+      "accountedState" : {
+        "declaredHandlers" : 1000,
+        "fixedInteractionCount" : 1000,
+        "fixedInteractionJSONBytes" : 348676,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 652832,
+        "registrationJSONBytes" : 179890,
+        "retainedSchemas" : 1000,
+        "routeMetadataJSONBytes" : 58890
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 289.642645,
+        "liveAllocationBlocks" : 62560,
+        "liveAllocationBytes" : 5784608,
+        "peakRSSBytes" : 36012032,
+        "residentBytes" : 36012032
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 289.638789,
+        "liveAllocationBlocks" : 111564,
+        "liveAllocationBytes" : 14893584,
+        "peakRSSBytes" : 35782656,
+        "residentBytes" : 35782656
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 145.337595,
+        "liveAllocationBlocks" : 86967,
+        "liveAllocationBytes" : 11553936,
+        "peakRSSBytes" : 35454976,
+        "residentBytes" : 35454976
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 145.192761,
+        "liveAllocationBlocks" : 63488,
+        "liveAllocationBytes" : 5809024,
+        "peakRSSBytes" : 32374784,
+        "residentBytes" : 32342016
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 3113536,
+        "handlers" : 3113536,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 60.014009291,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 1000,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 3113536,
+      "invocationsPerSecond" : 51880.15326393001,
+      "latency" : {
+        "p50Milliseconds" : 0.16070900000000002,
+        "p95Milliseconds" : 0.196,
+        "p99Milliseconds" : 0.21141700000000002,
+        "sampleCount" : 10000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 8192,
+          "elapsedSeconds" : 0.165630625,
+          "process" : {
+            "cpuSeconds" : 145.707605,
+            "liveAllocationBlocks" : 110738,
+            "liveAllocationBytes" : 14746736,
+            "peakRSSBytes" : 35553280,
+            "residentBytes" : 35553280
+          }
+        },
+        {
+          "completedInvocations" : 65536,
+          "elapsedSeconds" : 1.307504958,
+          "process" : {
+            "cpuSeconds" : 148.425907,
+            "liveAllocationBlocks" : 113896,
+            "liveAllocationBytes" : 14953328,
+            "peakRSSBytes" : 35569664,
+            "residentBytes" : 35569664
+          }
+        },
+        {
+          "completedInvocations" : 122880,
+          "elapsedSeconds" : 2.442584791,
+          "process" : {
+            "cpuSeconds" : 151.132919,
+            "liveAllocationBlocks" : 114329,
+            "liveAllocationBytes" : 15008944,
+            "peakRSSBytes" : 35569664,
+            "residentBytes" : 35569664
+          }
+        },
+        {
+          "completedInvocations" : 180224,
+          "elapsedSeconds" : 3.57885725,
+          "process" : {
+            "cpuSeconds" : 153.857911,
+            "liveAllocationBlocks" : 115774,
+            "liveAllocationBytes" : 15142064,
+            "peakRSSBytes" : 35586048,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 237568,
+          "elapsedSeconds" : 4.695287958,
+          "process" : {
+            "cpuSeconds" : 156.517646,
+            "liveAllocationBlocks" : 115891,
+            "liveAllocationBytes" : 15187904,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35602432
+          }
+        },
+        {
+          "completedInvocations" : 294912,
+          "elapsedSeconds" : 5.818392791,
+          "process" : {
+            "cpuSeconds" : 159.204944,
+            "liveAllocationBlocks" : 111303,
+            "liveAllocationBytes" : 14846016,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35569664
+          }
+        },
+        {
+          "completedInvocations" : 352256,
+          "elapsedSeconds" : 6.940525625,
+          "process" : {
+            "cpuSeconds" : 161.882267,
+            "liveAllocationBlocks" : 111395,
+            "liveAllocationBytes" : 14788784,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35569664
+          }
+        },
+        {
+          "completedInvocations" : 409600,
+          "elapsedSeconds" : 8.072761083,
+          "process" : {
+            "cpuSeconds" : 164.570802,
+            "liveAllocationBlocks" : 111690,
+            "liveAllocationBytes" : 14883568,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35569664
+          }
+        },
+        {
+          "completedInvocations" : 466944,
+          "elapsedSeconds" : 9.206382708,
+          "process" : {
+            "cpuSeconds" : 167.28578,
+            "liveAllocationBlocks" : 111049,
+            "liveAllocationBytes" : 14806640,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35569664
+          }
+        },
+        {
+          "completedInvocations" : 524288,
+          "elapsedSeconds" : 10.330292958,
+          "process" : {
+            "cpuSeconds" : 169.966304,
+            "liveAllocationBlocks" : 112786,
+            "liveAllocationBytes" : 14913696,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 581632,
+          "elapsedSeconds" : 11.4418775,
+          "process" : {
+            "cpuSeconds" : 172.61653,
+            "liveAllocationBlocks" : 110730,
+            "liveAllocationBytes" : 14834048,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 638976,
+          "elapsedSeconds" : 12.569219166,
+          "process" : {
+            "cpuSeconds" : 175.298794,
+            "liveAllocationBlocks" : 112333,
+            "liveAllocationBytes" : 14924288,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 696320,
+          "elapsedSeconds" : 13.718800083,
+          "process" : {
+            "cpuSeconds" : 178.028384,
+            "liveAllocationBlocks" : 111288,
+            "liveAllocationBytes" : 14797392,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 753664,
+          "elapsedSeconds" : 14.858712333,
+          "process" : {
+            "cpuSeconds" : 180.717331,
+            "liveAllocationBlocks" : 111053,
+            "liveAllocationBytes" : 14811056,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 811008,
+          "elapsedSeconds" : 16.002219666,
+          "process" : {
+            "cpuSeconds" : 183.430541,
+            "liveAllocationBlocks" : 110360,
+            "liveAllocationBytes" : 14763696,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 868352,
+          "elapsedSeconds" : 17.145262125,
+          "process" : {
+            "cpuSeconds" : 186.166396,
+            "liveAllocationBlocks" : 111660,
+            "liveAllocationBytes" : 14856192,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 925696,
+          "elapsedSeconds" : 18.284104,
+          "process" : {
+            "cpuSeconds" : 188.867718,
+            "liveAllocationBlocks" : 110836,
+            "liveAllocationBytes" : 14792608,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 983040,
+          "elapsedSeconds" : 19.418206,
+          "process" : {
+            "cpuSeconds" : 191.556033,
+            "liveAllocationBlocks" : 111908,
+            "liveAllocationBytes" : 14872848,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 1040960,
+          "elapsedSeconds" : 20.566787833,
+          "process" : {
+            "cpuSeconds" : 194.287232,
+            "liveAllocationBlocks" : 111187,
+            "liveAllocationBytes" : 14824016,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35586048
+          }
+        },
+        {
+          "completedInvocations" : 1098304,
+          "elapsedSeconds" : 21.699109375,
+          "process" : {
+            "cpuSeconds" : 196.995044,
+            "liveAllocationBlocks" : 112718,
+            "liveAllocationBytes" : 14944576,
+            "peakRSSBytes" : 35602432,
+            "residentBytes" : 35602432
+          }
+        },
+        {
+          "completedInvocations" : 1155648,
+          "elapsedSeconds" : 22.780331166,
+          "process" : {
+            "cpuSeconds" : 199.63839,
+            "liveAllocationBlocks" : 113776,
+            "liveAllocationBytes" : 15136528,
+            "peakRSSBytes" : 35618816,
+            "residentBytes" : 35618816
+          }
+        },
+        {
+          "completedInvocations" : 1212992,
+          "elapsedSeconds" : 23.791849291,
+          "process" : {
+            "cpuSeconds" : 202.056073,
+            "liveAllocationBlocks" : 112831,
+            "liveAllocationBytes" : 15014688,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1270336,
+          "elapsedSeconds" : 24.876639083,
+          "process" : {
+            "cpuSeconds" : 204.637085,
+            "liveAllocationBlocks" : 112766,
+            "liveAllocationBytes" : 14976960,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1327680,
+          "elapsedSeconds" : 25.969698625,
+          "process" : {
+            "cpuSeconds" : 207.290506,
+            "liveAllocationBlocks" : 111682,
+            "liveAllocationBytes" : 14915184,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1385024,
+          "elapsedSeconds" : 27.065611333,
+          "process" : {
+            "cpuSeconds" : 209.951429,
+            "liveAllocationBlocks" : 112298,
+            "liveAllocationBytes" : 14959104,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1442368,
+          "elapsedSeconds" : 28.15784975,
+          "process" : {
+            "cpuSeconds" : 212.591627,
+            "liveAllocationBlocks" : 111812,
+            "liveAllocationBytes" : 14918416,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1499712,
+          "elapsedSeconds" : 29.247374,
+          "process" : {
+            "cpuSeconds" : 215.227384,
+            "liveAllocationBlocks" : 111254,
+            "liveAllocationBytes" : 14900400,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1557056,
+          "elapsedSeconds" : 30.341717041,
+          "process" : {
+            "cpuSeconds" : 217.876144,
+            "liveAllocationBlocks" : 111101,
+            "liveAllocationBytes" : 14868288,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1614400,
+          "elapsedSeconds" : 31.440432375,
+          "process" : {
+            "cpuSeconds" : 220.548689,
+            "liveAllocationBlocks" : 111893,
+            "liveAllocationBytes" : 14906640,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1671744,
+          "elapsedSeconds" : 32.542243791,
+          "process" : {
+            "cpuSeconds" : 223.219869,
+            "liveAllocationBlocks" : 111938,
+            "liveAllocationBytes" : 14943888,
+            "peakRSSBytes" : 35667968,
+            "residentBytes" : 35667968
+          }
+        },
+        {
+          "completedInvocations" : 1729088,
+          "elapsedSeconds" : 33.633951333,
+          "process" : {
+            "cpuSeconds" : 225.850159,
+            "liveAllocationBlocks" : 114074,
+            "liveAllocationBytes" : 15094416,
+            "peakRSSBytes" : 35684352,
+            "residentBytes" : 35684352
+          }
+        },
+        {
+          "completedInvocations" : 1786432,
+          "elapsedSeconds" : 34.728666875,
+          "process" : {
+            "cpuSeconds" : 228.491944,
+            "liveAllocationBlocks" : 112442,
+            "liveAllocationBytes" : 14932080,
+            "peakRSSBytes" : 35717120,
+            "residentBytes" : 35717120
+          }
+        },
+        {
+          "completedInvocations" : 1843776,
+          "elapsedSeconds" : 35.830329875,
+          "process" : {
+            "cpuSeconds" : 231.175922,
+            "liveAllocationBlocks" : 112401,
+            "liveAllocationBytes" : 14938432,
+            "peakRSSBytes" : 35717120,
+            "residentBytes" : 35717120
+          }
+        },
+        {
+          "completedInvocations" : 1901120,
+          "elapsedSeconds" : 36.926145416,
+          "process" : {
+            "cpuSeconds" : 233.839037,
+            "liveAllocationBlocks" : 112497,
+            "liveAllocationBytes" : 14973712,
+            "peakRSSBytes" : 35717120,
+            "residentBytes" : 35717120
+          }
+        },
+        {
+          "completedInvocations" : 1958464,
+          "elapsedSeconds" : 38.019389625,
+          "process" : {
+            "cpuSeconds" : 236.479682,
+            "liveAllocationBlocks" : 113414,
+            "liveAllocationBytes" : 15039840,
+            "peakRSSBytes" : 35717120,
+            "residentBytes" : 35717120
+          }
+        },
+        {
+          "completedInvocations" : 2015808,
+          "elapsedSeconds" : 39.105515,
+          "process" : {
+            "cpuSeconds" : 239.120865,
+            "liveAllocationBlocks" : 112058,
+            "liveAllocationBytes" : 14939376,
+            "peakRSSBytes" : 35717120,
+            "residentBytes" : 35717120
+          }
+        },
+        {
+          "completedInvocations" : 2073152,
+          "elapsedSeconds" : 40.198257166,
+          "process" : {
+            "cpuSeconds" : 241.73907,
+            "liveAllocationBlocks" : 113387,
+            "liveAllocationBytes" : 15016928,
+            "peakRSSBytes" : 35733504,
+            "residentBytes" : 35733504
+          }
+        },
+        {
+          "completedInvocations" : 2130496,
+          "elapsedSeconds" : 41.284940833,
+          "process" : {
+            "cpuSeconds" : 244.375673,
+            "liveAllocationBlocks" : 113266,
+            "liveAllocationBytes" : 15004880,
+            "peakRSSBytes" : 35749888,
+            "residentBytes" : 35749888
+          }
+        },
+        {
+          "completedInvocations" : 2187840,
+          "elapsedSeconds" : 42.371760041,
+          "process" : {
+            "cpuSeconds" : 247.001105,
+            "liveAllocationBlocks" : 114571,
+            "liveAllocationBytes" : 15094272,
+            "peakRSSBytes" : 35749888,
+            "residentBytes" : 35749888
+          }
+        },
+        {
+          "completedInvocations" : 2245184,
+          "elapsedSeconds" : 43.462971041,
+          "process" : {
+            "cpuSeconds" : 249.632864,
+            "liveAllocationBlocks" : 113775,
+            "liveAllocationBytes" : 15080848,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2302528,
+          "elapsedSeconds" : 44.562640125,
+          "process" : {
+            "cpuSeconds" : 252.297396,
+            "liveAllocationBlocks" : 113396,
+            "liveAllocationBytes" : 15012592,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2359872,
+          "elapsedSeconds" : 45.655139708,
+          "process" : {
+            "cpuSeconds" : 254.948868,
+            "liveAllocationBlocks" : 113956,
+            "liveAllocationBytes" : 15058784,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2417216,
+          "elapsedSeconds" : 46.743677665999996,
+          "process" : {
+            "cpuSeconds" : 257.586202,
+            "liveAllocationBlocks" : 112802,
+            "liveAllocationBytes" : 15003056,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2474560,
+          "elapsedSeconds" : 47.831897583,
+          "process" : {
+            "cpuSeconds" : 260.21662,
+            "liveAllocationBlocks" : 113514,
+            "liveAllocationBytes" : 15012048,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2531904,
+          "elapsedSeconds" : 48.927035291,
+          "process" : {
+            "cpuSeconds" : 262.876911,
+            "liveAllocationBlocks" : 111551,
+            "liveAllocationBytes" : 14843472,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2589248,
+          "elapsedSeconds" : 50.0231225,
+          "process" : {
+            "cpuSeconds" : 265.534364,
+            "liveAllocationBlocks" : 112581,
+            "liveAllocationBytes" : 14974032,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2646592,
+          "elapsedSeconds" : 51.111559625,
+          "process" : {
+            "cpuSeconds" : 268.176678,
+            "liveAllocationBlocks" : 112269,
+            "liveAllocationBytes" : 14958656,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2703936,
+          "elapsedSeconds" : 52.195253375,
+          "process" : {
+            "cpuSeconds" : 270.803166,
+            "liveAllocationBlocks" : 112283,
+            "liveAllocationBytes" : 14965376,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2761280,
+          "elapsedSeconds" : 53.290116916,
+          "process" : {
+            "cpuSeconds" : 273.452049,
+            "liveAllocationBlocks" : 112789,
+            "liveAllocationBytes" : 14934128,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2818624,
+          "elapsedSeconds" : 54.385744458,
+          "process" : {
+            "cpuSeconds" : 276.059324,
+            "liveAllocationBlocks" : 112411,
+            "liveAllocationBytes" : 14953792,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2875968,
+          "elapsedSeconds" : 55.477819625,
+          "process" : {
+            "cpuSeconds" : 278.709816,
+            "liveAllocationBlocks" : 112758,
+            "liveAllocationBytes" : 14950208,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2933312,
+          "elapsedSeconds" : 56.580600165999996,
+          "process" : {
+            "cpuSeconds" : 281.354696,
+            "liveAllocationBlocks" : 111686,
+            "liveAllocationBytes" : 14909520,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 2990656,
+          "elapsedSeconds" : 57.666977625,
+          "process" : {
+            "cpuSeconds" : 283.96733,
+            "liveAllocationBlocks" : 112714,
+            "liveAllocationBytes" : 14972624,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 3048000,
+          "elapsedSeconds" : 58.764713916,
+          "process" : {
+            "cpuSeconds" : 286.613112,
+            "liveAllocationBlocks" : 112773,
+            "liveAllocationBytes" : 14998176,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        },
+        {
+          "completedInvocations" : 3105344,
+          "elapsedSeconds" : 59.857047333,
+          "process" : {
+            "cpuSeconds" : 289.258948,
+            "liveAllocationBlocks" : 111576,
+            "liveAllocationBytes" : 14899072,
+            "peakRSSBytes" : 35782656,
+            "residentBytes" : 35782656
+          }
+        }
+      ],
+      "mode" : "dsl",
+      "planCompilationMilliseconds" : 85.67524999999999,
+      "schemaBuilds" : 1000,
+      "schemasAfterInvocations" : 1000
+    }
+  ]
+}

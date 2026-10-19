@@ -18,9 +18,10 @@ product, with explicit command authorization/admission adapters. Part 15H adds
 `DiscordBotDSL`. Part 15I adds [supervised bot applications](BotApplications.md)
 through that product, without changing the shared DSL's Core/Models-only graph.
 Part 15J adds [external module installation and typed dependencies](ModuleExtensions.md),
-with separate downstream extension libraries and consumer adoption. Capacity and
-full release review remain later
-[implementation milestones](DSLImplementationRoadmap.md).
+with separate downstream extension libraries and consumer adoption. Part 15K adds
+[offline direct/DSL measurements](DSLBenchmarks.md) and finite regression budgets.
+Production capacity and full release review remain separate
+[implementation gates](DSLImplementationRoadmap.md).
 An application can use the raw contribution API now to validate its own finite
 metadata catalog, without pretending that a custom kind implements a Discord API.
 

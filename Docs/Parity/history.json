@@ -1663,6 +1663,43 @@
       ],
       "details": "changes/phase15j-module-extensions.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-part-15k-dsl-measurements",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "unpublished 0.15.0 candidate",
+      "localCommit": "unknown",
+      "changeType": "local_qualification",
+      "previousBehavior": "Parts 15A-15J have local structural, command/event, supervised host and external extension evidence. Existing cache/broadcast measurements do not execute DSL handlers.",
+      "currentBehavior": "Independent offline direct/DSL handler workloads, manual/macro compiler costs, finite regression budgets and separate handler/cache soak artifacts qualify only their named local workloads. Runtime APIs and wire classifications are unchanged.",
+      "affectedSymbols": [
+        "RuntimeBenchmark",
+        "BenchmarkConfiguration",
+        "CommandRouter",
+        "CommandCompilation"
+      ],
+      "affectedPayloads": "Synthetic existing normalized command interactions and initial message callbacks only; no new wire fields or protocol support.",
+      "breakingChanges": [],
+      "migration": "No runtime migration. Select the development benchmark package explicitly. Re-record baseline observations and review budgets when the hardware, compiler or workload identity changes.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/events/gateway-events#interaction-create"
+      ],
+      "details": "changes/phase15k-dsl-measurements.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

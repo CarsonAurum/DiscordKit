@@ -42,8 +42,11 @@ modules through their explicitly selected products; shared actor state, custom
 codecs/policies and raw command adoption execute only in their offline modes.
 Graph auditing includes the separate package's exact imports and product selections;
 its public API and DocC are collected independently from runtime and macro APIs.
-Parts 15K-15L retain measured DSL capacity and final release certification. Workflow
-definitions do not establish a passed platform run.
+Part 15K adds independent benchmark Swift/Python tests and a small paired offline
+runtime smoke matrix. Full runtime/compiler measurements are explicit local qualification
+commands; compare numerical budgets only on matching hardware, toolchain and workload.
+Part 15L retains final release certification. Workflow definitions do not establish a
+passed platform run or production capacity.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to
 arm64 macOS 13 module availability. If a runner architecture or platform scope

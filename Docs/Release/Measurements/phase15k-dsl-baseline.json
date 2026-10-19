@@ -1,0 +1,1217 @@
+{
+  "schemaVersion": 1,
+  "reportKind": "dsl-local-baseline",
+  "identities": {
+    "compile": {
+      "environment": {
+        "compiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+        "operatingSystem": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+        "architecture": "arm64",
+        "processorCount": 14,
+        "hardwareModel": "Mac15,10",
+        "physicalMemoryBytes": 38654705664
+      },
+      "configuration": {
+        "handlerCounts": [
+          10,
+          100,
+          1000
+        ],
+        "modes": [
+          "manual",
+          "macro"
+        ],
+        "jobs": 4,
+        "samples": 1,
+        "configuration": "debug",
+        "buildSystem": "native",
+        "handlersPerFile": 10,
+        "optionsPerHandler": 1,
+        "incrementalEdit": "one response literal in the first ten-handler file",
+        "dependencyColdBuildIncluded": false
+      },
+      "fixtureHash": "d9b5e0e055bf1b3287fc957b61fb7d8ec9cf9755a5c493b52e4a7d015f18dabc",
+      "resolutionHash": "a799e14df791b1f57f392454f78e83ebc2e77eaecee9cbed920500d6ca5e58a8"
+    },
+    "runtime": {
+      "environment": {
+        "compiler": "swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+        "operatingSystem": "Version 27.0.1 (Build 26A434)",
+        "architecture": "arm64",
+        "processorCount": 14,
+        "hardwareModel": "Mac15,10",
+        "physicalMemoryBytes": 38654705664
+      },
+      "configuration": {
+        "concurrency": 8,
+        "handlerCounts": [
+          10,
+          100,
+          1000
+        ],
+        "invocations": 1000000,
+        "minimumDurationSeconds": 0,
+        "payloadBytes": 64,
+        "sampleLimit": 10000
+      }
+    }
+  },
+  "measurements": {
+    "compile.manual.10.0.clean.wallSeconds": {
+      "value": 4.03429545898689,
+      "direction": "maximum"
+    },
+    "compile.manual.10.0.clean.peakRSSBytes": {
+      "value": 215957504,
+      "direction": "maximum"
+    },
+    "compile.manual.10.0.incremental.wallSeconds": {
+      "value": 4.107086334028281,
+      "direction": "maximum"
+    },
+    "compile.manual.10.0.incremental.peakRSSBytes": {
+      "value": 216285184,
+      "direction": "maximum"
+    },
+    "compile.manual.10.0.binaryBytes": {
+      "value": 16829888,
+      "direction": "maximum"
+    },
+    "compile.macro.10.0.clean.wallSeconds": {
+      "value": 4.269373707997147,
+      "direction": "maximum"
+    },
+    "compile.macro.10.0.clean.peakRSSBytes": {
+      "value": 215859200,
+      "direction": "maximum"
+    },
+    "compile.macro.10.0.incremental.wallSeconds": {
+      "value": 4.261327999993227,
+      "direction": "maximum"
+    },
+    "compile.macro.10.0.incremental.peakRSSBytes": {
+      "value": 215646208,
+      "direction": "maximum"
+    },
+    "compile.macro.10.0.binaryBytes": {
+      "value": 16836096,
+      "direction": "maximum"
+    },
+    "compile.manual.100.0.clean.wallSeconds": {
+      "value": 4.61880708404351,
+      "direction": "maximum"
+    },
+    "compile.manual.100.0.clean.peakRSSBytes": {
+      "value": 221396992,
+      "direction": "maximum"
+    },
+    "compile.manual.100.0.incremental.wallSeconds": {
+      "value": 4.525581667025108,
+      "direction": "maximum"
+    },
+    "compile.manual.100.0.incremental.peakRSSBytes": {
+      "value": 221544448,
+      "direction": "maximum"
+    },
+    "compile.manual.100.0.binaryBytes": {
+      "value": 17379776,
+      "direction": "maximum"
+    },
+    "compile.macro.100.0.clean.wallSeconds": {
+      "value": 4.602968791965395,
+      "direction": "maximum"
+    },
+    "compile.macro.100.0.clean.peakRSSBytes": {
+      "value": 221872128,
+      "direction": "maximum"
+    },
+    "compile.macro.100.0.incremental.wallSeconds": {
+      "value": 4.303930082998704,
+      "direction": "maximum"
+    },
+    "compile.macro.100.0.incremental.peakRSSBytes": {
+      "value": 222724096,
+      "direction": "maximum"
+    },
+    "compile.macro.100.0.binaryBytes": {
+      "value": 17513072,
+      "direction": "maximum"
+    },
+    "compile.manual.1000.0.clean.wallSeconds": {
+      "value": 6.3562778329942375,
+      "direction": "maximum"
+    },
+    "compile.manual.1000.0.clean.peakRSSBytes": {
+      "value": 253034496,
+      "direction": "maximum"
+    },
+    "compile.manual.1000.0.incremental.wallSeconds": {
+      "value": 4.684098083002027,
+      "direction": "maximum"
+    },
+    "compile.manual.1000.0.incremental.peakRSSBytes": {
+      "value": 253018112,
+      "direction": "maximum"
+    },
+    "compile.manual.1000.0.binaryBytes": {
+      "value": 23086608,
+      "direction": "maximum"
+    },
+    "compile.macro.1000.0.clean.wallSeconds": {
+      "value": 8.01528941700235,
+      "direction": "maximum"
+    },
+    "compile.macro.1000.0.clean.peakRSSBytes": {
+      "value": 299614208,
+      "direction": "maximum"
+    },
+    "compile.macro.1000.0.incremental.wallSeconds": {
+      "value": 6.087919332960155,
+      "direction": "maximum"
+    },
+    "compile.macro.1000.0.incremental.peakRSSBytes": {
+      "value": 301875200,
+      "direction": "maximum"
+    },
+    "compile.macro.1000.0.binaryBytes": {
+      "value": 24175296,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.planCompilationMilliseconds": {
+      "value": 1.375167,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.durationSeconds": {
+      "value": 16.688952334,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.invocationsPerSecond": {
+      "value": 59919.878730956894,
+      "direction": "minimum"
+    },
+    "runtime.direct.10.latency.p50Milliseconds": {
+      "value": 0.14666700000000002,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.latency.p95Milliseconds": {
+      "value": 0.19037500000000002,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.latency.p99Milliseconds": {
+      "value": 0.209542,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.beforePlan.cpuSeconds": {
+      "value": 0.00689,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.beforePlan.peakRSSBytes": {
+      "value": 8798208,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.beforePlan.residentBytes": {
+      "value": 8798208,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.beforePlan.liveAllocationBlocks": {
+      "value": 1580,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.beforePlan.liveAllocationBytes": {
+      "value": 160128,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterPlan.cpuSeconds": {
+      "value": 0.009259,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterPlan.peakRSSBytes": {
+      "value": 11288576,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterPlan.residentBytes": {
+      "value": 11288576,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterPlan.liveAllocationBlocks": {
+      "value": 2215,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterPlan.liveAllocationBytes": {
+      "value": 285472,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterInvocations.cpuSeconds": {
+      "value": 43.169776,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterInvocations.peakRSSBytes": {
+      "value": 19152896,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterInvocations.residentBytes": {
+      "value": 19152896,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterInvocations.liveAllocationBlocks": {
+      "value": 64441,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterInvocations.liveAllocationBytes": {
+      "value": 6120704,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterCleanup.cpuSeconds": {
+      "value": 43.170666,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterCleanup.peakRSSBytes": {
+      "value": 19316736,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterCleanup.residentBytes": {
+      "value": 19316736,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterCleanup.liveAllocationBlocks": {
+      "value": 63934,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.afterCleanup.liveAllocationBytes": {
+      "value": 6006160,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.memoryMaximum.cpuSeconds": {
+      "value": 42.801971,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.memoryMaximum.peakRSSBytes": {
+      "value": 19152896,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.memoryMaximum.residentBytes": {
+      "value": 19152896,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.memoryMaximum.liveAllocationBlocks": {
+      "value": 64483,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.memoryMaximum.liveAllocationBytes": {
+      "value": 6133664,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.declaredHandlers": {
+      "value": 10,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.fixedInteractionCount": {
+      "value": 10,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.fixedInteractionJSONBytes": {
+      "value": 3432,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.maximumActualInvocations": {
+      "value": 100000000,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.maximumLatencySamples": {
+      "value": 10000,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.maximumMemorySamples": {
+      "value": 121,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.maximumPayloadBytes": {
+      "value": 64,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.maximumWorkers": {
+      "value": 8,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.planDescriptionTextBytes": {
+      "value": 0,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.registrationJSONBytes": {
+      "value": 1780,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.retainedSchemas": {
+      "value": 10,
+      "direction": "maximum"
+    },
+    "runtime.direct.10.accountedState.routeMetadataJSONBytes": {
+      "value": 570,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.planCompilationMilliseconds": {
+      "value": 1.1183750000000001,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.durationSeconds": {
+      "value": 16.980673209,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.invocationsPerSecond": {
+      "value": 58890.48023549418,
+      "direction": "minimum"
+    },
+    "runtime.dsl.10.latency.p50Milliseconds": {
+      "value": 0.13245800000000002,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.latency.p95Milliseconds": {
+      "value": 0.169459,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.latency.p99Milliseconds": {
+      "value": 0.18525,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.beforePlan.cpuSeconds": {
+      "value": 43.170787,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.beforePlan.peakRSSBytes": {
+      "value": 19316736,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.beforePlan.residentBytes": {
+      "value": 19316736,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.beforePlan.liveAllocationBlocks": {
+      "value": 63934,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.beforePlan.liveAllocationBytes": {
+      "value": 5924880,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterPlan.cpuSeconds": {
+      "value": 43.172604,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterPlan.peakRSSBytes": {
+      "value": 19595264,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterPlan.residentBytes": {
+      "value": 19595264,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterPlan.liveAllocationBlocks": {
+      "value": 64454,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterPlan.liveAllocationBytes": {
+      "value": 6040832,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterInvocations.cpuSeconds": {
+      "value": 86.68498,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterInvocations.peakRSSBytes": {
+      "value": 20316160,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterInvocations.residentBytes": {
+      "value": 20267008,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterInvocations.liveAllocationBlocks": {
+      "value": 62879,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterInvocations.liveAllocationBytes": {
+      "value": 5932160,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterCleanup.cpuSeconds": {
+      "value": 86.685865,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterCleanup.peakRSSBytes": {
+      "value": 20348928,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterCleanup.residentBytes": {
+      "value": 20348928,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterCleanup.liveAllocationBlocks": {
+      "value": 62362,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.afterCleanup.liveAllocationBytes": {
+      "value": 5816336,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.memoryMaximum.cpuSeconds": {
+      "value": 86.298443,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.memoryMaximum.peakRSSBytes": {
+      "value": 20316160,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.memoryMaximum.residentBytes": {
+      "value": 20316160,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.memoryMaximum.liveAllocationBlocks": {
+      "value": 72154,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.memoryMaximum.liveAllocationBytes": {
+      "value": 6562624,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.declaredHandlers": {
+      "value": 10,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.fixedInteractionCount": {
+      "value": 10,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.fixedInteractionJSONBytes": {
+      "value": 3432,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.maximumActualInvocations": {
+      "value": 100000000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.maximumLatencySamples": {
+      "value": 10000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.maximumMemorySamples": {
+      "value": 121,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.maximumPayloadBytes": {
+      "value": 64,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.maximumWorkers": {
+      "value": 8,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.planDescriptionTextBytes": {
+      "value": 6542,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.registrationJSONBytes": {
+      "value": 1780,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.retainedSchemas": {
+      "value": 10,
+      "direction": "maximum"
+    },
+    "runtime.dsl.10.accountedState.routeMetadataJSONBytes": {
+      "value": 570,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.planCompilationMilliseconds": {
+      "value": 4.023834,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.durationSeconds": {
+      "value": 17.859921292,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.invocationsPerSecond": {
+      "value": 55991.28818377998,
+      "direction": "minimum"
+    },
+    "runtime.direct.100.latency.p50Milliseconds": {
+      "value": 0.14175000000000001,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.latency.p95Milliseconds": {
+      "value": 0.181666,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.latency.p99Milliseconds": {
+      "value": 0.204833,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.beforePlan.cpuSeconds": {
+      "value": 86.685974,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.beforePlan.peakRSSBytes": {
+      "value": 20348928,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.beforePlan.residentBytes": {
+      "value": 20348928,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.beforePlan.liveAllocationBlocks": {
+      "value": 62361,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.beforePlan.liveAllocationBytes": {
+      "value": 5735056,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterPlan.cpuSeconds": {
+      "value": 86.69607,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterPlan.peakRSSBytes": {
+      "value": 21184512,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterPlan.residentBytes": {
+      "value": 21184512,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterPlan.liveAllocationBlocks": {
+      "value": 65584,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterPlan.liveAllocationBytes": {
+      "value": 6544704,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterInvocations.cpuSeconds": {
+      "value": 131.518275,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterInvocations.peakRSSBytes": {
+      "value": 21282816,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterInvocations.residentBytes": {
+      "value": 21233664,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterInvocations.liveAllocationBlocks": {
+      "value": 63117,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterInvocations.liveAllocationBytes": {
+      "value": 6504000,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterCleanup.cpuSeconds": {
+      "value": 131.519439,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterCleanup.peakRSSBytes": {
+      "value": 21282816,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterCleanup.residentBytes": {
+      "value": 21233664,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterCleanup.liveAllocationBlocks": {
+      "value": 57997,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.afterCleanup.liveAllocationBytes": {
+      "value": 5453424,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.memoryMaximum.cpuSeconds": {
+      "value": 130.759056,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.memoryMaximum.peakRSSBytes": {
+      "value": 21282816,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.memoryMaximum.residentBytes": {
+      "value": 21266432,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.memoryMaximum.liveAllocationBlocks": {
+      "value": 70495,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.memoryMaximum.liveAllocationBytes": {
+      "value": 6971408,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.declaredHandlers": {
+      "value": 100,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.fixedInteractionCount": {
+      "value": 100,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.fixedInteractionJSONBytes": {
+      "value": 34574,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.maximumActualInvocations": {
+      "value": 100000000,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.maximumLatencySamples": {
+      "value": 10000,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.maximumMemorySamples": {
+      "value": 121,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.maximumPayloadBytes": {
+      "value": 64,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.maximumWorkers": {
+      "value": 8,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.planDescriptionTextBytes": {
+      "value": 0,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.registrationJSONBytes": {
+      "value": 17890,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.retainedSchemas": {
+      "value": 100,
+      "direction": "maximum"
+    },
+    "runtime.direct.100.accountedState.routeMetadataJSONBytes": {
+      "value": 5790,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.planCompilationMilliseconds": {
+      "value": 9.165415999999999,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.durationSeconds": {
+      "value": 18.006063542,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.invocationsPerSecond": {
+      "value": 55536.8472219068,
+      "direction": "minimum"
+    },
+    "runtime.dsl.100.latency.p50Milliseconds": {
+      "value": 0.144959,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.latency.p95Milliseconds": {
+      "value": 0.185167,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.latency.p99Milliseconds": {
+      "value": 0.20583400000000002,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.beforePlan.cpuSeconds": {
+      "value": 131.519544,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.beforePlan.peakRSSBytes": {
+      "value": 21282816,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.beforePlan.residentBytes": {
+      "value": 21233664,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.beforePlan.liveAllocationBlocks": {
+      "value": 57996,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.beforePlan.liveAllocationBytes": {
+      "value": 5372784,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterPlan.cpuSeconds": {
+      "value": 131.535548,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterPlan.peakRSSBytes": {
+      "value": 21610496,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterPlan.residentBytes": {
+      "value": 21610496,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterPlan.liveAllocationBlocks": {
+      "value": 59543,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterPlan.liveAllocationBytes": {
+      "value": 5980304,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterInvocations.cpuSeconds": {
+      "value": 176.669181,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterInvocations.peakRSSBytes": {
+      "value": 21626880,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterInvocations.residentBytes": {
+      "value": 21594112,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterInvocations.liveAllocationBlocks": {
+      "value": 67139,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterInvocations.liveAllocationBytes": {
+      "value": 6780864,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterCleanup.cpuSeconds": {
+      "value": 176.67033,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterCleanup.peakRSSBytes": {
+      "value": 21626880,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterCleanup.residentBytes": {
+      "value": 21594112,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterCleanup.liveAllocationBlocks": {
+      "value": 61893,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.afterCleanup.liveAllocationBytes": {
+      "value": 5713984,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.memoryMaximum.cpuSeconds": {
+      "value": 175.900447,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.memoryMaximum.peakRSSBytes": {
+      "value": 21626880,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.memoryMaximum.residentBytes": {
+      "value": 21626880,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.memoryMaximum.liveAllocationBlocks": {
+      "value": 72489,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.memoryMaximum.liveAllocationBytes": {
+      "value": 7129600,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.declaredHandlers": {
+      "value": 100,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.fixedInteractionCount": {
+      "value": 100,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.fixedInteractionJSONBytes": {
+      "value": 34574,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.maximumActualInvocations": {
+      "value": 100000000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.maximumLatencySamples": {
+      "value": 10000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.maximumMemorySamples": {
+      "value": 121,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.maximumPayloadBytes": {
+      "value": 64,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.maximumWorkers": {
+      "value": 8,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.planDescriptionTextBytes": {
+      "value": 65132,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.registrationJSONBytes": {
+      "value": 17890,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.retainedSchemas": {
+      "value": 100,
+      "direction": "maximum"
+    },
+    "runtime.dsl.100.accountedState.routeMetadataJSONBytes": {
+      "value": 5790,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.planCompilationMilliseconds": {
+      "value": 41.026333,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.durationSeconds": {
+      "value": 19.126739417,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.invocationsPerSecond": {
+      "value": 52282.82658105291,
+      "direction": "minimum"
+    },
+    "runtime.direct.1000.latency.p50Milliseconds": {
+      "value": 0.154625,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.latency.p95Milliseconds": {
+      "value": 0.195208,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.latency.p99Milliseconds": {
+      "value": 0.214333,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.beforePlan.cpuSeconds": {
+      "value": 176.670444,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.beforePlan.peakRSSBytes": {
+      "value": 21626880,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.beforePlan.residentBytes": {
+      "value": 21594112,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.beforePlan.liveAllocationBlocks": {
+      "value": 61892,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.beforePlan.liveAllocationBytes": {
+      "value": 5632064,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterPlan.cpuSeconds": {
+      "value": 176.772947,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterPlan.peakRSSBytes": {
+      "value": 32784384,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterPlan.residentBytes": {
+      "value": 32784384,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterPlan.liveAllocationBlocks": {
+      "value": 86930,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterPlan.liveAllocationBytes": {
+      "value": 11537888,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterInvocations.cpuSeconds": {
+      "value": 223.175899,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterInvocations.peakRSSBytes": {
+      "value": 33112064,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterInvocations.residentBytes": {
+      "value": 33062912,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterInvocations.liveAllocationBlocks": {
+      "value": 109583,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterInvocations.liveAllocationBytes": {
+      "value": 14519104,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterCleanup.cpuSeconds": {
+      "value": 223.178245,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterCleanup.peakRSSBytes": {
+      "value": 33112064,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterCleanup.residentBytes": {
+      "value": 33062912,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterCleanup.liveAllocationBlocks": {
+      "value": 61047,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.afterCleanup.liveAllocationBytes": {
+      "value": 5573552,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.memoryMaximum.cpuSeconds": {
+      "value": 222.381625,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.memoryMaximum.peakRSSBytes": {
+      "value": 33112064,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.memoryMaximum.residentBytes": {
+      "value": 33095680,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.memoryMaximum.liveAllocationBlocks": {
+      "value": 114328,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.memoryMaximum.liveAllocationBytes": {
+      "value": 14840288,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.declaredHandlers": {
+      "value": 1000,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.fixedInteractionCount": {
+      "value": 1000,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.fixedInteractionJSONBytes": {
+      "value": 348676,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.maximumActualInvocations": {
+      "value": 100000000,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.maximumLatencySamples": {
+      "value": 10000,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.maximumMemorySamples": {
+      "value": 121,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.maximumPayloadBytes": {
+      "value": 64,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.maximumWorkers": {
+      "value": 8,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.planDescriptionTextBytes": {
+      "value": 0,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.registrationJSONBytes": {
+      "value": 179890,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.retainedSchemas": {
+      "value": 1000,
+      "direction": "maximum"
+    },
+    "runtime.direct.1000.accountedState.routeMetadataJSONBytes": {
+      "value": 58890,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.planCompilationMilliseconds": {
+      "value": 78.3395,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.durationSeconds": {
+      "value": 19.522991833,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.invocationsPerSecond": {
+      "value": 51221.65744646194,
+      "direction": "minimum"
+    },
+    "runtime.dsl.1000.latency.p50Milliseconds": {
+      "value": 0.160625,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.latency.p95Milliseconds": {
+      "value": 0.201,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.latency.p99Milliseconds": {
+      "value": 0.21937500000000001,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.beforePlan.cpuSeconds": {
+      "value": 223.178345,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.beforePlan.peakRSSBytes": {
+      "value": 33112064,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.beforePlan.residentBytes": {
+      "value": 33079296,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.beforePlan.liveAllocationBlocks": {
+      "value": 61045,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.beforePlan.liveAllocationBytes": {
+      "value": 5494128,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterPlan.cpuSeconds": {
+      "value": 223.315208,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterPlan.peakRSSBytes": {
+      "value": 39878656,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterPlan.residentBytes": {
+      "value": 39878656,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterPlan.liveAllocationBlocks": {
+      "value": 85637,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterPlan.liveAllocationBytes": {
+      "value": 11289024,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterInvocations.cpuSeconds": {
+      "value": 270.023181,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterInvocations.peakRSSBytes": {
+      "value": 39944192,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterInvocations.residentBytes": {
+      "value": 39895040,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterInvocations.liveAllocationBlocks": {
+      "value": 107959,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterInvocations.liveAllocationBytes": {
+      "value": 14485760,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterCleanup.cpuSeconds": {
+      "value": 270.026339,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterCleanup.peakRSSBytes": {
+      "value": 39944192,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterCleanup.residentBytes": {
+      "value": 39895040,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterCleanup.liveAllocationBlocks": {
+      "value": 58508,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.afterCleanup.liveAllocationBytes": {
+      "value": 5394688,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.memoryMaximum.cpuSeconds": {
+      "value": 269.226662,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.memoryMaximum.peakRSSBytes": {
+      "value": 39944192,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.memoryMaximum.residentBytes": {
+      "value": 39944192,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.memoryMaximum.liveAllocationBlocks": {
+      "value": 114492,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.memoryMaximum.liveAllocationBytes": {
+      "value": 14854784,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.declaredHandlers": {
+      "value": 1000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.fixedInteractionCount": {
+      "value": 1000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.fixedInteractionJSONBytes": {
+      "value": 348676,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.maximumActualInvocations": {
+      "value": 100000000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.maximumLatencySamples": {
+      "value": 10000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.maximumMemorySamples": {
+      "value": 121,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.maximumPayloadBytes": {
+      "value": 64,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.maximumWorkers": {
+      "value": 8,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.planDescriptionTextBytes": {
+      "value": 652832,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.registrationJSONBytes": {
+      "value": 179890,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.retainedSchemas": {
+      "value": 1000,
+      "direction": "maximum"
+    },
+    "runtime.dsl.1000.accountedState.routeMetadataJSONBytes": {
+      "value": 58890,
+      "direction": "maximum"
+    }
+  },
+  "sourceReports": {
+    "compile": "6919439a65989f857be04411efc0b00d0abde4c4180b7ed6db80e3ecdce93982",
+    "runtime": "5d504248ced9d32a1d3d68feee602eab2ef6c05ecf0e7333b8ae67b2c803a25b"
+  }
+}

@@ -1,15 +1,16 @@
 # Release certification
 
-The current **0.15.0 authoring candidate** covers Parts 15A-15J: [shared declarations](../DSL.md),
+The current **0.15.0 authoring candidate** covers Parts 15A-15K: [shared declarations](../DSL.md),
 [typed commands](../CommandDSL.md), [macros](../MacroDSL.md),
 [response ownership and signed HTTP](../CommandResponses.md),
 [message builders](../MessageBuilders.md), [command families](../CommandFamilies.md),
 [policies](../CommandPolicies.md), [typed Gateway event modules](../GatewayEventModules.md)
 and [supervised bot applications](../BotApplications.md), with
-[external modules and typed dependencies](../ModuleExtensions.md).
+[external modules and typed dependencies](../ModuleExtensions.md), plus
+[offline direct/DSL measurements and finite budgets](../DSLBenchmarks.md).
 Earlier milestone validation records remain historical. The current
-[machine report](phase15-report.json) and [15J validation record](phase15j-validation.json)
-state current checks and explicit exclusions. Capacity work and the remaining
+[machine report](phase15-report.json) and [15K validation record](phase15k-validation.json)
+state current checks and explicit exclusions. Production capacity and the remaining
 [DSL milestones](../DSLImplementationRoadmap.md) retain separate implementation gates.
 
 The historical [0.14.0 candidate report](2026-10-18.md) and
@@ -37,11 +38,13 @@ An unchanged hash does not establish semantic coverage of unrelated documentatio
 Every runtime release carries workload, hardware, throughput, p50/p95/p99, CPU/RSS,
 request savings, overload/recovery and fixed-working-set 30-minute evidence. The
 [measurements](Measurements/environment.json) identify Phase 14's earlier finite
-synthetic runs. Part 15J reruns the existing cache/broadcast profiles and 30-minute fixed-working-set
-soak, with exact source drift and executable identity retained in its measurement record.
-Those results cover the cache/broadcast harness; they are not DSL handler execution,
-controlled performance regression or capacity evidence. Part 15K retains direct-versus-DSL
-handler measurements and DSL-specific soak qualification.
+synthetic runs. Part 15K reruns the existing cache/broadcast profiles and 30-minute
+fixed-working-set soak, preserving exact source/executable identity. Independent
+direct/DSL handler measurements and a separate sustained-handler run cover their
+recorded workloads and durations. Manual/macro compiler costs and finite local
+budgets establish the first measured baseline. A baseline self-check does not prove
+a comparison against an earlier implementation or controlled performance regression.
+None of these workloads establishes production capacity.
 Reproduce greater-than-10% regressions three times on matching hardware
 and workload before attributing them. Concurrent build/test activity and historical
 baselines do not provide such a controlled comparison. See [scalability](../Scalability.md).

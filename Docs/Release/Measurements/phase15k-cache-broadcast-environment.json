@@ -1,0 +1,74 @@
+{
+  "recordedAtUTC": "2026-10-19T02:26:33.663365+00:00",
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+  "architecture": "arm64",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "sourceCommitBasis": "6eac0f733d3445e1d6dd160eeec2d60e118be26f",
+  "dirtySource": true,
+  "buildConfiguration": "release",
+  "peer": "offline fixed-key cache/broadcast scripts; no credentials or sockets",
+  "measurementScope": "Existing fixed-working-set cache/broadcast only; concurrent compilation makes this unsuitable for controlled regression comparison. No DSL handlers, live Discord, sockets, credentials or fleet qualification.",
+  "hardwareModel": "Mac15,10",
+  "processor": "Apple M3 Max",
+  "physicalMemoryBytes": 38654705664,
+  "startedAt": "2026-10-19T02:26:33.821204+00:00",
+  "baseCommit": "6eac0f733d3445e1d6dd160eeec2d60e118be26f",
+  "executableSHA256": "f9c08def19b3d8ad42249b8c416628ddfac18cb5cb48f178fab18fcba1ce7caf",
+  "sourceSHA256": {
+    "Sources/DiscordCache/CacheValues.swift": "aad23c15ca2decce7b72d02391c1e4f22a4187b9363aa1cbf3d56d149a8dab6c",
+    "Sources/DiscordCache/EntityCache.swift": "0dad36484aa3663f9ab5dce99c194dc5bacb0618df0974e6d762024acda64658",
+    "Sources/DiscordCache/EventReducer.swift": "eeda1685642c2a4fd57a10f9c3ab3c92a3d9d75cd2586b2168f4902217490aa8",
+    "Sources/DiscordGateway/EventHub.swift": "b2310b764554a6453d61f1a1684fdfe7c4f8af201916879ad42b17841911df59",
+    "Sources/DiscordGateway/EventHandlers.swift": "3feb0dd719b48c737030a6a16d48e183464238f8a6ba596f3f715335acdef475",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08"
+  },
+  "command": [
+    "/Users/carsonrau/Developer/DiscordKit/Tools/DiscordKitLoadTests/.build/release/DiscordKitLoadTests",
+    "--scenario",
+    "soak",
+    "--profile",
+    "accounts-1000000",
+    "--burst",
+    "--duration-seconds",
+    "1800"
+  ],
+  "completedAt": "2026-10-19T02:56:34.148734+00:00",
+  "elapsedSeconds": 1800.2920198749634,
+  "sourceDrift": [],
+  "executableAtCompletionSHA256": "f9c08def19b3d8ad42249b8c416628ddfac18cb5cb48f178fab18fcba1ce7caf",
+  "executablePathChangedDuringMeasurement": false,
+  "executableIdentityScope": "executableSHA256 identifies the executable path bytes read immediately before launch; executableAtCompletionSHA256 records the path bytes after completion. A successful strict-NIO release rebuild completed during the soak. Start/end hashes matched. Cache/broadcast source files did not change.",
+  "concurrentWorkloads": [
+    "Root and independent consumer builds/tests",
+    "Manual/macro compiler benchmarks",
+    "Direct/DSL handler runtime matrix and 60-second handler workloads"
+  ],
+  "processMemoryObservation": {
+    "checkpointCount": 121,
+    "tailWindowSeconds": 300,
+    "tailCheckpointCount": 21,
+    "peakObservedResidentBytes": 9814016,
+    "peakRSSBytes": 9830400,
+    "tailResidentBytes": {
+      "minimum": 9814016,
+      "maximum": 9814016,
+      "first": 9814016,
+      "last": 9814016
+    },
+    "tailLiveAllocationBytes": {
+      "minimum": 286288,
+      "maximum": 351632,
+      "first": 318736,
+      "last": 297376
+    },
+    "afterShutdown": {
+      "cpuSeconds": 2000.491141,
+      "liveAllocationBlocks": 3109,
+      "liveAllocationBytes": 297376,
+      "peakRSSBytes": 9830400,
+      "residentBytes": 9814016
+    },
+    "qualification": "Actual local process gauges are separate from accounted cache bytes. Concurrent work prevents controlled performance comparison. Finite observed variation is not production, fleet or general leak qualification."
+  },
+  "validatedAt": "2026-10-19T02:56:46.737377+00:00"
+}

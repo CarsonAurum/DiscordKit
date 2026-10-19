@@ -15,44 +15,44 @@
     {
       "id": "root-build",
       "status": "passed",
-      "scope": "Current strict direct-dependency local root debug build passed.",
+      "scope": "Current local root debug build passed with SWIFTNIO_STRICT=1; the separate dependency/import audit passed. 15K introduces no runtime source or root manifest change.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "root-tests",
       "status": "passed",
-      "scope": "2,367 tests in 287 suites across 32 root test targets passed, including shared namespace/dependency and downstream wire-identity regressions. Host access supplies required local signing and loopback; no live Discord.",
+      "scope": "2367 tests across 32 root test targets passed with strict NIO and host access for required local signing/loopback. No live Discord.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "tooling",
       "status": "passed",
-      "scope": "104 Swift tooling tests, 228 tooling Python tests, 44 CI Python tests, 31 separate macro tests, 26 real macro compiler fixtures and three public dependency compiler fixtures passed.",
+      "scope": "104 Swift tooling, 229 tooling Python, 44 CI Python, 31 macro tests, 26 macro compiler fixtures, three typed-dependency fixtures, nine new benchmark Swift and 19 benchmark Python tests passed.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "inventory",
       "status": "passed",
-      "scope": "18,137 discovery entries, 280 sources and 934 reviewed definitions validated with current UTC audit date 2026-10-19. No support classification promoted.",
+      "scope": "18137 entries, 280 sources and 934 reviewed definitions validated at current UTC audit date 2026-10-19. No support classification promoted.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
@@ -62,82 +62,82 @@
       "scope": "Five committed generated wire artifacts remain byte-identical.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "parity",
       "status": "passed",
-      "scope": "Offline checks pass with append-only 15J authoring history; no new wire/model-parity classification.",
+      "scope": "Append-only 15K local measurement history validates with no endpoint/event/field/permission/intent support promotion.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "declaration-docs",
       "status": "passed",
-      "scope": "771 Swift files and 8,535 explicit callable declarations audited with zero missing comments. Presence is syntactic evidence; semantic completeness remains separate.",
+      "scope": "777 owned Swift files, 8567 explicit callables and zero missing documentation comments; includes separate benchmark sources/tests. Syntactic presence only.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "docc",
       "status": "passed",
-      "scope": "31 runtime and two independent extension library DocC archives converted with strict diagnostics. Generated navigation and 22 synchronized existing listings pass. No other-platform or full Phase 15 tutorial certification claim.",
+      "scope": "All 31 public root DocC archives converted with strict diagnostics; curated symbol pages and example resources match. No new public library API in 15K; semantic completeness remains excluded.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "product-isolation",
       "status": "passed",
-      "scope": "31 runtime products, 337 runtime Swift files and 739 imports audited. Twelve independent examples and both separate authoring/extension packages preserve reviewed graphs. The command extension selected closure excludes Gateway/Client/Cache/plugins; bot extensions broaden adoption explicitly. Root products select no extensions.",
+      "scope": "All 31 root products, 13 independent consumers and two authoring packages pass exact graph/source import auditing. Benchmark remains downstream without Client/Gateway/Cache/adapters/plugins in its selected runtime graph. Platform gauge imports are scoped and validated.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "api-baseline",
       "status": "passed",
-      "scope": "Frozen 0.14.0 comparison passed: 1,010 added, zero changed/removed symbols and zero removed relationships; the pre-1.0 0.15.0 minor increment is accepted. First separate extension snapshot records 86 symbols in two libraries. No full Phase 15 or binary ABI certification.",
+      "scope": "Frozen 0.14.0 comparison passes for 0.15.0: pre-existing 1010 additions, zero changed/removed symbols and zero removed relationships. No new 15K runtime API, binary ABI or other-platform claim.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "examples",
       "status": "passed",
-      "scope": "Six public-only extension tests, four DSLCommands tests and three DSLBot tests passed. Signed HTTP and macro-free trusted Gateway consumers use the same external command module with exact custom-codec/raw/denied responses and injected actor effects. Bot custom selection/stop ends with zero owned counters and zero registration. Existing HTTPApp/CommandsApp/GatewayBot/RESTOnly builds and DSLEvents tests/offline execution pass.",
+      "scope": "Extension six tests, CommandsApp three, DSLCommands four, DSLEvents three and DSLBot three passed with independent builds/offline execution. HTTPApp/GatewayBot/RESTOnly builds and 26 macro/three dependency fixtures pass. Synthetic consumers establish no live host qualification.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "browser",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current browser qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current browser qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current browser qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current browser qualification is claimed.",
       "excludedClaims": [
         "browser"
       ]
@@ -145,8 +145,8 @@
     {
       "id": "social-catalog",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current social-catalog qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current social-catalog qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current social-catalog qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current social-catalog qualification is claimed.",
       "excludedClaims": [
         "social-catalog"
       ]
@@ -154,41 +154,41 @@
     {
       "id": "local-load",
       "status": "passed",
-      "scope": "28 existing load Swift tests, 12 Python peer tests, release build and all 12 normal/burst finite cache/short-soak profiles passed with zero shutdown ownership. This workload does not execute DSL handlers.",
+      "scope": "28 existing load Swift tests, 12 Python peer tests and all 12 finite cache/broadcast profiles passed. New direct/DSL six-million-invocation matrix, six manual/macro compiler workloads and 288-metric first-baseline budget self-check passed. No controlled regression comparison.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "fixed-working-set-soak",
       "status": "passed",
-      "scope": "Existing four-scope fixed-key cache/broadcast burst soak passed for 1800.002 seconds with 225,337 rounds, 121 actual RSS/heap checkpoints and zero owned shutdown counters. Relevant measured source hashes have no drift. Concurrent compilation prevents controlled regression comparison; this is not DSL handler/capacity evidence.",
+      "scope": "Existing four-scope fixed-key cache/broadcast burst soak passed for 1800.006 seconds, 227,274 rounds and 121 process checkpoints with zero final ownership. Separate 1000-handler direct/DSL paths each exceeded 60 seconds, retaining fixed schemas and zero active cleanup. Exact source/binary identities and concurrent work are recorded; no production capacity or whole-process zero-growth claim.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "macos",
       "status": "passed",
-      "scope": "Local macOS arm64 Swift 6.4 root and public independent extension/consumer tests, API/DocC and existing cache/broadcast measurements only. Other platforms, minimum-OS runtime, devices and live qualification remain unverified.",
+      "scope": "Local macOS arm64 Swift 6.4 root/independent tests, compiler/runtime benchmark matrix, named handler/cache soaks, API and DocC only. Other platforms, minimum-OS runtime, devices and live qualification remain unverified.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15j-validation.json",
-          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
+          "path": "Docs/Release/phase15k-validation.json",
+          "sha256": "8a4ff2bf763f80a6e34e62640d3688208eb925f4b359d1fa4c374b273589f10e"
         }
       ]
     },
     {
       "id": "linux",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current linux qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current linux qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current linux qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current linux qualification is claimed.",
       "excludedClaims": [
         "linux"
       ]
@@ -196,8 +196,8 @@
     {
       "id": "windows",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current windows qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current windows qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current windows qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current windows qualification is claimed.",
       "excludedClaims": [
         "windows"
       ]
@@ -205,8 +205,8 @@
     {
       "id": "apple-simulators",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-simulators qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-simulators qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current apple-simulators qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current apple-simulators qualification is claimed.",
       "excludedClaims": [
         "apple-simulators"
       ]
@@ -214,8 +214,8 @@
     {
       "id": "apple-devices",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-devices qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-devices qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current apple-devices qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current apple-devices qualification is claimed.",
       "excludedClaims": [
         "apple-devices"
       ]
@@ -223,8 +223,8 @@
     {
       "id": "android-cross-build",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-cross-build qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-cross-build qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current android-cross-build qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current android-cross-build qualification is claimed.",
       "excludedClaims": [
         "android-cross-build"
       ]
@@ -232,8 +232,8 @@
     {
       "id": "android-runtime",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-runtime qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-runtime qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current android-runtime qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current android-runtime qualification is claimed.",
       "excludedClaims": [
         "android-runtime"
       ]
@@ -241,8 +241,8 @@
     {
       "id": "live-discord",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current live-discord qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current live-discord qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current live-discord qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current live-discord qualification is claimed.",
       "excludedClaims": [
         "live-discord"
       ]
@@ -250,8 +250,8 @@
     {
       "id": "hardware",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current hardware qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current hardware qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current hardware qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current hardware qualification is claimed.",
       "excludedClaims": [
         "hardware"
       ]
@@ -259,8 +259,8 @@
     {
       "id": "independent-crypto-review",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current independent-crypto-review qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current independent-crypto-review qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current independent-crypto-review qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current independent-crypto-review qualification is claimed.",
       "excludedClaims": [
         "independent-crypto-review"
       ]
@@ -268,8 +268,8 @@
     {
       "id": "codec-interop",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current codec-interop qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current codec-interop qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current codec-interop qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current codec-interop qualification is claimed.",
       "excludedClaims": [
         "codec-interop"
       ]
@@ -277,8 +277,8 @@
     {
       "id": "semantic-documentation",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current semantic-documentation qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current semantic-documentation qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current semantic-documentation qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current semantic-documentation qualification is claimed.",
       "excludedClaims": [
         "semantic-documentation"
       ]
@@ -286,8 +286,8 @@
     {
       "id": "api-other-platforms",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current api-other-platforms qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current api-other-platforms qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current api-other-platforms qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current api-other-platforms qualification is claimed.",
       "excludedClaims": [
         "api-other-platforms"
       ]
@@ -295,8 +295,8 @@
     {
       "id": "upstream-collection",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current upstream-collection qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current upstream-collection qualification is claimed.",
+      "scope": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current upstream-collection qualification is claimed.",
+      "reason": "Not established by Part 15K local offline authoring/compiler/handler/cache measurements; no current upstream-collection qualification is claimed.",
       "excludedClaims": [
         "upstream-collection"
       ]
@@ -304,8 +304,8 @@
     {
       "id": "zero-resource-growth",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current zero-resource-growth qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current zero-resource-growth qualification is claimed.",
+      "scope": "Named functional counters return to zero; process RSS/live allocator observations and fixed-working-set runs do not establish entire-product zero resource growth.",
+      "reason": "Named functional counters return to zero; process RSS/live allocator observations and fixed-working-set runs do not establish entire-product zero resource growth.",
       "excludedClaims": [
         "zero-resource-growth"
       ]
@@ -313,8 +313,8 @@
     {
       "id": "performance-regression",
       "status": "unverified",
-      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current performance-regression qualification is claimed.",
-      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current performance-regression qualification is claimed.",
+      "scope": "First measured baseline and finite budgets exist, with a passing self-check. No previous-implementation comparison or three matching isolated runs establish controlled regression qualification.",
+      "reason": "First measured baseline and finite budgets exist, with a passing self-check. No previous-implementation comparison or three matching isolated runs establish controlled regression qualification.",
       "excludedClaims": [
         "performance-regression"
       ]
@@ -322,8 +322,8 @@
   ],
   "claims": [
     {
-      "id": "shared-command-event-supervised-bot-and-external-extension-local-milestones",
-      "description": "Parts 15A-15J only: finite modules, typed command families, optional macros, policies, signed HTTP, typed Gateway pipelines and supervised trusted host composition, plus bounded explicit namespaces and validated typed dependencies used by separately compiled public extension libraries. Local offline evidence excludes 15K-15L and external qualification.",
+      "id": "shared-command-event-supervised-bot-extension-and-local-measurement-milestones",
+      "description": "Parts 15A-15K local scope only: independently adopted authoring/runtime composition plus finite offline compiler/handler measurements and separately derived budgets. Full release and external qualification remain excluded.",
       "checkIDs": [
         "api-baseline",
         "declaration-docs",
@@ -336,15 +336,27 @@
         "product-isolation",
         "root-build",
         "root-tests",
-        "tooling"
+        "tooling",
+        "local-load"
       ]
     },
     {
       "id": "existing-local-cache-and-broadcast-measurements",
-      "description": "Existing fixed-working-set cache/broadcast workload only: finite profiles and a fresh 1800-second burst soak with actual RSS/heap observations, unchanged measured sources and zero shutdown ownership. It does not execute DSL handlers or qualify capacity, controlled regression or entire-product resource growth.",
+      "description": "Existing fixed-key cache/broadcast finite profiles and fresh 1800-second burst soak with actual process/accounted observations, exact source/executable identities and zero final active ownership. This workload does not execute DSL handlers.",
       "checkIDs": [
         "local-load",
         "fixed-working-set-soak"
+      ]
+    },
+    {
+      "id": "local-paired-dsl-handler-and-consumer-compiler-observations",
+      "description": "Direct/DSL six-million-invocation matrix, separate 60-second-per-path fixed-population handler observations and six manual/macro clean/incremental compiler workloads. First 288-metric baseline and finite budgets self-check; no controlled attribution or production/fleet capacity.",
+      "checkIDs": [
+        "local-load",
+        "fixed-working-set-soak",
+        "macos",
+        "product-isolation",
+        "tooling"
       ]
     }
   ],
@@ -356,7 +368,7 @@
     "historical-API-compatibility",
     "full-phase15-certification",
     "dsl-macro-other-toolchains-platforms",
-    "dsl-benchmark-capacity",
+    "production-dsl-capacity",
     "dsl-live-registration-qualification",
     "dsl-distributed-coordinator-and-keyed-policy-store-implementation"
   ]

@@ -1,0 +1,1886 @@
+{
+  "schemaVersion": 1,
+  "milestone": "15K",
+  "candidateVersion": "0.15.0",
+  "verifiedOn": "2026-10-18",
+  "published": false,
+  "baseCommit": "6eac0f733d3445e1d6dd160eeec2d60e118be26f",
+  "environment": {
+    "architecture": "arm64",
+    "compiler": "swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+    "hardwareModel": "Mac15,10",
+    "operatingSystem": "Version 27.0.1 (Build 26A434)",
+    "physicalMemoryBytes": 38654705664,
+    "processorCount": 14,
+    "dateScope": "2026-10-18 America/Chicago; execution and current UTC inventory audits occur 2026-10-19.",
+    "caches": "Pinned existing dependencies with isolated writable caches, --disable-sandbox and approved host access for local sockets, hardware metadata and release debug-symbol generation.",
+    "isolation": "Concurrent development/compiler/validation and cache-soak workloads. Timing isolation and controlled performance-regression attribution are not qualified."
+  },
+  "implementationPlan": "Docs/DSLBenchmarks.md records the finite paired workloads, functional gates, compiler measurements, first observations and subsequent budget derivation.",
+  "implementationScope": [
+    "Independent downstream DiscordDSLBenchmarks package compares handwritten routes and real DSL lowering through the same captured typed schema, handler, CommandRouter and InteractionResponder. No runtime product selects benchmark or compiler tooling.",
+    "Default matrix performs one million invocations per direct/DSL path at 10/100/1000 declarations, finite payload and concurrency, bounded prefix quantiles and actual RSS/live allocator/accounted-state observations.",
+    "Hard gates require exact registration/callback parity, schema capture once per declared handler, finite worker/sample/payload/input counts, no implicit hydration/registration construction and zero final active ownership. Tests cover malformed configuration and success/failure/cancellation cleanup.",
+    "Separate generated manual/macro external consumers measure clean consumer and controlled incremental build costs on the same compiler. Dependency/plugin bootstrap is separate, source edits restore and compiled catalogs verify exact finite route counts without running handlers.",
+    "First observations precede separately derived finite 10-percent budgets with explicit timing/memory floors. Complete matrices, real duration, monotonic bounded observations, schema/accounting/cleanup invariants and exact hardware/compiler/workload identity fail closed. Self-check establishes wiring only.",
+    "Existing cache/broadcast profiles and 1800-second soak remain separate from paired 60-second handler observations. Source/executable hashes and interference limitations are retained.",
+    "Callable documentation, graph/import isolation, strict benchmark tests, CI smoke/artifact collection, adoption/status docs and append-only parity history cover the development package. Scoped target system imports admit only reviewed platform modules."
+  ],
+  "sourceReviewScope": "No new Discord wire contract, upstream collection or semantic source review. Existing official review records govern unchanged composed contracts; inventory classifications are unchanged.",
+  "sourceFiles": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "ee89f1ff72f5c80ad3a8b9abcd282c3f38f9cc24fbf086349997a97cc27f0d84"
+    },
+    {
+      "path": "Package.resolved",
+      "sha256": "aef174e90a9ca49fe3e24c2872835f0b3c83cda82c4949a8e503f3bf20b8f31d"
+    },
+    {
+      "path": "Package.swift",
+      "sha256": "7d350bfd586d7e43a6966b0e6691f928d1fa86276015cde1aeb4dd29be257fd3"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/Package.resolved",
+      "sha256": "aef174e90a9ca49fe3e24c2872835f0b3c83cda82c4949a8e503f3bf20b8f31d"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/Package.swift",
+      "sha256": "a618e7fbd90e1c2a482b5df55db20dfd68d424306bba3e382877fb7ad730b75e"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/Sources/DiscordDSLBenchmarks/Configuration.swift",
+      "sha256": "53fccbdb1e2ae9cff707bc9cc82c0333b604db064554acacba634169ff8f6cf3"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/Sources/DiscordDSLBenchmarks/DiscordDSLBenchmarks.swift",
+      "sha256": "90aa5fa77dd8ef0399442177e67193d8af52fb0c571ba13c462ca4f1865bbfe9"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/Sources/DiscordDSLBenchmarks/Measurements.swift",
+      "sha256": "fd601f006159191f19c85b2ff34c8fb33c0e67db86a456e042147c6a3e5c48c4"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/Sources/DiscordDSLBenchmarks/RuntimeBenchmark.swift",
+      "sha256": "2897f9561b12165831c4a088659905176b90f995a8b0f408be8763d6f57b4de0"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/Tests/DiscordDSLBenchmarksTests/RuntimeBenchmarkTests.swift",
+      "sha256": "a594e137de93a2ab993c2bf50084f37c7145ea97318f8aef3ad6ef5eee89c1ae"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+      "sha256": "e34116cc680fd1fe66633e03c6695d19ae2859c91762f4d65cdd596edaed49e5"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/scripts/compile_benchmarks.py",
+      "sha256": "48461c8548d2ad0946783f2982d29f26a2e5f4f91d8e3c2d0c7e30538e909410"
+    },
+    {
+      "path": "Tools/DiscordDSLBenchmarks/scripts/test_benchmarks.py",
+      "sha256": "c2560cd75eaa64115aaf6781e401ef7c56b58c412703076c1f3c65a4ac704d76"
+    },
+    {
+      "path": "Tools/DiscordKitTools/release-policy.json",
+      "sha256": "dee1e2590937dd20b31215d9455609195f462468e4d3751aa6d0515c2727ee96"
+    },
+    {
+      "path": "Tools/DiscordKitTools/scripts/release_check.py",
+      "sha256": "be371bd64792d2d03812fedba97c4fe334904cb84dd7494869b3305d7503308c"
+    },
+    {
+      "path": "Tools/DiscordKitTools/scripts/test_release_check.py",
+      "sha256": "3b72a40f49c58927a4900a09b51d05c7d01b60b906bf431a0fbf4e4d009c54c5"
+    }
+  ],
+  "measurementEvidence": [
+    {
+      "path": "Docs/Release/Measurements/phase15k-cache-broadcast-environment.json",
+      "sha256": "3fabd42d0c43603b157dde644a14194c49395e2562886bedd48d77cda593f793"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-cache-broadcast-profiles.json",
+      "sha256": "378b2838d941456c045031b5c9ff83f548ae5d50d03f36ccfa8ad108a1fe841a"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-cache-broadcast-soak.json",
+      "sha256": "9fec96dc21637dd621ea7d5ca067174105d77778b540c6f52d81e6c14d45b5c3"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+      "sha256": "d4a4b73b16c981193e2bd21d9005e333128460303a2ed176df76a799ede3eef8"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-dsl-budget-check.json",
+      "sha256": "e4eecd3dcc44cacef676c9ca07828f0ce41fef413e5ba0d3a78418a8d0fee158"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-dsl-budgets.json",
+      "sha256": "251246b2942660adaf136a3411125aeb8b658f6c5c6e9a76a3ab1b833f969fbc"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-dsl-compile.json",
+      "sha256": "da193b49f92caf1c996def97658f2d2c296a6b0b526192f512d812d6ecc1d59b"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-dsl-environment.json",
+      "sha256": "136b4dfd723ade4a1c7d8491b4fab9418896b25c4f49f808317fc1b0e7b67db2"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-dsl-handler-soak.json",
+      "sha256": "22a4ce15665e99dee41d7406d4bbe7b4872ec31170a55005a52d967743b478c4"
+    },
+    {
+      "path": "Docs/Release/Measurements/phase15k-dsl-runtime.json",
+      "sha256": "318a02aa421a964a8efffc4ef3d028637777c3848c5114c9dfbe0830f7310816"
+    }
+  ],
+  "checks": [
+    {
+      "id": "results-0",
+      "command": [
+        "swift",
+        "test",
+        "--package-path",
+        "Tools/DiscordKitTools",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/discordkit-15d-spm"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 6.402,
+      "log": "/private/tmp/phase15k-root-checks/0.log"
+    },
+    {
+      "id": "results-1",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordKitTools/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 5.153,
+      "log": "/private/tmp/phase15k-root-checks/1.log"
+    },
+    {
+      "id": "results-2",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/ci",
+        "-p",
+        "test_*.py"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.105,
+      "log": "/private/tmp/phase15k-root-checks/2.log"
+    },
+    {
+      "id": "results-3",
+      "command": [
+        "swift",
+        "run",
+        "--package-path",
+        "Tools/DiscordKitTools",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/discordkit-15d-spm",
+        "DiscordKitTools",
+        "inventory",
+        "validate",
+        "--repository",
+        "."
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 10.593,
+      "log": "/private/tmp/phase15k-root-checks/3.log"
+    },
+    {
+      "id": "results-4",
+      "command": [
+        "swift",
+        "run",
+        "--package-path",
+        "Tools/DiscordKitTools",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/discordkit-15d-spm",
+        "DiscordKitTools",
+        "generate",
+        "--check",
+        "--repository",
+        "."
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 13.503,
+      "log": "/private/tmp/phase15k-root-checks/4.log"
+    },
+    {
+      "id": "results-5",
+      "command": [
+        "swift",
+        "run",
+        "--package-path",
+        "Tools/DiscordKitTools",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/discordkit-15d-spm",
+        "DiscordKitTools",
+        "parity",
+        "check",
+        "--repository",
+        "."
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 17.843,
+      "log": "/private/tmp/phase15k-root-checks/5.log"
+    },
+    {
+      "id": "results-6",
+      "command": [
+        "python3",
+        "Tools/DiscordKitTools/scripts/release_check.py",
+        "maintenance",
+        "--repository",
+        ".",
+        "--record",
+        "Docs/Release/maintenance.json"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.069,
+      "log": "/private/tmp/phase15k-root-checks/6.log"
+    },
+    {
+      "id": "api-results-0",
+      "command": [
+        "swift",
+        "package",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/discordkit-15d-spm",
+        "dump-symbol-graph",
+        "--minimum-access-level",
+        "public"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 25.525,
+      "log": "/private/tmp/phase15k-root-checks/api-0.log"
+    },
+    {
+      "id": "api-results-1",
+      "command": [
+        "python3",
+        "Tools/ci/curate_docc.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 1.424,
+      "log": "/private/tmp/phase15k-root-checks/api-1.log"
+    },
+    {
+      "id": "api-results-2",
+      "command": [
+        "python3",
+        "Tools/ci/documentation_examples.py"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.05,
+      "log": "/private/tmp/phase15k-root-checks/api-2.log"
+    },
+    {
+      "id": "api-results-3",
+      "command": [
+        "python3",
+        "Tools/DiscordKitTools/scripts/api_baseline.py",
+        "snapshot",
+        "--repository",
+        ".",
+        "--symbolgraphs",
+        ".build/out/symbolgraph",
+        "--version",
+        "0.15.0",
+        "--output",
+        "/private/tmp/phase15k-api.json"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.672,
+      "log": "/private/tmp/phase15k-root-checks/api-3.log"
+    },
+    {
+      "id": "api-results-4",
+      "command": [
+        "python3",
+        "Tools/DiscordKitTools/scripts/api_baseline.py",
+        "check",
+        "--baseline",
+        "Docs/Release/api-baseline.json",
+        "--candidate",
+        "/private/tmp/phase15k-api.json",
+        "--version",
+        "0.15.0"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.15,
+      "log": "/private/tmp/phase15k-root-checks/api-4.log"
+    },
+    {
+      "id": "api-results-5",
+      "command": [
+        "python3",
+        "Tools/ci/build_docc.py"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 25.681,
+      "log": "/private/tmp/phase15k-root-checks/api-5.log"
+    },
+    {
+      "id": "final-results-0",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordKitTools/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 5.837,
+      "log": "/private/tmp/phase15k-root-checks/final-0.log"
+    },
+    {
+      "id": "final-results-1",
+      "command": [
+        "python3",
+        "Tools/DiscordKitTools/scripts/release_check.py",
+        "graph",
+        "--repository",
+        "."
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 10.824,
+      "log": "/private/tmp/phase15k-root-checks/final-1.log"
+    },
+    {
+      "id": "final-results-2",
+      "command": [
+        "swift",
+        "run",
+        "--package-path",
+        "Tools/DiscordKitTools",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/discordkit-15d-spm",
+        "DiscordKitTools",
+        "documentation",
+        "audit",
+        "--repository",
+        "."
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 41.28,
+      "log": "/private/tmp/phase15k-root-checks/final-2.log"
+    },
+    {
+      "id": "final-results-3",
+      "command": [
+        "swift",
+        "run",
+        "--package-path",
+        "Tools/DiscordKitTools",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/discordkit-15d-spm",
+        "DiscordKitTools",
+        "parity",
+        "check",
+        "--repository",
+        "."
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 10.382,
+      "log": "/private/tmp/phase15k-root-checks/final-3.log"
+    },
+    {
+      "label": "root-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:24:40.381942+00:00",
+      "completedAt": "2026-10-19T02:24:46.087489+00:00",
+      "elapsedSeconds": 5.705436832970008,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/root-build.log"
+    },
+    {
+      "label": "load-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Tools/DiscordKitLoadTests"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:25:20.336530+00:00",
+      "completedAt": "2026-10-19T02:25:59.532338+00:00",
+      "elapsedSeconds": 39.195439792005345,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/load-tests.log"
+    },
+    {
+      "label": "DiscordDSLExtensions-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Packages/DiscordDSLExtensions"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:25:59.680635+00:00",
+      "completedAt": "2026-10-19T02:26:07.489937+00:00",
+      "elapsedSeconds": 7.809260750014801,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DiscordDSLExtensions-tests.log"
+    },
+    {
+      "label": "DiscordDSLMacros-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Packages/DiscordDSLMacros"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:07.490582+00:00",
+      "completedAt": "2026-10-19T02:26:14.484249+00:00",
+      "elapsedSeconds": 6.993632375029847,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DiscordDSLMacros-tests.log"
+    },
+    {
+      "label": "CommandsApp-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/CommandsApp"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:14.485145+00:00",
+      "completedAt": "2026-10-19T02:26:17.842008+00:00",
+      "elapsedSeconds": 3.356852083990816,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/CommandsApp-tests.log"
+    },
+    {
+      "label": "CommandsApp-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/CommandsApp"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:17.842669+00:00",
+      "completedAt": "2026-10-19T02:26:19.746099+00:00",
+      "elapsedSeconds": 1.9034341659862548,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/CommandsApp-build.log"
+    },
+    {
+      "label": "CommandsApp-offline",
+      "command": [
+        "swift",
+        "run",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/CommandsApp",
+        "CommandsApp",
+        "--offline"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:19.746702+00:00",
+      "completedAt": "2026-10-19T02:26:21.946057+00:00",
+      "elapsedSeconds": 2.19936820800649,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/CommandsApp-offline.log"
+    },
+    {
+      "label": "DSLCommands-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLCommands"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:21.946802+00:00",
+      "completedAt": "2026-10-19T02:26:26.815356+00:00",
+      "elapsedSeconds": 4.8685288749984466,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLCommands-tests.log"
+    },
+    {
+      "label": "DSLCommands-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLCommands"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:26.816243+00:00",
+      "completedAt": "2026-10-19T02:26:30.138342+00:00",
+      "elapsedSeconds": 3.32208900002297,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLCommands-build.log"
+    },
+    {
+      "label": "DSLCommands-offline",
+      "command": [
+        "swift",
+        "run",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLCommands",
+        "DSLCommands",
+        "--offline"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:30.139021+00:00",
+      "completedAt": "2026-10-19T02:26:32.818716+00:00",
+      "elapsedSeconds": 2.679700958018657,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLCommands-offline.log"
+    },
+    {
+      "label": "DSLEvents-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLEvents"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:32.819490+00:00",
+      "completedAt": "2026-10-19T02:26:35.770884+00:00",
+      "elapsedSeconds": 2.951378708006814,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLEvents-tests.log"
+    },
+    {
+      "label": "DSLEvents-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLEvents"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:35.771673+00:00",
+      "completedAt": "2026-10-19T02:26:38.155342+00:00",
+      "elapsedSeconds": 2.3836583340307698,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLEvents-build.log"
+    },
+    {
+      "label": "DSLEvents-offline",
+      "command": [
+        "swift",
+        "run",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLEvents",
+        "DSLEvents",
+        "--offline"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:38.156162+00:00",
+      "completedAt": "2026-10-19T02:26:40.247170+00:00",
+      "elapsedSeconds": 2.0909983750316314,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLEvents-offline.log"
+    },
+    {
+      "label": "DSLBot-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLBot"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:40.247944+00:00",
+      "completedAt": "2026-10-19T02:26:43.895448+00:00",
+      "elapsedSeconds": 3.647495249984786,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLBot-tests.log"
+    },
+    {
+      "label": "DSLBot-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLBot"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:43.896186+00:00",
+      "completedAt": "2026-10-19T02:26:46.455084+00:00",
+      "elapsedSeconds": 2.558886374987196,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLBot-build.log"
+    },
+    {
+      "label": "DSLBot-offline",
+      "command": [
+        "swift",
+        "run",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/DSLBot",
+        "DSLBot",
+        "--offline"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:46.455930+00:00",
+      "completedAt": "2026-10-19T02:26:48.632647+00:00",
+      "elapsedSeconds": 2.176709708000999,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/DSLBot-offline.log"
+    },
+    {
+      "label": "dsl-compile-fixtures",
+      "command": [
+        "python3",
+        "Tools/ci/dsl_compile_fixtures.py",
+        "--repository",
+        "."
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:48.633394+00:00",
+      "completedAt": "2026-10-19T02:28:14.974031+00:00",
+      "elapsedSeconds": 86.33997095900122,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/dsl-compile-fixtures.log"
+    },
+    {
+      "label": "root-strict-tests-host",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:26:46.952211+00:00",
+      "completedAt": "2026-10-19T02:28:16.092533+00:00",
+      "elapsedSeconds": 89.13945250003599,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/root-strict-tests-host.log"
+    },
+    {
+      "label": "load-release-build-host",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Tools/DiscordKitLoadTests",
+        "-c",
+        "release"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:27:11.975557+00:00",
+      "completedAt": "2026-10-19T02:28:52.601151+00:00",
+      "elapsedSeconds": 100.62461241602432,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/load-release-build-host.log"
+    },
+    {
+      "label": "HTTPApp-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/HTTPApp"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:28:49.774685+00:00",
+      "completedAt": "2026-10-19T02:28:53.296810+00:00",
+      "elapsedSeconds": 3.5220205420046113,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/HTTPApp-build.log"
+    },
+    {
+      "label": "load-python-tests-host",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordKitLoadTests/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:28:52.602108+00:00",
+      "completedAt": "2026-10-19T02:28:53.767125+00:00",
+      "elapsedSeconds": 1.1650165829923935,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/load-python-tests-host.log"
+    },
+    {
+      "label": "GatewayBot-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/GatewayBot"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:28:53.297555+00:00",
+      "completedAt": "2026-10-19T02:28:55.851878+00:00",
+      "elapsedSeconds": 2.5543086669640616,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/GatewayBot-build.log"
+    },
+    {
+      "label": "cache-broadcast-profiles",
+      "command": [
+        "python3",
+        "Tools/DiscordKitLoadTests/scripts/record_cache_baseline.py",
+        "--output-dir",
+        "/private/tmp/phase15k-cache-profiles"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:28:53.807782+00:00",
+      "completedAt": "2026-10-19T02:29:15.435042+00:00",
+      "elapsedSeconds": 21.62694966699928,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/cache-broadcast-profiles.log"
+    },
+    {
+      "label": "dsl-extension-fixtures-cached",
+      "command": [
+        "python3",
+        "Tools/ci/dsl_extension_fixtures.py",
+        "--repository",
+        ".",
+        "--cache-path",
+        ".build/dsl-compile-cache"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:28:48.634055+00:00",
+      "completedAt": "2026-10-19T02:29:19.566304+00:00",
+      "elapsedSeconds": 30.93194120802218,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/dsl-extension-fixtures-cached.log"
+    },
+    {
+      "label": "RESTOnly-build",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Examples/RESTOnly"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:36:54.049735+00:00",
+      "completedAt": "2026-10-19T02:36:56.597749+00:00",
+      "elapsedSeconds": 2.547929166990798,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/RESTOnly-build.log"
+    },
+    {
+      "label": "local-markdown-json-integrity",
+      "command": [
+        "python3",
+        "/private/tmp/phase15k_links_json.py"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:37:33.805615+00:00",
+      "completedAt": "2026-10-19T02:37:33.931689+00:00",
+      "elapsedSeconds": 0.12600674998247996,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/local-markdown-json-integrity.log"
+    },
+    {
+      "label": "benchmark-python-tests-final",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordDSLBenchmarks/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:55:38.947784+00:00",
+      "completedAt": "2026-10-19T02:55:39.089482+00:00",
+      "elapsedSeconds": 0.14163154200650752,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/benchmark-python-tests-final.log"
+    },
+    {
+      "label": "cache-broadcast-soak",
+      "command": [
+        "/Users/carsonrau/Developer/DiscordKit/Tools/DiscordKitLoadTests/.build/release/DiscordKitLoadTests",
+        "--scenario",
+        "soak",
+        "--profile",
+        "accounts-1000000",
+        "--burst",
+        "--duration-seconds",
+        "1800"
+      ],
+      "startedAt": "2026-10-19T02:26:33.821204+00:00",
+      "completedAt": "2026-10-19T02:56:34.148734+00:00",
+      "elapsedSeconds": 1800.2920198749634,
+      "exitCode": 0,
+      "outputPath": "/Users/carsonrau/Developer/DiscordKit/Docs/Release/Measurements/phase15k-cache-broadcast-soak.json",
+      "sourceDrift": [],
+      "invariantsPassed": true
+    },
+    {
+      "label": "local-markdown-json-integrity-final",
+      "command": [
+        "python3",
+        "/private/tmp/phase15k_links_json.py"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:56:46.780081+00:00",
+      "completedAt": "2026-10-19T02:56:46.870312+00:00",
+      "elapsedSeconds": 0.09017691697226837,
+      "exitCode": 0,
+      "logPath": "/private/tmp/phase15k-validation-logs/local-markdown-json-integrity-final.log"
+    },
+    {
+      "id": "runtime-matrix",
+      "command": [
+        "/private/tmp/discorddsl-15k-runtime-build/out/Products/Release/DiscordDSLBenchmarks",
+        "--output",
+        "/Users/carsonrau/Developer/DiscordKit/Docs/Release/Measurements/phase15k-dsl-runtime.json"
+      ],
+      "durationSeconds": 108.87345350004034,
+      "endedAt": "2026-10-19T02:36:51.482293+00:00",
+      "exitCode": 0,
+      "name": "matrix",
+      "report": "Docs/Release/Measurements/phase15k-dsl-runtime.json",
+      "reportSHA256": "318a02aa421a964a8efffc4ef3d028637777c3848c5114c9dfbe0830f7310816",
+      "startedAt": "2026-10-19T02:35:02.608014+00:00",
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "id": "runtime-handler-soak",
+      "command": [
+        "/private/tmp/discorddsl-15k-runtime-build/out/Products/Release/DiscordDSLBenchmarks",
+        "--handlers",
+        "1000",
+        "--invocations",
+        "1000000",
+        "--minimum-duration-seconds",
+        "60",
+        "--output",
+        "/Users/carsonrau/Developer/DiscordKit/Docs/Release/Measurements/phase15k-dsl-handler-soak.json"
+      ],
+      "durationSeconds": 120.47070633299882,
+      "endedAt": "2026-10-19T02:38:51.974611+00:00",
+      "exitCode": 0,
+      "name": "handler-soak",
+      "report": "Docs/Release/Measurements/phase15k-dsl-handler-soak.json",
+      "reportSHA256": "22a4ce15665e99dee41d7406d4bbe7b4872ec31170a55005a52d967743b478c4",
+      "startedAt": "2026-10-19T02:36:51.502637+00:00",
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "id": "benchmark-swift-tests",
+      "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/discorddsl-15k-runtime-clang SWIFT_MODULECACHE_PATH=/private/tmp/discorddsl-15k-runtime-swift swift test --package-path Tools/DiscordDSLBenchmarks --scratch-path /private/tmp/discorddsl-15k-runtime-build --cache-path /private/tmp/discordkit-spm-cache --disable-sandbox --skip-update --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "log": "/private/tmp/discorddsl-15k-runtime-tests.log",
+      "testCount": 9
+    },
+    {
+      "id": "benchmark-release-build",
+      "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/discorddsl-15k-runtime-clang SWIFT_MODULECACHE_PATH=/private/tmp/discorddsl-15k-runtime-swift swift build -c release --package-path Tools/DiscordDSLBenchmarks --scratch-path /private/tmp/discorddsl-15k-runtime-build --cache-path /private/tmp/discordkit-spm-cache --disable-sandbox --skip-update --explicit-target-dependency-import-check error",
+      "exitCode": 0,
+      "log": "/private/tmp/discorddsl-15k-runtime-release-build-final.log",
+      "reportedBuildDurationSeconds": 100.48
+    },
+    {
+      "id": "compiler-budget-0",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordDSLBenchmarks/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "wallSeconds": 0.10045037500094622,
+      "exitCode": 0,
+      "output": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.024s\n\nOK\n"
+    },
+    {
+      "id": "compiler-budget-1",
+      "command": [
+        "python3",
+        "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+        "record",
+        "--compile-report",
+        "Docs/Release/Measurements/phase15k-dsl-compile.json",
+        "--runtime-report",
+        "Docs/Release/Measurements/phase15k-dsl-runtime.json",
+        "--output",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json"
+      ],
+      "wallSeconds": 0.05046029097866267,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-2",
+      "command": [
+        "python3",
+        "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+        "budgets",
+        "--baseline",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+        "--output",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json"
+      ],
+      "wallSeconds": 0.04722349997609854,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-3",
+      "command": [
+        "python3",
+        "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+        "check",
+        "--baseline",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+        "--budgets",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json",
+        "--compile-report",
+        "Docs/Release/Measurements/phase15k-dsl-compile.json",
+        "--runtime-report",
+        "Docs/Release/Measurements/phase15k-dsl-runtime.json",
+        "--output",
+        "Docs/Release/Measurements/phase15k-dsl-budget-check.json"
+      ],
+      "wallSeconds": 0.048048791009932756,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-4",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordDSLBenchmarks/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "wallSeconds": 0.09986208297777921,
+      "exitCode": 0,
+      "output": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.023s\n\nOK\n"
+    },
+    {
+      "id": "compiler-budget-5",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "Tools/DiscordDSLBenchmarks/scripts",
+        "Docs/Release/Measurements/phase15k-dsl-compile.json",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json",
+        "Docs/Release/Measurements/phase15k-dsl-budget-check.json"
+      ],
+      "wallSeconds": 0.012277959031052887,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-6",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordDSLBenchmarks/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "wallSeconds": 0.16928904096130282,
+      "exitCode": 0,
+      "output": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.082s\n\nOK\n"
+    },
+    {
+      "id": "compiler-budget-7",
+      "command": [
+        "python3",
+        "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+        "budgets",
+        "--baseline",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+        "--output",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json"
+      ],
+      "wallSeconds": 0.04984495899407193,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-8",
+      "command": [
+        "python3",
+        "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+        "check",
+        "--baseline",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+        "--budgets",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json",
+        "--compile-report",
+        "Docs/Release/Measurements/phase15k-dsl-compile.json",
+        "--runtime-report",
+        "Docs/Release/Measurements/phase15k-dsl-runtime.json",
+        "--output",
+        "Docs/Release/Measurements/phase15k-dsl-budget-check.json"
+      ],
+      "wallSeconds": 0.05085141700692475,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-9",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordDSLBenchmarks/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "wallSeconds": 0.1081345829879865,
+      "exitCode": 0,
+      "output": "...................\n----------------------------------------------------------------------\nRan 19 tests in 0.029s\n\nOK\n"
+    },
+    {
+      "id": "compiler-budget-10",
+      "command": [
+        "python3",
+        "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+        "budgets",
+        "--baseline",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+        "--output",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json"
+      ],
+      "wallSeconds": 0.04762162500992417,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-11",
+      "command": [
+        "python3",
+        "Tools/DiscordDSLBenchmarks/scripts/baseline.py",
+        "check",
+        "--baseline",
+        "Docs/Release/Measurements/phase15k-dsl-baseline.json",
+        "--budgets",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json",
+        "--compile-report",
+        "Docs/Release/Measurements/phase15k-dsl-compile.json",
+        "--runtime-report",
+        "Docs/Release/Measurements/phase15k-dsl-runtime.json",
+        "--output",
+        "Docs/Release/Measurements/phase15k-dsl-budget-check.json"
+      ],
+      "wallSeconds": 0.04765062499791384,
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "id": "compiler-budget-12",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "Tools/DiscordDSLBenchmarks/scripts",
+        "Docs/Release/Measurements/phase15k-dsl-budgets.json",
+        "Docs/Release/Measurements/phase15k-dsl-budget-check.json"
+      ],
+      "wallSeconds": 0.011398583999834955,
+      "exitCode": 0,
+      "output": ""
+    }
+  ],
+  "finalGraphAudit": {
+    "command": [
+      "python3",
+      "Tools/DiscordKitTools/scripts/release_check.py",
+      "graph",
+      "--repository",
+      "."
+    ],
+    "exitCode": 0,
+    "summary": {
+      "authoringPackages": {
+        "Packages/DiscordDSLExtensions": {
+          "products": 2,
+          "resolvedPackages": 7,
+          "runtimeTargets": [
+            "DiscordBits",
+            "DiscordBotDSL",
+            "DiscordCache",
+            "DiscordClient",
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordGateway",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 3,
+          "targets": 3
+        },
+        "Packages/DiscordDSLMacros": {
+          "products": 1,
+          "resolvedPackages": 8,
+          "runtimeTargets": [
+            "DiscordBits",
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 7,
+          "targets": 3
+        }
+      },
+      "consumers": {
+        "Examples/ActivityHost": {
+          "reachableTargets": [
+            "DiscordActivities",
+            "DiscordBits",
+            "DiscordCommerce",
+            "DiscordCore",
+            "DiscordHTTP",
+            "DiscordModels",
+            "DiscordOAuth",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordActivities",
+            "DiscordCommerce",
+            "DiscordCore",
+            "DiscordHTTP",
+            "DiscordModels",
+            "DiscordOAuth"
+          ],
+          "sourceFiles": 3,
+          "targets": 3
+        },
+        "Examples/CommandsApp": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordModels"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/DSLBot": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordBotDSL",
+            "DiscordCache",
+            "DiscordClient",
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordGateway",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordBotDSL",
+            "DiscordClient",
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordGateway",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/DSLCommands": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordNIOTransport",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordNIOTransport",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 4,
+          "targets": 1
+        },
+        "Examples/DSLEvents": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordBotDSL",
+            "DiscordCache",
+            "DiscordClient",
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordGateway",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordBotDSL",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordGateway",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/GatewayBot": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCache",
+            "DiscordClient",
+            "DiscordCore",
+            "DiscordFoundationTransport",
+            "DiscordGateway",
+            "DiscordHTTP",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCache",
+            "DiscordClient",
+            "DiscordCore",
+            "DiscordFoundationTransport",
+            "DiscordGateway",
+            "DiscordHTTP",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/HTTPApp": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordNIOTransport",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordNIOTransport",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/OAuthApp": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCore",
+            "DiscordHTTP",
+            "DiscordModels",
+            "DiscordOAuth",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCore",
+            "DiscordOAuth"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/RESTOnly": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCore",
+            "DiscordFoundationTransport",
+            "DiscordHTTP",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCore",
+            "DiscordFoundationTransport",
+            "DiscordHTTP"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/RPCApp": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCertifiedDevices",
+            "DiscordCore",
+            "DiscordRPC",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCertifiedDevices",
+            "DiscordCore",
+            "DiscordRPC",
+            "DiscordTransport"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/SocialApp": {
+          "reachableTargets": [
+            "DiscordActivities",
+            "DiscordBits",
+            "DiscordCommerce",
+            "DiscordCore",
+            "DiscordGameServices",
+            "DiscordHTTP",
+            "DiscordMedia",
+            "DiscordModels",
+            "DiscordOAuth",
+            "DiscordRPC",
+            "DiscordSocial",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCore",
+            "DiscordMedia",
+            "DiscordSocial"
+          ],
+          "sourceFiles": 1,
+          "targets": 1
+        },
+        "Examples/VoiceBot": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCore",
+            "DiscordDAVE",
+            "DiscordMLS",
+            "DiscordMedia",
+            "DiscordModels",
+            "DiscordTransport",
+            "DiscordVoice",
+            "DiscordVoiceCodecs",
+            "DiscordVoiceCrypto"
+          ],
+          "selectedProducts": [
+            "DiscordDAVE",
+            "DiscordMLS",
+            "DiscordMedia",
+            "DiscordModels",
+            "DiscordVoice",
+            "DiscordVoiceCodecs",
+            "DiscordVoiceCrypto"
+          ],
+          "sourceFiles": 3,
+          "targets": 1
+        },
+        "Tools/DiscordDSLBenchmarks": {
+          "reachableTargets": [
+            "DiscordBits",
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordHTTP",
+            "DiscordInteractions",
+            "DiscordModels",
+            "DiscordTransport"
+          ],
+          "selectedProducts": [
+            "DiscordCommandDSL",
+            "DiscordCommands",
+            "DiscordCore",
+            "DiscordDSL",
+            "DiscordInteractions",
+            "DiscordModels"
+          ],
+          "sourceFiles": 4,
+          "targets": 1
+        }
+      },
+      "imports": 739,
+      "products": 31,
+      "resolvedPackages": 7,
+      "sourceFiles": 337,
+      "targets": 31
+    }
+  },
+  "testTotals": {
+    "rootStrictSwiftTesting": 2367,
+    "loadSwiftTesting": 28,
+    "loadPython": 12,
+    "extensionsSwiftTesting": 6,
+    "macrosSwiftTesting": 31,
+    "CommandsAppSwiftTesting": 3,
+    "DSLCommandsSwiftTesting": 4,
+    "DSLEventsSwiftTesting": 3,
+    "DSLBotSwiftTesting": 3,
+    "macroExternalCompileFixtures": 26,
+    "dependencyExternalCompileFixtures": 3,
+    "toolingSwift": 104,
+    "toolingPython": 229,
+    "ciPython": 44,
+    "benchmarkSwift": 9,
+    "benchmarkPython": 19
+  },
+  "measurementSummary": {
+    "defaultInvocations": 6000000,
+    "defaultWorkloads": 6,
+    "declaredHandlerCounts": [
+      10,
+      100,
+      1000
+    ],
+    "offeredWorkers": 8,
+    "handlerSoak": [
+      {
+        "mode": "direct",
+        "invocations": 3121728,
+        "durationSeconds": 60.019611333,
+        "memoryObservations": 55,
+        "cleanup": {
+          "acknowledgementBytes": 0,
+          "activeAcknowledgements": 0,
+          "activeHandlers": 0,
+          "activeWorkers": 0
+        }
+      },
+      {
+        "mode": "dsl",
+        "invocations": 3113536,
+        "durationSeconds": 60.014009291,
+        "memoryObservations": 55,
+        "cleanup": {
+          "acknowledgementBytes": 0,
+          "activeAcknowledgements": 0,
+          "activeHandlers": 0,
+          "activeWorkers": 0
+        }
+      }
+    ],
+    "cacheBroadcastSoak": {
+      "completedRounds": 227274,
+      "durationSeconds": 1800.005830709,
+      "checkpoints": 121,
+      "selectedScopes": 4
+    },
+    "finiteBudgetMetrics": 288,
+    "budgetSelfCheckPassed": true,
+    "controlledRegressionDemonstrated": false
+  },
+  "documentationScope": {
+    "swiftFiles": 777,
+    "explicitCallables": 8567,
+    "missingComments": 0,
+    "rootPublicDocCArchives": 31,
+    "limitation": "Syntactic documentation presence, curated examples and DocC conversion do not prove semantic completeness."
+  },
+  "apiScope": "No runtime API change in 15K. Current 0.15.0 candidate comparison to frozen 0.14.0 retains the pre-existing 1010 additions, zero changed/removed symbols and zero removed relationships. The checked pre-1.0 minor version rule accepts 0.15.0; no binary ABI or other-platform certification.",
+  "resolvedInfrastructureFailures": [
+    {
+      "label": "root-strict-tests",
+      "command": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:24:46.088137+00:00",
+      "completedAt": "2026-10-19T02:25:53.388624+00:00",
+      "elapsedSeconds": 67.29996404104168,
+      "exitCode": 1,
+      "logPath": "/private/tmp/phase15k-validation-logs/root-strict-tests.log"
+    },
+    {
+      "label": "load-python-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "Tools/DiscordKitLoadTests/scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:25:59.533017+00:00",
+      "completedAt": "2026-10-19T02:25:59.680064+00:00",
+      "elapsedSeconds": 0.14704966597491875,
+      "exitCode": 1,
+      "logPath": "/private/tmp/phase15k-validation-logs/load-python-tests.log"
+    },
+    {
+      "label": "dsl-extension-fixtures",
+      "command": [
+        "python3",
+        "Tools/ci/dsl_extension_fixtures.py",
+        "--repository",
+        "."
+      ],
+      "environmentOverrides": {
+        "CLANG_MODULE_CACHE_PATH": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/phase15k-validation-cache/clang",
+        "SWIFTNIO_STRICT": "1"
+      },
+      "startedAt": "2026-10-19T02:28:14.974992+00:00",
+      "completedAt": "2026-10-19T02:28:17.106220+00:00",
+      "elapsedSeconds": 2.1312163750408217,
+      "exitCode": 1,
+      "logPath": "/private/tmp/phase15k-validation-logs/dsl-extension-fixtures.log"
+    },
+    {
+      "label": "load-release-build-sandbox",
+      "command": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/private/tmp/phase15k-validation-cache/swiftpm",
+        "--skip-update",
+        "--package-path",
+        "Tools/DiscordKitLoadTests",
+        "-c",
+        "release"
+      ],
+      "startedAt": "2026-10-19T02:24:04.997703+00:00",
+      "completedAt": "2026-10-19T02:25:32.571381+00:00",
+      "elapsedSeconds": 87.57367777824402,
+      "timingSource": "log creation to final write; approximate subprocess wall time",
+      "exitCode": 1,
+      "logPath": "/private/tmp/phase15k-validation-logs/load-release-build.log",
+      "failure": "Managed sandbox denied dsymutil after successful executable linking; resolved by approved host rerun."
+    },
+    {
+      "label": "cache-soak-sandbox-metadata",
+      "command": [
+        "python3",
+        "/private/tmp/phase15k_validation.py",
+        "soak"
+      ],
+      "elapsedSeconds": 0.0828,
+      "exitCode": 1,
+      "failure": "Managed sandbox denied sysctl hw.model during baseline metadata capture before workload startup; resolved by approved host rerun."
+    }
+  ],
+  "infrastructureFailureResolutions": {
+    "root-strict-tests": "Sandbox denied loopback/Unix sockets; full strict-NIO host rerun passed.",
+    "load-python-tests": "Sandbox denied owned loopback peer binds; host rerun passed.",
+    "dsl-extension-fixtures": "Default fresh extension dependency cache missing repositories; rerun using populated dsl-compile-cache passed3/3.",
+    "load-release-build-sandbox": "Sandbox denied dSYM generation after linking; host rebuild passed.",
+    "cache-soak-sandbox-metadata": "Sandbox denied read-only hardware sysctl; approved host rerun completed and passed the 1800-second soak."
+  },
+  "independentReview": {
+    "runtime": "Reviewed configuration, direct/DSL routes, schema/worker/sample bounds, process gauges, successful/failure/cancellation cleanup and tests; no blocking findings.",
+    "compiler": "Reviewed generated manual/macro consumers, dependency bootstrap separation, clean-output handling, incremental restoration, timing/RSS scope and tests.",
+    "resolvedFindings": [
+      "Runtime evidence validator now enforces Swift config bounds and actual configured duration.",
+      "Runtime throughput must match completed work and elapsed time.",
+      "Bounded monotonic memory observations are required and their maxima budgeted.",
+      "Duplicate JSON keys and unavailable baseline identity values are rejected.",
+      "Compiler ru_maxrss and concurrent workload limitations are explicit."
+    ],
+    "pythonBenchmarkTests": 19
+  },
+  "qualificationLimits": [
+    "Local macOS arm64 Swift 6.4 offline/synthetic evidence only; no authorized Discord, hardware/device, other-platform or production/fleet qualification.",
+    "First baseline only; a matching self-check is not a previous-implementation comparison. Concurrent work, prefix latency samples, fixed order and allocator history prevent controlled attribution. Investigate greater-than-10-percent regressions reproduced in three matching runs.",
+    "Plan timing includes schema/definition construction, lowering and router admission; excludes fixed interaction parsing. Invocation timing includes instrumentation, fresh ownership and callback validation.",
+    "Runtime RSS/CPU/live allocations are process-wide gauges, not cumulative allocations or exact per-plan heap sizes. Accounted JSON/counts describe finite logical/transient author state. Zero active ownership is not entire-process zero growth.",
+    "Compiler clean builds retain dependencies/plugin; one sample per clean/incremental operation includes planning/codegen/link. Native backend measurements omit its optional explicit-import checker; independent repository graph/import audit passes.",
+    "Runtime handler evidence uses normalized contexts and initial replies only. It does not measure signed HTTP ingress, Gateway event-host throughput, other response families or supervised network sessions.",
+    "Full Phase 15 documentation/migration and release certification remain Part 15L; optional service, distributed coordinator, keyed-store and live-registration gates are unchanged."
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "reportKind": "dsl-compiler-cost",
+  "recordedAt": "2026-10-19T02:33:40.054124+00:00",
+  "configuration": {
+    "handlerCounts": [
+      10,
+      100,
+      1000
+    ],
+    "modes": [
+      "manual",
+      "macro"
+    ],
+    "jobs": 4,
+    "samples": 1,
+    "configuration": "debug",
+    "buildSystem": "native",
+    "handlersPerFile": 10,
+    "optionsPerHandler": 1,
+    "incrementalEdit": "one response literal in the first ten-handler file",
+    "dependencyColdBuildIncluded": false
+  },
+  "environment": {
+    "compiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+    "operatingSystem": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "architecture": "arm64",
+    "processorCount": 14,
+    "hardwareModel": "Mac15,10",
+    "physicalMemoryBytes": 38654705664
+  },
+  "revision": "6eac0f733d3445e1d6dd160eeec2d60e118be26f",
+  "sourceHash": "4b08e6cb758ef8902c96c90ef84e90d5874db69b9d1608667a53a95209a087e0",
+  "fixtureHash": "d9b5e0e055bf1b3287fc957b61fb7d8ec9cf9755a5c493b52e4a7d015f18dabc",
+  "resolutionHash": "a799e14df791b1f57f392454f78e83ebc2e77eaecee9cbed920500d6ca5e58a8",
+  "bootstrap": {
+    "wallSeconds": 3.5994212080258876,
+    "peakRSSBytes": 126746624
+  },
+  "workloads": [
+    {
+      "mode": "manual",
+      "handlerCount": 10,
+      "samples": [
+        {
+          "clean": {
+            "wallSeconds": 4.03429545898689,
+            "peakRSSBytes": 215957504
+          },
+          "incremental": {
+            "wallSeconds": 4.107086334028281,
+            "peakRSSBytes": 216285184
+          },
+          "removedConsumerOutputs": [
+            "arm64-apple-macosx/debug/Manual10.build/Handlers000.swiftdeps",
+            "arm64-apple-macosx/debug/Manual10.build/Handlers000.dia",
+            "arm64-apple-macosx/debug/Manual10.build/Arguments.dia",
+            "arm64-apple-macosx/debug/Manual10.build/Arguments.swift.o",
+            "arm64-apple-macosx/debug/Manual10.build/Handlers000.d",
+            "arm64-apple-macosx/debug/Manual10.build/Handlers000.swift.o",
+            "arm64-apple-macosx/debug/Manual10.build/Main.d",
+            "arm64-apple-macosx/debug/Manual10.build/Arguments.swiftdeps",
+            "arm64-apple-macosx/debug/Manual10.build/Main.swift.o",
+            "arm64-apple-macosx/debug/Manual10.build/primary.priors",
+            "arm64-apple-macosx/debug/Manual10.build/Arguments.d",
+            "arm64-apple-macosx/debug/Manual10.build/Manual10.emit-module.dia",
+            "arm64-apple-macosx/debug/Manual10.build/Main.swiftdeps",
+            "arm64-apple-macosx/debug/Manual10.build/Manual10.emit-module.d",
+            "arm64-apple-macosx/debug/Manual10.build/Main.dia",
+            "arm64-apple-macosx/debug/Manual10",
+            "arm64-apple-macosx/debug/Manual10.dSYM",
+            "arm64-apple-macosx/debug/Modules/Manual10.swiftsourceinfo",
+            "arm64-apple-macosx/debug/Modules/Manual10.abi.json",
+            "arm64-apple-macosx/debug/Modules/Manual10.swiftmodule",
+            "arm64-apple-macosx/debug/Modules/Manual10.swiftdoc"
+          ],
+          "binaryBytes": 16829888,
+          "binarySHA256": "cc01add0ff98d1cef188a9f7cbb8e497c0656b4db6bf91145755e612fbd5576d"
+        }
+      ],
+      "functionalGatesPassed": true
+    },
+    {
+      "mode": "macro",
+      "handlerCount": 10,
+      "samples": [
+        {
+          "clean": {
+            "wallSeconds": 4.269373707997147,
+            "peakRSSBytes": 215859200
+          },
+          "incremental": {
+            "wallSeconds": 4.261327999993227,
+            "peakRSSBytes": 215646208
+          },
+          "removedConsumerOutputs": [
+            "arm64-apple-macosx/debug/Macro10.build/Macro10.emit-module.d",
+            "arm64-apple-macosx/debug/Macro10.build/Handlers000.dia",
+            "arm64-apple-macosx/debug/Macro10.build/Arguments.dia",
+            "arm64-apple-macosx/debug/Macro10.build/Arguments.swift.o",
+            "arm64-apple-macosx/debug/Macro10.build/Main.d",
+            "arm64-apple-macosx/debug/Macro10.build/Arguments.swiftdeps",
+            "arm64-apple-macosx/debug/Macro10.build/Main.swift.o",
+            "arm64-apple-macosx/debug/Macro10.build/Macro10.emit-module.dia",
+            "arm64-apple-macosx/debug/Macro10.build/primary.priors",
+            "arm64-apple-macosx/debug/Macro10.build/Arguments.d",
+            "arm64-apple-macosx/debug/Macro10.build/Main.swiftdeps",
+            "arm64-apple-macosx/debug/Macro10.build/Main.dia",
+            "arm64-apple-macosx/debug/Modules/Macro10.swiftsourceinfo",
+            "arm64-apple-macosx/debug/Modules/Macro10.abi.json",
+            "arm64-apple-macosx/debug/Modules/Macro10.swiftmodule",
+            "arm64-apple-macosx/debug/Modules/Macro10.swiftdoc"
+          ],
+          "binaryBytes": 16836096,
+          "binarySHA256": "1c34a0562a7c7d5d22bb7430dde6743b8524c29699b39e3dbe71d209ccf54695"
+        }
+      ],
+      "functionalGatesPassed": true
+    },
+    {
+      "mode": "manual",
+      "handlerCount": 100,
+      "samples": [
+        {
+          "clean": {
+            "wallSeconds": 4.61880708404351,
+            "peakRSSBytes": 221396992
+          },
+          "incremental": {
+            "wallSeconds": 4.525581667025108,
+            "peakRSSBytes": 221544448
+          },
+          "removedConsumerOutputs": [],
+          "binaryBytes": 17379776,
+          "binarySHA256": "02c63d8591828928dc6380de8c3edbec988d6b396692bc3dc623c1cfd5b00207"
+        }
+      ],
+      "functionalGatesPassed": true
+    },
+    {
+      "mode": "macro",
+      "handlerCount": 100,
+      "samples": [
+        {
+          "clean": {
+            "wallSeconds": 4.602968791965395,
+            "peakRSSBytes": 221872128
+          },
+          "incremental": {
+            "wallSeconds": 4.303930082998704,
+            "peakRSSBytes": 222724096
+          },
+          "removedConsumerOutputs": [],
+          "binaryBytes": 17513072,
+          "binarySHA256": "b8895b673f4494fcb2064f845947dc063317240c2df1f8a6bfcebf99d2b7b690"
+        }
+      ],
+      "functionalGatesPassed": true
+    },
+    {
+      "mode": "manual",
+      "handlerCount": 1000,
+      "samples": [
+        {
+          "clean": {
+            "wallSeconds": 6.3562778329942375,
+            "peakRSSBytes": 253034496
+          },
+          "incremental": {
+            "wallSeconds": 4.684098083002027,
+            "peakRSSBytes": 253018112
+          },
+          "removedConsumerOutputs": [],
+          "binaryBytes": 23086608,
+          "binarySHA256": "0bbbe2cff4134d31db0ae33fb4fe90cded7112d4676ca1b6749e569a43dfbbd3"
+        }
+      ],
+      "functionalGatesPassed": true
+    },
+    {
+      "mode": "macro",
+      "handlerCount": 1000,
+      "samples": [
+        {
+          "clean": {
+            "wallSeconds": 8.01528941700235,
+            "peakRSSBytes": 299614208
+          },
+          "incremental": {
+            "wallSeconds": 6.087919332960155,
+            "peakRSSBytes": 301875200
+          },
+          "removedConsumerOutputs": [],
+          "binaryBytes": 24175296,
+          "binarySHA256": "8709cf0257ba939839bf8e19b93d7e08c106ae1464a4a0bf19458568e09b05dd"
+        }
+      ],
+      "functionalGatesPassed": true
+    }
+  ],
+  "qualification": {
+    "localOnly": true,
+    "liveDiscordQualified": false,
+    "productionQualified": false,
+    "scope": "SwiftPM debug consumer compile/link; warm dependencies; no handler execution or live I/O",
+    "timingIsolationQualified": false,
+    "processRSSSemantics": "time ru_maxrss is the largest reported process RSS, not simultaneous aggregate compiler-family RSS",
+    "concurrentWorkloadNote": "Local cache/broadcast soak and development validation were active during compiler measurements; no regression attribution or isolated compiler capacity is established."
+  }
+}
