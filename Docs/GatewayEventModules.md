@@ -2,9 +2,11 @@
 
 Part 15H adds the independently adopted `DiscordBotDSL` product. It composes typed
 protocol handlers with the shared `BotModule`/`BotBuilder` structure and the existing
-bounded Gateway hub/dispatcher. Its direct dependencies are DSL, Gateway, Models
-and Core. Existing shared/command products gain no upward dependency; event-only
-adoption requires no Client, Cache, command runtime, concrete adapter or macros.
+bounded Gateway hub/dispatcher. Part 15I broadens the explicitly selected BotDSL
+product with [supervised bot applications](BotApplications.md), Client and CommandDSL
+composition. Existing shared/command products gain no upward dependency. Event-only
+execution still creates no client, cache, command runtime, concrete adapter or macros,
+although BotDSL's selected product graph now includes the host dependencies.
 
 ## Declare, compile, subscribe, run
 
@@ -96,9 +98,10 @@ the hub's existing semantics; already admitted callbacks are joined.
 
 ## Qualification boundary
 
-Part 15H owns event pipelines only. It never starts or stops a client, consumes raw
-shard queues, bridges Gateway interactions, reads credentials or registers commands.
-Part 15I retains shared service/interaction adapters and supervised bot application
-lifetime. Parts 15J-15L retain full extension adoption, DSL handler measurements,
+The event compilation and pipeline APIs own event delivery only. They never start
+or stop a client, consume raw shard queues, bridge interactions, read credentials
+or register commands. Explicitly adopt Part 15I's [bot runtime](BotApplications.md)
+for shared services, trusted interaction delivery and supervised client lifetime.
+Parts 15J-15L retain full extension adoption, DSL handler measurements,
 capacity/soak and final release certification. Local synthetic tests and the existing
 cache/broadcast soak do not qualify live Discord, other platforms or DSL capacity.

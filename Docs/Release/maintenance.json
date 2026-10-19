@@ -4,7 +4,7 @@
   "nextReviewDue": "2026-10-25",
   "unclassifiedEntries": [],
   "historyPath": "Docs/Parity/history.json",
-  "reviewScope": "Affected release/HTTP transition sources and Part 15F command-family authoring, partial input, response compatibility and explicit reconciliation contracts; historical records retained. Discovery status is not full semantic parity.",
+  "reviewScope": "Affected release/HTTP transition sources and Parts 15F-15I command-family, Gateway event and supervised bot composition contracts. Part 15I refresh is limited to the three named official Gateway/interaction pages; historical reviews and transitions are retained. Discovery status is not full semantic parity.",
   "officialSources": [
     {
       "url": "https://docs.discord.com/developers/reference.md",
@@ -25,10 +25,10 @@
       "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
     },
     {
-      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
       "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
-      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15i.json",
+      "sha256": "e10cfc532c0081652c88f46c397ab0300a16d350f91bc238b7b6551e8f8324e3"
     },
     {
       "url": "https://docs.discord.com/developers/components/reference.md",
@@ -41,6 +41,18 @@
       "verifiedOn": "2026-10-18",
       "snapshotPath": "Docs/Release/sources/2026-10-18-phase15e.json",
       "sha256": "51e9aead1048fa9f5d9228eee7783d2a21c0b156f7e827d63250602601d43828"
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway",
+      "verifiedOn": "2026-10-18",
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15i.json",
+      "sha256": "e10cfc532c0081652c88f46c397ab0300a16d350f91bc238b7b6551e8f8324e3"
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
+      "verifiedOn": "2026-10-18",
+      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15i.json",
+      "sha256": "e10cfc532c0081652c88f46c397ab0300a16d350f91bc238b7b6551e8f8324e3"
     }
   ],
   "transitions": [

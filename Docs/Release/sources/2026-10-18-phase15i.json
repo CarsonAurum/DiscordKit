@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "scope": "Part 15I supervised bot authoring over existing Gateway v10, normalized interaction ownership and HTTP v10 response callbacks. No new model or wire support.",
+  "protocolVersions": {
+    "Gateway": "10",
+    "REST": "10"
+  },
+  "sources": [
+    {
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "verifiedOn": "2026-10-18",
+      "reviewMethod": "Official page opened with web tool. Reviewed mutually exclusive Gateway/HTTP receipt, mandatory HTTP callbacks for Gateway interactions, receipt-relative initial/continuation deadlines, callback status codes and original-edit/followup operations."
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway",
+      "verifiedOn": "2026-10-18",
+      "reviewMethod": "Official Gateway page opened with web tool; existing owned connection and explicit selected-intent boundaries retained."
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
+      "verifiedOn": "2026-10-18",
+      "reviewMethod": "Official Interaction Create section inspected with web tool; inner payload remains the existing Interaction model."
+    }
+  ],
+  "findings": [
+    "Gateway receipt and outgoing HTTP receipt are alternative configured modes. The bridge responds through HTTP using the exact interaction token.",
+    "Initial acknowledgement must occur within three seconds of receipt and continuation tokens last fifteen minutes. Local queueing cannot reset either receipt-relative budget.",
+    "Ordinary public broadcast publication is not authentication. Only package-owned client ingestion supplies the private bridge; application IDs and normalized response ownership are validated before routing."
+  ],
+  "collectionLimits": "Official page review only; no archived upstream raw bytes, full semantic audit or authorized live Discord qualification."
+}

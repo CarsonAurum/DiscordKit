@@ -33,6 +33,7 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
     private let authority: ClientAuthority<C>
     private let project: @Sendable (GatewayEvent) async throws -> Void
     private let cleanup: @Sendable () async -> Void
+    private var interactionHandler: (@Sendable (GatewayEvent) async throws -> Void)?
     private var phase: ClientPhase = .idle
     private var shards: [GatewayShard<C, Leases>] = []
     private var reservation: UInt64?
@@ -65,6 +66,17 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
         self.token = token; self.configuration = configuration; self.services = services
         self.transport = transport; self.clock = clock; self.leases = leases
         self.authority = authority; self.events = events; self.project = project; self.cleanup = cleanup
+    }
+
+    /// Installs the package-owned interaction queue before this single-use client starts.
+    /// Public broadcast publication and replay events never invoke this callback. The callback must
+    /// only enqueue bounded input: decoding, HTTP operations and user handlers belong to its separate
+    /// supervised dispatcher. Installation neither subscribes nor starts the client.
+    /// - Parameter handler: Sole trusted ingestion receiver, called before optional cache projection.
+    /// - Throws: `alreadyRunning` if installation was already performed or the client left idle state.
+    package func setInteractionHandler(_ handler: @escaping @Sendable (GatewayEvent) async throws -> Void) throws {
+        guard phase == .idle, interactionHandler == nil else { throw ClientFailure.alreadyRunning }
+        interactionHandler = handler
     }
 
     /// Discovers v10 topology and supervises all selected sessions until shutdown or failure.
@@ -226,14 +238,24 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
         }
     }
 
-    /// Reduces and publishes ordered batches without invoking user handlers on shard actors.
-    /// - Parameter shard: This run's sole raw queue consumer.
-    /// - Throws: Cancellation, raw ingestion failures or sanitized projection failure.
+    /// Drains each bounded raw batch in shard order, queues trusted interaction dispatches before
+    /// optional state projection, then publishes independent public broadcast copies. The package-only
+    /// interaction receiver can enqueue bounded input only; arbitrary handlers and HTTP response work
+    /// belong to a separately supervised dispatcher. Public hub publication never calls this receiver.
+    /// - Parameter shard: This run's exclusive raw queue consumer; raw ownership is never transferred.
+    /// - Throws: Cancellation, raw ingestion/queue failures, or sanitized `invalidPayload` for private
+    ///   receiver/projection failure. A failed event is not published or replayed. Actor suspension
+    ///   permits other shards to progress; heartbeat/control receive remains owned by the shard.
     private func ingest(_ shard: GatewayShard<C, Leases>) async throws {
         while let batch = try await shard.nextEvents(maximum: configuration.ingestionBatchSize) {
             for event in batch {
                 try Task.checkCancellation()
-                do { try await project(event) }
+                do {
+                    if event.opcode == 0, event.name == "INTERACTION_CREATE" {
+                        try await interactionHandler?(event)
+                    }
+                    try await project(event)
+                }
                 catch is CancellationError { throw CancellationError() }
                 catch { throw GatewayFailure.invalidPayload }
                 _ = await events.publish(event)
@@ -248,10 +270,13 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
         }
     }
 
-    /// Transfers optional dependency cleanup exactly once before its suspension point.
+    /// Releases the private interaction receiver and transfers optional dependency cleanup exactly
+    /// once before its suspension point. Running clients call this only after ingestion children join;
+    /// pre-run shutdown drops the idle receiver without discovering, leasing or retaining its catalog.
     private func cleanupOnce() async {
         guard !cleaned else { return }
         cleaned = true
+        interactionHandler = nil
         await cleanup()
     }
 

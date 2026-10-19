@@ -1574,6 +1574,50 @@
       ],
       "details": "changes/phase15h-gateway-event-modules.md",
       "remainingGates": "../DSLImplementationRoadmap.md"
+    },
+    {
+      "id": "2026-10-18-phase15i-supervised-bot-applications",
+      "recordedOn": "2026-10-18",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-18",
+      "localSupportDate": "2026-10-18",
+      "localRelease": "unpublished 0.15.0 candidate",
+      "localCommit": "unknown",
+      "changeType": "authoring_and_existing_runtime_composition",
+      "previousBehavior": "BotDSL compiled typed event modules and owned event pipelines; consumers composed client supervision and Gateway command delivery directly.",
+      "currentBehavior": "BotApplication and BotRuntime explicitly compose one existing client, bounded event pipelines and optional trusted Gateway interactions with shared typed services. Subscriptions precede startup, terminal exits cancel and join owned work, HTTP response ownership remains unchanged and ordinary execution never registers commands.",
+      "affectedSymbols": [
+        "BotApplication",
+        "BotRuntime",
+        "BotRuntimePhase",
+        "BotRuntimeFailure",
+        "BotRuntimeFailures",
+        "BotServiceProviding",
+        "BotServiceAdapter",
+        "GatewayInteractionAdapter",
+        "GatewayInteractionFailure",
+        "DiscordClient",
+        "GatewayEvent"
+      ],
+      "affectedPayloads": "Existing Gateway v10 INTERACTION_CREATE and HTTP v10 interaction callback/edit-original/followup operations. No new event, endpoint, intent, permission or model-parity classification.",
+      "breakingChanges": [],
+      "migration": "Existing direct consumers remain valid. BotDSL now explicitly selects Client and CommandDSL host dependencies; shared/command-only adoption remains independent. Supply host dependencies and shared authorities explicitly, use requestStop in handlers, join run/shutdown externally and synchronize commands only when requested. Synthetic public-hub publication cannot authenticate interaction input.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/receiving-and-responding",
+        "https://docs.discord.com/developers/events/gateway",
+        "https://docs.discord.com/developers/events/gateway-events#interaction-create"
+      ],
+      "details": "changes/phase15i-supervised-bot-applications.md",
+      "remainingGates": "../DSLImplementationRoadmap.md"
     }
   ]
 }

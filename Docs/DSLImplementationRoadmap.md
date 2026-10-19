@@ -10,13 +10,16 @@ interpolation over existing Models. **15F** adds command trees, typed context me
 partial autocomplete, exact component/modal handlers and explicit catalog reconciliation.
 **15G** adds bounded short-circuit policies, ordered middleware, injected authorization and
 concurrency admission with explicit rejection/error mapping. **15H** adds typed Gateway
-event modules over existing bounded subscriptions and per-shard dispatch.
+event modules over existing bounded subscriptions and per-shard dispatch. **15I** adds
+an explicit bot application host, shared REST services and a trusted Gateway interaction
+bridge under the existing supervised client lifetime.
 These statuses do not
 imply that the complete bot authoring experience is available. See
 [shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md),
 [response ownership and HTTP applications](CommandResponses.md),
 [message/component builders](MessageBuilders.md), [command families](CommandFamilies.md),
-[policies and middleware](CommandPolicies.md), [Gateway event modules](GatewayEventModules.md) and
+[policies and middleware](CommandPolicies.md), [Gateway event modules](GatewayEventModules.md),
+[supervised bot applications](BotApplications.md) and
 [architecture](Architecture.md) for the implemented APIs and product boundaries.
 
 | Milestone | Status | Scope |
@@ -29,7 +32,7 @@ imply that the complete bot authoring experience is available. See
 | 15F | Implemented | Slash trees, typed context menus, partial autocomplete, exact component/modal handlers, legal response families and explicit change-only catalog reconciliation. |
 | 15G | Implemented | Bounded named/operator policies and middleware, guild/context checks, injected authorization/concurrency and explicit rejection/error mapping. |
 | 15H | Implemented | Typed selectors/handlers, explicit intent validation, one default subscription and bounded independent groups over existing per-shard dispatch. |
-| 15I | Planned | Bot application and supervised client/interaction lifetime. |
+| 15I | Implemented | Explicit BotApplication host construction, shared typed services, trusted Gateway interaction callbacks over HTTP and supervised client/pipeline lifetime. |
 | 15J | Planned | Independent external extensions, typed dependency validation and consumer adoption. |
 | 15K | Planned | Compile-time and direct-versus-DSL runtime measurements, finite budgets and DSL-specific soak evidence. |
 | 15L | Planned | Complete DSL adoption/migration guides and full Phase 15 release certification. |
@@ -53,6 +56,14 @@ field-presence semantics remain available. Part 15F extends the compiled catalog
 all currently supported command families and route-only interaction contributions.
 Initial-response constraints and complete-versus-partial decoding remain distinct;
 existing command reconciliation preserves unmanaged names and partial outcomes.
+
+Part 15I broadens the explicitly selected `DiscordBotDSL` graph to compose Client,
+CommandDSL and the existing Commands/Interactions/HTTP/Transport owners. Existing
+products acquire no dependency on BotDSL; shared and command-only adoption remain
+independent. `BotRuntime` subscribes before client startup and joins client, event
+and interaction work on terminal exit. Construction and ordinary execution register
+nothing. Trusted interaction admission comes from the client's ingestion boundary;
+publishing a synthetic envelope to an ordinary event hub grants no authenticity.
 
 Structural admission limits describe finite compilation resources. They do not
 establish network throughput, bot population, live Discord interoperability or

@@ -117,6 +117,45 @@
         ]
       }
     },
+    "Examples/DSLBot": {
+      "forbidden": [
+        "DiscordActivities",
+        "DiscordApplePlatform",
+        "DiscordCertifiedDevices",
+        "DiscordCommerce",
+        "DiscordDAVE",
+        "DiscordDSLMacros",
+        "DiscordDSLMacrosPlugin",
+        "DiscordFoundationTransport",
+        "DiscordGameServices",
+        "DiscordKit",
+        "DiscordMLS",
+        "DiscordMedia",
+        "DiscordNIOTransport",
+        "DiscordOAuth",
+        "DiscordRPC",
+        "DiscordSocial",
+        "DiscordTestSupport",
+        "DiscordUnixPlatform",
+        "DiscordVoice",
+        "DiscordVoiceCodecs",
+        "DiscordVoiceCrypto"
+      ],
+      "targets": {
+        "DSLBot": [
+          "DiscordKit/DiscordBotDSL",
+          "DiscordKit/DiscordClient",
+          "DiscordKit/DiscordCommandDSL",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordDSL",
+          "DiscordKit/DiscordGateway",
+          "DiscordKit/DiscordHTTP",
+          "DiscordKit/DiscordInteractions",
+          "DiscordKit/DiscordModels",
+          "DiscordKit/DiscordTransport"
+        ]
+      }
+    },
     "Examples/DSLCommands": {
       "authoringPackages": {
         "DiscordDSLMacros": "Packages/DiscordDSLMacros"
@@ -161,14 +200,9 @@
       "forbidden": [
         "DiscordActivities",
         "DiscordApplePlatform",
-        "DiscordCache",
-        "DiscordClient",
-        "DiscordCommandDSL",
-        "DiscordCommands",
         "DiscordDAVE",
         "DiscordDSLMacros",
         "DiscordFoundationTransport",
-        "DiscordInteractions",
         "DiscordKit",
         "DiscordMLS",
         "DiscordNIOTransport",
@@ -486,18 +520,13 @@
     "DiscordBotDSL": [
       "DiscordActivities",
       "DiscordApplePlatform",
-      "DiscordCache",
       "DiscordCertifiedDevices",
-      "DiscordClient",
-      "DiscordCommandDSL",
-      "DiscordCommands",
       "DiscordCommerce",
       "DiscordDAVE",
       "DiscordDSLMacros",
       "DiscordDSLMacrosPlugin",
       "DiscordFoundationTransport",
       "DiscordGameServices",
-      "DiscordInteractions",
       "DiscordKit",
       "DiscordKitTools",
       "DiscordMLS",
@@ -1080,10 +1109,16 @@
     ],
     "DiscordBits": [],
     "DiscordBotDSL": [
+      "DiscordClient",
+      "DiscordCommandDSL",
+      "DiscordCommands",
       "DiscordCore",
       "DiscordDSL",
       "DiscordGateway",
-      "DiscordModels"
+      "DiscordHTTP",
+      "DiscordInteractions",
+      "DiscordModels",
+      "DiscordTransport"
     ],
     "DiscordCache": [
       "DiscordBits",

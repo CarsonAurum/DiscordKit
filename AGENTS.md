@@ -174,8 +174,18 @@ Part 15H adds independently adopted `DiscordBotDSL`: typed Gateway selectors/han
 explicit intent validation, one default bounded subscription and finite independent
 event groups over the existing complete-shard dispatcher. Construction and compilation
 start no tasks, subscriptions, client startup or registration. Explicit subscribe/run
-owns only event pipelines; supervised client/interaction hosts remain Part 15I.
+owns only event pipelines; Part 15I adds explicit supervised client/interaction hosts.
 See `Docs/GatewayEventModules.md`.
+
+Part 15I adds `BotApplication`, `BotRuntime`, shared typed REST service access and a
+trusted Gateway interaction bridge to `DiscordBotDSL`, explicitly composing existing
+Client/CommandDSL/Commands/Interactions/HTTP/Transport owners. Construction starts no
+work. The runtime subscribes before client startup and cancels/closes/joins client,
+event and interaction children on terminal exit. Only the client's package-internal
+ingestion boundary supplies interaction provenance; public event publication cannot
+authenticate input. Callbacks retain existing HTTP ownership and independent initial
+response admission. Registration remains explicit. No concrete adapter or compiler
+plugin enters the runtime product. See `Docs/BotApplications.md`.
 
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
@@ -208,8 +218,9 @@ See `Docs/GatewayEventModules.md`.
 - `Sources/DiscordCommandDSL/`: finite typed arguments and manual slash-command lowering
   over existing Commands/Interactions and HTTP/Transport; signed HTTP composition,
   explicit synchronization and no Gateway/client or concrete-adapter ownership.
-- `Sources/DiscordBotDSL/`: inert typed event compilation and explicit bounded Gateway
-  subscription/dispatcher composition over DSL/Gateway/Models/Core.
+- `Sources/DiscordBotDSL/`: inert typed event compilation, explicit bounded Gateway
+  subscription/dispatcher composition, shared services, trusted interaction admission
+  and supervised bot lifetime over the existing Client/CommandDSL owners.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -378,13 +389,28 @@ translation without replay or fallback after partial side effects. Stateful keye
 must inject finite count/TTL bounds; the built-in authority retains only a fixed active count.
 
 For Gateway event DSL changes, preserve existing shared/command product graphs and
-the event-only BotDSL graph. Run root build/tests, callable documentation, graph/import
+the reviewed BotDSL host graph. Run root build/tests, callable documentation, graph/import
 isolation, API/DocC and the independent DSLEvents offline consumer. Test declaration
 order, complete-shard serialization/cross-shard progress, explicit required intents,
 duplicate identities, raw/unknown/malformed dispatches, queue overflow, callback failure,
 finite independent groups and cancellation/setup cleanup. Build GatewayBot and run
-load cache/soak checks as required for event changes. This does not qualify a supervised
-bot application, live Discord or DSL handler capacity; Parts 15I-15L remain separate.
+load cache/soak checks as required for event changes. Local tests do not qualify live
+Discord or DSL handler capacity; Parts 15J-15L remain separate.
+
+For bot application/interaction bridge changes, also build/test/run the independent
+DSLBot consumer offline. Keep raw shard ingestion exclusive to DiscordClient and
+authenticate Gateway interactions only at its package-internal ingestion boundary.
+Test ordinary public-hub publication rejection, bounded trusted admission, exact
+application identity, malformed/wrong-kind interactions, relative service timeouts,
+HTTP callbacks and existing one-response/defer/expiry/uncertainty contracts. Exercise
+subscribe-before-startup, cancellation before/during startup, stop-before-run,
+repeated shutdown, cancelled cleanup waiters, handler-requested stop, child failure,
+failed lease release and zero final owned counters. Inject and retain shared
+credential/startup/lease/event/handler/REST/resource authorities across modules;
+construction and ordinary execution must issue no command registration. Build the
+affected independent command/event consumers and retain the cache/broadcast soak's
+qualification limits. No concrete adapter, compiler plugin, voice, Social or OAuth
+requirement belongs in BotDSL's runtime graph.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

@@ -104,6 +104,12 @@ public struct GatewayEvent: Sendable, CustomStringConvertible, CustomReflectable
     public let socketGeneration: UInt64
     public let data: JSONValue
     let byteCount: Int
+    private let receiptAge: (@Sendable () -> Duration)?
+
+    /// Time since socket receipt for owned interaction dispatches, including raw and handler queues.
+    /// Other events and publicly manufactured replay events carry nil; this package-only observation grants no
+    /// authority outside the client-owned ingestion path. The captured monotonic clock owns no tasks.
+    package var elapsedSinceReceipt: Duration? { receiptAge?() }
 
     /// Accounted UTF-8 envelope bytes retained by bounded ingestion and broadcast queues.
     public var retainedByteCount: Int { byteCount }
@@ -129,6 +135,7 @@ public struct GatewayEvent: Sendable, CustomStringConvertible, CustomReflectable
         self.shard = shard; self.opcode = opcode; self.name = name
         self.sequence = sequence; self.data = data
         self.socketGeneration = socketGeneration
+        receiptAge = nil
         byteCount = try JSONValue.object(["op": gatewayNumber(opcode), "t": name.map(JSONValue.string) ?? .null,
             "s": sequence.map(gatewayNumber) ?? .null, "d": data]).serialized(limits: limits).count
     }
@@ -138,10 +145,14 @@ public struct GatewayEvent: Sendable, CustomStringConvertible, CustomReflectable
     ///   - shard: Fixed topology source; nonguild events are delivered by Discord to shard zero.
     ///   - envelope: Parsed complete envelope, including unknown opcodes and fields in `data`.
     ///   - socketGeneration: Local socket fence for cache/replay provenance, default zero.
-    init(shard: ShardIdentity, envelope: GatewayEnvelope, socketGeneration: UInt64 = 0) {
+    ///   - receiptAge: Optional monotonic elapsed-time reader captured at socket receipt, default nil
+    ///     for internal correlation snapshots that cannot reach the trusted client interaction bridge.
+    init(shard: ShardIdentity, envelope: GatewayEnvelope, socketGeneration: UInt64 = 0,
+         receiptAge: (@Sendable () -> Duration)? = nil) {
         self.shard = shard; opcode = envelope.opcode; name = envelope.name
         sequence = envelope.sequence; data = envelope.data; byteCount = envelope.byteCount
         self.socketGeneration = socketGeneration
+        self.receiptAge = receiptAge
     }
 
     /// Decodes a dispatch on demand, preserving raw future names and unknown payload fields.

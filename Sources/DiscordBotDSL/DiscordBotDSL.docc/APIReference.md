@@ -6,20 +6,29 @@ Browse the public types and operations provided by DiscordBotDSL.
 
 ### Classes and actors
 
+- ``DiscordBotDSL/BotRuntime``
 - ``DiscordBotDSL/GatewayEventPipelines``
+- ``DiscordBotDSL/GatewayInteractionAdapter``
 
 ### Enumerations
 
+- ``DiscordBotDSL/BotRuntimeFailure``
+- ``DiscordBotDSL/BotRuntimePhase``
 - ``DiscordBotDSL/EventCompilation``
 - ``DiscordBotDSL/GatewayEventPipelineFailure``
+- ``DiscordBotDSL/GatewayInteractionFailure``
 
 ### Protocols
 
+- ``DiscordBotDSL/BotApplication``
+- ``DiscordBotDSL/BotServiceProviding``
 - ``DiscordBotDSL/GatewayEventContribution``
 - ``DiscordBotDSL/GatewayEventHandler``
 
 ### Structures
 
+- ``DiscordBotDSL/BotRuntimeFailures``
+- ``DiscordBotDSL/BotServiceAdapter``
 - ``DiscordBotDSL/CompiledEvents``
 - ``DiscordBotDSL/EventCompilationDiagnostic``
 - ``DiscordBotDSL/GatewayEventContext``

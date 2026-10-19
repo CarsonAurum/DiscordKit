@@ -65,7 +65,10 @@ routes and explicit catalog reconciliation. Part 15G adds [bounded policies and
 middleware](Docs/CommandPolicies.md), injected authorization and concurrency admission.
 Part 15H adds [typed Gateway event modules](Docs/GatewayEventModules.md), explicit
 intent validation and bounded ordered dispatch in the independent `DiscordBotDSL` product.
-Supervised Gateway hosts remain later
+Part 15I adds [supervised bot applications](Docs/BotApplications.md), shared service
+access and trusted Gateway interaction callbacks over HTTP. Explicit `run` owns the
+existing client and bounded pipelines; construction and ordinary execution register
+nothing. Further extension and capacity work remain later
 [DSL milestones](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
@@ -148,7 +151,8 @@ explains navigation generation, synchronized tutorial code, validation and hosti
   handlers, message/component builders, existing command lowering and signed HTTP
   application composition with explicit synchronization.
 - `DiscordBotDSL`: typed Gateway selectors and protocol handlers, finite event compilation,
-  one default subscription and explicit bounded independent groups; no client startup.
+  bounded event groups, shared services, trusted Gateway interactions and explicit
+  supervised bot application lifetime over existing Client/CommandDSL owners.
 - `DiscordOAuth`: state/issuer-bound authorization, S256 PKCE, installation URLs,
   form-encoded token operations, injected browser presentation and bounded refresh ownership.
 - `DiscordGameServices`: documented provisional/merge/unmerge/publisher backend operations

@@ -1,6 +1,6 @@
 # ``DiscordBotDSL``
 
-Compose finite typed Gateway event modules over existing bounded subscriptions and dispatchers.
+Compose finite typed Gateway modules and explicit supervised bot applications over existing owners.
 
 ## Overview
 
@@ -18,6 +18,21 @@ Construction and compilation start no tasks, client, sockets, registration or I/
 Cancellation and failure release subscriptions and join cooperative callbacks through
 `run`; explicit `cancel` may safely be called by a handler without joining itself.
 
-See the repository's Gateway event modules guide and independent DSLEvents offline
-consumer. Supervised client/interaction hosts, live Discord, platform qualification
-and DSL handler capacity remain separate milestones.
+`BotApplication` provides an explicit application factory and a default async entry
+point. `BotRuntime` subscribes before starting the existing client, supervises event
+and optional interaction pipelines, and closes/joins them on every terminal exit.
+Use nonjoining `requestStop` from handlers and joining `shutdown` from external
+owners. Terminal cleanup failures remain visible; stopped runtimes are single-use.
+
+The trusted Gateway interaction adapter accepts only the client's package-internal
+ingestion stream. Public event-hub publication cannot authenticate interactions.
+Command routes retain the existing response owner and HTTP callback transport;
+initial-response admission remains independent and synchronization stays explicit.
+`BotServiceAdapter` delegates typed REST operations through existing shared services
+with relative deadlines and conservative mutation invalidation.
+
+The selected product includes Client and CommandDSL without adding an upward
+dependency to existing products. Concrete adapters and compiler plugins remain
+application choices. See the repository's bot application/event guides and the
+independent DSLBot/DSLEvents offline consumers. Live Discord, platform qualification,
+DSL handler capacity and the remaining authoring milestones retain separate gates.

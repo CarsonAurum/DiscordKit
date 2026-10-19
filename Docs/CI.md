@@ -13,7 +13,7 @@ Hosted macOS 26/Ubuntu 24.04 jobs install Swift 6.4.1, build/test the root, test
 tooling/load packages and Python helpers, run browser bridge tests, validate
 documentation presence/inventory/generation/parity/Social catalog, audit the actual
 manifest/import DAG, validate release/maintenance records, and build every consumer.
-CommandsApp/DSLCommands/ActivityHost tests and CommandsApp/DSLCommands/VoiceBot/SocialApp offline runs are
+CommandsApp/DSLCommands/DSLEvents/DSLBot/ActivityHost tests and CommandsApp/DSLCommands/DSLEvents/DSLBot/VoiceBot/SocialApp offline runs are
 explicit. Credential-bearing examples are built only.
 
 Parts 15A and 15B add independently selected `DiscordDSL` and `DiscordCommandDSL`
@@ -33,7 +33,9 @@ Part 15F adds family routing/input/response and catalog reconciliation regressio
 compiled family macros and external incompatible-response fixtures. Part 15G adds
 policy ordering, rejection, cancellation and terminal-ownership tests. Part 15H adds
 typed Gateway event compilation, explicit intents, ordered bounded dispatch and the
-independent DSLEvents offline consumer. Supervised bot hosts remain in Part 15I. Workflow
+independent DSLEvents offline consumer. Part 15I adds supervised client/event/interaction
+lifecycle tests and the independently compiled DSLBot offline consumer, whose synthetic
+host uses no credentials or external sockets. Workflow
 definitions do not establish a passed platform run.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to

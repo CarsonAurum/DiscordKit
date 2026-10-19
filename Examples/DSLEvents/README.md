@@ -11,7 +11,8 @@ swift test --package-path Examples/DSLEvents
 swift run --package-path Examples/DSLEvents
 ```
 
-It reads no credentials and creates no sockets, client, cache, command registration,
-concrete adapter or compiler-plugin dependency. Its async entry point owns only the
-event pipelines; a supervised bot application remains Part 15I. Finite offline tests
+It reads no credentials and creates no sockets, client, cache or command registration.
+The selected BotDSL graph now includes Client and CommandDSL for Part 15I, but this
+example executes only the event pipelines and selects no concrete adapter or compiler
+plugin. See [DSLBot](../DSLBot/README.md) for supervised offline host composition. Finite offline tests
 do not qualify live Discord, complete model coverage, other platforms or capacity.

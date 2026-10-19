@@ -460,16 +460,22 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         }
     }
 
-    /// Receives controls independently of all event consumers and user handlers.
+    /// Receives controls independently of event consumers, projections and user handlers. Captures
+    /// monotonic receipt immediately after each transport read, before generation fencing or parsing;
+    /// queued interaction dispatches retain an elapsed-time reader so response budgets include raw
+    /// queue delay. Public replay constructors cannot manufacture this package-owned observation.
     /// - Parameters:
     ///   - socket: Current generation's sole read owner.
     ///   - generation: Captured fence; every completion is validated before state mutation.
-    /// - Throws: Protocol, capacity, ownership, disconnect or adapter errors.
+    /// - Throws: Cancellation, protocol/frame/queue capacity, generation/lease ownership, disconnect
+    ///   or adapter errors. Known control opcodes execute on this owner without entering handler queues;
+    ///   duplicate sequences are discarded, while admitted events retain complete-shard ordering.
     private func receiveLoop(_ socket: any WebSocketConnection, generation active: UInt64) async throws {
         while running {
             guard let message = try await socket.receive(context: TransportContext(clock: clock)) else {
                 throw GatewayFailure.disconnected
             }
+            let receivedAt = clock.now
             try await fence(active)
             let envelope = try GatewayEnvelope(message, maximumBytes: configuration.maximumFrameBytes)
             switch envelope.opcode {
@@ -485,7 +491,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
                     sessionID = session; resumeURL = validated
                 } else if name == "RESUMED" { _ = try state.apply(.ready) }
                 sequence = next
-                try append(envelope)
+                try append(envelope, receivedAt: receivedAt)
                 requests.ingest(GatewayEvent(shard: identity, envelope: envelope, socketGeneration: active))
                 if name == "RATE_LIMITED" { try await recordRateLimit(envelope.data, generation: active) }
             case 1: try await sendHeartbeat(generation: active, scheduled: false)
@@ -496,7 +502,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
                 throw GatewayFailure.reconnectRequested
             case 11: heartbeatPending = false
             case 10: throw GatewayFailure.invalidPayload
-            default: try append(envelope)
+            default: try append(envelope, receivedAt: receivedAt)
             }
         }
     }
@@ -617,14 +623,23 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     }
 
     /// Appends one frame only after both queue bounds pass, preserving per-shard order.
-    /// - Parameter envelope: Validated event or unknown opcode; controls are not queued.
+    /// - Parameters:
+    ///   - envelope: Validated event or unknown opcode; controls are not queued.
+    ///   - receivedAt: Exact monotonic socket receipt instant, before fencing and envelope parsing.
     /// - Throws: `eventCapacityExceeded` atomically before exceeding either bound.
-    private func append(_ envelope: GatewayEnvelope) throws {
+    private func append(_ envelope: GatewayEnvelope, receivedAt: C.Instant) throws {
         guard events.count < configuration.maximumBufferedEvents,
               envelope.byteCount <= configuration.maximumBufferedBytes - bufferedBytes else {
             throw GatewayFailure.eventCapacityExceeded
         }
-        events.append(GatewayEvent(shard: identity, envelope: envelope, socketGeneration: generation)); bufferedBytes += envelope.byteCount
+        let clock = self.clock
+        let receiptAge: (@Sendable () -> Duration)?
+        if envelope.opcode == 0, envelope.name == "INTERACTION_CREATE" {
+            receiptAge = { receivedAt.duration(to: clock.now) }
+        } else { receiptAge = nil }
+        events.append(GatewayEvent(shard: identity, envelope: envelope, socketGeneration: generation,
+            receiptAge: receiptAge))
+        bufferedBytes += envelope.byteCount
         eventSignal.continuation.yield(())
     }
 

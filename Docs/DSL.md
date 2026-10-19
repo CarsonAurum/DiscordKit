@@ -15,7 +15,9 @@ CommandDSL. Part 15F adds [command families](CommandFamilies.md) in CommandDSL.
 Part 15G adds [bounded policies and middleware](CommandPolicies.md) in the shared
 product, with explicit command authorization/admission adapters. Part 15H adds
 [typed Gateway event modules](GatewayEventModules.md) through the separately selected
-`DiscordBotDSL`. Supervised bot hosts remain later
+`DiscordBotDSL`. Part 15I adds [supervised bot applications](BotApplications.md)
+through that product, without changing the shared DSL's Core/Models-only graph.
+External extension qualification and capacity remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 An application can use the raw contribution API now to validate its own finite
 metadata catalog, without pretending that a custom kind implements a Discord API.

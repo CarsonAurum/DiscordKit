@@ -133,12 +133,19 @@ input admission. The existing Commands route owner provides synchronous preparat
 execution interception without any DSL dependency. Injected concurrency authorities
 remain independent of HTTP rate limits. Policies create no tasks or I/O.
 Part 15H adds independently adopted [Gateway event modules](GatewayEventModules.md)
-in `DiscordBotDSL` over DSL/Gateway/Models/Core. It validates explicit intents,
+in `DiscordBotDSL`. It validates explicit intents,
 flattens modules to one default bounded subscription, and delegates complete-shard
 serialization and cross-shard concurrency to the existing dispatcher. Named independent
-groups opt into extra bounded subscriptions. Neither Client nor CommandDSL is required
-for this event-only milestone; their host/service composition remains in Part 15I.
-Supervised Gateway hosts remain later
+groups opt into extra bounded subscriptions. Part 15I adds [supervised bot applications](BotApplications.md),
+shared typed services and a trusted Gateway interaction bridge. BotDSL now explicitly
+selects Client, CommandDSL, Commands, Interactions, HTTP and Transport in addition to
+DSL/Gateway/Models/Core. Existing products remain independently adopted and gain no
+upward dependency. An inert `BotRuntime` subscribes before client startup, supervises
+the existing client and pipelines, and closes/joins them on all exits. A package-only
+client ingestion boundary supplies interaction provenance; ordinary public event-hub
+publication cannot authenticate input. Callbacks retain existing HTTP response ownership.
+No concrete transport, compiler plugin, credential discovery or automatic registration
+is introduced. Parts 15J-15L retain their separate
 [implementation milestones](DSLImplementationRoadmap.md).
 
 ## Product boundaries
@@ -162,6 +169,12 @@ flowchart TD
     DiscordBotDSL --> DiscordGateway
     DiscordBotDSL --> DiscordModels
     DiscordBotDSL --> DiscordCore
+    DiscordBotDSL --> DiscordClient
+    DiscordBotDSL --> DiscordCommandDSL
+    DiscordBotDSL --> DiscordCommands
+    DiscordBotDSL --> DiscordInteractions
+    DiscordBotDSL --> DiscordHTTP
+    DiscordBotDSL --> DiscordTransport
     DiscordCommandDSL --> DiscordDSL
     DiscordCommandDSL --> DiscordCore
     DiscordCommandDSL --> DiscordModels

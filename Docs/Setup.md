@@ -12,12 +12,15 @@ separate from the package's local test results.
 Use Swift 6.4 or newer. Add the needed products to your target rather than importing
 the umbrella for every application. Examples are separate packages with explicit
 product selections; `swift build --package-path Examples/<Name>` compiles without
-executing them. Offline CI builds all nine and audits their selected dependency/import graphs.
+executing them. Offline CI builds the independent consumers and audits their selected
+dependency/import graphs.
 
 | Application | Example | Configuration required before live use |
 | --- | --- | --- |
 | REST bot backend | [RESTOnly](../Examples/RESTOnly/README.md) | Bot credential and application install permissions |
 | Supervised Gateway bot | [GatewayBot](../Examples/GatewayBot/README.md) | Matching bot ID/token, explicit intents and shared authorities |
+| Protocol-module Gateway host | [DSLBot](../Examples/DSLBot/README.md) | Offline synthetic host; inject real client dependencies and explicit intents for deployment |
+| Typed Gateway event modules | [DSLEvents](../Examples/DSLEvents/README.md) | Offline synthetic event delivery with explicit finite subscription ownership |
 | Signed HTTP application | [HTTPApp](../Examples/HTTPApp/README.md) | Public application ID/key, HTTPS forwarding and registered commands |
 | Commands/components | [CommandsApp](../Examples/CommandsApp/README.md) | Offline composition; explicit registration and trusted receipt in deployment |
 | OAuth application | [OAuthApp](../Examples/OAuthApp/README.md) | Registered redirect, user scopes, injected browser and secure storage |
@@ -39,7 +42,17 @@ explicit mention suppression by default. See [response/application contracts](Co
 For optional `@CommandArguments`/`@SlashCommand` authoring, select the separate
 [DiscordDSLMacros package](MacroDSL.md); the root package does not select its plugin.
 
-Only CommandsApp, DSLCommands in default/`--offline` mode, VoiceBot, RPCApp,
+Select `DiscordBotDSL` for [supervised bot applications](BotApplications.md). Its
+`BotApplication` factory constructs explicit host dependencies and returns a
+single-use `BotRuntime`. The runtime subscribes before client startup, owns the
+existing client and event/interaction pipelines, and joins their cleanup on terminal
+exit. Share credential, startup, lease, event, handler, REST and resource authorities;
+ordinary startup performs no command synchronization. Gateway interaction provenance
+comes from the client's package-internal ingestion boundary, and callbacks retain
+existing HTTP response ownership. Ordinary synthetic event publication cannot
+authenticate an interaction.
+
+Only CommandsApp, DSLCommands in default/`--offline` mode, DSLEvents, DSLBot, VoiceBot, RPCApp,
 ActivityHost, OAuthApp and SocialApp are safe
 offline demonstrations by design. RESTOnly/GatewayBot can use credentials when
 run; HTTPApp can bind a listener when configured. Routine CI builds these examples

@@ -1,6 +1,6 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A/15B/15C/15D/15E/15F. The
+The current authoring candidate is **0.15.0**, covering Parts 15A-15I. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
@@ -61,10 +61,30 @@ presence, validation and intentional mention policies. Part 15F adds optional
 Use a command tree for nested slash paths and keep partial autocomplete distinct from
 complete invocation arguments. Context menus use typed partial targets; component and
 modal routes use separate exact-ID namespaces. Synchronization still manages only
-compiled name/type pairs and never deletes unmanaged commands. Policies and Gateway
-hosts remain later milestones. See
+compiled name/type pairs and never deletes unmanaged commands. Part 15G adds
+optional [policies and middleware](CommandPolicies.md) with explicit authorization,
+shared concurrency admission and rejection/error mapping. See
 [response ownership](CommandResponses.md) and [the guide](CommandDSL.md)
 for argument presence, limits, diagnostics and the custom-code contract.
+
+## Adopt the supervised module host
+
+Existing direct Gateway/client consumers require no migration. Part 15H's
+[event modules](GatewayEventModules.md) still compile and run through explicit
+subscription owners. Part 15I expands the selected `DiscordBotDSL` graph to include
+Client and CommandDSL for [supervised bot applications](BotApplications.md); the
+shared and command-only graphs remain independent. A consumer that audits an
+event-only product closure must accept these host dependencies or retain direct
+Gateway dispatcher adoption. Selecting BotDSL starts no client or command work.
+
+Supply the existing client, compiled event plan, handler configuration and optional
+trusted interaction adapter to `BotRuntime`; place explicit dependency construction
+in a `BotApplication.makeRuntime` factory when an application entry point is useful.
+Use `requestStop` inside handlers and await `run` or external `shutdown` to join
+cleanup. Keep authorities shared across modules and client replacements. The bridge
+receives trusted input only from client ingestion, while responses remain HTTP
+callbacks. Continue to synchronize commands explicitly. The [DSLBot example](../Examples/DSLBot/README.md)
+exercises synthetic host composition without credentials or external sockets.
 
 ## Upstream protocol changes
 
