@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import Foundation
@@ -98,6 +99,8 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
             try context.check()
             guard connection == nil, !connecting, closing == nil else { throw RPCFailure.alreadyConnected }
         }
+        let logger = DiscordLog.makeLogger("rpc")
+        logger.trace("RPC connection started", metadata: ["dk.event": "rpc.connection.started"])
         connecting = true; generation = UUID(); let session = generation
         let task = Task { try await self.startSession(session: session, context: context) }
         startup = task
@@ -109,8 +112,14 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
             guard connecting, generation == session else { throw RPCFailure.closed }
             connecting = false; startup = nil; terminal = .connectionLost
             reader = Task { await self.readLoop(wire: wire, session: session) }
+            logger.debug("RPC connection ready", metadata: ["dk.event": "rpc.connection.ready"])
             return ready
         } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("RPC connection cancelled", metadata: ["dk.event": "rpc.connection.cancelled"])
+            } else {
+                logger.error("RPC connection failed", metadata: ["dk.event": "rpc.connection.failed"])
+            }
             task.cancel()
             if case .success(let (wire, _)) = await task.result { await wire.close() }
             if generation == session { connecting = false; startup = nil; connection = nil; terminal = .connectionLost }
@@ -180,11 +189,15 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         let payload: Data
         do { payload = try JSONValue.object(object).serialized(limits: .init(maximumBytes: maximumPayloadBytes)) }
         catch { throw RPCFailure.invalidPayload }
-        return try await context.run {
+        let logger = DiscordLog.makeLogger("rpc")
+        logger.trace("RPC request started", metadata: ["dk.event": "rpc.request.started"])
+        let response = try await context.run {
             try await withTaskCancellationHandler {
                 try await self.enqueue(nonce: nonce, command: request.command.rawValue, event: request.event?.rawValue, payload: payload)
             } onCancel: { Task { await self.cancelRequest(nonce) } }
         }
+        logger.debug("RPC request completed", metadata: ["dk.event": "rpc.request.completed"])
+        return response
     }
 
     /// Pulls one bounded dispatch; exactly one event consumer may wait at a time.
@@ -213,6 +226,9 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     /// Wire CLOSE is not required for disposal and is not sent ahead of pending writes.
     public func close() async {
         if let closing { await closing.value; return }
+        let logger = DiscordLog.makeLogger("rpc")
+        logger.debug("RPC client closing", metadata: ["dk.event": "rpc.client.closing",
+            "dk.pending": .stringConvertible(pending.count)])
         let oldReader = reader; let oldWriter = writer; let oldConnection = connection; let oldStartup = startup
         generation = UUID(); connecting = false; connection = nil; reader = nil; writer = nil; startup = nil
         terminal = .closed; rejectPending(.closed)
@@ -240,7 +256,10 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     private func enqueue(nonce: String, command: String, event: String?, payload: Data) async throws -> JSONValue {
         try Task.checkCancellation()
         guard connection != nil, !connecting else { throw RPCFailure.notConnected }
-        guard pending.count < maximumPendingRequests, payload.count <= maximumPendingBytes - pendingBytes else { throw RPCFailure.overloaded }
+        guard pending.count < maximumPendingRequests, payload.count <= maximumPendingBytes - pendingBytes else {
+            DiscordLog.makeLogger("rpc").trace("RPC admission rejected", metadata: ["dk.event": "rpc.request.overloaded"])
+            throw RPCFailure.overloaded
+        }
         return try await withCheckedThrowingContinuation { continuation in
             pending[nonce] = Pending(command: command, frame: .init(opcode: .frame, payload: payload), event: event, continuation: continuation)
             pendingBytes += payload.count; outgoing.append(nonce)
@@ -362,6 +381,8 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     ///   - error: Safe terminal reason without peer-controlled descriptions.
     private func fail(session: UUID, error: RPCFailure) async {
         guard generation == session else { return }
+        DiscordLog.makeLogger("rpc").error("RPC session terminated", metadata: ["dk.event": "rpc.session.failed",
+            "dk.pending": .stringConvertible(pending.count)])
         generation = UUID(); terminal = error
         let wire = connection; connection = nil
         reader?.cancel(); writer?.cancel()

@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordTransport
 import Foundation
 import NIOConcurrencyHelpers
@@ -73,6 +74,7 @@ public final class NIODatagramTransport: DatagramTransport, Sendable {
         maximumPendingBytes: Int = 1_048_576,
         context: TransportContext<C>
     ) async throws -> NIODatagramTransport where C.Duration == Duration {
+        DiscordLog.makeLogger("nio.datagram").trace("Starting local datagram binding", metadata: ["dk.event": "nio.datagram.bind"])
         try context.check()
         guard (1...65_507).contains(maximumDatagramBytes), maximumPendingDatagrams > 0,
               maximumPendingBytes > 0 else { throw NIOServiceFailure.invalidConfiguration }
@@ -101,6 +103,7 @@ public final class NIODatagramTransport: DatagramTransport, Sendable {
                     guard let host = channel.localAddress?.ipAddress,
                           let port = channel.localAddress?.port, let wirePort = UInt16(exactly: port)
                     else { throw NIOServiceFailure.invalidAddress }
+                    DiscordLog.makeLogger("nio.datagram").debug("Local datagram bound", metadata: ["dk.event": "nio.datagram.bound"])
                     return NIODatagramTransport(channel: channel, lifetime: lifetime, slot: slot, input: input,
                                                 maximumDatagramBytes: maximumDatagramBytes,
                                                 localAddress: .init(host: host, port: wirePort))
@@ -186,6 +189,7 @@ public final class NIODatagramTransport: DatagramTransport, Sendable {
     public func close() async {
         input.finish()
         await lifetime.close()
+        DiscordLog.makeLogger("nio.datagram").debug("Local datagram transport closed", metadata: ["dk.event": "nio.datagram.closed"])
     }
 }
 

@@ -1,0 +1,122 @@
+{
+  "scope": "Selected-module device/simulator compile only; no runtime or full-package qualification",
+  "modules": [
+    "Logging",
+    "DiscordLogging",
+    "DiscordLogHandlers",
+    "DiscordBits",
+    "DiscordCore",
+    "DiscordTransport",
+    "DiscordMedia",
+    "DiscordApplePlatform"
+  ],
+  "platforms": [
+    {
+      "sdk": "macosx",
+      "target": "arm64-apple-macos13.0",
+      "modules": 8
+    },
+    {
+      "sdk": "iphoneos",
+      "target": "arm64-apple-ios16.0",
+      "modules": 8
+    },
+    {
+      "sdk": "iphonesimulator",
+      "target": "arm64-apple-ios16.0-simulator",
+      "modules": 8
+    },
+    {
+      "sdk": "appletvos",
+      "target": "arm64-apple-tvos16.0",
+      "modules": 8
+    },
+    {
+      "sdk": "appletvsimulator",
+      "target": "arm64-apple-tvos16.0-simulator",
+      "modules": 8
+    },
+    {
+      "sdk": "watchos",
+      "target": "arm64_32-apple-watchos9.0",
+      "modules": 8
+    },
+    {
+      "sdk": "watchsimulator",
+      "target": "arm64-apple-watchos9.0-simulator",
+      "modules": 8
+    },
+    {
+      "sdk": "xros",
+      "target": "arm64-apple-xros1.0",
+      "modules": 8
+    },
+    {
+      "sdk": "xrsimulator",
+      "target": "arm64-apple-xros1.0-simulator",
+      "modules": 8
+    }
+  ],
+  "sourceSHA256": {
+    "Sources/DiscordLogging/DiscordLog.swift": "fd7b78b1e8b56f752462d705a226811d84da6b045eaa87ba9cf6c24466051ae5",
+    "Sources/DiscordLogHandlers/DiscordFileLogHandler.swift": "70038ae52c2f03fa68e3ea86f39d916a27ac80ce609c500a1f919c2270d8eed1",
+    "Sources/DiscordLogHandlers/DiscordLogJSONWriter.swift": "87e40427f6d46ef95995df9350ee539cc9818af679376078b99ef7b9235d62d9",
+    "Sources/DiscordLogHandlers/DiscordLogRecord.swift": "260fd07afe4c1f1c6bc4f297e51f17f2da06f2c2e5ec7c5a73577506a8658946",
+    "Sources/DiscordLogHandlers/DiscordOSLogHandler.swift": "9a0495498a0ca3a9360156eef8ce66834f2f9015a32fcdb600e892caa7a01d5e",
+    "Sources/DiscordBits/UnsignedBitSet.swift": "0ee1bc57e5e60a54611d5454ee45a54a3d1c64b2649b5319548ec46aba0204f1",
+    "Sources/DiscordCore/Capabilities.swift": "6246e273919462f38c111abde8583ddaf0d0ff1cf49cee39560eb57d6fa9465d",
+    "Sources/DiscordCore/Credentials.swift": "0a3ddfb84abfe5cf2f1cf0842b15c3ecf911611d2894ebad80f9e8690169502b",
+    "Sources/DiscordCore/DiscordError.swift": "2b46ab96fe5598f959a6bfeab132e6792548804402751a19d5e761371011aaf2",
+    "Sources/DiscordCore/DiscordTimestamp.swift": "956843e3608707a4d1ffb3305a2f8dbb95d41ade2d2aa8a9423bb3c9ceaa8acb",
+    "Sources/DiscordCore/Field.swift": "fe508278ec65d9ca237682c19a2b5506a9e7e15cae05337876d39c77bba66969",
+    "Sources/DiscordCore/JSONValue.swift": "4c6d1dcbb5e170263f93e654d054b8e70c66868f784c20288d07217cdc1faf3a",
+    "Sources/DiscordCore/RawValue.swift": "b234cb1f8b47de4ea95fd1dcd04b81c4549fae00b82da52fdf9c65c882385670",
+    "Sources/DiscordCore/Redaction.swift": "a9157f728f92680eb78a7387fd265c22bd6b42bf82e07cff25c42b4e715a1d59",
+    "Sources/DiscordCore/Snowflake.swift": "592ed2c616d56121bed90213c0fc15d056e1877e25fca349c8e8768d5097a76b",
+    "Sources/DiscordTransport/BodyStream.swift": "41fdacba6ac848d98f93e99e4dded3e24cad3ce34c487cd81e4b93b2406f5e1c",
+    "Sources/DiscordTransport/ContinuousDeadline.swift": "f72c20bc5b4c535e1279051b9fce036ebf5a5dce2d44dc8a42e125fd3cfc631f",
+    "Sources/DiscordTransport/DatagramTransport.swift": "11e7931d84041f36374d05dfc6ea4459e1630e57170d6be83cbfc89bef81a3e8",
+    "Sources/DiscordTransport/HTTPIngress.swift": "ee0a9c59f31baf4b0e37ec3576b08445dd13afb05417f3ca623d69472f336fec",
+    "Sources/DiscordTransport/HTTPTransport.swift": "cd2393eef340b9d2d25ba3b6d6cb30727972fd04c60991fff75af16063c0f3b1",
+    "Sources/DiscordTransport/IPCTransport.swift": "d0fcda7fc68d333ff3f1205ea9a2910100e97e10a0f253672b816a1f621a20bb",
+    "Sources/DiscordTransport/Lifecycle.swift": "ce6dca52319b27fb47618ceb0a850525ff8ee63ad31601a19e10c67727d6e367",
+    "Sources/DiscordTransport/ShardOwnership.swift": "c8dc82635aea87e92b13ee0eb2443dad017fa1a59d9ab1c7ca38ec283c326922",
+    "Sources/DiscordTransport/WebSocketTransport.swift": "add9683aae0eaea5dabb1c3cd6d8532fadb2c1fc238be1a8d83fc221d828edc3",
+    "Sources/DiscordMedia/MediaClock.swift": "0c5e64095e54a39df73e8948f77d002e7843a3c10afd5acf48bffdcef8a79d98",
+    "Sources/DiscordMedia/MediaDescriptors.swift": "6c3fed0cae1a2313eb44c6d2a95801bb2eb41b1d4a749558747f5634db3f6b21",
+    "Sources/DiscordMedia/MediaFrames.swift": "0dc2be2bcd306a97d6fb47a4f65dc447abb03d0d342511c9a2370181ac71a1c6",
+    "Sources/DiscordMedia/PCM.swift": "ae83b88cfee07074b18e7c59827f37a638f5915b25f9d57f6eec509c2f23f997",
+    "Sources/DiscordMedia/PCMBandlimitedResampler.swift": "14e17b75517198f89cef0ff1866aa76e6526ea1f0ae3cece22eb725ba96ce7b9",
+    "Sources/DiscordMedia/PCMFramePacer.swift": "75495bdb666e7925905314bade4ffae8495f89173f533b3949f953eabd8f935f",
+    "Sources/DiscordMedia/PCMFrameStream.swift": "7fac6e52ef04c0088fe9213e8bc73a7d32664561287b758a27016c88f7e688e0",
+    "Sources/DiscordMedia/PCMSpeechActivityDetector.swift": "926ce853879c4e6a77737ef00f794cc0270147c422b156ae1308feed4ebc975f",
+    "Sources/DiscordMedia/PCMStreamingResampler.swift": "358cbada6ac79266c41415f527b093aed10ebe02e95c51a2c235d712b1787f31",
+    "Sources/DiscordApplePlatform/AppleAudio.swift": "a1b6f88604c0930a9597e607e97bdb3fe9e514fb793f3ed6fc450c3e14df36a3",
+    "Sources/DiscordApplePlatform/AppleAudioDevices.swift": "284dfc72ad534e672e4234927aed51f41a2ae6c1c1fad8bce7ade544c4b3fa0b",
+    "Sources/DiscordApplePlatform/AppleAudioRoutes.swift": "e43f58c5d9f145d2773d43645e29e37c6394b97775ef34a3487fc720012dbe4c",
+    "Sources/DiscordApplePlatform/AppleLifecycle.swift": "297e4f1e230279280821ab606bacdf2271212ead166810bb5dd972e43acf3612"
+  },
+  "dependencySourceSHA256": {
+    "Sources/Logging/Handlers/MultiplexLogHandler.swift": "b14a7d71be252b0738ce21e4ec0a74c4a1d286f32135e15780566e6b68c309bf",
+    "Sources/Logging/Handlers/StreamLogHandler.swift": "2baf32b378d49f164ddf44b7ea8d685c360bef7518a7b750a70e3871a677dbf2",
+    "Sources/Logging/Handlers/SwiftLogNoOpLogHandler.swift": "c137f5a1a50daadfca807d33364e704ce041b77635be931f29d2c01649778436",
+    "Sources/Logging/Locks.swift": "708a3053dec133209bd0f31809a435f4c789902c608fd687c9f683d876148195",
+    "Sources/Logging/LogEvent.swift": "05c8fd8c804408d3ccd944ac008745bafa9f75166e574c82233901e0991e1228",
+    "Sources/Logging/LogHandler.swift": "cdaa8d45b24e4af06e5cb6271f3aa9d4fd705a1fb43c802ab5afea3c9e98b31e",
+    "Sources/Logging/Logger+Attributes.swift": "48c9b6ec5bc94f9a37e2a73cb67edd47bbb16eb443477bb918616d33cb9d501f",
+    "Sources/Logging/Logger+With.swift": "87120b66aeb2956e062b0561701eced63c7db54fea56dbdc9dd1007a718d0794",
+    "Sources/Logging/Logger.swift": "d3bc9d2a56c791514ee807c674ec0bd995baaf91079a177fedcfe363f12ff3b5",
+    "Sources/Logging/LoggingSystem.swift": "98e7cd8b68bd26b209c79835b3f9fe5f635dfca374a88d3c264403908352c1b6",
+    "Sources/Logging/MetadataProvider.swift": "5347986685be900033e0cdd9e81eec586fe732070af91fdd0527269a2191f514"
+  },
+  "loggingDependency": {
+    "identity": "swift-log",
+    "kind": "remoteSourceControl",
+    "location": "https://github.com/apple/swift-log.git",
+    "state": {
+      "revision": "4038b6a4f74a1426f47eb1dd5b4bb5628a15d597",
+      "version": "1.16.1"
+    }
+  },
+  "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0"
+}

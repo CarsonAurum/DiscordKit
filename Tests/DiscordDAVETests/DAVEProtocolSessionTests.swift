@@ -1,3 +1,5 @@
+import DiscordTestSupport
+import DiscordLogging
 import Crypto
 import DiscordCore
 import DiscordMLS
@@ -422,5 +424,37 @@ import Testing
             }
             #expect(await fresh.session.snapshot().isClosed)
         }
+    }
+}
+
+extension DAVEProtocolSessionTests {
+    /// Captures coarse establishment/epoch/closure and fail-closed downgrade events while keeping
+    /// signing authority, session credentials, group IDs and complete media frames out of logs.
+    /// - Throws: Unexpected key construction or valid offline establishment failures.
+    @Test func structuredLoggingExcludesKeysAndMedia() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let setup = try fixture()
+            #expect(recorder.entries.isEmpty)
+            let (peer, _) = try await establish(setup)
+            let beforeFrame = recorder.entries.count
+            _ = try await setup.session.seal(Data([0xf8, 0xff, 0xfe]), codec: .opus)
+            #expect(recorder.entries.count == beforeFrame)
+            try await setup.session.close()
+            await peer.close()
+            let rejected = try fixture()
+            await #expect(throws: DAVESessionError.downgradeRejected) {
+                try await rejected.session.start(protocolVersion: 0)
+            }
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.dave" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "dave.session.package_prepared" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "dave.epoch.activated" })
+        #expect(entries.contains { $0.level == .error && $0.metadata["dk.event"] == "dave.session.failed" })
+        let rendered = recorder.entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["synthetic-token", "synthetic-session", "voice.discord.media", "signaturePrivateKey", "epochAuthenticator"] {
+            #expect(!rendered.contains(secret))
+        }
+        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem"]) })
     }
 }

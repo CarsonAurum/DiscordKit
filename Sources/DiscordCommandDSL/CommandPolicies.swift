@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCommands
 import DiscordCore
 import DiscordDSL
@@ -50,8 +51,12 @@ public actor CommandConcurrencyLimit: CommandConcurrencyAuthority {
     ///   Actor suspension is reentrant; a cancelled operation retains its slot until it actually exits.
     public func withPermit<Value: Sendable>(operation: @Sendable () async throws -> Value) async throws -> Value {
         try Task.checkCancellation()
-        guard active < maximumConcurrent else { throw CommandPolicyError.capacityExceeded }
+        guard active < maximumConcurrent else {
+            DiscordLog.makeLogger("command_dsl").debug("Command policy capacity exhausted", metadata: ["dk.event": "command_dsl.policy.overloaded"])
+            throw CommandPolicyError.capacityExceeded
+        }
         active += 1
+        DiscordLog.makeLogger("command_dsl").trace("Command policy admission granted", metadata: ["dk.event": "command_dsl.policy.admitted"])
         defer { active -= 1 }
         try Task.checkCancellation()
         return try await operation()

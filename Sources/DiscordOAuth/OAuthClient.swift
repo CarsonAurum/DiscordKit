@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import DiscordModels
@@ -397,8 +398,16 @@ public struct OAuthClient<C: Clock>: Sendable, CustomStringConvertible, CustomDe
     /// - Throws: Explicit invalidGrant/accessDenied/invalidRequest or fixed authorizationFailed for API errors;
     ///   transport/admission/cancellation/uncertainty errors propagate with their existing safe categories.
     private func execute<Value: Sendable>(_ endpoint: Endpoint<Value>) async throws -> Value {
-        do { return try await rest.execute(endpoint) }
+        let logger = DiscordLog.makeLogger("oauth")
+        logger.trace("OAuth request started", metadata: ["dk.event": "oauth.request.started"])
+        do {
+            let response = try await rest.execute(endpoint)
+            logger.debug("OAuth request completed", metadata: ["dk.event": "oauth.request.completed"])
+            return response
+        }
         catch let error as APIResponseError {
+            logger.debug("OAuth request rejected", metadata: ["dk.event": "oauth.request.rejected",
+                "dk.status": .stringConvertible(error.status)])
             let code = error.withUnsafePayload { value -> String? in
                 guard case .object(let fields) = value, case .string(let code) = fields["error"] else { return nil }; return code
             }
@@ -408,6 +417,13 @@ public struct OAuthClient<C: Clock>: Sendable, CustomStringConvertible, CustomDe
             case "invalid_request": throw OAuthError.invalidRequest
             default: throw OAuthError.authorizationFailed
             }
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("OAuth request cancelled", metadata: ["dk.event": "oauth.request.cancelled"])
+            } else {
+                logger.debug("OAuth request failed", metadata: ["dk.event": "oauth.request.failed"])
+            }
+            throw error
         }
     }
     /// Conceals the HTTP pipeline and client authentication.

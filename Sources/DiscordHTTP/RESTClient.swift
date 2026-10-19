@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import Foundation
@@ -71,6 +72,7 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     ///   or indeterminate mutation outcome when an unsafe send may already have succeeded.
     ///   Decoder errors are replaced with a safe invalid-response category.
     public func execute<Response: Sendable>(_ endpoint: Endpoint<Response>, deadline: C.Instant? = nil) async throws -> Response {
+        DiscordLog.makeLogger("http").debug("REST execution started", metadata: ["dk.event": "http.execute.started"])
         let context = TransportContext(clock: clock, deadline: deadline)
         try context.check()
         try endpoint.validateCredential(credential)
@@ -83,6 +85,7 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
                 let key = self.readKey(endpoint)
                 if endpoint.readPolicy?.timeToLive != nil, let data = await self.cache?.value(for: key) {
                     try context.check()
+                    DiscordLog.makeLogger("http").trace("REST read cache hit", metadata: ["dk.event": "http.cache.hit"])
                     return try self.decode(endpoint, data: data)
                 }
                 let operation: @Sendable () async throws -> Data = {
@@ -111,8 +114,14 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
                 return try self.decode(endpoint, data: data)
             }
             try context.check()
+            DiscordLog.makeLogger("http").debug("REST execution completed", metadata: ["dk.event": "http.execute.completed"])
             return result
         } catch {
+            if error is CancellationError {
+                DiscordLog.makeLogger("http").debug("REST execution cancelled", metadata: ["dk.event": "http.execute.cancelled"])
+            } else {
+                DiscordLog.makeLogger("http").debug("REST execution failed", metadata: ["dk.event": "http.execute.failed"])
+            }
             if endpoint.retrySafety == .unsafe, await evidence.wasSubmitted(),
                error is CancellationError || (error as? TransportFailure) == .deadlineExceeded {
                 throw self.submissionFailure(error, safety: .unsafe)
@@ -149,6 +158,7 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
                 catch let error as DiscordError {
                     if case .transport = error, endpoint.retrySafety == .safe,
                        let delay = self.retryPolicy.delay(after: attempt) {
+                        DiscordLog.makeLogger("http").debug("Retrying safe REST transport failure", metadata: ["dk.event": "http.retry.transport", "dk.attempt": .stringConvertible(attempt)])
                         try await self.clock.sleep(for: delay)
                         continue
                     }
@@ -160,12 +170,14 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
                 }
                 let error = APIResponseError(status: reply.status, headers: reply.headers, body: reply.data)
                 if reply.status == 429, self.retryPolicy.delay(after: attempt) != nil {
+                    DiscordLog.makeLogger("http").debug("Retrying REST server rejection", metadata: ["dk.event": "http.retry.rate_limit", "dk.attempt": .stringConvertible(attempt)])
                     // A complete 429 establishes rejection; queued retry cancellation
                     // must not be misreported as an indeterminate mutation.
                     continue
                 }
                 if (500...599).contains(reply.status), endpoint.retrySafety == .safe,
                    let delay = self.retryPolicy.delay(after: attempt) {
+                    DiscordLog.makeLogger("http").debug("Retrying safe REST server failure", metadata: ["dk.event": "http.retry.server", "dk.attempt": .stringConvertible(attempt), "dk.status": .stringConvertible(reply.status)])
                     try await self.clock.sleep(for: delay)
                     continue
                 }
@@ -212,6 +224,7 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
             throw submissionFailure(error, safety: endpoint.retrySafety)
         }
         await request.body?.close()
+        DiscordLog.makeLogger("http").trace("REST response received", metadata: ["dk.event": "http.response.received", "dk.status": .stringConvertible(response.status)])
         let data: Data
         do { data = try await ResponseBody.collect(response.body, maximumBytes: maximumResponseBytes) }
         catch {

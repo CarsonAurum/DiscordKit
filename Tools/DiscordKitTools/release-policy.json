@@ -336,6 +336,45 @@
         ]
       }
     },
+    "Examples/LoggingApp": {
+      "forbidden": [
+        "DiscordActivities",
+        "DiscordApplePlatform",
+        "DiscordBotDSL",
+        "DiscordCache",
+        "DiscordCertifiedDevices",
+        "DiscordClient",
+        "DiscordCommandDSL",
+        "DiscordCommands",
+        "DiscordCommerce",
+        "DiscordDAVE",
+        "DiscordDSL",
+        "DiscordFoundationTransport",
+        "DiscordGameServices",
+        "DiscordGateway",
+        "DiscordHTTP",
+        "DiscordInteractions",
+        "DiscordKit",
+        "DiscordMLS",
+        "DiscordMedia",
+        "DiscordModels",
+        "DiscordNIOTransport",
+        "DiscordOAuth",
+        "DiscordRPC",
+        "DiscordSocial",
+        "DiscordUnixPlatform",
+        "DiscordVoice",
+        "DiscordVoiceCodecs",
+        "DiscordVoiceCrypto"
+      ],
+      "targets": {
+        "LoggingApp": [
+          "DiscordKit/DiscordLogHandlers",
+          "DiscordKit/DiscordLogging",
+          "DiscordKit/DiscordTransport"
+        ]
+      }
+    },
     "Examples/OAuthApp": {
       "forbidden": [
         "DiscordCache",
@@ -458,6 +497,12 @@
         "DiscordVoiceCodecs",
         "DiscordVoiceCrypto"
       ],
+      "targetSystemImports": {
+        "DiscordDSLBenchmarks": [
+          "Darwin",
+          "Glibc"
+        ]
+      },
       "targets": {
         "DiscordDSLBenchmarks": [
           "DiscordKit/DiscordCommandDSL",
@@ -465,13 +510,8 @@
           "DiscordKit/DiscordCore",
           "DiscordKit/DiscordDSL",
           "DiscordKit/DiscordInteractions",
+          "DiscordKit/DiscordLogging",
           "DiscordKit/DiscordModels"
-        ]
-      },
-      "targetSystemImports": {
-        "DiscordDSLBenchmarks": [
-          "Darwin",
-          "Glibc"
         ]
       }
     }
@@ -482,6 +522,14 @@
         {
           "lowerBound": "5.0.1",
           "upperBound": "6.0.0"
+        }
+      ]
+    },
+    "swift-log": {
+      "range": [
+        {
+          "lowerBound": "1.16.1",
+          "upperBound": "2.0.0"
         }
       ]
     },
@@ -507,6 +555,7 @@
     "swift-atomics": "https://github.com/apple/swift-atomics.git",
     "swift-collections": "https://github.com/apple/swift-collections.git",
     "swift-crypto": "https://github.com/apple/swift-crypto.git",
+    "swift-log": "https://github.com/apple/swift-log.git",
     "swift-nio": "https://github.com/apple/swift-nio.git",
     "swift-nio-ssl": "https://github.com/apple/swift-nio-ssl.git",
     "swift-system": "https://github.com/apple/swift-system.git"
@@ -619,6 +668,7 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordOAuth",
       "DiscordTestSupport",
@@ -626,6 +676,7 @@
     ],
     "DiscordApplePlatform": [
       "DiscordBotDSL",
+      "DiscordLogHandlers",
       "DiscordTestSupport"
     ],
     "DiscordBits": [
@@ -636,6 +687,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -652,6 +704,7 @@
       "DiscordGameServices",
       "DiscordKit",
       "DiscordKitTools",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordMedia",
       "DiscordNIOTransport",
@@ -670,6 +723,7 @@
       "DiscordApplePlatform",
       "DiscordBotDSL",
       "DiscordFoundationTransport",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -683,6 +737,7 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordOAuth",
       "DiscordTestSupport",
@@ -692,6 +747,7 @@
       "DiscordApplePlatform",
       "DiscordBotDSL",
       "DiscordFoundationTransport",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -712,6 +768,7 @@
       "DiscordGateway",
       "DiscordKit",
       "DiscordKitTools",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordMedia",
       "DiscordNIOTransport",
@@ -734,6 +791,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -746,6 +804,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -758,6 +817,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -766,6 +826,7 @@
       "DiscordApplePlatform",
       "DiscordBotDSL",
       "DiscordFoundationTransport",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -790,6 +851,7 @@
       "DiscordInteractions",
       "DiscordKit",
       "DiscordKitTools",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordMedia",
       "DiscordNIOTransport",
@@ -807,6 +869,7 @@
     ],
     "DiscordFoundationTransport": [
       "DiscordBotDSL",
+      "DiscordLogHandlers",
       "DiscordTestSupport"
     ],
     "DiscordGameServices": [
@@ -817,6 +880,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -825,6 +889,7 @@
       "DiscordApplePlatform",
       "DiscordBotDSL",
       "DiscordFoundationTransport",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -837,6 +902,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -849,6 +915,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -858,12 +925,81 @@
       "DiscordBotDSL",
       "DiscordDAVE",
       "DiscordFoundationTransport",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordNIOTransport",
       "DiscordSocial",
       "DiscordTestSupport",
       "DiscordUnixPlatform",
       "DiscordVoice"
+    ],
+    "DiscordLogHandlers": [
+      "DiscordActivities",
+      "DiscordApplePlatform",
+      "DiscordBits",
+      "DiscordBotDSL",
+      "DiscordCache",
+      "DiscordCertifiedDevices",
+      "DiscordClient",
+      "DiscordCommandDSL",
+      "DiscordCommands",
+      "DiscordCommerce",
+      "DiscordCore",
+      "DiscordDAVE",
+      "DiscordDSL",
+      "DiscordFoundationTransport",
+      "DiscordGameServices",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordInteractions",
+      "DiscordKit",
+      "DiscordLogging",
+      "DiscordMLS",
+      "DiscordMedia",
+      "DiscordModels",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordRPC",
+      "DiscordSocial",
+      "DiscordTransport",
+      "DiscordUnixPlatform",
+      "DiscordVoice",
+      "DiscordVoiceCodecs",
+      "DiscordVoiceCrypto"
+    ],
+    "DiscordLogging": [
+      "DiscordActivities",
+      "DiscordApplePlatform",
+      "DiscordBits",
+      "DiscordBotDSL",
+      "DiscordCache",
+      "DiscordCertifiedDevices",
+      "DiscordClient",
+      "DiscordCommandDSL",
+      "DiscordCommands",
+      "DiscordCommerce",
+      "DiscordCore",
+      "DiscordDAVE",
+      "DiscordDSL",
+      "DiscordFoundationTransport",
+      "DiscordGameServices",
+      "DiscordGateway",
+      "DiscordHTTP",
+      "DiscordInteractions",
+      "DiscordKit",
+      "DiscordLogHandlers",
+      "DiscordMLS",
+      "DiscordMedia",
+      "DiscordModels",
+      "DiscordNIOTransport",
+      "DiscordOAuth",
+      "DiscordRPC",
+      "DiscordSocial",
+      "DiscordTransport",
+      "DiscordUnixPlatform",
+      "DiscordVoice",
+      "DiscordVoiceCodecs",
+      "DiscordVoiceCrypto"
     ],
     "DiscordMLS": [
       "DiscordActivities",
@@ -883,6 +1019,7 @@
       "DiscordHTTP",
       "DiscordInteractions",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordMedia",
       "DiscordModels",
       "DiscordNIOTransport",
@@ -906,6 +1043,7 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordNIOTransport",
       "DiscordOAuth",
@@ -920,12 +1058,14 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
     ],
     "DiscordNIOTransport": [
       "DiscordBotDSL",
+      "DiscordLogHandlers",
       "DiscordTestSupport"
     ],
     "DiscordOAuth": [
@@ -936,6 +1076,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
@@ -949,6 +1090,7 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordOAuth",
       "DiscordTestSupport",
@@ -963,6 +1105,7 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordNIOTransport",
       "DiscordTestSupport",
@@ -977,12 +1120,14 @@
       "DiscordFoundationTransport",
       "DiscordGateway",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordNIOTransport",
       "DiscordTestSupport",
       "DiscordUnixPlatform"
     ],
     "DiscordUnixPlatform": [
       "DiscordBotDSL",
+      "DiscordLogHandlers",
       "DiscordTestSupport"
     ],
     "DiscordVoice": [
@@ -995,6 +1140,7 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordNIOTransport",
       "DiscordOAuth",
@@ -1011,6 +1157,7 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordNIOTransport",
       "DiscordOAuth",
@@ -1027,6 +1174,7 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordKit",
+      "DiscordLogHandlers",
       "DiscordMLS",
       "DiscordNIOTransport",
       "DiscordOAuth",
@@ -1091,6 +1239,12 @@
     ],
     "DiscordKit": [
       "DiscordKit"
+    ],
+    "DiscordLogHandlers": [
+      "DiscordLogHandlers"
+    ],
+    "DiscordLogging": [
+      "DiscordLogging"
     ],
     "DiscordMLS": [
       "DiscordMLS"
@@ -1170,7 +1324,7 @@
     "zero-resource-growth",
     "performance-regression"
   ],
-  "reviewedOn": "2026-10-18",
+  "reviewedOn": "2026-10-19",
   "schemaVersion": 1,
   "systemImports": [
     "Foundation"
@@ -1195,6 +1349,8 @@
     "DiscordHTTP": "Sources/DiscordHTTP",
     "DiscordInteractions": "Sources/DiscordInteractions",
     "DiscordKit": "Sources/DiscordKit",
+    "DiscordLogHandlers": "Sources/DiscordLogHandlers",
+    "DiscordLogging": "Sources/DiscordLogging",
     "DiscordMLS": "Sources/DiscordMLS",
     "DiscordMedia": "Sources/DiscordMedia",
     "DiscordModels": "Sources/DiscordModels",
@@ -1218,15 +1374,21 @@
     "DiscordFoundationTransport": [
       "FoundationNetworking",
       "os"
+    ],
+    "DiscordLogHandlers": [
+      "OSLog",
+      "os"
     ]
   },
   "targets": {
     "DiscordActivities": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordTransport"
     ],
     "DiscordApplePlatform": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordMedia",
       "DiscordTransport"
     ],
@@ -1240,16 +1402,19 @@
       "DiscordGateway",
       "DiscordHTTP",
       "DiscordInteractions",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport"
     ],
     "DiscordCache": [
       "DiscordBits",
       "DiscordCore",
+      "DiscordLogging",
       "DiscordModels"
     ],
     "DiscordCertifiedDevices": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordRPC",
       "DiscordTransport"
     ],
@@ -1258,6 +1423,7 @@
       "DiscordCore",
       "DiscordGateway",
       "DiscordHTTP",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport"
     ],
@@ -1267,6 +1433,7 @@
       "DiscordDSL",
       "DiscordHTTP",
       "DiscordInteractions",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport"
     ],
@@ -1274,11 +1441,13 @@
       "DiscordCore",
       "DiscordHTTP",
       "DiscordInteractions",
+      "DiscordLogging",
       "DiscordModels"
     ],
     "DiscordCommerce": [
       "DiscordCore",
       "DiscordHTTP",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport"
     ],
@@ -1287,6 +1456,7 @@
     ],
     "DiscordDAVE": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordMLS",
       "DiscordTransport",
       "DiscordVoice",
@@ -1296,9 +1466,11 @@
     ],
     "DiscordDSL": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordModels"
     ],
     "DiscordFoundationTransport": [
+      "DiscordLogging",
       "DiscordTransport"
     ],
     "DiscordGameServices": [
@@ -1311,17 +1483,20 @@
     "DiscordGateway": [
       "DiscordCore",
       "DiscordHTTP",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport"
     ],
     "DiscordHTTP": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport"
     ],
     "DiscordInteractions": [
       "DiscordCore",
       "DiscordHTTP",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport",
       "swift-crypto/Crypto"
@@ -1337,14 +1512,24 @@
       "DiscordOAuth",
       "DiscordTransport"
     ],
+    "DiscordLogHandlers": [
+      "swift-log/Logging"
+    ],
+    "DiscordLogging": [
+      "swift-log/Logging"
+    ],
     "DiscordMLS": [
+      "DiscordLogging",
       "swift-crypto/Crypto"
     ],
-    "DiscordMedia": [],
+    "DiscordMedia": [
+      "DiscordLogging"
+    ],
     "DiscordModels": [
       "DiscordCore"
     ],
     "DiscordNIOTransport": [
+      "DiscordLogging",
       "DiscordTransport",
       "swift-nio-ssl/NIOSSL",
       "swift-nio/NIOConcurrencyHelpers",
@@ -1356,12 +1541,14 @@
     "DiscordOAuth": [
       "DiscordCore",
       "DiscordHTTP",
+      "DiscordLogging",
       "DiscordModels",
       "DiscordTransport",
       "swift-crypto/Crypto"
     ],
     "DiscordRPC": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordTransport"
     ],
     "DiscordSocial": [
@@ -1370,6 +1557,7 @@
       "DiscordCore",
       "DiscordGameServices",
       "DiscordHTTP",
+      "DiscordLogging",
       "DiscordMedia",
       "DiscordModels",
       "DiscordOAuth",
@@ -1377,9 +1565,11 @@
       "DiscordTransport"
     ],
     "DiscordTransport": [
-      "DiscordCore"
+      "DiscordCore",
+      "DiscordLogging"
     ],
     "DiscordUnixPlatform": [
+      "DiscordLogging",
       "DiscordTransport",
       "swift-nio/NIOConcurrencyHelpers",
       "swift-nio/NIOCore",
@@ -1387,6 +1577,7 @@
     ],
     "DiscordVoice": [
       "DiscordCore",
+      "DiscordLogging",
       "DiscordMedia",
       "DiscordModels",
       "DiscordTransport",

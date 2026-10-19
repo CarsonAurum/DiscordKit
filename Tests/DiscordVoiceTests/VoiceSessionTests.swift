@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordMedia
 import DiscordTestSupport
@@ -891,5 +892,40 @@ struct VoiceSessionTests {
         #expect(await owner.snapshot().reconnectAttempts == 0)
         #expect(await backend.recorded().0)
         #expect(clock.pendingSleepCount == 0)
+    }
+}
+
+extension VoiceSessionTests {
+    /// Captures explicit supervised lifetime and media readiness without logging voice credentials,
+    /// discovery addresses, session identifiers, key arrays or per-frame media payloads.
+    /// - Throws: Unexpected valid synthetic handshake or cleanup errors.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func structuredLoggingTracksReadinessWithoutCredentials() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let tuple = credentials()
+            let socket = SessionTestSocket(try initialFrames())
+            let connector = SessionTestConnector([socket])
+            let backend = SessionTestE2EE(tuple.identity)
+            let clock = SessionTestClock()
+            let udp = SessionTestDatagram(discovery())
+            let owner = try VoiceSession(credentials: tuple, webSocket: connector, makeDatagram: { _ in udp }, e2ee: backend, clock: clock)
+            #expect(recorder.entries.isEmpty)
+            let run = Task { try await owner.run() }
+            try await socket.waitForRead(4)
+            #expect(await owner.snapshot().phase == .ready)
+            await owner.stop()
+            try await run.value
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.voice" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.session.running" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.discovery.completed" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.media.authorized" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.session.stopped" })
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["synthetic-session", "synthetic-token", "voice.discord.media", "127.0.0.1", "secret_key"] {
+            #expect(!rendered.contains(secret))
+        }
+        #expect(entries.allSatisfy { $0.level != .info && $0.level != .notice })
     }
 }

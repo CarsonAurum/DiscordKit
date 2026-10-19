@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import Foundation
@@ -89,6 +90,9 @@ public actor CertifiedDeviceHTTPPublisher: TransportResource {
         let bytes = try JSONValue.object([
             "cmd": .string("SET_CERTIFIED_DEVICES"), "nonce": .string(nonce), "args": .object(arguments),
         ]).serialized(limits: JSONLimits(maximumBytes: maximumRequestBytes))
+        let logger = DiscordLog.makeLogger("certified_devices")
+        logger.trace("Certified devices publication started", metadata: ["dk.event": "certified_devices.http.started",
+            "dk.count": .stringConvertible(devices.count)])
         let transport = self.transport
         let url = self.url
         let maximumResponseBytes = self.maximumResponseBytes
@@ -98,10 +102,20 @@ public actor CertifiedDeviceHTTPPublisher: TransportResource {
         }
         operation = task
         defer { operation = nil }
-        try await withTaskCancellationHandler {
-            try await task.value
-        } onCancel: {
-            task.cancel()
+        do {
+            try await withTaskCancellationHandler {
+                try await task.value
+            } onCancel: {
+                task.cancel()
+            }
+            logger.debug("Certified devices publication acknowledged", metadata: ["dk.event": "certified_devices.http.completed"])
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Certified devices publication cancelled", metadata: ["dk.event": "certified_devices.http.cancelled"])
+            } else {
+                logger.debug("Certified devices publication failed", metadata: ["dk.event": "certified_devices.http.failed"])
+            }
+            throw error
         }
     }
 
@@ -109,6 +123,9 @@ public actor CertifiedDeviceHTTPPublisher: TransportResource {
     /// Repeated concurrent calls await the same operation; the shared transport stays
     /// caller-owned. Closing does not publish an empty array or mutate desktop state.
     public func close() async {
+        if !closed {
+            DiscordLog.makeLogger("certified_devices").debug("Certified devices publisher closing", metadata: ["dk.event": "certified_devices.http.closed"])
+        }
         closed = true
         let pending = operation
         pending?.cancel()

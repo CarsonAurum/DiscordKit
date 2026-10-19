@@ -6,6 +6,7 @@ and `InteractionResponder`. It is a downstream package; no runtime product selec
 it. It starts no listener and uses no credentials, hydration provider, registration
 reconciler or remote transport. Synthetic normalized interactions bypass HTTP
 signature verification and Gateway ingestion.
+The executable sends SwiftLog diagnostics to stderr; stdout or `--output` contains only the JSON report.
 
 Run from the repository root with Swift 6.4 or newer:
 

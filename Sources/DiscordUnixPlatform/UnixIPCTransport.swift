@@ -1,3 +1,4 @@
+import DiscordLogging
 #if !os(Windows) && !os(WASI)
 import DiscordTransport
 import Foundation
@@ -65,6 +66,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
         maximumWriteBytes: Int = 1_048_576,
         context: TransportContext<C>
     ) async throws -> UnixIPCTransport where C.Duration == Duration {
+        DiscordLog.makeLogger("unix.ipc").trace("Starting Unix IPC connection", metadata: ["dk.event": "unix.ipc.connect"])
         try context.check()
         guard maximumBufferedBytes > 0, maximumWriteBytes > 0 else {
             throw UnixIPCFailure.invalidConfiguration
@@ -89,6 +91,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
                             }
                         }.connect(unixDomainSocketPath: path).get()
                     try Task.checkCancellation()
+                    DiscordLog.makeLogger("unix.ipc").debug("Unix IPC connected", metadata: ["dk.event": "unix.ipc.connected"])
                     return UnixIPCTransport(channel: channel, input: input, lifetime: lifetime, slot: slot,
                                             maximumWriteBytes: maximumWriteBytes)
                 } onCancel: {
@@ -99,6 +102,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
         } catch {
             input.finish(discard: true)
             await lifetime.close()
+            DiscordLog.makeLogger("unix.ipc").debug("Unix IPC connection failed", metadata: ["dk.event": "unix.ipc.failed"])
             throw unixIPCRedacted(error)
         }
     }
@@ -178,6 +182,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
     public func close() async {
         input.finish(discard: true)
         await lifetime.close()
+        DiscordLog.makeLogger("unix.ipc").debug("Unix IPC transport closed", metadata: ["dk.event": "unix.ipc.closed"])
     }
 }
 

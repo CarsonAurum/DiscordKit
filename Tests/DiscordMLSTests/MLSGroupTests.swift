@@ -1,3 +1,5 @@
+import DiscordTestSupport
+import DiscordLogging
 import Crypto
 import Foundation
 import Testing
@@ -165,5 +167,39 @@ import Testing
         let initialOther = try await otherOwner.createGroup(groupID: setup.groupID, policy: setup.policy)
         await #expect(throws: MLSError.invalidCommit) { try await initialOther.acceptCommit(initial.commit) }
         await b.close(); await initialOther.close()
+    }
+}
+
+extension MLSGroupTests {
+    /// Captures group creation, selected commit and closure without logging membership, group
+    /// identity or exporter/authenticator operations; package/group construction remains silent.
+    /// - Throws: Unexpected bounded key-policy/commit fixture errors.
+    @Test func structuredLoggingExcludesSecretOperations() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let setup = try fixture([1, 2])
+            #expect(recorder.entries.isEmpty)
+            let groupID = Data("private-group-identifier".utf8)
+            let group = try await setup.owners[0].createGroup(groupID: groupID, policy: setup.policy)
+            _ = try await add(setup.owners[1].keyPackage, epoch: 0, groups: [group], external: setup.external, groupID: groupID)
+            let candidate = try await group.prepareCommit()
+            #expect(try await group.acceptCommit(candidate.commit) == .advanced)
+            let beforeSecretOperations = recorder.entries.count
+            _ = try await group.export(label: "private-export-label", context: Data("private-export-context".utf8), length: 32)
+            _ = try await group.epochAuthenticator()
+            #expect(recorder.entries.count == beforeSecretOperations)
+            await group.close()
+            await group.close()
+            await setup.owners[1].close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.mls" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "mls.group.created" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "mls.commit.local_selected" })
+        #expect(entries.filter { $0.metadata["dk.event"] == "mls.group.closed" }.count == 1)
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["private-group-identifier", "private-export-label", "private-export-context"] {
+            #expect(!rendered.contains(secret))
+        }
+        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem"]) })
     }
 }

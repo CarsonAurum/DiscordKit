@@ -14,6 +14,7 @@ let package = Package(
         .executableTarget(
             name: "DiscordKitLoadTests",
             dependencies: [
+                .product(name: "DiscordLogging", package: "DiscordKit"),
                 .product(name: "DiscordTransport", package: "DiscordKit"),
                 .product(name: "DiscordNIOTransport", package: "DiscordKit"),
                 .product(name: "DiscordHTTP", package: "DiscordKit"),

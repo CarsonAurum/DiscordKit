@@ -1,3 +1,5 @@
+import DiscordTestSupport
+import DiscordLogging
 import Testing
 @testable import DiscordMedia
 
@@ -260,5 +262,32 @@ struct PCMFrameStreamTests {
     ///   This is a scheduling barrier, not a wall-clock delay or timeout assertion.
     private func waitForReader(_ stream: PCMFrameStream) async {
         while !(await stream.snapshot().hasPendingReader) { await Task.yield() }
+    }
+}
+
+extension PCMFrameStreamTests {
+    /// Emits a single lifecycle event on terminal stream ownership, with no initialization or
+    /// per-buffer/sample diagnostics and no duplicate event when finish is repeated.
+    /// - Throws: Unexpected valid PCM fixture or stream admission failures.
+    @Test func structuredLoggingStaysOutsideFrameOperations() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let stream = try PCMFrameStream()
+            var iterator = stream.makeAsyncIterator()
+            #expect(recorder.entries.isEmpty)
+            let buffer = try PCMBuffer(format: PCMFormat(), samples: [0.123456, -0.123456])
+            try await stream.write(buffer)
+            #expect(try await iterator.next() == buffer)
+            #expect(recorder.entries.isEmpty)
+            await stream.finish()
+            await stream.finish(discardingBuffered: true)
+            #expect(try await iterator.next() == nil)
+        }
+        #expect(recorder.entries.count == 1)
+        #expect(recorder.entries.first?.label == "discordkit.media")
+        #expect(recorder.entries.first?.level == .debug)
+        #expect(recorder.entries.first?.metadata["dk.event"] == "media.pcm_stream.finished")
+        let renderedMetadata = String(describing: recorder.entries.first?.metadata)
+        #expect(!renderedMetadata.contains("0.123456"))
     }
 }

@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 import DiscordTransport
 import NIOCore
@@ -81,6 +82,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
     ///   invalid TLS trust/hostname or redacted transport error. No request is replayed.
     public func connectWebSocket<C: Clock>(_ request: HTTPRequest, context: TransportContext<C>) async throws
     -> any WebSocketConnection where C.Duration == Duration {
+        DiscordLog.makeLogger("nio.websocket").trace("Starting NIO WebSocket connection", metadata: ["dk.event": "nio.websocket.connect"])
         var id: UUID?
         var operation: Task<WebSocketWire, any Error>?
         do {
@@ -107,6 +109,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
             guard !closed else { throw TransportFailure.closed }
             wires[token] = wire
             connecting.removeValue(forKey: token)
+            DiscordLog.makeLogger("nio.websocket").debug("NIO WebSocket connected", metadata: ["dk.event": "nio.websocket.connected"])
             return NIOWebSocketConnection(wire: wire, configuration: configuration, attempt: attempt,
                                           release: { await self.release(token) })
         } catch {
@@ -118,6 +121,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
                 connecting.removeValue(forKey: id)
             }
             if let body = request.body { await body.close() }
+            DiscordLog.makeLogger("nio.websocket").debug("NIO WebSocket connection failed", metadata: ["dk.event": "nio.websocket.failed"])
             throw nioWebSocketError(error)
         }
     }
@@ -148,6 +152,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
             try? await group.shutdownGracefully()
         }
         cleanup = task; await task.value
+        DiscordLog.makeLogger("nio.websocket").debug("NIO WebSocket transport closed", metadata: ["dk.event": "nio.websocket.closed"])
     }
 
     /// Removes one caller-owned slot and its wire after connection cleanup completes.

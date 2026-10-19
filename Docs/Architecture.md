@@ -6,7 +6,16 @@ development package; public runtime products select no documentation tooling.
 The [release report](Release/2026-10-18.md) distinguishes compiled products from
 unverified platform capabilities and preserves the existing adoption boundaries.
 
-Status: adopted design, updated 2026-10-18. `DiscordBits`, `DiscordCore` and
+[Integrated logging](Logging.md) adds `DiscordLogging -> swift-log/Logging` to explicit
+operation owners, including shared DSL policy execution. Pure Bits/Core/Models,
+codec/crypto transforms and authoring compilation remain independent and quiet.
+This is a narrow logging-only addition to earlier product diagrams and Core/Models-only
+DSL descriptions. It introduces no upward service, compiler plugin or concrete-adapter
+edge. The independently selected `DiscordLogHandlers -> swift-log/Logging` owns optional
+outputs; no existing runtime product selects it. The executable configures SwiftLog,
+thresholds and output lifetimes; library constructors never bootstrap or emit.
+
+Status: adopted design, updated 2026-10-19. `DiscordBits`, `DiscordCore` and
 `DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
 Core aliases. Part 2 adds independently injected Foundation/NIO adapters, Unix IPC
 and Apple lifecycle ownership. Part 3 adds [HTTP execution](HTTP.md), partial Models

@@ -1,5 +1,6 @@
 import DiscordCore
 import DiscordDAVE
+import DiscordLogging
 import DiscordMLS
 import DiscordMedia
 import DiscordModels
@@ -75,8 +76,10 @@ struct QualificationReport: Codable {
     /// `--seconds` defaults to 600 measured seconds and accepts 0.02...3600; a
     /// separate 100-frame/two-second warmup precedes measurement. `--output`
     /// optionally writes the same report atomically. Errors terminate nonzero after cleanup.
+    /// Process-owned SwiftLog diagnostics go to stderr, preserving stdout JSON.
     /// - Throws: Invalid CLI input, local networking, cryptographic, codec or file errors.
     static func main() async throws {
+        LoggingSystem.bootstrap(StreamLogHandler.standardError)
         var seconds = 600.0
         var output: String?
         let arguments = Array(CommandLine.arguments.dropFirst())

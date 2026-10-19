@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordNIOTransport
 import Foundation
 
@@ -269,6 +270,9 @@ enum LoadCommand {
         try FileHandle.standardOutput.write(contentsOf: data)
     }
 }
+
+// Process entry owns diagnostic routing; reusable runners never bootstrap SwiftLog.
+LoggingSystem.bootstrap(StreamLogHandler.standardError)
 
 do {
     try await LoadCommand.run(arguments: Array(CommandLine.arguments.dropFirst()))

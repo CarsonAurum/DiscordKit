@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 import DiscordCore
 import DiscordModels
@@ -92,6 +93,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         entry.access = access
         entries[scoped] = entry
         hits &+= 1
+        DiscordLog.makeLogger("cache").trace("Entity cache hit", metadata: ["dk.event": "cache.read.hit"])
         return entry.snapshot
     }
 
@@ -137,6 +139,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         access &+= 1
         entries[scoped] = Entry(snapshot: merged, expires: clock.now.advanced(by: ttl), bytes: retainedBytes, access: access)
         bytes += retainedBytes
+        DiscordLog.makeLogger("cache").trace("Entity snapshot retained", metadata: ["dk.event": "cache.write.stored", "dk.entries": .stringConvertible(entries.count), "dk.bytes": .stringConvertible(bytes)])
         return .stored
     }
 
@@ -226,6 +229,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     /// Repeated/concurrent calls wait for the same cleanup and permanently reject reads.
     /// Loaders must cooperate with cancellation; no timeout can safely abandon their resources.
     public func close() async {
+        DiscordLog.makeLogger("cache").debug("Entity cache closing", metadata: ["dk.event": "cache.closed"])
         closed = true
         revision &+= 1
         entries.removeAll()
@@ -452,7 +456,13 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         waiters -= refresh.waiters.count
         let delivered: Result<EntitySnapshot, any Error>
         switch result {
-        case .failure(let error): delivered = .failure(error)
+        case .failure(let error):
+            if error is CancellationError {
+                DiscordLog.makeLogger("cache").debug("Entity refresh cancelled", metadata: ["dk.event": "cache.refresh.cancelled"])
+            } else {
+                DiscordLog.makeLogger("cache").debug("Entity refresh failed", metadata: ["dk.event": "cache.refresh.failed"])
+            }
+            delivered = .failure(error)
         case .success(let snapshot):
             if captured != revision || closed {
                 staleCompletions &+= 1
@@ -481,6 +491,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         for key in entries.filter({ $0.value.expires <= clock.now }).map(\.key) {
             remove(key)
             expirations &+= 1
+            DiscordLog.makeLogger("cache").trace("Entity cache entry expired", metadata: ["dk.event": "cache.entry.expired"])
         }
     }
 

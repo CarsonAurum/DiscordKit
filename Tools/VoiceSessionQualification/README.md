@@ -5,6 +5,7 @@ This independent executable uses actual localhost UDP sockets and continuous-clo
 owned Opus encoder, a real two-member MLS/DAVE epoch, RTP, transport AEAD, the
 opposite UDP socket, both authentication layers, bounded jitter, and PCM decoding.
 Both synthetic senders share the single same-key transport nonce authority.
+The executable sends SwiftLog diagnostics to stderr and writes JSON to stdout and the optional `--output` file.
 
 ```sh
 swift run --package-path Tools/VoiceSessionQualification -c release \

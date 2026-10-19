@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import Foundation
@@ -71,10 +72,13 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         try Task.checkCancellation()
         guard timeout > .zero else { throw ActivityFailure.invalidConfiguration }
         guard state == .idle else { throw state == .closed ? ActivityFailure.closed : ActivityFailure.notReady }
+        let logger = DiscordLog.makeLogger("activities")
+        logger.trace("Activity handshake started", metadata: ["dk.event": "activities.handshake.started"])
         state = .starting
         let context = TransportContext(clock: clock, deadline: clock.now.advanced(by: timeout))
         do {
             try await context.run { try await self.awaitReady() }
+            logger.debug("Activity host ready", metadata: ["dk.event": "activities.handshake.completed"])
         } catch {
             await fail(error)
             throw error
@@ -91,19 +95,24 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     public func execute<Response: Sendable>(_ request: ActivityRequest<Response>, timeout: Duration = .seconds(15)) async throws -> Response {
         guard timeout > .zero else { throw ActivityFailure.invalidConfiguration }
         let context = TransportContext(clock: clock, deadline: clock.now.advanced(by: timeout))
+        let logger = DiscordLog.makeLogger("activities")
+        logger.trace("Activity command started", metadata: ["dk.event": "activities.command.started"])
         let nonce = UUID().uuidString
         let data = try await context.run {
             do {
                 return try await self.exchange(command: request.command.rawValue, arguments: request.arguments,
                                                event: request.event, nonce: nonce)
             } catch let error as ActivityCommandFailure where error.code == 4000 && request.command == .setOrientationLockState && request.arguments["grid_lock_state"] != nil {
+                DiscordLog.makeLogger("activities").warning("Activity orientation compatibility fallback", metadata: ["dk.event": "activities.command.compatibility_fallback"])
                 var compatible = request.arguments; compatible.removeValue(forKey: "grid_lock_state")
                 return try await self.exchange(command: request.command.rawValue, arguments: compatible,
                                                event: request.event, nonce: UUID().uuidString)
             }
         }
         try Task.checkCancellation()
-        return try request.decode(data)
+        let response = try request.decode(data)
+        logger.debug("Activity command completed", metadata: ["dk.event": "activities.command.completed"])
+        return response
     }
 
     /// Acquires one reference-counted subscription. Equal event/arguments share one upstream SUBSCRIBE.
@@ -138,6 +147,8 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         let context = TransportContext(clock: clock, deadline: clock.now.advanced(by: timeout))
         do {
             try await context.run { try await self.waitForSubscription(token) }
+            DiscordLog.makeLogger("activities").debug("Activity subscription acquired", metadata: ["dk.event": "activities.subscription.acquired",
+                "dk.groups": .stringConvertible(groups.count)])
             return token
         } catch {
             await abandonSubscription(token)
@@ -388,6 +399,15 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     ///     Failures/remote close dispose immediately; all paths reserve terminal state before suspending.
     private func fail(_ error: any Error, notifyHost: Bool = false) async {
         if state != .closed {
+            let logger = DiscordLog.makeLogger("activities")
+            if notifyHost || error as? ActivityFailure == .closed {
+                logger.debug("Activity client closing", metadata: ["dk.event": "activities.client.closing"])
+            } else if error is CancellationError {
+                logger.trace("Activity client cancelled", metadata: ["dk.event": "activities.client.cancelled"])
+            } else {
+                logger.error("Activity client terminated", metadata: ["dk.event": "activities.client.failed",
+                    "dk.pending": .stringConvertible(pending.count)])
+            }
             state = .closed
             startup?.resume(throwing: error); startup = nil
             let operations = pending.values; pending.removeAll(); pendingBytes = 0; writes.removeAll()

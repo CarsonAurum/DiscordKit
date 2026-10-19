@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordClient
 import DiscordGateway
 
@@ -107,6 +108,7 @@ public actor BotRuntime {
             throw phase == .stopped || phase == .failed ? BotRuntimeFailure.stopped : .alreadyRunning
         }
         phase = .starting
+        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime started", metadata: ["dk.event": "bot_dsl.runtime.started"])
         let task = Task { try await self.execute() }
         completion = task
         try await withTaskCancellationHandler {
@@ -120,6 +122,7 @@ public actor BotRuntime {
     public func requestStop() {
         guard phase != .stopped && phase != .failed else { return }
         stopRequested = true
+        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime stop requested", metadata: ["dk.event": "bot_dsl.runtime.stop_requested"])
         if phase == .idle {
             phase = .stopping
             completion = Task { await self.closeBeforeRun() }
@@ -146,6 +149,7 @@ public actor BotRuntime {
         await clientShutdown()
         stop.continuation.finish()
         phase = .stopped
+        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime stopped before startup", metadata: ["dk.event": "bot_dsl.runtime.stopped_before_run"])
     }
 
     /// Performs bounded setup and supervises a fixed set of result-reporting children.
@@ -164,6 +168,7 @@ public actor BotRuntime {
             try Task.checkCancellation()
             if !stopRequested {
                 phase = .running
+                DiscordLog.makeLogger("bot_dsl").debug("Bot runtime subscriptions prepared", metadata: ["dk.event": "bot_dsl.runtime.running"])
                 let prepared = pipelines
                 await withTaskGroup(of: Result<Void, any Error>.self) { children in
                     children.addTask { await Self.result(self.clientRun) }
@@ -203,11 +208,16 @@ public actor BotRuntime {
         stop.continuation.finish()
         phase = failures.isEmpty ? .stopped : .failed
         if let first = failures.first {
+            DiscordLog.makeLogger("bot_dsl").error("Bot runtime failed after cleanup", metadata: ["dk.event": "bot_dsl.runtime.failed", "dk.failures": .stringConvertible(failures.count)])
             if failures.count == 1 { throw first }
             throw BotRuntimeFailures(primary: first, additional: Array(failures.dropFirst()))
         }
         try Task.checkCancellation()
-        if cancelled && !stopRequested { throw CancellationError() }
+        if cancelled && !stopRequested {
+            DiscordLog.makeLogger("bot_dsl").debug("Bot runtime cancelled", metadata: ["dk.event": "bot_dsl.runtime.cancelled"])
+            throw CancellationError()
+        }
+        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime stopped", metadata: ["dk.event": "bot_dsl.runtime.stopped"])
     }
 
     /// Converts one owned child's terminal result without swallowing dependency failures.

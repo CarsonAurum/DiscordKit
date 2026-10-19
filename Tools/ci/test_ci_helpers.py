@@ -239,7 +239,8 @@ class CIHelpersTests(unittest.TestCase):
     def test_apple_device_simulator_targets_and_concurrency(self):
         """Every device/simulator minimum is explicit and source paths remain one argument."""
         self.assertEqual(len(compile_apple.DESTINATIONS), 9)
-        self.assertEqual(len(compile_apple.MODULES), 5)
+        self.assertEqual(compile_apple.MODULES, ["Logging", "DiscordLogging", "DiscordLogHandlers", "DiscordBits",
+                                               "DiscordCore", "DiscordTransport", "DiscordMedia", "DiscordApplePlatform"])
         command = compile_apple.compiler_command("DiscordBits", [Path("source with spaces.swift")],
                                                 "arm64-apple-ios16.0-simulator", "SDK path", Path("out"), Path("cache"))
         self.assertIn("ApproachableConcurrency", command)
@@ -247,6 +248,64 @@ class CIHelpersTests(unittest.TestCase):
         self.assertIn("SDK path", command)
         self.assertEqual(command[-1], "source with spaces.swift")
         self.assertNotIn("-emit-executable", command)
+        upstream = compile_apple.compiler_command("Logging", [Path("logging.swift")],
+                                                 "arm64-apple-ios16.0", "SDK", Path("out"), Path("cache"))
+        self.assertNotIn("ApproachableConcurrency", upstream)
+        self.assertIn("-require-explicit-sendable", upstream)
+        self.assertEqual(upstream[upstream.index("-package-name") + 1], "swift_log")
+        self.assertEqual(command[command.index("-package-name") + 1], "discordkit")
+        for feature in compile_apple.LOGGING_FEATURES:
+            self.assertIn(feature, upstream)
+
+    def test_apple_resolver_preserves_explicit_paths_and_host_options(self):
+        """Resolution is shell-free, and offline callers can supply existing scratch contents."""
+        command = compile_apple.resolution_command(Path("repository with spaces"), Path("scratch with spaces"),
+                                                   Path("cache with spaces"), disable_sandbox=True)
+        self.assertEqual(command, ["swift", "package", "--package-path", "repository with spaces",
+                                   "--scratch-path", "scratch with spaces", "--cache-path", "cache with spaces",
+                                   "--disable-sandbox", "resolve"])
+        minimal = compile_apple.resolution_command(Path("repo"), Path("scratch"))
+        self.assertNotIn("--cache-path", minimal)
+        self.assertNotIn("--disable-sandbox", minimal)
+
+    def test_apple_logging_requires_resolved_source_and_matching_checkout(self):
+        """Missing, stale or escaping checkouts cannot claim compilation of the pinned dependency."""
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary)
+            scratch = repository / "scratch"
+            scratch.mkdir()
+            pin = {"identity": "swift-log", "kind": "remoteSourceControl",
+                   "location": "https://github.com/apple/swift-log.git",
+                   "state": {"revision": "a" * 40, "version": "1.16.1"}}
+            dependency = {"packageRef": {"identity": "swift-log", "location": pin["location"]},
+                          "state": {"name": "sourceControlCheckout", "checkoutState": pin["state"]},
+                          "subpath": "swift-log"}
+            (repository / "Package.resolved").write_text(json.dumps({"pins": [pin]}))
+
+            def save_workspace():
+                """Retain the current simulated SwiftPM checkout state for validation."""
+                (scratch / "workspace-state.json").write_text(json.dumps({"object": {"dependencies": [dependency]}}))
+
+            save_workspace()
+            with self.assertRaisesRegex(ValueError, "Missing resolved"):
+                compile_apple.resolved_logging(repository, scratch)
+            checkout = scratch / "checkouts/swift-log"
+            (checkout / "Sources/Logging").mkdir(parents=True)
+            (checkout / "Sources/Logging/Logger.swift").write_text("public struct Logger {}\n")
+            with patch("compile_apple.subprocess.check_output", return_value="a" * 40 + "\n"):
+                self.assertEqual(compile_apple.resolved_logging(repository, scratch), (checkout.resolve(), pin))
+            with patch("compile_apple.subprocess.check_output", return_value="b" * 40 + "\n"):
+                with self.assertRaisesRegex(ValueError, "HEAD does not match"):
+                    compile_apple.resolved_logging(repository, scratch)
+            dependency["state"]["checkoutState"] = {"revision": "b" * 40, "version": "1.16.1"}
+            save_workspace()
+            with self.assertRaisesRegex(ValueError, "does not match"):
+                compile_apple.resolved_logging(repository, scratch)
+            dependency["state"]["checkoutState"] = pin["state"]
+            dependency["subpath"] = "../../outside"
+            save_workspace()
+            with self.assertRaisesRegex(ValueError, "Missing resolved"):
+                compile_apple.resolved_logging(repository, scratch)
 
     def test_upstream_requires_exact_pins_and_keeps_surfaces_separate(self):
         """Missing, ambiguous and non-Git revisions cannot silently select a comparison base."""

@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordTransport
 import Foundation
 import NIOConcurrencyHelpers
@@ -58,6 +59,7 @@ public final class NIOHTTPIngress: HTTPIngress, Sendable {
         maximumHeaderBytes: Int = 16_384,
         context: TransportContext<C>
     ) async throws -> NIOHTTPIngress where C.Duration == Duration {
+        DiscordLog.makeLogger("nio.ingress").trace("Starting local ingress binding", metadata: ["dk.event": "nio.ingress.bind"])
         try context.check()
         guard maximumConnections > 0, maximumPendingRequests > 0,
               maximumBodyBytes > 0, maximumHeaderBytes > 0 else {
@@ -106,6 +108,7 @@ public final class NIOHTTPIngress: HTTPIngress, Sendable {
                     guard let host = listener.localAddress?.ipAddress,
                           let port = listener.localAddress?.port, let wirePort = UInt16(exactly: port)
                     else { throw NIOServiceFailure.invalidAddress }
+                    DiscordLog.makeLogger("nio.ingress").debug("Local ingress bound", metadata: ["dk.event": "nio.ingress.bound"])
                     return NIOHTTPIngress(listener: listener, registry: registry, input: input,
                                           localAddress: .init(host: host, port: wirePort))
                 } onCancel: {
@@ -164,6 +167,7 @@ public final class NIOHTTPIngress: HTTPIngress, Sendable {
     public func close() async {
         input.finish()
         await cleanup.close()
+        DiscordLog.makeLogger("nio.ingress").debug("Local HTTP ingress closed", metadata: ["dk.event": "nio.ingress.closed"])
     }
 }
 

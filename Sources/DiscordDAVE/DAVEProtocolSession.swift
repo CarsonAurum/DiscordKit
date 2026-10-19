@@ -1,3 +1,4 @@
+import DiscordLogging
 import Crypto
 import DiscordMLS
 import DiscordVoice
@@ -92,12 +93,23 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     ///   versions close the owner. Repeated start never resets counters or reuses a package.
     public func start(protocolVersion: UInt16) async throws -> [VoiceGatewayFrame] {
         try begin(); defer { busy = false }
+        let logger = DiscordLog.makeLogger("dave")
+        logger.trace("DAVE establishment started", metadata: ["dk.event": "dave.session.started"])
         do {
             try validateVersion(protocolVersion)
             guard version == nil else { throw DAVESessionError.invalidTransition }
             version = protocolVersion
-            return [try await freshPackage()]
-        } catch { await dispose(); throw error }
+            let commands = [try await freshPackage()]
+            logger.debug("DAVE key package prepared", metadata: ["dk.event": "dave.session.package_prepared"])
+            return commands
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("DAVE establishment cancelled", metadata: ["dk.event": "dave.session.cancelled"])
+            } else {
+                logger.error("DAVE establishment failed", metadata: ["dk.event": "dave.session.failed"])
+            }
+            await dispose(); throw error
+        }
     }
 
     /// Reduces one authenticated server control and returns bounded outbound commands.
@@ -112,12 +124,21 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     ///   complete results before sending another control. Lost results require a rejoin.
     public func receive(_ frame: VoiceGatewayFrame, now: TimeInterval) async throws -> [VoiceGatewayFrame] {
         try begin(); defer { busy = false }
+        let logger = DiscordLog.makeLogger("dave")
+        logger.trace("DAVE control admitted", metadata: ["dk.event": "dave.control.admitted"])
         do {
             try await expire(now)
             guard version != nil else { throw DAVESessionError.invalidTransition }
             let message = try DAVESignaling.decode(frame, maximumMembers: maximumMembers)
             return try await consume(message, now: now)
-        } catch { await dispose(); throw error }
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("DAVE control cancelled", metadata: ["dk.event": "dave.control.cancelled"])
+            } else {
+                logger.error("DAVE control failed", metadata: ["dk.event": "dave.control.failed"])
+            }
+            await dispose(); throw error
+        }
     }
 
     /// Protects a complete encoded frame using the active local sender epoch.
@@ -190,7 +211,11 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     ///   await that call and retry. Repeated closure succeeds and cancellation cannot prevent it.
     public func close() async throws {
         guard !busy else { throw DAVESessionError.operationInProgress }
-        busy = true; defer { busy = false }; await dispose()
+        busy = true; defer { busy = false }
+        if !closed {
+            DiscordLog.makeLogger("dave").debug("DAVE session closing", metadata: ["dk.event": "dave.session.closing"])
+        }
+        await dispose()
     }
 
     /// Keeps all retained identity, wire and key material out of ordinary logs.
@@ -387,6 +412,7 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
         }
         guard let active else { throw DAVESessionError.invalidTransition }
         transition = nil
+        DiscordLog.makeLogger("dave").debug("DAVE epoch activated", metadata: ["dk.event": "dave.epoch.activated"])
         if active.id > 0 {
             try await verificationStore?.replaceSession(sessionID: verificationSessionID, epoch: active.id,
                 identities: active.identities, epochAuthenticator: active.authenticator)
@@ -406,6 +432,7 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     /// - Returns: New KeyPackage command; negotiated version and authenticated membership survive.
     /// - Throws: New key or policy errors. Cleared secrets cannot be restored after failure.
     private func recover() async throws -> VoiceGatewayFrame {
+        DiscordLog.makeLogger("dave").warning("DAVE key establishment recovering", metadata: ["dk.event": "dave.session.recovering"])
         await clearEpochs(); await group?.close(); group = nil
         await package?.close(); package = nil; transition = nil
         await verificationStore?.removeSession(sessionID: verificationSessionID)

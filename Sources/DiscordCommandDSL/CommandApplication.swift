@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCommands
 import DiscordCore
 import DiscordHTTP
@@ -68,6 +69,7 @@ public struct CommandApplication: Sendable {
     public func handle<C: Clock>(_ exchange: HTTPExchange, context: TransportContext<C>,
         continuations: (@Sendable (Interaction) -> InteractionResponseSink)? = nil) async throws
         where C.Duration == Duration {
+        DiscordLog.makeLogger("command_dsl").debug("Command HTTP exchange started", metadata: ["dk.event": "command_dsl.exchange.started"])
         try await application.handle(exchange, context: context, continuations: continuations) { input in
             guard try await router.route(input) else { throw CommandApplicationError.unmatchedCommand }
         }
@@ -88,6 +90,7 @@ public struct CommandApplication: Sendable {
     public func run<C: Clock>(listener: any HTTPIngress, context: TransportContext<C>,
         continuations: (@Sendable (Interaction) -> InteractionResponseSink)? = nil) async throws
         where C.Duration == Duration {
+        DiscordLog.makeLogger("command_dsl").debug("Command HTTP listener started", metadata: ["dk.event": "command_dsl.listener.started"])
         let accepted = AcceptedCommandExchange()
         do {
             try await withThrowingTaskGroup(of: CommandApplicationEvent.self) { group in
@@ -131,7 +134,13 @@ public struct CommandApplication: Sendable {
             }
             await accepted.close()
             await listener.close()
+            DiscordLog.makeLogger("command_dsl").debug("Command HTTP listener stopped", metadata: ["dk.event": "command_dsl.listener.stopped"])
         } catch {
+            if error is CancellationError {
+                DiscordLog.makeLogger("command_dsl").debug("Command HTTP listener cancelled", metadata: ["dk.event": "command_dsl.listener.cancelled"])
+            } else {
+                DiscordLog.makeLogger("command_dsl").error("Command HTTP listener failed", metadata: ["dk.event": "command_dsl.listener.failed"])
+            }
             await accepted.close()
             await listener.close()
             throw error

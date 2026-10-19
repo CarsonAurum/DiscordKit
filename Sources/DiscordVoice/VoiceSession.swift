@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordMedia
 import DiscordModels
@@ -181,6 +182,8 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     public func run() async throws {
         guard !running else { throw VoiceSessionFailure.alreadyRunning }
         guard !stopped else { throw VoiceControlFailure.closed }
+        let logger = DiscordLog.makeLogger("voice")
+        logger.debug("Voice session running", metadata: ["dk.event": "voice.session.running"])
         running = true
         do {
             try await withThrowingTaskGroup(of: Void.self) { group in
@@ -192,7 +195,13 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                 }
             }
             await dispose(); running = false
+            logger.debug("Voice session stopped", metadata: ["dk.event": "voice.session.stopped"])
         } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Voice session cancelled", metadata: ["dk.event": "voice.session.cancelled"])
+            } else {
+                logger.error("Voice session failed", metadata: ["dk.event": "voice.session.failed"])
+            }
             await dispose(); running = false
             throw error
         }
@@ -225,6 +234,8 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                     throw VoiceSessionFailure.retryExhausted
                 }
                 attempts += 1; state.connectionLost()
+                DiscordLog.makeLogger("voice").warning("Voice connection resuming", metadata: ["dk.event": "voice.connection.resuming",
+                    "dk.attempt": .stringConvertible(attempts)])
                 await resumable.closeForReconnect(); connection = nil
                 try await clock.sleep(until: clock.now.advanced(by: configuration.retryDelay), tolerance: nil)
             }
@@ -424,6 +435,7 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
             try await e2ee.bindSSRC(server.ssrc, userID: identity.userID)
             try await send(state.selectProtocol(address: external.host, port: external.port))
             discoveryComplete = true
+            DiscordLog.makeLogger("voice").debug("Voice datagram discovery completed", metadata: ["dk.event": "voice.discovery.completed"])
             udpSignal.continuation.yield(())
         case .configureMedia(let description):
             guard let datagram, let peer, let localSSRC,
@@ -443,6 +455,7 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
             for command in try await e2ee.start(protocolVersion: description.daveProtocolVersion) { try await send(command) }
             guard !stopped else { throw VoiceControlFailure.closed }
             e2eeStarted = true
+            DiscordLog.makeLogger("voice").debug("Voice media configured", metadata: ["dk.event": "voice.media.configured"])
             let pending = pendingMembership; pendingMembership.removeAll(); pendingControlBytes = 0
             for event in pending { try await processE2EE(event) }
             try await authorizeIfAvailable()
@@ -479,6 +492,7 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
         // that use the exposed encoded pipeline without the PCM playback convenience.
         try await setSpeaking(true)
         await media?.setAuthorized(true)
+        DiscordLog.makeLogger("voice").debug("Voice media authorized", metadata: ["dk.event": "voice.media.authorized"])
     }
 
     /// Routes authenticated speaking/member events into bounded source and DAVE state.
@@ -558,6 +572,8 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// Resources acquired after stop are closed by their startup guards before ownership transfer.
     private func dispose() async {
         if let cleanup { await cleanup.value; return }
+        DiscordLog.makeLogger("voice").debug("Voice session closing", metadata: ["dk.event": "voice.session.closing",
+            "dk.rejected_packets": .stringConvertible(rejected), "dk.sources": .stringConvertible(sources.count)])
         stopped = true; state.close(); udpSignal.continuation.finish(); sources.removeAll(); pendingMembership.removeAll(); pendingControlBytes = 0
         let media = media, cipher = cipher, e2ee = e2ee, connection = connection, datagram = datagram
         let playback = playback

@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import DiscordModels
@@ -102,12 +103,30 @@ public enum EntitlementVerification {
     public static func verify(entitlementID: EntitlementID, requirement: EntitlementRequirement,
         now: @Sendable () -> DiscordTimestamp,
         fetch: @Sendable (Endpoint<Entitlement>) async throws -> Entitlement) async throws -> Entitlement {
+        let logger = DiscordLog.makeLogger("commerce")
+        logger.trace("Entitlement verification started", metadata: ["dk.event": "commerce.verification.started"])
         try Task.checkCancellation()
         let descriptor = try EntitlementEndpoints.get(applicationID: requirement.applicationID,
             entitlementID: entitlementID, readPolicy: nil)
-        let entitlement = try await fetch(descriptor)
+        let entitlement: Entitlement
+        do {
+            entitlement = try await fetch(descriptor)
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Entitlement fetch cancelled", metadata: ["dk.event": "commerce.verification.cancelled"])
+            } else {
+                logger.debug("Entitlement fetch failed", metadata: ["dk.event": "commerce.verification.failed"])
+            }
+            throw error
+        }
         try Task.checkCancellation()
-        try requirement.validate(entitlement, entitlementID: entitlementID, now: now())
+        do {
+            try requirement.validate(entitlement, entitlementID: entitlementID, now: now())
+        } catch {
+            logger.debug("Entitlement authorization rejected", metadata: ["dk.event": "commerce.verification.rejected"])
+            throw error
+        }
+        logger.debug("Entitlement verification completed", metadata: ["dk.event": "commerce.verification.completed"])
         return entitlement
     }
 
@@ -132,6 +151,7 @@ public enum EntitlementVerification {
         try Task.checkCancellation()
         _ = try await consume(EntitlementEndpoints.consume(applicationID: requirement.applicationID,
             entitlementID: entitlementID))
+        DiscordLog.makeLogger("commerce").debug("Entitlement consumption acknowledged", metadata: ["dk.event": "commerce.consumption.completed"])
         return entitlement
     }
 }
@@ -166,6 +186,8 @@ public enum ActivityPurchasing {
             verified.append(try await EntitlementVerification.verify(entitlementID: identifier,
                 requirement: requirement, now: now, fetch: fetch))
         }
+        DiscordLog.makeLogger("commerce").debug("Purchase acknowledgements verified", metadata: ["dk.event": "commerce.purchase.completed",
+            "dk.count": .stringConvertible(verified.count)])
         return verified
     }
 }

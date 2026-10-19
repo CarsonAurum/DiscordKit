@@ -1,5 +1,17 @@
 # Dependency policy and qualification
 
+Integrated logging adds the official [SwiftLog 1.16.1](https://github.com/apple/swift-log/releases/tag/1.16.1)
+`Logging` product with a next-major requirement and resolved revision
+`4038b6a4f74a1426f47eb1dd5b4bb5628a15d597`. Its Swift tools 6.2 manifest
+selects no external dependencies for `Logging`; it supports the required Swift 6.4
+toolchain. The [pinned license](https://github.com/apple/swift-log/blob/4038b6a4f74a1426f47eb1dd5b4bb5628a15d597/LICENSE.txt)
+is Apache-2.0. Preserve upstream notices in redistribution. `DiscordLogging` and
+optional `DiscordLogHandlers` select only this product; existing operation owners
+select the logging foundation and never the outputs. Pure Bits/Core/Models and
+codec/crypto transforms remain independent. Existing dependency versions/revisions
+are unchanged. Local builds do not establish other-platform or device qualification;
+see [logging](Logging.md) and its validation record.
+
 Phase 14 adds exact **swift-syntax 604.0.0** solely to the independent
 DiscordKitTools package for the owned SwiftSyntax/SwiftParser declaration audit.
 The [official release](https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0)
@@ -144,7 +156,7 @@ in their addition's dependency audit.
 | [swift-collections](https://github.com/apple/swift-collections/releases/tag/1.7.3) | 1.7.3 | Bounded queues and ordered collections |
 | [swift-async-algorithms](https://github.com/apple/swift-async-algorithms/releases/tag/1.1.7) | 1.1.7 | Stable sequence/channel algorithms |
 | [swift-http-types](https://github.com/apple/swift-http-types/releases/tag/1.8.0) | 1.8.0 | Shared HTTP value types |
-| [swift-log](https://github.com/apple/swift-log/releases/tag/1.16.0) | 1.16.0 | Consumer-configured logging |
+| [swift-log](https://github.com/apple/swift-log/releases/tag/1.16.1) | 1.16.1 | Consumer-configured logging |
 | [swift-crypto](https://github.com/apple/swift-crypto/releases/tag/5.0.1) | 5.0.1 | Supported signatures, hashes and AEAD primitives |
 | [swift-nio](https://github.com/apple/swift-nio/releases/tag/2.104.0) | 2.104.0 | Owned HTTP, WebSocket, UDP and ingress adapters |
 | [swift-nio-ssl](https://github.com/apple/swift-nio-ssl/releases/tag/2.37.5) | 2.37.5 | TLS for qualified NIO adapters |

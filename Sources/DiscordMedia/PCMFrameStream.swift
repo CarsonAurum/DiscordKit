@@ -1,3 +1,4 @@
+import DiscordLogging
 /// Failures specific to terminal-aware, single-consumer PCM streaming.
 public enum PCMStreamError: Error, Sendable, Equatable {
     /// Another iterator call is already suspended for this stream's next block.
@@ -175,6 +176,11 @@ public struct PCMFrameStream: AsyncSequence, PCMSink, Sendable {
         /// - Parameter discardingBuffered: Whether to discard queued blocks immediately.
         ///   Any parked read implies the queue is empty and is completed with normal EOF.
         func finish(discardingBuffered: Bool) {
+            if !finished {
+                DiscordLog.makeLogger("media").debug("PCM stream finished", metadata: ["dk.event": "media.pcm_stream.finished",
+                    "dk.buffered_blocks": .stringConvertible(buffers.count),
+                    "dk.discarding": .stringConvertible(discardingBuffered)])
+            }
             finished = true
             if discardingBuffered {
                 buffers.removeAll(keepingCapacity: false)
@@ -190,6 +196,9 @@ public struct PCMFrameStream: AsyncSequence, PCMSink, Sendable {
         /// Repeated calls are safe; any suspended reader receives `CancellationError`.
         /// This method never suspends and has no user-owned cleanup callback.
         func cancel() {
+            if !finished {
+                DiscordLog.makeLogger("media").trace("PCM stream cancelled", metadata: ["dk.event": "media.pcm_stream.cancelled"])
+            }
             finished = true
             buffers.removeAll(keepingCapacity: false)
             accountedBytes = 0

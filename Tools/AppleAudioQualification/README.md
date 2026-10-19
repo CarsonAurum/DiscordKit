@@ -5,6 +5,7 @@ DiscordApplePlatform. Ordinary package tests never invoke it. It uses no Discord
 credentials or network service, and writes no captured or decoded audio. The
 executable embeds a microphone usage description; the responsible host app must
 also allow microphone access under macOS privacy settings.
+The executable sends SwiftLog diagnostics to stderr; JSON evidence goes to the required `--output` file.
 
 Build with optimization before measuring frame budgets:
 

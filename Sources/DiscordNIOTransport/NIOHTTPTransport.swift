@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 import DiscordTransport
 import NIOCore
@@ -94,6 +95,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
     ///   redacted transport failure. Ambiguous writes are never retried.
     public func execute<C: Clock>(_ request: HTTPRequest, context: TransportContext<C>) async throws -> HTTPResponse
     where C.Duration == Duration {
+        DiscordLog.makeLogger("nio.http").trace("Starting NIO HTTP exchange", metadata: ["dk.event": "nio.http.execute"])
         var token: UUID?
         do {
             try context.check()
@@ -125,6 +127,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
                         try await completeUpload(id)
                         let metadata = try await wire.begin(request, target: target, upload: upload)
                         let stream = try await responseStream(id, wire: wire, context: context)
+                        DiscordLog.makeLogger("nio.http").debug("NIO HTTP response received", metadata: ["dk.event": "nio.http.response", "http.status": "\(metadata.status)"])
                         return HTTPResponse(status: metadata.status, headers: metadata.headers, body: stream)
                     } onCancel: { attempt.cancel() }
                 }
@@ -139,6 +142,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
             if let body = request.body { await body.close() }
             if let token { await discard(token) }
             if closed && !Task.isCancelled { throw TransportFailure.closed }
+            DiscordLog.makeLogger("nio.http").debug("NIO HTTP exchange ended without a response", metadata: ["dk.event": "nio.http.failed"])
             throw Self.safe(error)
         }
     }
@@ -173,6 +177,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
         }
         cleanup = task
         await task.value
+        DiscordLog.makeLogger("nio.http").debug("NIO HTTP transport closed", metadata: ["dk.event": "nio.http.closed"])
     }
 
     /// Reserves a slot synchronously before any suspension; rejects overload without

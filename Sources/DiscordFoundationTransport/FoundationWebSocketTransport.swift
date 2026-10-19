@@ -1,4 +1,5 @@
 #if canImport(Darwin)
+import DiscordLogging
 import DiscordTransport
 import Foundation
 import os
@@ -30,6 +31,7 @@ public struct FoundationWebSocketTransport: WebSocketTransport, TransportResourc
     ///   failure, closure or `unavailableCapability` on watchOS. Never reconnects.
     public func connectWebSocket<C: Clock>(_ request: HTTPRequest, context: TransportContext<C>) async throws
     -> any WebSocketConnection where C.Duration == Duration {
+        DiscordLog.makeLogger("foundation.websocket").trace("Starting Foundation WebSocket connection", metadata: ["dk.event": "foundation.websocket.connect"])
         #if os(watchOS)
         await request.body?.close()
         throw FoundationTransportFailure.unavailableCapability
@@ -58,17 +60,22 @@ public struct FoundationWebSocketTransport: WebSocketTransport, TransportResourc
                     Task { await handshake.finish(.failure(CancellationError())) }
                 }
             }
+            DiscordLog.makeLogger("foundation.websocket").debug("Foundation WebSocket connected", metadata: ["dk.event": "foundation.websocket.connected"])
             return connection
         } catch {
             await request.body?.close()
             if let identifier { await owner.abandon(identifier) }
+            DiscordLog.makeLogger("foundation.websocket").debug("Foundation WebSocket connection failed", metadata: ["dk.event": "foundation.websocket.failed"])
             throw foundationFailure(error)
         }
         #endif
     }
 
     /// Cancels every admitted connection and awaits session invalidation exactly once.
-    public func close() async { await owner.close() }
+    public func close() async {
+        await owner.close()
+        DiscordLog.makeLogger("foundation.websocket").debug("Foundation WebSocket transport closed", metadata: ["dk.event": "foundation.websocket.closed"])
+    }
 }
 
 /// One-shot handshake state supporting callback-before-wait and cancellation races.

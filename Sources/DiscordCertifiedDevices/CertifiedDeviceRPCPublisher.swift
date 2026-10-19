@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordRPC
 import DiscordTransport
@@ -46,7 +47,14 @@ public struct CertifiedDeviceRPCPublisher<C: Clock>: Sendable where C.Duration =
         let arguments = try certifiedDeviceArguments(devices, maximumDevices: maximumDevices)
         let request = try RPCRequest(command: .setCertifiedDevices, arguments: arguments,
             limits: JSONLimits(maximumBytes: maximumArgumentBytes))
+        let logger = DiscordLog.makeLogger("certified_devices")
+        logger.trace("Certified devices RPC publication started", metadata: ["dk.event": "certified_devices.rpc.started",
+            "dk.count": .stringConvertible(devices.count)])
         let result = try await client.request(request, context: context)
-        guard result == .null else { throw CertifiedDeviceFailure.invalidResponse }
+        guard result == .null else {
+            logger.debug("Certified devices RPC acknowledgement rejected", metadata: ["dk.event": "certified_devices.rpc.failed"])
+            throw CertifiedDeviceFailure.invalidResponse
+        }
+        logger.debug("Certified devices RPC publication acknowledged", metadata: ["dk.event": "certified_devices.rpc.completed"])
     }
 }

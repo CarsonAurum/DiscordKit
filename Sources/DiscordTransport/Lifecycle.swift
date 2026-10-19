@@ -1,3 +1,4 @@
+import DiscordLogging
 /// Failures owned by transport infrastructure rather than Discord endpoint policy.
 public enum TransportFailure: Error, Equatable, Sendable {
     case deadlineExceeded
@@ -30,7 +31,10 @@ public struct TransportContext<C: Clock>: Sendable where C.Duration == Duration 
     ///   `TransportFailure.deadlineExceeded` when the clock has reached the deadline.
     public func check() throws {
         try Task.checkCancellation()
-        if let deadline, clock.now >= deadline { throw TransportFailure.deadlineExceeded }
+        if let deadline, clock.now >= deadline {
+            DiscordLog.makeLogger("transport").trace("Transport operation deadline expired", metadata: ["dk.event": "transport.deadline.expired"])
+            throw TransportFailure.deadlineExceeded
+        }
     }
 
     /// Runs an operation with a structured deadline race and awaits both children.

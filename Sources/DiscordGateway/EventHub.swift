@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 
 /// Closed subscription/admission failures that never contain event payloads or credentials.
@@ -169,6 +170,7 @@ public actor GatewayEventHubAuthority {
         subscribers[id] = Subscriber(hub: hub, ordinal: nextOrdinal, configuration: configuration,
             maximumEvents: events, maximumBytes: bytes, policy: policy)
         nextOrdinal += 1
+        DiscordLog.makeLogger("gateway").debug("Gateway subscription created", metadata: ["dk.event": "gateway.subscription.created", "dk.subscriptions": .stringConvertible(subscribers.count)])
         return GatewayEventSubscription(authority: self, id: id)
     }
 
@@ -220,6 +222,9 @@ public actor GatewayEventHubAuthority {
                 subscribers[id] = subscriber
                 terminated += 1
             } else { dropped += 1 }
+        }
+        if terminated > 0 || dropped > 0 {
+            DiscordLog.makeLogger("gateway").debug("Gateway subscriber capacity exhausted", metadata: ["dk.event": "gateway.subscription.overflow", "dk.dropped": .stringConvertible(dropped), "dk.terminated": .stringConvertible(terminated)])
         }
         return GatewayEventPublication(delivered: delivered, dropped: dropped, terminated: terminated)
     }

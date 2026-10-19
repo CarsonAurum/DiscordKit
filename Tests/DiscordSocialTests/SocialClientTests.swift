@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordModels
 import DiscordSocial
@@ -242,4 +243,33 @@ private struct PresenceStub: SocialPresenceProvider {
 private struct UnsafeFailure: Error, CustomStringConvertible {
     /// Deliberate secret sentinel that must never escape through the composition error.
     var description: String { "sentinel-provider-secret" }
+}
+
+extension SocialClientTests {
+    /// Captures explicit consent and provider lifecycle events without traversing user projections,
+    /// injected failure descriptions, presence text or authorization account identifiers.
+    /// - Throws: Unexpected valid authorization/profile fixture errors.
+    @Test func structuredLoggingExcludesProviderData() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let client = try SocialClient(clock: ContinuousClock(), profile: ProfileStub(body: { _ in try user() }),
+                presence: PresenceStub(body: { _, _ in throw UnsafeFailure() }), stateLimits: SocialStateLimits())
+            #expect(recorder.entries.isEmpty)
+            try await client.activate(scope: scope(), grantedScopes: ["identify", "rpc.activities.write"], availableHosts: [.desktopRPC])
+            _ = try await client.currentProfile()
+            await #expect(throws: SocialFailure.providerFailure) {
+                try await client.updatePresence(SocialPresence(name: "private-presence-text"))
+            }
+            await client.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.social" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "social.authorization.activated" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "social.profile.completed" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "social.presence.failed" })
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["private-presence-text", "sentinel-provider-secret", "rpc.activities.write", "username"] {
+            #expect(!rendered.contains(secret))
+        }
+        #expect(entries.allSatisfy { $0.level != .info && $0.level != .notice })
+    }
 }

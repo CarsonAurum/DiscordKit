@@ -6,6 +6,7 @@ let package = Package(
     platforms: [.macOS(.v13)],
     dependencies: [.package(name: "DiscordKit", path: "../..")],
     targets: [.executableTarget(name: "VoiceSessionQualification", dependencies: [
+        .product(name: "DiscordLogging", package: "DiscordKit"),
         .product(name: "DiscordCore", package: "DiscordKit"),
         .product(name: "DiscordModels", package: "DiscordKit"),
         .product(name: "DiscordTransport", package: "DiscordKit"),

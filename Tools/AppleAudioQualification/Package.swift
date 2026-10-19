@@ -19,6 +19,7 @@ let package = Package(
         ], swiftSettings: concurrencySettings),
         .executableTarget(name: "AppleAudioQualification", dependencies: [
             "QualificationSupport",
+            .product(name: "DiscordLogging", package: "DiscordKit"),
             .product(name: "DiscordApplePlatform", package: "DiscordKit"),
             .product(name: "DiscordMedia", package: "DiscordKit"),
             .product(name: "DiscordVoiceCodecs", package: "DiscordKit"),

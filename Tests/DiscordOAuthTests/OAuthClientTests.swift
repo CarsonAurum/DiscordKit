@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import DiscordModels
@@ -327,4 +328,52 @@ private func codeResult() async throws -> OAuthAuthorizationCode {
 /// - Throws: Unexpected body construction errors for the finite fixture.
 private func oauthResponse(_ text: String, status: Int = 200) throws -> HTTPResponse {
     HTTPResponse(status: status, body: try RequestBody(bytes: Data(text.utf8), contentType: "application/json").makeStream())
+}
+
+extension OAuthClientTests {
+    /// Captures successful/rejected/failed grants through native SwiftLog without exposing credentials,
+    /// scopes, response fields or arbitrary transport error text; construction remains silent.
+    /// - Throws: Unexpected fixture or successful grant failures.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func structuredLoggingRedactsGrantMaterial() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let transport = try ScriptedHTTPTransport(steps: [
+                { _ in try oauthResponse(tokenJSON) },
+                { _ in try oauthResponse("{\"error\":\"invalid_grant\",\"error_description\":\"private-response-secret\"}", status: 400) },
+                { _ in throw TestSupportFailure.scripted("private-transport-secret") }
+            ])
+            let clock = ManualClock()
+            let rate = RateLimitCoordinator(clock: clock)
+            let rest = RESTClient(credential: .none, identity: RateLimitIdentity(), transport: transport,
+                coordinator: rate, clock: clock, retryPolicy: .init(maximumAttempts: 1))
+            let client = OAuthClient(rest: rest, authentication: .publicPKCE(clientID: .init(rawValue: 1)))
+            #expect(recorder.entries.isEmpty)
+            _ = try await client.refresh(refreshToken: OAuthRefreshToken("private-refresh-secret"))
+            // Headerless responses retain the route's conservative one-second pacing.
+            // Advance virtual time between completed calls so the fixture needs no sleeper.
+            try clock.advance(by: .seconds(1))
+            await #expect(throws: OAuthError.invalidGrant) {
+                try await client.refresh(refreshToken: OAuthRefreshToken("private-refresh-secret"))
+            }
+            try clock.advance(by: .seconds(1))
+            await #expect(throws: DiscordError.unknownMutationOutcome(.connectionLostAfterSubmission)) {
+                try await client.refresh(refreshToken: OAuthRefreshToken("private-refresh-secret"))
+            }
+            #expect(await transport.executionCount == 3)
+            #expect(await rate.snapshot().activeCount == 0)
+            #expect(clock.pendingSleepCount == 0)
+            await rate.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.oauth" }
+        #expect(entries.contains { $0.level == .trace && $0.metadata["dk.event"] == "oauth.request.started" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "oauth.request.completed" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "oauth.request.rejected" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "oauth.request.failed" })
+        let rendered = recorder.entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["private-refresh-secret", "private-response-secret", "private-transport-secret", "access_secret", "refresh_secret", "future.scope"] {
+            #expect(!rendered.contains(secret))
+        }
+        #expect(entries.allSatisfy { $0.level != .info && $0.level != .notice })
+    }
 }

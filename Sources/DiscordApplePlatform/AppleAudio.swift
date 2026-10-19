@@ -1,3 +1,4 @@
+import DiscordLogging
 #if canImport(AVFoundation) && canImport(os)
 import AVFoundation
 import DiscordMedia
@@ -299,6 +300,7 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
     ///   `unsupportedDeviceSelection`, or redacted `nativeFailure`. Every native start
     ///   failure stops the backend and clears all queue accounting before returning.
     @discardableResult public func start() throws -> PCMFormat? {
+        DiscordLog.makeLogger("apple.audio").debug("Starting owned Apple audio routes", metadata: ["dk.event": "apple.audio.start"])
         try Task.checkCancellation()
         guard state != .running else { throw AppleAudioError.alreadyRunning }
         if configuration.captureEnabled {
@@ -326,6 +328,7 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
             }
             captureFormat = format
             try storage.setCaptureFormat(format)
+            DiscordLog.makeLogger("apple.audio").debug("Apple audio routes running", metadata: ["dk.event": "apple.audio.running"])
             return format
         } catch {
             stop(reason: .failed)
@@ -376,6 +379,7 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
         state = .stopped(reason)
         captureFormat = nil
         backend.stop()
+        DiscordLog.makeLogger("apple.audio").debug("Apple audio routes stopped", metadata: ["dk.event": "apple.audio.stopped"])
     }
 
     /// Reports coherent PCM accounting without querying native devices or exposing sample content.

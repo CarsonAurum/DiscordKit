@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import Foundation
@@ -245,6 +246,8 @@ public actor OAuthDeviceAuthorizationFlow<C: Clock>: CustomStringConvertible,
         guard !busy else { throw OAuthDeviceAuthorizationError.busy }
         guard !started, !finished else { throw OAuthDeviceAuthorizationError.alreadyStarted }
         let endpoint = try OAuthDeviceAuthorizationEndpoints.authorize(scopes: scopes, authentication: authentication)
+        let logger = DiscordLog.makeLogger("oauth")
+        logger.trace("Device authorization started", metadata: ["dk.event": "oauth.device.started"])
         started = true
         busy = true
         let requestStart = clock.now
@@ -261,8 +264,14 @@ public actor OAuthDeviceAuthorizationFlow<C: Clock>: CustomStringConvertible,
             expiresAt = expiry
             pollingInterval = .seconds(result.interval)
             nextPollAt = clock.now.advanced(by: pollingInterval)
+            logger.debug("Device authorization instructions admitted", metadata: ["dk.event": "oauth.device.instructions"])
             return result
         } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Device authorization cancelled", metadata: ["dk.event": "oauth.device.cancelled"])
+            } else {
+                logger.debug("Device authorization failed", metadata: ["dk.event": "oauth.device.failed"])
+            }
             finish()
             throw error
         }
@@ -285,6 +294,8 @@ public actor OAuthDeviceAuthorizationFlow<C: Clock>: CustomStringConvertible,
         guard clock.now < expiresAt else { finish(); throw OAuthDeviceAuthorizationError.expired }
         if clock.now < nextPollAt { return .waiting(retryAfter: clock.now.duration(to: nextPollAt)) }
         guard polls < maximumPolls else { finish(); throw OAuthDeviceAuthorizationError.pollLimitExceeded }
+        let logger = DiscordLog.makeLogger("oauth")
+        logger.trace("Device token poll started", metadata: ["dk.event": "oauth.device.poll.started"])
         busy = true
         polls += 1
         defer { busy = false }
@@ -296,6 +307,7 @@ public actor OAuthDeviceAuthorizationFlow<C: Clock>: CustomStringConvertible,
                 guard !cancelled else { throw OAuthDeviceAuthorizationError.cancelled }
                 guard clock.now < expiresAt else { throw OAuthDeviceAuthorizationError.expired }
                 finish()
+                logger.debug("Device authorization completed", metadata: ["dk.event": "oauth.device.authorized"])
                 return .authorized(tokens)
             } catch let error as APIResponseError {
                 try Task.checkCancellation()
@@ -308,9 +320,11 @@ public actor OAuthDeviceAuthorizationFlow<C: Clock>: CustomStringConvertible,
                 guard error.status == 400 else { throw OAuthDeviceAuthorizationError.authorizationFailed }
                 switch code {
                 case "authorization_pending":
+                    logger.trace("Device authorization pending", metadata: ["dk.event": "oauth.device.pending"])
                     self.nextPollAt = clock.now.advanced(by: pollingInterval)
                     return .pending(retryAfter: pollingInterval)
                 case "slow_down":
+                    logger.debug("Device polling interval increased", metadata: ["dk.event": "oauth.device.slow_down"])
                     pollingInterval += .seconds(5)
                     self.nextPollAt = clock.now.advanced(by: pollingInterval)
                     return .slowDown(retryAfter: pollingInterval)
@@ -320,6 +334,11 @@ public actor OAuthDeviceAuthorizationFlow<C: Clock>: CustomStringConvertible,
                 }
             }
         } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Device token poll cancelled", metadata: ["dk.event": "oauth.device.poll.cancelled"])
+            } else {
+                logger.debug("Device token polling terminated", metadata: ["dk.event": "oauth.device.poll.failed"])
+            }
             finish()
             throw error
         }
@@ -331,6 +350,9 @@ public actor OAuthDeviceAuthorizationFlow<C: Clock>: CustomStringConvertible,
     /// REST transport. To interrupt an outstanding HTTP request as well, cancel its
     /// calling task; submission may already have happened and cannot be undone.
     public func cancel() {
+        if !cancelled {
+            DiscordLog.makeLogger("oauth").debug("Device authorization cancelled", metadata: ["dk.event": "oauth.device.closed"])
+        }
         cancelled = true
         finish()
     }

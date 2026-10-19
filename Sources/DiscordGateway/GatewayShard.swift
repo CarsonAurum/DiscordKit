@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import Foundation
@@ -156,6 +157,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         guard !running, state.phase == .disconnected else { throw GatewayFailure.alreadyRunning }
         try Task.checkCancellation()
         running = true
+        DiscordLog.makeLogger("gateway").debug("Gateway shard started", metadata: ["dk.event": "gateway.shard.started"])
         var runFailure: (any Error)?
         do {
             let acquired = try await leases.acquire(identity, owner: owner, lifetime: configuration.leaseLifetime)
@@ -171,13 +173,22 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         // A failed remote release is observable even when the original run also failed.
         // Until expiry, an external coordinator may still retain the ownership record.
         try await finish()
-        if let runFailure { throw runFailure }
+        if let runFailure {
+            if runFailure is CancellationError {
+                DiscordLog.makeLogger("gateway").debug("Gateway shard cancelled", metadata: ["dk.event": "gateway.shard.cancelled"])
+            } else {
+                DiscordLog.makeLogger("gateway").error("Gateway shard failed", metadata: ["dk.event": "gateway.shard.failed"])
+            }
+            throw runFailure
+        }
+        DiscordLog.makeLogger("gateway").debug("Gateway shard stopped", metadata: ["dk.event": "gateway.shard.stopped"])
     }
 
     /// Requests controlled drain/handoff; closing unblocks receive before `run` finishes cleanup.
     /// Repeated stops are harmless. The caller should await its run task before handing off topology.
     /// Stopping a never-started instance permanently transitions it to stopped without acquiring a lease.
     public func stop() async {
+        DiscordLog.makeLogger("gateway").debug("Gateway shard stop requested", metadata: ["dk.event": "gateway.shard.stop_requested"])
         let neverStarted = !running && state.phase == .disconnected
         running = false
         eventSignal.continuation.finish()
@@ -383,6 +394,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
             try Task.checkCancellation()
             guard generation < UInt64.max else { throw GatewayFailure.staleGeneration }
             generation += 1
+            DiscordLog.makeLogger("gateway").debug("Gateway connection attempt started", metadata: ["dk.event": "gateway.connection.started"])
             requests.reset(); sentAt.removeAll(); presenceSentAt.removeAll()
             let active = generation
             _ = try state.apply(.start)
@@ -429,6 +441,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
                     cap *= 2
                 }
                 retries += 1
+                DiscordLog.makeLogger("gateway").debug("Gateway connection retry scheduled", metadata: ["dk.event": "gateway.connection.retry", "dk.attempt": .stringConvertible(retries)])
                 try await clock.sleep(for: cap * jitter())
             }
         }
@@ -488,6 +501,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
                           case .string(let url) = data["resume_gateway_url"] else { throw GatewayFailure.invalidPayload }
                     let validated = try gatewayURL(url)
                     _ = try state.apply(.ready)
+                    DiscordLog.makeLogger("gateway").debug("Gateway session ready", metadata: ["dk.event": "gateway.session.ready"])
                     sessionID = session; resumeURL = validated
                 } else if name == "RESUMED" { _ = try state.apply(.ready) }
                 sequence = next
@@ -630,6 +644,7 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
     private func append(_ envelope: GatewayEnvelope, receivedAt: C.Instant) throws {
         guard events.count < configuration.maximumBufferedEvents,
               envelope.byteCount <= configuration.maximumBufferedBytes - bufferedBytes else {
+            DiscordLog.makeLogger("gateway").error("Gateway raw event queue exhausted", metadata: ["dk.event": "gateway.events.overflow", "dk.queued": .stringConvertible(events.count), "dk.bytes": .stringConvertible(bufferedBytes)])
             throw GatewayFailure.eventCapacityExceeded
         }
         let clock = self.clock
@@ -672,7 +687,10 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         events.removeAll(); bufferedBytes = 0; heartbeatPending = false; clearSession()
         if state.phase == .draining { _ = try? state.apply(.closed) }
         else if state.phase != .stopped { _ = try? state.apply(.fatal) }
-        if let releaseFailure { throw releaseFailure }
+        if let releaseFailure {
+            DiscordLog.makeLogger("gateway").error("Gateway ownership release failed", metadata: ["dk.event": "gateway.lease.release_failed"])
+            throw releaseFailure
+        }
     }
 }
 

@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import Foundation
 
@@ -226,6 +227,7 @@ public actor OAuthTokenCoordinator {
         guard replacement.expiresAt > completionTime else { throw OAuthTokenFailure.expired }
         guard try await storage.compareExchange(for: identity, expectedGeneration: current?.generation,
             replacement: replacement, now: completionTime) else { throw OAuthTokenFailure.conflict }
+        DiscordLog.makeLogger("oauth").debug("Authorized token installed", metadata: ["dk.event": "oauth.token.installed"])
     }
 
     /// Durably invalidates a grant before attempting one remote revocation exchange.
@@ -238,6 +240,7 @@ public actor OAuthTokenCoordinator {
         defer { mutations.remove(identity.authorizationID) }
         guard let record = try await removeToken(for: identity) else { return }
         try await revoke(identity, record)
+        DiscordLog.makeLogger("oauth").debug("Token revocation completed", metadata: ["dk.event": "oauth.token.revoked"])
     }
 
     /// Applies an externally observed revocation or unmerge to local authoritative storage only.
@@ -250,12 +253,17 @@ public actor OAuthTokenCoordinator {
         try beginMutation(identity)
         defer { mutations.remove(identity.authorizationID) }
         _ = try await removeToken(for: identity)
+        DiscordLog.makeLogger("oauth").debug("Token invalidation completed", metadata: ["dk.event": "oauth.token.invalidated"])
     }
 
     /// Rejects new work, promptly releases subscribers and joins all owned exchanges.
     /// Repeated calls join the same remaining cleanup. Storage remains owned by its caller.
     /// In-progress install/invalidate/revoke calls are caller-owned and must be awaited by that caller.
     public func close() async {
+        if !closed {
+            DiscordLog.makeLogger("oauth").debug("Token coordinator closing", metadata: ["dk.event": "oauth.coordinator.closing",
+                "dk.active_operations": .stringConvertible(flights.count)])
+        }
         closed = true
         let current = flights
         for identity in current.keys { invalidateFlight(identity, error: OAuthTokenFailure.closed) }
@@ -320,6 +328,7 @@ public actor OAuthTokenCoordinator {
             guard flight.waiters.count < maximumWaitersPerIdentity else {
                 continuation.resume(throwing: OAuthTokenFailure.capacityExceeded); return
             }
+            DiscordLog.makeLogger("oauth").trace("Token resolution shared", metadata: ["dk.event": "oauth.token.shared"])
             flight.waiters[waiter] = continuation
             flights[identity] = flight
         } else {
@@ -368,8 +377,15 @@ public actor OAuthTokenCoordinator {
         }
         let response: OAuthTokenResponse
         try Task.checkCancellation()
+        let logger = DiscordLog.makeLogger("oauth")
+        logger.trace("Token refresh started", metadata: ["dk.event": "oauth.refresh.started"])
         do { response = try await refresh(identity, refreshToken) }
         catch {
+            if error is CancellationError {
+                logger.trace("Token refresh cancelled", metadata: ["dk.event": "oauth.refresh.cancelled"])
+            } else {
+                logger.debug("Token refresh failed", metadata: ["dk.event": "oauth.refresh.failed"])
+            }
             if let failure = error as? OAuthError, failure == .invalidGrant {
                 _ = try await storage.compareExchange(for: identity, expectedGeneration: record.generation,
                     replacement: nil, now: currentTime())
@@ -383,6 +399,7 @@ public actor OAuthTokenCoordinator {
         guard try await storage.compareExchange(for: identity, expectedGeneration: record.generation,
             replacement: replacement, now: completion) else { throw OAuthTokenFailure.conflict }
         guard replacement.expiresAt > completion else { throw OAuthTokenFailure.expired }
+        logger.debug("Token refresh persisted", metadata: ["dk.event": "oauth.refresh.persisted"])
         return replacement.accessToken
     }
 

@@ -1,3 +1,5 @@
+import DiscordTestSupport
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import DiscordModels
@@ -202,4 +204,36 @@ private actor CommerceRecorder {
     /// Appends one operation label to the observed order.
     /// - Parameter event: Synthetic fixed operation name, never an account or token identifier.
     func record(_ event: String) { events.append(event) }
+}
+
+extension EntitlementVerificationTests {
+    /// Uses native SwiftLog capture for verification, rejection and fetch failure while keeping
+    /// authoritative entitlement fields and arbitrary executor errors outside log messages.
+    /// - Throws: Unexpected valid entitlement construction or verification errors.
+    @Test func structuredLoggingExcludesPurchaseIdentity() async throws {
+        let recorder = LogRecorder()
+        let entitlement = try Self.fixture()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            _ = try await EntitlementVerification.verify(entitlementID: .init(rawValue: 1),
+                requirement: Self.policy(), now: { Self.now }, fetch: { _ in entitlement })
+            await #expect(throws: EntitlementVerificationError.mismatchedGrant) {
+                try await EntitlementVerification.verify(entitlementID: .init(rawValue: 999_987_654),
+                    requirement: Self.policy(), now: { Self.now }, fetch: { _ in entitlement })
+            }
+            await #expect(throws: TestSupportFailure.scripted("private-commerce-error")) {
+                try await EntitlementVerification.verify(entitlementID: .init(rawValue: 1),
+                    requirement: Self.policy(), now: { Self.now }, fetch: { _ in
+                        throw TestSupportFailure.scripted("private-commerce-error")
+                    })
+            }
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.commerce" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "commerce.verification.completed" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "commerce.verification.rejected" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "commerce.verification.failed" })
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        #expect(!rendered.contains("999987654"))
+        #expect(!rendered.contains("private-commerce-error"))
+        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem"]) })
+    }
 }

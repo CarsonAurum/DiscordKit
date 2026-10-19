@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordModels
 import DiscordTransport
@@ -88,6 +89,7 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
             throw SocialFailure.staleSession
         }
         self.scope = scope; scopes = grantedScopes; hosts = availableHosts
+        DiscordLog.makeLogger("social").debug("Social authorization activated", metadata: ["dk.event": "social.authorization.activated"])
     }
 
     /// Revokes local consent, fences pending results and releases all local relationship data.
@@ -96,6 +98,8 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
     /// It is idempotent, including on a closed client; no new calls are admitted afterward
     /// until explicit activation succeeds.
     public func disconnect() async {
+        DiscordLog.makeLogger("social").debug("Social authorization cleared", metadata: ["dk.event": "social.authorization.cleared",
+            "dk.active_operations": .stringConvertible(inFlight)])
         revision = UUID(); scope = nil; scopes = []; hosts = []
         await relationships.clear()
     }
@@ -104,6 +108,9 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
     /// Repeated calls are harmless. Callers cancel/await outstanding calls before disposing
     /// their provider resources; closing this composition does not replay or undo mutations.
     public func close() async {
+        if !closed {
+            DiscordLog.makeLogger("social").debug("Social client closing", metadata: ["dk.event": "social.client.closed"])
+        }
         closed = true
         await disconnect()
     }
@@ -140,12 +147,22 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
         guard inFlight < maximumOperations else { throw SocialFailure.overloaded }
         let expected = revision; let account = scope!.accountID; let provider = profile!
         inFlight += 1; defer { inFlight -= 1 }
+        let logger = DiscordLog.makeLogger("social")
+        logger.trace("Social profile read started", metadata: ["dk.event": "social.profile.started"])
         do {
             let user = try await context.run { try await provider.currentProfile(context: context) }
             try context.check(); try requireRevision(expected)
             guard user.id == account else { throw SocialFailure.accountMismatch }
+            logger.debug("Social profile read completed", metadata: ["dk.event": "social.profile.completed"])
             return user
-        } catch { throw safe(error) }
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Social profile read cancelled", metadata: ["dk.event": "social.profile.cancelled"])
+            } else {
+                logger.debug("Social profile read failed", metadata: ["dk.event": "social.profile.failed"])
+            }
+            throw safe(error)
+        }
     }
 
     /// Serializes common presence mutations across authorization changes with fail-fast admission.
@@ -161,12 +178,22 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
         guard !writingPresence else { throw SocialFailure.mutationInProgress }
         guard inFlight < maximumOperations else { throw SocialFailure.overloaded }
         let expected = revision; let provider = presence!
+        let logger = DiscordLog.makeLogger("social")
+        logger.trace("Social presence write started", metadata: ["dk.event": "social.presence.started"])
         writingPresence = true; inFlight += 1
         defer { writingPresence = false; inFlight -= 1 }
         do {
             try await context.run { try await provider.updatePresence(value, context: context) }
             try context.check(); try requireRevision(expected)
-        } catch { throw safe(error) }
+            logger.debug("Social presence write completed", metadata: ["dk.event": "social.presence.completed"])
+        } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Social presence write cancelled", metadata: ["dk.event": "social.presence.cancelled"])
+            } else {
+                logger.debug("Social presence write failed", metadata: ["dk.event": "social.presence.failed"])
+            }
+            throw safe(error)
+        }
     }
 
     /// Replaces local observations from an application-normalized authorized provider snapshot.

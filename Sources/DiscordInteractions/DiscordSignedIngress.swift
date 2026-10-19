@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordTransport
 import Foundation
 
@@ -48,10 +49,12 @@ public actor DiscordSignedIngress {
         where C.Duration == Duration {
         do { try context.check() } catch { await request.body?.close(); throw error }
         guard active < maximumConcurrentRequests else {
+            DiscordLog.makeLogger("interactions").debug("Signed ingress capacity exhausted", metadata: ["dk.event": "interactions.ingress.overloaded"])
             await request.body?.close()
             return HTTPResponse(status: 503, headers: [HTTPHeader(name: "Retry-After", value: "1")])
         }
         active += 1
+        DiscordLog.makeLogger("interactions").trace("Signed ingress admitted", metadata: ["dk.event": "interactions.ingress.admitted"])
         defer { active -= 1 }
         guard request.method == "POST" else { await request.body?.close(); return HTTPResponse(status: 405) }
         var headerBytes = 0
@@ -86,6 +89,7 @@ public actor DiscordSignedIngress {
             let verified = try await verifier.verify(headers: request.headers, body: bytes)
             try context.check()
             authenticated = true
+            DiscordLog.makeLogger("interactions").debug("Signed request authenticated", metadata: ["dk.event": "interactions.ingress.authenticated"])
             try await context.run {
                 let response = try await handler(verified)
                 await responseLease.store(response)
@@ -101,6 +105,7 @@ public actor DiscordSignedIngress {
             await responseLease.take()?.body?.close()
             try context.check()
             if !authenticated, let failure = error as? SignedIngressFailure {
+                DiscordLog.makeLogger("interactions").debug("Signed ingress rejected unverified request", metadata: ["dk.event": "interactions.ingress.rejected"])
                 switch failure {
                 case .bodyTooLarge: return HTTPResponse(status: 413)
                 case .replayCapacity: return HTTPResponse(status: 503)
@@ -108,7 +113,11 @@ public actor DiscordSignedIngress {
                 case .malformedHeaders, .invalidSignature, .staleTimestamp, .replay: return HTTPResponse(status: 401)
                 }
             }
-            if error is CancellationError { throw error }
+            if error is CancellationError {
+                DiscordLog.makeLogger("interactions").debug("Signed ingress cancelled", metadata: ["dk.event": "interactions.ingress.cancelled"])
+                throw error
+            }
+            DiscordLog.makeLogger("interactions").debug("Signed ingress handler failed", metadata: ["dk.event": "interactions.ingress.failed"])
             return HTTPResponse(status: 500)
         }
     }

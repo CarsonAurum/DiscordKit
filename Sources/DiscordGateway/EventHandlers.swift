@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordTransport
 import Foundation
 
@@ -136,6 +137,7 @@ public struct GatewayEventHandlerDispatcher: Sendable {
     ///   or the original callback error. After an error, concurrently completed side effects are not undone.
     public func run(subscription: GatewayEventSubscription,
                     handler: @escaping @Sendable (GatewayEvent) async throws -> Void) async throws {
+        DiscordLog.makeLogger("gateway").debug("Gateway handler dispatcher started", metadata: ["dk.event": "gateway.handlers.started"])
         do {
             try Task.checkCancellation()
             try await withThrowingTaskGroup(of: Completion.self) { group in
@@ -171,6 +173,7 @@ public struct GatewayEventHandlerDispatcher: Sendable {
                         inputScheduled = false
                         guard let event else { inputFinished = true; continue }
                         guard event.retainedByteCount <= configuration.maximumRetainedBytes - retainedBytes else {
+                            DiscordLog.makeLogger("gateway").error("Gateway handler retained capacity exhausted", metadata: ["dk.event": "gateway.handlers.overflow", "dk.retained": .stringConvertible(retainedEvents)])
                             throw GatewayEventDeliveryFailure.handlerCapacityExceeded
                         }
                         retainedEvents += 1
@@ -185,9 +188,15 @@ public struct GatewayEventHandlerDispatcher: Sendable {
             }
         } catch {
             await subscription.cancel()
+            if error is CancellationError {
+                DiscordLog.makeLogger("gateway").debug("Gateway handler dispatcher cancelled", metadata: ["dk.event": "gateway.handlers.cancelled"])
+            } else {
+                DiscordLog.makeLogger("gateway").error("Gateway handler dispatcher failed", metadata: ["dk.event": "gateway.handlers.failed"])
+            }
             throw error
         }
         await subscription.cancel()
+        DiscordLog.makeLogger("gateway").debug("Gateway handler dispatcher stopped", metadata: ["dk.event": "gateway.handlers.stopped"])
     }
 
     /// Executes one callback under optional aggregate admission, releasing ownership on every path.

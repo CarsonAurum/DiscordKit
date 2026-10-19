@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 
 /// Complete matrix artifact carries its configuration, local environment and explicit measurement boundaries.
@@ -12,8 +13,10 @@ struct BenchmarkReport: Encodable, Sendable {
 /// Local offline authoring/handler measurements; the executable has no listener, credentials or remote adapter.
 @main struct DiscordDSLBenchmarks {
     /// Executes deterministic direct-then-DSL pairs and emits one inspectable JSON artifact.
+    /// Process-owned SwiftLog diagnostics go to stderr, preserving the JSON destination.
     /// - Throws: Configuration, original workload validation or hard functional gate failure; no partial success artifact is written.
     static func main() async throws {
+        LoggingSystem.bootstrap(StreamLogHandler.standardError)
         let parsed = try BenchmarkConfiguration.parse(Array(CommandLine.arguments.dropFirst()))
         let environment = BenchmarkEnvironment.capture()
         var workloads: [WorkloadMeasurement] = []

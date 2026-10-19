@@ -1,3 +1,5 @@
+import DiscordLogging
+
 /// A sanitized structural admission failure that contains no invocation data or user error text.
 /// Predicate, middleware and terminal errors propagate unchanged and are not represented here.
 public enum PolicyCompositionError: Error, Sendable, Equatable {
@@ -134,7 +136,10 @@ public struct InvocationPolicy<Input: Sendable>: Sendable {
     public func evaluate(_ input: Input, limits: PolicyLimits) async throws -> Bool {
         try validate(limits: limits)
         try Task.checkCancellation()
-        return try await operation(input)
+        DiscordLog.makeLogger("dsl").trace("Invocation policy evaluation started", metadata: ["dk.event": "dsl.policy.evaluating"])
+        let allowed = try await operation(input)
+        DiscordLog.makeLogger("dsl").trace("Invocation policy evaluation completed", metadata: ["dk.event": "dsl.policy.evaluated", "dk.allowed": .stringConvertible(allowed)])
+        return allowed
     }
 }
 
@@ -246,6 +251,7 @@ public struct InvocationMiddleware<Input: Sendable, Output: Sendable>: Sendable 
     public func run(_ input: Input, limits: PolicyLimits, next: @escaping Next) async throws -> Output {
         try validate(limits: limits)
         try Task.checkCancellation()
+        DiscordLog.makeLogger("dsl").trace("Invocation middleware started", metadata: ["dk.event": "dsl.middleware.started"])
         return try await operation(input) { forwarded in
             try Task.checkCancellation()
             return try await next(forwarded)

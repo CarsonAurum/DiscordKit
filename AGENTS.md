@@ -511,6 +511,24 @@ media routes remain distinct; named unmet requirements never count as SDK suppor
   memory and request reduction before each runtime capacity claim. Keep metrics
   label cardinality bounded and never use credentials as diagnostic identifiers.
 
+## Logging
+
+Use native SwiftLog through `DiscordLogging` at explicit operation/lifetime owners;
+see `Docs/Logging.md`. Applications own bootstrap, factories, levels and outputs.
+Runtime products may select the logging-only foundation; they must never select
+`DiscordLogHandlers`. This narrow addition qualifies earlier Core/Models-only DSL
+graph descriptions without introducing runtime/adapters or compiler plugins.
+Reserve `info` and `notice` for application semantic events. Use trace/debug for
+normal flow and caller-visible failures; warning for autonomous degradation, error
+for terminal subsystem failures, critical only for unusable safety authorities.
+Use fixed subsystem labels and `dk.event` values with safe counts/states/statuses.
+Never log credentials, URLs/paths, headers/payloads, identifiers, keys or arbitrary
+error descriptions. Keep constructors, pure compilation, and realtime/sample/crypto
+loops quiet. Preserve native lazy filtering, cancellation and resource ownership.
+Test new boundaries with bounded task-scoped `DiscordTestSupport.LogRecorder` captures;
+never bootstrap root test processes. File-output applications must stop/join producers
+before closing their shared sink. New output semantics need bounded/error/concurrency tests.
+
 ## Method documentation
 
 - Every explicitly declared function and method must have comprehensive Swift

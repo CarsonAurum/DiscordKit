@@ -80,6 +80,11 @@ reviewed `0.15.0` API baselines and current scoped
 unpublished and untagged; platform/live/device/crypto/interop and production-capacity
 qualification remain explicit exclusions.
 
+[Integrated SwiftLog diagnostics](Docs/Logging.md) add stable subsystem events with
+application-owned routing, reserved semantic levels, and optional file, console,
+Apple unified-log and callback outputs. The independent
+[logging example](Examples/LoggingApp/README.md) runs entirely offline.
+
 Part 4 adds reviewed inventory contracts and deterministic offline generation for
 the existing model/endpoint slice. Consumer builds compile committed output; see
 [reviewed generation and parity checks](Docs/Generation.md).

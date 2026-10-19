@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import DiscordTestSupport
@@ -236,5 +237,34 @@ struct ActivityClientTests {
         let startup = Task { try await waiting.start() }; _ = await peer.nextSent(); await waiting.close()
         await #expect(throws: ActivityFailure.closed) { try await startup.value }
         #expect(await peer.closes == 1)
+    }
+}
+
+extension ActivityClientTests {
+    /// Captures inert construction and explicit host handshake/command/close events while excluding
+    /// correlation IDs, host URL fields, command arguments and response bodies from SwiftLog.
+    /// - Throws: Unexpected valid simulated Activity exchange behavior.
+    @Test func structuredLoggingExcludesHostAndCommandPayloads() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let peer = ActivityPeer()
+            let client = try ActivityClient(applicationID: .init(rawValue: 1), host: Self.host(), transport: peer, clock: ContinuousClock())
+            #expect(recorder.entries.isEmpty)
+            try await client.start()
+            _ = await peer.nextSent()
+            let operation = Task { try await client.execute(Self.request()) }
+            let request = await peer.nextSent()
+            try await peer.reply(request, value: .string("private-activity-payload"))
+            #expect(try await operation.value == .string("private-activity-payload"))
+            await client.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.activities" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "activities.handshake.completed" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "activities.command.completed" })
+        #expect(entries.contains { $0.metadata["dk.event"] == "activities.client.closing" })
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["private-activity-payload", "frame_id", "instance_id", String(UInt64.max)] {
+            #expect(!rendered.contains(secret))
+        }
     }
 }

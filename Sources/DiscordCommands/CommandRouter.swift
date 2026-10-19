@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordInteractions
 import DiscordModels
@@ -227,12 +228,25 @@ public actor CommandRouter {
     public func route(_ context: InteractionContext) async throws -> Bool {
         try Task.checkCancellation()
         guard let key = CommandRouteKey.incoming(context.interaction), let route = routes[key] else { return false }
-        guard activeHandlers < maximumConcurrentHandlers else { throw DiscordError.validation(.limitExceeded) }
+        guard activeHandlers < maximumConcurrentHandlers else {
+            DiscordLog.makeLogger("commands").debug("Command handler capacity exhausted", metadata: ["dk.event": "commands.route.overloaded"])
+            throw DiscordError.validation(.limitExceeded)
+        }
         activeHandlers += 1
+        DiscordLog.makeLogger("commands").trace("Command route admitted", metadata: ["dk.event": "commands.route.admitted"])
         defer { activeHandlers -= 1 }
         let execute = try route.prepare(context)
         try Task.checkCancellation()
-        try await execute()
+        do { try await execute() }
+        catch {
+            if error is CancellationError {
+                DiscordLog.makeLogger("commands").debug("Command route cancelled", metadata: ["dk.event": "commands.route.cancelled"])
+            } else {
+                DiscordLog.makeLogger("commands").debug("Command handler failed", metadata: ["dk.event": "commands.route.failed"])
+            }
+            throw error
+        }
+        DiscordLog.makeLogger("commands").trace("Command route completed", metadata: ["dk.event": "commands.route.completed"])
         return true
     }
 }

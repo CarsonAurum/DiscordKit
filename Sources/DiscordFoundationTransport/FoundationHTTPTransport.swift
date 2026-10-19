@@ -1,4 +1,5 @@
 #if canImport(Darwin)
+import DiscordLogging
 import DiscordTransport
 import Foundation
 
@@ -39,6 +40,7 @@ public struct FoundationHTTPTransport: HTTPTransport, TransportResource {
     ///   redacted numeric native failure. Mutations are never replayed by this adapter.
     public func execute<C: Clock>(_ request: HTTPRequest, context: TransportContext<C>) async throws -> HTTPResponse
     where C.Duration == Duration {
+        DiscordLog.makeLogger("foundation.http").trace("Starting Foundation HTTP exchange", metadata: ["dk.event": "foundation.http.execute"])
         var identifier: UUID?
         do {
             try context.check()
@@ -88,17 +90,22 @@ public struct FoundationHTTPTransport: HTTPTransport, TransportResource {
                                                                         value: String(describing: $0.value)) }
                 return HTTPResponse(status: response.statusCode, headers: headers, body: body)
             }
+            DiscordLog.makeLogger("foundation.http").debug("Foundation HTTP response received", metadata: ["dk.event": "foundation.http.response", "http.status": "\(result.status)"])
             return result
         } catch {
             await request.body?.close()
             if let identifier { await owner.abandon(identifier) }
+            DiscordLog.makeLogger("foundation.http").debug("Foundation HTTP exchange ended without a response", metadata: ["dk.event": "foundation.http.failed"])
             throw foundationFailure(error)
         }
     }
 
     /// Cancels every outstanding exchange/body and waits for session invalidation.
     /// Closure is idempotent; subsequent executions fail with `TransportFailure.closed`.
-    public func close() async { await owner.close() }
+    public func close() async {
+        await owner.close()
+        DiscordLog.makeLogger("foundation.http").debug("Foundation HTTP transport closed", metadata: ["dk.event": "foundation.http.closed"])
+    }
 }
 
 /// Preserves iterator state across pulls while leaving concurrency rejection to BodyStream.

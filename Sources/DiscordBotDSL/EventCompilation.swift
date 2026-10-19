@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordDSL
 import DiscordGateway
@@ -106,6 +107,7 @@ public struct CompiledEvents: Sendable {
                     maximumEvents: maximumEvents, maximumBytes: maximumBytes))
             }
             try Task.checkCancellation()
+            DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines subscribed", metadata: ["dk.event": "bot_dsl.events.subscribed", "dk.subscriptions": .stringConvertible(subscriptions.count)])
             return GatewayEventPipelines(groups: groups, subscriptions: subscriptions,
                 dispatcher: .init(configuration: configuration, authority: authority))
         } catch {
@@ -244,6 +246,7 @@ public actor GatewayEventPipelines {
     public func run() async throws {
         guard !runStarted else { throw GatewayEventPipelineFailure.alreadyRun }
         runStarted = true
+        DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines started", metadata: ["dk.event": "bot_dsl.events.started"])
         do {
             try Task.checkCancellation()
             if stopped { throw CancellationError() }
@@ -263,11 +266,17 @@ public actor GatewayEventPipelines {
             if stopped { throw CancellationError() }
             try Task.checkCancellation()
         } catch {
+            if error is CancellationError {
+                DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines cancelled", metadata: ["dk.event": "bot_dsl.events.cancelled"])
+            } else {
+                DiscordLog.makeLogger("bot_dsl").error("Gateway event pipelines failed", metadata: ["dk.event": "bot_dsl.events.failed"])
+            }
             await cancel()
             runTask = nil
             throw error
         }
         await cancel()
+        DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines stopped", metadata: ["dk.event": "bot_dsl.events.stopped"])
     }
 
     /// Idempotently stops every owned queue and releases all buffered events before returning.

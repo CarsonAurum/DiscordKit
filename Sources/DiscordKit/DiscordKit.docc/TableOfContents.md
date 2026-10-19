@@ -10,6 +10,13 @@ Begin with <doc:GettingStarted> and <doc:LibraryArchitecture>, or select a produ
 
 The links below resolve across the independent archives when built with the repository documentation helper. The merged DiscordKit Library archive also includes every module in its navigator.
 
+## Logging
+
+`DiscordLogging` supplies native SwiftLog subsystem diagnostics; select
+`DiscordLogHandlers` separately for file, Apple unified-log or callback outputs.
+Applications own bootstrap, levels and output lifetime. Info and notice remain
+application semantic levels; pure values and realtime media paths remain quiet.
+
 ## Topics
 
 ### Orientation and tutorials

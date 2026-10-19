@@ -1,0 +1,99 @@
+{
+  "loggingDefault": "Pinned swift-log 1.16.1 LoggingSystem._factory already constructs StreamLogHandler.standardError; the explicit executable bootstrap preserves this behavior and makes report routing deliberate.",
+  "changes": "Only four executable entrypoints bootstrap stderr. Reusable runners and tests never bootstrap. Four direct DiscordLogging product dependencies and CLI documentation plus benchmark selected-product graph are updated.",
+  "loadTests": {
+    "command": "CLANG_MODULE_CACHE_PATH=/tmp/discordkit-logging-clang SWIFTPM_MODULECACHE_OVERRIDE=/tmp/discordkit-logging-module swift test --package-path Tools/DiscordKitLoadTests --disable-sandbox --cache-path /tmp/discordkit-logging-spm --skip-update --jobs 2 --explicit-target-dependency-import-check error",
+    "exit": 0,
+    "passed": 28,
+    "log": "/private/tmp/discordkit-logging-cli-load-tests.log"
+  },
+  "benchmarkTests": {
+    "command": "CLANG_MODULE_CACHE_PATH=/tmp/discordkit-logging-clang SWIFTPM_MODULECACHE_OVERRIDE=/tmp/discordkit-logging-module swift test --package-path Tools/DiscordDSLBenchmarks --disable-sandbox --cache-path /tmp/discordkit-logging-spm --skip-update --jobs 2 --explicit-target-dependency-import-check error",
+    "exit": 0,
+    "passed": 9,
+    "log": "/private/tmp/discordkit-logging-cli-benchmark-tests.log"
+  },
+  "qualificationBuilds": [
+    {
+      "command": "CLANG_MODULE_CACHE_PATH=/tmp/discordkit-logging-clang SWIFTPM_MODULECACHE_OVERRIDE=/tmp/discordkit-logging-module swift build --package-path Tools/VoiceSessionQualification --disable-sandbox --cache-path /tmp/discordkit-logging-spm --skip-update --jobs 2 --explicit-target-dependency-import-check error",
+      "exit": 0,
+      "execution": "Not run; build-only evidence"
+    },
+    {
+      "command": "CLANG_MODULE_CACHE_PATH=/tmp/discordkit-logging-clang SWIFTPM_MODULECACHE_OVERRIDE=/tmp/discordkit-logging-module swift build --package-path Tools/AppleAudioQualification --disable-sandbox --cache-path /tmp/discordkit-logging-spm --skip-update --jobs 2 --explicit-target-dependency-import-check error",
+      "exit": 0,
+      "execution": "Not run; build-only evidence"
+    }
+  ],
+  "finiteLoad": {
+    "http": {
+      "validJSON": true,
+      "stderrBytes": 0,
+      "counts": {
+        "scenario": "offlineHTTPPolicy",
+        "offeredRequests": 2000,
+        "successfulRequests": 2000,
+        "failedRequests": 0,
+        "retryResponses": 200,
+        "activeAfterShutdown": 0,
+        "queuedAfterShutdown": 0
+      }
+    },
+    "gateway": {
+      "validJSON": true,
+      "stderrBytes": 0,
+      "counts": {
+        "targetDispatches": 10000,
+        "deliveredDispatches": 10000,
+        "ownedConnectionsAfterShutdown": 0,
+        "leasesAfterShutdown": 0,
+        "pendingRequestsAfterShutdown": 0,
+        "applicationWritesAfterShutdown": 0
+      }
+    },
+    "cache": {
+      "validJSON": true,
+      "stderrBytes": 0,
+      "counts": {
+        "scenario": "cache",
+        "entriesAfterShutdown": 0,
+        "refreshesAfterShutdown": 0,
+        "waitersAfterShutdown": 0,
+        "subscriptionsAfterShutdown": 0,
+        "bufferedEventsAfterShutdown": 0,
+        "completedRounds": 8,
+        "slowSubscriberResynchronizations": 8
+      }
+    }
+  },
+  "finiteLoadCommands": [
+    "Tools/DiscordKitLoadTests/.build/out/Products/Debug/DiscordKitLoadTests --scenario http --profile accounts-100 > /private/tmp/discordkit-logging-cli-final-http.stdout.json 2> /private/tmp/discordkit-logging-cli-final-http.stderr.log",
+    "Tools/DiscordKitLoadTests/.build/out/Products/Debug/DiscordKitLoadTests --scenario gateway --profile accounts-100 > /private/tmp/discordkit-logging-cli-final-gateway.stdout.json 2> /private/tmp/discordkit-logging-cli-final-gateway.stderr.log",
+    "Tools/DiscordKitLoadTests/.build/out/Products/Debug/DiscordKitLoadTests --scenario cache --profile accounts-100 > /private/tmp/discordkit-logging-cli-final-cache.stdout.json 2> /private/tmp/discordkit-logging-cli-final-cache.stderr.log"
+  ],
+  "stderrProbe": {
+    "package": "/private/tmp/discordkit-logging-cli-routing",
+    "command": "/tmp/discordkit-logging-cli-routing/.build/out/Products/Debug/RoutingProbe > /private/tmp/discordkit-logging-cli-routing.stdout.json 2> /private/tmp/discordkit-logging-cli-routing.stderr.log",
+    "exit": 0,
+    "assertions": "stdout is exactly parseable JSON; one warning, error and critical event appear only on stderr using the same bootstrap and actual DiscordLogging."
+  },
+  "pins": "All four downstream Package.resolved graphs match root exactly. Only swift-log 1.16.1 revision 4038b6a4f74a1426f47eb1dd5b4bb5628a15d597 added vs HEAD; existing pins unchanged.",
+  "soakQualification": "The existing 30-minute soak retains its originally built release executable; no release load rebuild was performed. CacheLoadRunner, GatewayLoadRunner, HTTPPolicyRunner and all library workload source were not changed by this CLI patch. Final source drift is the load entrypoint import/stderr bootstrap and manifest direct dependency/docs only. Updated finite runs use the newly built Debug executable.",
+  "unchangedReleaseLoadSHA256": "a98c5698a2f6d69311db8ca2530470b185f97587a36c6e99e235c9d3d1cd6e6d",
+  "qualificationLimits": "Local offline smoke/build evidence only, no performance regression comparison, production capacity, live Discord, hardware or new 30-minute qualification claim.",
+  "benchmarkReleaseBuild": {
+    "command": "CLANG_MODULE_CACHE_PATH=/tmp/discordkit-logging-clang SWIFTPM_MODULECACHE_OVERRIDE=/tmp/discordkit-logging-module swift build -c release --package-path Tools/DiscordDSLBenchmarks --disable-sandbox --cache-path /tmp/discordkit-logging-spm --skip-update --jobs 2 --explicit-target-dependency-import-check error",
+    "exit": 0,
+    "limitation": "Initial dsymutil failed Operation not permitted; identical authorized host-access rerun passed.",
+    "log": "/private/tmp/discordkit-logging-cli-benchmark-release-build-host.log"
+  },
+  "benchmarkSmoke": {
+    "command": "Tools/DiscordDSLBenchmarks/.build/out/Products/Release/DiscordDSLBenchmarks --invocations 1000 > /private/tmp/discordkit-logging-cli-final-benchmark.stdout.json 2> /private/tmp/discordkit-logging-cli-final-benchmark.stderr.log",
+    "exit": 0,
+    "validStdoutJSON": true,
+    "stderrBytes": 0,
+    "rows": 6,
+    "finiteMetrics": 258,
+    "assertions": "baseline.collect_report accepted all functional gates and cleanup counters for6 direct/DSL rows (1000 invocations each,6000 total). No baseline regression comparison."
+  }
+}

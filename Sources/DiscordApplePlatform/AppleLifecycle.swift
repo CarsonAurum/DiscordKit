@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import Foundation
@@ -128,10 +129,12 @@ public actor AppleLifecycle: TransportResource {
             await pending.1.value
             if cleanupTask?.0 == pending.0 { cleanupTask = nil }
         }
+        DiscordLog.makeLogger("apple.lifecycle").debug("Applying host lifecycle transition", metadata: ["dk.event": "apple.lifecycle.transition", "state": .string(newState.rawValue)])
         state = newState
         let invalid = resources.filter { policyAvailability(of: $0.value.0, in: newState) != .available }
         for key in invalid.keys { resources.removeValue(forKey: key) }
         guard !invalid.isEmpty else { return }
+        DiscordLog.makeLogger("apple.lifecycle").trace("Draining lifecycle resources", metadata: ["dk.event": "apple.lifecycle.drain", "resources": "\(invalid.count)"])
         let closing = invalid.values.map { $0.1 }
         let task = Task {
             await withTaskGroup(of: Void.self) { group in

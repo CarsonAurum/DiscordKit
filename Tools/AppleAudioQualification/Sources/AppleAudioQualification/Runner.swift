@@ -1,4 +1,5 @@
 import DiscordApplePlatform
+import DiscordLogging
 import DiscordMedia
 import DiscordVoiceCodecs
 import Foundation
@@ -53,7 +54,9 @@ private struct NativeReport: Codable {
     /// Native modes require an explicit flag and may monitor captured audio and open the microphone.
     /// Permission prompts require a second explicit flag; no PCM content is written or transmitted.
     /// A successful probe reports only host capabilities and cannot pass hardware qualification.
+    /// Process-owned SwiftLog diagnostics go to stderr; evidence uses the requested file.
     @MainActor static func main() async {
+        LoggingSystem.bootstrap(StreamLogHandler.standardError)
         let options: QualificationOptions
         do {
             options = try QualificationOptions(arguments: Array(CommandLine.arguments.dropFirst()))

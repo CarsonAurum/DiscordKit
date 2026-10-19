@@ -1,6 +1,17 @@
 # Release certification
 
-The current **0.15.0 authoring candidate** covers Parts 15A-15L: [shared declarations](../DSL.md),
+The integrated [SwiftLog work](../Logging.md) advances the unpublished root API
+candidate to **0.16.0**, adding two independently adopted logging products.
+Its [validation record](logging-validation.json) covers actual local checks,
+with a separately named [root API baseline](api-baseline-0.16.0.json): 33 modules
+and 14,511 symbols on macOS arm64. Compared with 0.15.0, this adds 266 symbols
+in two logging modules and changes/removes no existing symbols or relationships.
+Root CI compares 0.16.0 with both frozen historical snapshots and this new baseline;
+macro/extension APIs retain their existing 0.15.0 baselines. The authoring checkpoint and its
+measurements below remain historical and do not certify this source revision.
+No package/tag is published by this work.
+
+The **0.15.0 authoring checkpoint** covers Parts 15A-15L: [shared declarations](../DSL.md),
 [typed commands](../CommandDSL.md), [macros](../MacroDSL.md),
 [response ownership and signed HTTP](../CommandResponses.md),
 [message builders](../MessageBuilders.md), [command families](../CommandFamilies.md),
@@ -9,9 +20,9 @@ and [supervised bot applications](../BotApplications.md), with
 [external modules and typed dependencies](../ModuleExtensions.md), plus
 [offline direct/DSL measurements and finite budgets](../DSLBenchmarks.md), and
 [design](../DSLDesign.md), [adoption](../DSLAdoption.md) and migration guidance.
-Earlier milestone validation records remain historical. The current
+Earlier milestone validation records remain historical. The checkpoint
 [machine report](phase15l-report.json) and [15L validation record](phase15l-validation.json)
-state current checks and explicit exclusions. The [readable release record](phase15l.md)
+state its recorded checks and explicit exclusions. The [readable release record](phase15l.md)
 summarizes the evidence. This completes the locally verifiable
 [DSL milestones](../DSLImplementationRoadmap.md); production capacity and external
 qualification remain separate gates. The [15K report](phase15-report.json) retains
@@ -37,8 +48,8 @@ and 14,245 symbols on macOS arm64. Its comparison with the preserved 0.14.0 base
 adds 1,010 symbols without changed or removed symbols. The separately selected
 [macro](api-baseline-macros-0.15.0.json) and
 [extension](api-baseline-extensions-0.15.0.json) baselines capture five and 86 symbols.
-CI compares fresh compiler output with these current baselines as well as checking
-the historical root migration. First authoring baselines prove no earlier
+CI retains these authoring comparisons while checking the current root baseline
+and historical root migrations. First authoring baselines prove no earlier
 compatibility, behavioral compatibility or binary ABI.
 
 Before release, refresh affected official sources, classify discoveries, update dated

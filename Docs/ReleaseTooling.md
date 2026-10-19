@@ -1,5 +1,11 @@
 # Release certification tools
 
+The integrated logging work targets an unpublished `0.16.0` API candidate. The
+`0.14.0` and `0.15.0` baselines/checkpoint records below remain historical. Compare
+new root graphs at version `0.16.0` against both historical baselines and the
+separately named `api-baseline-0.16.0.json`; do not rewrite previous snapshots.
+See [logging validation](Release/logging-validation.json) for the current scope.
+
 The Phase 14 tools are development-only Python standard-library programs. They
 perform local, nonwriting checks unless an API snapshot output is explicitly
 requested. Consumer packages do not run these scripts, fetch documentation or

@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordTransport
 import Foundation
 
@@ -10,6 +11,9 @@ import Foundation
 /// resource/class, including holding that partition until completion. Share the
 /// coordinator when mutation ordering must span clients; a distributed store alone
 /// coordinates rate admission, not cross-process application mutation ordering.
+/// An uncertain authority failure permanently closes local admission and emits one
+/// critical event. Replace the coordinator after restoring authority; it never resets
+/// the safety latch or silently grants local fallback admission.
 public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
     private struct QueuePartition: Hashable {
         let identity: RateLimitIdentity
@@ -76,6 +80,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
         queue.append(id)
         waiters[id] = Waiter(request: request, deadline: effectiveDeadline, blockedUntil: now)
         queuedBytes += request.queuedBytes
+        DiscordLog.makeLogger("http").trace("REST admission queued", metadata: ["dk.event": "http.admission.queued", "dk.queued": .stringConvertible(queue.count)])
         defer { removeWaiter(id) }
         return try await withTaskCancellationHandler {
             while true {
@@ -109,6 +114,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
                             throw RateLimitFailure.deadlineExceeded
                         }
                         active[reservation.id] = reservation
+                        DiscordLog.makeLogger("http").trace("REST admission granted", metadata: ["dk.event": "http.admission.granted"])
                         return reservation
                     case .retry(let instant):
                         waiter.blockedUntil = max(instant, current.advanced(by: policy.fairnessInterval))
@@ -231,6 +237,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
     /// Already acquired tokens retain caller ownership and must still be completed
     /// or released. This operation is idempotent and does not close an injected store.
     public func close() {
+        DiscordLog.makeLogger("http").debug("REST admission closed", metadata: ["dk.event": "http.admission.closed"])
         closed = true
         for waiter in waiters.values { waiter.sleeper?.cancel() }
         for waiter in orderingWaiters.values { waiter.sleeper?.cancel() }
@@ -293,6 +300,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
               sameIdentity.count < policy.maximumQueuedRequestsPerIdentity,
               request.queuedBytes <= policy.maximumQueuedBytes - queuedBytes,
               request.queuedBytes <= policy.maximumQueuedBytesPerIdentity - identityBytes else {
+            DiscordLog.makeLogger("http").debug("REST admission queue exhausted", metadata: ["dk.event": "http.admission.overloaded", "dk.queued": .stringConvertible(all.count)])
             throw RateLimitFailure.queueFull
         }
     }
@@ -336,8 +344,12 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
     /// - Parameter id: Canceled queue registration.
     private func cancelWaiter(_ id: UUID) { removeWaiter(id) }
 
-    /// Latches an authority failure and wakes queued tasks without granting admission.
+    /// Permanently latches authority failure and wakes queued tasks without granting admission.
+    /// The one critical transition requires application intervention and coordinator replacement.
     private func failClosed() {
+        if !unavailable {
+            DiscordLog.makeLogger("http").critical("REST authority permanently unavailable; replace coordinator", metadata: ["dk.event": "http.admission.unavailable"])
+        }
         unavailable = true
         for waiter in waiters.values { waiter.sleeper?.cancel() }
         for waiter in orderingWaiters.values { waiter.sleeper?.cancel() }

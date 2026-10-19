@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordGateway
 import DiscordHTTP
@@ -91,6 +92,7 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
             throw ClientFailure.alreadyRunning
         }
         phase = .discovering
+        DiscordLog.makeLogger("client").debug("Client run started", metadata: ["dk.event": "client.run.started"])
         startCompletionWait()
         var failure: (any Error)?
         do {
@@ -130,7 +132,15 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
         stopSignal.continuation.finish()
         completion.continuation.finish()
         await completionWait?.value
-        if let failure { throw failure }
+        if let failure {
+            if failure is CancellationError {
+                DiscordLog.makeLogger("client").debug("Client run cancelled", metadata: ["dk.event": "client.run.cancelled"])
+            } else {
+                DiscordLog.makeLogger("client").error("Client run failed", metadata: ["dk.event": "client.run.failed"])
+            }
+            throw failure
+        }
+        DiscordLog.makeLogger("client").debug("Client run stopped", metadata: ["dk.event": "client.run.stopped"])
     }
 
     /// Requests stop and awaits the owning run's complete structured cleanup.
@@ -139,6 +149,7 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
     /// both belong to the same run and would await their own completion.
     /// Before `run`, shutdown permanently closes this client without discovering or leasing.
     public func shutdown() async {
+        DiscordLog.makeLogger("client").debug("Client shutdown requested", metadata: ["dk.event": "client.shutdown.requested"])
         if phase == .idle {
             startCompletionWait()
             phase = .stopped
@@ -217,6 +228,7 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
                 startup: startup, configuration: configuration.shard, commandCoordinator: authority.commands)
         }
         phase = .running
+        DiscordLog.makeLogger("client").debug("Client shards prepared", metadata: ["dk.event": "client.shards.prepared", "dk.shards": .stringConvertible(shards.count)])
         let bot = try GatewayBot(shards: shards, maximumShards: configuration.maximumShards)
         try await withThrowingTaskGroup(of: Bool.self) { group in
             group.addTask { try await bot.run(); return true }
@@ -257,7 +269,10 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
                     try await project(event)
                 }
                 catch is CancellationError { throw CancellationError() }
-                catch { throw GatewayFailure.invalidPayload }
+                catch {
+                    DiscordLog.makeLogger("client").error("Client event projection failed", metadata: ["dk.event": "client.projection.failed"])
+                    throw GatewayFailure.invalidPayload
+                }
                 _ = await events.publish(event)
             }
         }

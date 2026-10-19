@@ -1,0 +1,558 @@
+{
+  "configuration" : {
+    "concurrency" : 8,
+    "handlerCounts" : [
+      10,
+      100,
+      1000
+    ],
+    "invocations" : 1000,
+    "minimumDurationSeconds" : 0,
+    "payloadBytes" : 64,
+    "sampleLimit" : 10000
+  },
+  "environment" : {
+    "architecture" : "arm64",
+    "compiler" : "swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+    "hardwareModel" : "Mac15,10",
+    "operatingSystem" : "Version 27.0.1 (Build 26A434)",
+    "physicalMemoryBytes" : 38654705664,
+    "processorCount" : 14
+  },
+  "qualification" : [
+    "Local synthetic normalized HTTP contexts; no signature verification, network, Discord, Gateway host or fleet-capacity qualification.",
+    "Each declared handler has one retained schema and one fixed interaction snapshot; each invocation creates a fresh response owner and typed arguments.",
+    "Direct and DSL paths share the real typed decoder, handler, router and response ownership; the direct route is handwritten and the DSL route uses SlashCommand and CommandCompilation.",
+    "Plan compilation includes authoring, schema capture, lowering and router admission; it excludes fixed input parsing, sink creation and consumer compiler time measured by the separate build script. Process snapshots include the fixture population.",
+    "Latency is a bounded prefix of end-to-end route invocations including fresh responder construction and exact initial callback validation; throughput covers every invocation and joined worker round.",
+    "The process runs direct then DSL for each declared count; allocator\/runtime warmup, prior workloads and process peaks can affect later observations. RSS\/malloc gauges are process-wide, not isolated retained-plan sizes or cumulative allocation events.",
+    "Accounted state reports retained input\/author JSON byte counts and configured cardinality caps, not exact heap allocation size. Current RSS and live allocation gauges are best-effort platform observations.",
+    "No REST client, registration reconciler, hydration provider, transport or listener is constructed; only the initial offline callback sink is configured. Implicit REST request counts are structurally zero.",
+    "Duration-floor runs repeat the fixed population up to a hard 100-million invocation ceiling; existing cache\/broadcast soak and handler execution evidence remain separate."
+  ],
+  "schemaVersion" : 1,
+  "workloads" : [
+    {
+      "accountedState" : {
+        "declaredHandlers" : 10,
+        "fixedInteractionCount" : 10,
+        "fixedInteractionJSONBytes" : 3432,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 0,
+        "registrationJSONBytes" : 1780,
+        "retainedSchemas" : 10,
+        "routeMetadataJSONBytes" : 570
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 0.062391,
+        "liveAllocationBlocks" : 7468,
+        "liveAllocationBytes" : 880480,
+        "peakRSSBytes" : 12926976,
+        "residentBytes" : 12926976
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 0.062187,
+        "liveAllocationBlocks" : 7976,
+        "liveAllocationBytes" : 995088,
+        "peakRSSBytes" : 12877824,
+        "residentBytes" : 12877824
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 0.010754,
+        "liveAllocationBlocks" : 2206,
+        "liveAllocationBytes" : 284000,
+        "peakRSSBytes" : 11304960,
+        "residentBytes" : 11304960
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 0.008006,
+        "liveAllocationBlocks" : 1574,
+        "liveAllocationBytes" : 160256,
+        "peakRSSBytes" : 8880128,
+        "residentBytes" : 8880128
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 1000,
+        "handlers" : 1000,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 0.023325208,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 10,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 1000,
+      "invocationsPerSecond" : 42872.07213757751,
+      "latency" : {
+        "p50Milliseconds" : 0.18025,
+        "p95Milliseconds" : 0.231958,
+        "p99Milliseconds" : 0.28925,
+        "sampleCount" : 1000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 1000,
+          "elapsedSeconds" : 0.023220083,
+          "process" : {
+            "cpuSeconds" : 0.062083,
+            "liveAllocationBlocks" : 7975,
+            "liveAllocationBytes" : 994976,
+            "peakRSSBytes" : 12877824,
+            "residentBytes" : 12877824
+          }
+        }
+      ],
+      "mode" : "direct",
+      "planCompilationMilliseconds" : 1.585291,
+      "schemaBuilds" : 10,
+      "schemasAfterInvocations" : 10
+    },
+    {
+      "accountedState" : {
+        "declaredHandlers" : 10,
+        "fixedInteractionCount" : 10,
+        "fixedInteractionJSONBytes" : 3432,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 6542,
+        "registrationJSONBytes" : 1780,
+        "retainedSchemas" : 10,
+        "routeMetadataJSONBytes" : 570
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 0.11409,
+        "liveAllocationBlocks" : 13296,
+        "liveAllocationBytes" : 1565520,
+        "peakRSSBytes" : 13959168,
+        "residentBytes" : 13959168
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 0.113901,
+        "liveAllocationBlocks" : 13813,
+        "liveAllocationBytes" : 1681216,
+        "peakRSSBytes" : 13959168,
+        "residentBytes" : 13959168
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 0.064266,
+        "liveAllocationBlocks" : 7988,
+        "liveAllocationBytes" : 988960,
+        "peakRSSBytes" : 13205504,
+        "residentBytes" : 13205504
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 0.062488,
+        "liveAllocationBlocks" : 7468,
+        "liveAllocationBytes" : 873120,
+        "peakRSSBytes" : 12926976,
+        "residentBytes" : 12926976
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 1000,
+        "handlers" : 1000,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 0.023163666,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 10,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 1000,
+      "invocationsPerSecond" : 43171.05936512813,
+      "latency" : {
+        "p50Milliseconds" : 0.182709,
+        "p95Milliseconds" : 0.22024999999999997,
+        "p99Milliseconds" : 0.24850000000000003,
+        "sampleCount" : 1000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 1000,
+          "elapsedSeconds" : 0.023063583,
+          "process" : {
+            "cpuSeconds" : 0.113799,
+            "liveAllocationBlocks" : 13812,
+            "liveAllocationBytes" : 1681104,
+            "peakRSSBytes" : 13959168,
+            "residentBytes" : 13959168
+          }
+        }
+      ],
+      "mode" : "dsl",
+      "planCompilationMilliseconds" : 1.1194169999999999,
+      "schemaBuilds" : 10,
+      "schemasAfterInvocations" : 10
+    },
+    {
+      "accountedState" : {
+        "declaredHandlers" : 100,
+        "fixedInteractionCount" : 100,
+        "fixedInteractionJSONBytes" : 34574,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 0,
+        "registrationJSONBytes" : 17890,
+        "retainedSchemas" : 100,
+        "routeMetadataJSONBytes" : 5790
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 0.174967,
+        "liveAllocationBlocks" : 19070,
+        "liveAllocationBytes" : 2260896,
+        "peakRSSBytes" : 15990784,
+        "residentBytes" : 15990784
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 0.174618,
+        "liveAllocationBlocks" : 23987,
+        "liveAllocationBytes" : 3285584,
+        "peakRSSBytes" : 15990784,
+        "residentBytes" : 15990784
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 0.123589,
+        "liveAllocationBlocks" : 18211,
+        "liveAllocationBytes" : 2582336,
+        "peakRSSBytes" : 15220736,
+        "residentBytes" : 15220736
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 0.114188,
+        "liveAllocationBlocks" : 13295,
+        "liveAllocationBytes" : 1557968,
+        "peakRSSBytes" : 13959168,
+        "residentBytes" : 13959168
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 1000,
+        "handlers" : 1000,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 0.024595667,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 100,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 1000,
+      "invocationsPerSecond" : 40657.56785534623,
+      "latency" : {
+        "p50Milliseconds" : 0.192542,
+        "p95Milliseconds" : 0.24537499999999998,
+        "p99Milliseconds" : 0.282917,
+        "sampleCount" : 1000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 1000,
+          "elapsedSeconds" : 0.024502,
+          "process" : {
+            "cpuSeconds" : 0.174524,
+            "liveAllocationBlocks" : 23986,
+            "liveAllocationBytes" : 3285472,
+            "peakRSSBytes" : 15990784,
+            "residentBytes" : 15990784
+          }
+        }
+      ],
+      "mode" : "direct",
+      "planCompilationMilliseconds" : 3.925584,
+      "schemaBuilds" : 100,
+      "schemasAfterInvocations" : 100
+    },
+    {
+      "accountedState" : {
+        "declaredHandlers" : 100,
+        "fixedInteractionCount" : 100,
+        "fixedInteractionJSONBytes" : 34574,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 65132,
+        "registrationJSONBytes" : 17890,
+        "retainedSchemas" : 100,
+        "routeMetadataJSONBytes" : 5790
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 0.243457,
+        "liveAllocationBlocks" : 20545,
+        "liveAllocationBytes" : 2382048,
+        "peakRSSBytes" : 16580608,
+        "residentBytes" : 16580608
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 0.243178,
+        "liveAllocationBlocks" : 25562,
+        "liveAllocationBytes" : 3419408,
+        "peakRSSBytes" : 16580608,
+        "residentBytes" : 16580608
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 0.189442,
+        "liveAllocationBlocks" : 24592,
+        "liveAllocationBytes" : 3340224,
+        "peakRSSBytes" : 16416768,
+        "residentBytes" : 16416768
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 0.175062,
+        "liveAllocationBlocks" : 19069,
+        "liveAllocationBytes" : 2253984,
+        "peakRSSBytes" : 15990784,
+        "residentBytes" : 15990784
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 1000,
+        "handlers" : 1000,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 0.02387375,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 100,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 1000,
+      "invocationsPerSecond" : 41887.00979108854,
+      "latency" : {
+        "p50Milliseconds" : 0.1875,
+        "p95Milliseconds" : 0.236542,
+        "p99Milliseconds" : 0.259084,
+        "sampleCount" : 1000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 1000,
+          "elapsedSeconds" : 0.023789083,
+          "process" : {
+            "cpuSeconds" : 0.243094,
+            "liveAllocationBlocks" : 25561,
+            "liveAllocationBytes" : 3419296,
+            "peakRSSBytes" : 16580608,
+            "residentBytes" : 16580608
+          }
+        }
+      ],
+      "mode" : "dsl",
+      "planCompilationMilliseconds" : 8.93625,
+      "schemaBuilds" : 100,
+      "schemasAfterInvocations" : 100
+    },
+    {
+      "accountedState" : {
+        "declaredHandlers" : 1000,
+        "fixedInteractionCount" : 1000,
+        "fixedInteractionJSONBytes" : 348676,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 0,
+        "registrationJSONBytes" : 179890,
+        "retainedSchemas" : 1000,
+        "routeMetadataJSONBytes" : 58890
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 0.392619,
+        "liveAllocationBlocks" : 12834,
+        "liveAllocationBytes" : 1244912,
+        "peakRSSBytes" : 28196864,
+        "residentBytes" : 28196864
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 0.390897,
+        "liveAllocationBlocks" : 61321,
+        "liveAllocationBytes" : 10185024,
+        "peakRSSBytes" : 28196864,
+        "residentBytes" : 28196864
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 0.337884,
+        "liveAllocationBlocks" : 58350,
+        "liveAllocationBytes" : 9808640,
+        "peakRSSBytes" : 27967488,
+        "residentBytes" : 27967488
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 0.243537,
+        "liveAllocationBlocks" : 20544,
+        "liveAllocationBytes" : 2373856,
+        "peakRSSBytes" : 16580608,
+        "residentBytes" : 16580608
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 1000,
+        "handlers" : 1000,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 0.026050625,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 1000,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 1000,
+      "invocationsPerSecond" : 38386.79494253977,
+      "latency" : {
+        "p50Milliseconds" : 0.203708,
+        "p95Milliseconds" : 0.254125,
+        "p99Milliseconds" : 0.28454199999999996,
+        "sampleCount" : 1000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 1000,
+          "elapsedSeconds" : 0.025925083,
+          "process" : {
+            "cpuSeconds" : 0.390772,
+            "liveAllocationBlocks" : 61320,
+            "liveAllocationBytes" : 10184912,
+            "peakRSSBytes" : 28196864,
+            "residentBytes" : 28196864
+          }
+        }
+      ],
+      "mode" : "direct",
+      "planCompilationMilliseconds" : 39.381667,
+      "schemaBuilds" : 1000,
+      "schemasAfterInvocations" : 1000
+    },
+    {
+      "accountedState" : {
+        "declaredHandlers" : 1000,
+        "fixedInteractionCount" : 1000,
+        "fixedInteractionJSONBytes" : 348676,
+        "maximumActualInvocations" : 100000000,
+        "maximumLatencySamples" : 10000,
+        "maximumMemorySamples" : 121,
+        "maximumPayloadBytes" : 64,
+        "maximumWorkers" : 8,
+        "planDescriptionTextBytes" : 652832,
+        "registrationJSONBytes" : 179890,
+        "retainedSchemas" : 1000,
+        "routeMetadataJSONBytes" : 58890
+      },
+      "afterCleanup" : {
+        "cpuSeconds" : 0.58593,
+        "liveAllocationBlocks" : 14935,
+        "liveAllocationBytes" : 1382976,
+        "peakRSSBytes" : 31113216,
+        "residentBytes" : 31113216
+      },
+      "afterInvocations" : {
+        "cpuSeconds" : 0.584242,
+        "liveAllocationBlocks" : 64378,
+        "liveAllocationBytes" : 10421456,
+        "peakRSSBytes" : 31113216,
+        "residentBytes" : 31113216
+      },
+      "afterPlan" : {
+        "cpuSeconds" : 0.532334,
+        "liveAllocationBlocks" : 58879,
+        "liveAllocationBytes" : 9755440,
+        "peakRSSBytes" : 31047680,
+        "residentBytes" : 31047680
+      },
+      "beforePlan" : {
+        "cpuSeconds" : 0.392732,
+        "liveAllocationBlocks" : 12833,
+        "liveAllocationBytes" : 1239280,
+        "peakRSSBytes" : 28196864,
+        "residentBytes" : 28196864
+      },
+      "cleanup" : {
+        "acknowledgementBytes" : 0,
+        "activeAcknowledgements" : 0,
+        "activeHandlers" : 0,
+        "activeWorkers" : 0
+      },
+      "counters" : {
+        "activeWorkers" : 0,
+        "callbacks" : 1000,
+        "handlers" : 1000,
+        "peakWorkers" : 8,
+        "schemas" : 0
+      },
+      "durationSeconds" : 0.02589,
+      "functionalGatesPassed" : true,
+      "handlerCount" : 1000,
+      "implicitHydrationRequests" : 0,
+      "implicitRegistrationRequests" : 0,
+      "invocations" : 1000,
+      "invocationsPerSecond" : 38624.95171881035,
+      "latency" : {
+        "p50Milliseconds" : 0.204583,
+        "p95Milliseconds" : 0.250875,
+        "p99Milliseconds" : 0.280958,
+        "sampleCount" : 1000
+      },
+      "memoryObservations" : [
+        {
+          "completedInvocations" : 1000,
+          "elapsedSeconds" : 0.025768625,
+          "process" : {
+            "cpuSeconds" : 0.58412,
+            "liveAllocationBlocks" : 64377,
+            "liveAllocationBytes" : 10421344,
+            "peakRSSBytes" : 31113216,
+            "residentBytes" : 31113216
+          }
+        }
+      ],
+      "mode" : "dsl",
+      "planCompilationMilliseconds" : 88.73775,
+      "schemaBuilds" : 1000,
+      "schemasAfterInvocations" : 1000
+    }
+  ]
+}

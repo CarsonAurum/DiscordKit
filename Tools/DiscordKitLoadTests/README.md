@@ -20,6 +20,7 @@ script. The harness creates/reaps its peer, consumes every successful body to
 EOF and closes the transport before reporting. HTTP and Gateway policy scenarios
 use finite offline scripts with no sockets or credentials. Cache and soak scenarios
 exercise fixed-size cache and broadcast recovery workloads locally on macOS 15 or newer.
+The executable sends SwiftLog diagnostics to stderr and writes one JSON report to stdout.
 
 ## Version 1 workloads
 

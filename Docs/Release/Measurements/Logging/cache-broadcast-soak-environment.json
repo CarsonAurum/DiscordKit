@@ -1,0 +1,46 @@
+{
+  "command": "swift run --disable-sandbox --cache-path /tmp/discordkit-logging-spm -c release --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario soak --profile accounts-1000000 --burst --duration-seconds 1800",
+  "execution": "Local macOS arm64; synthetic fixed-working-set cache and broadcast only; default SwiftLog filtering; other validation ran concurrently.",
+  "exitCode": 0,
+  "recordedOn": "2026-10-19",
+  "reportSHA256": "69cead5b8abe5f124464976fb730150057e75919524b6141a06387ef4442f8d3",
+  "identitiesCapturedAfterRun": [
+    {
+      "path": "Tools/DiscordKitLoadTests/.build/out/Products/Release/DiscordKitLoadTests",
+      "sha256": "a98c5698a2f6d69311db8ca2530470b185f97587a36c6e99e235c9d3d1cd6e6d",
+      "modifiedUTC": "2026-10-19T06:36:00.767026+00:00"
+    },
+    {
+      "path": "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift",
+      "sha256": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08",
+      "modifiedUTC": "2026-10-17T04:43:49.889040+00:00"
+    },
+    {
+      "path": "Sources/DiscordCache/EntityCache.swift",
+      "sha256": "d9f139bc0c0caa51352a6c8603e3f5cc57b3053a5cbbe4e0328563f8aa2829d5",
+      "modifiedUTC": "2026-10-19T06:31:48.879015+00:00"
+    },
+    {
+      "path": "Sources/DiscordGateway/EventHub.swift",
+      "sha256": "a1bf7d593b28643383aa3af7c3cac02b9a3bd333b1d93ab41a87bec0530f894c",
+      "modifiedUTC": "2026-10-19T06:31:48.878759+00:00"
+    },
+    {
+      "path": "Sources/DiscordLogging/DiscordLog.swift",
+      "sha256": "fd7b78b1e8b56f752462d705a226811d84da6b045eaa87ba9cf6c24466051ae5",
+      "modifiedUTC": "2026-10-19T06:26:53.021209+00:00"
+    }
+  ],
+  "sourceDrift": {
+    "measuredOwners": "CacheLoadRunner, EntityCache, EventHub and DiscordLog unchanged between build and completion; modification times and hashes retained.",
+    "finalSourceDifferences": "The final load executable entrypoint explicitly imports/bootstrap-selects stderr, its manifest selects DiscordLogging directly, and docs changed. The measured release executable was preserved. Later unrelated adapter diagnostics are outside this workload. Final-source Debug HTTP/Gateway/cache runs passed separately.",
+    "entrypointAtBuildSHA256": "4c4135758888efdd995258d7f6d36a3606bfaa49399012dac01814b33a5f6a19",
+    "manifestAtBuildSHA256": "bb58834f2afc5f8176ac4ee8680e8c417f7180d555df51d9975725c420f8cf68"
+  },
+  "limits": [
+    "No controlled timing/performance comparison.",
+    "No active file/unified-log/callback output throughput measurement.",
+    "No handler/Client projection/permissions/real shard/device/voice/network capacity qualification.",
+    "Logical accounts are arithmetic dimensions; four actual scopes and a fixed bounded set are used."
+  ]
+}

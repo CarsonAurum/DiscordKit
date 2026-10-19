@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import DiscordModels
@@ -119,6 +120,7 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
         }
         let bytes = try response.jsonValue(interactionType: kind).serialized().count
         state = .acknowledging
+        DiscordLog.makeLogger("interactions").debug("Initial interaction response reserved", metadata: ["dk.event": "interactions.response.reserved"])
         let reservation: UUID
         do {
             reservation = try await admission.acquire(encodedBytes: bytes)
@@ -138,9 +140,11 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
             let timeout = acknowledgementDeadline - clock.now
             try await clock.run(until: acknowledgementDeadline) { try await self.sink.initial(response, timeout) }
             state = .acknowledged(response.type)
+            DiscordLog.makeLogger("interactions").debug("Initial interaction response acknowledged", metadata: ["dk.event": "interactions.response.acknowledged"])
             await admission.release(reservation)
         } catch {
             state = stateAfterInitialFailure(error)
+            DiscordLog.makeLogger("interactions").debug("Initial interaction response failed", metadata: ["dk.event": "interactions.response.failed"])
             updateExpiry()
             await admission.release(reservation)
             throw error

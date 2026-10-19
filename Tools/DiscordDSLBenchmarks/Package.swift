@@ -8,6 +8,7 @@ let package = Package(
     dependencies: [.package(name: "DiscordKit", path: "../..")],
     targets: [
         .executableTarget(name: "DiscordDSLBenchmarks", dependencies: [
+            .product(name: "DiscordLogging", package: "DiscordKit"),
             .product(name: "DiscordDSL", package: "DiscordKit"),
             .product(name: "DiscordCommandDSL", package: "DiscordKit"),
             .product(name: "DiscordCommands", package: "DiscordKit"),

@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import DiscordModels
@@ -102,6 +103,7 @@ public actor CommandReconciler {
         try Task.checkCancellation()
         guard !synchronizing else { throw DiscordError.validation(.limitExceeded) }
         synchronizing = true
+        DiscordLog.makeLogger("commands").debug("Explicit command synchronization started", metadata: ["dk.event": "commands.sync.started", "dk.definitions": .stringConvertible(definitions.count)])
         defer { synchronizing = false }
         let endpoint = try ApplicationCommandEndpoints.list(applicationID: applicationID,
             guildID: guildID, withLocalizations: true, readPolicy: nil)
@@ -136,10 +138,12 @@ public actor CommandReconciler {
                     written.append(try await client.execute(change, deadline: deadline))
                 }
             } catch {
+                DiscordLog.makeLogger("commands").debug("Command synchronization stopped with partial progress", metadata: ["dk.event": "commands.sync.partial", "dk.written": .stringConvertible(written.count), "dk.unchanged": .stringConvertible(unchanged)])
                 throw CommandSyncFailure(completed: CommandSyncReport(unchangedCount: unchanged, written: written),
                     failedDefinitionIndex: index, underlyingError: error)
             }
         }
+        DiscordLog.makeLogger("commands").debug("Command synchronization completed", metadata: ["dk.event": "commands.sync.completed", "dk.written": .stringConvertible(written.count), "dk.unchanged": .stringConvertible(unchanged)])
         return CommandSyncReport(unchangedCount: unchanged, written: written)
     }
 }

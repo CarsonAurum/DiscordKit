@@ -13,13 +13,17 @@ Hosted macOS 26/Ubuntu 24.04 jobs install Swift 6.4.1, build/test the root, test
 tooling/load packages and Python helpers, run browser bridge tests, validate
 documentation presence/inventory/generation/parity/Social catalog, audit the actual
 manifest/import DAG, validate release/maintenance records, and build every consumer.
-CommandsApp/DSLCommands/DSLEvents/DSLBot/ActivityHost tests and CommandsApp/DSLCommands/DSLEvents/DSLBot/VoiceBot/SocialApp offline runs are
-explicit. Credential-bearing examples are built only.
+CommandsApp/DSLCommands/DSLEvents/DSLBot/ActivityHost/LoggingApp tests and
+CommandsApp/DSLCommands/DSLEvents/DSLBot/VoiceBot/SocialApp/LoggingApp offline runs are
+explicit. Credential-bearing examples are built only. Integrated SwiftLog adds a
+root `0.16.0` API baseline and optional output handlers; macro/extension baselines
+remain `0.15.0`. Existing runtime products never select the output library.
 
 Parts 15A and 15B add independently selected `DiscordDSL` and `DiscordCommandDSL`
-products and their root tests. CI compares the current `0.15.0` authoring candidate against the frozen
-`0.14.0` and separately named `0.15.0` API baselines, validates historical and current reports, and discovers
-the public DocC modules from the manifest. The current candidate covers shared
+products and their root tests. CI compares the current root candidate against
+the frozen `0.14.0`/`0.15.0` API snapshots and the new `0.16.0` baseline, validates
+historical release/maintenance records, and discovers the public DocC modules
+from the manifest. The authoring checkpoint covers shared
 declarations, typed argument decoding, explicit command lowering and Part 15C's
 separate macro authoring package. Part 15D adds typed immediate/deferred/manual
 responses and signed HTTP application composition with explicit synchronization.
@@ -45,12 +49,13 @@ its public API and DocC are collected independently from runtime and macro APIs.
 Part 15K adds independent benchmark Swift/Python tests and a small paired offline
 runtime smoke matrix. Full runtime/compiler measurements are explicit local qualification
 commands; compare numerical budgets only on matching hardware, toolchain and workload.
-Part 15L selects `Docs/Release/phase15l-report.json` for the current release-candidate
-evidence and keeps the Phase 14 and 15K checkpoint reports intact and separately
-validated. It also checks freshly emitted macro and extension APIs against their
+Part 15L preserves `Docs/Release/phase15l-report.json` as authoring checkpoint
+evidence and keeps the Phase 14 and 15K reports intact and separately validated.
+The logging candidate records current local checks in
+[logging validation](Release/logging-validation.json). It also checks freshly emitted macro and extension APIs against their
 separate `0.15.0` baselines. The root comparison retains the historical `0.14.0`
-migration check, then rejects same-version API drift against the reviewed `0.15.0`
-snapshot. None of these checks replaces running the current source validation or
+migration checks, then rejects same-version root API drift against the reviewed
+`0.16.0` snapshot. None of these checks replaces running the current source validation or
 establishes a passed platform run, publication or production capacity.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to
@@ -75,10 +80,16 @@ Archives and API evidence are downloadable workflow artifacts. The job publishes
 artifacts only; it does not deploy documentation or publish a package/tag.
 DocC public coverage cannot prove private declaration presence or accurate semantics.
 
-A separate Apple job uses installed Xcode SDKs to compile Bits/Core/Transport/Media/
-ApplePlatform in dependency order at package minima for macOS, iOS, tvOS, watchOS,
-visionOS and their applicable simulators. It emits 45 selected modules and source
-hashes. A missing SDK or compiler error fails the job. These are module emissions,
+A separate Apple job resolves the root's pinned SwiftLog checkout, then uses installed
+Xcode SDKs to compile Logging, DiscordLogging, DiscordLogHandlers and Bits/Core/Transport/
+Media/ApplePlatform in dependency order at package minima for macOS, iOS, tvOS, watchOS,
+visionOS and their applicable simulators. The eight modules produce 72 emissions
+across nine destinations, with source hashes including upstream Logging and its resolved revision. The Logging
+emission uses its upstream concurrency settings; owned modules use the root settings.
+`compile_apple.py` accepts `--scratch-path`, `--cache-path` and `--disable-sandbox`
+for managed hosts and inherits the caller's environment. `--skip-resolve` uses an
+existing checkout offline, requiring its SwiftPM state and Git revision to match
+`Package.resolved`; missing sources fail. A missing SDK or compiler error fails the job. These are module emissions,
 not a complete graph build, linked app, physical-device test, audio route test or
 minimum-OS runtime result. The toolchain's Xcode selection must provide Swift 6.4+
 and every named SDK; installation alone is never recorded as a passed compile.

@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTransport
 import DiscordTestSupport
@@ -348,5 +349,38 @@ actor RPCPeerConnector: RPCConnector {
         await peer.pushJSON("{\"cmd\":\"DISPATCH\",\"evt\":\"NEXT\",\"data\":null}")
         #expect(try await rpc.nextEvent(context: context)?.name == "NEXT")
         await rpc.close()
+    }
+}
+
+extension RPCClientTests {
+    /// Captures connection/request success and terminal startup failure without logging peer payloads,
+    /// application identifiers, request arguments or server-controlled diagnostic text.
+    /// - Throws: Unexpected valid synthetic session behavior.
+    @Test func structuredLoggingTracksLifecycleWithoutPayloads() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let peer = RPCPeer()
+            let rpc = try client([peer])
+            #expect(recorder.entries.isEmpty)
+            try await rpc.connect(context: context())
+            let operation = Task { try await rpc.request(.getGuilds(), context: context()) }
+            let request = await peer.nextSent()
+            try await peer.reply(to: request, data: .string("private-rpc-payload"))
+            #expect(try await operation.value == .string("private-rpc-payload"))
+            await rpc.close()
+            let badPeer = RPCPeer(startup: [.init(opcode: .frame, payload: Data("{\"private-rpc-error\":true}".utf8))])
+            let failing = try client([badPeer])
+            await #expect(throws: RPCFailure.invalidPayload) { try await failing.connect(context: context()) }
+            await failing.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.rpc" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "rpc.connection.ready" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "rpc.request.completed" })
+        #expect(entries.contains { $0.level == .error && $0.metadata["dk.event"] == "rpc.connection.failed" })
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["private-rpc-payload", "private-rpc-error", String(UInt64.max)] {
+            #expect(!rendered.contains(secret))
+        }
+        #expect(entries.allSatisfy { $0.metadata["dk.event"] != nil && $0.level != .info && $0.level != .notice })
     }
 }

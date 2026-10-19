@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordModels
 import DiscordTransport
@@ -155,6 +156,9 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
             throw VoiceManagerFailure.operationInProgress
         }
         guard entries[guildID] != nil || entries.count < maximumGuilds else { throw VoiceManagerFailure.capacityExceeded }
+        let logger = DiscordLog.makeLogger("voice")
+        logger.trace("Voice join admitted", metadata: ["dk.event": "voice.manager.join.started",
+            "dk.retained_guilds": .stringConvertible(entries.count)])
         let generation = try reserveGeneration()
         let old = entries[guildID]
         let rendezvous = try VoiceJoinRendezvous(guildID: guildID, userID: userID, channelID: channelID,
@@ -179,8 +183,14 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
                 throw VoiceManagerFailure.superseded
             }
             entries[guildID]?.joining = false; entries[guildID]?.operation = nil
+            logger.debug("Voice join session installed", metadata: ["dk.event": "voice.manager.join.completed"])
             return session
         } catch {
+            if error is CancellationError || Task.isCancelled {
+                logger.trace("Voice join cancelled", metadata: ["dk.event": "voice.manager.join.cancelled"])
+            } else {
+                logger.debug("Voice join failed", metadata: ["dk.event": "voice.manager.join.failed"])
+            }
             let externallyClosed = entries[guildID]?.generation != generation || entries[guildID]?.closing == true
             await discard(guildID: guildID, generation: generation, sendLeave: true)
             if stopped { throw VoiceManagerFailure.closed }
@@ -264,6 +274,7 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
               let task = beginClose(guildID: guildID, generation: entry.generation,
                   sendLeave: true, waiterFailure: .disconnected) else { return }
         try await task.value
+        DiscordLog.makeLogger("voice").debug("Voice leave completed", metadata: ["dk.event": "voice.manager.leave.completed"])
     }
 
     /// Permanently stops all sessions, beginning one best-effort leave for each open guild.
@@ -273,6 +284,8 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
     public func stop() async {
         if let shutdownTask { await shutdownTask.value; return }
         guard !stopped else { return }
+        DiscordLog.makeLogger("voice").debug("Voice manager stopping", metadata: ["dk.event": "voice.manager.stopping",
+            "dk.retained_guilds": .stringConvertible(entries.count)])
         stopped = true
         let retained = entries
         var tasks: [Task<Void, any Error>] = []
@@ -477,6 +490,8 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
         guard entries[guildID]?.generation == generation,
               entries[guildID]?.credentials?.generation == connectionGeneration,
               entries[guildID]?.closing == false else { return }
+        DiscordLog.makeLogger("voice").debug("Managed voice session finished", metadata: ["dk.event": "voice.manager.session.finished",
+            "dk.failed": .stringConvertible(failed)])
         entries[guildID]?.session = nil; entries[guildID]?.task = nil
     }
 

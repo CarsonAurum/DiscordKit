@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import Foundation
 
@@ -163,6 +164,7 @@ public actor InProcessShardLeaseStore<C: Clock>: ShardLeaseStore where C.Duratio
         let lease = ShardLease<C>(shard: shard, owner: owner, generation: nextGeneration,
                                  expiresAt: now.advanced(by: lifetime))
         leases[shard] = lease
+        DiscordLog.makeLogger("transport.leases").trace("Shard ownership acquired", metadata: ["dk.event": "transport.leases.acquired", "leases": "\(leases.count)"])
         return lease
     }
 
@@ -189,13 +191,17 @@ public actor InProcessShardLeaseStore<C: Clock>: ShardLeaseStore where C.Duratio
         let replacement = ShardLease<C>(shard: lease.shard, owner: lease.owner, generation: nextGeneration,
                                        expiresAt: clock.now.advanced(by: lifetime))
         leases[lease.shard] = replacement
+        DiscordLog.makeLogger("transport.leases").trace("Shard ownership renewed", metadata: ["dk.event": "transport.leases.renewed"])
         return replacement
     }
 
     /// Removes only the matching ticket and tolerates repeat/stale/cancelled cleanup.
     /// - Parameter lease: Ownership to release; newer tickets remain authoritative.
     public func release(_ lease: ShardLease<C>) {
-        if matches(lease) { leases.removeValue(forKey: lease.shard) }
+        if matches(lease) {
+            leases.removeValue(forKey: lease.shard)
+            DiscordLog.makeLogger("transport.leases").trace("Shard ownership released", metadata: ["dk.event": "transport.leases.released", "leases": "\(leases.count)"])
+        }
     }
 
     /// Reports retained records, including expired records not yet pruned.

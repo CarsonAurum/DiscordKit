@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCertifiedDevices
 import DiscordCore
 import DiscordTestSupport
@@ -342,4 +343,35 @@ actor CertifiedResponseSource {
     /// Returns the fixture chunk once, then EOF.
     /// - Returns: Stored bytes, or nil after the first read.
     func next() -> Data? { defer { bytes = nil }; return bytes }
+}
+
+extension CertifiedDeviceHTTPPublisherTests {
+    /// Captures one acknowledged publication and one terminal failure while keeping device/native IDs,
+    /// hardware text, correlation strings and injected transport errors out of SwiftLog events.
+    /// - Throws: Unexpected fixture or acknowledged-publication errors.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func structuredLoggingExcludesDeviceAndTransportData() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let transport = try ScriptedHTTPTransport(steps: [
+                { _ in try await certifiedAcknowledgement("private-device-nonce") },
+                { _ in throw TestSupportFailure.scripted("private-device-transport") }
+            ])
+            let publisher = try CertifiedDeviceHTTPPublisher(clientID: "18446744073709551615", port: 6463, transport: transport)
+            #expect(recorder.entries.isEmpty)
+            try await publisher.publish([certifiedDevice("private-native-device")], nonce: "private-device-nonce",
+                context: TransportContext(clock: ManualClock()))
+            await #expect(throws: CertifiedDeviceFailure.transportFailure) {
+                try await publisher.publish([], nonce: "private-second-nonce", context: TransportContext(clock: ManualClock()))
+            }
+            await publisher.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.certified_devices" }
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "certified_devices.http.completed" })
+        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "certified_devices.http.failed" })
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["private-native-device", "private-device-nonce", "private-second-nonce", "private-device-transport", String(UInt64.max)] {
+            #expect(!rendered.contains(secret))
+        }
+    }
 }
