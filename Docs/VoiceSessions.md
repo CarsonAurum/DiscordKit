@@ -54,6 +54,10 @@ Resumable socket replacement preserves transport/DAVE nonce authorities and
 reauthorizes actual E2EE before enabling media. Session-invalidating/authentication/
 terminal peer codes fail closed and require fresh main-Gateway credentials.
 The finite retry budget never silently becomes an unbounded reconnect storm.
+A protocol or handshake deadline remains the first causal failure when cancelling
+sibling receives exposes a later local close status. Only actual socket-loss
+results use peer status to replace their generic loss category; a terminal numeric
+code never permits a retry. See the [initial DAVE follow-up](DAVEInteropFollowup.md).
 
 DAVE imports Voice; Voice imports no DAVE or MLS. `DAVEVoiceSession` implements the
 injected protocol using `DAVEProtocolSession`. Supply the trusted external sender,

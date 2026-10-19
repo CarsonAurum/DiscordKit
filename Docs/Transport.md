@@ -89,6 +89,10 @@ metadata collapses duplicate header fields; duplicate request names are rejected
 rather than silently normalized. Choose NIO when exact duplicate fields and
 owned socket buffering matter. Foundation has no production Linux WebSocket
 qualification in this change.
+The WebSocket adapter marks local cancellation/disposal before native cancellation.
+Later native close callbacks cannot manufacture peer status from the requested
+local code; peer evidence already observed before cleanup remains available.
+See the [voice/DAVE causality follow-up](DAVEInteropFollowup.md).
 
 Ingress does not terminate TLS, negotiate upgrades, accept trailers/Expect,
 reuse keep-alive connections or run application handlers on its event loop.

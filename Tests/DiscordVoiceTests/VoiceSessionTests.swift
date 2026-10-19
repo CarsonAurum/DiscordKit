@@ -36,13 +36,16 @@ private actor SessionTestSocket: WebSocketSessionConnection {
     private var reconnectCloses = 0
     private var receiveFailure: TransportFailure?
     private let acknowledge: Bool
+    private let cancellationCloseCode: Int?
 
     /// Stores a finite server script without reading or creating background work.
     /// - Parameters:
     ///   - incoming: Initial complete messages in wire order.
     ///   - acknowledge: Whether to echo exact heartbeat nonces automatically.
-    init(_ incoming: [WebSocketMessage], acknowledge: Bool = true) {
+    ///   - cancellationCloseCode: Optional native-style local cleanup status exposed on read cancellation.
+    init(_ incoming: [WebSocketMessage], acknowledge: Bool = true, cancellationCloseCode: Int? = nil) {
         self.incoming = incoming; self.acknowledge = acknowledge
+        self.cancellationCloseCode = cancellationCloseCode
     }
 
     /// Records one bounded client frame and optionally queues a heartbeat ACK.
@@ -86,8 +89,9 @@ private actor SessionTestSocket: WebSocketSessionConnection {
         } onCancel: { Task { await self.cancelRead() } }
     }
 
-    /// Cancels the sole pending read without changing peer-session close evidence.
+    /// Cancels the pending read, optionally modeling an adapter that reports its local cleanup code.
     private func cancelRead() {
+        if code == nil, let cancellationCloseCode { code = cancellationCloseCode }
         let waiter = waiter; self.waiter = nil; waiter?.resume(throwing: CancellationError())
     }
 
@@ -263,6 +267,7 @@ private struct SessionTestReadiness: VoiceE2EEReadiness {
 /// Fake authenticated backend used only to isolate network ownership/control behavior.
 private actor SessionTestE2EE: VoiceSessionE2EE {
     private let identity: VoiceConnectionIdentity
+    private let authorizesMedia: Bool
     private var closed = false
     private var controls: [UInt8] = []
     private var bindings: [UInt32: UserID] = [:]
@@ -274,13 +279,15 @@ private actor SessionTestE2EE: VoiceSessionE2EE {
     /// Creates an inert exact-identity fixture without key material or network access.
     /// - Parameters:
     ///   - identity: Expected whole identity for authorization checks.
+    ///   - authorizesMedia: False keeps the reducer awaiting E2EE for handshake deadline tests; default true.
     ///   - beforeBind: Optional admitted-binding suspension hook, default nil. Closure owns
     ///     no keys; cleanup waits for its cancellation-independent task before returning.
     ///   - beforeRemoval: Optional admitted-removal suspension hook with the same cleanup
     ///     ownership, default nil; used to test pre-negotiation stop ordering.
-    init(_ identity: VoiceConnectionIdentity, beforeBind: (@Sendable (UserID) async -> Void)? = nil,
+    init(_ identity: VoiceConnectionIdentity, authorizesMedia: Bool = true, beforeBind: (@Sendable (UserID) async -> Void)? = nil,
          beforeRemoval: (@Sendable (UserID) async -> Void)? = nil) {
-        self.identity = identity; self.beforeBind = beforeBind; self.beforeRemoval = beforeRemoval
+        self.identity = identity; self.authorizesMedia = authorizesMedia
+        self.beforeBind = beforeBind; self.beforeRemoval = beforeRemoval
     }
 
     /// Accepts only the nonzero fixture version without pretending to establish real MLS.
@@ -304,9 +311,10 @@ private actor SessionTestE2EE: VoiceSessionE2EE {
     /// Authorizes the copied reducer through the existing whole-identity test verifier.
     /// - Parameter state: Suspended fixture reducer.
     /// - Returns: Ready fixture reducer, preserving its other fields.
-    /// - Throws: Closure or exact identity/version mismatch.
+    /// - Throws: Closure, explicitly unavailable E2EE, or exact identity/version mismatch.
     func authorizeGateway(_ state: VoiceGatewaySessionState) async throws -> VoiceGatewaySessionState {
         guard !closed else { throw VoiceControlFailure.closed }
+        guard authorizesMedia else { throw VoiceControlFailure.e2eeUnavailable }
         var result = state; try result.authorizeMedia(using: SessionTestReadiness(identity: identity)); return result
     }
 
@@ -380,6 +388,7 @@ private final class SessionTestClock: Clock, Sendable {
     let firstHeartbeat = TestBarrier()
     let secondHeartbeat = TestBarrier()
     let retry = TestBarrier()
+    let shortHandshake = TestBarrier()
     private let heartbeatSleeps = Mutex(0)
     private let mediaSleeps = Mutex(0)
     private let mediaSleepGates = (0..<5).map { _ in TestBarrier() }
@@ -401,6 +410,7 @@ private final class SessionTestClock: Clock, Sendable {
             if count == 1 { firstHeartbeat.open() }; if count == 2 { secondHeartbeat.open() }
         }
         if duration == .milliseconds(50) { retry.open() }
+        if duration == .milliseconds(100) { shortHandshake.open() }
         if duration > .zero, duration <= .milliseconds(20) {
             let count = mediaSleeps.withLock { count in count += 1; return count }
             if count <= mediaSleepGates.count { mediaSleepGates[count - 1].open() }
@@ -684,7 +694,7 @@ struct VoiceSessionTests {
     /// Session-invalidating/kick/rate/call-termination codes never consume a reconnect attempt.
     /// - Parameter code: Current documented terminal numeric peer code.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-    @Test(arguments: [4006, 4014, 4021, 4022])
+    @Test(arguments: [1002, 4006, 4014, 4021, 4022])
     func terminalPeerCloseRequiresFreshJoin(code: Int) async throws {
         let tuple = credentials(), backend = SessionTestE2EE(tuple.identity), socket = SessionTestSocket(try initialFrames())
         let udp = SessionTestDatagram(discovery()), clock = ManualClock(), connector = SessionTestConnector([socket])
@@ -875,12 +885,44 @@ struct VoiceSessionTests {
         #expect(clock.pendingSleepCount == 0)
     }
 
+    /// A stalled encrypted handshake retains its first deadline error even when the cancelled
+    /// receive subsequently reports local protocol-error closure 1002. No resume, plaintext
+    /// authorization or media send occurs, and all structured children/resources finish.
+    /// - Throws: Unexpected synthetic setup, clock or session failure.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func handshakeDeadlineSurvivesLocalProtocolErrorCleanup() async throws {
+        let tuple = credentials()
+        let backend = SessionTestE2EE(tuple.identity, authorizesMedia: false)
+        let socket = SessionTestSocket(try initialFrames(), cancellationCloseCode: 1002)
+        let connector = SessionTestConnector([socket]), udp = SessionTestDatagram(discovery())
+        let clock = SessionTestClock()
+        let owner = try VoiceSession(credentials: tuple, webSocket: connector,
+            makeDatagram: { _ in udp }, e2ee: backend, clock: clock,
+            configuration: VoiceSessionConfiguration(handshakeTimeout: .milliseconds(100)))
+        let run = Task { try await owner.run() }
+        try await socket.waitForRead(4)
+        try await clock.shortHandshake.wait()
+        #expect(await owner.snapshot().phase == .awaitingE2EE)
+        #expect(await owner.mediaPipeline() == nil)
+        try clock.base.advance(by: .milliseconds(100))
+        await #expect(throws: TransportFailure.deadlineExceeded) { try await run.value }
+        #expect(await socket.peerCloseCode() == 1002)
+        #expect(await connector.recorded().count == 1)
+        let final = await owner.snapshot()
+        #expect(final.phase == .closed && !final.isRunning && !final.hasDatagramTransport)
+        #expect(final.reconnectAttempts == 0 && final.pendingControlCount == 0)
+        #expect(await backend.recorded().0)
+        #expect(await udp.lifecycle().closed)
+        #expect(await udp.sentDatagrams().count == 1)
+        #expect(clock.base.pendingSleepCount == 0)
+    }
+
     /// Adapter validation/capacity failures stay terminal and never create broken resume loops.
     /// - Parameter failure: Explicit bounded adapter error distinct from socket closure/loss.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test(arguments: [TransportFailure.invalidLimit, .concurrentRead, .chunkTooLarge(limit: 256, actual: 257)])
     func adapterValidationErrorsAreNotRetried(failure: TransportFailure) async throws {
-        let tuple = credentials(), backend = SessionTestE2EE(tuple.identity), socket = SessionTestSocket(try initialFrames())
+        let tuple = credentials(), backend = SessionTestE2EE(tuple.identity), socket = SessionTestSocket(try initialFrames(), cancellationCloseCode: 1002)
         let udp = SessionTestDatagram(discovery()), clock = ManualClock(), connector = SessionTestConnector([socket])
         let owner = try VoiceSession(credentials: tuple, webSocket: connector,
             makeDatagram: { _ in udp }, e2ee: backend, clock: clock)

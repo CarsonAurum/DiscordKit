@@ -220,6 +220,13 @@ secret tree, tree arithmetic, tree validation and TreeKEM. Each fixture's proven
 records its source and qualification boundary. Historical expiry is disabled only
 for the historical fixture checks; authenticity remains required.
 
+The [initial DAVE follow-up](DAVEInteropFollowup.md) adds an explicit, separately
+built [Cisco MLS++ oracle](../Tools/DAVEInterop/README.md): generated commit/Welcome
+framing, signatures, references and full native Welcome acceptance with matching
+epoch authenticator. Its transient synthetic inputs are never committed or logged;
+ordinary consumers/tests fetch no native dependency. The initial membership MAC
+and complete native/live session remain outside that comparison.
+
 Synthetic local peers and published vectors do not establish interoperability
 with a live Discord voice deployment, an independent complete MLS client, all
 supported platforms or all deployment minima. External crypto review, complete

@@ -210,7 +210,11 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// Supervises successive WebSocket generations while the lifetime UDP reader remains active.
     /// Cancelling a per-attempt socket task must never cancel the UDP receive, because owned
     /// adapters may close UDP on receive cancellation. Only terminal session cleanup cancels it.
-    /// - Throws: Terminal protocol/peer errors, cancellation or exhausted resume policy.
+    /// The first protocol, crypto, capacity or deadline failure remains causal even when
+    /// cancelling sibling reads changes the native socket status during cleanup. Only an
+    /// actual connection-loss result is classified from observed peer-close evidence.
+    /// - Throws: Original terminal protocol/deadline errors, observed peer errors,
+    ///   cancellation or exhausted resume policy; cleanup never authorizes another retry.
     private func runConnections() async throws {
         while !stopped {
             do { try await attempt(); break }
@@ -218,15 +222,17 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                 if stopped { break }
                 await media?.setAuthorized(false)
                 try Task.checkCancellation()
-                let code = await (connection as? any WebSocketSessionConnection)?.peerCloseCode()
-                if let code, !Self.canResume(closeCode: code) {
-                    throw VoiceSessionFailure.peerClosed(code)
-                }
                 // Only actual socket loss or heartbeat failure permits a resume. Malformed
-                // signaling, crypto, discovery and bounded-capacity failures fail closed.
+                // signaling, crypto, discovery, timeout and capacity failures preserve their
+                // causal error before sampling status that cancellation cleanup may change.
                 let lost = (error as? VoiceSessionFailure) == .connectionLost
                 let missed = (error as? VoiceControlFailure) == .missedHeartbeatACK
                 guard lost || missed else { throw error }
+                let code = await (connection as? any WebSocketSessionConnection)?.peerCloseCode()
+                if let code, !Self.canResume(closeCode: code) {
+                    if lost { throw VoiceSessionFailure.peerClosed(code) }
+                    throw error
+                }
                 guard let resumable = connection as? any WebSocketSessionConnection else {
                     throw VoiceSessionFailure.rejoinRequired
                 }

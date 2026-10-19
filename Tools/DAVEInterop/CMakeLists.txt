@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.20)
+project(DiscordKitDAVEInterop LANGUAGES CXX)
+
+# Development-only independent oracle. Consumers never fetch or link this source.
+set(MLSPP_SOURCE "" CACHE PATH "Explicit local checkout of the reviewed Cisco MLS++ revision")
+if(NOT EXISTS "${MLSPP_SOURCE}/include/mls/state.h")
+    message(FATAL_ERROR "Provide MLSPP_SOURCE pointing to a local Cisco MLS++ checkout")
+endif()
+execute_process(COMMAND git -C "${MLSPP_SOURCE}" rev-parse HEAD
+    OUTPUT_VARIABLE MLSPP_REVISION OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ERROR_IS_FATAL ANY)
+if(NOT MLSPP_REVISION STREQUAL "fc724c3100ce3b5d8565dbd6d93648a440991a8c")
+    message(FATAL_ERROR "MLS++ checkout does not match the reviewed reference revision")
+endif()
+execute_process(COMMAND git -C "${MLSPP_SOURCE}" status --porcelain
+    OUTPUT_VARIABLE MLSPP_DIRTY OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ERROR_IS_FATAL ANY)
+if(NOT MLSPP_DIRTY STREQUAL "")
+    message(FATAL_ERROR "MLS++ reference checkout must be clean")
+endif()
+set(TESTING OFF CACHE BOOL "" FORCE)
+set(DISABLE_GREASE ON CACHE BOOL "" FORCE)
+set(DISABLE_PQ ON CACHE BOOL "" FORCE)
+set(MLS_NAMESPACE_SUFFIX pp CACHE STRING "" FORCE)
+add_subdirectory("${MLSPP_SOURCE}" mlspp EXCLUDE_FROM_ALL)
+add_executable(DAVEInterop DAVEInterop.cpp)
+target_compile_features(DAVEInterop PRIVATE cxx_std_17)
+target_link_libraries(DAVEInterop PRIVATE mlspp)

@@ -106,6 +106,74 @@ import Testing
         #expect(await session.snapshot().pendingTransition == id)
     }
 
+    /// Initial groups keep only the newest tentative state across proposal append/revocation.
+    /// Selection requires its exact public commit: a superseded candidate triggers bounded
+    /// recovery with the same signing identity, while a current self-echo acknowledges Ready
+    /// and retains the media gate until Execute. Welcome addresses only the unrevoked member.
+    /// - Parameter selectStale: True selects the superseded commit to exercise recovery.
+    /// - Throws: Unexpected synthetic protocol, MLS or authenticated frame errors.
+    @Test(arguments: [false, true])
+    func initialCandidateRevocationAndExactSelfEcho(selectStale: Bool) async throws {
+        let external = P256.Signing.PrivateKey(compactRepresentable: false)
+        let sender = try MLSExternalSender(signatureKey: external.publicKey.x963Representation,
+            credential: MLSCredential(identity: Data("gateway".utf8)))
+        let groupID = Data([0, 0, 0, 0, 0, 0, 0, 4])
+        let a = try session(1, sender: sender, groupID: groupID)
+        let b = try session(2, sender: sender, groupID: groupID)
+        let c = try session(3, sender: sender, groupID: groupID)
+        let alice = try await initialize(a, sender: sender)
+        let bob = try await initialize(b, sender: sender)
+        let carol = try await initialize(c, sender: sender)
+        let addB = try MLSProposal.add(bob).externalMessage(groupID: groupID, epoch: 0,
+            signaturePrivateKey: external.rawRepresentation)
+        let addC = try MLSProposal.add(carol).externalMessage(groupID: groupID, epoch: 0,
+            signaturePrivateKey: external.rawRepresentation)
+        let first = try await a.receive(proposals([addB]), now: 0)
+        let stale = try candidate(#require(first.first))
+        _ = try await a.receive(proposals([addC]), now: 0)
+        var reference = MLSWriter()
+        try reference.writeVector(MLSCipherSuite2.refHash(label: "MLS 1.0 Proposal Reference", value: MLSPublicMessage.decode(addC).authenticatedContent()))
+        var revoked = MLSWriter(); revoked.write(UInt8(1))
+        try revoked.writeVector(reference.data)
+        let replacement = try await a.receive(binary(27, revoked.data), now: 0)
+        let current = try candidate(#require(replacement.first))
+        #expect(current.commit != stale.commit)
+        let message = try MLSPublicMessage.decode(current.commit)
+        #expect(message.groupID == groupID && message.epoch == 0 && message.sender == .member(0))
+        guard case .commit(let commit) = message.body else { throw DAVESessionError.invalidMessage }
+        #expect(commit.references == [try MLSCipherSuite2.refHash(label: "MLS 1.0 Proposal Reference", value: MLSPublicMessage.decode(addB).authenticatedContent())])
+        let path = try #require(commit.path)
+        #expect(path.leafNode.credential == alice.leafNode.credential)
+        #expect(path.leafNode.signatureKey == alice.leafNode.signatureKey)
+        let welcome = try MLSWelcome.decode(Data([0, 1, 0, 3]) + current.welcome)
+        #expect(welcome.secrets.map(\.reference) == [try bob.reference()])
+        #expect(await a.snapshot().activeEpoch == nil)
+        await #expect(throws: DAVESessionError.mediaUnavailable) { try await a.seal(Data([0xF8, 1]), codec: .opus) }
+        let selected = try await a.receive(binary(29, Data([0, 9]) + (selectStale ? stale.commit : current.commit)), now: 1)
+        if selectStale {
+            #expect(selected.map(\.opcode) == [31, 26])
+            guard case .binary(let freshBytes) = try #require(selected.last).payload else { throw DAVESessionError.invalidMessage }
+            let fresh = try MLSKeyPackage.decode(freshBytes, messageWrapped: true)
+            #expect(fresh.leafNode.signatureKey == alice.leafNode.signatureKey)
+            #expect(fresh.initKey != alice.initKey)
+            #expect(await a.snapshot().pendingTransition == nil)
+        } else {
+            #expect(selected.map(\.opcode) == [23])
+            #expect(await a.snapshot().pendingTransition == 9)
+            #expect(await a.snapshot().activeEpoch == nil)
+            await #expect(throws: DAVESessionError.mediaUnavailable) { try await a.seal(Data([0xF8, 1]), codec: .opus) }
+            try await select(b, selection: current.welcome, joining: true, id: 9, now: 1)
+            for owner in [a, b] { _ = try await owner.receive(json(22, transition(9)), now: 1) }
+            let packet = try await a.seal(Data([0xF8, 1]), codec: .opus)
+            #expect(try await b.open(packet, senderID: 1, mediaType: .audio, now: 1) == Data([0xF8, 1]))
+        }
+        for owner in [a, b, c] {
+            try await owner.close()
+            #expect(await owner.snapshot().isClosed)
+            #expect(await owner.snapshot().retainedEpochCount == 0)
+        }
+    }
+
     /// Rejects every constructor policy/key boundary before work or secret ownership;
     /// account-scoped verification cannot accidentally be adopted by another local user.
     @Test func constructorBoundsAccountAndOwnedSliceAdmission() async throws {
