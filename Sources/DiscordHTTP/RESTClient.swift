@@ -205,11 +205,16 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
         let reservation = try await coordinator.acquire(rateRequest(endpoint), deadline: context.deadline)
         let request: HTTPRequest
         do { request = try endpoint.makeRequest(credential: credential, userAgent: userAgent) }
-        catch { try? await coordinator.release(reservation, outcome: .notSent); throw error }
+        catch {
+            do { try await coordinator.release(reservation, outcome: .notSent) }
+            catch { await recordOwnerFailure(error) }
+            throw error
+        }
         do { try context.check() }
         catch {
             await request.body?.close()
-            try? await coordinator.release(reservation, outcome: .notSent)
+            do { try await coordinator.release(reservation, outcome: .notSent) }
+            catch { await recordOwnerFailure(error) }
             throw error
         }
         let response: HTTPResponse
@@ -220,7 +225,9 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
         }
         catch {
             await request.body?.close()
-            try? await coordinator.release(reservation, outcome: .uncertain)
+            do { try await coordinator.release(reservation, outcome: .uncertain) }
+            catch { await recordOwnerFailure(error) }
+            await recordOwnerFailure(error)
             throw submissionFailure(error, safety: endpoint.retrySafety)
         }
         await request.body?.close()
@@ -228,7 +235,9 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
         let data: Data
         do { data = try await ResponseBody.collect(response.body, maximumBytes: maximumResponseBytes) }
         catch {
-            try? await coordinator.complete(reservation, status: response.status, headers: response.headers)
+            do { try await coordinator.complete(reservation, status: response.status, headers: response.headers) }
+            catch { await recordOwnerFailure(error) }
+            await recordOwnerFailure(error)
             throw submissionFailure(error, safety: endpoint.retrySafety)
         }
         var retryAfter: Duration?
@@ -243,11 +252,37 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
             try await coordinator.complete(reservation, status: response.status, headers: response.headers,
                                            retryAfter: retryAfter, global: global)
         } catch {
+            await recordOwnerFailure(error)
             if endpoint.retrySafety == .unsafe { throw submissionFailure(error, safety: .unsafe) }
             throw error
         }
         if response.status == 429 { await evidence.markRejected() }
         return WireReply(status: response.status, headers: response.headers, data: data)
+    }
+
+    /// Records closed owner evidence before normalization can erase the source failure.
+    /// - Parameter error: Original adapter/body/admission failure; only reviewed safe typed cases are inspected.
+    /// This observation does not change public thrown errors, request replay or cleanup behavior.
+    private func recordOwnerFailure(_ error: any Error) async {
+        let failure: InvocationOwnerFailure
+        if let error = error as? RateLimitFailure {
+            switch error {
+            case .closed: failure = .rateLimitClosed
+            case .invalidRequest: failure = .rateLimitInvalidRequest
+            case .unknownReservation: failure = .rateLimitUnknownReservation
+            case .coordinatorUnavailable: failure = .rateLimitCoordinatorUnavailable
+            default: return
+            }
+        } else if let error = error as? TransportFailure {
+            switch error {
+            case .closed: failure = .transportClosed
+            case .concurrentRead: failure = .transportConcurrentRead
+            case .invalidLimit: failure = .transportInvalidLimit
+            case .scriptExhausted: failure = .transportScriptExhausted
+            default: return
+            }
+        } else { return }
+        await InvocationOwnerFailureScope.record(failure)
     }
 
     /// Replaces untrusted adapter error descriptions with bounded public categories.

@@ -1,0 +1,63 @@
+{
+  "scope": "macOS arm64 public source declarations/relationships only, not ABI or other platform branches",
+  "modules": 33,
+  "symbols": 14638,
+  "comparisons": [
+    {
+      "baselineVersion": "0.14.0",
+      "candidateVersion": "0.17.0",
+      "requiredIncrement": "major",
+      "changes": {
+        "removed": 0,
+        "changed": 0,
+        "added": 1403,
+        "removedRelationships": 0,
+        "addedRelationships": 1900,
+        "removedModules": 0,
+        "addedModules": 5
+      }
+    },
+    {
+      "baselineVersion": "0.15.0",
+      "candidateVersion": "0.17.0",
+      "requiredIncrement": "major",
+      "changes": {
+        "removed": 2,
+        "changed": 0,
+        "added": 395,
+        "removedRelationships": 2,
+        "addedRelationships": 475,
+        "removedModules": 0,
+        "addedModules": 2
+      }
+    },
+    {
+      "baselineVersion": "0.16.0",
+      "candidateVersion": "0.17.0",
+      "requiredIncrement": "major",
+      "changes": {
+        "removed": 2,
+        "changed": 0,
+        "added": 129,
+        "removedRelationships": 2,
+        "addedRelationships": 143,
+        "removedModules": 0,
+        "addedModules": 0
+      }
+    },
+    {
+      "baselineVersion": "0.17.0",
+      "candidateVersion": "0.17.0",
+      "requiredIncrement": "none",
+      "changes": {
+        "removed": 0,
+        "changed": 0,
+        "added": 0,
+        "removedRelationships": 0,
+        "addedRelationships": 0,
+        "removedModules": 0,
+        "addedModules": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "0.17.0",
+  "verifiedOn": "2026-10-19",
+  "status": "local-validation-passed",
+  "scope": "Local macOS arm64 offline Gateway invocation resilience and safe staged runtime diagnostics; unpublished and untagged.",
+  "baseCommit": "1be682639dc0ef999a381547a95fae64204e567b",
+  "platform": {
+    "compiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+    "operatingSystem": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434",
+    "execution": "Synthetic peers and local loopback. Approved host access used where compiler plugins, temporary files or local socket tests required it; no credentials or live Discord requests."
+  },
+  "implemented": [
+    "Explicit failFast default and continueInvocations policy",
+    "Fixed stages and closed safe categories with optional numeric API/fatal-close evidence",
+    "No response fallback, token refresh, handler replay or mutation retry",
+    "Terminal trusted-input, continuity/overflow, cancellation and shared owner failures",
+    "Bounded primary plus two additional diagnostic entries and joined cleanup",
+    "Safe terminal owner evidence captured before HTTP normalization and suppressed cleanup failures"
+  ],
+  "checks": [
+    {
+      "name": "final root build and tests",
+      "status": "passed",
+      "commands": [
+        "SWIFTNIO_STRICT=1 swift build",
+        "SWIFTNIO_STRICT=1 swift test"
+      ],
+      "executionOptions": "--disable-sandbox; TMPDIR=/private/tmp; CLANG_MODULE_CACHE_PATH=/private/tmp/discordkit-recovery-clang; --cache-path /private/tmp/discordkit-recovery-cache --config-path /private/tmp/discordkit-recovery-config --security-path /private/tmp/discordkit-recovery-security",
+      "driver": "default SwiftBuild; separate test products",
+      "passedTests": 2435,
+      "suites": 303,
+      "testProducts": 34,
+      "failedTests": 0
+    },
+    {
+      "name": "focused recovery diagnostics and operation ownership",
+      "status": "passed",
+      "commands": [
+        "SWIFTNIO_STRICT=1 swift test --filter 'RecoveryTests|DiagnosticTests|OperationFailureTests|RESTCleanupOwnerTests'"
+      ],
+      "tests": 24,
+      "suites": 5,
+      "testProducts": 4,
+      "recoveryScenarios": 42,
+      "secondaryCleanupOwnerCases": 4,
+      "coverage": [
+        "One connection survives recoverable handler/callback/continuation/decode/deadline/token/stale-command failures",
+        "Default fail-fast and malformed/untrusted/wrong-application/overflow/preparation/owner termination",
+        "Exactly-once uncertain submissions without response fallback or replay",
+        "Cancellation, repeated shutdown and zero final ownership",
+        "Secret sentinels, closed typed mappings, numeric API evidence and finite aggregate classification",
+        "Original public typed catches, middleware error replacement and nested routing"
+      ]
+    },
+    {
+      "name": "independent consumers and extension adoption",
+      "status": "passed",
+      "built": [
+        "RESTOnly",
+        "GatewayBot",
+        "HTTPApp",
+        "CommandsApp",
+        "DSLCommands",
+        "DSLEvents",
+        "DSLBot"
+      ],
+      "testCounts": {
+        "DSLCommands": 4,
+        "DSLEvents": 3,
+        "DSLBot": 3,
+        "DiscordDSLExtensions": 6
+      },
+      "offlineRuns": [
+        "DSLCommands --offline",
+        "DSLEvents",
+        "DSLBot"
+      ],
+      "notes": [
+        "Final source includes secondary cleanup-owner capture. DSLBot explicitly selects continueInvocations. No command registration or authenticated calls."
+      ]
+    },
+    {
+      "name": "tooling and local load packages",
+      "status": "passed",
+      "swiftTests": {
+        "DiscordKitTools": 105,
+        "DiscordKitLoadTests": 28
+      },
+      "pythonTests": {
+        "DiscordKitTools": 229,
+        "DiscordKitLoadTests": 12,
+        "ci": 47
+      },
+      "commands": [
+        "swift test --package-path Tools/DiscordKitTools",
+        "swift test --package-path Tools/DiscordKitLoadTests",
+        "python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'",
+        "python3 -m unittest discover -s Tools/DiscordKitLoadTests/scripts -p 'test_*.py'",
+        "python3 -m unittest discover -s Tools/ci -p 'test_*.py'"
+      ]
+    },
+    {
+      "name": "reviewed definitions and callable documentation",
+      "status": "passed",
+      "commands": [
+        "swift run --package-path Tools/DiscordKitTools DiscordKitTools documentation audit --repository .",
+        "swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository .",
+        "swift run --package-path Tools/DiscordKitTools DiscordKitTools generate --check --repository .",
+        "swift run --package-path Tools/DiscordKitTools DiscordKitTools parity check --repository ."
+      ],
+      "swiftFiles": 807,
+      "explicitCallables": 8786,
+      "missingComments": 0,
+      "notes": [
+        "Generated outputs require no regeneration. Documentation presence is syntactic evidence; source and independent review remain separate."
+      ]
+    },
+    {
+      "name": "dependency and import isolation",
+      "status": "passed",
+      "commands": [
+        "python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository ."
+      ],
+      "runtimeProducts": 33,
+      "consumers": 14,
+      "authoringPackages": 2,
+      "report": "Measurements/InvocationResilience/dependency-graph.json"
+    },
+    {
+      "name": "public API and DocC",
+      "status": "passed",
+      "commands": [
+        "swift package dump-symbol-graph --minimum-access-level public",
+        "python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot --repository . --symbolgraphs .build/out/symbolgraph --version 0.17.0 --output .build/recovery-current-api.json",
+        "python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline.json --candidate .build/recovery-current-api.json --version 0.17.0",
+        "python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.15.0.json --candidate .build/recovery-current-api.json --version 0.17.0",
+        "python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.16.0.json --candidate .build/recovery-current-api.json --version 0.17.0",
+        "python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.17.0.json --candidate .build/recovery-current-api.json --version 0.17.0",
+        "python3 Tools/ci/curate_docc.py --check",
+        "python3 Tools/ci/documentation_examples.py",
+        "python3 Tools/ci/build_docc.py --output .build/recovery-documentation"
+      ],
+      "modules": 33,
+      "publicSymbols": 14638,
+      "sameVersionDrift": false,
+      "strictDocCArchives": 33,
+      "synchronizedListings": 32,
+      "reports": [
+        "Measurements/InvocationResilience/api-comparisons.json",
+        "Measurements/InvocationResilience/docc-build-report.json"
+      ],
+      "notes": [
+        "The 0.16.0 comparison has 129 added symbols and two replaced initializer declarations with defaulted new parameters; 0.17.0 satisfies the pre-1.0 breaking-change policy. Ordinary initializer calls compile unchanged; explicit initializer function references need review. No ABI or unavailable-platform API qualification."
+      ]
+    },
+    {
+      "name": "selected Apple minimum-target module compilation",
+      "status": "passed",
+      "commands": [
+        "python3 Tools/ci/compile_apple.py --skip-resolve --disable-sandbox --output .build/recovery-apple-compilation.json"
+      ],
+      "modules": 8,
+      "destinations": 9,
+      "emissions": 72,
+      "report": "Measurements/InvocationResilience/apple-module-compilation.json",
+      "notes": [
+        "Selected logging/foundation/media/Apple modules, including changed Transport scope plumbing. Module emission only; no complete-package cross-build, linking, device execution, minimum-OS runtime or hardware qualification."
+      ]
+    },
+    {
+      "name": "finite local HTTP Gateway and cache scenarios",
+      "status": "passed",
+      "profile": "accounts-100",
+      "commands": [
+        "swift run --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario http --profile accounts-100",
+        "swift run --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario gateway --profile accounts-100",
+        "swift run --package-path Tools/DiscordKitLoadTests DiscordKitLoadTests --scenario cache --profile accounts-100"
+      ],
+      "httpSuccesses": 2000,
+      "httpRetryResponses": 200,
+      "gatewayDispatches": 10000,
+      "gatewayResumes": 2,
+      "cacheRounds": 8,
+      "zeroFinalOwnedCounters": true,
+      "report": "Measurements/InvocationResilience/finite-scenarios.json",
+      "notes": [
+        "Final-source Debug executable; synthetic local work; concurrent validation excludes controlled performance comparison."
+      ]
+    },
+    {
+      "name": "historical release and maintenance records",
+      "status": "passed",
+      "commands": [
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase14-report.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15-report.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15l-report.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json"
+      ],
+      "notes": [
+        "Historical hash-bound evidence is preserved and does not certify new source."
+      ]
+    },
+    {
+      "name": "fixed-working-set cache and broadcast soak",
+      "status": "passed",
+      "commands": [
+        "swift run -c release --package-path Tools/DiscordKitLoadTests --disable-sandbox --cache-path .build/recovery-swiftpm-cache --config-path .build/recovery-swiftpm-config --security-path .build/recovery-swiftpm-security DiscordKitLoadTests --scenario soak --profile accounts-1000000 --burst --duration-seconds 1800"
+      ],
+      "durationSeconds": 1800.006337375,
+      "completedRounds": 212817,
+      "selectedScopes": 4,
+      "workingSetKeysPerScope": 20,
+      "checkpoints": 121,
+      "actualLoaderCalls": 851268,
+      "completedRefreshCalls": 6810144,
+      "capacityRefusals": 47671008,
+      "peakEntries": 64,
+      "peakAccountedBytes": 72512,
+      "peakRefreshes": 1,
+      "peakWaiters": 8,
+      "peakBufferedEvents": 2,
+      "finalOwnedCounters": {
+        "entriesAfterShutdown": 0,
+        "refreshesAfterShutdown": 0,
+        "waitersAfterShutdown": 0,
+        "subscriptionsAfterShutdown": 0,
+        "bufferedEventsAfterShutdown": 0
+      },
+      "peakRSSBytes": 10256384,
+      "sampledPeakResidentBytes": 10256384,
+      "finalFiveMinutesRSSBytes": {
+        "minimum": 9879552,
+        "maximum": 9994240
+      },
+      "finalFiveMinutesLiveAllocationBytes": {
+        "minimum": 559248,
+        "maximum": 626400
+      },
+      "report": "Measurements/InvocationResilience/cache-broadcast-soak.json",
+      "environment": "Measurements/InvocationResilience/cache-broadcast-soak-environment.json",
+      "notes": [
+        "Four actual scopes and fixed 20 keys per scope; logical accounts are an arithmetic profile dimension, not a million users or tasks.",
+        "Cache/broadcast workload owners are unchanged since measured binary build. HTTP cleanup instrumentation was refined during the run and is outside its zero-HTTP workload. The environment artifact records the source capture timing and exact binary identity.",
+        "No invocation/Client projection/real shard/device/network/production capacity claim; no controlled timing or performance regression comparison."
+      ]
+    },
+    {
+      "name": "final source and document review",
+      "status": "passed",
+      "commands": [
+        "git diff --check"
+      ],
+      "notes": [
+        "Independent runtime, security, privacy and ownership review found no remaining blockers. Changed JSON parses, relative Markdown file links resolve, and parity history is append-only. No commit or publication performed."
+      ]
+    }
+  ],
+  "executionAttempts": [
+    {
+      "status": "not-qualified",
+      "attempt": "Native combined root test runner",
+      "result": "Aborted signal 5 in a NIO HTTP fixture during parallel suite startup; no completed result total. Default-driver final full suite passed separately.",
+      "log": ".build/recovery-root-tests-native-unified-signal5.log"
+    },
+    {
+      "status": "superseded",
+      "attempt": "Concurrent default-driver build",
+      "result": "Shared build database was locked while the public symbol dump was compiling. Sequential default-driver final build and tests passed."
+    },
+    {
+      "status": "superseded",
+      "attempt": "Managed default compiler or loopback execution",
+      "result": "Sandbox denied compiler/plugin temporary work or local sockets. Isolated writable caches and approved host access completed the affected checks."
+    }
+  ],
+  "qualificationLimits": [
+    "No live Discord acceptance or cause attribution for MiniCarson's pre-existing Failed state",
+    "No independent security or crypto review, complete-client interoperability, or device/hardware qualification",
+    "No Linux, Windows, Android, full Apple package/runtime or production/fleet capacity qualification",
+    "Safe response fingerprints describe observed categories and cannot prove causal identity after same-category application replacement; unknown/differently replaced errors fall back to the escaping handler boundary",
+    "No automatic failure response, reconciliation or retry safety is established by API status/code or mutation uncertainty",
+    "Synchronous observers must return promptly and be concurrency-safe; noncooperative application work cannot be forcibly joined",
+    "The native combined test runner is excluded after its NIO fixture abort; passing root evidence uses the default driver"
+  ],
+  "publication": {
+    "published": false,
+    "tagged": false
+  },
+  "productionQualified": false,
+  "validatedSourceSHA256": {
+    "Examples/DSLBot/Sources/DSLBot/DSLBot.swift": "c950b56819c14679dea6efc5128078415f5088ff3bffac8fe6e6246f32d0417d",
+    "Sources/DiscordBotDSL/BotRuntime.swift": "f804a5d4ab329524811456a8826c62314b431b311f86d63394efc597c741b96d",
+    "Sources/DiscordBotDSL/GatewayInteractionAdapter.swift": "2d072fd3cd94c0493ea88e8a7290f992377ad03b40789aff9274f992d3aaee4e",
+    "Sources/DiscordCommands/CommandRouter.swift": "19d23b5743ff12951410c78700e9ca18dcf7f5f12e781eec23ce9a127affd80d",
+    "Sources/DiscordGateway/GatewayShard.swift": "246245809c4fa7814646d47270407d1a929294b89b88b47e0003a9a933e49f00",
+    "Sources/DiscordHTTP/RESTClient.swift": "446a615c2ee328c8406177f8a967c424d4ff94d439afc3a69c0c0ff915da3c66",
+    "Sources/DiscordInteractions/InteractionResponder.swift": "67c5bc8c14126088ee46bbd3f83396fbceb09cb43b77530d6f6c0ab46648faa8",
+    "Tests/DiscordBotDSLTests/LifecycleTests.swift": "7928c4a359339e2d5f9b2258b7f6326f7aa1a6abda7b387960f93e48d2f259d3",
+    "Sources/DiscordBotDSL/BotFailureDiagnostic.swift": "58091e4a99c8e833e76a5496721087b4d5a458e7bb0dd178668bd284235c6bb1",
+    "Sources/DiscordInteractions/InteractionOperationFailure.swift": "88464aeebebce923a694f20bad9c2d1439609afca34abf8c16a60fa4a04cc770",
+    "Sources/DiscordTransport/InvocationOwnerFailureScope.swift": "a8fa405b72395169141331edd78abe4626c39f1827391d38dd7bf63b657f8c13",
+    "Sources/DiscordTransport/RuntimeCleanupFailure.swift": "6274e058aa690c165ea2256bb476ad0074e9925471a67aeba05dcc8a716b89c5",
+    "Tests/DiscordBotDSLTests/DiagnosticTests.swift": "22e205047eec7d9d5fcab8b4c24dd3bb54fb033524d824144e81bf6d09388d66",
+    "Tests/DiscordBotDSLTests/RecoveryTests.swift": "7a2f8bb1a0125d8ecf0f5ebbf1b6b998eb478859337b765e305e11e55aac075e",
+    "Tests/DiscordCommandsTests/CommandOperationFailureTests.swift": "8e0e4d6902dc3a5ecefdb2d6d61ba3e05d4f44926da60edda85895d9e00143e3",
+    "Tests/DiscordHTTPTests/RESTCleanupOwnerTests.swift": "3fd63f9338fc67306ebdac3776a92fa469d2148edd1ee6759b58162a36688150",
+    "Tests/DiscordInteractionsTests/InteractionOperationFailureTests.swift": "6c6addb5b94045f485bddfcb2d839c754ea524f78d6f50ba13597dd3690c359c"
+  },
+  "measurementSHA256": {
+    "Measurements/InvocationResilience/api-comparisons.json": "3b2270e7a213b4c445be0d515827efd5f699bc860650f51e33a901307df1a236",
+    "Measurements/InvocationResilience/apple-module-compilation.json": "219b925b1b10636af42a83644d8ed91a398fe7baa7f675df0a7384e2796c4135",
+    "Measurements/InvocationResilience/cache-broadcast-soak-environment.json": "8feaada5bc8f780d08f9a9a9fa602ecace09e2a400332c01699e0120c9237a97",
+    "Measurements/InvocationResilience/cache-broadcast-soak.json": "c47b613719c26ababed5270f7720049f73861f7e155913f840d920fabe001072",
+    "Measurements/InvocationResilience/cache-scenario.json": "96fe64fbdb5fc5294bc1454aa5955836608984be6690ac12209aba53ff1905a7",
+    "Measurements/InvocationResilience/dependency-graph.json": "3fd776e81343e5e6c829b8b9235e832774f9a23aca60364b9f306cf7d1d946a3",
+    "Measurements/InvocationResilience/docc-build-report.json": "19a46b0b372588ad058d98e72061715f9d32e3dc9899cd9092110034d2612fb3",
+    "Measurements/InvocationResilience/finite-scenarios.json": "a8ce295cc4e30729a15d613feaab1f01faf98e27035bb0971585feced4e1be08",
+    "Measurements/InvocationResilience/gateway-scenario.json": "2e740763c9d4d3e1fe839e61b247d8956fcf7b6bb461b953b5c7cd5f990d8b3d",
+    "Measurements/InvocationResilience/http-scenario.json": "3cf5b3a36a252e297a95dbf30fafe74d4412a150d55d5decbdcf9aaa7f3610f1"
+  }
+}

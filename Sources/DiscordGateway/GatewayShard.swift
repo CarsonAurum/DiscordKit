@@ -689,6 +689,9 @@ public actor GatewayShard<C: Clock, Leases: ShardLeaseStore> where C.Duration ==
         else if state.phase != .stopped { _ = try? state.apply(.fatal) }
         if let releaseFailure {
             DiscordLog.makeLogger("gateway").error("Gateway ownership release failed", metadata: ["dk.event": "gateway.lease.release_failed"])
+            if RuntimeCleanupFailureScope.capturesFailures, !(releaseFailure is CancellationError) {
+                throw RuntimeCleanupFailure(original: releaseFailure)
+            }
             throw releaseFailure
         }
     }

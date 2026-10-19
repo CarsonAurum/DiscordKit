@@ -1,0 +1,21 @@
+{
+  "recordedOn": "2026-10-19",
+  "scope": "Final-source local Debug accounts-100 finite HTTP, Gateway and cache scenarios with synthetic peers. Concurrent validation excludes controlled throughput/regression comparison; no live Discord or fleet capacity evidence.",
+  "reports": {
+    "http": {
+      "report": "http-scenario.json",
+      "reportSHA256": "3cf5b3a36a252e297a95dbf30fafe74d4412a150d55d5decbdcf9aaa7f3610f1",
+      "zeroFinalOwnedCounters": true
+    },
+    "gateway": {
+      "report": "gateway-scenario.json",
+      "reportSHA256": "2e740763c9d4d3e1fe839e61b247d8956fcf7b6bb461b953b5c7cd5f990d8b3d",
+      "zeroFinalOwnedCounters": true
+    },
+    "cache": {
+      "report": "cache-scenario.json",
+      "reportSHA256": "96fe64fbdb5fc5294bc1454aa5955836608984be6690ac12209aba53ff1905a7",
+      "zeroFinalOwnedCounters": true
+    }
+  }
+}

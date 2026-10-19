@@ -1,12 +1,20 @@
 # Release certification
 
-The integrated [SwiftLog work](../Logging.md) advances the unpublished root API
+Invocation resilience advances the unpublished root API candidate to **0.17.0**,
+adding explicit Gateway invocation recovery and immutable safe failure diagnostics.
+See [validation](invocation-resilience-validation.json),
+[adoption and attribution limits](../BotApplications.md) and the separately named
+[root API baseline](api-baseline-0.17.0.json). Existing snapshots and reports remain
+historical. No release or tag is published, and offline tests do not attribute
+MiniCarson's pre-existing Failed state or establish live Discord acceptance.
+
+The historical integrated [SwiftLog work](../Logging.md) advanced the unpublished root API
 candidate to **0.16.0**, adding two independently adopted logging products.
 Its [validation record](logging-validation.json) covers actual local checks,
 with a separately named [root API baseline](api-baseline-0.16.0.json): 33 modules
 and 14,511 symbols on macOS arm64. Compared with 0.15.0, this adds 266 symbols
 in two logging modules and changes/removes no existing symbols or relationships.
-Root CI compares 0.16.0 with both frozen historical snapshots and this new baseline;
+That checkpoint compared 0.16.0 with both frozen historical snapshots and its new baseline;
 macro/extension APIs retain their existing 0.15.0 baselines. The authoring checkpoint and its
 measurements below remain historical and do not certify this source revision.
 No package/tag is published by this work.

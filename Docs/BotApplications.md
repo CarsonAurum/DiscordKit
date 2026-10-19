@@ -122,8 +122,67 @@ continues through edit-original. Construction and serving never register command
 
 The trusted stream and dispatcher have explicit finite queue/count/byte/admission
 bounds. Handler work never moves onto the Gateway heartbeat/control path. Overflow
-or a child error terminates the supervised owner; reconnecting does not silently
-replay handler effects. Applications retain responsibility for explicit recovery.
+and terminal child errors stop the supervised owner. `failurePolicy: .failFast`
+preserves the default behavior for invocation errors. A host can explicitly select
+`failurePolicy: .continueInvocations` to release one failed invocation and dispatch
+the next queued interaction on the same client connection. The generic dispatcher
+and runtime retain their fail-fast contracts.
+
+Recovery applies to ordinary matched-handler errors, initial callback rejection or
+uncertainty, continuation/API/decoding failures, expired acknowledgement/token
+windows and structurally valid unmatched/stale command routes. Synchronous typed
+input preparation, malformed/unsupported routing shapes, missing receipt provenance,
+wrong application identity, input overflow/continuity, owner cancellation and host
+setup/control failures remain terminal. Closed/missing HTTP coordinators, invalid
+reservations, closed/invalid transport owners, client/Gateway/lease failures and response-context configuration errors
+are terminal even if thrown by a handler. Capacity/deadline errors confined to an
+invocation may end that invocation; they never bypass the existing authority.
+
+Recovery performs no response operation: no alternative acknowledgement, generic
+failure edit, follow-up, automatic registration, token refresh, handler re-execution,
+mutation retry or compensation. Confirmed deferral remains confirmed; an ambiguous
+initial submission remains indeterminate. Completed or possibly completed effects
+require explicit application reconciliation. Every route exit releases its router
+admission before the next callback; the existing responder releases initial-response
+admission and owns all continuation state.
+
+## Observe safe failure diagnostics
+
+Pass a `failureObserver` to the interaction adapter for failed invocation diagnostics,
+and separately to `BotRuntime` for terminal setup/child/cleanup diagnostics. Both use
+`BotFailureObserver`, a synchronous nonthrowing `@Sendable` callback receiving only
+an immutable `BotFailureDiagnostic`. Callbacks may overlap across shards, must return
+promptly and own any application retention. The library starts no observer task or
+queue and retains no per-token history. A throwing observer cannot be supplied.
+
+Diagnostics contain one of eight fixed stages (`setup`, `client`, `events`,
+`interactions`, `acknowledgement`, `continuation`, `handler`, `cleanup`), a closed
+`BotFailureCategory`, and optional numeric HTTP status/API code/fatal Gateway close
+code. Unknown injected errors are `unclassified`. No error descriptions, dynamic
+type names, payloads, options, tokens, headers, URLs or identifiers enter observer
+values or runtime failure logs. Status/code and mutation uncertainty never establish
+retry safety. A closed safe owner marker is captured before HTTP/continuation error
+translation, so mutation uncertainty cannot turn a failed shared authority into a
+recoverable invocation. Public response errors retain their existing semantics.
+`BotFailureDiagnostic.classify(_:stage:)` handles aggregate primary and
+at most two additional errors separately; nested aggregates remain unclassified.
+Runtime-produced `BotRuntimeFailures.diagnostics` preserves those bounded original
+operation observations after cleanup while explicit original error access remains.
+
+Client/event/setup boundaries tag their failures before supervision. Lease release
+tags `cleanup` where release actually fails. Router preparation and escaping handler
+errors are tagged at their boundaries. Response operations retain one closed safe
+fingerprint per invocation, recording acknowledgement/continuation failure where it
+occurs and rethrowing the original error to application catch clauses. The router
+uses a matching safe observation when a known error escapes. Successful response
+operations clear the observation. Arbitrary response errors or errors changed to a
+different category fall back to the escaping handler boundary. A matching fingerprint
+cannot prove causal identity if application code replaces a caught error with another
+of the same safe category; diagnostics are operation observations, not a causal audit.
+
+The MiniCarson session's pre-existing Failed state remains unattributed. These
+changes supply evidence for future failures; its successful live commands and handled
+currency failures do not reproduce an uncaught fail-fast outage.
 
 ## Reuse typed REST services
 

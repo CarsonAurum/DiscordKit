@@ -104,49 +104,59 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     ///   Discord error 10062 closes the expired token; 40060 retains unknown remote acknowledgement ownership.
     ///   At the exact three-second boundary a pending callback fails locally and its token is treated as expired.
     public func respond(_ response: InteractionResponse) async throws {
-        try Task.checkCancellation()
-        try validateReceipt()
-        updateExpiry()
-        switch state {
-        case .pending: break
-        case .acknowledging: throw InteractionLifecycleError.initialResponseInFlight
-        case .acknowledged: throw InteractionLifecycleError.alreadyAcknowledged
-        case .indeterminate: throw InteractionLifecycleError.indeterminateAcknowledgement
-        case .expired: throw InteractionLifecycleError.deadlineExceeded
-        }
-        guard let kind = interaction.type.knownValue else { throw InteractionLifecycleError.unsupportedInteraction }
-        if response.type == .deferredUpdateMessage || response.type == .updateMessage {
-            guard case .value = interaction.message else { throw InteractionLifecycleError.originalResponseUnavailable }
-        }
-        let bytes = try response.jsonValue(interactionType: kind).serialized().count
-        state = .acknowledging
-        DiscordLog.makeLogger("interactions").debug("Initial interaction response reserved", metadata: ["dk.event": "interactions.response.reserved"])
-        let reservation: UUID
-        do {
-            reservation = try await admission.acquire(encodedBytes: bytes)
-        } catch {
-            // A failed acquisition never enters the delivery sink.
-            state = .pending; updateExpiry()
-            throw error
-        }
         do {
             try Task.checkCancellation()
-            guard clock.now < acknowledgementDeadline else { throw InteractionLifecycleError.deadlineExceeded }
-        } catch {
-            state = .pending; updateExpiry(); await admission.release(reservation)
-            throw error
-        }
-        do {
-            let timeout = acknowledgementDeadline - clock.now
-            try await clock.run(until: acknowledgementDeadline) { try await self.sink.initial(response, timeout) }
-            state = .acknowledged(response.type)
-            DiscordLog.makeLogger("interactions").debug("Initial interaction response acknowledged", metadata: ["dk.event": "interactions.response.acknowledged"])
-            await admission.release(reservation)
-        } catch {
-            state = stateAfterInitialFailure(error)
-            DiscordLog.makeLogger("interactions").debug("Initial interaction response failed", metadata: ["dk.event": "interactions.response.failed"])
+            try validateReceipt()
             updateExpiry()
-            await admission.release(reservation)
+            switch state {
+            case .pending: break
+            case .acknowledging: throw InteractionLifecycleError.initialResponseInFlight
+            case .acknowledged: throw InteractionLifecycleError.alreadyAcknowledged
+            case .indeterminate: throw InteractionLifecycleError.indeterminateAcknowledgement
+            case .expired: throw InteractionLifecycleError.deadlineExceeded
+            }
+            guard let kind = interaction.type.knownValue else { throw InteractionLifecycleError.unsupportedInteraction }
+            if response.type == .deferredUpdateMessage || response.type == .updateMessage {
+                guard case .value = interaction.message else { throw InteractionLifecycleError.originalResponseUnavailable }
+            }
+            let bytes = try response.jsonValue(interactionType: kind).serialized().count
+            state = .acknowledging
+            DiscordLog.makeLogger("interactions").debug("Initial interaction response reserved", metadata: ["dk.event": "interactions.response.reserved"])
+            let reservation: UUID
+            do {
+                reservation = try await admission.acquire(encodedBytes: bytes)
+            } catch {
+                // A failed acquisition never enters the delivery sink.
+                state = .pending; updateExpiry()
+                throw error
+            }
+            do {
+                try Task.checkCancellation()
+                guard clock.now < acknowledgementDeadline else { throw InteractionLifecycleError.deadlineExceeded }
+            } catch {
+                state = .pending; updateExpiry(); await admission.release(reservation)
+                throw error
+            }
+            do {
+                let timeout = acknowledgementDeadline - clock.now
+                try await clock.run(until: acknowledgementDeadline) {
+                    try await InteractionFailureScope.withResponseStage(.acknowledgement) {
+                        try await self.sink.initial(response, timeout)
+                    }
+                }
+                state = .acknowledged(response.type)
+                DiscordLog.makeLogger("interactions").debug("Initial interaction response acknowledged", metadata: ["dk.event": "interactions.response.acknowledged"])
+                await admission.release(reservation)
+                await InteractionFailureScope.clear()
+            } catch {
+                state = stateAfterInitialFailure(error)
+                DiscordLog.makeLogger("interactions").debug("Initial interaction response failed", metadata: ["dk.event": "interactions.response.failed"])
+                updateExpiry()
+                await admission.release(reservation)
+                throw error
+            }
+        } catch {
+            await InteractionFailureScope.record(error, at: .acknowledgement)
             throw error
         }
     }
@@ -172,16 +182,22 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     ///   cancellation or REST failure. Cancellation/deadline after adapter entry remains an explicit unknown mutation
     ///   outcome. Ambiguous edits propagate without changing the confirmed initial state or completing a defer locally.
     public func editOriginal(_ request: InteractionMessageEdit) async throws -> Message {
-        let kind = try reserveContinuation(requireOriginal: true)
-        defer { continuationInFlight = false }
-        if request.deferredResponse, kind != .deferredChannelMessageWithSource {
-            throw InteractionLifecycleError.deferredResponseRequired
+        do {
+            let kind = try reserveContinuation(requireOriginal: true)
+            defer { continuationInFlight = false }
+            if request.deferredResponse, kind != .deferredChannelMessageWithSource {
+                throw InteractionLifecycleError.deferredResponseRequired
+            }
+            _ = try request.jsonValue()
+            let timeout = tokenDeadline - clock.now
+            let result = try await performContinuation { try await self.sink.edit(request, timeout) }
+            deferredCompleted = true
+            await InteractionFailureScope.clear()
+            return result
+        } catch {
+            await InteractionFailureScope.record(error, at: .continuation)
+            throw error
         }
-        _ = try request.jsonValue()
-        let timeout = tokenDeadline - clock.now
-        let result = try await performContinuation { try await self.sink.edit(request, timeout) }
-        deferredCompleted = true
-        return result
     }
 
     /// Creates a new follow-up only after the deferred original has been explicitly completed.
@@ -190,25 +206,38 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     /// - Throws: Lifecycle/expiry/overlap errors, incomplete deferred original, validation or REST failure.
     ///   Cancellation, deadline or transport loss after adapter entry remains an explicit unknown mutation outcome.
     public func followup(_ request: InteractionMessageCreate) async throws -> Message {
-        let kind = try reserveContinuation(requireOriginal: false)
-        defer { continuationInFlight = false }
-        guard kind != .deferredChannelMessageWithSource || deferredCompleted || originalDeleted else {
-            throw InteractionLifecycleError.completeDeferredResponseFirst
+        do {
+            let kind = try reserveContinuation(requireOriginal: false)
+            defer { continuationInFlight = false }
+            guard kind != .deferredChannelMessageWithSource || deferredCompleted || originalDeleted else {
+                throw InteractionLifecycleError.completeDeferredResponseFirst
+            }
+            _ = try request.jsonValue()
+            let timeout = tokenDeadline - clock.now
+            let result = try await performContinuation { try await self.sink.followup(request, timeout) }
+            await InteractionFailureScope.clear()
+            return result
+        } catch {
+            await InteractionFailureScope.record(error, at: .continuation)
+            throw error
         }
-        _ = try request.jsonValue()
-        let timeout = tokenDeadline - clock.now
-        return try await performContinuation { try await self.sink.followup(request, timeout) }
     }
 
     /// Deletes the original response once; confirmed deletion prevents later local original edits/deletes.
     /// - Throws: Lifecycle/expiry/overlap errors, absent original, cancellation or REST failure. An ambiguous
     ///   deletion is surfaced as explicit mutation uncertainty and does not invent local confirmed deletion.
     public func deleteOriginal() async throws {
-        _ = try reserveContinuation(requireOriginal: true)
-        defer { continuationInFlight = false }
-        let timeout = tokenDeadline - clock.now
-        try await performContinuation { try await self.sink.delete(timeout) }
-        originalDeleted = true
+        do {
+            _ = try reserveContinuation(requireOriginal: true)
+            defer { continuationInFlight = false }
+            let timeout = tokenDeadline - clock.now
+            try await performContinuation { try await self.sink.delete(timeout) }
+            originalDeleted = true
+            await InteractionFailureScope.clear()
+        } catch {
+            await InteractionFailureScope.record(error, at: .continuation)
+            throw error
+        }
     }
 
     /// Runs a handler with an explicitly owned early-defer timer and awaits cancellation cleanup on every exit.
@@ -221,20 +250,25 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     ///   wins its reserved slot; the timer then performs no second initial callback.
     public func runWithAutoDefer<Value: Sendable>(policy: InteractionAutoDeferPolicy,
         operation: @escaping @Sendable () async throws -> Value) async throws -> Value {
-        try Task.checkCancellation()
-        try validateReceipt()
-        updateExpiry()
-        if state == .expired { throw InteractionLifecycleError.tokenExpired }
-        if state == .indeterminate { throw InteractionLifecycleError.indeterminateAcknowledgement }
-        guard !handlerRunning else { throw InteractionLifecycleError.handlerAlreadyRunning }
         let response: InteractionResponse = switch policy.mode {
         case .message(let ephemeral): .deferredMessage(ephemeral: ephemeral)
         case .update: .deferredUpdate
         }
-        guard let kind = interaction.type.knownValue else { throw InteractionLifecycleError.unsupportedInteraction }
-        _ = try response.jsonValue(interactionType: kind)
-        if policy.mode == .update, case .absent = interaction.message {
-            throw InteractionLifecycleError.originalResponseUnavailable
+        do {
+            try Task.checkCancellation()
+            try validateReceipt()
+            updateExpiry()
+            if state == .expired { throw InteractionLifecycleError.tokenExpired }
+            if state == .indeterminate { throw InteractionLifecycleError.indeterminateAcknowledgement }
+            guard !handlerRunning else { throw InteractionLifecycleError.handlerAlreadyRunning }
+            guard let kind = interaction.type.knownValue else { throw InteractionLifecycleError.unsupportedInteraction }
+            _ = try response.jsonValue(interactionType: kind)
+            if policy.mode == .update, case .absent = interaction.message {
+                throw InteractionLifecycleError.originalResponseUnavailable
+            }
+        } catch {
+            await InteractionFailureScope.record(error, at: .acknowledgement)
+            throw error
         }
         handlerRunning = true
         defer { handlerRunning = false }
@@ -309,8 +343,13 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     ///   no retry is attempted and the caller must reconcile before repeating a potentially applied operation.
     private func performContinuation<Value: Sendable>(
         operation: @escaping @Sendable () async throws -> Value) async throws -> Value {
-        do { return try await clock.run(until: tokenDeadline, operation: operation) }
+        do {
+            return try await clock.run(until: tokenDeadline) {
+                try await InteractionFailureScope.withResponseStage(.continuation, operation: operation)
+            }
+        }
         catch {
+            await InteractionFailureScope.recordOwnerFailure(error, at: .continuation)
             if let typed = error as? DiscordError {
                 switch typed {
                 case .cancelled: throw DiscordError.unknownMutationOutcome(.cancelledAfterSubmission)

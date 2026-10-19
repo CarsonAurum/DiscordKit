@@ -93,7 +93,7 @@ struct LifecycleTests {
     @Test func handlerCanRequestStop() async throws {
         let reference = BotRuntimeReference()
         let fixture = try BotLifecycleFixture()
-        let runtime = try fixture.runtime { await reference.requestStop() }
+        let runtime = try fixture.runtime(callback: { await reference.requestStop() })
         await reference.install(runtime)
         try await runtime.run()
         try await runtime.shutdown()
@@ -105,7 +105,7 @@ struct LifecycleTests {
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func callbackFailureCancelsClientAndPersistsForShutdown() async throws {
         let fixture = try BotLifecycleFixture()
-        let runtime = try fixture.runtime { throw BotLifecycleFailure.callback }
+        let runtime = try fixture.runtime(callback: { throw BotLifecycleFailure.callback })
         await #expect(throws: BotLifecycleFailure.callback) { try await runtime.run() }
         await #expect(throws: BotLifecycleFailure.callback) { try await runtime.shutdown() }
         await #expect(throws: BotLifecycleFailure.callback) { try await runtime.shutdown() }
@@ -196,7 +196,8 @@ struct LifecycleTests {
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func multipleChildFailuresAreBoundedAndRedacted() async throws {
         let fixture = try BotLifecycleFixture(failRelease: true)
-        let runtime = try fixture.runtime { throw BotLifecycleFailure.callback }
+        let diagnostics = DiagnosticCapture()
+        let runtime = try fixture.runtime(failureObserver: diagnostics.record) { throw BotLifecycleFailure.callback }
         do {
             try await runtime.run()
             Issue.record("Expected aggregated child failures")
@@ -204,6 +205,8 @@ struct LifecycleTests {
             #expect(failures.primary as? BotLifecycleFailure == .callback)
             #expect(failures.additional.count == 1)
             #expect(failures.additional.first as? ShardOwnershipFailure == .coordinatorUnavailable)
+            #expect(failures.diagnostics.map(\.stage) == [.events, .cleanup])
+            #expect(failures.diagnostics.map(\.category) == [.unclassified, .shardOwnershipCoordinatorUnavailable])
             #expect(String(describing: failures) == "BotRuntimeFailures(redacted)")
             #expect(String(reflecting: failures).contains("redacted"))
         }
@@ -216,7 +219,8 @@ struct LifecycleTests {
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func leaseReleaseFailureIsPreserved() async throws {
         let fixture = try BotLifecycleFixture(failRelease: true, holdRelease: true)
-        let runtime = try fixture.runtime()
+        let diagnostics = DiagnosticCapture()
+        let runtime = try fixture.runtime(failureObserver: diagnostics.record)
         let run = Task { try await runtime.run() }
         try await fixture.delivered.wait()
         let shutdown = Task { try await runtime.shutdown() }
@@ -227,6 +231,8 @@ struct LifecycleTests {
         await #expect(throws: ShardOwnershipFailure.coordinatorUnavailable) { try await shutdown.value }
         await #expect(throws: ShardOwnershipFailure.coordinatorUnavailable) { try await runtime.shutdown() }
         #expect(await fixture.leases.releaseCalls == 1)
+        #expect(diagnostics.diagnostics.map(\.stage) == [.cleanup])
+        #expect(diagnostics.diagnostics.map(\.category) == [.shardOwnershipCoordinatorUnavailable])
         #expect(await fixture.leases.retainedCount() == 1)
         #expect(await fixture.socket.closed)
         await fixture.expectEmpty(expectedLeases: 1)
@@ -281,16 +287,20 @@ private struct BotLifecycleFixture {
     }
 
     /// Compiles a raw event handler without running it and stores the real client in its supervised host.
-    /// - Parameter callback: Optional finite callback behavior, default empty; called only after publication.
+    /// - Parameters:
+    ///   - failureObserver: Optional finite synchronous safe diagnostic observation.
+    ///   - callback: Optional finite callback behavior, default empty; called only after publication.
     /// - Returns: Inert single-use host with one compiled event group and shared aggregate admission.
     /// - Throws: Structural compilation or finite dispatcher validation errors.
-    func runtime(callback: @escaping @Sendable () async throws -> Void = {}) throws -> BotRuntime {
+    func runtime(failureObserver: BotFailureObserver? = nil,
+        callback: @escaping @Sendable () async throws -> Void = {}) throws -> BotRuntime {
         let delivered = delivered
         let handler = BotLifecycleHandler { event in
             if event.name == "READY" { delivered.open(); try await callback() }
         }
         let events = try EventCompilation.compile(Module(id: "lifetime") { handler }, intents: [.guilds])
-        return try BotRuntime(client: client, events: events, handlerConfiguration: try .init(), handlerAuthority: authority)
+        return try BotRuntime(client: client, events: events, handlerConfiguration: try .init(), handlerAuthority: authority,
+            failureObserver: failureObserver)
     }
 
     /// Checks final owned accounting after the runtime's joining API has completed.

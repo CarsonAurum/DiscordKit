@@ -125,7 +125,7 @@ private struct BotExampleFixture {
     }
 
     /// Compiles command/event protocol modules separately and binds exact-token response services to one host.
-    /// - Returns: Inert host with an authenticated-client-only command ingress and one event subscription.
+    /// - Returns: Inert host with trusted command ingress, explicit invocation recovery and one event subscription.
     /// - Throws: Existing declaration, response admission, bridge configuration or intent validation failures.
     func makeRuntime() async throws -> BotRuntime {
         let dependencies = ExtensionDependencies(counter: counter, completed: {
@@ -159,7 +159,7 @@ private struct BotExampleFixture {
         })
         let interactions = try GatewayInteractionAdapter(applicationID: .init(rawValue: 2), commands: commands,
             services: services, clock: clock, admission: InteractionAcknowledgementAdmission(),
-            authority: handlerAuthority)
+            authority: handlerAuthority, failurePolicy: .continueInvocations)
         let runtime = try BotRuntime(client: client, events: events, handlerConfiguration: .init(),
             handlerAuthority: handlerAuthority, interactions: interactions)
         await reference.install(runtime)

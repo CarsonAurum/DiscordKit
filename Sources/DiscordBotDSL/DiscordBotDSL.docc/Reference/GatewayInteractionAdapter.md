@@ -4,7 +4,7 @@
 
 ### Creating a value
 
-- ``DiscordBotDSL/GatewayInteractionAdapter/init(applicationID:commands:services:clock:admission:guildID:configuration:authority:maximumPendingInteractions:maximumPendingBytes:maximumConcurrentHandlers:maximumDefinitionBytes:limits:)``
+- ``DiscordBotDSL/GatewayInteractionAdapter/init(applicationID:commands:services:clock:admission:guildID:configuration:authority:maximumPendingInteractions:maximumPendingBytes:maximumConcurrentHandlers:maximumDefinitionBytes:limits:failurePolicy:failureObserver:)``
 
 ### Instance methods
 

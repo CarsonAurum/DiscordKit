@@ -1774,6 +1774,45 @@
       ],
       "details": "changes/2026-10-19-gateway-zero-reset.md",
       "remainingGates": "../Gateway.md"
+    },
+    {
+      "id": "2026-10-19-invocation-resilience",
+      "recordedOn": "2026-10-19",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-19",
+      "localSupportDate": "2026-10-19",
+      "localRelease": "unpublished 0.17.0 candidate",
+      "localCommit": "unknown",
+      "changeType": "bug_fix",
+      "previousBehavior": "Every uncaught Gateway interaction invocation error terminated the adapter and supervised bot runtime; terminal runtime logs contained a failure count without operation classification.",
+      "currentBehavior": "Explicit continuation policy isolates ordinary matched handler/response and valid stale-command failures without response fallback or replay. Default fail-fast, malformed/trusted-input boundaries, owner/continuity cancellation and joined cleanup remain. Immutable finite diagnostics expose closed stages/categories and safe numeric evidence.",
+      "affectedSymbols": [
+        "GatewayInteractionAdapter",
+        "GatewayInvocationFailurePolicy",
+        "BotRuntime",
+        "BotRuntimeFailures",
+        "BotFailureDiagnostic",
+        "BotFailureObserver"
+      ],
+      "affectedPayloads": "No new Discord fields, opcodes, endpoints or protocol versions. Existing initial/continuation HTTP response ownership and receipt-relative deadlines remain authoritative.",
+      "breakingChanges": [
+        "GatewayInteractionAdapter and BotRuntime initializer declarations gain defaulted policy/observer parameters; the pre-1.0 API snapshot records a new minor candidate."
+      ],
+      "migration": "Existing ordinary initializer calls retain fail-fast behavior. Hosts explicitly select continueInvocations and synchronous nonthrowing safe observers. No automatic failure message or mutation reconciliation is added. Rebuild consumers and review diagnostic attribution limits.",
+      "sources": [
+        "https://docs.discord.com/developers/interactions/receiving-and-responding"
+      ],
+      "details": "changes/2026-10-19-invocation-resilience.md",
+      "remainingGates": "../BotApplications.md"
     }
   ]
 }

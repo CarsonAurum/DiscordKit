@@ -28,6 +28,14 @@ The trusted Gateway interaction adapter accepts only the client's package-intern
 ingestion stream. Public event-hub publication cannot authenticate interactions.
 Command routes retain the existing response owner and HTTP callback transport;
 initial-response admission remains independent and synchronization stays explicit.
+Fail-fast invocation handling remains the default. Explicit
+`GatewayInvocationFailurePolicy.continueInvocations` isolates ordinary handler,
+response and stale-command failures without replay or replacement responses.
+Malformed/untrusted input, wrong application, continuity loss, owner failures and
+cancellation remain terminal. `BotFailureDiagnostic` and synchronous
+`BotFailureObserver` callbacks provide closed stages/categories and numeric protocol
+evidence without retaining interaction data or arbitrary errors. See
+<doc:InvocationRecovery> for recovery boundaries and diagnostic attribution limits.
 `BotServiceAdapter` delegates typed REST operations through existing shared services
 with relative deadlines and conservative mutation invalidation.
 

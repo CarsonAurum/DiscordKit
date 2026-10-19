@@ -4,6 +4,8 @@ import DiscordCommands
 import DiscordCore
 import DiscordGateway
 import DiscordInteractions
+import DiscordHTTP
+import DiscordLogging
 import DiscordModels
 import DiscordTransport
 
@@ -15,6 +17,25 @@ public enum GatewayInteractionFailure: Error, Sendable, Equatable {
     case untrustedEvent
     case wrongApplication
     case unmatchedCommand
+}
+
+/// Finite invocation handling choices. Recovery never retries work or sends a replacement response.
+/// Security, malformed input, owner/admission continuity and cancellation failures remain terminal.
+public enum GatewayInvocationFailurePolicy: Sendable {
+    /// Preserves the original supervised fail-fast behavior.
+    case failFast
+    /// Releases one failed invocation and continues queued work after trusted input admission.
+    /// Handler, initial callback, continuation and stale/unmatched command failures are observed only;
+    /// no acknowledgement, follow-up, token refresh or compensating mutation is performed.
+    case continueInvocations
+}
+
+/// Internal aggregate ownership evidence without event, credential or per-interaction labels.
+internal struct GatewayInteractionSnapshot: Sendable {
+    let activeHandlers: Int
+    let bufferedEvents: Int
+    let bufferedBytes: Int
+    let subscriptions: Int
 }
 
 /// Trusted Gateway-to-command composition owned by a supervised bot runtime. Only the package's
@@ -31,6 +52,8 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
     private let reconciler: CommandReconciler
     private let hub: GatewayEventHub
     private let dispatcher: GatewayEventHandlerDispatcher
+    private let failurePolicy: GatewayInvocationFailurePolicy
+    private let failureObserver: BotFailureObserver?
     private var subscription: GatewayEventSubscription?
     private var prepared = false
     private var started = false
@@ -54,6 +77,11 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
     ///   - maximumConcurrentHandlers: Positive existing command-router aggregate cap, default 64.
     ///   - maximumDefinitionBytes: Positive explicit registration JSON bound, default 1 MiB.
     ///   - limits: Existing interaction JSON decoding bounds, default standard model limits.
+    ///   - failurePolicy: Fail-fast by default; explicit continuation isolates ordinary invocation failures.
+    ///     Preparation, untrusted/malformed input, wrong identity, cancellation and host failures stay terminal.
+    ///   - failureObserver: Optional synchronous nonthrowing safe diagnostic callback. It runs inline once
+    ///     per failed invocation, may run concurrently across shards, and must return promptly. No original
+    ///     error or interaction is passed, and the adapter retains no diagnostic history or observer tasks.
     /// - Throws: Existing router/catalog/reconciler or nonpositive queue-bound validation errors.
     /// No application auto-defer timer exists; typed deferred handlers retain their explicit ownership.
     public init(applicationID: ApplicationID, commands: CompiledCommands, services: BotServiceAdapter<C>,
@@ -61,12 +89,15 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
         configuration: GatewayEventHandlerConfiguration = try! .init(), authority: GatewayHandlerAuthority? = nil,
         maximumPendingInteractions: Int = 256, maximumPendingBytes: Int = 8 * 1_024 * 1_024,
         maximumConcurrentHandlers: Int = 64, maximumDefinitionBytes: Int = 1_048_576,
-        limits: JSONLimits = .default) throws {
+        limits: JSONLimits = .default, failurePolicy: GatewayInvocationFailurePolicy = .failFast,
+        failureObserver: BotFailureObserver? = nil) throws {
         self.applicationID = applicationID
         self.services = services
         self.clock = InteractionClock(clock)
         self.admission = admission
         self.limits = limits
+        self.failurePolicy = failurePolicy
+        self.failureObserver = failureObserver
         router = try commands.makeRouter(maximumConcurrentHandlers: maximumConcurrentHandlers)
         reconciler = try CommandReconciler(applicationID: applicationID, guildID: guildID,
             definitions: commands.definitions, maximumDefinitionBytes: maximumDefinitionBytes)
@@ -122,11 +153,14 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
     }
 
     /// Runs the prepared private dispatcher until failure or supervised cancellation, joining all handlers.
-    /// - Throws: Repeated/missing preparation, malformed/wrong-application/unmatched input, original command
-    ///   failures, queue/admission errors, response uncertainty or cancellation. Completed effects are not replayed.
+    /// - Parameter reportingStage: Internal supervised composition option, default false. True preserves
+    ///   an operation-stage envelope for the runtime, which unwraps the original error before public rethrow.
+    /// - Throws: Repeated/missing preparation, malformed/wrong-application input, owner/continuity errors
+    ///   or cancellation. Fail-fast also propagates invocation failures unchanged. Explicit continuation
+    ///   observes handler/response and unmatched-command failures after releasing all invocation ownership.
     /// Cancellation closes the queue and awaits cooperative callbacks; noncooperative injected work cannot
     /// be forcibly terminated. Receipt-relative three-second and fifteen-minute response limits are unchanged.
-    package func run() async throws {
+    package func run(reportingStage: Bool = false) async throws {
         guard !started else { throw GatewayInteractionFailure.alreadyRun }
         started = true
         guard prepared, let subscription else { throw GatewayInteractionFailure.notPrepared }
@@ -135,23 +169,62 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
             guard !stopped else { throw CancellationError() }
             let dispatcher = self.dispatcher, applicationID = self.applicationID, services = self.services
             let clock = self.clock, admission = self.admission, router = self.router, limits = self.limits
+            let policy = failurePolicy, observer = failureObserver
             let task = Task {
                 try await dispatcher.run(subscription: subscription) { event in
-                    let responseNow = clock.now
-                    guard let age = event.elapsedSinceReceipt, age >= .zero else {
-                        throw GatewayInteractionFailure.untrustedEvent
+                    do {
+                        let responseNow = clock.now
+                        guard let age = event.elapsedSinceReceipt, age >= .zero else {
+                            throw GatewayInteractionFailure.untrustedEvent
+                        }
+                        let receivedAt = responseNow - age
+                        guard let dispatch = try event.decodeDispatch(limits: limits),
+                              case .interactionCreate(let interaction) = dispatch else {
+                            throw GatewayInteractionFailure.untrustedEvent
+                        }
+                        guard interaction.applicationID == applicationID else { throw GatewayInteractionFailure.wrongApplication }
+                        guard CommandRouteKey.incoming(interaction) != nil else {
+                            throw DiscordError.validation(.invalidValue)
+                        }
+                        let responder = InteractionResponder(interaction: interaction, deliveryMode: .gateway,
+                            clock: clock, sink: services.responseSink(for: interaction), admission: admission,
+                            receivedAt: receivedAt)
+                        let context = try InteractionContext(interaction: interaction, deliveryMode: .gateway, responder: responder)
+                        do {
+                            try await InteractionFailureScope.$captureOperationFailures.withValue(true) {
+                                guard try await router.route(context) else { throw GatewayInteractionFailure.unmatchedCommand }
+                            }
+                        } catch {
+                            let operation = error as? InteractionOperationFailure
+                            let original = operation?.underlying ?? error
+                            if original is CancellationError { throw original }
+                            let stage: BotFailureStage = switch operation?.stage {
+                            case .preparation, .none: .interactions
+                            case .handler: .handler
+                            case .acknowledgement: .acknowledgement
+                            case .continuation: .continuation
+                            }
+                            let diagnosticSource: any Error = switch operation?.ownerFailure {
+                            case .rateLimit(let failure): failure
+                            case .transport(let failure): failure
+                            case .none: original
+                            }
+                            let diagnostic = BotFailureDiagnostic(classifying: diagnosticSource, stage: stage)
+                            observer?(diagnostic)
+                            if policy == .continueInvocations,
+                               operation?.ownerFailure == nil,
+                               Self.canContinue(original, stage: operation?.stage), !Task.isCancelled {
+                                Self.logInvocation(diagnostic)
+                                return
+                            }
+                            throw BotFailureObservationError(original: original, diagnostic: diagnostic)
+                        }
+                    } catch {
+                        if error is CancellationError { throw error }
+                        if error is BotFailureObservationError { throw error }
+                        throw BotFailureObservationError(original: error,
+                            diagnostic: BotFailureDiagnostic(classifying: error, stage: .interactions))
                     }
-                    let receivedAt = responseNow - age
-                    guard let dispatch = try event.decodeDispatch(limits: limits),
-                          case .interactionCreate(let interaction) = dispatch else {
-                        throw GatewayInteractionFailure.untrustedEvent
-                    }
-                    guard interaction.applicationID == applicationID else { throw GatewayInteractionFailure.wrongApplication }
-                    let responder = InteractionResponder(interaction: interaction, deliveryMode: .gateway,
-                        clock: clock, sink: services.responseSink(for: interaction), admission: admission,
-                        receivedAt: receivedAt)
-                    let context = try InteractionContext(interaction: interaction, deliveryMode: .gateway, responder: responder)
-                    guard try await router.route(context) else { throw GatewayInteractionFailure.unmatchedCommand }
                 }
             }
             runTask = task
@@ -162,9 +235,61 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
         } catch {
             await cancel()
             runTask = nil
+            if !reportingStage, let failure = error as? BotFailureObservationError { throw failure.original }
             throw error
         }
         await cancel()
+    }
+
+    /// Determines whether a failed, already authenticated invocation may release the dispatcher callback.
+    /// - Parameters:
+    ///   - error: Original error, inspected only by closed typed cases; no text or reflection is used.
+    ///   - stage: Exact route/response stage, or nil only for an unmatched command.
+    /// - Returns: False for preparation, cancellation and owner/control failures. Other matched handler
+    ///   and response failures may end only their invocation; uncertainty never authorizes replay.
+    private nonisolated static func canContinue(_ error: any Error, stage: InteractionOperationStage?) -> Bool {
+        if error is CancellationError { return false }
+        if let failure = error as? DiscordError, failure == .cancelled { return false }
+        if stage == .preparation { return false }
+        if let failure = error as? GatewayInteractionFailure { return failure == .unmatchedCommand }
+        if error is GatewayFailure || error is GatewayEventDeliveryFailure || error is ClientFailure ||
+            error is BotRuntimeFailure || error is BotRuntimeFailures || error is ShardOwnershipFailure ||
+            error is RuntimeCleanupFailure { return false }
+        if let failure = error as? RateLimitFailure {
+            switch failure {
+            case .closed, .invalidRequest, .unknownReservation, .coordinatorUnavailable: return false
+            case .queueFull, .metadataFull, .deadlineExceeded, .reservationExpired: break
+            }
+        }
+        if let failure = error as? TransportFailure {
+            switch failure {
+            case .closed, .concurrentRead, .invalidLimit, .scriptExhausted: return false
+            case .deadlineExceeded, .chunkTooLarge: break
+            }
+        }
+        if let failure = error as? InteractionLifecycleError {
+            switch failure {
+            case .invalidConfiguration, .contextMismatch: return false
+            default: break
+            }
+        }
+        return stage != nil
+    }
+
+    /// Emits one finite fixed diagnostic for an explicitly recovered invocation without retaining input.
+    /// - Parameter diagnostic: Closed category/stage and optional numeric protocol evidence only.
+    private nonisolated static func logInvocation(_ diagnostic: BotFailureDiagnostic) {
+        var metadata = diagnostic.logMetadata
+        metadata["dk.event"] = "bot_dsl.invocation.failed"
+        DiscordLog.makeLogger("bot_dsl").debug("Gateway invocation failed", metadata: metadata)
+    }
+
+    /// Reads aggregate router and private queue ownership for package regression evidence.
+    /// - Returns: Current bounded counts; values are separate actor observations, not a transactional snapshot.
+    internal func snapshot() async -> GatewayInteractionSnapshot {
+        let queue = await hub.snapshot()
+        return GatewayInteractionSnapshot(activeHandlers: await router.activeHandlerCount,
+            bufferedEvents: queue.bufferedEvents, bufferedBytes: queue.bufferedBytes, subscriptions: queue.subscriptions)
     }
 
     /// Stops private input and cancels the owning run without joining a callback that may request stop.

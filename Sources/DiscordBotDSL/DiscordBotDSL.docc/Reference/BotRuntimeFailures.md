@@ -7,6 +7,7 @@
 - ``DiscordBotDSL/BotRuntimeFailures/additional``
 - ``DiscordBotDSL/BotRuntimeFailures/customMirror``
 - ``DiscordBotDSL/BotRuntimeFailures/description``
+- ``DiscordBotDSL/BotRuntimeFailures/diagnostics``
 - ``DiscordBotDSL/BotRuntimeFailures/primary``
 
 ## See Also

@@ -4,7 +4,7 @@
 
 ### Creating a value
 
-- ``DiscordBotDSL/BotRuntime/init(client:events:handlerConfiguration:handlerAuthority:interactions:)``
+- ``DiscordBotDSL/BotRuntime/init(client:events:handlerConfiguration:handlerAuthority:interactions:failureObserver:)``
 
 ### Instance properties
 

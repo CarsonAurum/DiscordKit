@@ -90,7 +90,7 @@ public struct CommandRouteKey: Sendable, Hashable {
     /// - Parameter interaction: Already authenticated HTTP or trusted Gateway interaction; unknown types are unhandled.
     /// - Returns: Validated route or nil for unsupported, malformed, ambiguous or incomplete command paths/focus.
     ///   Inspection is bounded to three levels of at most 25 siblings; submitted values never become route keys.
-    fileprivate static func incoming(_ interaction: Interaction) -> Self? {
+    package static func incoming(_ interaction: Interaction) -> Self? {
         guard case .value(let data) = interaction.data else { return nil }
         switch (interaction.type.knownValue, data) {
         case (.applicationCommand, .command(let command)), (.applicationCommandAutocomplete, .command(let command)):
@@ -235,18 +235,22 @@ public actor CommandRouter {
         activeHandlers += 1
         DiscordLog.makeLogger("commands").trace("Command route admitted", metadata: ["dk.event": "commands.route.admitted"])
         defer { activeHandlers -= 1 }
-        let execute = try route.prepare(context)
-        try Task.checkCancellation()
-        do { try await execute() }
-        catch {
-            if error is CancellationError {
-                DiscordLog.makeLogger("commands").debug("Command route cancelled", metadata: ["dk.event": "commands.route.cancelled"])
-            } else {
-                DiscordLog.makeLogger("commands").debug("Command handler failed", metadata: ["dk.event": "commands.route.failed"])
+        return try await InteractionFailureScope.withOperationCapture {
+            let execute: @Sendable () async throws -> Void
+            do { execute = try route.prepare(context) }
+            catch { throw await InteractionFailureScope.annotate(error, at: .preparation) }
+            try Task.checkCancellation()
+            do { try await execute() }
+            catch {
+                if error is CancellationError {
+                    DiscordLog.makeLogger("commands").debug("Command route cancelled", metadata: ["dk.event": "commands.route.cancelled"])
+                } else {
+                    DiscordLog.makeLogger("commands").debug("Command handler failed", metadata: ["dk.event": "commands.route.failed"])
+                }
+                throw await InteractionFailureScope.annotate(error, at: .handler)
             }
-            throw error
+            DiscordLog.makeLogger("commands").trace("Command route completed", metadata: ["dk.event": "commands.route.completed"])
+            return true
         }
-        DiscordLog.makeLogger("commands").trace("Command route completed", metadata: ["dk.event": "commands.route.completed"])
-        return true
     }
 }

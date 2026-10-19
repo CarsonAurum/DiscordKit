@@ -1,10 +1,16 @@
 # Release certification tools
 
-The integrated logging work targets an unpublished `0.16.0` API candidate. The
-`0.14.0` and `0.15.0` baselines/checkpoint records below remain historical. Compare
-new root graphs at version `0.16.0` against both historical baselines and the
-separately named `api-baseline-0.16.0.json`; do not rewrite previous snapshots.
-See [logging validation](Release/logging-validation.json) for the current scope.
+The invocation resilience work targets an unpublished `0.17.0` root API candidate.
+Compare current graphs against the separately named `api-baseline-0.17.0.json`
+and historical `0.14.0`, `0.15.0` and `0.16.0` snapshots at version `0.17.0`.
+Historical snapshots and hash-bound reports remain unchanged. See
+[invocation resilience validation](Release/invocation-resilience-validation.json).
+
+The historical integrated logging work targeted an unpublished `0.16.0` API candidate. The
+`0.14.0`, `0.15.0` and `0.16.0` baselines/checkpoint records remain historical.
+The separately named `api-baseline-0.16.0.json` records that logging checkpoint;
+never rewrite it to accept newer APIs. See
+[logging validation](Release/logging-validation.json) for its historical scope.
 
 The Phase 14 tools are development-only Python standard-library programs. They
 perform local, nonwriting checks unless an API snapshot output is explicitly
@@ -59,13 +65,19 @@ behavior was added.
 swift package dump-symbol-graph --minimum-access-level public
 python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
   --repository . --symbolgraphs .build/out/symbolgraph \
-  --version 0.15.0 --output /tmp/discordkit-current-api.json
+  --version 0.17.0 --output /tmp/discordkit-current-api.json
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline.json \
-  --candidate /tmp/discordkit-current-api.json --version 0.15.0
+  --candidate /tmp/discordkit-current-api.json --version 0.17.0
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline-0.15.0.json \
-  --candidate /tmp/discordkit-current-api.json --version 0.15.0
+  --candidate /tmp/discordkit-current-api.json --version 0.17.0
+python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
+  --baseline Docs/Release/api-baseline-0.16.0.json \
+  --candidate /tmp/discordkit-current-api.json --version 0.17.0
+python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
+  --baseline Docs/Release/api-baseline-0.17.0.json \
+  --candidate /tmp/discordkit-current-api.json --version 0.17.0
 ```
 
 Use the symbolgraph directory printed by the installed SwiftPM toolchain if it
@@ -73,7 +85,7 @@ differs. Compile the graphs with the same target/deployment scope as the baselin
 The initial `0.14.0` baseline records 28 modules and 13,235 public/open symbols on
 macOS arm64. It establishes a starting point; there is no earlier public baseline
 against which to establish historical compatibility. This candidate is neither a
-published release nor a tag. The current `0.15.0` candidate adds the independent
+published release nor a tag. The historical `0.15.0` candidate added the independent
 shared-declaration and typed-command products for Parts 15A/15B, plus the separately
 compiled Part 15C macro authoring package. Part 15D adds typed response adapters
 and signed HTTP command application composition with explicit synchronization.
