@@ -15,8 +15,10 @@ are [recorded separately](Parity/gateway-current-sources.json) from historical p
 `GatewayEndpoints.bot()` uses the HTTP pipeline for authenticated discovery.
 `GatewayDiscovery` validates the trusted WSS URL and recommended shard/session-start
 metadata. Completed discovery snapshots are not cached as live startup allowances.
-Reset delays above 30 days are rejected as an explicit implementation bound before
-untrusted values reach monotonic-clock arithmetic.
+Negative reset delays and delays above 30 days are rejected as explicit implementation
+bounds before untrusted values reach monotonic-clock arithmetic. A zero delay is
+accepted with conservative local quota accounting, as described below; the official
+session-start reference does not specify that edge case.
 Build the selected `ShardIdentity` subset from discovery, sharing one lease store
 and startup coordinator per bot across every local worker. The discovery shard
 count and `(guildID >> 22) % count` routing are separate from REST guild-list partitions.
@@ -68,6 +70,14 @@ server reset replenishes once; later exhaustion requires refreshed discovery rat
 than assuming `reset_after` is a recurring period. Refresh preserves active bucket
 windows and conservatively combines snapshots. A concurrency topology change needs
 a drain and controlled coordinator replacement, without resetting remaining starts.
+
+A discovery response with `reset_after: 0` permits the reported remaining starts but
+does not schedule automatic replenishment. Identify still consumes one start and
+obeys the five-second concurrency buckets; depletion requires fresh discovery.
+Repeated zero-delay snapshots cannot restore locally spent starts. A zero-delay
+refresh clears any previous reset deadline; a later positive delay establishes a
+future reset without immediately restoring spent starts. This is local compatibility
+behavior, not a newly documented upstream reset contract.
 
 `GatewayStartupCoordinator` is injectable for cross-process atomic admission.
 `ShardLeaseStore` supplies ownership, expiry and monotonic generation fencing.

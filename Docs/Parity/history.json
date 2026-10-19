@@ -1740,6 +1740,40 @@
       ],
       "details": "changes/phase15l-authoring-candidate.md",
       "remainingGates": "../Release/phase15l-report.json"
+    },
+    {
+      "id": "2026-10-19-gateway-zero-reset",
+      "recordedOn": "2026-10-19",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-19",
+      "localSupportDate": "2026-10-19",
+      "localRelease": "unpublished 0.16.0 candidate",
+      "localCommit": "unknown",
+      "changeType": "bug_fix",
+      "previousBehavior": "GatewayDiscovery required a positive reset_after interval and rejected an observed HTTP 200 discovery response with total 1000, remaining 1000 and reset_after 0 before WebSocket startup.",
+      "currentBehavior": "Zero-reset discovery is accepted with conservative local quota accounting: no automatic refill is inferred, reported remaining starts and concurrency buckets remain enforced, repeated zero refreshes cannot restore locally spent starts, and zero refresh clears any previous reset deadline. A later positive delay establishes a future one-shot reset without an immediate top-up. Negative intervals and the 30-day cap remain rejected.",
+      "affectedSymbols": [
+        "GatewaySessionStartLimit",
+        "GatewayDiscovery",
+        "InProcessGatewayStartupCoordinator"
+      ],
+      "affectedPayloads": "Existing Gateway Bot session_start_limit.reset_after only; no new fields or protocol version. Official documentation specifies integer milliseconds but does not define the zero edge case.",
+      "breakingChanges": [],
+      "migration": "No source migration. Continue sharing one startup coordinator and lease authority per bot; zero-reset depletion requires fresh discovery and never implies unlimited or recurring starts.",
+      "sources": [
+        "https://docs.discord.com/developers/events/gateway#session-start-limit-object"
+      ],
+      "details": "changes/2026-10-19-gateway-zero-reset.md",
+      "remainingGates": "../Gateway.md"
     }
   ]
 }

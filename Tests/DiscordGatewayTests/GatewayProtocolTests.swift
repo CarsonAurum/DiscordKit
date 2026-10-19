@@ -124,6 +124,32 @@ struct GatewayProtocolTests {
         #expect(throws: GatewayFailure.invalidPayload) { try GatewayDiscovery(json: .object([:])) }
     }
 
+    /// Decodes the reported zero-reset response through the REST endpoint without losing allowances.
+    /// - Parameter remaining: Full, partial or exhausted quota independent of the reset interval.
+    @Test(arguments: [1000, 1, 0])
+    func zeroResetDiscovery(remaining: Int) throws {
+        let payload = Data("""
+        {"url":"wss://gateway.discord.gg/","shards":1,"session_start_limit":
+        {"total":1000,"remaining":\(remaining),"reset_after":0,"max_concurrency":1}}
+        """.utf8)
+        let discovery = try GatewayEndpoints.bot().decode(payload)
+        #expect(discovery.recommendedShardCount == 1)
+        #expect(try discovery.sessionStartLimit == GatewaySessionStartLimit(
+            total: 1000, remaining: remaining, resetAfter: .zero, maxConcurrency: 1))
+        #expect(try discovery.rawValue == JSONValue.parse(payload))
+    }
+
+    /// Rejects negative, fractional and overflowing reset values at the discovery boundary.
+    /// - Parameter reset: Untrusted JSON reset interval, encoded in milliseconds.
+    @Test(arguments: ["-1", "0.5", "9223372036854775808", "\"0\""])
+    func invalidDiscoveryReset(reset: String) throws {
+        let value = try JSONValue.parse("""
+        {"url":"wss://gateway.discord.gg/","shards":1,"session_start_limit":
+        {"total":1000,"remaining":1000,"reset_after":\(reset),"max_concurrency":1}}
+        """)
+        #expect(throws: GatewayFailure.invalidPayload) { try GatewayDiscovery(json: value) }
+    }
+
     /// Rejects nonsensical queue/retry/time and server limits before opening any transport.
     @Test func invalidConfiguration() {
         #expect(throws: GatewayFailure.invalidConfiguration) { try GatewayShardConfiguration(maximumFrameBytes: 0) }
@@ -133,7 +159,7 @@ struct GatewayProtocolTests {
             try GatewaySessionStartLimit(total: 1, remaining: 2, resetAfter: .seconds(1), maxConcurrency: 1)
         }
         #expect(throws: GatewayFailure.invalidConfiguration) {
-            try GatewaySessionStartLimit(total: 1, remaining: 1, resetAfter: .zero, maxConcurrency: 1)
+            try GatewaySessionStartLimit(total: 1, remaining: 1, resetAfter: .milliseconds(-1), maxConcurrency: 1)
         }
         #expect(throws: GatewayFailure.invalidConfiguration) {
             try GatewaySessionStartLimit(total: 1, remaining: 1, resetAfter: .milliseconds(2_592_000_001), maxConcurrency: 1)
