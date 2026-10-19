@@ -6,6 +6,7 @@ __pycache__/
 *.pyc
 /Packages/*
 !/Packages/DiscordDSLMacros/
+!/Packages/DiscordDSLExtensions/
 xcuserdata/
 DerivedData/
 .swiftpm/configuration/registries.json

@@ -4,13 +4,14 @@
 
 ### Creating a value
 
-- ``DiscordDSL/DefinitionLimits/init(maxModules:maxDepth:maxDeclarations:maxTextBytes:maxStructuralNodes:)``
+- ``DiscordDSL/DefinitionLimits/init(maxModules:maxDepth:maxDeclarations:maxTextBytes:maxStructuralNodes:maxNamespaces:)``
 
 ### Instance properties
 
 - ``DiscordDSL/DefinitionLimits/maxDeclarations``
 - ``DiscordDSL/DefinitionLimits/maxDepth``
 - ``DiscordDSL/DefinitionLimits/maxModules``
+- ``DiscordDSL/DefinitionLimits/maxNamespaces``
 - ``DiscordDSL/DefinitionLimits/maxStructuralNodes``
 - ``DiscordDSL/DefinitionLimits/maxTextBytes``
 

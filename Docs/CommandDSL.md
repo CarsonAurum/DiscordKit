@@ -13,7 +13,10 @@ optional [macro authoring](MacroDSL.md); Part 15D adds
 Part 15E adds [message/component builders and safe typed content](MessageBuilders.md)
 with thin adapters to those response values. Part 15F adds [command trees, context
 menus, autocomplete, components and modal submissions](CommandFamilies.md). Part 15G adds
-[bounded policies and middleware](CommandPolicies.md). Gateway hosts remain later
+[bounded policies and middleware](CommandPolicies.md). Part 15I supplies separately
+adopted [Gateway bot hosts](BotApplications.md); Part 15J adds
+[external module installation and typed dependencies](ModuleExtensions.md).
+Capacity and full release review remain later
 [implementation milestones](DSLImplementationRoadmap.md). Existing low-level APIs
 remain independently usable for their broader implemented surfaces.
 
@@ -140,8 +143,11 @@ presence/value fingerprints, the unknown-option policy and schema/option source
 coordinates. Author defaults are intentionally visible in these immutable
 descriptions; submitted interaction values and executable closures are excluded.
 Use explicit source coordinates when cross-file snapshots require reproducible
-locations. Duplicate declaration/module IDs fail structurally; different IDs with the same route still fail as duplicate
-routes. The result exposes immutable `description`, `definitions` and `routes`.
+locations. Duplicate declaration/module IDs fail within their explicit namespace;
+ordinary unnamespaced definitions retain their existing duplicate checks.
+Namespace paths appear separately in the structural description and never alter
+command metadata or wire routes. Different IDs or namespaces with the same route
+still fail as duplicate routes. The result exposes immutable `description`, `definitions` and `routes`.
 Registration/reconciliation remain explicit existing `DiscordCommands` operations.
 
 ## Diagnostics and evidence boundary

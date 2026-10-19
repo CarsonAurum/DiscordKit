@@ -4,7 +4,7 @@
 
 ### Creating a value
 
-- ``DiscordDSL/DefinitionDiagnostic/init(code:source:modulePath:)``
+- ``DiscordDSL/DefinitionDiagnostic/init(code:source:modulePath:namespacePath:)``
 
 ### Nested enumerations
 
@@ -14,6 +14,7 @@
 
 - ``DiscordDSL/DefinitionDiagnostic/code``
 - ``DiscordDSL/DefinitionDiagnostic/modulePath``
+- ``DiscordDSL/DefinitionDiagnostic/namespacePath``
 - ``DiscordDSL/DefinitionDiagnostic/source``
 
 ## See Also

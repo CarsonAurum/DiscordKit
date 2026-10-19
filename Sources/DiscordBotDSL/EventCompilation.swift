@@ -13,6 +13,8 @@ public struct EventCompilationDiagnostic: Error, Sendable, Equatable {
         case unsupportedContribution
         /// A registration's complete snapshot disagrees or its selector/group identity is invalid.
         case invalidRegistration
+        /// Structural namespaces contain the same runtime handler ID, which must remain globally unique.
+        case duplicateHandlerID
         /// Explicitly selected host intents omit one or more declared required bits.
         case missingIntents
         /// Another distinct named independent group would exceed the configured finite bound.
@@ -129,7 +131,8 @@ public enum EventCompilation {
     ///   - maximumIndependentGroups: Named subscription cap in `0...128`, default eight, in addition
     ///     to at most one default group. Zero allows only the default group.
     /// - Returns: Immutable declarations and finite groups, with no runtime side effects.
-    /// - Throws: Shared structural diagnostics (including duplicate handler IDs), custom expansion
+    /// - Throws: Shared structural diagnostics, duplicate runtime handler IDs even across structural
+    ///   namespaces, custom expansion
     ///   errors, or event diagnostics for forged snapshots, invalid selector/group names, absent
     ///   intents, unsupported custom leaves or exhausted independent-group admission. No partial
     ///   plan or executable pipeline escapes. Work is proportional to admitted structure and metadata.
@@ -144,6 +147,7 @@ public enum EventCompilation {
         var independentGroups = 0
         var requiredIntents: GatewayIntents = []
         var handlerIDs: [String] = []
+        var runtimeIDs: Set<String> = []
         for (index, contribution) in plan.contributions.enumerated() {
             let metadata = plan.description.declarations[index].declaration
             guard let contribution = contribution as? any GatewayEventContribution else {
@@ -154,6 +158,10 @@ public enum EventCompilation {
             guard registration.declaration == metadata, validIdentity(registration.selectorID),
                   registration.eventGroup.map(validIdentity) ?? true else {
                 throw EventCompilationDiagnostic(code: .invalidRegistration,
+                    handlerID: metadata.id, source: metadata.source)
+            }
+            guard runtimeIDs.insert(registration.id).inserted else {
+                throw EventCompilationDiagnostic(code: .duplicateHandlerID,
                     handlerID: metadata.id, source: metadata.source)
             }
             let missing = registration.requiredIntents.subtracting(intents)

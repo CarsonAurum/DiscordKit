@@ -187,6 +187,17 @@ authenticate input. Callbacks retain existing HTTP ownership and independent ini
 response admission. Registration remains explicit. No concrete adapter or compiler
 plugin enters the runtime product. See `Docs/BotApplications.md`.
 
+Part 15J adds explicit `ModuleNamespace` installation and lazy `DependentModule`
+construction over typed Sendable `ModuleDependencies`. Compilation admits each module,
+validates local dependencies and then creates its body; dependency failures are bounded
+and redact the original error. Namespace component paths qualify structural identities
+without rewriting original metadata, command wire routes or event handler IDs.
+The separate `Packages/DiscordDSLExtensions` package demonstrates public external
+adoption through independent HTTP/Gateway consumers. Existing runtime graphs remain
+unchanged; optional Voice/Social/OAuth interfaces are injected application choices.
+Construction and compilation start no tasks, I/O, registration or handler execution.
+See `Docs/ModuleExtensions.md`; Parts 15K-15L retain capacity and final release gates.
+
 - `Package.swift`: package manifest, library product, and target settings.
 - `Sources/DiscordKit/`: library implementation and public APIs.
 - `Sources/DiscordBits/`, `Sources/DiscordCore/`, `Sources/DiscordTransport/`:
@@ -214,13 +225,16 @@ plugin enters the runtime product. See `Docs/BotApplications.md`.
 - `Sources/DiscordSocial/`: independently adopted provider composition, scoped local
   observations and PCM controls; no upward dependency from existing products.
 - `Sources/DiscordDSL/`: inert structural module composition and finite validated
-  descriptions over Core/Models only; no runtime, macro or concrete-adapter ownership.
+  descriptions, explicit namespaces and validated typed dependencies over Core/Models
+  only; no runtime, macro or concrete-adapter ownership.
 - `Sources/DiscordCommandDSL/`: finite typed arguments and manual slash-command lowering
   over existing Commands/Interactions and HTTP/Transport; signed HTTP composition,
   explicit synchronization and no Gateway/client or concrete-adapter ownership.
 - `Sources/DiscordBotDSL/`: inert typed event compilation, explicit bounded Gateway
   subscription/dispatcher composition, shared services, trusted interaction admission
   and supervised bot lifetime over the existing Client/CommandDSL owners.
+- `Packages/DiscordDSLExtensions/`: independently selected public extension libraries
+  and tests; no upward dependency from root runtime products.
 - `Examples/VoiceBot/`: offline synthetic voice-protocol consumer; never joins Discord.
 - `Browser/DiscordActivityBridge/`: owned JavaScript bridge; no npm runtime dependencies.
 - `Examples/ActivityHost/`: independent Activity/backend composition; build without authenticated calls.
@@ -395,7 +409,7 @@ order, complete-shard serialization/cross-shard progress, explicit required inte
 duplicate identities, raw/unknown/malformed dispatches, queue overflow, callback failure,
 finite independent groups and cancellation/setup cleanup. Build GatewayBot and run
 load cache/soak checks as required for event changes. Local tests do not qualify live
-Discord or DSL handler capacity; Parts 15J-15L remain separate.
+Discord or DSL handler capacity; Parts 15K-15L remain separate.
 
 For bot application/interaction bridge changes, also build/test/run the independent
 DSLBot consumer offline. Keep raw shard ingestion exclusive to DiscordClient and
@@ -411,6 +425,18 @@ construction and ordinary execution must issue no command registration. Build th
 affected independent command/event consumers and retain the cache/broadcast soak's
 qualification limits. No concrete adapter, compiler plugin, voice, Social or OAuth
 requirement belongs in BotDSL's runtime graph.
+
+For external module/dependency changes, run the independent
+`Packages/DiscordDSLExtensions` tests, root build/tests, callable documentation,
+graph/import isolation, scoped API/DocC checks and affected DSLCommands/DSLBot
+build/test/offline runs. Keep shared DSL Core/Models-only and command extension
+adoption independent of Gateway/Client/Cache/concrete adapters. Test exact namespace
+components and duplicate/empty/count/depth/text bounds, original metadata/source
+preservation, dependency rejection before body creation, terminal swallowed failures
+and zero construction/compilation execution. External compile fixtures must reject
+missing/wrong typed dependencies. Reuse injected aggregate authorities and preserve
+existing command/event route uniqueness and response/lifetime ownership. Local
+extension tests do not qualify capacity, optional service support or live Discord.
 
 For Social changes, build/run `Examples/SocialApp` offline, run the Social catalog
 validator and Python tests, and preserve its graph without Gateway/Client/Cache,

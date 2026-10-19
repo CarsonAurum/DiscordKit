@@ -7,6 +7,7 @@ let package = Package(
     dependencies: [
         .package(name: "DiscordKit", path: "../.."),
         .package(name: "DiscordDSLMacros", path: "../../Packages/DiscordDSLMacros"),
+        .package(name: "DiscordDSLExtensions", path: "../../Packages/DiscordDSLExtensions"),
         .package(url: "https://github.com/apple/swift-crypto.git", from: "5.0.1"),
     ],
     targets: [.executableTarget(name: "DSLCommands", dependencies: [
@@ -19,6 +20,7 @@ let package = Package(
         .product(name: "DiscordTransport", package: "DiscordKit"),
         .product(name: "DiscordNIOTransport", package: "DiscordKit"),
         .product(name: "DiscordDSLMacros", package: "DiscordDSLMacros"),
+        .product(name: "DiscordCommandExtensions", package: "DiscordDSLExtensions"),
         .product(name: "Crypto", package: "swift-crypto"),
     ], swiftSettings: [.enableUpcomingFeature("ApproachableConcurrency"), .defaultIsolation(nil)]),
     .testTarget(name: "DSLCommandsTests", dependencies: [

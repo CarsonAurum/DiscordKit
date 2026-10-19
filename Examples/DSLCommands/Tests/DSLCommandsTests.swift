@@ -33,4 +33,12 @@ import Testing
         #expect(evidence.allowed == ["authorize", "audit enter", "metrics enter", "handler", "metrics exit", "audit exit"])
         #expect(evidence.denied == ["authorize"])
     }
+
+    /// An imported extension executes custom decoding, exact raw command parity and actor-backed denial.
+    /// - Throws: Any dependency, signature, callback or effect-count mismatch fails the external consumer.
+    @Test func signedOfflineExternalExtensions() async throws {
+        let evidence = try await ExtensionExamples.run()
+        #expect(evidence.authorizations == 2)
+        #expect(evidence.executions == 2)
+    }
 }

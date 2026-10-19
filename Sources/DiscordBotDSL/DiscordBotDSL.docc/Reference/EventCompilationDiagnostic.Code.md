@@ -4,6 +4,7 @@
 
 ### Cases
 
+- ``DiscordBotDSL/EventCompilationDiagnostic/Code/duplicateHandlerID``
 - ``DiscordBotDSL/EventCompilationDiagnostic/Code/independentGroupLimit``
 - ``DiscordBotDSL/EventCompilationDiagnostic/Code/invalidConfiguration``
 - ``DiscordBotDSL/EventCompilationDiagnostic/Code/invalidRegistration``

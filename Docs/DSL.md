@@ -17,7 +17,9 @@ product, with explicit command authorization/admission adapters. Part 15H adds
 [typed Gateway event modules](GatewayEventModules.md) through the separately selected
 `DiscordBotDSL`. Part 15I adds [supervised bot applications](BotApplications.md)
 through that product, without changing the shared DSL's Core/Models-only graph.
-External extension qualification and capacity remain later
+Part 15J adds [external module installation and typed dependencies](ModuleExtensions.md),
+with separate downstream extension libraries and consumer adoption. Capacity and
+full release review remain later
 [implementation milestones](DSLImplementationRoadmap.md).
 An application can use the raw contribution API now to validate its own finite
 metadata catalog, without pretending that a custom kind implements a Discord API.
@@ -70,6 +72,10 @@ builder once and stores the resulting body. `BotBuilder` supports nested modules
 empty blocks, conditionals, `switch`, availability branches, homogeneous or
 heterogeneous definition arrays and finite loops in source/iteration order.
 Every builder group, even an empty one, participates in structural admission.
+`ModuleNamespace` explicitly installs reusable local IDs under a separate namespace
+path. `DependentModule` retains a typed dependency value and lazy body factory;
+compilation admits the module and validates dependencies before creating its body.
+Ordinary `Module` and namespace builders retain their eager construction behavior.
 
 ## Extension and ownership contract
 
@@ -101,21 +107,27 @@ memory already allocated while a caller constructs an array or loop body.
 
 | Limit | Default | Meaning |
 | --- | --- | --- |
-| `maxModules` | 256 | Globally unique installed module instances. |
-| `maxDepth` | 32 | Simultaneously open module, builder-group and contribution scopes; valid range `1...128`. |
+| `maxModules` | 256 | Installed module instances across all namespaces. |
+| `maxNamespaces` | 256 | Explicit namespace installations, including empty ones. |
+| `maxDepth` | 32 | Simultaneously open module, namespace, builder-group and contribution scopes; valid range `1...128`. |
 | `maxDeclarations` | 4,096 | Admitted leaf contributions. |
 | `maxTextBytes` | 1,048,576 | Aggregate UTF-8 metadata and compact JSON payload bytes. |
-| `maxStructuralNodes` | 16,384 | All visited structural scopes, including empty groups. |
+| `maxStructuralNodes` | 16,384 | All visited structural scopes, including empty groups and namespaces. |
 
 Count/byte budgets accept zero and reject negatives. The depth hard ceiling limits
 recursive collector expansion. IDs, kinds and capability names must be nonempty,
 at most 128 UTF-8 bytes and contain no ASCII controls, including DEL. Module IDs
-are globally unique across the plan; declaration IDs are independently globally
-unique. Installing the same reusable module twice requires distinct explicit IDs,
-even beneath different parent modules. Names are never inferred from type names,
-reflection or dictionary enumeration.
+are unique within their explicit namespace; declaration IDs are independently
+unique within that namespace. Ordinary definitions share the empty namespace and
+retain their previous global duplicate checks. Installing the same reusable
+module twice requires distinct local IDs or distinct explicit namespaces;
+different parent modules alone do not establish separate identity scopes.
+Every full namespace component path is unique throughout a plan. Names are never
+inferred from type names, reflection or dictionary enumeration. Namespace paths
+remain separate components in `DefinitionIdentity`; joining them with a delimiter
+would lose the identity distinction.
 
-Text accounting includes module IDs/source labels; declaration IDs, kinds, text,
+Text accounting includes module and namespace IDs/source labels; declaration IDs, kinds, text,
 source labels and required capability names; and each payload's serialized bytes.
 A label repeated by multiple declarations is charged for each declaration. JSON
 also enforces 64-container-depth and 100,000-node limits, and the remaining text
@@ -128,14 +140,18 @@ cross-file examples; unavailable/synthetic line and column values are zero.
 
 Compilation throws the first `DefinitionDiagnostic` for invalid limits/identities,
 duplicates, unsupported kinds/capabilities, count/depth/text/structure exhaustion
-or malformed/oversized payloads. The diagnostic retains a bounded source label
-and ancestor module path, without declaration text or payload contents. Custom
+or malformed/oversized payloads. Dependency validation failures become the bounded
+`invalidDependencies` category, omitting dependency values and the original error.
+The diagnostic retains a bounded source label and ancestor module/namespace paths,
+without declaration text or payload contents. Custom
 expansion errors propagate. No partial plan is returned; correct the declaration,
 allowlist or explicit budget before compiling again.
 
 `DefinitionDescription` equality compares exact module/declaration order, metadata,
 coordinates and accounting. Modules use preorder and declarations use depth-first
-source order. Equality does not compare executable behavior retained by custom
+source order; explicit namespace installations use preorder and preserve empty
+scopes. Qualified module/declaration identities retain their original metadata.
+Equality does not compare executable behavior retained by custom
 leaf values. Structural limits and local tests provide no network throughput,
 platform, live Discord, macro, command/event execution or fleet-capacity evidence.
 See [the authoring-only history](Parity/changes/phase15-dsl.md).

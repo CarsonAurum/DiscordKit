@@ -35,6 +35,14 @@ Browse the public types and operations provided by DiscordDSL.
 - ``DiscordDSL/MessageContentError``
 - ``DiscordDSL/RenderedMessageContent``
 
+### Module Extensions
+
+- ``DiscordDSL/DefinitionIdentity``
+- ``DiscordDSL/DependentModule``
+- ``DiscordDSL/ModuleDependencies``
+- ``DiscordDSL/ModuleNamespace``
+- ``DiscordDSL/PlannedNamespace``
+
 ### Policy Composition
 
 - ``DiscordDSL/!(_:)``

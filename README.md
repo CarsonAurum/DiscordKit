@@ -68,7 +68,10 @@ intent validation and bounded ordered dispatch in the independent `DiscordBotDSL
 Part 15I adds [supervised bot applications](Docs/BotApplications.md), shared service
 access and trusted Gateway interaction callbacks over HTTP. Explicit `run` owns the
 existing client and bounded pipelines; construction and ordinary execution register
-nothing. Further extension and capacity work remain later
+nothing. Part 15J adds [external module namespaces and typed dependencies](Docs/ModuleExtensions.md),
+with separately adopted extension libraries and independent HTTP/Gateway consumers.
+Dependency validation precedes lazy body creation; namespaces preserve original
+metadata and wire routes. Capacity qualification and final release review remain later
 [DSL milestones](Docs/DSLImplementationRoadmap.md).
 
 Part 4 adds reviewed inventory contracts and deterministic offline generation for

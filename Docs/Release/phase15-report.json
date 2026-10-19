@@ -15,129 +15,129 @@
     {
       "id": "root-build",
       "status": "passed",
-      "scope": "Current local debug root build passed with strict direct-dependency imports.",
+      "scope": "Current strict direct-dependency local root debug build passed.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "root-tests",
       "status": "passed",
-      "scope": "2,353 tests in 286 suites across 32 root test targets passed, including 48 BotDSL event/bridge/lifecycle tests. Approved host access supports required local loopback/signing; no live Discord.",
+      "scope": "2,367 tests in 287 suites across 32 root test targets passed, including shared namespace/dependency and downstream wire-identity regressions. Host access supplies required local signing and loopback; no live Discord.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "tooling",
       "status": "passed",
-      "scope": "104 Swift tooling tests, 228 tooling Python tests, 40 CI Python tests, 31 macro tests and 26 external compiler fixtures pass.",
+      "scope": "104 Swift tooling tests, 228 tooling Python tests, 44 CI Python tests, 31 separate macro tests, 26 real macro compiler fixtures and three public dependency compiler fixtures passed.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "inventory",
       "status": "passed",
-      "scope": "18,137 discovery entries, 280 sources and 934 reviewed definitions validated; no discovery support classification promoted.",
+      "scope": "18,137 discovery entries, 280 sources and 934 reviewed definitions validated with current UTC audit date 2026-10-19. No support classification promoted.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "generation",
       "status": "passed",
-      "scope": "Five generated wire artifacts remain byte-identical.",
+      "scope": "Five committed generated wire artifacts remain byte-identical.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "parity",
       "status": "passed",
-      "scope": "Offline parity checks pass with append-only 15I authoring history; no new wire or model-parity support classification.",
+      "scope": "Offline checks pass with append-only 15J authoring history; no new wire/model-parity classification.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "declaration-docs",
       "status": "passed",
-      "scope": "Documentation presence audit: 760 Swift files; 8467 explicit callable declarations; 0 missing comments. Presence is syntactic evidence; semantic completeness remains a separate review gate.",
+      "scope": "771 Swift files and 8,535 explicit callable declarations audited with zero missing comments. Presence is syntactic evidence; semantic completeness remains separate.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "docc",
       "status": "passed",
-      "scope": "31 runtime DocC archives converted with strict diagnostics; generated navigation and 22 synchronized documentation listings pass. DSLBot is independently built/tested; no new tutorial listing or macro DocC qualification is claimed.",
+      "scope": "31 runtime and two independent extension library DocC archives converted with strict diagnostics. Generated navigation and 22 synchronized existing listings pass. No other-platform or full Phase 15 tutorial certification claim.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "product-isolation",
       "status": "passed",
-      "scope": "31 runtime products, 336 production Swift files and 739 imports audited. Twelve independent consumers and the separate authoring package preserve reviewed graphs. BotDSL explicitly composes DSL/CommandDSL/Client/Commands/Interactions/Gateway/Models/Core/HTTP/Transport; shared and command products retain independence. No concrete adapters or compiler plugins in BotDSL.",
+      "scope": "31 runtime products, 337 runtime Swift files and 739 imports audited. Twelve independent examples and both separate authoring/extension packages preserve reviewed graphs. The command extension selected closure excludes Gateway/Client/Cache/plugins; bot extensions broaden adoption explicitly. Root products select no extensions.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "api-baseline",
       "status": "passed",
-      "scope": "Frozen 0.14.0 runtime comparison passed: 970 added, 0 changed, 0 removed symbols and 0 removed relationships. Pre-1.0 0.15.0 minor increment accepted. Local unpublished 15H comparison adds exactly 59 BotDSL symbols, with no existing symbol/relationship removals or changes.",
+      "scope": "Frozen 0.14.0 comparison passed: 1,010 added, zero changed/removed symbols and zero removed relationships; the pre-1.0 0.15.0 minor increment is accepted. First separate extension snapshot records 86 symbols in two libraries. No full Phase 15 or binary ABI certification.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "examples",
       "status": "passed",
-      "scope": "HTTPApp, CommandsApp, GatewayBot and RESTOnly independently built. DSLCommands tests/offline modes and DSLEvents tests/offline execution pass. New independently built DSLBot passes three tests and synthetic offline client/command/event composition: one HTTP callback, zero command registration and zero owned resources.",
+      "scope": "Six public-only extension tests, four DSLCommands tests and three DSLBot tests passed. Signed HTTP and macro-free trusted Gateway consumers use the same external command module with exact custom-codec/raw/denied responses and injected actor effects. Bot custom selection/stop ends with zero owned counters and zero registration. Existing HTTPApp/CommandsApp/GatewayBot/RESTOnly builds and DSLEvents tests/offline execution pass.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "browser",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current browser qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current browser qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current browser qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current browser qualification is claimed.",
       "excludedClaims": [
         "browser"
       ]
@@ -145,8 +145,8 @@
     {
       "id": "social-catalog",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current social-catalog qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current social-catalog qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current social-catalog qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current social-catalog qualification is claimed.",
       "excludedClaims": [
         "social-catalog"
       ]
@@ -154,41 +154,41 @@
     {
       "id": "local-load",
       "status": "passed",
-      "scope": "Existing load package: 28 Swift tests, 12 Python peer tests and 12 normal/burst cache/short-soak profiles pass with zero measured shutdown ownership. Initial and final release/dSYM builds pass. The soak retains its start executable hash; final Gateway receipt metadata changes are not exercised by this cache/broadcast workload. This harness does not execute DSL handlers.",
+      "scope": "28 existing load Swift tests, 12 Python peer tests, release build and all 12 normal/burst finite cache/short-soak profiles passed with zero shutdown ownership. This workload does not execute DSL handlers.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "fixed-working-set-soak",
       "status": "passed",
-      "scope": "Existing four-scope fixed-working-set cache/broadcast burst soak passed for 1800.005 seconds with 227,734 rounds, 121 actual RSS/heap checkpoints and zero owned shutdown counters. Exact drift in two Gateway receipt-metadata source files is retained; the measured cache/broadcast implementation is unchanged. This is not current shard-runtime, DSL handler/capacity or controlled performance-regression evidence.",
+      "scope": "Existing four-scope fixed-key cache/broadcast burst soak passed for 1800.002 seconds with 225,337 rounds, 121 actual RSS/heap checkpoints and zero owned shutdown counters. Relevant measured source hashes have no drift. Concurrent compilation prevents controlled regression comparison; this is not DSL handler/capacity evidence.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "macos",
       "status": "passed",
-      "scope": "Local macOS arm64 Swift 6.4 debug build/tests, independent offline consumers, scoped API/DocC and existing cache/broadcast measurements only. No other-platform, minimum-OS, device or live qualification.",
+      "scope": "Local macOS arm64 Swift 6.4 root and public independent extension/consumer tests, API/DocC and existing cache/broadcast measurements only. Other platforms, minimum-OS runtime, devices and live qualification remain unverified.",
       "evidence": [
         {
-          "path": "Docs/Release/phase15i-validation.json",
-          "sha256": "fa57ae318478e14d4a64f99a7600ece6fe6c0cbdcfda79751487e4dcad538a7e"
+          "path": "Docs/Release/phase15j-validation.json",
+          "sha256": "f01ebbf5eab0b3372db3db9860b87356d8397dc5abeabfe4bc47bc4f3fbd4bdd"
         }
       ]
     },
     {
       "id": "linux",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current linux qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current linux qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current linux qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current linux qualification is claimed.",
       "excludedClaims": [
         "linux"
       ]
@@ -196,8 +196,8 @@
     {
       "id": "windows",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current windows qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current windows qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current windows qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current windows qualification is claimed.",
       "excludedClaims": [
         "windows"
       ]
@@ -205,8 +205,8 @@
     {
       "id": "apple-simulators",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current apple-simulators qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current apple-simulators qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-simulators qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-simulators qualification is claimed.",
       "excludedClaims": [
         "apple-simulators"
       ]
@@ -214,8 +214,8 @@
     {
       "id": "apple-devices",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current apple-devices qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current apple-devices qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-devices qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current apple-devices qualification is claimed.",
       "excludedClaims": [
         "apple-devices"
       ]
@@ -223,8 +223,8 @@
     {
       "id": "android-cross-build",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current android-cross-build qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current android-cross-build qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-cross-build qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-cross-build qualification is claimed.",
       "excludedClaims": [
         "android-cross-build"
       ]
@@ -232,8 +232,8 @@
     {
       "id": "android-runtime",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current android-runtime qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current android-runtime qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-runtime qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current android-runtime qualification is claimed.",
       "excludedClaims": [
         "android-runtime"
       ]
@@ -241,8 +241,8 @@
     {
       "id": "live-discord",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current live-discord qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current live-discord qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current live-discord qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current live-discord qualification is claimed.",
       "excludedClaims": [
         "live-discord"
       ]
@@ -250,8 +250,8 @@
     {
       "id": "hardware",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current hardware qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current hardware qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current hardware qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current hardware qualification is claimed.",
       "excludedClaims": [
         "hardware"
       ]
@@ -259,8 +259,8 @@
     {
       "id": "independent-crypto-review",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current independent-crypto-review qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current independent-crypto-review qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current independent-crypto-review qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current independent-crypto-review qualification is claimed.",
       "excludedClaims": [
         "independent-crypto-review"
       ]
@@ -268,8 +268,8 @@
     {
       "id": "codec-interop",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current codec-interop qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current codec-interop qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current codec-interop qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current codec-interop qualification is claimed.",
       "excludedClaims": [
         "codec-interop"
       ]
@@ -277,8 +277,8 @@
     {
       "id": "semantic-documentation",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current semantic-documentation qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current semantic-documentation qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current semantic-documentation qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current semantic-documentation qualification is claimed.",
       "excludedClaims": [
         "semantic-documentation"
       ]
@@ -286,8 +286,8 @@
     {
       "id": "api-other-platforms",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current api-other-platforms qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current api-other-platforms qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current api-other-platforms qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current api-other-platforms qualification is claimed.",
       "excludedClaims": [
         "api-other-platforms"
       ]
@@ -295,8 +295,8 @@
     {
       "id": "upstream-collection",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current upstream-collection qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current upstream-collection qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current upstream-collection qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current upstream-collection qualification is claimed.",
       "excludedClaims": [
         "upstream-collection"
       ]
@@ -304,8 +304,8 @@
     {
       "id": "zero-resource-growth",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current zero-resource-growth qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current zero-resource-growth qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current zero-resource-growth qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current zero-resource-growth qualification is claimed.",
       "excludedClaims": [
         "zero-resource-growth"
       ]
@@ -313,8 +313,8 @@
     {
       "id": "performance-regression",
       "status": "unverified",
-      "scope": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current performance-regression qualification is claimed.",
-      "reason": "Not established by Part 15I local supervised bot composition and existing cache/broadcast checks; no current performance-regression qualification is claimed.",
+      "scope": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current performance-regression qualification is claimed.",
+      "reason": "Not established by Part 15J local external-extension authoring and cache/broadcast validation; no current performance-regression qualification is claimed.",
       "excludedClaims": [
         "performance-regression"
       ]
@@ -322,8 +322,8 @@
   ],
   "claims": [
     {
-      "id": "shared-command-event-and-supervised-bot-local-milestones",
-      "description": "Parts 15A-15I only: finite modules, typed command families, optional macros, policies, signed HTTP composition, bounded typed Gateway subscriptions and supervised client/service/trusted interaction ownership. Local offline evidence excludes remaining DSL milestones and external qualification.",
+      "id": "shared-command-event-supervised-bot-and-external-extension-local-milestones",
+      "description": "Parts 15A-15J only: finite modules, typed command families, optional macros, policies, signed HTTP, typed Gateway pipelines and supervised trusted host composition, plus bounded explicit namespaces and validated typed dependencies used by separately compiled public extension libraries. Local offline evidence excludes 15K-15L and external qualification.",
       "checkIDs": [
         "api-baseline",
         "declaration-docs",
@@ -341,7 +341,7 @@
     },
     {
       "id": "existing-local-cache-and-broadcast-measurements",
-      "description": "Existing cache/broadcast workload only: finite cache profiles, zero measured ownership after shutdown and a recorded 1800-second fixed-working-set soak with source drift explicitly retained. It does not execute DSL handlers or qualify current shard-runtime, capacity, controlled regression or entire-product resource growth.",
+      "description": "Existing fixed-working-set cache/broadcast workload only: finite profiles and a fresh 1800-second burst soak with actual RSS/heap observations, unchanged measured sources and zero shutdown ownership. It does not execute DSL handlers or qualify capacity, controlled regression or entire-product resource growth.",
       "checkIDs": [
         "local-load",
         "fixed-working-set-soak"

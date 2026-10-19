@@ -5,7 +5,9 @@
 ### Instance properties
 
 - ``DiscordDSL/PlannedDeclaration/declaration``
+- ``DiscordDSL/PlannedDeclaration/identity``
 - ``DiscordDSL/PlannedDeclaration/modulePath``
+- ``DiscordDSL/PlannedDeclaration/namespacePath``
 
 ## See Also
 

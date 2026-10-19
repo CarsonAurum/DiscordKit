@@ -43,3 +43,12 @@ authority. Construction executes no service checks; denial sends an explicit eph
 message before middleware/handler work. The example asserts exact successful traversal,
 denial effects and zero active permits after cleanup. See the
 [policy guide](../../Docs/CommandPolicies.md) for finite bounds, cancellation and response ownership.
+
+Part 15J's `ExtensionExamples.swift` imports `DiscordCommandExtensions` from the
+separate `Packages/DiscordDSLExtensions` package. Signed exchanges exercise its
+custom uppercase-code `ArgumentValue`, reusable namespaced `BotModule`, explicit
+typed dependencies, actor-backed custom policy and direct `CommandDefinition`/
+`CommandRoute` adapter. Compilation makes zero actor calls; successful typed and
+raw invocations share the exact injected actor, while explicit denial executes no
+handler. The extension's command-only selected graph excludes Gateway, Client,
+Cache and compiler plugins. This application continues to select macros separately.

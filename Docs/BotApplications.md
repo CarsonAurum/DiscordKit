@@ -42,6 +42,12 @@ product remains in its dependency closure, but the runtime constructs no cache
 implicitly. Shared DSL retains Core/Models-only adoption; CommandDSL retains
 independent HTTP adoption. Existing products gain no dependency on BotDSL. Concrete
 adapters, compiler plugins, voice, Social and OAuth remain application choices.
+Part 15J adds [explicit external module installation and typed dependency validation](ModuleExtensions.md).
+Pass the same services and aggregate authorities into each reusable module; validated
+dependency values retain those references without creating another owner.
+Application-owned Voice, Social or OAuth interfaces may be injected explicitly,
+without adding those products to BotDSL's runtime graph. The independent DSLBot
+consumer adopts an external event extension through its own package selection.
 
 ## Own startup and terminal cleanup
 
@@ -154,7 +160,8 @@ Run root build/tests, callable documentation, graph/import isolation, scoped API
 and DocC checks; build/test/run DSLBot offline and affected command/event consumers.
 Gateway/cache changes retain the existing local cache/broadcast profiles and
 fixed-working-set 30-minute soak requirement. Those measurements cover their named
-harness and do not establish DSL handler capacity. Parts 15J-15L retain external
-extension qualification, direct-versus-DSL measurements and final release review.
+harness and do not establish DSL handler capacity. Part 15J's independent extension
+package/consumer checks cover public external adoption. Parts 15K-15L retain
+direct-versus-DSL measurements, DSL-specific soak evidence and final release review.
 Local synthetic peers do not qualify live Discord, other platforms, hardware,
 independent crypto review or production capacity.

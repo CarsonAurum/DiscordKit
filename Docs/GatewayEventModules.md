@@ -102,6 +102,10 @@ The event compilation and pipeline APIs own event delivery only. They never star
 or stop a client, consume raw shard queues, bridge interactions, read credentials
 or register commands. Explicitly adopt Part 15I's [bot runtime](BotApplications.md)
 for shared services, trusted interaction delivery and supervised client lifetime.
-Parts 15J-15L retain full extension adoption, DSL handler measurements,
-capacity/soak and final release certification. Local synthetic tests and the existing
+Part 15J adds [independent extension libraries and typed dependency validation](ModuleExtensions.md),
+including a custom typed selector and reusable event handlers in the separately
+selected `DiscordBotExtensions` product. Namespaces scope structural identity;
+event handler IDs retain their existing global uniqueness and group behavior.
+Parts 15K-15L retain DSL handler measurements, capacity/soak and final release
+certification. Local synthetic tests and the existing
 cache/broadcast soak do not qualify live Discord, other platforms or DSL capacity.

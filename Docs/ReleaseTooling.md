@@ -16,7 +16,10 @@ This command evaluates the actual root and twelve independent consumer manifests
 using `swift package dump-package`, with temporary writable caches. Part 15D adds
 the independent DSLCommands consumer, including its explicitly selected separate
 macro product. Part 15H adds the macro-free DSLEvents event consumer. Part 15I adds
-the macro-free DSLBot supervised offline host consumer. It compares
+the macro-free DSLBot supervised offline host consumer. Part 15J adds the separate
+`DiscordDSLExtensions` libraries, selected explicitly by DSLCommands and DSLBot.
+The command-only product preserves its independent graph while the event product
+explicitly selects BotDSL. It compares
 the complete shipped target DAG, direct package requirements, product roots,
 source roots and resolved Apple package identities/URLs against the reviewed
 `Tools/DiscordKitTools/release-policy.json`. Every resolved pin needs a concrete
@@ -77,6 +80,12 @@ broadens only that selected product's graph with Client, CommandDSL and the exis
 HTTP interaction owners for supervised bot lifetime, trusted Gateway callbacks and
 shared typed service access. Existing products retain independent adoption and gain
 no upward DSL dependency. Its public API and DocC join the current candidate.
+Part 15J adds namespace-qualified structural identities and validated lazy typed
+dependencies over the unchanged runtime graphs. The independent extension package
+uses only public APIs for custom codecs, policies, typed/raw commands and event
+modules; its public library products receive a separate API snapshot and DocC
+conversion. Runtime products do not acquire the package. Parts 15K-15L retain
+measurements and complete release certification.
 The root runtime API is compared
 against that frozen baseline with a pre-1.0 minor increment. The checker conservatively labels added enum cases
 and protocol requirements as requiring a major increment (a minor increment before
@@ -101,6 +110,24 @@ The macro package receives its own DocC conversion and curated reference pages.
 Keep its first full release baseline separate until Part 15L review; a first
 snapshot has no historical compatibility comparison. Compiled external fixtures
 check the actual macro signatures and generated behavior on the recorded toolchain.
+
+Part 15J uses the same separate-package snapshot mechanism for public extension
+libraries, without compiler plugins or SwiftSyntax in that package:
+
+```sh
+swift package --package-path Packages/DiscordDSLExtensions dump-symbol-graph --minimum-access-level public
+python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
+  --repository . --authoring-package Packages/DiscordDSLExtensions \
+  --symbolgraphs Packages/DiscordDSLExtensions/.build/out/symbolgraph \
+  --version 0.15.0 --output /tmp/discordkit-current-extensions-api.json
+```
+
+Build/test the package independently and run
+`python3 Tools/ci/dsl_extension_fixtures.py --repository .` for genuine external
+positive and missing/wrong dependency compile checks. Collect its two library
+products' curated DocC with the same separate-repository commands used for the
+macro package. Existing root public API comparisons remain unchanged; a separate
+first snapshot does not establish historical extension compatibility.
 
 Snapshots normalize all owned graph shards, including external-type extensions,
 and reject missing modules, conflicting duplicates and mixed platform scopes.
@@ -132,7 +159,8 @@ python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
 
 The current report covers shared declarations, typed argument decoding, command
 lowering, separate macro authoring, response ownership, signed HTTP composition,
-event modules, supervised bot lifetime and trusted Gateway interaction composition.
+event modules, supervised bot lifetime, trusted Gateway interaction composition,
+external namespace installation and validated typed dependency adoption.
 It includes only checks actually recorded for the current checkpoint. The macro
 package is audited separately from the root runtime API graphs;
 its public macro signatures are checked through compiled external consumers. Validate the

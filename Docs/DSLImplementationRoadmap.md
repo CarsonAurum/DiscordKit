@@ -12,14 +12,15 @@ partial autocomplete, exact component/modal handlers and explicit catalog reconc
 concurrency admission with explicit rejection/error mapping. **15H** adds typed Gateway
 event modules over existing bounded subscriptions and per-shard dispatch. **15I** adds
 an explicit bot application host, shared REST services and a trusted Gateway interaction
-bridge under the existing supervised client lifetime.
+bridge under the existing supervised client lifetime. **15J** adds explicit namespace
+installation, typed dependency validation and independent external extension consumers.
 These statuses do not
 imply that the complete bot authoring experience is available. See
 [shared declarations](DSL.md), [typed commands](CommandDSL.md), [macros](MacroDSL.md),
 [response ownership and HTTP applications](CommandResponses.md),
 [message/component builders](MessageBuilders.md), [command families](CommandFamilies.md),
 [policies and middleware](CommandPolicies.md), [Gateway event modules](GatewayEventModules.md),
-[supervised bot applications](BotApplications.md) and
+[supervised bot applications](BotApplications.md), [external modules and typed dependencies](ModuleExtensions.md) and
 [architecture](Architecture.md) for the implemented APIs and product boundaries.
 
 | Milestone | Status | Scope |
@@ -33,7 +34,7 @@ imply that the complete bot authoring experience is available. See
 | 15G | Implemented | Bounded named/operator policies and middleware, guild/context checks, injected authorization/concurrency and explicit rejection/error mapping. |
 | 15H | Implemented | Typed selectors/handlers, explicit intent validation, one default subscription and bounded independent groups over existing per-shard dispatch. |
 | 15I | Implemented | Explicit BotApplication host construction, shared typed services, trusted Gateway interaction callbacks over HTTP and supervised client/pipeline lifetime. |
-| 15J | Planned | Independent external extensions, typed dependency validation and consumer adoption. |
+| 15J | Implemented | Explicit namespaces, validated lazy typed dependencies and independently compiled public extension libraries reused by HTTP/Gateway consumers. |
 | 15K | Planned | Compile-time and direct-versus-DSL runtime measurements, finite budgets and DSL-specific soak evidence. |
 | 15L | Planned | Complete DSL adoption/migration guides and full Phase 15 release certification. |
 
@@ -64,6 +65,17 @@ independent. `BotRuntime` subscribes before client startup and joins client, eve
 and interaction work on terminal exit. Construction and ordinary execution register
 nothing. Trusted interaction admission comes from the client's ingestion boundary;
 publishing a synthetic envelope to an ordinary event hub grants no authenticity.
+
+Part 15J keeps the existing shared, command and bot runtime graphs unchanged.
+`ModuleNamespace` scopes only structural module/declaration identities and records
+its exact component path separately from original metadata. Wire route names and
+event handler identities keep their existing downstream uniqueness rules.
+`DependentModule` admits its installation, validates an injected Sendable
+`ModuleDependencies` value, then creates its body. Invalid dependencies produce a
+bounded diagnostic before body evaluation. The separate `DiscordDSLExtensions`
+package is consumed explicitly by the independent HTTP and Gateway examples;
+runtime targets do not depend on it or discover it automatically. Application-owned
+Voice, Social and OAuth interfaces can be injected without changing those graphs.
 
 Structural admission limits describe finite compilation resources. They do not
 establish network throughput, bot population, live Discord interoperability or

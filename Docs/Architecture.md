@@ -145,7 +145,14 @@ the existing client and pipelines, and closes/joins them on all exits. A package
 client ingestion boundary supplies interaction provenance; ordinary public event-hub
 publication cannot authenticate input. Callbacks retain existing HTTP response ownership.
 No concrete transport, compiler plugin, credential discovery or automatic registration
-is introduced. Parts 15J-15L retain their separate
+is introduced. Part 15J adds [external module namespaces and typed dependencies](ModuleExtensions.md)
+without changing those runtime graphs. Namespace component paths qualify structural
+identities while original declaration metadata and wire names remain unchanged.
+Dependency validation occurs synchronously after module admission and before lazy
+body creation. Separately selected `DiscordDSLExtensions` libraries depend downstream
+on shared/command/bot products; root products never select that package. Application-owned
+Voice, Social and OAuth interfaces can be injected into typed dependency values
+without a DSL import or runtime service locator. Parts 15K-15L retain their separate
 [implementation milestones](DSLImplementationRoadmap.md).
 
 ## Product boundaries
@@ -243,15 +250,16 @@ Owned adapters may depend on approved Apple networking packages or platform
 facilities. Their concrete dependency graph must be recorded and qualified before
 advertising support. Development generators, documentation audits, fixtures and
 test support are separate from public runtime products.
-The Client → Interactions edge remains planned; current Gateway consumers explicitly
-normalize trusted interaction dispatches into the same context and response actor.
+The Client → Interactions edge supplies only package-internal trusted ingestion;
+the explicitly selected BotDSL bridge normalizes those dispatches into the existing
+context and response actor. Ordinary event publication supplies no provenance.
 
 ## Responsibilities and invariants
 
 | Layer | Responsibility and boundary |
 | --- | --- |
 | Bits/Core | Portable value semantics, identifiers, field presence, errors, credentials, redaction and capability descriptions. No live networking. |
-| DSL | Synchronous structural module composition, bounded source diagnostics and a deterministic immutable declaration description. Core/Models only; no runtime, compiler-plugin or concrete-adapter ownership. |
+| DSL | Synchronous module composition, explicit namespaces, validated typed dependencies, bounded source diagnostics and deterministic immutable descriptions. Core/Models only; no runtime, compiler-plugin or concrete-adapter ownership. |
 | Models | Immutable, `Sendable` Discord payloads and forward-compatible variants. No client, socket or transport references. |
 | Transport | Narrow HTTP, WebSocket, datagram, IPC, ingress, stream and lifecycle contracts. Own no Discord endpoint policy. |
 | HTTP | Typed service descriptors, authentication policy, codecs, bounded bodies, rate limits, retries and pagination. No Gateway requirement. |

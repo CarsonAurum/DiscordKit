@@ -9,6 +9,37 @@ import Testing
 
 /// Local public-API equivalence and lifecycle checks. No credentials, transports or timers are run.
 @Suite(.timeLimit(.minutes(1))) struct CompilationTests {
+    /// Explicit structural namespaces preserve registration names and cannot hide wire-route collisions.
+    /// Distinct low-level names remain reusable with the same local module and contribution identities.
+    /// - Throws: Unexpected adapter construction or valid compilation errors fail this offline test.
+    @Test func namespacedExternalAdaptersRetainWireUniqueness() throws {
+        let first = try ExistingSlashCommand(id: "command", definition: .slash(name: "first", description: "First"),
+            route: CommandRoute(key: .command(name: "first")) { _ in Issue.record("Compilation executed a route") })
+        let second = try ExistingSlashCommand(id: "command", definition: .slash(name: "second", description: "Second"),
+            route: CommandRoute(key: .command(name: "second")) { _ in Issue.record("Compilation executed a route") })
+        let plan = try CommandCompilation.compile(BotDefinitionGroup([
+            ModuleNamespace(id: "one") { Module(id: "shared") { first } },
+            ModuleNamespace(id: "two") { Module(id: "shared") { second } },
+        ]))
+        #expect(plan.definitions.map(\.request.name) == ["first", "second"])
+        #expect(plan.description.declarations.map(\.declaration.id) == ["command", "command"])
+        #expect(plan.description.declarations.map(\.namespacePath) == [["one"], ["two"]])
+        #expect(throws: CommandCompilationDiagnostic(code: .duplicateRoute,
+            commandName: "first", source: first.declaration.source)) {
+            try CommandCompilation.compile(BotDefinitionGroup([
+                ModuleNamespace(id: "one") { first }, ModuleNamespace(id: "two") { first },
+            ]))
+        }
+        let family = ExistingCommandFamily(id: "family", definitions: [first.definition, second.definition],
+            routes: [first.route, second.route])
+        #expect(throws: DefinitionDiagnostic(code: .declarationLimit, source: family.declaration.source,
+            modulePath: ["shared"], namespacePath: ["one"])) {
+            try CommandCompilation.compile(ModuleNamespace(id: "one") {
+                Module(id: "shared") { family }
+            }, limits: .init(maxDeclarations: 1))
+        }
+    }
+
     /// Typed registration equals direct low-level construction, including advanced metadata and ordering.
     /// Compilation and router construction must leave both behavior and response ownership untouched.
     /// - Throws: Unexpected definition, schema or lowering errors fail the test.

@@ -5,11 +5,14 @@ let concurrency: [SwiftSetting] = [.enableUpcomingFeature("ApproachableConcurren
 
 let package = Package(name: "DSLBot", platforms: [.macOS(.v13)], dependencies: [
     .package(name: "DiscordKit", path: "../.."),
+    .package(name: "DiscordDSLExtensions", path: "../../Packages/DiscordDSLExtensions"),
 ], targets: [
     .executableTarget(name: "DSLBot", dependencies: [
         .product(name: "DiscordBotDSL", package: "DiscordKit"),
         .product(name: "DiscordClient", package: "DiscordKit"),
         .product(name: "DiscordCommandDSL", package: "DiscordKit"),
+        .product(name: "DiscordCommandExtensions", package: "DiscordDSLExtensions"),
+        .product(name: "DiscordBotExtensions", package: "DiscordDSLExtensions"),
         .product(name: "DiscordCore", package: "DiscordKit"),
         .product(name: "DiscordDSL", package: "DiscordKit"),
         .product(name: "DiscordGateway", package: "DiscordKit"),

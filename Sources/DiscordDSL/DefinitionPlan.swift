@@ -27,15 +27,17 @@ public struct DefinitionSourceLocation: Sendable, Hashable {
 /// Invalid configurations are retained until compilation, which rejects them before visiting
 /// user definitions. Zero count/byte limits are valid for intentionally empty admission.
 public struct DefinitionLimits: Sendable, Equatable {
-    /// Maximum globally distinct module instances; default 256.
+    /// Maximum module instances across all explicit namespaces; default 256.
     public let maxModules: Int
-    /// Maximum simultaneously open module/group/contribution scopes, in `1...128`; default 32.
+    /// Maximum explicit namespace installations, including empty namespaces; default 256.
+    public let maxNamespaces: Int
+    /// Maximum simultaneously open module/namespace/group/contribution scopes, in `1...128`; default 32.
     public let maxDepth: Int
     /// Maximum contributed declarations; default 4,096.
     public let maxDeclarations: Int
     /// Aggregate UTF-8 metadata and compact JSON payload bytes; default 1 MiB.
     public let maxTextBytes: Int
-    /// Maximum visited module/group/contribution scopes, including empty groups; default 16,384.
+    /// Maximum visited module/namespace/group/contribution scopes, including empty groups; default 16,384.
     public let maxStructuralNodes: Int
 
     /// Configures finite compilation admission without expanding any definitions.
@@ -45,9 +47,11 @@ public struct DefinitionLimits: Sendable, Equatable {
     ///   - maxDeclarations: Nonnegative leaf count, default 4,096.
     ///   - maxTextBytes: Nonnegative aggregate byte budget, default 1,048,576.
     ///   - maxStructuralNodes: Nonnegative visited scope count, default 16,384.
+    ///   - maxNamespaces: Nonnegative explicit namespace count, default 256; empty namespaces count.
     public init(maxModules: Int = 256, maxDepth: Int = 32, maxDeclarations: Int = 4_096,
-                maxTextBytes: Int = 1_048_576, maxStructuralNodes: Int = 16_384) {
+                maxTextBytes: Int = 1_048_576, maxStructuralNodes: Int = 16_384, maxNamespaces: Int = 256) {
         self.maxModules = maxModules
+        self.maxNamespaces = maxNamespaces
         self.maxDepth = maxDepth
         self.maxDeclarations = maxDeclarations
         self.maxTextBytes = maxTextBytes
@@ -64,10 +68,16 @@ public struct DefinitionDiagnostic: Error, Sendable, Equatable {
         case invalidLimits
         /// An ID, kind or capability is empty, exceeds 128 UTF-8 bytes, or contains ASCII controls.
         case invalidIdentity
-        /// A module ID has already been installed anywhere in the plan.
+        /// A module ID has already been installed in the same explicit namespace.
         case duplicateModuleID
-        /// A declaration ID has already been contributed anywhere in the plan.
+        /// A declaration ID has already been contributed in the same explicit namespace.
         case duplicateDeclarationID
+        /// An explicit namespace path has already been installed, including an empty namespace.
+        case duplicateNamespaceID
+        /// Explicit namespace count admission was exhausted before expanding its body.
+        case namespaceLimit
+        /// An injected dependency value rejected pure validation; its underlying error is omitted.
+        case invalidDependencies
         /// The compiler's explicitly supported kinds do not contain the declaration kind.
         case unsupportedKind
         /// An explicitly required capability is absent from the supplied host capabilities.
@@ -92,18 +102,24 @@ public struct DefinitionDiagnostic: Error, Sendable, Equatable {
     public let source: DefinitionSourceLocation
     /// Already admitted ancestor module IDs, bounded by depth and the 128-byte identity limit.
     public let modulePath: [String]
+    /// Already admitted explicit namespace IDs, independently bounded from module ancestry.
+    public let namespacePath: [String]
 
     /// Creates a diagnostic while bounding caller-supplied display context.
     /// - Parameters:
     ///   - code: Structural failure category.
     ///   - source: Coordinate; only a bounded file-label prefix is retained.
     ///   - modulePath: At most 128 ancestors, each reduced to at most 128 UTF-8 bytes.
-    public init(code: Code, source: DefinitionSourceLocation, modulePath: [String]) {
+    ///   - namespacePath: Explicit namespace ancestors, default empty; the same bounds apply.
+    public init(code: Code, source: DefinitionSourceLocation, modulePath: [String], namespacePath: [String] = []) {
         self.code = code
         self.source = DefinitionSourceLocation(
             fileID: Self.boundedLabel(source.fileID, maximumBytes: 256),
             line: source.line, column: source.column)
         self.modulePath = modulePath.prefix(128).map {
+            Self.boundedLabel($0, maximumBytes: 128)
+        }
+        self.namespacePath = namespacePath.prefix(128).map {
             Self.boundedLabel($0, maximumBytes: 128)
         }
     }
@@ -130,7 +146,7 @@ public struct DefinitionDiagnostic: Error, Sendable, Equatable {
 /// It is useful without a command runtime: applications can validate and inspect a catalog of
 /// their own kinds. This value grants no protocol support, permissions, execution or I/O.
 public struct RawDefinitionContribution: DefinitionContribution, Sendable, Equatable {
-    /// Globally unique, explicit stable declaration instance ID, validated during compilation.
+    /// Explicit stable declaration instance ID, unique within its namespace during compilation.
     public let id: String
     /// Application-defined kind, accepted only when explicitly listed in `supportedKinds`.
     public let kind: String
@@ -147,7 +163,7 @@ public struct RawDefinitionContribution: DefinitionContribution, Sendable, Equat
 
     /// Records metadata without validating, registering or executing it.
     /// - Parameters:
-    ///   - id: Nonempty stable identity, at most 128 UTF-8 bytes without ASCII controls.
+    ///   - id: Nonempty stable identity unique within its explicit namespace, at most 128 UTF-8 bytes without ASCII controls.
     ///   - kind: Nonempty compiler-supported kind with the same identity restrictions.
     ///   - requiredCapabilities: Explicit capability identities; default empty.
     ///   - text: Metadata text, default empty; no escaping or wire interpretation occurs.
@@ -166,7 +182,7 @@ public struct RawDefinitionContribution: DefinitionContribution, Sendable, Equat
 
     /// Records raw metadata while capturing the author's call site without opening source files.
     /// - Parameters:
-    ///   - id: Globally unique stable ID, validated at compilation; nonempty and at most 128 UTF-8 bytes.
+    ///   - id: Stable ID unique in its namespace, validated at compilation; nonempty and at most 128 UTF-8 bytes.
     ///   - kind: Explicit downstream kind; compilation fails unless the host supports it.
     ///   - requiredCapabilities: Explicit host requirements, default empty; no capability is inferred.
     ///   - text: Verbatim metadata text, default empty, counted against aggregate UTF-8 admission.
@@ -187,10 +203,14 @@ public struct RawDefinitionContribution: DefinitionContribution, Sendable, Equat
 
 /// An installed module in pre-order expansion order.
 public struct PlannedModule: Sendable, Equatable {
-    /// Explicit instance identity, unique throughout the compiled plan.
+    /// Original explicit instance identity, unique within its namespace.
     public let id: String
     /// Ancestor IDs followed by this module's ID.
     public let path: [String]
+    /// Explicit namespace ancestry; no module or wire name is rewritten.
+    public let namespacePath: [String]
+    /// Collision-safe qualified identity retaining each namespace as a distinct component.
+    public var identity: DefinitionIdentity { DefinitionIdentity(namespacePath: namespacePath, id: id) }
     /// Original module coordinate.
     public let source: DefinitionSourceLocation
 }
@@ -201,6 +221,12 @@ public struct PlannedDeclaration: Sendable, Equatable {
     public let declaration: RawDefinitionContribution
     /// Ancestor module identities; empty for top-level contributions.
     public let modulePath: [String]
+    /// Explicit namespace ancestry, independent of the original declaration and module path.
+    public let namespacePath: [String]
+    /// Collision-safe qualified identity; the original declaration ID is retained verbatim.
+    public var identity: DefinitionIdentity {
+        DefinitionIdentity(namespacePath: namespacePath, id: declaration.id)
+    }
 }
 
 /// Comparable description of one compilation. Equality compares exact metadata, locations,
@@ -208,11 +234,13 @@ public struct PlannedDeclaration: Sendable, Equatable {
 public struct DefinitionDescription: Sendable, Equatable {
     /// Module installations in deterministic pre-order.
     public let modules: [PlannedModule]
+    /// Explicit namespaces in deterministic pre-order, including empty installations.
+    public let namespaces: [PlannedNamespace]
     /// Contributions in deterministic depth-first source order.
     public let declarations: [PlannedDeclaration]
-    /// Admitted metadata/payload bytes. Repeated source labels count once per declaration/module.
+    /// Admitted metadata/payload bytes. Repeated source labels count once per declaration/module/namespace.
     public let textBytes: Int
-    /// Visited structural scopes, including modules, builder groups and contributions.
+    /// Visited structural scopes, including modules, namespaces, builder groups and contributions.
     public let structureCount: Int
 }
 
@@ -247,7 +275,7 @@ public struct DefinitionPlan: Sendable {
         do { try definition.collect(into: &collector) }
         catch { throw collector.failure ?? error }
         if let failure = collector.failure { throw failure }
-        return Self(description: DefinitionDescription(modules: collector.modules,
+        return Self(description: DefinitionDescription(modules: collector.modules, namespaces: collector.namespaces,
             declarations: collector.declarations, textBytes: collector.textBytes,
             structureCount: collector.structureCount), contributions: collector.contributions)
     }
@@ -256,19 +284,22 @@ public struct DefinitionPlan: Sendable {
 /// Compiler-owned mutable admission context exposed only for synchronous extension expansion.
 /// Obtain one through `BotDefinition.collect(into:)`; there is no public initializer or plan
 /// extraction. Composite extensions must use `withStructure` and contribute through `append`
-/// or `withModule`, propagate errors, and avoid retaining/copying the collector for later work.
+/// or `withModule`/`withNamespace`, propagate errors, and avoid retaining/copying the collector for later work.
 public struct DefinitionCollector: Sendable {
     private let supportedKinds: Set<String>
     private let capabilities: Set<String>
     private let limits: DefinitionLimits
     fileprivate var modules: [PlannedModule] = []
+    fileprivate var namespaces: [PlannedNamespace] = []
     fileprivate var declarations: [PlannedDeclaration] = []
     fileprivate var contributions: [any DefinitionContribution] = []
     fileprivate var textBytes = 0
     fileprivate var structureCount = 0
     fileprivate var failure: (any Error)?
-    private var moduleIDs: Set<String> = []
-    private var declarationIDs: Set<String> = []
+    private var moduleIDs: Set<DefinitionIdentity> = []
+    private var declarationIDs: Set<DefinitionIdentity> = []
+    private var namespaceIDs: Set<[String]> = []
+    private var namespacePath: [String] = []
     private var modulePath: [String] = []
     private var depth = 0
 
@@ -286,7 +317,7 @@ public struct DefinitionCollector: Sendable {
     /// Rejects invalid limits before any custom definition code is visited.
     /// - Throws: `DefinitionDiagnostic` with `invalidLimits` for negative budgets or unsafe depth.
     fileprivate mutating func validateLimits() throws {
-        guard limits.maxModules >= 0, (1...128).contains(limits.maxDepth),
+        guard limits.maxModules >= 0, limits.maxNamespaces >= 0, (1...128).contains(limits.maxDepth),
               limits.maxDeclarations >= 0, limits.maxTextBytes >= 0, limits.maxStructuralNodes >= 0 else {
             throw reject(.invalidLimits, source: .init(fileID: "<configuration>", line: 0, column: 0))
         }
@@ -315,7 +346,7 @@ public struct DefinitionCollector: Sendable {
 
     /// Admits an explicit module instance before expanding its body.
     /// - Parameters:
-    ///   - id: Globally unique stable ID with the identity restrictions documented by the raw leaf.
+    ///   - id: Stable ID unique within the explicit namespace, with the raw leaf identity restrictions.
     ///   - source: Module source coordinate, counted in the aggregate text budget.
     ///   - body: Synchronous expansion; not called if module, depth, identity or byte admission fails.
     /// - Throws: Structural/duplicate/identity errors or the body's error; ancestor scope is always restored.
@@ -323,16 +354,70 @@ public struct DefinitionCollector: Sendable {
                                    _ body: (inout DefinitionCollector) throws -> Void) throws {
         try withStructure(source: source) { collector in
             try collector.validateIdentity(id, source: source)
-            guard !collector.moduleIDs.contains(id) else { throw collector.reject(.duplicateModuleID, source: source) }
+            let identity = DefinitionIdentity(namespacePath: collector.namespacePath, id: id)
+            guard !collector.moduleIDs.contains(identity) else { throw collector.reject(.duplicateModuleID, source: source) }
             guard collector.modules.count < collector.limits.maxModules else { throw collector.reject(.moduleLimit, source: source) }
             try collector.charge(id, source: source)
             try collector.charge(source.fileID, source: source)
-            collector.moduleIDs.insert(id)
+            collector.moduleIDs.insert(identity)
             collector.modulePath.append(id)
-            collector.modules.append(PlannedModule(id: id, path: collector.modulePath, source: source))
+            collector.modules.append(PlannedModule(id: id, path: collector.modulePath,
+                namespacePath: collector.namespacePath, source: source))
             defer { collector.modulePath.removeLast() }
             try body(&collector)
         }
+    }
+
+    /// Admits an explicit namespace before expanding its children, without rewriting their metadata.
+    /// - Parameters:
+    ///   - id: Nonempty stable component, at most 128 UTF-8 bytes and without ASCII controls.
+    ///     Components remain separate; delimiters in IDs never alias nested namespace paths.
+    ///   - source: Original namespace coordinate, counted once against aggregate text admission.
+    ///   - body: Ordered synchronous expansion, called only after identity, count, depth and byte admission.
+    /// - Throws: Invalid or duplicate namespace identity, exhausted namespace/structure/depth/text
+    ///   admission, or the body's error. Namespace ancestry is restored on every exit; failures remain terminal.
+    ///
+    /// Each full namespace path may be installed once throughout a plan, even when empty or placed
+    /// in different module bodies. Modules do not implicitly create namespaces. Module and declaration
+    /// uniqueness uses the exact namespace component array plus the original local identity.
+    public mutating func withNamespace(id: String, source: DefinitionSourceLocation,
+                                      _ body: (inout DefinitionCollector) throws -> Void) throws {
+        try withStructure(source: source) { collector in
+            try collector.validateIdentity(id, source: source)
+            let path = collector.namespacePath + [id]
+            guard !collector.namespaceIDs.contains(path) else {
+                throw collector.reject(.duplicateNamespaceID, source: source)
+            }
+            guard collector.namespaces.count < collector.limits.maxNamespaces else {
+                throw collector.reject(.namespaceLimit, source: source)
+            }
+            try collector.charge(id, source: source)
+            try collector.charge(source.fileID, source: source)
+            collector.namespaceIDs.insert(path)
+            collector.namespacePath.append(id)
+            collector.namespaces.append(PlannedNamespace(id: id, path: path,
+                modulePath: collector.modulePath, source: source))
+            defer { collector.namespacePath.removeLast() }
+            try body(&collector)
+        }
+    }
+
+    /// Performs pure validation of an explicitly injected typed dependency value.
+    /// - Parameters:
+    ///   - dependencies: Value or actor references supplied by the application; no type lookup,
+    ///     reflection, global registry, task, suspension or I/O is performed by owned code.
+    ///   - source: Module coordinate used if validation fails; dependency values are never described.
+    /// - Throws: The collector's existing terminal error, or bounded `invalidDependencies` when
+    ///   validation throws. The original error is intentionally discarded to avoid exposing secrets.
+    ///
+    /// External modules should call this inside `withModule`, before evaluating child factories.
+    /// Validation must terminate synchronously and inspect only local configuration; arbitrary conformer
+    /// code is not sandboxed. A caught validation failure still poisons the entire compilation.
+    public mutating func validateDependencies<Dependencies: ModuleDependencies>(
+        _ dependencies: Dependencies, source: DefinitionSourceLocation) throws {
+        if let failure { throw failure }
+        do { try dependencies.validate() }
+        catch { throw reject(.invalidDependencies, source: source) }
     }
 
     /// Admits and retains one typed leaf without invoking any execution behavior.
@@ -348,7 +433,8 @@ public struct DefinitionCollector: Sendable {
             let raw = contribution.declaration
             try collector.validateIdentity(raw.id, source: raw.source)
             try collector.validateIdentity(raw.kind, source: raw.source)
-            guard !collector.declarationIDs.contains(raw.id) else { throw collector.reject(.duplicateDeclarationID, source: raw.source) }
+            let identity = DefinitionIdentity(namespacePath: collector.namespacePath, id: raw.id)
+            guard !collector.declarationIDs.contains(identity) else { throw collector.reject(.duplicateDeclarationID, source: raw.source) }
             guard collector.supportedKinds.contains(raw.kind) else { throw collector.reject(.unsupportedKind, source: raw.source) }
             try collector.charge(raw.id, source: raw.source)
             try collector.charge(raw.kind, source: raw.source)
@@ -382,8 +468,9 @@ public struct DefinitionCollector: Sendable {
             } catch {
                 throw collector.reject(.invalidPayload, source: raw.source)
             }
-            collector.declarationIDs.insert(raw.id)
-            collector.declarations.append(PlannedDeclaration(declaration: raw, modulePath: collector.modulePath))
+            collector.declarationIDs.insert(identity)
+            collector.declarations.append(PlannedDeclaration(declaration: raw, modulePath: collector.modulePath,
+                namespacePath: collector.namespacePath))
             collector.contributions.append(contribution)
         }
     }
@@ -503,7 +590,7 @@ public struct DefinitionCollector: Sendable {
     ///   - source: Original source coordinate, truncated by the diagnostic initializer.
     /// - Returns: The bounded diagnostic for immediate throwing; no payload/text is copied.
     private mutating func reject(_ code: DefinitionDiagnostic.Code, source: DefinitionSourceLocation) -> DefinitionDiagnostic {
-        let diagnostic = DefinitionDiagnostic(code: code, source: source, modulePath: modulePath)
+        let diagnostic = DefinitionDiagnostic(code: code, source: source, modulePath: modulePath, namespacePath: namespacePath)
         if failure == nil { failure = diagnostic }
         return diagnostic
     }

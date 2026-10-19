@@ -35,7 +35,14 @@ policy ordering, rejection, cancellation and terminal-ownership tests. Part 15H 
 typed Gateway event compilation, explicit intents, ordered bounded dispatch and the
 independent DSLEvents offline consumer. Part 15I adds supervised client/event/interaction
 lifecycle tests and the independently compiled DSLBot offline consumer, whose synthetic
-host uses no credentials or external sockets. Workflow
+host uses no credentials or external sockets. Part 15J tests the separate
+`DiscordDSLExtensions` libraries and genuine external positive/negative dependency
+compile fixtures. DSLCommands and macro-free DSLBot import reusable command/event
+modules through their explicitly selected products; shared actor state, custom
+codecs/policies and raw command adoption execute only in their offline modes.
+Graph auditing includes the separate package's exact imports and product selections;
+its public API and DocC are collected independently from runtime and macro APIs.
+Parts 15K-15L retain measured DSL capacity and final release certification. Workflow
 definitions do not establish a passed platform run.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to

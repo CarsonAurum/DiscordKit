@@ -1,5 +1,78 @@
 {
   "authoringPackages": {
+    "Packages/DiscordDSLExtensions": {
+      "directRequirements": {},
+      "externalPackages": {},
+      "forbiddenRuntimeTargets": [
+        "DiscordActivities",
+        "DiscordApplePlatform",
+        "DiscordCertifiedDevices",
+        "DiscordCommerce",
+        "DiscordDAVE",
+        "DiscordDSLMacros",
+        "DiscordDSLMacrosPlugin",
+        "DiscordFoundationTransport",
+        "DiscordGameServices",
+        "DiscordKit",
+        "DiscordMLS",
+        "DiscordMedia",
+        "DiscordNIOTransport",
+        "DiscordOAuth",
+        "DiscordRPC",
+        "DiscordSocial",
+        "DiscordTestSupport",
+        "DiscordUnixPlatform",
+        "DiscordVoice",
+        "DiscordVoiceCodecs",
+        "DiscordVoiceCrypto"
+      ],
+      "products": {
+        "DiscordBotExtensions": [
+          "DiscordBotExtensions"
+        ],
+        "DiscordCommandExtensions": [
+          "DiscordCommandExtensions"
+        ]
+      },
+      "targetPaths": {
+        "DiscordBotExtensions": "Sources/DiscordBotExtensions",
+        "DiscordCommandExtensions": "Sources/DiscordCommandExtensions",
+        "DiscordCommandExtensionsTests": "Tests/DiscordCommandExtensionsTests"
+      },
+      "targetSystemImports": {
+        "DiscordCommandExtensionsTests": [
+          "Testing"
+        ]
+      },
+      "targetTypes": {
+        "DiscordBotExtensions": "regular",
+        "DiscordCommandExtensions": "regular",
+        "DiscordCommandExtensionsTests": "test"
+      },
+      "targets": {
+        "DiscordBotExtensions": [
+          "DiscordKit/DiscordBotDSL",
+          "DiscordKit/DiscordDSL",
+          "DiscordKit/DiscordGateway",
+          "DiscordKit/DiscordModels"
+        ],
+        "DiscordCommandExtensions": [
+          "DiscordKit/DiscordCommandDSL",
+          "DiscordKit/DiscordCommands",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordDSL",
+          "DiscordKit/DiscordInteractions",
+          "DiscordKit/DiscordModels"
+        ],
+        "DiscordCommandExtensionsTests": [
+          "DiscordCommandExtensions",
+          "DiscordKit/DiscordCommandDSL",
+          "DiscordKit/DiscordCore",
+          "DiscordKit/DiscordDSL",
+          "DiscordKit/DiscordModels"
+        ]
+      }
+    },
     "Packages/DiscordDSLMacros": {
       "directRequirements": {
         "swift-syntax": {
@@ -118,6 +191,9 @@
       }
     },
     "Examples/DSLBot": {
+      "authoringPackages": {
+        "DiscordDSLExtensions": "Packages/DiscordDSLExtensions"
+      },
       "forbidden": [
         "DiscordActivities",
         "DiscordApplePlatform",
@@ -143,6 +219,8 @@
       ],
       "targets": {
         "DSLBot": [
+          "DiscordDSLExtensions/DiscordBotExtensions",
+          "DiscordDSLExtensions/DiscordCommandExtensions",
           "DiscordKit/DiscordBotDSL",
           "DiscordKit/DiscordClient",
           "DiscordKit/DiscordCommandDSL",
@@ -158,12 +236,8 @@
     },
     "Examples/DSLCommands": {
       "authoringPackages": {
+        "DiscordDSLExtensions": "Packages/DiscordDSLExtensions",
         "DiscordDSLMacros": "Packages/DiscordDSLMacros"
-      },
-      "externalProducts": {
-        "swift-crypto": [
-          "Crypto"
-        ]
       },
       "directRequirements": {
         "swift-crypto": {
@@ -175,6 +249,11 @@
           ]
         }
       },
+      "externalProducts": {
+        "swift-crypto": [
+          "Crypto"
+        ]
+      },
       "forbidden": [
         "DiscordCache",
         "DiscordClient",
@@ -183,6 +262,7 @@
       ],
       "targets": {
         "DSLCommands": [
+          "DiscordDSLExtensions/DiscordCommandExtensions",
           "DiscordDSLMacros/DiscordDSLMacros",
           "DiscordKit/DiscordCommandDSL",
           "DiscordKit/DiscordCore",

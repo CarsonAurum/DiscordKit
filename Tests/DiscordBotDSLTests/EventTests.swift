@@ -86,6 +86,25 @@ private actor EventPipelineReference {
 /// Exercises independently authored Gateway handlers through owned offline hubs and deterministic gates.
 @Suite("Gateway event DSL", .timeLimit(.minutes(1)))
 struct EventTests {
+    /// Structural namespaces cannot duplicate the existing runtime dispatcher handler identity.
+    /// Rejection occurs at compilation, before creating a subscription or invoking user callbacks.
+    /// - Throws: Unexpected handler construction or diagnostic-capture errors fail the test.
+    @Test func namespacesPreserveRuntimeHandlerUniqueness() throws {
+        let first = FixtureEventHandler(handlerID: "shared", selector: GatewayEventSelector<GatewayEvent>.raw) { _, _ in
+            Issue.record("Compilation executed a handler")
+        }
+        let second = FixtureEventHandler(handlerID: "shared", selector: GatewayEventSelector<GatewayEvent>.raw,
+            eventGroup: "independent") { _, _ in Issue.record("Compilation executed a handler") }
+        let diagnostic = try Self.compilationFailure {
+            try EventCompilation.compile(BotDefinitionGroup([
+                ModuleNamespace(id: "one") { first }, ModuleNamespace(id: "two") { second },
+            ]), intents: [])
+        }
+        #expect(diagnostic.code == .duplicateHandlerID)
+        #expect(diagnostic.handlerID == "shared")
+        #expect(diagnostic.source == second.sourceLocation)
+    }
+
     /// Builds a bounded synthetic event while retaining exact complete shard and connection provenance.
     /// - Parameters:
     ///   - sequence: Nonnegative fixture sequence, default one.

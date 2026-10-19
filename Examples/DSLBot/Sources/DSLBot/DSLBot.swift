@@ -1,6 +1,8 @@
 import DiscordBotDSL
+import DiscordBotExtensions
 import DiscordClient
 import DiscordCommandDSL
+import DiscordCommandExtensions
 import DiscordCore
 import DiscordDSL
 import DiscordGateway
@@ -20,88 +22,8 @@ struct BotDemoResult: Sendable {
     let registrationCount: Int
     let callbacksBeforeRun: Int
     let ownedResources: Int
-}
-
-/// Empty command arguments are rebuilt for every invocation through the public schema extension point.
-private struct PingArguments: CommandArguments {
-    /// Describes no options and captures a constructor without executing it during compilation.
-    /// - Throws: Existing finite schema validation errors.
-    static var schema: CommandArgumentSchema<Self> {
-        /// Captures the fresh empty-value constructor without invoking it.
-        /// - Returns: A validated finite schema with no options.
-        /// - Throws: Existing schema admission failures.
-        get throws { try .init(options: []) { _ in Self() } }
-    }
-}
-
-/// Handwritten external command protocol conformance with explicit existing response ownership.
-private struct PingCommand: ManualSlashCommandHandler {
-    let transcript: BotTranscript
-    let command = SlashCommandMetadata(name: "ping", description: "Check the offline supervised bot")
-
-    /// Replies once through the existing responder, then releases the synthetic peer's next dispatch.
-    /// - Parameters:
-    ///   - context: Trusted Gateway invocation with the existing receipt-relative response owner.
-    ///   - arguments: Fresh empty typed invocation value.
-    /// - Throws: Existing response validation, cancellation, HTTP admission or delivery failures.
-    func execute(_ context: InteractionContext, arguments: PingArguments) async throws {
-        let response = try MessageResponse(visibility: .ephemeral) { Text("Pong!") }
-        try await context.responder.reply(response.message)
-        await transcript.record("ping")
-        await transcript.commandCompleted.open()
-    }
-}
-
-/// Reusable external module owns declarations and initializer-injected services, without runtime work.
-private struct PingModule: BotModule {
-    let moduleID = "example.commands"
-    let ping: SlashCommand<PingCommand>
-    /// Contributes one already validated command without registering or executing it.
-    @BotBuilder var body: some BotDefinition { ping }
-}
-
-/// Typed READY observation demonstrates ordinary event delivery beside private command ingress.
-private struct ReadyHandler: GatewayEventHandler {
-    let handlerID = "example.ready"
-    let selector = GatewayEventSelector<GatewayReady>.ready
-    let transcript: BotTranscript
-    /// Records the first authenticated dispatch, preserving module order without owning a connection.
-    /// - Parameters:
-    ///   - event: Existing partial READY value; resource availability is not inferred.
-    ///   - context: Original source provenance, unused by this finite observation.
-    func handle(_ event: GatewayReady, context: GatewayEventContext) async throws {
-        await transcript.record("ready")
-        await transcript.readyHandled.open()
-    }
-}
-
-/// A synthetic future dispatch requests nonjoining stop only after the command's reply completed.
-private struct StopHandler: GatewayEventHandler {
-    let handlerID = "example.stop"
-    let selector = GatewayEventSelector<GatewayUnknownEvent>.unknown
-    let transcript: BotTranscript
-    let reference: RuntimeReference
-    /// Stops its own host without joining the callback currently executing in that host.
-    /// - Parameters:
-    ///   - event: Existing unknown-event projection of the synthetic completion event.
-    ///   - context: Exact shard provenance; not used as authorization evidence.
-    func handle(_ event: GatewayUnknownEvent, context: GatewayEventContext) async throws {
-        guard event.name == "OFFLINE_STOP" else { return }
-        await transcript.record("stop")
-        await reference.requestStop()
-    }
-}
-
-/// A second reusable module shares only explicitly injected application services with the command module.
-private struct StatusModule: BotModule {
-    let moduleID = "example.events"
-    let transcript: BotTranscript
-    let reference: RuntimeReference
-    /// Preserves READY-before-completion handler ordering through the existing default pipeline.
-    @BotBuilder var body: some BotDefinition {
-        ReadyHandler(transcript: transcript)
-        StopHandler(transcript: transcript, reference: reference)
-    }
+    let extensionAuthorizations: Int
+    let extensionExecutions: Int
 }
 
 /// `@main`-compatible host composition with no ambient credential or concrete network adapter selection.
@@ -138,8 +60,13 @@ private struct StatusModule: BotModule {
         let labels = await fixture.transcript.snapshot()
         guard labels == ["ready", "ping", "stop"], await fixture.http.callbackCount == 1,
               await fixture.http.registrationCount == 0 else { throw BotDemoFailure.incomplete }
+        let extensionEvidence = await fixture.counter.snapshot()
+        guard extensionEvidence.authorizations == 1, extensionEvidence.executions == 1 else {
+            throw BotDemoFailure.incomplete
+        }
         return BotDemoResult(labels: labels, callbackCount: await fixture.http.callbackCount,
-            registrationCount: await fixture.http.registrationCount, callbacksBeforeRun: before, ownedResources: owned)
+            registrationCount: await fixture.http.registrationCount, callbacksBeforeRun: before, ownedResources: owned,
+            extensionAuthorizations: extensionEvidence.authorizations, extensionExecutions: extensionEvidence.executions)
     }
 }
 
@@ -170,6 +97,7 @@ private actor RuntimeReference {
 private struct BotExampleFixture {
     let clock = ContinuousClock()
     let transcript = BotTranscript()
+    let counter = ExtensionCounter()
     let reference = RuntimeReference()
     let http = DemoHTTP()
     let socket: DemoSocket
@@ -200,9 +128,24 @@ private struct BotExampleFixture {
     /// - Returns: Inert host with an authenticated-client-only command ingress and one event subscription.
     /// - Throws: Existing declaration, response admission, bridge configuration or intent validation failures.
     func makeRuntime() async throws -> BotRuntime {
-        let declaration = try SlashCommand(id: "example.ping", handler: PingCommand(transcript: transcript))
-        let commands = try CommandCompilation.compile(PingModule(ping: declaration))
-        let events = try EventCompilation.compile(StatusModule(transcript: transcript, reference: reference), intents: [.guilds])
+        let dependencies = ExtensionDependencies(counter: counter, completed: {
+            await transcript.record("ping")
+            await transcript.commandCompleted.open()
+        })
+        let module = try ExtensionCommands(id: "commands", dependencies: dependencies)
+        let commands = try CommandCompilation.compile(ModuleNamespace(id: "external") { module })
+            .applying(ExtensionCommands.policies(dependencies: dependencies))
+        let before = await counter.snapshot()
+        guard before.authorizations == 0, before.executions == 0 else { throw BotDemoFailure.incomplete }
+        let eventDependencies = ExtensionEventDependencies(ready: {
+            await transcript.record("ready")
+            await transcript.readyHandled.open()
+        }, stop: {
+            await transcript.record("stop")
+            await reference.requestStop()
+        })
+        let eventModule = ExtensionEvents(id: "events", dependencies: eventDependencies)
+        let events = try EventCompilation.compile(ModuleNamespace(id: "external") { eventModule }, intents: [.guilds])
         let clock = clock, http = http
         let initialCoordinator = RateLimitCoordinator(clock: clock)
         let continuationCoordinator = RateLimitCoordinator(clock: clock)
@@ -288,7 +231,7 @@ private actor DemoHTTP: HTTPTransport {
             guard request.method == "POST", request.url.path == "/api/v10/interactions/1/synthetic-offline/callback",
                   callbackCount == 0 else { throw BotDemoFailure.unexpectedRequest }
             let bytes = try await ResponseBody.collect(request.body, maximumBytes: 4096)
-            let expected = try JSONValue.parse(#"{"type":4,"data":{"content":"Pong!","flags":64,"allowed_mentions":{"parse":[],"replied_user":false}}}"#)
+            let expected = try JSONValue.parse(#"{"type":4,"data":{"content":"Code: ABC","flags":64,"allowed_mentions":{"parse":[],"replied_user":false}}}"#)
             guard try JSONValue.parse(bytes) == expected else { throw BotDemoFailure.callbackMismatch }
             callbackCount += 1
             return HTTPResponse(status: 204)
@@ -348,10 +291,12 @@ private actor DemoSocket: WebSocketConnection {
             return .text(#"{"op":0,"s":1,"t":"READY","d":{"v":10,"user":{"id":"42","username":"offline","discriminator":"0","global_name":null,"avatar":null},"guilds":[],"session_id":"offline","resume_gateway_url":"wss://gateway.discord.gg","application":{"id":"2","flags":0}}}"#)
         case 2:
             try await ready.wait()
-            return .text(#"{"op":0,"s":2,"t":"INTERACTION_CREATE","d":{"id":"1","application_id":"2","type":2,"token":"synthetic-offline","version":1,"data":{"id":"3","name":"ping","type":1},"app_permissions":"0","entitlements":[],"authorizing_integration_owners":{},"attachment_size_limit":1000}}"#)
+            return .text(#"{"op":0,"s":2,"t":"INTERACTION_CREATE","d":{"id":"1","application_id":"2","type":2,"token":"synthetic-offline","version":1,"data":{"id":"3","name":"extension","type":1,"options":[{"name":"code","type":3,"value":"ABC"}]},"app_permissions":"0","entitlements":[],"authorizing_integration_owners":{},"attachment_size_limit":1000}}"#)
         case 3:
             try await completed.wait()
-            return .text(#"{"op":0,"s":3,"t":"OFFLINE_STOP","d":{}}"#)
+            return .text(#"{"op":0,"s":3,"t":"OFFLINE_IGNORED","d":{}}"#)
+        case 4:
+            return .text(#"{"op":0,"s":4,"t":"OFFLINE_STOP","d":{}}"#)
         default: try await idle.wait(); return nil
         }
     }

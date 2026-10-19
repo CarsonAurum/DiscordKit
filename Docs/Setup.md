@@ -52,6 +52,14 @@ comes from the client's package-internal ingestion boundary, and callbacks retai
 existing HTTP response ownership. Ordinary synthetic event publication cannot
 authenticate an interaction.
 
+Select reusable extension libraries as explicit downstream package products.
+Inject typed dependencies through ordinary initializers; use `DependentModule`
+when local validation must precede body creation and `ModuleNamespace` for distinct
+structural installations. Root runtime products select no extension automatically.
+The [extension guide](ModuleExtensions.md) and independent
+[extension package](../Packages/DiscordDSLExtensions/README.md) show command-only and
+bot adoption while retaining the existing host and service owners.
+
 Only CommandsApp, DSLCommands in default/`--offline` mode, DSLEvents, DSLBot, VoiceBot, RPCApp,
 ActivityHost, OAuthApp and SocialApp are safe
 offline demonstrations by design. RESTOnly/GatewayBot can use credentials when

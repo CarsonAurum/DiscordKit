@@ -15,16 +15,16 @@ public protocol BotDefinition: Sendable {
 
 /// A reusable, explicitly identified module whose body consists of ordinary Swift definitions.
 /// Identity is supplied by the author and is independent of type names, reflection or installation
-/// order. Repeated instances need distinct stable IDs throughout a compiled plan.
+/// order. Repeated instances need distinct stable IDs or explicit namespaces throughout a compiled plan.
 /// Inject dependencies through the conforming type's initializer; body evaluation remains synchronous.
 public protocol BotModule: BotDefinition {
     /// Concrete definition body produced by ordinary Swift or `BotBuilder` syntax.
     associatedtype Body: BotDefinition
 
-    /// Stable, explicit identity, globally unique throughout the compiled plan.
+    /// Stable, explicit identity, unique within the installed explicit namespace.
     var moduleID: String {
         /// Returns the stable author-supplied module identity without deriving or registering it.
-        /// - Returns: An identity validated for global uniqueness, length and controls during compilation.
+        /// - Returns: An identity validated for namespace-local uniqueness, length and controls during compilation.
         get
     }
 
@@ -93,7 +93,7 @@ public extension DefinitionContribution {
 /// network operations, registration or device work. Collection later admits the module before
 /// traversing the stored body and retains source order across nested modules.
 public struct Module<Body: BotDefinition>: BotModule {
-    /// Author-supplied stable identity, globally unique throughout the compiled plan.
+    /// Author-supplied stable identity, unique within the installed explicit namespace.
     public let moduleID: String
     /// Explicitly captured module declaration location.
     public let sourceLocation: DefinitionSourceLocation
@@ -118,7 +118,7 @@ public struct Module<Body: BotDefinition>: BotModule {
 
     /// Constructs a module using an already captured diagnostic location.
     /// - Parameters:
-    ///   - id: Stable module identity, validated as globally unique during compilation.
+    ///   - id: Stable module identity, validated as namespace-local unique during compilation.
     ///   - source: Exact diagnostic coordinate; unknown coordinates may use zero line/column.
     ///   - body: Finite synchronous builder evaluated once at initialization. It must not perform
     ///     I/O, start tasks or invoke handlers; collected declarations are validated later.

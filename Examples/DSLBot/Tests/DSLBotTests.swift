@@ -14,6 +14,8 @@ struct DSLBotTests {
         #expect(result.registrationCount == 0)
         #expect(result.callbacksBeforeRun == 0)
         #expect(result.ownedResources == 0)
+        #expect(result.extensionAuthorizations == 1)
+        #expect(result.extensionExecutions == 1)
     }
 
     /// The protocol's public default `main` invokes its explicit inert factory then joins the entire run.

@@ -5,6 +5,8 @@
 ### Instance properties
 
 - ``DiscordDSL/PlannedModule/id``
+- ``DiscordDSL/PlannedModule/identity``
+- ``DiscordDSL/PlannedModule/namespacePath``
 - ``DiscordDSL/PlannedModule/path``
 - ``DiscordDSL/PlannedModule/source``
 

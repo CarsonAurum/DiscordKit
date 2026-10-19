@@ -171,7 +171,7 @@ public enum CommandCompilation {
     ///   - limits: Shared module/depth/declaration/text/node bounds, including every complete registration
     ///     and exact route snapshot. Definitions and routes are each capped by maxDeclarations as well.
     /// - Returns: Immutable registration/route output with one source of typed command metadata.
-    /// - Throws: Structural diagnostics, duplicate-route/unsupported-contribution diagnostics, invalid
+    /// - Throws: Structural diagnostics retaining explicit namespace ancestry, duplicate-route/unsupported-contribution diagnostics, invalid
     ///   third-party snapshots, missing execution/autocomplete coverage, mismatched partial schemas,
     ///   or custom collector failures. Registration identity includes command type; components/modals
     ///   occupy separate namespaces and never enter registration reconciliation. No partial plan escapes.
@@ -224,7 +224,8 @@ public enum CommandCompilation {
             guard admittedRoutes.count <= limits.maxDeclarations - routes.count,
                   admittedDefinitions.count <= limits.maxDeclarations - definitions.count else {
                 throw DefinitionDiagnostic(code: .declarationLimit, source: metadata.source,
-                    modulePath: plan.description.declarations[index].modulePath)
+                    modulePath: plan.description.declarations[index].modulePath,
+                    namespacePath: plan.description.declarations[index].namespacePath)
             }
             for definition in admittedDefinitions {
                 let key = try CommandRouteKey.command(name: definition.request.name, type: definition.request.type)

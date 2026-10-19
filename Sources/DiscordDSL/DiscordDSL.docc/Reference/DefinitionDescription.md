@@ -6,6 +6,7 @@
 
 - ``DiscordDSL/DefinitionDescription/declarations``
 - ``DiscordDSL/DefinitionDescription/modules``
+- ``DiscordDSL/DefinitionDescription/namespaces``
 - ``DiscordDSL/DefinitionDescription/structureCount``
 - ``DiscordDSL/DefinitionDescription/textBytes``
 

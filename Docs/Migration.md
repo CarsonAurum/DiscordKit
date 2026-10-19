@@ -1,6 +1,6 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A-15I. The
+The current authoring candidate is **0.15.0**, covering Parts 15A-15J. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
@@ -85,6 +85,15 @@ cleanup. Keep authorities shared across modules and client replacements. The bri
 receives trusted input only from client ingestion, while responses remain HTTP
 callbacks. Continue to synchronize commands explicitly. The [DSLBot example](../Examples/DSLBot/README.md)
 exercises synthetic host composition without credentials or external sockets.
+
+Part 15J optionally installs reusable modules under `ModuleNamespace` and validates
+explicit typed `ModuleDependencies` through `DependentModule` before creating its
+body. Existing unnamespaced IDs retain their duplicate checks; namespaces preserve
+raw IDs and never rewrite command routes or runtime handler IDs. Duplicate event
+handler IDs now fail event compilation before a subscription is created. Select
+external libraries explicitly and pass the same application-owned services to each
+module. See [external modules and typed dependencies](ModuleExtensions.md) for bounds,
+diagnostics and the independent HTTP/Gateway consumers.
 
 ## Upstream protocol changes
 

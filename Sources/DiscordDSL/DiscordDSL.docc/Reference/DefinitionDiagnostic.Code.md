@@ -8,10 +8,13 @@
 - ``DiscordDSL/DefinitionDiagnostic/Code/depthLimit``
 - ``DiscordDSL/DefinitionDiagnostic/Code/duplicateDeclarationID``
 - ``DiscordDSL/DefinitionDiagnostic/Code/duplicateModuleID``
+- ``DiscordDSL/DefinitionDiagnostic/Code/duplicateNamespaceID``
+- ``DiscordDSL/DefinitionDiagnostic/Code/invalidDependencies``
 - ``DiscordDSL/DefinitionDiagnostic/Code/invalidIdentity``
 - ``DiscordDSL/DefinitionDiagnostic/Code/invalidLimits``
 - ``DiscordDSL/DefinitionDiagnostic/Code/invalidPayload``
 - ``DiscordDSL/DefinitionDiagnostic/Code/moduleLimit``
+- ``DiscordDSL/DefinitionDiagnostic/Code/namespaceLimit``
 - ``DiscordDSL/DefinitionDiagnostic/Code/structureLimit``
 - ``DiscordDSL/DefinitionDiagnostic/Code/textLimit``
 - ``DiscordDSL/DefinitionDiagnostic/Code/unsupportedCapability``

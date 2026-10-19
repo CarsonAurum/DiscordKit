@@ -33,7 +33,13 @@ illegal layouts and limits before transmission; response ownership remains with
 Interactions. Part 15G adds ``InvocationPolicy`` and ``InvocationMiddleware`` with
 finite ``PolicyLimits``. Named and operator composition are inert; explicit evaluation
 uses caller-owned tasks and cancellation. Command-specific authorization/admission
-lives in the separately selected CommandDSL. Gateway hosts remain later milestones.
+lives in the separately selected CommandDSL. The separately selected BotDSL supplies
+explicit Gateway event/application ownership. Part 15J adds ``ModuleNamespace`` for
+reusable local identities and ``DependentModule`` for lazy bodies over explicit
+``ModuleDependencies``. Dependencies validate after module admission and before body
+creation. ``DefinitionIdentity`` retains exact namespace components without changing
+original metadata or wire route names. External extension libraries remain downstream;
+capacity measurements and complete DSL release certification remain later milestones.
 This shared product selects no transport, client, concrete adapter,
 compiler plugin or documentation tooling.
 
@@ -47,6 +53,14 @@ compiler plugin or documentation tooling.
 - ``BotBuilder``
 - ``BotDefinitionGroup``
 - ``EmptyBotDefinition``
+
+### External installation and dependencies
+
+- ``ModuleNamespace``
+- ``ModuleDependencies``
+- ``DependentModule``
+- ``DefinitionIdentity``
+- ``PlannedNamespace``
 
 ### Contributions and compilation
 

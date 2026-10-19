@@ -5,7 +5,9 @@
 ### Instance methods
 
 - ``DiscordDSL/DefinitionCollector/append(_:)``
+- ``DiscordDSL/DefinitionCollector/validateDependencies(_:source:)``
 - ``DiscordDSL/DefinitionCollector/withModule(id:source:_:)``
+- ``DiscordDSL/DefinitionCollector/withNamespace(id:source:_:)``
 - ``DiscordDSL/DefinitionCollector/withStructure(source:_:)``
 
 ## See Also
