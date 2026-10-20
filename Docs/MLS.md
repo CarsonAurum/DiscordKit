@@ -96,7 +96,9 @@ independent MLS callers retain that responsibility themselves.
 
 `MLSKeyPackageOwner(userID:)` generates fresh P-256 signing, leaf-encryption and
 independent invitation-init keys. Its immutable nonisolated `keyPackage` can be
-published as `keyPackage.encoded(messageWrapped: true)`. The actor retains private
+encoded as a bare KeyPackage with `keyPackage.encoded(messageWrapped: false)`
+for DAVE opcode 26. Generic MLSMessage callers can explicitly select `true`; their
+representation is separate from this Voice command. The actor retains private
 key material until one successful `createGroup(groupID:policy:)` or
 `join(welcome:expectedGroupID:policy:)`. A failed or cancelled admission preserves
 the package for a corrected authenticated input. Success consumes the owner;

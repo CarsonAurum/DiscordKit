@@ -178,13 +178,16 @@ authenticate to different plaintexts under different retained keys during a
 transition. Multiple epoch candidates inherit that protocol property; local tests
 do not remove it or establish a stronger key-commitment guarantee.
 
-Opcode 26 follows the whitepaper's MLSMessage-wrapped KeyPackage. Pinned libdave
-`Session::GetMarshalledKeyPackage` returns a bare TLS KeyPackage at its library API
-boundary; this alone does not establish its complete Voice wire encoding or prove
-a mismatch. Complete-peer/service framing remains unverified. The implementation
-follows normative published framing without probing alternate encodings or replaying
-a mutation; synthetic peers using the same framing cannot supply independent
-complete-client interoperability evidence.
+Opcode 26 now publishes a bare TLS KeyPackage, matching pinned libdave and the
+complete Discord.js/Davey Voice send path. This corrects the previous MLSMessage
+wrapper, which followed the conflicting whitepaper sketch. An independent native
+strict-decoder regression rejects the unchanged SDK publication and accepts it
+after removal of only the four-byte wrapper, validating both signatures, suite-2
+parameters and the basic eight-byte Discord credential. The
+[wire correction record](Parity/changes/2026-10-19-dave-keypackage-wire.md) documents
+the source conflict and exact boundary. It establishes local representation parity;
+it does not establish live service acceptance or explain a past service outcome.
+No alternate encoding is probed or ambiguous mutation replayed at runtime.
 
 Independent Python HMAC/scrypt answers, a Node/OpenSSL AES-GCM media vector and
 [exact pinned C++/Swift codec comparisons](Parity/phase12c-codec-oracle.json) check

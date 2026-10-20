@@ -152,7 +152,7 @@ struct QualificationReport: Codable {
         }
         _ = try await owner.receive(json(11, ["user_ids": .array([.string("1"), .string("2")])]), now: 0)
         _ = try await owner.receive(binary(25, sender.encoded()), now: 0)
-        return try MLSKeyPackage.decode(bytes, messageWrapped: true)
+        return try MLSKeyPackage.decode(bytes, messageWrapped: false)
     }
 
     /// Establishes a real two-member MLS epoch through public adapter signaling methods.

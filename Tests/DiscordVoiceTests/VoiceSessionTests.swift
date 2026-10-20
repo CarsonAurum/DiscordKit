@@ -187,6 +187,8 @@ private actor SessionTestDatagram: DatagramTransport {
     nonisolated let mediaReadStarted = TestBarrier()
     private var initial: Datagram?
     private var sent: [Datagram] = []
+    /// Deterministic observation gates for complete sends, including discovery.
+    private var sendCountGates: [Int: TestBarrier] = [:]
     private var waiter: CheckedContinuation<Datagram?, any Error>?
     private var closed = false
     private var cancelledReads = 0
@@ -202,6 +204,16 @@ private actor SessionTestDatagram: DatagramTransport {
     /// - Throws: Cancellation, deadline or explicit closure.
     func sendDatagram<C: Clock>(_ datagram: Datagram, context: TransportContext<C>) async throws where C.Duration == Duration {
         try context.check(); guard !closed else { throw TransportFailure.closed }; sent.append(datagram)
+        sendCountGates.removeValue(forKey: sent.count)?.open()
+    }
+
+    /// Waits until an exact complete datagram count has been sent without timing-dependent polling.
+    /// - Parameter count: Positive expected count, including the initial discovery packet.
+    /// - Throws: Test cancellation before the expected send is observed.
+    func waitForSendCount(_ count: Int) async throws {
+        if sent.count >= count { return }
+        let gate = sendCountGates[count] ?? TestBarrier(); sendCountGates[count] = gate
+        try await gate.wait()
     }
 
     /// Delivers discovery once, then blocks cancellation-cooperatively for media/close.
@@ -390,8 +402,12 @@ private final class SessionTestClock: Clock, Sendable {
     let retry = TestBarrier()
     let shortHandshake = TestBarrier()
     private let heartbeatSleeps = Mutex(0)
+    /// Counts all short media/readiness waits under synchronous concurrent access.
     private let mediaSleeps = Mutex(0)
+    /// Observes the first five short media/readiness waits without wall-clock polling.
     private let mediaSleepGates = (0..<5).map { _ in TestBarrier() }
+    /// Signals that the observed initial 100ms negotiation deadline has returned.
+    let shortHandshakeCompleted = TestBarrier()
 
     /// Returns the underlying explicitly advanced monotonic instant.
     var now: Instant { base.now }
@@ -416,10 +432,11 @@ private final class SessionTestClock: Clock, Sendable {
             if count <= mediaSleepGates.count { mediaSleepGates[count - 1].open() }
         }
         try await base.sleep(until: deadline, tolerance: tolerance)
+        if duration == .milliseconds(100) { shortHandshakeCompleted.open() }
     }
 
-    /// Waits for one exact media pacing sleep to start before advancing virtual time.
-    /// - Parameter count: One-based termination-silence wait in `1...5`.
+    /// Waits for one exact media pacing or readiness sleep to start before advancing virtual time.
+    /// - Parameter count: One-based short media or readiness wait in `1...5`.
     /// - Throws: Invalid test configuration or cooperative cancellation.
     func waitForMediaSleep(_ count: Int) async throws {
         guard (1...mediaSleepGates.count).contains(count) else { throw VoiceControlFailure.invalidConfiguration }
@@ -626,6 +643,109 @@ struct VoiceSessionTests {
         #expect(sent[2].bytes.suffix(4) == Data([0, 0, 0, 1]))
         await owner.stop(); try await run.value
         #expect(await udp.lifecycle().closed)
+        #expect(clock.base.pendingSleepCount == 0)
+    }
+
+    /// Continuous PCM survives real socket EOF and authenticated key-transition revocation without replay.
+    /// A second frame is deliberately parked in pacing while authorization changes; that consumed
+    /// frame is dropped, and a third frame uses the retained pipeline with a fresh pacing origin.
+    /// - Parameter socketLoss: True exercises Resume; false exercises a typed participant/key suspension.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test(arguments: [false, true])
+    func pcmPlaybackSurvivesMediaReauthorization(socketLoss: Bool) async throws {
+        let tuple = credentials(), first = SessionTestSocket(try initialFrames())
+        let second = SessionTestSocket([try sessionServerFrame(8, .object(["heartbeat_interval": voiceControlNumber(1_000)])),
+                                       try sessionServerFrame(9, .null)])
+        let connector = SessionTestConnector([first, second]), clock = SessionTestClock()
+        let backend = SessionTestE2EE(tuple.identity), udp = SessionTestDatagram(discovery())
+        let owner = try VoiceSession(credentials: tuple, webSocket: connector, makeDatagram: { _ in udp },
+            e2ee: backend, clock: clock, configuration: VoiceSessionConfiguration(retryDelay: .milliseconds(50)))
+        let run = Task { try await owner.run() }
+        try await first.waitForRead(4)
+        let originalMedia = try #require(await owner.mediaPipeline())
+        let stream = try PCMFrameStream()
+        let buffer = try PCMBuffer(format: PCMFormat(sampleRate: 48_000, channelCount: 2),
+                                   samples: Array(repeating: 0.1, count: 1_920))
+        for _ in 0..<3 { try await stream.write(buffer) }
+        let playback = Task { try await owner.play(stream) }
+        // One frame was sent; the second owns the pending 20ms pacing wait.
+        try await clock.waitForMediaSleep(1)
+        #expect(await originalMedia.snapshot().sentPackets == 1)
+        if socketLoss {
+            await first.disconnect(code: 4015)
+            try await clock.retry.wait()
+            try clock.base.advance(by: .milliseconds(20))
+            // The invalidated frame was dropped and playback now waits for real reauthorization.
+            try await clock.waitForMediaSleep(2)
+            try clock.base.advance(by: .milliseconds(30))
+            try await second.waitForRead(3)
+            try clock.base.advance(by: .milliseconds(20))
+        } else {
+            await first.enqueue(try sessionServerFrame(11, .object(["user_ids": .array([.string("3")])])) )
+            try await first.waitForRead(5)
+            try clock.base.advance(by: .milliseconds(20))
+        }
+        try await udp.waitForSendCount(3)
+        let currentMedia = try #require(await owner.mediaPipeline())
+        #expect(currentMedia === originalMedia)
+        #expect(await owner.snapshot().phase == .ready)
+        #expect(await owner.snapshot().reconnectAttempts == (socketLoss ? 1 : 0))
+        #expect(await originalMedia.snapshot().sentPackets == 2)
+        let sent = await udp.sentDatagrams()
+        let firstPacket = try RTPPacket(bytes: sent[1].bytes), nextPacket = try RTPPacket(bytes: sent[2].bytes)
+        #expect(firstPacket.sequence == 0 && nextPacket.sequence == 1)
+        #expect(firstPacket.timestamp == 0 && nextPacket.timestamp == 960)
+        #expect(sent[1].bytes.suffix(4) == Data([0, 0, 0, 0]))
+        #expect(sent[2].bytes.suffix(4) == Data([0, 0, 0, 1]))
+        #expect(await udp.lifecycle().cancelledReads == 0)
+        if socketLoss { #expect(await second.recorded().0.first?.opcode == 7) }
+        await owner.stop()
+        await #expect(throws: CancellationError.self) { try await playback.value }
+        try await run.value
+        #expect(await backend.recorded().0)
+        #expect(await udp.lifecycle().closed)
+        #expect(clock.base.pendingSleepCount == 0)
+    }
+
+    /// A stalled authorization wait honors its finite budget and caller cancellation, joining all owners.
+    /// The original negotiation timer is joined before revoking media so only the new playback wait
+    /// can report the deadline; no source frame is consumed or dispatched during the suspension.
+    /// - Parameter deadlineExpires: True advances the full readiness budget; false cancels its caller.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test(arguments: [false, true])
+    func pcmReauthorizationWaitIsBounded(deadlineExpires: Bool) async throws {
+        let tuple = credentials(), socket = SessionTestSocket(try initialFrames()), clock = SessionTestClock()
+        let backend = SessionTestE2EE(tuple.identity), udp = SessionTestDatagram(discovery())
+        let owner = try VoiceSession(credentials: tuple, webSocket: SessionTestConnector([socket]),
+            makeDatagram: { _ in udp }, e2ee: backend, clock: clock,
+            configuration: VoiceSessionConfiguration(handshakeTimeout: .milliseconds(100)))
+        let run = Task { try await owner.run() }
+        try await socket.waitForRead(4)
+        try await clock.shortHandshake.wait()
+        try clock.base.advance(by: .milliseconds(100))
+        try await clock.shortHandshakeCompleted.wait()
+        let media = try #require(await owner.mediaPipeline())
+        await media.setAuthorized(false)
+        let stream = try PCMFrameStream()
+        let buffer = try PCMBuffer(format: PCMFormat(sampleRate: 48_000, channelCount: 2),
+                                   samples: Array(repeating: 0.1, count: 1_920))
+        try await stream.write(buffer)
+        let playback = Task { try await owner.play(stream) }
+        try await clock.waitForMediaSleep(1)
+        #expect(await media.snapshot().sentPackets == 0)
+        if deadlineExpires {
+            try clock.base.advance(by: .milliseconds(100))
+            await #expect(throws: TransportFailure.deadlineExceeded) { try await playback.value }
+        } else {
+            playback.cancel()
+            await #expect(throws: CancellationError.self) { try await playback.value }
+        }
+        try await run.value
+        #expect(await owner.snapshot().phase == .closed)
+        #expect(await media.snapshot().closed)
+        #expect(await udp.sentDatagrams().count == 1)
+        #expect(await udp.lifecycle().closed)
+        #expect(await backend.recorded().0)
         #expect(clock.base.pendingSleepCount == 0)
     }
 

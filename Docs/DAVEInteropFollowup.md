@@ -4,6 +4,49 @@ Scoped implementation and offline verification: **2026-10-19**, macOS arm64,
 Apple Swift 6.4. This follows MiniCarson's Phase 8A initial-commit investigation
 against DiscordKit `953acc151470c058507d688372d3b9a849cba779`.
 
+## Subsequent native wire and complete-session evidence — 2026-10-19
+
+The later [opcode-26 correction](Parity/changes/2026-10-19-dave-keypackage-wire.md)
+supersedes the earlier investigation's no-defect conclusion at that integration
+boundary. `DAVEProtocolSession` now publishes a bare TLS KeyPackage, matching
+pinned libdave and the complete Discord.js/Davey Voice send path. The whitepaper's
+opcode-26 sketch instead shows an MLSMessage wrapper. Strict native decoding of
+actual unchanged SDK publication fails (exit 1); removing only that four-byte
+wrapper passes complete canonical decoding, both signatures, suite-2 parameters,
+the basic eight-byte Discord credential and capabilities (exit 0). Client binary
+framing and the opcode-28 wrapped Commit/bare Welcome concatenation are unchanged.
+
+An isolated full-session oracle builds clean native libdave
+`8de72b1f8a2ac3c5a5270755bb8091a62e3c6169` against its Cisco MLS++
+`fc724c3100ce3b5d8565dbd6d93648a440991a8c` dependency. One native baseline and ten
+cross-language exchanges pass, five in each creator direction. The Swift-creator
+path independently checks its epoch-zero tree/context/external sender, verifies
+initial membership MAC and signature, rejects a wrong MAC key, admits its Welcome
+through native `Session` and matches epoch authenticators and sender exporters.
+Native creators validate their selected self-echo before Swift recipients join.
+This closes the partial oracle's initial-MAC and full-native-session gaps below.
+
+A separate synthetic media oracle passes 100 frames from the actual Swift music
+encoder (48-kHz stereo, 960 samples/channel, CELT/fullband, 64 kbps, no DTX/FEC).
+Native OpenSSL authenticates outer AES-256-GCM RTP-size packets, checking payload
+type 120, sequence, 960-sample timestamp steps, SSRC and transport counters.
+Native libdave decrypts every frame to the exact 160-byte Opus packet, and
+libopus 1.6.1 decodes 96,000 samples/channel. RMS is 0.142020; the 440-Hz tone-power
+ratio is 0.998897. The safe local results, source/build commands and hashes are
+in MiniCarson's ignored `.build/phase8-investigation/native/results.json`; no
+private/live key material or audio is retained as a repository fixture.
+
+These are local synthetic native interoperability results. They establish the
+opcode-26 representation mismatch and candidate/media compatibility, not Discord
+service admission, audible listening or the cause of a historical deadline.
+The proposed live wire diagnostic stopped at Keychain before network work while
+the listener was unavailable. No new Discord attempt or accepted epoch is claimed.
+The explicit command publishes one encoding once; no fallback or mutation retry
+is introduced. The original diagnostic and partial-oracle record follows as
+history; its exact validation counts and release snapshots remain unchanged.
+
+## Earlier diagnostic and partial-oracle record (historical)
+
 ## Established changes
 
 `VoiceSession` preserves the first protocol, crypto, capacity or deadline failure

@@ -48,6 +48,8 @@ The supervisor validates the endpoint, explicitly uses Voice v8, applies HELLO h
 
 Resumable socket replacement preserves the exact transport nonce authority and reauthorizes E2EE before media resumes. Authentication/session-invalidating/terminal closures require fresh main-Gateway credentials. A retry budget does not become an unbounded reconnect storm, and ambiguous main-Gateway mutations are not replayed.
 
+``VoiceSession/play(_:)`` pauses PCM source consumption while a resumable socket loss or authenticated key transition revokes media. The wait uses the finite session handshake budget and remains cancellation-aware. If revocation invalidates a frame already waiting for its send slot, playback discards that consumed frame and resumes with the next source frame after actual authorization. The retained pipeline resets pacing while preserving nonce and RTP authorities; no frame is replayed. Source, format, cryptographic and transport failures, and any partial termination-silence failure, still close the session.
+
 DiscordDAVE's adapter implements ``VoiceSessionE2EE`` from a separate product. Share its monotonic-seconds closure with the supervisor and supply the trusted external sender, authenticated group ID and shared signing identity. See the [secure session composition guide](https://github.com/CarsonAurum/DiscordKit/blob/main/Docs/VoiceSessions.md) for the complete boundary.
 
 ### Verify supervision without credentials

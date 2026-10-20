@@ -81,12 +81,15 @@ controls. External Add/Remove proposals still require the trusted MLS external
 sender's signature. An opcode 25 sender must exactly match the application-supplied
 credential/key. No untrusted frame can replace that trust anchor.
 
-Opcode 26 uses the whitepaper's MLSMessage-wrapped KeyPackage. Pinned libdave
-`Session::GetMarshalledKeyPackage` exposes a bare TLS KeyPackage at its library API
-boundary. That helper's output does not establish the complete Voice integration's
-wire encoding; no on-wire mismatch has been demonstrated. DiscordKit follows the
-normative published wrapper without trying alternate encodings or replaying this
-mutation. Complete peer/service interoperability remains unverified.
+Opcode 26 publishes a bare TLS KeyPackage, matching pinned libdave
+`Session::GetMarshalledKeyPackage` and the complete Discord.js/Davey Voice send path.
+The whitepaper's opcode-26 sketch instead shows an MLSMessage wrapper; this is a
+documented source disagreement. Native strict decoding rejects the previous wrapped
+publication and accepts the same bytes with only that four-byte wrapper removed,
+including both signatures, suite-2 parameters and the eight-byte Discord credential.
+The [wire correction record](Parity/changes/2026-10-19-dave-keypackage-wire.md)
+identifies the source chain and scope. No alternate encoding is probed or retried at
+runtime. Complete live service acceptance remains unverified.
 
 Before an initial Welcome, the owner retains its KeyPackage and a provisional
 epoch-zero group. Cached proposals produce a tentative opcode 28 Commit/Welcome;

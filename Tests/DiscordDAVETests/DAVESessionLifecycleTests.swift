@@ -73,7 +73,7 @@ import Testing
     private func initialize(_ session: DAVEProtocolSession, sender: MLSExternalSender) async throws -> MLSKeyPackage {
         let commands = try await session.start(protocolVersion: 1)
         guard case .binary(let body) = try #require(commands.first).payload else { throw DAVESessionError.invalidMessage }
-        let package = try MLSKeyPackage.decode(body, messageWrapped: true)
+        let package = try MLSKeyPackage.decode(body, messageWrapped: false)
         _ = try await session.receive(json(11, ["user_ids": .array([.string("1"), .string("2"), .string("3")])]), now: 0)
         _ = try await session.receive(binary(25, sender.encoded()), now: 0)
         return package
@@ -153,7 +153,7 @@ import Testing
         if selectStale {
             #expect(selected.map(\.opcode) == [31, 26])
             guard case .binary(let freshBytes) = try #require(selected.last).payload else { throw DAVESessionError.invalidMessage }
-            let fresh = try MLSKeyPackage.decode(freshBytes, messageWrapped: true)
+            let fresh = try MLSKeyPackage.decode(freshBytes, messageWrapped: false)
             #expect(fresh.leafNode.signatureKey == alice.leafNode.signatureKey)
             #expect(fresh.initKey != alice.initKey)
             #expect(await a.snapshot().pendingTransition == nil)

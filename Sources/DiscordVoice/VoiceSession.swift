@@ -288,7 +288,10 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// Normal completion sends five authenticated silence frames then clears Speaking. Source
     /// iteration suspends independently from the structured heartbeat/control children. The
     /// session retains one playback task: stop and terminal disconnect cancel and await it,
-    /// including a cooperative source parked waiting for its next buffer.
+    /// including a cooperative source parked waiting for its next buffer. Resumable socket
+    /// loss and authenticated key transitions suspend source consumption until actual media
+    /// reauthorization within the finite handshake budget. A frame invalidated while sending
+    /// is discarded rather than replayed; format, crypto and transport failures remain terminal.
     public func play<S: AsyncSequence & Sendable>(_ source: S) async throws
     where S.Element == PCMBuffer, S.AsyncIterator: Sendable {
         guard !playing, let media = mediaPipeline() else { throw VoiceSessionFailure.concurrentPlayback }
@@ -297,9 +300,17 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
             try Task.checkCancellation()
             try await setSpeaking(true)
             var iterator = source.makeAsyncIterator()
-            while let buffer = try await iterator.next() {
-                _ = try await media.send(buffer, context: context())
+            while true {
+                try await waitForPlaybackReadiness(media)
+                guard let buffer = try await iterator.next() else { break }
+                do { _ = try await media.send(buffer, context: context()) }
+                catch let error as VoiceMediaPipelineError where error == .unauthorized || error == .staleOperation {
+                    // The revocation guards fail before UDP dispatch. Drop this consumed frame;
+                    // preserve the source and wait for the actual epoch owner to reauthorize.
+                    try await waitForPlaybackReadiness(media)
+                }
             }
+            try await waitForPlaybackReadiness(media)
             try await media.sendTerminationSilence(context: context())
             try await setSpeaking(false)
         }
@@ -310,7 +321,26 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                 try await operation.value
             } onCancel: { operation.cancel() }
             try Task.checkCancellation()
-        } catch { await dispose(); throw error }
+        } catch {
+            await dispose(); throw error
+        }
+    }
+
+    /// Suspends source consumption until the current session and media owner are authorized again.
+    /// - Parameter media: Exact pipeline already owned by this playback operation.
+    /// - Throws: Cancellation, permanent closure or the configured finite negotiation deadline.
+    /// The pipeline owns pacing reset and cryptographic generations; no frame is retained or replayed.
+    private func waitForPlaybackReadiness(_ media: VoiceMediaPipeline<C>) async throws {
+        let deadline = clock.now.advanced(by: configuration.handshakeTimeout)
+        while true {
+            try Task.checkCancellation()
+            guard !stopped, state.phase != .closed else { throw VoiceControlFailure.closed }
+            let snapshot = await media.snapshot()
+            guard !stopped, !snapshot.closed else { throw VoiceControlFailure.closed }
+            if state.phase == .ready, snapshot.authorized, snapshot.sendingAllowed { return }
+            guard clock.now < deadline else { throw TransportFailure.deadlineExceeded }
+            try await clock.sleep(until: min(clock.now.advanced(by: .milliseconds(20)), deadline), tolerance: nil)
+        }
     }
 
     /// Validates Voice close policy from the current official opcode table (2026-10-18).

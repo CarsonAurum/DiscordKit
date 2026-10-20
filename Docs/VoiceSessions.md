@@ -83,7 +83,13 @@ Speaking true before a later talkspurt. `play` consumes a cancellation-aware PCM
 AsyncSequence with a Sendable iterator, matching the owned encoder's frame size
 and 48-kHz format. `PCMFrameStream` provides bounded source/sink composition.
 Completion sends five securely transformed 20ms Opus silence frames before
-clearing Speaking. Cancellation or source/device disappearance closes the session.
+clearing Speaking. Resumable socket loss or an authenticated key transition pauses
+source consumption until media is actually reauthorized, within the finite session
+handshake budget. A frame invalidated while waiting to send is discarded; playback
+continues with the next source frame without replay. The retained pipeline resets
+its pacing origin while preserving nonce and RTP authorities. Cancellation, stalled
+reauthorization, source/device disappearance, format/cryptographic/transport failure,
+or any partial termination-silence failure closes the session.
 Stop/disconnect cancels and awaits the one owned playback task, releasing a parked
 cooperative PCM source. The injected source must cooperate with cancellation; no library can forcibly
 interrupt arbitrary user code.

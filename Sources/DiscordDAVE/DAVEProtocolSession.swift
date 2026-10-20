@@ -88,7 +88,7 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
 
     /// Begins negotiated DAVE v1 and publishes one fresh KeyPackage command.
     /// - Parameter protocolVersion: Exact Session Description version; only one is supported.
-    /// - Returns: Opcode 26 containing the documented MLSMessage-wrapped KeyPackage.
+    /// - Returns: Opcode 26 containing the bare TLS KeyPackage used by native libdave and Voice integrations.
     /// - Throws: Downgrade/version/transition, cancellation or package errors. Unsupported
     ///   versions close the owner. Repeated start never resets counters or reuses a package.
     public func start(protocolVersion: UInt16) async throws -> [VoiceGatewayFrame] {
@@ -264,7 +264,7 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     }
 
     /// Publishes fresh HPKE keys while preserving this account's shared signing identity.
-    /// - Returns: One documented KeyPackage command; creates a pending epoch-zero group
+    /// - Returns: One bare KeyPackage command; creates a pending epoch-zero group
     ///   when the trusted external sender has already been received.
     /// - Throws: Key generation, policy or wire errors; caller closes on failure.
     private func freshPackage() async throws -> VoiceGatewayFrame {
@@ -272,7 +272,7 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
         let owner = try MLSKeyPackageOwner(userID: identity.userID.rawValue, signaturePrivateKey: signingKey)
         package = owner
         if externalSenderReceived { group = try await owner.createGroup(groupID: groupID, policy: policy(), retainForWelcome: true) }
-        return try DAVESignaling.binaryCommand(opcode: 26, body: owner.keyPackage.encoded(messageWrapped: true))
+        return try DAVESignaling.binaryCommand(opcode: 26, body: owner.keyPackage.encoded(messageWrapped: false))
     }
 
     /// Executes one parsed control under the actor's exclusive bounded admission.

@@ -67,7 +67,7 @@ import Testing
         try VoiceGatewayFrame(.binary(Data([0, 1, opcode]) + body))
     }
 
-    /// Starts protocol v1 and decodes its exact MLSMessage-wrapped public package.
+    /// Starts protocol v1 and decodes its exact native-compatible bare public package.
     /// - Parameter setup: Fresh unstarted local session.
     /// - Returns: Valid signed public package; no owner secret escapes.
     /// - Throws: Session or package errors and fixture assertion failures.
@@ -77,10 +77,31 @@ import Testing
         let frame = try #require(commands.first)
         #expect(frame.opcode == 26)
         guard case .binary(let bytes) = frame.payload else { throw DAVESessionError.invalidMessage }
-        let package = try MLSKeyPackage.decode(bytes, messageWrapped: true)
+        let package = try MLSKeyPackage.decode(bytes, messageWrapped: false)
         try package.validate(now: 0, validateLifetime: false)
         #expect(try package.leafNode.signatureKey == P256.Signing.PrivateKey(rawRepresentation: setup.signingKey).publicKey.x963Representation)
         return package
+    }
+
+    /// Opcode 26 publishes the bare native KeyPackage, with no nested MLSMessage or server sequence prefix.
+    /// The published whitepaper sketch differs; libdave and complete Discord.js/Davey send paths use this form.
+    @Test func keyPackageCommandMatchesNativeBareWireContract() async throws {
+        let setup = try fixture()
+        let commands = try await setup.session.start(protocolVersion: 1)
+        let command = try #require(commands.first)
+        #expect(commands.count == 1 && command.opcode == 26)
+        guard case .binary(let wire) = try command.message() else { throw DAVESessionError.invalidMessage }
+        #expect(wire.prefix(5) == Data([26, 0, 1, 0, 2]))
+        let body = Data(wire.dropFirst())
+        let package = try MLSKeyPackage.decode(body, messageWrapped: false)
+        try package.validate(now: 0, expectedIdentity: Data([0, 0, 0, 0, 0, 0, 0, 1]), validateLifetime: false)
+        #expect(try package.encoded(messageWrapped: false) == body)
+        #expect(command.payload == .binary(body))
+        #expect(throws: (any Error).self) { try MLSKeyPackage.decode(body, messageWrapped: true) }
+        let wrapped = Data([0, 1, 0, 5]) + body
+        #expect(throws: (any Error).self) { try MLSKeyPackage.decode(wrapped, messageWrapped: false) }
+        #expect(try MLSKeyPackage.decode(wrapped, messageWrapped: true) == package)
+        try await setup.session.close()
     }
 
     /// Creates a real remote MLS creator and its selected first-epoch Welcome.
@@ -202,7 +223,7 @@ import Testing
         #expect(recovery.map(\.opcode) == [31, 26])
         #expect(try recovery[0].payload == .json(.object(["transition_id": .number(JSONNumber(rawValue: "8"))])))
         guard case .binary(let freshBytes) = recovery[1].payload else { throw DAVESessionError.invalidMessage }
-        let fresh = try MLSKeyPackage.decode(freshBytes, messageWrapped: true)
+        let fresh = try MLSKeyPackage.decode(freshBytes, messageWrapped: false)
         #expect(try fresh.leafNode.signatureKey == P256.Signing.PrivateKey(rawRepresentation: setup.signingKey).publicKey.x963Representation)
         #expect(await store.status(userID: 2) == .unavailable)
         let snapshot = await setup.session.snapshot()
@@ -211,7 +232,7 @@ import Testing
         let repeated = try await setup.session.receive(binary(30, Data([0, 9, 0xAA])), now: 3)
         #expect(repeated.map(\.opcode) == [31, 26])
         guard case .binary(let laterBytes) = repeated[1].payload else { throw DAVESessionError.invalidMessage }
-        let later = try MLSKeyPackage.decode(laterBytes, messageWrapped: true)
+        let later = try MLSKeyPackage.decode(laterBytes, messageWrapped: false)
         #expect(later.initKey != fresh.initKey)
         #expect(later.leafNode.encryptionKey != fresh.leafNode.encryptionKey)
         #expect(later.leafNode.signatureKey == fresh.leafNode.signatureKey)
@@ -412,7 +433,7 @@ import Testing
         #expect(reset.map(\.opcode) == [26])
         #expect(await setup.session.snapshot().activeEpoch == nil)
         guard case .binary(let bytes) = reset[0].payload else { throw DAVESessionError.invalidMessage }
-        #expect(try MLSKeyPackage.decode(bytes, messageWrapped: true).leafNode.signatureKey
+        #expect(try MLSKeyPackage.decode(bytes, messageWrapped: false).leafNode.signatureKey
                 == P256.Signing.PrivateKey(rawRepresentation: setup.signingKey).publicKey.x963Representation)
         _ = try await setup.session.receive(json(13, .object(["user_id": .string("1")])), now: 2)
         #expect(await setup.session.snapshot().isClosed)

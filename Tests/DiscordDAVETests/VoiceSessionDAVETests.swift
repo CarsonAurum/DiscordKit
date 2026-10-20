@@ -81,7 +81,7 @@ import Testing
         let result = try await owner.start(protocolVersion: 1)
         #expect(result.map(\.opcode) == [26])
         guard case .binary(let bytes) = try #require(result.first).payload else { throw DAVESessionError.invalidMessage }
-        let package = try MLSKeyPackage.decode(bytes, messageWrapped: true)
+        let package = try MLSKeyPackage.decode(bytes, messageWrapped: false)
         #expect(try await owner.receive(json(11, ["user_ids": .array([.string("1"), .string("2")])]), now: 0).isEmpty)
         #expect(try await owner.receive(binary(25, sender.encoded()), now: 0).isEmpty)
         return package
