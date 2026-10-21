@@ -177,7 +177,7 @@ public struct PCMFrameStream: AsyncSequence, PCMSink, Sendable {
         ///   Any parked read implies the queue is empty and is completed with normal EOF.
         func finish(discardingBuffered: Bool) {
             if !finished {
-                DiscordLog.makeLogger("media").debug("PCM stream finished", metadata: ["dk.event": "media.pcm_stream.finished",
+                DiscordLog.makeLogger("media.pcm_stream").debug("PCM stream finished", metadata: ["dk.event": "media.pcm_stream.finished",
                     "dk.buffered_blocks": .stringConvertible(buffers.count),
                     "dk.discarding": .stringConvertible(discardingBuffered)])
             }
@@ -197,7 +197,7 @@ public struct PCMFrameStream: AsyncSequence, PCMSink, Sendable {
         /// This method never suspends and has no user-owned cleanup callback.
         func cancel() {
             if !finished {
-                DiscordLog.makeLogger("media").trace("PCM stream cancelled", metadata: ["dk.event": "media.pcm_stream.cancelled"])
+                DiscordLog.makeLogger("media.pcm_stream").trace("PCM stream cancelled", metadata: ["dk.event": "media.pcm_stream.cancelled"])
             }
             finished = true
             buffers.removeAll(keepingCapacity: false)

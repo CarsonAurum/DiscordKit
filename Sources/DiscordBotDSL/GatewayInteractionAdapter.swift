@@ -123,14 +123,18 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
     package func prepare<L: ShardLeaseStore>(client: DiscordClient<C, L>) async throws where L.LeaseClock == C {
         guard !prepared else { throw GatewayInteractionFailure.alreadyPrepared }
         prepared = true
+        DiscordLog.makeLogger("bot.interactions").debug("Trusted Gateway interaction bridge preparation started", metadata: ["dk.event": "bot_dsl.interactions.preparing"])
         do {
             try Task.checkCancellation()
             guard !stopped else { throw CancellationError() }
             let subscription = try await hub.subscribe()
             self.subscription = subscription
+            DiscordLog.makeLogger("bot.interactions").trace("Private Gateway interaction subscription acquired", metadata: ["dk.event": "bot_dsl.interactions.subscription_acquired"])
             try await client.setInteractionHandler { event in try await self.receive(event) }
+            DiscordLog.makeLogger("bot.interactions").trace("Private trusted client interaction receiver installed", metadata: ["dk.event": "bot_dsl.interactions.receiver_installed"])
             try Task.checkCancellation()
             guard !stopped else { throw CancellationError() }
+            DiscordLog.makeLogger("bot.interactions").debug("Trusted Gateway interaction bridge prepared", metadata: ["dk.event": "bot_dsl.interactions.prepared"])
         } catch {
             await cancel()
             throw error
@@ -142,14 +146,17 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
     /// - Throws: Cancellation, missing receipt provenance, closed input or queue-overflow failure.
     /// This operation only enqueues; it never decodes payloads, invokes response factories or executes handlers.
     internal func receive(_ event: GatewayEvent) async throws {
+        DiscordLog.makeLogger("bot.interactions").trace("Gateway interaction input admission started", metadata: ["dk.event": "bot_dsl.interactions.receiving"])
         try Task.checkCancellation()
         guard !stopped else { throw CancellationError() }
         guard event.elapsedSinceReceipt != nil else { throw GatewayInteractionFailure.untrustedEvent }
         guard event.opcode == 0, event.name == "INTERACTION_CREATE" else { return }
         let publication = await hub.publish(event)
         guard publication.delivered == 1, publication.terminated == 0 else {
+            DiscordLog.makeLogger("bot.interactions").warning("Trusted interaction queue cannot preserve continuity", metadata: ["dk.event": "bot_dsl.interactions.delivery_failed"])
             throw GatewayEventDeliveryFailure.resynchronizationRequired
         }
+        DiscordLog.makeLogger("bot.interactions").trace("Trusted Gateway interaction queued", metadata: ["dk.event": "bot_dsl.interactions.queued"])
     }
 
     /// Runs the prepared private dispatcher until failure or supervised cancellation, joining all handlers.
@@ -164,6 +171,7 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
         guard !started else { throw GatewayInteractionFailure.alreadyRun }
         started = true
         guard prepared, let subscription else { throw GatewayInteractionFailure.notPrepared }
+        DiscordLog.makeLogger("bot.interactions").info("Trusted Gateway interaction dispatcher started", metadata: ["dk.event": "bot_dsl.interactions.started"])
         do {
             try Task.checkCancellation()
             guard !stopped else { throw CancellationError() }
@@ -173,6 +181,7 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
             let task = Task {
                 try await dispatcher.run(subscription: subscription) { event in
                     do {
+                        DiscordLog.makeLogger("bot.interactions").trace("Decoding trusted Gateway interaction envelope", metadata: ["dk.event": "bot_dsl.interactions.decoding"])
                         let responseNow = clock.now
                         guard let age = event.elapsedSinceReceipt, age >= .zero else {
                             throw GatewayInteractionFailure.untrustedEvent
@@ -186,14 +195,17 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
                         guard CommandRouteKey.incoming(interaction) != nil else {
                             throw DiscordError.validation(.invalidValue)
                         }
+                        DiscordLog.makeLogger("bot.interactions").trace("Trusted interaction provenance and application validated", metadata: ["dk.event": "bot_dsl.interactions.validated"])
                         let responder = InteractionResponder(interaction: interaction, deliveryMode: .gateway,
                             clock: clock, sink: services.responseSink(for: interaction), admission: admission,
                             receivedAt: receivedAt)
                         let context = try InteractionContext(interaction: interaction, deliveryMode: .gateway, responder: responder)
+                        DiscordLog.makeLogger("bot.interactions").trace("Gateway response ownership normalized for routing", metadata: ["dk.event": "bot_dsl.interactions.normalized"])
                         do {
                             try await InteractionFailureScope.$captureOperationFailures.withValue(true) {
                                 guard try await router.route(context) else { throw GatewayInteractionFailure.unmatchedCommand }
                             }
+                            DiscordLog.makeLogger("bot.interactions").debug("Trusted Gateway interaction completed", metadata: ["dk.event": "bot_dsl.interactions.completed"])
                         } catch {
                             let operation = error as? InteractionOperationFailure
                             let original = operation?.underlying ?? error
@@ -239,6 +251,7 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
             throw error
         }
         await cancel()
+        DiscordLog.makeLogger("bot.interactions").info("Trusted Gateway interaction dispatcher stopped", metadata: ["dk.event": "bot_dsl.interactions.stopped"])
     }
 
     /// Determines whether a failed, already authenticated invocation may release the dispatcher callback.
@@ -281,7 +294,7 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
     private nonisolated static func logInvocation(_ diagnostic: BotFailureDiagnostic) {
         var metadata = diagnostic.logMetadata
         metadata["dk.event"] = "bot_dsl.invocation.failed"
-        DiscordLog.makeLogger("bot_dsl").debug("Gateway invocation failed", metadata: metadata)
+        DiscordLog.makeLogger("bot.interactions").notice("Gateway invocation failed; dispatcher continues by explicit policy", metadata: metadata)
     }
 
     /// Reads aggregate router and private queue ownership for package regression evidence.

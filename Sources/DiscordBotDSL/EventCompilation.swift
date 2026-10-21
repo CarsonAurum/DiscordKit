@@ -100,17 +100,20 @@ public struct CompiledEvents: Sendable {
         authority: GatewayHandlerAuthority? = nil, policy: GatewayEventOverflowPolicy = .resynchronize,
         maximumEvents: Int? = nil, maximumBytes: Int? = nil) async throws -> GatewayEventPipelines {
         var subscriptions: [GatewayEventSubscription] = []
+        DiscordLog.makeLogger("bot.events").debug("Gateway event pipeline subscription started", metadata: ["dk.event": "bot_dsl.events.subscribing", "dk.groups": .stringConvertible(groups.count)])
         do {
             try Task.checkCancellation()
             for _ in groups {
                 subscriptions.append(try await hub.subscribe(policy: policy,
                     maximumEvents: maximumEvents, maximumBytes: maximumBytes))
+                DiscordLog.makeLogger("bot.events").trace("Gateway event group subscription acquired", metadata: ["dk.event": "bot_dsl.events.subscription_acquired", "dk.subscriptions": .stringConvertible(subscriptions.count)])
             }
             try Task.checkCancellation()
-            DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines subscribed", metadata: ["dk.event": "bot_dsl.events.subscribed", "dk.subscriptions": .stringConvertible(subscriptions.count)])
+            DiscordLog.makeLogger("bot.events").debug("Gateway event pipelines subscribed", metadata: ["dk.event": "bot_dsl.events.subscribed", "dk.subscriptions": .stringConvertible(subscriptions.count)])
             return GatewayEventPipelines(groups: groups, subscriptions: subscriptions,
                 dispatcher: .init(configuration: configuration, authority: authority))
         } catch {
+            DiscordLog.makeLogger("bot.events").trace("Releasing partial Gateway pipeline subscriptions", metadata: ["dk.event": "bot_dsl.events.setup_cleanup", "dk.subscriptions": .stringConvertible(subscriptions.count)])
             for subscription in subscriptions { await subscription.cancel() }
             throw error
         }
@@ -246,7 +249,7 @@ public actor GatewayEventPipelines {
     public func run() async throws {
         guard !runStarted else { throw GatewayEventPipelineFailure.alreadyRun }
         runStarted = true
-        DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines started", metadata: ["dk.event": "bot_dsl.events.started"])
+        DiscordLog.makeLogger("bot.events").info("Gateway event pipelines started", metadata: ["dk.event": "bot_dsl.events.started", "dk.groups": .stringConvertible(groups.count)])
         do {
             try Task.checkCancellation()
             if stopped { throw CancellationError() }
@@ -267,16 +270,16 @@ public actor GatewayEventPipelines {
             try Task.checkCancellation()
         } catch {
             if error is CancellationError {
-                DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines cancelled", metadata: ["dk.event": "bot_dsl.events.cancelled"])
+                DiscordLog.makeLogger("bot.events").debug("Gateway event pipelines cancelled", metadata: ["dk.event": "bot_dsl.events.cancelled"])
             } else {
-                DiscordLog.makeLogger("bot_dsl").error("Gateway event pipelines failed", metadata: ["dk.event": "bot_dsl.events.failed"])
+                DiscordLog.makeLogger("bot.events").error("Gateway event pipelines failed", metadata: ["dk.event": "bot_dsl.events.failed"])
             }
             await cancel()
             runTask = nil
             throw error
         }
         await cancel()
-        DiscordLog.makeLogger("bot_dsl").debug("Gateway event pipelines stopped", metadata: ["dk.event": "bot_dsl.events.stopped"])
+        DiscordLog.makeLogger("bot.events").info("Gateway event pipelines stopped", metadata: ["dk.event": "bot_dsl.events.stopped"])
     }
 
     /// Idempotently stops every owned queue and releases all buffered events before returning.
@@ -286,9 +289,11 @@ public actor GatewayEventPipelines {
     /// A run attempted after stopping throws cancellation. Calling this from a handler never waits
     /// for that same handler, avoiding a self-join; handler code must still honor its task cancellation.
     public func cancel() async {
+        DiscordLog.makeLogger("bot.events").trace("Cancelling Gateway event pipeline work and subscriptions", metadata: ["dk.event": "bot_dsl.events.cancelling", "dk.subscriptions": .stringConvertible(subscriptions.count)])
         stopped = true
         runTask?.cancel()
         for subscription in subscriptions { await subscription.cancel() }
+        DiscordLog.makeLogger("bot.events").trace("Gateway event pipeline subscriptions closed", metadata: ["dk.event": "bot_dsl.events.subscriptions_closed"])
     }
 
     /// Supervises existing dispatchers without inheriting actor-isolated mutable owner state.
@@ -307,11 +312,17 @@ public actor GatewayEventPipelines {
                 let subscription = subscriptions[index]
                 tasks.addTask {
                     let needsDispatch = group.registrations.contains(where: \.decodesDispatch)
+                    DiscordLog.makeLogger("bot.events").trace("Gateway event group consumer started", metadata: ["dk.event": "bot_dsl.events.group_started", "dk.handlers": .stringConvertible(group.registrations.count), "dk.decodes_dispatch": .stringConvertible(needsDispatch)])
+                    defer { DiscordLog.makeLogger("bot.events").trace("Gateway event group consumer exited", metadata: ["dk.event": "bot_dsl.events.group_exited"]) }
                     try await dispatcher.run(subscription: subscription) { raw in
+                        DiscordLog.makeLogger("bot.events").trace("Gateway event group processing envelope", metadata: ["dk.event": "bot_dsl.events.envelope_received"])
                         let dispatch = needsDispatch ? try raw.decodeDispatch() : nil
+                        DiscordLog.makeLogger("bot.events").trace("Gateway event group dispatch preparation completed", metadata: ["dk.event": "bot_dsl.events.dispatch_prepared"])
                         for registration in group.registrations {
                             try Task.checkCancellation()
+                            DiscordLog.makeLogger("bot.events").trace("Evaluating Gateway event registration", metadata: ["dk.event": "bot_dsl.events.registration_invoking"])
                             try await registration.invoke(raw, dispatch)
+                            DiscordLog.makeLogger("bot.events").trace("Gateway event registration returned", metadata: ["dk.event": "bot_dsl.events.registration_returned"])
                         }
                     }
                 }

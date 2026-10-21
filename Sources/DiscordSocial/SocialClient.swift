@@ -80,16 +80,19 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
               grantedScopes.allSatisfy({ !$0.isEmpty && $0.utf8.count <= 128 }) else {
             throw SocialFailure.invalidConfiguration
         }
+        DiscordLog.makeLogger("social.client").trace("Social authorization replacement admitted", metadata: ["dk.event": "social.authorization.admitted",
+            "dk.active_operations": .stringConvertible(inFlight)])
         changing = true; self.scope = nil; scopes = []; hosts = []
         revision = UUID(); let expected = revision
         defer { changing = false }
         try await relationships.activate(scope: scope)
+        DiscordLog.makeLogger("social.client").trace("Social relationship scope activated", metadata: ["dk.event": "social.authorization.relationships.activated"])
         guard !closed, revision == expected else {
             await relationships.clear()
             throw SocialFailure.staleSession
         }
         self.scope = scope; scopes = grantedScopes; hosts = availableHosts
-        DiscordLog.makeLogger("social").debug("Social authorization activated", metadata: ["dk.event": "social.authorization.activated"])
+        DiscordLog.makeLogger("social.client").info("Social authorization activated", metadata: ["dk.event": "social.authorization.activated"])
     }
 
     /// Revokes local consent, fences pending results and releases all local relationship data.
@@ -98,7 +101,7 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
     /// It is idempotent, including on a closed client; no new calls are admitted afterward
     /// until explicit activation succeeds.
     public func disconnect() async {
-        DiscordLog.makeLogger("social").debug("Social authorization cleared", metadata: ["dk.event": "social.authorization.cleared",
+        DiscordLog.makeLogger("social.client").notice("Social authorization cleared", metadata: ["dk.event": "social.authorization.cleared",
             "dk.active_operations": .stringConvertible(inFlight)])
         revision = UUID(); scope = nil; scopes = []; hosts = []
         await relationships.clear()
@@ -109,7 +112,7 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
     /// their provider resources; closing this composition does not replay or undo mutations.
     public func close() async {
         if !closed {
-            DiscordLog.makeLogger("social").debug("Social client closing", metadata: ["dk.event": "social.client.closed"])
+            DiscordLog.makeLogger("social.client").info("Social client closing", metadata: ["dk.event": "social.client.closed"])
         }
         closed = true
         await disconnect()
@@ -147,12 +150,16 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
         guard inFlight < maximumOperations else { throw SocialFailure.overloaded }
         let expected = revision; let account = scope!.accountID; let provider = profile!
         inFlight += 1; defer { inFlight -= 1 }
-        let logger = DiscordLog.makeLogger("social")
+        let logger = DiscordLog.makeLogger("social.client")
         logger.trace("Social profile read started", metadata: ["dk.event": "social.profile.started"])
         do {
+            logger.trace("Social profile provider admitted", metadata: ["dk.event": "social.profile.provider.admitted",
+                "dk.active_operations": .stringConvertible(inFlight)])
             let user = try await context.run { try await provider.currentProfile(context: context) }
+            logger.trace("Social profile provider returned", metadata: ["dk.event": "social.profile.provider.completed"])
             try context.check(); try requireRevision(expected)
             guard user.id == account else { throw SocialFailure.accountMismatch }
+            logger.trace("Social profile authorization remains current", metadata: ["dk.event": "social.profile.authorization.validated"])
             logger.debug("Social profile read completed", metadata: ["dk.event": "social.profile.completed"])
             return user
         } catch {
@@ -178,12 +185,15 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
         guard !writingPresence else { throw SocialFailure.mutationInProgress }
         guard inFlight < maximumOperations else { throw SocialFailure.overloaded }
         let expected = revision; let provider = presence!
-        let logger = DiscordLog.makeLogger("social")
+        let logger = DiscordLog.makeLogger("social.client")
         logger.trace("Social presence write started", metadata: ["dk.event": "social.presence.started"])
         writingPresence = true; inFlight += 1
         defer { writingPresence = false; inFlight -= 1 }
         do {
+            logger.trace("Social presence mutation ownership admitted", metadata: ["dk.event": "social.presence.provider.admitted",
+                "dk.active_operations": .stringConvertible(inFlight)])
             try await context.run { try await provider.updatePresence(value, context: context) }
+            logger.trace("Social presence provider returned", metadata: ["dk.event": "social.presence.provider.completed"])
             try context.check(); try requireRevision(expected)
             logger.debug("Social presence write completed", metadata: ["dk.event": "social.presence.completed"])
         } catch {
@@ -206,6 +216,7 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
         let expected = revision
         let result = try await relationships.apply(snapshot: snapshot)
         try requireRevision(expected)
+        DiscordLog.makeLogger("social.client").trace("Social relationship observation validated", metadata: ["dk.event": "social.relationships.observation.completed"])
         return result
     }
 
@@ -217,8 +228,10 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
         try require(.relationshipState)
         guard event.scope == scope else { throw SocialFailure.accountMismatch }
         let expected = revision
+        DiscordLog.makeLogger("social.client").trace("Social relationship event admitted", metadata: ["dk.event": "social.relationships.apply.admitted"])
         let result = try await relationships.apply(event: event)
         try requireRevision(expected)
+        DiscordLog.makeLogger("social.client").trace("Social relationship observation validated", metadata: ["dk.event": "social.relationships.observation.completed"])
         return result
     }
 
@@ -229,6 +242,7 @@ public actor SocialClient<C: Clock> where C.Duration == Duration {
         let expected = revision
         let result = await relationships.view()
         try requireRevision(expected)
+        DiscordLog.makeLogger("social.client").trace("Social relationship observation validated", metadata: ["dk.event": "social.relationships.observation.completed"])
         return result
     }
 

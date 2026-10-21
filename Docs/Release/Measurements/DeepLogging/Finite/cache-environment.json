@@ -1,0 +1,25 @@
+{
+  "architecture": "arm64",
+  "buildConfiguration": "release",
+  "cacheRounds": 8,
+  "dirtySource": true,
+  "executableSHA256": "6e0df7d713234f13b1de3a72bfe63e6adce542bcaaa1f0992e4ffcd9a1c127f6",
+  "hardwareModel": "Mac15,10",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "measurementScope": "one shared cache; 1/2/4 scopes and 20 fixed keys per scope; exact finite refresh, eviction, TTL, invalidation and subscriber recovery rounds; separate accounted bytes and actual process RSS; no fleet or 30-minute qualification inferred",
+  "peer": "offline fixed-key cache/broadcast scripts; no credentials or sockets",
+  "physicalMemoryBytes": 38654705664,
+  "processor": "Apple M3 Max",
+  "recordedAtUTC": "2026-10-21T03:58:21.678468+00:00",
+  "soakRounds": 512,
+  "sourceCommitBasis": "eb3a44d248275682eb2a1b6ba53e741db092f233",
+  "sourceSHA256": {
+    "Sources/DiscordCache/CacheValues.swift": "aad23c15ca2decce7b72d02391c1e4f22a4187b9363aa1cbf3d56d149a8dab6c",
+    "Sources/DiscordCache/EntityCache.swift": "888dadd2aca93ff14ad1827796dddc8437d49d569a49bad0b019806b272ec188",
+    "Sources/DiscordCache/EventReducer.swift": "eeda1685642c2a4fd57a10f9c3ab3c92a3d9d75cd2586b2168f4902217490aa8",
+    "Sources/DiscordGateway/EventHandlers.swift": "2bcd97076996d90d2d58301c28d6f3d60698724bb5080d7aaca85a4abac7b3a1",
+    "Sources/DiscordGateway/EventHub.swift": "7be9cbef8f26d722297e1646ada8a47783c0bfa510c030819bf7f3e7d994d986",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08"
+  },
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0"
+}

@@ -103,7 +103,7 @@ public final class NIODatagramTransport: DatagramTransport, Sendable {
                     guard let host = channel.localAddress?.ipAddress,
                           let port = channel.localAddress?.port, let wirePort = UInt16(exactly: port)
                     else { throw NIOServiceFailure.invalidAddress }
-                    DiscordLog.makeLogger("nio.datagram").debug("Local datagram bound", metadata: ["dk.event": "nio.datagram.bound"])
+                    DiscordLog.makeLogger("nio.datagram").info("Local datagram bound", metadata: ["dk.event": "nio.datagram.bound"])
                     return NIODatagramTransport(channel: channel, lifetime: lifetime, slot: slot, input: input,
                                                 maximumDatagramBytes: maximumDatagramBytes,
                                                 localAddress: .init(host: host, port: wirePort))
@@ -189,7 +189,7 @@ public final class NIODatagramTransport: DatagramTransport, Sendable {
     public func close() async {
         input.finish()
         await lifetime.close()
-        DiscordLog.makeLogger("nio.datagram").debug("Local datagram transport closed", metadata: ["dk.event": "nio.datagram.closed"])
+        DiscordLog.makeLogger("nio.datagram").info("Local datagram transport closed", metadata: ["dk.event": "nio.datagram.closed"])
     }
 }
 

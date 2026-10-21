@@ -1813,6 +1813,48 @@
       ],
       "details": "changes/2026-10-19-invocation-resilience.md",
       "remainingGates": "../BotApplications.md"
+    },
+    {
+      "id": "2026-10-20-semantic-logging",
+      "recordedOn": "2026-10-20",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8",
+        "rpc": "1",
+        "mls": "1.0",
+        "dave": "1"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-10-20",
+      "localSupportDate": "2026-10-20",
+      "localRelease": "unpublished 0.18.0 candidate",
+      "localCommit": "unknown",
+      "changeType": "local_feature",
+      "previousBehavior": "Sparse operation entry/exit diagnostics used coarse subsystem labels and reserved info/notice for applications; shared RPC/Activity writer and reply tasks did not preserve exact request diagnostic spans.",
+      "currentBehavior": "Hierarchical component categories and semantic severity expose detailed runtime admission, decisions, protocol phases, outcomes and cleanup. Scoped component thresholds/context and ephemeral operation traces preserve nested work correlation; bounded RPC/Activity request metadata preserves queued transport and reply spans. An optional output floor adapter preserves destination severity under multiplex threshold changes.",
+      "affectedSymbols": [
+        "DiscordLog",
+        "DiscordLogConfiguration",
+        "DiscordLevelFilterLogHandler",
+        "RESTClient",
+        "GatewayShard",
+        "DiscordClient",
+        "BotRuntime",
+        "VoiceSession",
+        "RPCClient",
+        "ActivityClient"
+      ],
+      "affectedPayloads": "Local diagnostic metadata only; no Discord protocol, resource schema, endpoint, opcode or registration change.",
+      "breakingChanges": [
+        "Exact logger labels become dotted components; info and notice now include library lifecycle and milestone events."
+      ],
+      "migration": "Update exact-label filters; select dotted component thresholds and wrap multiplex destinations with fixed level floors when needed. Application bootstrap, output lifetime and secrets remain application-owned.",
+      "sources": [],
+      "provenance": "Local Swift implementation, checked-in SwiftLog source and offline test/build evidence; no new upstream source review claimed.",
+      "details": "changes/2026-10-20-semantic-logging.md",
+      "remainingGates": "../Logging.md"
     }
   ]
 }

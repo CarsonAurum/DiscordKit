@@ -108,7 +108,7 @@ public final class NIOHTTPIngress: HTTPIngress, Sendable {
                     guard let host = listener.localAddress?.ipAddress,
                           let port = listener.localAddress?.port, let wirePort = UInt16(exactly: port)
                     else { throw NIOServiceFailure.invalidAddress }
-                    DiscordLog.makeLogger("nio.ingress").debug("Local ingress bound", metadata: ["dk.event": "nio.ingress.bound"])
+                    DiscordLog.makeLogger("nio.ingress").info("Local ingress bound", metadata: ["dk.event": "nio.ingress.bound"])
                     return NIOHTTPIngress(listener: listener, registry: registry, input: input,
                                           localAddress: .init(host: host, port: wirePort))
                 } onCancel: {
@@ -167,7 +167,7 @@ public final class NIOHTTPIngress: HTTPIngress, Sendable {
     public func close() async {
         input.finish()
         await cleanup.close()
-        DiscordLog.makeLogger("nio.ingress").debug("Local HTTP ingress closed", metadata: ["dk.event": "nio.ingress.closed"])
+        DiscordLog.makeLogger("nio.ingress").info("Local HTTP ingress closed", metadata: ["dk.event": "nio.ingress.closed"])
     }
 }
 

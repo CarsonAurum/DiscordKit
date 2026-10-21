@@ -93,12 +93,14 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     ///   versions close the owner. Repeated start never resets counters or reuses a package.
     public func start(protocolVersion: UInt16) async throws -> [VoiceGatewayFrame] {
         try begin(); defer { busy = false }
-        let logger = DiscordLog.makeLogger("dave")
+        let logger = DiscordLog.makeLogger("dave.protocol")
         logger.trace("DAVE establishment started", metadata: ["dk.event": "dave.session.started"])
         do {
+            logger.trace("DAVE protocol version validating", metadata: ["dk.event": "dave.session.version.validating"])
             try validateVersion(protocolVersion)
             guard version == nil else { throw DAVESessionError.invalidTransition }
             version = protocolVersion
+            logger.trace("DAVE fresh key package ownership creating", metadata: ["dk.event": "dave.session.package.creating"])
             let commands = [try await freshPackage()]
             logger.debug("DAVE key package prepared", metadata: ["dk.event": "dave.session.package_prepared"])
             return commands
@@ -124,13 +126,19 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     ///   complete results before sending another control. Lost results require a rejoin.
     public func receive(_ frame: VoiceGatewayFrame, now: TimeInterval) async throws -> [VoiceGatewayFrame] {
         try begin(); defer { busy = false }
-        let logger = DiscordLog.makeLogger("dave")
+        let logger = DiscordLog.makeLogger("dave.protocol")
         logger.trace("DAVE control admitted", metadata: ["dk.event": "dave.control.admitted"])
         do {
             try await expire(now)
             guard version != nil else { throw DAVESessionError.invalidTransition }
+            logger.trace("DAVE control envelope decoding", metadata: ["dk.event": "dave.control.decoding",
+                "dk.opcode": .stringConvertible(frame.opcode), "dk.participants": .stringConvertible(expectedParticipants.count)])
             let message = try DAVESignaling.decode(frame, maximumMembers: maximumMembers)
-            return try await consume(message, now: now)
+            let commands = try await consume(message, now: now)
+            logger.trace("DAVE control ownership effects completed", metadata: ["dk.event": "dave.control.completed",
+                "dk.commands": .stringConvertible(commands.count), "dk.active_epoch": .stringConvertible(active != nil),
+                "dk.pending_epoch": .stringConvertible(pending != nil)])
+            return commands
         } catch {
             if error is CancellationError || Task.isCancelled {
                 logger.trace("DAVE control cancelled", metadata: ["dk.event": "dave.control.cancelled"])
@@ -213,7 +221,7 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
         guard !busy else { throw DAVESessionError.operationInProgress }
         busy = true; defer { busy = false }
         if !closed {
-            DiscordLog.makeLogger("dave").debug("DAVE session closing", metadata: ["dk.event": "dave.session.closing"])
+            DiscordLog.makeLogger("dave.protocol").debug("DAVE session closing", metadata: ["dk.event": "dave.session.closing"])
         }
         await dispose()
     }
@@ -412,7 +420,7 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
         }
         guard let active else { throw DAVESessionError.invalidTransition }
         transition = nil
-        DiscordLog.makeLogger("dave").debug("DAVE epoch activated", metadata: ["dk.event": "dave.epoch.activated"])
+        DiscordLog.makeLogger("dave.protocol").info("DAVE epoch activated", metadata: ["dk.event": "dave.epoch.activated"])
         if active.id > 0 {
             try await verificationStore?.replaceSession(sessionID: verificationSessionID, epoch: active.id,
                 identities: active.identities, epochAuthenticator: active.authenticator)
@@ -432,11 +440,15 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     /// - Returns: New KeyPackage command; negotiated version and authenticated membership survive.
     /// - Throws: New key or policy errors. Cleared secrets cannot be restored after failure.
     private func recover() async throws -> VoiceGatewayFrame {
-        DiscordLog.makeLogger("dave").warning("DAVE key establishment recovering", metadata: ["dk.event": "dave.session.recovering"])
+        DiscordLog.makeLogger("dave.protocol").notice("DAVE key establishment recovering", metadata: ["dk.event": "dave.session.recovering"])
+        let logger = DiscordLog.makeLogger("dave.protocol")
+        logger.trace("DAVE recovery old key owners releasing", metadata: ["dk.event": "dave.session.recovery.releasing"])
         await clearEpochs(); await group?.close(); group = nil
         await package?.close(); package = nil; transition = nil
         await verificationStore?.removeSession(sessionID: verificationSessionID)
-        return try await freshPackage()
+        let replacement = try await freshPackage()
+        logger.trace("DAVE recovery replacement package prepared", metadata: ["dk.event": "dave.session.recovery.prepared"])
+        return replacement
     }
 
     /// Checks injected monotonic time and releases expired receive-only epoch references.
@@ -464,10 +476,13 @@ public actor DAVEProtocolSession: CustomStringConvertible, CustomDebugStringConv
     /// Permanently invalidates admission before releasing every subordinate key owner.
     /// Cleanup ignores task cancellation and is safe to invoke repeatedly.
     private func dispose() async {
+        let logger = DiscordLog.makeLogger("dave.protocol")
+        logger.trace("DAVE session key ownership releasing", metadata: ["dk.event": "dave.session.cleanup.started"])
         closed = true; signingKey = nil; version = nil; transition = nil
         expectedParticipants.removeAll(); externalSenderReceived = false
         await clearEpochs(); await group?.close(); group = nil
         await package?.close(); package = nil
         await verificationStore?.removeSession(sessionID: verificationSessionID)
+        logger.trace("DAVE session key ownership released", metadata: ["dk.event": "dave.session.cleanup.completed"])
     }
 }

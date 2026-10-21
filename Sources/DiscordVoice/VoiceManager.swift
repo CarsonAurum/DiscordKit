@@ -156,7 +156,7 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
             throw VoiceManagerFailure.operationInProgress
         }
         guard entries[guildID] != nil || entries.count < maximumGuilds else { throw VoiceManagerFailure.capacityExceeded }
-        let logger = DiscordLog.makeLogger("voice")
+        let logger = DiscordLog.makeLogger("voice.manager")
         logger.trace("Voice join admitted", metadata: ["dk.event": "voice.manager.join.started",
             "dk.retained_guilds": .stringConvertible(entries.count)])
         let generation = try reserveGeneration()
@@ -166,12 +166,15 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
         entries[guildID] = Entry(generation: generation, rendezvous: rendezvous)
         let context = TransportContext(clock: clock, deadline: clock.now.advanced(by: timeout))
         let operation = Operation(Task<(any VoiceManagedSession)?, any Error> { [self] in
+            logger.trace("Voice prior session cleanup starting", metadata: ["dk.event": "voice.manager.join.previous_cleanup"])
             await terminate(old)
             try Task.checkCancellation()
             return try await context.run { [self] in
                 try await sendJoin(guildID: guildID, channelID: channelID, selfMute: selfMute,
                     selfDeaf: selfDeaf, generation: generation)
+                logger.trace("Voice credential rendezvous waiting", metadata: ["dk.event": "voice.manager.join.credentials.waiting"])
                 let credentials = try await waitForCredentials(guildID: guildID, generation: generation)
+                logger.trace("Voice credential rendezvous completed", metadata: ["dk.event": "voice.manager.join.credentials.completed"])
                 return try await install(credentials, guildID: guildID, generation: generation)
             }
         }, depth: 1)
@@ -183,7 +186,7 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
                 throw VoiceManagerFailure.superseded
             }
             entries[guildID]?.joining = false; entries[guildID]?.operation = nil
-            logger.debug("Voice join session installed", metadata: ["dk.event": "voice.manager.join.completed"])
+            logger.info("Voice join session installed", metadata: ["dk.event": "voice.manager.join.completed"])
             return session
         } catch {
             if error is CancellationError || Task.isCancelled {
@@ -274,7 +277,7 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
               let task = beginClose(guildID: guildID, generation: entry.generation,
                   sendLeave: true, waiterFailure: .disconnected) else { return }
         try await task.value
-        DiscordLog.makeLogger("voice").debug("Voice leave completed", metadata: ["dk.event": "voice.manager.leave.completed"])
+        DiscordLog.makeLogger("voice.manager").info("Voice leave completed", metadata: ["dk.event": "voice.manager.leave.completed"])
     }
 
     /// Permanently stops all sessions, beginning one best-effort leave for each open guild.
@@ -284,7 +287,7 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
     public func stop() async {
         if let shutdownTask { await shutdownTask.value; return }
         guard !stopped else { return }
-        DiscordLog.makeLogger("voice").debug("Voice manager stopping", metadata: ["dk.event": "voice.manager.stopping",
+        DiscordLog.makeLogger("voice.manager").info("Voice manager stopping", metadata: ["dk.event": "voice.manager.stopping",
             "dk.retained_guilds": .stringConvertible(entries.count)])
         stopped = true
         let retained = entries
@@ -305,6 +308,8 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
     ///   All waiters have been resolved and all entries marked closing before this task starts.
     private func finishStop(_ tasks: [Task<Void, any Error>]) async {
         for task in tasks { _ = await task.result }
+        DiscordLog.makeLogger("voice.manager").trace("Voice manager child cleanup joined", metadata: ["dk.event": "voice.manager.cleanup.joined",
+            "dk.children": .stringConvertible(tasks.count)])
     }
 
     /// Returns finite aggregate diagnostics without traversing sessions or credentials.
@@ -490,7 +495,7 @@ public actor VoiceManager<C: Clock> where C.Duration == Duration {
         guard entries[guildID]?.generation == generation,
               entries[guildID]?.credentials?.generation == connectionGeneration,
               entries[guildID]?.closing == false else { return }
-        DiscordLog.makeLogger("voice").debug("Managed voice session finished", metadata: ["dk.event": "voice.manager.session.finished",
+        DiscordLog.makeLogger("voice.manager").debug("Managed voice session finished", metadata: ["dk.event": "voice.manager.session.finished",
             "dk.failed": .stringConvertible(failed)])
         entries[guildID]?.session = nil; entries[guildID]?.task = nil
     }

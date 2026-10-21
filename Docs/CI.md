@@ -51,11 +51,12 @@ runtime smoke matrix. Full runtime/compiler measurements are explicit local qual
 commands; compare numerical budgets only on matching hardware, toolchain and workload.
 Part 15L preserves `Docs/Release/phase15l-report.json` as authoring checkpoint
 evidence and keeps the Phase 14 and 15K reports intact and separately validated.
-The logging candidate records current local checks in
-[logging validation](Release/logging-validation.json). It also checks freshly emitted macro and extension APIs against their
+The semantic logging candidate records current local checks in
+[semantic logging validation](Release/semantic-logging-validation.json); the first
+[logging validation](Release/logging-validation.json) stays historical. It also checks freshly emitted macro and extension APIs against their
 separate `0.15.0` baselines. The root comparison retains the historical `0.14.0`
 migration checks, then rejects same-version root API drift against the reviewed
-`0.16.0` snapshot. None of these checks replaces running the current source validation or
+`0.18.0` snapshot. None of these checks replaces running the current source validation or
 establishes a passed platform run, publication or production capacity.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to

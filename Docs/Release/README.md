@@ -1,6 +1,14 @@
 # Release certification
 
-Invocation resilience advances the unpublished root API candidate to **0.17.0**,
+Semantic logging advances the unpublished root API candidate to **0.18.0**,
+adding hierarchical component thresholds, scoped context and correlated operation
+timelines. See [logging adoption](../Logging.md),
+[current validation](semantic-logging-validation.json),
+[machine report](semantic-logging-report.json) and the separately named
+[root API baseline](api-baseline-0.18.0.json). Existing checkpoint evidence stays
+historical. No release or tag is published.
+
+Invocation resilience advanced the unpublished root API candidate to **0.17.0**,
 adding explicit Gateway invocation recovery and immutable safe failure diagnostics.
 See [validation](invocation-resilience-validation.json),
 [adoption and attribution limits](../BotApplications.md) and the separately named

@@ -5,9 +5,11 @@ Emit native SwiftLog diagnostics with application-owned outputs and task-scoped 
 ## Overview
 
 ``DiscordLog`` provides a logger factory used by independent operation owners.
-Library flow uses trace/debug; exceptional recoveries and terminal failures use
-warning/error/critical. Info and notice remain reserved for application semantic
-events. Constructors and pure compilation emit nothing. The application configures
+Trace describes execution steps, debug describes diagnostic summaries, info records
+normal lifecycle outcomes and notice records recovery or operational milestones.
+Warning/error/critical identify degradation, terminal failure and lost safety.
+Component thresholds and correlated operation context are task scoped.
+Constructors and pure compilation emit nothing. The application configures
 SwiftLog once and may select the optional `DiscordLogHandlers` product.
 
 ## Topics

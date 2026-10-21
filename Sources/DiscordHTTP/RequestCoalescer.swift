@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 
 /// Explicit bounded admission failures shared by read reuse components.
@@ -105,6 +106,7 @@ public actor RequestCoalescer {
             flight.waiters[waiter] = continuation
             flights[key] = flight
             waiterCount += 1
+            DiscordLog.makeLogger("http.coalescing").trace("REST subscriber joined an existing read flight", metadata: ["dk.event": "http.coalescing.joined", "dk.waiters": .stringConvertible(flight.waiters.count), "dk.flights": .stringConvertible(flights.count)])
             return
         }
         guard flights.count < maximumFlights,
@@ -124,6 +126,7 @@ public actor RequestCoalescer {
         }
         flights[key] = Flight(generation: generation, task: task, waiters: [waiter: continuation])
         waiterCount += 1
+        DiscordLog.makeLogger("http.coalescing").trace("REST shared read flight created", metadata: ["dk.event": "http.coalescing.created", "dk.flights": .stringConvertible(flights.count), "dk.waiters": .stringConvertible(waiterCount)])
     }
 
     /// Removes one cancelled subscriber; final cancellation awaits exchange cleanup.
@@ -133,6 +136,7 @@ public actor RequestCoalescer {
     private func cancel(key: HTTPReadKey, waiter: UUID) async {
         guard var flight = flights[key], let continuation = flight.waiters.removeValue(forKey: waiter) else { return }
         waiterCount -= 1
+        DiscordLog.makeLogger("http.coalescing").trace("REST shared read subscriber cancelled", metadata: ["dk.event": "http.coalescing.cancelled", "dk.waiters": .stringConvertible(flight.waiters.count), "dk.cancel_flight": .stringConvertible(flight.waiters.isEmpty)])
         if flight.waiters.isEmpty {
             // Retain the empty flight until cleanup completes so close also awaits it.
             flights[key] = flight
@@ -151,6 +155,7 @@ public actor RequestCoalescer {
         guard let flight = flights[key], flight.generation == generation else { return }
         flights.removeValue(forKey: key)
         waiterCount -= flight.waiters.count
+        DiscordLog.makeLogger("http.coalescing").trace("REST shared read flight completed and released", metadata: ["dk.event": "http.coalescing.completed", "dk.subscribers": .stringConvertible(flight.waiters.count), "dk.flights": .stringConvertible(flights.count), "dk.waiters": .stringConvertible(waiterCount)])
         for continuation in flight.waiters.values { continuation.resume(with: result) }
     }
 }

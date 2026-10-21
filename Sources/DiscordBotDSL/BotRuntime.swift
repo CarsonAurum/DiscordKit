@@ -111,6 +111,7 @@ public actor BotRuntime {
     /// Acquires all subscriptions before starting the client, then supervises every declared child.
     /// The first child completion/failure or stop signal cancels siblings, shuts down the client and
     /// joins all owned work. Handler/lease-release failures survive cancellation during cleanup.
+    /// Diagnostics inherit one ephemeral operation trace through setup, child execution and cleanup.
     /// - Throws: `alreadyRunning` for concurrent invocation, `stopped` after any terminal lifetime,
     ///   cancellation, original setup/child errors, or `BotRuntimeFailures` for multiple failures.
     ///   Callbacks/transports must cooperate with cancellation; effects are never rolled back/replayed.
@@ -118,13 +119,15 @@ public actor BotRuntime {
         guard phase == .idle else {
             throw phase == .stopped || phase == .failed ? BotRuntimeFailure.stopped : .alreadyRunning
         }
-        phase = .starting
-        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime started", metadata: ["dk.event": "bot_dsl.runtime.started"])
-        let task = Task { try await self.execute() }
-        completion = task
-        try await withTaskCancellationHandler {
-            try await task.value
-        } onCancel: { task.cancel() }
+        try await DiscordLog.withOperation("bot.lifecycle", event: "bot_dsl.runtime.operation") {
+            phase = .starting
+            DiscordLog.makeLogger("bot.lifecycle").info("Bot runtime started", metadata: ["dk.event": "bot_dsl.runtime.started"])
+            let task = Task { try await self.execute() }
+            completion = task
+            try await withTaskCancellationHandler {
+                try await task.value
+            } onCancel: { task.cancel() }
+        }
     }
 
     /// Requests an idempotent stop without joining the caller's own callback.
@@ -133,7 +136,7 @@ public actor BotRuntime {
     public func requestStop() {
         guard phase != .stopped && phase != .failed else { return }
         stopRequested = true
-        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime stop requested", metadata: ["dk.event": "bot_dsl.runtime.stop_requested"])
+        DiscordLog.makeLogger("bot.lifecycle").debug("Bot runtime stop requested", metadata: ["dk.event": "bot_dsl.runtime.stop_requested", "dk.phase": .string(phase.rawValue)])
         if phase == .idle {
             phase = .stopping
             completion = Task { await self.closeBeforeRun() }
@@ -151,16 +154,18 @@ public actor BotRuntime {
     public func shutdown() async throws {
         requestStop()
         try await completion?.value
+        DiscordLog.makeLogger("bot.lifecycle").trace("Bot runtime shutdown joined owner completion", metadata: ["dk.event": "bot_dsl.runtime.shutdown_joined"])
     }
 
     /// Closes inert ownership after a stop requested before subscription or client startup.
     /// All concurrent shutdown callers await this same task, including cancelled callers.
     private func closeBeforeRun() async {
+        DiscordLog.makeLogger("bot.lifecycle").trace("Closing bot ownership before startup", metadata: ["dk.event": "bot_dsl.runtime.closing_before_run"])
         await cancelInteractions?()
         await clientShutdown()
         stop.continuation.finish()
         phase = .stopped
-        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime stopped before startup", metadata: ["dk.event": "bot_dsl.runtime.stopped_before_run"])
+        DiscordLog.makeLogger("bot.lifecycle").info("Bot runtime stopped before startup", metadata: ["dk.event": "bot_dsl.runtime.stopped_before_run"])
     }
 
     /// Performs bounded setup and supervises a fixed set of result-reporting children.
@@ -173,16 +178,21 @@ public actor BotRuntime {
         var cancelled = false
         do {
             try Task.checkCancellation()
-            if !stopRequested { try await prepareInteractions?() }
+            if !stopRequested {
+                DiscordLog.makeLogger("bot.lifecycle").trace("Preparing trusted Gateway interaction admission", metadata: ["dk.event": "bot_dsl.runtime.interactions_preparing", "dk.enabled": .stringConvertible(prepareInteractions != nil)])
+                try await prepareInteractions?()
+                DiscordLog.makeLogger("bot.lifecycle").trace("Trusted interaction preparation completed", metadata: ["dk.event": "bot_dsl.runtime.interactions_prepared"])
+            }
             if !stopRequested {
                 pipelines = try await events.subscribe(to: hub, configuration: configuration, authority: authority)
             }
             try Task.checkCancellation()
             if !stopRequested {
                 phase = .running
-                DiscordLog.makeLogger("bot_dsl").debug("Bot runtime subscriptions prepared", metadata: ["dk.event": "bot_dsl.runtime.running"])
+                DiscordLog.makeLogger("bot.lifecycle").info("Bot runtime subscriptions prepared", metadata: ["dk.event": "bot_dsl.runtime.running"])
                 let prepared = pipelines
                 await withTaskGroup(of: ChildResult.self) { children in
+                    DiscordLog.makeLogger("bot.lifecycle").trace("Launching supervised bot children after subscriptions", metadata: ["dk.event": "bot_dsl.runtime.children_starting"])
                     children.addTask { await Self.result(stage: .client, self.clientRun) }
                     if let prepared, prepared.subscriptionCount > 0 {
                         children.addTask { await Self.result(stage: .events) { try await prepared.run() } }
@@ -198,15 +208,18 @@ public actor BotRuntime {
                         if Self.original(error) is CancellationError { cancelled = true }
                         else { collect(error, stage: first.stage, failures: &failures, diagnostics: &diagnostics) }
                     }
+                    DiscordLog.makeLogger("bot.lifecycle").trace("Bot child completion observed; cancelling siblings", metadata: ["dk.event": "bot_dsl.runtime.children_cancelling"])
                     children.cancelAll()
                     await prepared?.cancel()
                     await cancelInteractions?()
                     await clientShutdown()
+                    DiscordLog.makeLogger("bot.lifecycle").trace("Bot input owners closed; joining supervised children", metadata: ["dk.event": "bot_dsl.runtime.children_joining"])
                     while let result = await children.next() {
                         if case .failure(let error) = result.result, !(Self.original(error) is CancellationError) {
                             collect(error, stage: result.stage, failures: &failures, diagnostics: &diagnostics)
                         }
                     }
+                    DiscordLog.makeLogger("bot.lifecycle").trace("Every supervised bot child joined", metadata: ["dk.event": "bot_dsl.runtime.children_joined"])
                 }
             }
         } catch {
@@ -214,22 +227,24 @@ public actor BotRuntime {
             else { collect(error, stage: .setup, failures: &failures, diagnostics: &diagnostics) }
         }
         // Setup may fail before a task group exists. These idempotent calls also cover that path.
+        DiscordLog.makeLogger("bot.lifecycle").trace("Closing bot pipelines and client after setup or execution", metadata: ["dk.event": "bot_dsl.runtime.cleanup_started"])
         await pipelines?.cancel()
         await cancelInteractions?()
         await clientShutdown()
+        DiscordLog.makeLogger("bot.lifecycle").trace("Bot pipeline and client cleanup completed", metadata: ["dk.event": "bot_dsl.runtime.cleanup_completed"])
         stop.continuation.finish()
         phase = failures.isEmpty ? .stopped : .failed
         if let first = failures.first {
-            DiscordLog.makeLogger("bot_dsl").error("Bot runtime failed after cleanup", metadata: ["dk.event": "bot_dsl.runtime.failed", "dk.failures": .stringConvertible(failures.count)])
+            DiscordLog.makeLogger("bot.lifecycle").error("Bot runtime failed after cleanup", metadata: ["dk.event": "bot_dsl.runtime.failed", "dk.failures": .stringConvertible(failures.count)])
             if failures.count == 1 { throw first }
             throw BotRuntimeFailures(primary: first, additional: Array(failures.dropFirst()), diagnostics: diagnostics)
         }
         try Task.checkCancellation()
         if cancelled && !stopRequested {
-            DiscordLog.makeLogger("bot_dsl").debug("Bot runtime cancelled", metadata: ["dk.event": "bot_dsl.runtime.cancelled"])
+            DiscordLog.makeLogger("bot.lifecycle").debug("Bot runtime cancelled", metadata: ["dk.event": "bot_dsl.runtime.cancelled"])
             throw CancellationError()
         }
-        DiscordLog.makeLogger("bot_dsl").debug("Bot runtime stopped", metadata: ["dk.event": "bot_dsl.runtime.stopped"])
+        DiscordLog.makeLogger("bot.lifecycle").info("Bot runtime stopped", metadata: ["dk.event": "bot_dsl.runtime.stopped"])
     }
 
     /// An original child result paired with the exact supervised boundary that observed it.
@@ -253,7 +268,7 @@ public actor BotRuntime {
             diagnostics.append(diagnostic)
             var metadata = diagnostic.logMetadata
             metadata["dk.event"] = "bot_dsl.runtime.operation_failed"
-            DiscordLog.makeLogger("bot_dsl").error("Bot runtime operation failed", metadata: metadata)
+            DiscordLog.makeLogger("bot.lifecycle").error("Bot runtime operation failed", metadata: metadata)
             failureObserver?(diagnostic)
         }
     }
@@ -273,6 +288,8 @@ public actor BotRuntime {
     /// - Returns: Original success/failure and stage for finite aggregation after sibling cleanup.
     private nonisolated static func result(stage: BotFailureStage,
         _ operation: @Sendable () async throws -> Void) async -> ChildResult {
+        DiscordLog.makeLogger("bot.lifecycle").trace("Supervised bot child entered", metadata: ["dk.event": "bot_dsl.runtime.child_entered", "dk.stage": .string(stage.rawValue)])
+        defer { DiscordLog.makeLogger("bot.lifecycle").trace("Supervised bot child exited", metadata: ["dk.event": "bot_dsl.runtime.child_exited", "dk.stage": .string(stage.rawValue)]) }
         do { try await operation(); return ChildResult(stage: stage, result: .success(())) }
         catch { return ChildResult(stage: stage, result: .failure(error)) }
     }

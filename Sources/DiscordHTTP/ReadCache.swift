@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 
 /// An opaque authentication scope and exact request representation. Never log its contents.
@@ -84,10 +85,14 @@ public actor ReadCache<C: Clock> where C.Duration == Duration {
     /// - Returns: Retained successful bytes, or nil for a missing/expired entry.
     public func value(for key: HTTPReadKey) -> Data? {
         prune()
-        guard var entry = entries[key] else { return nil }
+        guard var entry = entries[key] else {
+            DiscordLog.makeLogger("http.cache").trace("REST response cache lookup missed", metadata: ["dk.event": "http.cache.lookup.missed", "dk.entries": .stringConvertible(entries.count)])
+            return nil
+        }
         access &+= 1
         entry.access = access
         entries[key] = entry
+        DiscordLog.makeLogger("http.cache").trace("REST response cache lookup succeeded", metadata: ["dk.event": "http.cache.lookup.hit", "dk.bytes": .stringConvertible(entry.data.count)])
         return entry.data
     }
 
@@ -119,6 +124,7 @@ public actor ReadCache<C: Clock> where C.Duration == Duration {
         access &+= 1
         entries[key] = Entry(data: data, expires: clock.now.advanced(by: timeToLive), tags: tags, access: access)
         bytes += data.count
+        DiscordLog.makeLogger("http.cache").trace("REST response cache retained validated bytes", metadata: ["dk.event": "http.cache.inserted", "dk.entries": .stringConvertible(entries.count), "dk.bytes": .stringConvertible(bytes)])
     }
 
     /// Fences old fetches and removes matching snapshots. Empty tags invalidate all for the identity.
@@ -149,12 +155,18 @@ public actor ReadCache<C: Clock> where C.Duration == Duration {
     private func prune() {
         let expired = entries.filter { $0.value.expires <= clock.now }.map(\.key)
         for key in expired { remove(key) }
+        if !expired.isEmpty {
+            DiscordLog.makeLogger("http.cache").trace("REST response cache expired entries pruned", metadata: ["dk.event": "http.cache.expired", "dk.removed": .stringConvertible(expired.count)])
+        }
     }
 
     /// Releases one entry and its exact payload accounting; missing keys are harmless.
     /// - Parameter key: Representation to remove.
     private func remove(_ key: HTTPReadKey) {
-        if let old = entries.removeValue(forKey: key) { bytes -= old.data.count }
+        if let old = entries.removeValue(forKey: key) {
+            bytes -= old.data.count
+            DiscordLog.makeLogger("http.cache").trace("REST response cache entry released", metadata: ["dk.event": "http.cache.removed", "dk.entries": .stringConvertible(entries.count), "dk.bytes": .stringConvertible(bytes)])
+        }
     }
 
     /// Sums one identity's retained payload accounting within the finite entry bound.

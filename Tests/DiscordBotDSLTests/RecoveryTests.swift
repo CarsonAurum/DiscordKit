@@ -123,7 +123,7 @@ struct RecoveryTests {
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test(arguments: RecoveryMode.allCases)
     private func sameRuntimeSurvivesSingleInvocation(_ mode: RecoveryMode) async throws {
-        let recorder = LogRecorder(maximumEntries: 256)
+        let recorder = LogRecorder(maximumEntries: 2_048)
         try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
             let fixture = try RecoveryFixture(mode: mode)
             let runtime = try fixture.runtime()
@@ -175,7 +175,7 @@ struct RecoveryTests {
                          "RECOVERY_BOT_SECRET"] {
             #expect(!rendered.contains(sentinel))
         }
-        #expect(recorder.entries.count < 256)
+        #expect(recorder.entries.count < 2_048)
     }
 
     /// Recovery does not alter malformed-input, identity, provenance, preparation or queue continuity gates.

@@ -1,5 +1,6 @@
 import DiscordCore
 import DiscordHTTP
+import DiscordLogging
 import DiscordModels
 import DiscordTestSupport
 import DiscordTransport
@@ -9,6 +10,37 @@ import Testing
 
 /// Explicit registration tests exercise real HTTP policy using bounded synthetic scripts and virtual time.
 @Suite(.timeLimit(.minutes(1))) struct CommandReconcilerTests {
+    /// Cancellation during an explicit mutation preserves partial progress and releases reconciliation without an error-severity event.
+    /// - Throws: Unexpected synthetic definition, transport, barrier or configuration failure.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func cancelledMutationLogsDiagnosticSeverity() async throws {
+        let entered = TestBarrier(), release = TestBarrier(), logs = LogRecorder()
+        let definition = try CommandDefinition.slash(name: "private-command", description: "private-description")
+        let harness = try CommandsRESTHarness(steps: [
+            { _ in try CommandsTestFixtures.response(Data("[]".utf8)) },
+            { _ in entered.open(); try await release.wait(); throw CancellationError() },
+        ])
+        let reconciler = try CommandReconciler(applicationID: CommandsTestFixtures.applicationID, definitions: [definition])
+        await DiscordLog.$loggerFactory.withValue({ logs.makeLogger($0) }) {
+            let task = Task { try await reconciler.synchronize(using: harness.client) }
+            do { try await entered.wait() }
+            catch { Issue.record("Mutation admission barrier failed") }
+            task.cancel()
+            do { _ = try await task.value; Issue.record("Expected partial cancellation failure") }
+            catch let failure as CommandSyncFailure {
+                #expect(failure.completed.written.isEmpty)
+                #expect(failure.failedDefinitionIndex == 0)
+            } catch { Issue.record("Expected CommandSyncFailure") }
+        }
+        let partial = try #require(logs.entries.first { $0.metadata["dk.event"] == "commands.sync.partial" })
+        #expect(partial.level == .debug && partial.metadata["dk.cancelled"]?.description == "true")
+        #expect(logs.entries.last?.metadata["dk.event"] == "commands.sync.released")
+        #expect(!logs.entries.contains { $0.label == "discordkit.commands.reconciliation" && $0.level >= .warning })
+        #expect(!String(describing: logs.entries.map { ($0.message, $0.metadata) }).contains("private-"))
+        #expect(await harness.coordinator.snapshot().activeCount == 0)
+        await harness.coordinator.close()
+    }
+
     /// Two identical reconciliations each fetch once and send zero writes, leaving unrelated registrations untouched.
     /// Server-only metadata, nested explicit defaults, localization singulars and set order are canonicalized.
     /// - Parameters:

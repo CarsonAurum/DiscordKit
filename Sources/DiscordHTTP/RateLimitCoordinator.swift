@@ -80,7 +80,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
         queue.append(id)
         waiters[id] = Waiter(request: request, deadline: effectiveDeadline, blockedUntil: now)
         queuedBytes += request.queuedBytes
-        DiscordLog.makeLogger("http").trace("REST admission queued", metadata: ["dk.event": "http.admission.queued", "dk.queued": .stringConvertible(queue.count)])
+        DiscordLog.makeLogger("http.ratelimit").trace("REST admission queued", metadata: ["dk.event": "http.admission.queued", "dk.queued": .stringConvertible(queue.count)])
         defer { removeWaiter(id) }
         return try await withTaskCancellationHandler {
             while true {
@@ -93,6 +93,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
                     let partition = QueuePartition(request)
                     admitting.insert(partition)
                     let result: RateLimitAdmission<C.Instant>
+                    DiscordLog.makeLogger("http.ratelimit").trace("REST shared authority reservation started", metadata: ["dk.event": "http.admission.reserve", "dk.active": .stringConvertible(active.count)])
                     do { result = try await store.reserve(request, now: current) }
                     catch {
                         admitting.remove(partition)
@@ -114,15 +115,17 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
                             throw RateLimitFailure.deadlineExceeded
                         }
                         active[reservation.id] = reservation
-                        DiscordLog.makeLogger("http").trace("REST admission granted", metadata: ["dk.event": "http.admission.granted"])
+                        DiscordLog.makeLogger("http.ratelimit").trace("REST admission granted", metadata: ["dk.event": "http.admission.granted"])
                         return reservation
                     case .retry(let instant):
+                        DiscordLog.makeLogger("http.ratelimit").trace("REST shared authority deferred admission", metadata: ["dk.event": "http.admission.deferred"])
                         waiter.blockedUntil = max(instant, current.advanced(by: policy.fairnessInterval))
                         waiters[id]?.blockedUntil = waiter.blockedUntil
                     }
                 }
                 let wake = min(waiter.deadline, max(current.advanced(by: policy.fairnessInterval), waiter.blockedUntil))
                 let clock = self.clock
+                DiscordLog.makeLogger("http.ratelimit").trace("REST admission waiting for eligibility", metadata: ["dk.event": "http.admission.wait", "dk.queued": .stringConvertible(waiters.count), "dk.active": .stringConvertible(active.count)])
                 let sleeper = Task { try await clock.sleep(until: wake, tolerance: nil) }
                 waiters[id]?.sleeper = sleeper
                 do { try await sleeper.value }
@@ -166,12 +169,14 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
         guard effectiveDeadline > now else { throw RateLimitFailure.deadlineExceeded }
         try validateQueueCapacity(request)
         let id = UUID()
+        DiscordLog.makeLogger("http.ordering").trace("REST ordered operation queued", metadata: ["dk.event": "http.ordering.queued", "dk.queued": .stringConvertible(orderingWaiters.count + 1)])
         orderingQueue.append(id)
         orderingWaiters[id] = Waiter(request: request, deadline: effectiveDeadline, blockedUntil: now)
         queuedBytes += request.queuedBytes
         defer {
             removeOrderingWaiter(id)
             orderedOperations.removeValue(forKey: id)
+            DiscordLog.makeLogger("http.ordering").trace("REST ordered operation released", metadata: ["dk.event": "http.ordering.released", "dk.active": .stringConvertible(orderedOperations.count)])
         }
         return try await withTaskCancellationHandler {
             while true {
@@ -182,6 +187,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
                 if eligibleOrderingHead(at: clock.now) == id {
                     removeOrderingWaiter(id)
                     orderedOperations[id] = request
+                    DiscordLog.makeLogger("http.ordering").trace("REST ordered operation admitted", metadata: ["dk.event": "http.ordering.admitted", "dk.active": .stringConvertible(orderedOperations.count)])
                     return try await operation()
                 }
                 let clock = self.clock
@@ -218,6 +224,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
         do {
             try await store.complete(reservation, status: status, headers: headers,
                                      retryAfter: retryAfter, global: global, now: clock.now)
+            DiscordLog.makeLogger("http.ratelimit").trace("REST response rate observation completed", metadata: ["dk.event": "http.admission.completed", "dk.status": .stringConvertible(status), "dk.global": .stringConvertible(global), "dk.retry_after_present": .stringConvertible(retryAfter != nil)])
         } catch { failClosed(); throw authorityFailure(error) }
     }
 
@@ -229,7 +236,10 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
     public func release(_ reservation: RateLimitReservation<C.Instant>, outcome: RateLimitReleaseOutcome) async throws {
         guard active[reservation.id] != nil else { throw RateLimitFailure.unknownReservation }
         defer { active.removeValue(forKey: reservation.id) }
-        do { try await store.release(reservation, outcome: outcome, now: clock.now) }
+        do {
+            try await store.release(reservation, outcome: outcome, now: clock.now)
+            DiscordLog.makeLogger("http.ratelimit").trace("REST admission released without response", metadata: ["dk.event": "http.admission.released", "dk.uncertain": .stringConvertible(outcome == .uncertain)])
+        }
         catch { failClosed(); throw authorityFailure(error) }
     }
 
@@ -237,7 +247,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
     /// Already acquired tokens retain caller ownership and must still be completed
     /// or released. This operation is idempotent and does not close an injected store.
     public func close() {
-        DiscordLog.makeLogger("http").debug("REST admission closed", metadata: ["dk.event": "http.admission.closed"])
+        DiscordLog.makeLogger("http.ratelimit").info("REST admission closed", metadata: ["dk.event": "http.admission.closed"])
         closed = true
         for waiter in waiters.values { waiter.sleeper?.cancel() }
         for waiter in orderingWaiters.values { waiter.sleeper?.cancel() }
@@ -300,7 +310,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
               sameIdentity.count < policy.maximumQueuedRequestsPerIdentity,
               request.queuedBytes <= policy.maximumQueuedBytes - queuedBytes,
               request.queuedBytes <= policy.maximumQueuedBytesPerIdentity - identityBytes else {
-            DiscordLog.makeLogger("http").debug("REST admission queue exhausted", metadata: ["dk.event": "http.admission.overloaded", "dk.queued": .stringConvertible(all.count)])
+            DiscordLog.makeLogger("http.ratelimit").debug("REST admission queue exhausted", metadata: ["dk.event": "http.admission.overloaded", "dk.queued": .stringConvertible(all.count)])
             throw RateLimitFailure.queueFull
         }
     }
@@ -338,6 +348,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
         queuedBytes -= waiter.request.queuedBytes
         queue.removeAll { $0 == id }
         waiter.sleeper?.cancel()
+        DiscordLog.makeLogger("http.ratelimit").trace("REST admission waiter removed", metadata: ["dk.event": "http.admission.waiter.removed", "dk.queued": .stringConvertible(waiters.count), "dk.bytes": .stringConvertible(queuedBytes)])
     }
 
     /// Runs prompt cancellation cleanup from the cancellation handler's small task.
@@ -348,7 +359,7 @@ public actor RateLimitCoordinator<C: Clock> where C.Duration == Duration {
     /// The one critical transition requires application intervention and coordinator replacement.
     private func failClosed() {
         if !unavailable {
-            DiscordLog.makeLogger("http").critical("REST authority permanently unavailable; replace coordinator", metadata: ["dk.event": "http.admission.unavailable"])
+            DiscordLog.makeLogger("http.ratelimit").critical("REST authority permanently unavailable; replace coordinator", metadata: ["dk.event": "http.admission.unavailable"])
         }
         unavailable = true
         for waiter in waiters.values { waiter.sleeper?.cancel() }

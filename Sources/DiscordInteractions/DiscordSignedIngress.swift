@@ -47,32 +47,47 @@ public actor DiscordSignedIngress {
     public func process<C: Clock>(request: HTTPRequest, context: TransportContext<C>,
         handler: @escaping @Sendable (VerifiedDiscordRequest) async throws -> HTTPResponse) async throws -> HTTPResponse
         where C.Duration == Duration {
-        do { try context.check() } catch { await request.body?.close(); throw error }
+        DiscordLog.makeLogger("interactions.ingress").debug("Signed request processing started", metadata: ["dk.event": "interactions.ingress.started"])
+        do { try context.check() } catch {
+            await request.body?.close()
+            DiscordLog.makeLogger("interactions.ingress").trace("Request body closed before admission", metadata: ["dk.event": "interactions.ingress.closed_before_admission"])
+            throw error
+        }
         guard active < maximumConcurrentRequests else {
-            DiscordLog.makeLogger("interactions").debug("Signed ingress capacity exhausted", metadata: ["dk.event": "interactions.ingress.overloaded"])
+            DiscordLog.makeLogger("interactions.ingress").debug("Signed ingress capacity exhausted", metadata: ["dk.event": "interactions.ingress.overloaded", "dk.active": .stringConvertible(active)])
             await request.body?.close()
             return HTTPResponse(status: 503, headers: [HTTPHeader(name: "Retry-After", value: "1")])
         }
         active += 1
-        DiscordLog.makeLogger("interactions").trace("Signed ingress admitted", metadata: ["dk.event": "interactions.ingress.admitted"])
-        defer { active -= 1 }
-        guard request.method == "POST" else { await request.body?.close(); return HTTPResponse(status: 405) }
+        DiscordLog.makeLogger("interactions.ingress").trace("Signed ingress admitted", metadata: ["dk.event": "interactions.ingress.admitted", "dk.active": .stringConvertible(active)])
+        defer {
+            active -= 1
+            DiscordLog.makeLogger("interactions.ingress").trace("Signed ingress admission released", metadata: ["dk.event": "interactions.ingress.released", "dk.active": .stringConvertible(active)])
+        }
+        guard request.method == "POST" else {
+            DiscordLog.makeLogger("interactions.ingress").debug("Signed ingress rejected request method", metadata: ["dk.event": "interactions.ingress.method_rejected", "dk.status": "405"])
+            await request.body?.close(); return HTTPResponse(status: 405)
+        }
         var headerBytes = 0
         for header in request.headers {
             guard header.name.utf8.count <= maximumHeaderBytes - headerBytes else {
+                DiscordLog.makeLogger("interactions.ingress").debug("Signed ingress header bound exceeded", metadata: ["dk.event": "interactions.ingress.headers_rejected", "dk.status": "431"])
                 await request.body?.close(); return HTTPResponse(status: 431)
             }
             headerBytes += header.name.utf8.count
             guard header.value.utf8.count <= maximumHeaderBytes - headerBytes else {
+                DiscordLog.makeLogger("interactions.ingress").debug("Signed ingress header bound exceeded", metadata: ["dk.event": "interactions.ingress.headers_rejected", "dk.status": "431"])
                 await request.body?.close(); return HTTPResponse(status: 431)
             }
             headerBytes += header.value.utf8.count
         }
+        DiscordLog.makeLogger("interactions.ingress").trace("Request header bounds validated", metadata: ["dk.event": "interactions.ingress.headers_validated", "dk.bytes": .stringConvertible(headerBytes)])
         let responseLease = ResponseLease()
         var pendingResponse: HTTPResponse?
         var authenticated = false
         do {
             let maximumBodyBytes = self.maximumBodyBytes
+            DiscordLog.makeLogger("interactions.ingress").trace("Reading bounded request body", metadata: ["dk.event": "interactions.ingress.body_reading"])
             let bytes = try await context.run {
                 var bytes = Data()
                 if let body = request.body {
@@ -86,10 +101,13 @@ public actor DiscordSignedIngress {
                 }
                 return bytes
             }
+            DiscordLog.makeLogger("interactions.ingress").trace("Request body read and closed", metadata: ["dk.event": "interactions.ingress.body_read", "dk.bytes": .stringConvertible(bytes.count)])
+            DiscordLog.makeLogger("interactions.ingress").trace("Verifying request signature and replay admission", metadata: ["dk.event": "interactions.ingress.verifying"])
             let verified = try await verifier.verify(headers: request.headers, body: bytes)
             try context.check()
             authenticated = true
-            DiscordLog.makeLogger("interactions").debug("Signed request authenticated", metadata: ["dk.event": "interactions.ingress.authenticated"])
+            DiscordLog.makeLogger("interactions.ingress").trace("Signed request authenticated", metadata: ["dk.event": "interactions.ingress.authenticated"])
+            DiscordLog.makeLogger("interactions.ingress").trace("Invoking authenticated request handler", metadata: ["dk.event": "interactions.ingress.handler_started"])
             try await context.run {
                 let response = try await handler(verified)
                 await responseLease.store(response)
@@ -98,14 +116,17 @@ public actor DiscordSignedIngress {
             try context.check()
             guard let response = pendingResponse else { throw TransportFailure.closed }
             pendingResponse = nil
+            DiscordLog.makeLogger("interactions.ingress").debug("Signed request processing completed", metadata: ["dk.event": "interactions.ingress.completed", "dk.status": .stringConvertible(response.status)])
             return response
         } catch {
+            DiscordLog.makeLogger("interactions.ingress").trace("Closing failed request and retained response bodies", metadata: ["dk.event": "interactions.ingress.cleanup_started"])
             await request.body?.close()
             await pendingResponse?.body?.close()
             await responseLease.take()?.body?.close()
+            DiscordLog.makeLogger("interactions.ingress").trace("Failed request bodies closed", metadata: ["dk.event": "interactions.ingress.cleanup_completed"])
             try context.check()
             if !authenticated, let failure = error as? SignedIngressFailure {
-                DiscordLog.makeLogger("interactions").debug("Signed ingress rejected unverified request", metadata: ["dk.event": "interactions.ingress.rejected"])
+                DiscordLog.makeLogger("interactions.ingress").debug("Signed ingress rejected unverified request", metadata: ["dk.event": "interactions.ingress.rejected"])
                 switch failure {
                 case .bodyTooLarge: return HTTPResponse(status: 413)
                 case .replayCapacity: return HTTPResponse(status: 503)
@@ -114,10 +135,10 @@ public actor DiscordSignedIngress {
                 }
             }
             if error is CancellationError {
-                DiscordLog.makeLogger("interactions").debug("Signed ingress cancelled", metadata: ["dk.event": "interactions.ingress.cancelled"])
+                DiscordLog.makeLogger("interactions.ingress").debug("Signed ingress cancelled", metadata: ["dk.event": "interactions.ingress.cancelled"])
                 throw error
             }
-            DiscordLog.makeLogger("interactions").debug("Signed ingress handler failed", metadata: ["dk.event": "interactions.ingress.failed"])
+            DiscordLog.makeLogger("interactions.ingress").error("Signed ingress handler failed", metadata: ["dk.event": "interactions.ingress.failed", "dk.status": "500"])
             return HTTPResponse(status: 500)
         }
     }
@@ -133,9 +154,12 @@ public actor DiscordSignedIngress {
         where C.Duration == Duration {
         do {
             let response = try await process(request: exchange.request, context: context, handler: handler)
+            DiscordLog.makeLogger("interactions.ingress").trace("Sending exchange response", metadata: ["dk.event": "interactions.ingress.response_sending", "dk.status": .stringConvertible(response.status)])
             try await exchange.responder.respond(response, context: context)
+            DiscordLog.makeLogger("interactions.ingress").trace("Exchange response sent", metadata: ["dk.event": "interactions.ingress.response_sent"])
         } catch {
             await exchange.responder.close()
+            DiscordLog.makeLogger("interactions.ingress").trace("Failed exchange response slot closed", metadata: ["dk.event": "interactions.ingress.exchange_closed"])
             throw error
         }
     }

@@ -398,10 +398,22 @@ public struct OAuthClient<C: Clock>: Sendable, CustomStringConvertible, CustomDe
     /// - Throws: Explicit invalidGrant/accessDenied/invalidRequest or fixed authorizationFailed for API errors;
     ///   transport/admission/cancellation/uncertainty errors propagate with their existing safe categories.
     private func execute<Value: Sendable>(_ endpoint: Endpoint<Value>) async throws -> Value {
-        let logger = DiscordLog.makeLogger("oauth")
+        return try await DiscordLog.withOperation("oauth.http", event: "oauth.exchange") {
+            try await executeOwned(endpoint)
+        }
+    }
+
+    /// Executes the credential-bearing descriptor within an inherited diagnostic scope.
+    /// - Parameter endpoint: Original request whose URL, headers and body remain unlogged.
+    /// - Returns: The unchanged coordinated HTTP result.
+    /// - Throws: Recognized OAuth or original sanitized execution failures.
+    private func executeOwned<Value: Sendable>(_ endpoint: Endpoint<Value>) async throws -> Value {
+        let logger = DiscordLog.makeLogger("oauth.http")
         logger.trace("OAuth request started", metadata: ["dk.event": "oauth.request.started"])
         do {
+            logger.trace("OAuth coordinated HTTP execution admitted", metadata: ["dk.event": "oauth.request.http.admitted"])
             let response = try await rest.execute(endpoint)
+            logger.trace("OAuth response decoded", metadata: ["dk.event": "oauth.request.response.decoded"])
             logger.debug("OAuth request completed", metadata: ["dk.event": "oauth.request.completed"])
             return response
         }
@@ -421,7 +433,8 @@ public struct OAuthClient<C: Clock>: Sendable, CustomStringConvertible, CustomDe
             if error is CancellationError || Task.isCancelled {
                 logger.trace("OAuth request cancelled", metadata: ["dk.event": "oauth.request.cancelled"])
             } else {
-                logger.debug("OAuth request failed", metadata: ["dk.event": "oauth.request.failed"])
+                logger.debug("OAuth request failed", metadata: ["dk.event": "oauth.request.failed",
+                    "dk.failure": .string("execution")])
             }
             throw error
         }

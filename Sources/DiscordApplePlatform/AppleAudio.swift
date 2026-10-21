@@ -309,6 +309,8 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
         }
         guard generation < .max else { throw AppleAudioError.identifierExhausted }
         generation += 1
+        DiscordLog.makeLogger("apple.audio").trace("Apple audio permission and generation admitted", metadata: ["dk.event": "apple.audio.admitted",
+            "dk.capture": .stringConvertible(configuration.captureEnabled), "dk.playback": .stringConvertible(configuration.playbackEnabled)])
         let current = generation
         storage.begin(generation: current)
         state = .running
@@ -319,7 +321,9 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
             self?.invalidate(reason, generation: current)
         })
         do {
+            DiscordLog.makeLogger("apple.audio").trace("Apple audio backend starting", metadata: ["dk.event": "apple.audio.backend.starting"])
             let format = try backend.start(configuration: configuration, callbacks: callbacks)
+            DiscordLog.makeLogger("apple.audio").trace("Apple audio backend returned", metadata: ["dk.event": "apple.audio.backend.started"])
             try Task.checkCancellation()
             guard state == .running,
                   configuration.captureEnabled == (format != nil),
@@ -328,7 +332,7 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
             }
             captureFormat = format
             try storage.setCaptureFormat(format)
-            DiscordLog.makeLogger("apple.audio").debug("Apple audio routes running", metadata: ["dk.event": "apple.audio.running"])
+            DiscordLog.makeLogger("apple.audio").info("Apple audio routes running", metadata: ["dk.event": "apple.audio.running"])
             return format
         } catch {
             stop(reason: .failed)
@@ -375,6 +379,7 @@ public final class AppleAudioDevice: PCMSource, PCMSink {
     /// - Parameter reason: Defaults to explicit caller stop. Repeated stops are harmless and require
     ///   no permission or uncancelled task; later restart creates an independent callback generation.
     public func stop(reason: AppleAudioStopReason = .requested) {
+        DiscordLog.makeLogger("apple.audio").trace("Apple audio callback admission revoked", metadata: ["dk.event": "apple.audio.cleanup.started"])
         storage.end()
         state = .stopped(reason)
         captureFormat = nil

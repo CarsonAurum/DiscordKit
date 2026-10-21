@@ -284,7 +284,7 @@ extension PCMFrameStreamTests {
             #expect(try await iterator.next() == nil)
         }
         #expect(recorder.entries.count == 1)
-        #expect(recorder.entries.first?.label == "discordkit.media")
+        #expect(recorder.entries.first?.label == "discordkit.media.pcm_stream")
         #expect(recorder.entries.first?.level == .debug)
         #expect(recorder.entries.first?.metadata["dk.event"] == "media.pcm_stream.finished")
         let renderedMetadata = String(describing: recorder.entries.first?.metadata)

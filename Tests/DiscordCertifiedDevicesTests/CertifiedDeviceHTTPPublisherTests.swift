@@ -366,8 +366,8 @@ extension CertifiedDeviceHTTPPublisherTests {
             }
             await publisher.close()
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.certified_devices" }
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "certified_devices.http.completed" })
+        let entries = recorder.entries.filter { $0.label == "discordkit.certified_devices.http" }
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "certified_devices.http.completed" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "certified_devices.http.failed" })
         let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
         for secret in ["private-native-device", "private-device-nonce", "private-second-nonce", "private-device-transport", String(UInt64.max)] {

@@ -170,7 +170,7 @@ public actor GatewayEventHubAuthority {
         subscribers[id] = Subscriber(hub: hub, ordinal: nextOrdinal, configuration: configuration,
             maximumEvents: events, maximumBytes: bytes, policy: policy)
         nextOrdinal += 1
-        DiscordLog.makeLogger("gateway").debug("Gateway subscription created", metadata: ["dk.event": "gateway.subscription.created", "dk.subscriptions": .stringConvertible(subscribers.count)])
+        DiscordLog.makeLogger("gateway.events").debug("Gateway subscription created", metadata: ["dk.event": "gateway.subscription.created", "dk.subscriptions": .stringConvertible(subscribers.count)])
         return GatewayEventSubscription(authority: self, id: id)
     }
 
@@ -224,8 +224,9 @@ public actor GatewayEventHubAuthority {
             } else { dropped += 1 }
         }
         if terminated > 0 || dropped > 0 {
-            DiscordLog.makeLogger("gateway").debug("Gateway subscriber capacity exhausted", metadata: ["dk.event": "gateway.subscription.overflow", "dk.dropped": .stringConvertible(dropped), "dk.terminated": .stringConvertible(terminated)])
+            DiscordLog.makeLogger("gateway.events").warning("Gateway subscriber capacity exhausted", metadata: ["dk.event": "gateway.subscription.overflow", "dk.dropped": .stringConvertible(dropped), "dk.terminated": .stringConvertible(terminated)])
         }
+        DiscordLog.makeLogger("gateway.events").trace("Gateway event publication completed", metadata: ["dk.event": "gateway.publication.completed", "dk.delivered": .stringConvertible(delivered), "dk.dropped": .stringConvertible(dropped), "dk.terminated": .stringConvertible(terminated), "dk.queued": .stringConvertible(bufferedEvents), "dk.bytes": .stringConvertible(bufferedBytes)])
         return GatewayEventPublication(delivered: delivered, dropped: dropped, terminated: terminated)
     }
 
@@ -265,8 +266,10 @@ public actor GatewayEventHubAuthority {
             bufferedEvents -= 1
             bufferedBytes -= event.retainedByteCount
             subscribers[id] = subscriber
+            DiscordLog.makeLogger("gateway.events").trace("Gateway subscription dequeued an event", metadata: ["dk.event": "gateway.subscription.dequeued", "dk.queued": .stringConvertible(bufferedEvents), "dk.bytes": .stringConvertible(bufferedBytes)])
             return event
         }
+        DiscordLog.makeLogger("gateway.events").trace("Gateway subscription waiting for publication", metadata: ["dk.event": "gateway.subscription.wait"])
         return try await withCheckedThrowingContinuation { continuation in
             subscriber.waiter = continuation
             subscribers[id] = subscriber
@@ -281,6 +284,7 @@ public actor GatewayEventHubAuthority {
         guard let subscriber = subscribers.removeValue(forKey: id) else { return }
         bufferedEvents -= subscriber.events.count
         bufferedBytes -= subscriber.bytes
+        DiscordLog.makeLogger("gateway.events").trace("Gateway subscription released", metadata: ["dk.event": "gateway.subscription.released", "dk.cancelled": .stringConvertible(cancelled), "dk.subscriptions": .stringConvertible(subscribers.count), "dk.queued": .stringConvertible(bufferedEvents), "dk.bytes": .stringConvertible(bufferedBytes)])
         if cancelled { subscriber.waiter?.resume(throwing: CancellationError()) }
         else { subscriber.waiter?.resume(returning: nil) }
     }

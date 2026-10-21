@@ -9,6 +9,74 @@ import OSLog
 
 /// Exercises optional outputs without global bootstrap, external services or background work.
 @Suite struct DiscordLogHandlersTests {
+    /// Verifies independent output floors survive multiplex threshold changes, provider
+    /// evaluation stays lazy, and copied handlers retain independent metadata and levels.
+    @Test func fixedOutputFloorsAndValueSemantics() {
+        let console = Box<[DiscordLogRecord]>([])
+        let file = Box<[DiscordLogRecord]>([])
+        let providers = Box(0)
+        var floor = DiscordLevelFilterLogHandler(
+            DiscordCallbackLogHandler(label: "console", logLevel: .trace) { record in
+                console.update { $0.append(record) }
+            }, minimumLevel: .info
+        )
+        #expect(console.read().isEmpty)
+        #expect(floor.logLevel == .info)
+        floor.metadata = ["base": "original"]
+        floor[metadataKey: "temporary"] = "remove"
+        floor[metadataKey: "temporary"] = nil
+        #expect(floor[metadataKey: "temporary"] == nil)
+        floor.metadataProvider = .init {
+            providers.update { $0 += 1 }
+            return ["provider": "yes"]
+        }
+        #expect(floor.metadataProvider != nil)
+        var copy = floor
+        copy[metadataKey: "base"] = "copy"
+        copy.logLevel = .error
+        #expect(floor.metadata["base"] == "original")
+        #expect(floor.logLevel == .info)
+        #expect(copy.logLevel == .error)
+        var logger = Logging.Logger(label: "multiplex") { _ in
+            MultiplexLogHandler([
+                floor,
+                DiscordCallbackLogHandler(label: "file", logLevel: .trace) { record in
+                    file.update { $0.append(record) }
+                },
+            ])
+        }
+        logger.logLevel = .trace
+        var rendered = false
+        logger.trace("trace")
+        logger.debug("debug")
+        #expect(providers.read() == 0)
+        logger.info("info", metadata: ["call": "value"])
+        logger.notice("notice")
+        logger.warning("warning")
+        logger.error("error")
+        logger.critical("critical")
+        logger.logLevel = .critical
+        logger.trace("\({ rendered = true; return "filtered" }())")
+        #expect(!rendered)
+        logger.logLevel = .trace
+        logger.debug("file only again")
+        #expect(console.read().map(\.level) == [.info, .notice, .warning, .error, .critical])
+        #expect(file.read().map(\.level) == Logger.Level.allCases + [.debug])
+        #expect(providers.read() == 5)
+        #expect(console.read().first?.metadata["base"] == "original")
+        #expect(console.read().first?.metadata["provider"] == "yes")
+        #expect(console.read().first?.metadata["call"] == "value")
+        #expect(copy[metadataKey: "base"] == "copy")
+        let before = providers.read()
+        floor.log(event: .init(level: .debug, message: "direct filtered", metadata: nil,
+            source: nil, file: #fileID, function: #function, line: #line))
+        #expect(providers.read() == before)
+        floor.log(event: .init(level: .info, message: "direct retained", metadata: nil,
+            source: nil, file: #fileID, function: #function, line: #line))
+        #expect(console.read().last?.message == "direct retained")
+        #expect(providers.read() == before + 1)
+    }
+
     /// Protects captured observations for concurrent handler and diagnostic tests.
     private final class Box<Value: Sendable>: @unchecked Sendable {
         private let lock = NSLock()

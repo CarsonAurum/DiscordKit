@@ -103,11 +103,16 @@ public actor CommandReconciler {
         try Task.checkCancellation()
         guard !synchronizing else { throw DiscordError.validation(.limitExceeded) }
         synchronizing = true
-        DiscordLog.makeLogger("commands").debug("Explicit command synchronization started", metadata: ["dk.event": "commands.sync.started", "dk.definitions": .stringConvertible(definitions.count)])
-        defer { synchronizing = false }
+        DiscordLog.makeLogger("commands.reconciliation").debug("Explicit command synchronization started", metadata: ["dk.event": "commands.sync.started", "dk.definitions": .stringConvertible(definitions.count)])
+        defer {
+            synchronizing = false
+            DiscordLog.makeLogger("commands.reconciliation").trace("Command synchronization ownership released", metadata: ["dk.event": "commands.sync.released"])
+        }
         let endpoint = try ApplicationCommandEndpoints.list(applicationID: applicationID,
             guildID: guildID, withLocalizations: true, readPolicy: nil)
+        DiscordLog.makeLogger("commands.reconciliation").trace("Fetching fresh command registration catalog", metadata: ["dk.event": "commands.sync.fetching"])
         let current = try await client.execute(endpoint, deadline: deadline)
+        DiscordLog.makeLogger("commands.reconciliation").trace("Command registration catalog fetched", metadata: ["dk.event": "commands.sync.fetched", "dk.definitions": .stringConvertible(current.count)])
         guard current.count <= (guildID == nil ? 131 : 130) else { throw DiscordError.validation(.limitExceeded) }
         var byIdentity: [String: ApplicationCommand] = [:], ids: Set<ApplicationCommandID> = []
         for command in current {
@@ -120,30 +125,37 @@ public actor CommandReconciler {
             guard byIdentity.updateValue(command, forKey: identity) == nil else { throw DiscordError.transport(.invalidResponse) }
         }
         var unchanged = 0, written: [ApplicationCommand] = []
+        DiscordLog.makeLogger("commands.reconciliation").trace("Command catalog identity and scope validated", metadata: ["dk.event": "commands.sync.validated"])
         for (index, definition) in definitions.enumerated() {
             do {
                 try Task.checkCancellation()
                 let identity = "\(definition.request.type.rawValue):\(definition.request.name)"
+                DiscordLog.makeLogger("commands.reconciliation").trace("Comparing desired command registration", metadata: ["dk.event": "commands.sync.comparing", "dk.index": .stringConvertible(index)])
                 if let existing = byIdentity[identity], commandMatches(existing, desired: definition.request) {
                     unchanged += 1
+                    DiscordLog.makeLogger("commands.reconciliation").trace("Command registration is unchanged", metadata: ["dk.event": "commands.sync.unchanged", "dk.index": .stringConvertible(index)])
                 } else {
                     let change: Endpoint<ApplicationCommand>
                     if let existing = byIdentity[identity] {
+                        DiscordLog.makeLogger("commands.reconciliation").trace("Updating managed command registration", metadata: ["dk.event": "commands.sync.updating", "dk.index": .stringConvertible(index)])
                         change = try ApplicationCommandEndpoints.modify(applicationID: applicationID,
                             commandID: existing.id, guildID: guildID, request: definition.request.replacementChanges())
                     } else {
+                        DiscordLog.makeLogger("commands.reconciliation").trace("Creating managed command registration", metadata: ["dk.event": "commands.sync.creating", "dk.index": .stringConvertible(index)])
                         change = try ApplicationCommandEndpoints.create(applicationID: applicationID,
                             guildID: guildID, request: definition.request)
                     }
                     written.append(try await client.execute(change, deadline: deadline))
+                    DiscordLog.makeLogger("commands.reconciliation").trace("Command registration write acknowledged", metadata: ["dk.event": "commands.sync.written", "dk.index": .stringConvertible(index)])
                 }
             } catch {
-                DiscordLog.makeLogger("commands").debug("Command synchronization stopped with partial progress", metadata: ["dk.event": "commands.sync.partial", "dk.written": .stringConvertible(written.count), "dk.unchanged": .stringConvertible(unchanged)])
+                let cancelled = error is CancellationError || Task.isCancelled
+                DiscordLog.makeLogger("commands.reconciliation").log(level: cancelled ? .debug : .error, "Command synchronization stopped with partial progress", metadata: ["dk.event": "commands.sync.partial", "dk.written": .stringConvertible(written.count), "dk.unchanged": .stringConvertible(unchanged), "dk.index": .stringConvertible(index), "dk.cancelled": .stringConvertible(cancelled)])
                 throw CommandSyncFailure(completed: CommandSyncReport(unchangedCount: unchanged, written: written),
                     failedDefinitionIndex: index, underlyingError: error)
             }
         }
-        DiscordLog.makeLogger("commands").debug("Command synchronization completed", metadata: ["dk.event": "commands.sync.completed", "dk.written": .stringConvertible(written.count), "dk.unchanged": .stringConvertible(unchanged)])
+        DiscordLog.makeLogger("commands.reconciliation").notice("Command synchronization completed", metadata: ["dk.event": "commands.sync.completed", "dk.written": .stringConvertible(written.count), "dk.unchanged": .stringConvertible(unchanged)])
         return CommandSyncReport(unchangedCount: unchanged, written: written)
     }
 }

@@ -168,7 +168,7 @@ public actor MLSKeyPackageOwner: CustomStringConvertible, CustomDebugStringConve
         let group = MLSGroup(state: state, signingKey: signingKey, userID: userID, policy: policy)
         hasCreatedGroup = true
         if !retainForWelcome { close() }
-        DiscordLog.makeLogger("mls").debug("MLS candidate group created", metadata: ["dk.event": "mls.group.created"])
+        DiscordLog.makeLogger("mls.group").debug("MLS candidate group created", metadata: ["dk.event": "mls.group.created"])
         return group
     }
 
@@ -224,7 +224,7 @@ public actor MLSKeyPackageOwner: CustomStringConvertible, CustomDebugStringConve
             keys: MLSEpochKeys(schedule), interimTranscript: mlsInterimTranscript(confirmed: info.context.confirmedTranscriptHash, confirmation: info.confirmationTag))
         let group = MLSGroup(state: state, signingKey: signingKey, userID: userID, policy: policy)
         close()
-        DiscordLog.makeLogger("mls").debug("MLS Welcome authenticated", metadata: ["dk.event": "mls.group.joined"])
+        DiscordLog.makeLogger("mls.group").debug("MLS Welcome authenticated", metadata: ["dk.event": "mls.group.joined"])
         return group
     }
 
@@ -315,6 +315,7 @@ public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, Cu
     public func cacheProposal(_ bytes: Data) throws -> Data {
         try Task.checkCancellation(); guard let state else { throw MLSError.closed }
         guard bytes.count <= policy.maximumMessageBytes else { throw MLSError.capacityExceeded }
+        DiscordLog.makeLogger("mls.group").trace("MLS proposal envelope decoding", metadata: ["dk.event": "mls.proposal.decoding"])
         let message = try MLSPublicMessage.decode(bytes)
         guard message.groupID == state.context.groupID, message.epoch == state.context.epoch else { throw MLSError.wrongEpoch }
         guard message.sender == .external(0), case .proposal(let proposal) = message.body else { throw MLSError.invalidProposal }
@@ -392,16 +393,19 @@ public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, Cu
     ///   so they release secrets after verifying the old-epoch signature/membership.
     public func acceptCommit(_ bytes: Data) throws -> MLSCommitOutcome {
         try Task.checkCancellation(); guard let current = state else { throw MLSError.closed }
-        let logger = DiscordLog.makeLogger("mls")
+        let logger = DiscordLog.makeLogger("mls.group")
         logger.trace("MLS selected commit validation started", metadata: ["dk.event": "mls.commit.started"])
         guard bytes.count <= policy.maximumMessageBytes else { throw MLSError.capacityExceeded }
+        logger.trace("MLS commit bounds admitted", metadata: ["dk.event": "mls.commit.admitted",
+            "dk.participants": .stringConvertible(expectedParticipants.count), "dk.candidate": .stringConvertible(pending != nil)])
         if let pending, pending.result.commit == bytes {
             try Self.validateTree(pending.state.tree, context: pending.state.context, participants: expectedParticipants)
             state = pending.state; clearPending()
-            logger.debug("MLS local commit selected", metadata: ["dk.event": "mls.commit.local_selected"])
+            logger.info("MLS local commit selected", metadata: ["dk.event": "mls.commit.local_selected"])
             return .advanced
         }
         guard current.context.epoch > 0 else { throw MLSError.invalidCommit }
+        logger.trace("MLS remote commit envelope decoding", metadata: ["dk.event": "mls.commit.remote.decoding"])
         let message = try MLSPublicMessage.decode(bytes)
         guard message.groupID == current.context.groupID, message.epoch == current.context.epoch else { throw MLSError.wrongEpoch }
         guard case .member(let sender) = message.sender, sender != current.ownLeaf,
@@ -409,7 +413,10 @@ public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, Cu
         guard try MLSCipherSuite2.verifyMAC(key: current.keys.membership, content: message.membershipInput(context: current.context), tag: message.membershipTag) else { throw MLSError.authenticationFailed }
         guard try MLSCipherSuite2.verifyWithLabel(publicKey: senderLeaf.signatureKey, label: "FramedContentTBS",
             content: message.signatureInput(context: current.context), signature: message.signature) else { throw MLSError.invalidSignature }
+        logger.trace("MLS commit sender authenticated", metadata: ["dk.event": "mls.commit.sender.authenticated"])
         let applied = try applyProposals(commit.references, to: current, committer: sender)
+        logger.trace("MLS commit proposals validated", metadata: ["dk.event": "mls.commit.proposals.validated",
+            "dk.added": .stringConvertible(applied.added.count), "dk.removed": .stringConvertible(applied.removed.count)])
         guard let path = commit.path else {
             // This owner always emits a path, but RFC allows its omission for Add-only commits.
             guard applied.added.count == commit.references.count else { throw MLSError.invalidCommit }
@@ -424,7 +431,7 @@ public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, Cu
         try Self.validateTree(tree, context: provisional, participants: expectedParticipants)
         if applied.removed.contains(current.ownLeaf) {
             close()
-            logger.debug("MLS local membership removed", metadata: ["dk.event": "mls.group.removed"])
+            logger.notice("MLS local membership removed", metadata: ["dk.event": "mls.group.removed"])
             return .removed
         }
         let retained = retainedKeys(current.privateKeys, in: tree)
@@ -459,7 +466,7 @@ public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, Cu
     /// Recovery requires a fresh `MLSKeyPackageOwner` and an authenticated new Welcome.
     public func close() {
         if state != nil {
-            DiscordLog.makeLogger("mls").debug("MLS group closing", metadata: ["dk.event": "mls.group.closed"])
+            DiscordLog.makeLogger("mls.group").debug("MLS group closing", metadata: ["dk.event": "mls.group.closed"])
         }
         state = nil; signingKey = nil; clearPending()
     }
@@ -627,7 +634,7 @@ public actor MLSGroup: CustomStringConvertible, CustomDebugStringConvertible, Cu
         let candidate = try MLSEpochState(context: context, tree: tree, ownLeaf: current.ownLeaf, privateKeys: privateKeys,
             keys: MLSEpochKeys(schedule), interimTranscript: mlsInterimTranscript(confirmed: confirmed, confirmation: message.confirmationTag))
         state = candidate; clearPending()
-        DiscordLog.makeLogger("mls").debug("MLS remote commit authenticated", metadata: ["dk.event": "mls.commit.remote_selected"])
+        DiscordLog.makeLogger("mls.group").info("MLS remote commit authenticated", metadata: ["dk.event": "mls.commit.remote_selected"])
         return .advanced
     }
 

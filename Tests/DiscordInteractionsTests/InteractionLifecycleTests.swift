@@ -1,5 +1,6 @@
 import DiscordCore
 import DiscordHTTP
+import DiscordLogging
 import DiscordModels
 import DiscordTestSupport
 import DiscordTransport
@@ -10,6 +11,60 @@ import Testing
 /// Exercises one response owner using virtual monotonic time and injected cancellation-aware callbacks.
 /// No Discord credentials, live network requests, wall-clock sleeps or Gateway runtime are involved.
 @Suite(.timeLimit(.minutes(1))) struct InteractionLifecycleTests {
+    /// A complete response lifecycle distinguishes encoding, admission, delivery, continuation and cleanup without content.
+    /// - Throws: Unexpected offline fixture or response operation failure.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func detailedResponseLoggingTimeline() async throws {
+        let logs = LogRecorder()
+        let fixture = try DiscordLog.$loggerFactory.withValue({ logs.makeLogger($0) }) { try LifecycleFixture() }
+        #expect(logs.entries.isEmpty)
+        try await DiscordLog.$loggerFactory.withValue({ logs.makeLogger($0) }) {
+            try await fixture.responder.deferResponse(ephemeral: true)
+            _ = try await fixture.responder.editOriginal(InteractionMessageEdit(content: .value("private_edit"), deferredResponse: true))
+            _ = try await fixture.responder.followup(InteractionMessageCreate(content: .value("private_followup")))
+            try await fixture.responder.deleteOriginal()
+        }
+        let responseEvents = logs.entries.filter { $0.label == "discordkit.interactions.response" }
+            .compactMap { $0.metadata["dk.event"]?.description }
+        #expect(Array(responseEvents.prefix(7)) == ["interactions.response.started", "interactions.response.validated",
+            "interactions.response.reserved", "interactions.response.admission_acquired",
+            "interactions.response.delivering", "interactions.response.acknowledged", "interactions.response.admission_released"])
+        for operation in ["edit", "followup", "delete"] {
+            #expect(responseEvents.contains("interactions.response.\(operation)_started"))
+            #expect(responseEvents.contains("interactions.response.\(operation)_completed"))
+        }
+        #expect(responseEvents.filter { $0 == "interactions.response.continuation_reserved" }.count == 3)
+        #expect(responseEvents.filter { $0 == "interactions.response.continuation_released" }.count == 3)
+        #expect(logs.entries.contains { $0.level == .trace && $0.metadata["dk.event"] == "interactions.admission.released" && $0.metadata["dk.active"]?.description == "0" && $0.metadata["dk.bytes"]?.description == "0" })
+        let rendered = String(describing: logs.entries.map { ($0.message, $0.metadata) })
+        for privateValue in ["private_edit", "private_followup", "test-token", "18446744073709551615"] {
+            #expect(!rendered.contains(privateValue))
+        }
+        #expect(await fixture.admission.snapshot().activeCount == 0)
+        #expect(fixture.clock.pendingSleepCount == 0)
+    }
+
+    /// Definite non-submission remains retryable while ambiguous initial delivery produces a warning and never retries.
+    /// - Parameter uncertain: Whether the sink throws an unclassified confidential failure.
+    /// - Throws: Unexpected response fixture or admission setup failure.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test(arguments: [false, true]) func initialFailureLogging(uncertain: Bool) async throws {
+        let logs = LogRecorder()
+        let fixture = try LifecycleFixture(sink: InteractionResponseSink(initial: { _, _ in
+            if uncertain { throw TestSupportFailure.scripted("private_delivery_error") }
+            throw InteractionDeliveryError.notSubmitted
+        }))
+        await DiscordLog.$loggerFactory.withValue({ logs.makeLogger($0) }) {
+            await #expect(throws: (any Error).self) { try await fixture.responder.deferResponse() }
+        }
+        #expect(await fixture.responder.snapshot() == (uncertain ? .indeterminate : .pending))
+        #expect(logs.entries.contains { $0.level == .warning && $0.metadata["dk.event"] == "interactions.response.indeterminate" } == uncertain)
+        #expect(logs.entries.last?.metadata["dk.event"] == "interactions.response.stopped")
+        #expect(logs.entries.contains { $0.metadata["dk.event"] == "interactions.response.admission_released" })
+        #expect(!String(describing: logs.entries.map { ($0.message, $0.metadata) }).contains("private_delivery_error"))
+        #expect(await fixture.admission.snapshot().activeCount == 0)
+    }
+
     /// Invalid capacities/delays fail before tasks; a clock retains its original domain through advancement.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func configurationAndClock() async throws {

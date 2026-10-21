@@ -64,6 +64,8 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     }
 
     /// Executes a typed or raw descriptor through authentication, admission and bounded decoding.
+    /// Trace diagnostics correlate validation, reuse, attempts, rate admission, request/body
+    /// ownership and decoding without exposing routes, credentials or content.
     /// - Parameters:
     ///   - endpoint: Explicit success, retry, representation and optional read-reuse policy.
     ///   - deadline: Optional inclusive deadline in this client's clock domain.
@@ -72,61 +74,66 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     ///   or indeterminate mutation outcome when an unsafe send may already have succeeded.
     ///   Decoder errors are replaced with a safe invalid-response category.
     public func execute<Response: Sendable>(_ endpoint: Endpoint<Response>, deadline: C.Instant? = nil) async throws -> Response {
-        DiscordLog.makeLogger("http").debug("REST execution started", metadata: ["dk.event": "http.execute.started"])
-        let context = TransportContext(clock: clock, deadline: deadline)
-        try context.check()
-        try endpoint.validateCredential(credential)
-        if case .webhook = endpoint.pathCredential, endpoint.usesGlobalLimit, egress == nil {
-            throw DiscordError.validation(.missingValue)
-        }
-        let evidence = HTTPSubmissionEvidence()
-        do {
-            let result = try await context.run {
-                let key = self.readKey(endpoint)
-                if endpoint.readPolicy?.timeToLive != nil, let data = await self.cache?.value(for: key) {
+        return try await DiscordLog.withOperation("http.execution", event: "http.operation") {
+            DiscordLog.makeLogger("http.execution").debug("REST execution started", metadata: ["dk.event": "http.execute.started"])
+            let context = TransportContext(clock: clock, deadline: deadline)
+            try context.check()
+            try endpoint.validateCredential(credential)
+            if case .webhook = endpoint.pathCredential, endpoint.usesGlobalLimit, egress == nil {
+                throw DiscordError.validation(.missingValue)
+            }
+            DiscordLog.makeLogger("http.execution").trace("REST descriptor and credentials validated", metadata: ["dk.event": "http.execute.validated", "dk.safe_retry": .stringConvertible(endpoint.retrySafety == .safe), "dk.read_reuse": .stringConvertible(endpoint.readPolicy != nil)])
+            let evidence = HTTPSubmissionEvidence()
+            do {
+                let result = try await context.run {
+                    let key = self.readKey(endpoint)
+                    if endpoint.readPolicy?.timeToLive != nil, let data = await self.cache?.value(for: key) {
+                        try context.check()
+                        DiscordLog.makeLogger("http.cache").trace("REST read cache hit", metadata: ["dk.event": "http.cache.hit"])
+                        return try self.decode(endpoint, data: data)
+                    }
+                    DiscordLog.makeLogger("http.cache").trace("REST read reuse lookup completed without a cached response", metadata: ["dk.event": "http.cache.miss", "dk.enabled": .stringConvertible(endpoint.readPolicy?.timeToLive != nil && self.cache != nil)])
+                    let operation: @Sendable () async throws -> Data = {
+                        let generation = await self.cache?.generation()
+                        let maximumDeadline = self.clock.now.advanced(by: self.maximumExchangeDuration)
+                        let shared = endpoint.readPolicy?.coalescing == true && self.coalescer != nil
+                        let sharedDeadline = shared ? maximumDeadline : min(deadline ?? maximumDeadline, maximumDeadline)
+                        let started = self.clock.now
+                        let reply = try await self.perform(endpoint, deadline: sharedDeadline, evidence: evidence)
+                        let data = reply.data
+                        // Validate before retention so malformed successes never become cached data.
+                        _ = try self.decode(endpoint, data: data)
+                        if let requested = endpoint.readPolicy?.timeToLive, let generation,
+                           let ttl = self.cacheLifetime(requested: requested, headers: reply.headers + endpoint.headers,
+                                                        elapsed: started.duration(to: self.clock.now)) {
+                            await self.cache?.insert(data, for: key, timeToLive: ttl,
+                                                     tags: endpoint.readPolicy?.tags ?? [], generation: generation)
+                        }
+                        return data
+                    }
+                    let data: Data
+                    if endpoint.readPolicy?.coalescing == true, let coalescer = self.coalescer {
+                        DiscordLog.makeLogger("http.coalescing").trace("REST read entering shared flight admission", metadata: ["dk.event": "http.coalescing.admission"])
+                        data = try await coalescer.run(key: key, operation: operation)
+                    } else { data = try await operation() }
                     try context.check()
-                    DiscordLog.makeLogger("http").trace("REST read cache hit", metadata: ["dk.event": "http.cache.hit"])
                     return try self.decode(endpoint, data: data)
                 }
-                let operation: @Sendable () async throws -> Data = {
-                    let generation = await self.cache?.generation()
-                    let maximumDeadline = self.clock.now.advanced(by: self.maximumExchangeDuration)
-                    let shared = endpoint.readPolicy?.coalescing == true && self.coalescer != nil
-                    let sharedDeadline = shared ? maximumDeadline : min(deadline ?? maximumDeadline, maximumDeadline)
-                    let started = self.clock.now
-                    let reply = try await self.perform(endpoint, deadline: sharedDeadline, evidence: evidence)
-                    let data = reply.data
-                    // Validate before retention so malformed successes never become cached data.
-                    _ = try self.decode(endpoint, data: data)
-                    if let requested = endpoint.readPolicy?.timeToLive, let generation,
-                       let ttl = self.cacheLifetime(requested: requested, headers: reply.headers + endpoint.headers,
-                                                    elapsed: started.duration(to: self.clock.now)) {
-                        await self.cache?.insert(data, for: key, timeToLive: ttl,
-                                                 tags: endpoint.readPolicy?.tags ?? [], generation: generation)
-                    }
-                    return data
-                }
-                let data: Data
-                if endpoint.readPolicy?.coalescing == true, let coalescer = self.coalescer {
-                    data = try await coalescer.run(key: key, operation: operation)
-                } else { data = try await operation() }
                 try context.check()
-                return try self.decode(endpoint, data: data)
+                DiscordLog.makeLogger("http.execution").info("REST execution completed", metadata: ["dk.event": "http.execute.completed"])
+                return result
+            } catch {
+                if error is CancellationError {
+                    DiscordLog.makeLogger("http.execution").debug("REST execution cancelled", metadata: ["dk.event": "http.execute.cancelled"])
+                } else {
+                    DiscordLog.makeLogger("http.execution").debug("REST execution failed", metadata: ["dk.event": "http.execute.failed"])
+                }
+                if endpoint.retrySafety == .unsafe, await evidence.wasSubmitted(),
+                   error is CancellationError || (error as? TransportFailure) == .deadlineExceeded {
+                    throw self.submissionFailure(error, safety: .unsafe)
+                }
+                throw error
             }
-            try context.check()
-            DiscordLog.makeLogger("http").debug("REST execution completed", metadata: ["dk.event": "http.execute.completed"])
-            return result
-        } catch {
-            if error is CancellationError {
-                DiscordLog.makeLogger("http").debug("REST execution cancelled", metadata: ["dk.event": "http.execute.cancelled"])
-            } else {
-                DiscordLog.makeLogger("http").debug("REST execution failed", metadata: ["dk.event": "http.execute.failed"])
-            }
-            if endpoint.retrySafety == .unsafe, await evidence.wasSubmitted(),
-               error is CancellationError || (error as? TransportFailure) == .deadlineExceeded {
-                throw self.submissionFailure(error, safety: .unsafe)
-            }
-            throw error
         }
     }
 
@@ -134,8 +141,10 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     /// - Parameter tags: Matching cache tags, or empty to remove all snapshots for this scope.
     /// TTL alone cannot detect unobserved external changes. Existing coalesced readers cancel.
     public func invalidate(tags: Set<String> = []) async {
+        DiscordLog.makeLogger("http.cache").debug("REST read scope invalidation started", metadata: ["dk.event": "http.cache.invalidation.started", "dk.tags": .stringConvertible(tags.count)])
         await cache?.invalidate(identity: identity, tags: tags)
         await coalescer?.invalidate(identity: identity)
+        DiscordLog.makeLogger("http.cache").trace("REST read scope invalidation completed", metadata: ["dk.event": "http.cache.invalidation.completed"])
     }
 
     /// Performs finite attempts while holding mutation order through each admitted exchange.
@@ -153,31 +162,33 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
             while true {
                 try context.check()
                 attempt += 1
+                DiscordLog.makeLogger("http.execution").trace("REST attempt started", metadata: ["dk.event": "http.attempt.started", "dk.attempt": .stringConvertible(attempt), "dk.maximum_attempts": .stringConvertible(self.retryPolicy.maximumAttempts)])
                 let reply: WireReply
                 do { reply = try await self.send(endpoint, context: context, evidence: evidence) }
                 catch let error as DiscordError {
                     if case .transport = error, endpoint.retrySafety == .safe,
                        let delay = self.retryPolicy.delay(after: attempt) {
-                        DiscordLog.makeLogger("http").debug("Retrying safe REST transport failure", metadata: ["dk.event": "http.retry.transport", "dk.attempt": .stringConvertible(attempt)])
+                        DiscordLog.makeLogger("http.retry").notice("Retrying safe REST transport failure", metadata: ["dk.event": "http.retry.transport", "dk.attempt": .stringConvertible(attempt)])
                         try await self.clock.sleep(for: delay)
                         continue
                     }
                     throw error
                 }
+                DiscordLog.makeLogger("http.execution").trace("REST attempt response classified", metadata: ["dk.event": "http.attempt.classified", "dk.attempt": .stringConvertible(attempt), "dk.status": .stringConvertible(reply.status), "dk.accepted": .stringConvertible(endpoint.successStatuses.contains(reply.status))])
                 if endpoint.successStatuses.contains(reply.status) {
                     if !endpoint.invalidates.isEmpty { await self.invalidate(tags: endpoint.invalidates) }
                     return reply
                 }
                 let error = APIResponseError(status: reply.status, headers: reply.headers, body: reply.data)
                 if reply.status == 429, self.retryPolicy.delay(after: attempt) != nil {
-                    DiscordLog.makeLogger("http").debug("Retrying REST server rejection", metadata: ["dk.event": "http.retry.rate_limit", "dk.attempt": .stringConvertible(attempt)])
+                    DiscordLog.makeLogger("http.retry").notice("Retrying REST server rejection", metadata: ["dk.event": "http.retry.rate_limit", "dk.attempt": .stringConvertible(attempt)])
                     // A complete 429 establishes rejection; queued retry cancellation
                     // must not be misreported as an indeterminate mutation.
                     continue
                 }
                 if (500...599).contains(reply.status), endpoint.retrySafety == .safe,
                    let delay = self.retryPolicy.delay(after: attempt) {
-                    DiscordLog.makeLogger("http").debug("Retrying safe REST server failure", metadata: ["dk.event": "http.retry.server", "dk.attempt": .stringConvertible(attempt), "dk.status": .stringConvertible(reply.status)])
+                    DiscordLog.makeLogger("http.retry").warning("Retrying safe REST server failure", metadata: ["dk.event": "http.retry.server", "dk.attempt": .stringConvertible(attempt), "dk.status": .stringConvertible(reply.status)])
                     try await self.clock.sleep(for: delay)
                     continue
                 }
@@ -202,9 +213,13 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     /// - Throws: Safe transport/authority failures or conservative unsafe-send uncertainty.
     private func send<Response: Sendable>(_ endpoint: Endpoint<Response>, context: TransportContext<C>, evidence: HTTPSubmissionEvidence) async throws -> WireReply {
         try context.check()
+        DiscordLog.makeLogger("http.execution").trace("REST attempt requesting rate admission", metadata: ["dk.event": "http.request.admission"])
         let reservation = try await coordinator.acquire(rateRequest(endpoint), deadline: context.deadline)
         let request: HTTPRequest
-        do { request = try endpoint.makeRequest(credential: credential, userAgent: userAgent) }
+        do {
+            request = try endpoint.makeRequest(credential: credential, userAgent: userAgent)
+            DiscordLog.makeLogger("http.execution").trace("REST request encoded", metadata: ["dk.event": "http.request.encoded", "dk.has_body": .stringConvertible(request.body != nil)])
+        }
         catch {
             do { try await coordinator.release(reservation, outcome: .notSent) }
             catch { await recordOwnerFailure(error) }
@@ -221,6 +236,7 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
         do {
             await evidence.markSubmitted()
             try context.check()
+            DiscordLog.makeLogger("http.execution").trace("REST request submitted to transport", metadata: ["dk.event": "http.request.submitted"])
             response = try await transport.execute(request, context: context)
         }
         catch {
@@ -231,9 +247,13 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
             throw submissionFailure(error, safety: endpoint.retrySafety)
         }
         await request.body?.close()
-        DiscordLog.makeLogger("http").trace("REST response received", metadata: ["dk.event": "http.response.received", "dk.status": .stringConvertible(response.status)])
+        DiscordLog.makeLogger("http.execution").trace("REST response received", metadata: ["dk.event": "http.response.received", "dk.status": .stringConvertible(response.status)])
         let data: Data
-        do { data = try await ResponseBody.collect(response.body, maximumBytes: maximumResponseBytes) }
+        do {
+            DiscordLog.makeLogger("http.execution").trace("REST response body collection started", metadata: ["dk.event": "http.response.body.started", "dk.maximum_bytes": .stringConvertible(maximumResponseBytes)])
+            data = try await ResponseBody.collect(response.body, maximumBytes: maximumResponseBytes)
+            DiscordLog.makeLogger("http.execution").trace("REST response body collection completed", metadata: ["dk.event": "http.response.body.completed", "dk.bytes": .stringConvertible(data.count)])
+        }
         catch {
             do { try await coordinator.complete(reservation, status: response.status, headers: response.headers) }
             catch { await recordOwnerFailure(error) }
@@ -256,6 +276,7 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
             if endpoint.retrySafety == .unsafe { throw submissionFailure(error, safety: .unsafe) }
             throw error
         }
+        DiscordLog.makeLogger("http.execution").trace("REST attempt admission released after response observation", metadata: ["dk.event": "http.request.completed", "dk.status": .stringConvertible(response.status)])
         if response.status == 429 { await evidence.markRejected() }
         return WireReply(status: response.status, headers: response.headers, data: data)
     }
@@ -394,8 +415,15 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
     /// - Returns: Typed successful value.
     /// - Throws: `DiscordError.transport(.invalidResponse)` for every decoding failure.
     private func decode<Response: Sendable>(_ endpoint: Endpoint<Response>, data: Data) throws -> Response {
-        do { return try endpoint.decode(data) }
-        catch { throw DiscordError.transport(.invalidResponse) }
+        DiscordLog.makeLogger("http.codec").trace("REST response decoding started", metadata: ["dk.event": "http.decode.started", "dk.bytes": .stringConvertible(data.count)])
+        do {
+            let value = try endpoint.decode(data)
+            DiscordLog.makeLogger("http.codec").trace("REST response decoding completed", metadata: ["dk.event": "http.decode.completed"])
+            return value
+        } catch {
+            DiscordLog.makeLogger("http.codec").debug("REST response decoding rejected", metadata: ["dk.event": "http.decode.rejected"])
+            throw DiscordError.transport(.invalidResponse)
+        }
     }
 }
 

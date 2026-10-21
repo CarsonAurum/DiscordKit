@@ -226,30 +226,44 @@ public actor CommandRouter {
     ///   precedes wrappers; a preparation failure invokes neither wrapper nor handler.
     ///   Every completion releases admission, including thrown errors. Suspension is reentrant and concurrency remains bounded.
     public func route(_ context: InteractionContext) async throws -> Bool {
+        DiscordLog.makeLogger("commands.router").debug("Command routing started", metadata: ["dk.event": "commands.route.started"])
         try Task.checkCancellation()
-        guard let key = CommandRouteKey.incoming(context.interaction), let route = routes[key] else { return false }
+        guard let key = CommandRouteKey.incoming(context.interaction), let route = routes[key] else {
+            DiscordLog.makeLogger("commands.router").debug("No command route matched", metadata: ["dk.event": "commands.route.unmatched"])
+            return false
+        }
+        DiscordLog.makeLogger("commands.router").trace("Exact command route matched", metadata: ["dk.event": "commands.route.matched"])
         guard activeHandlers < maximumConcurrentHandlers else {
-            DiscordLog.makeLogger("commands").debug("Command handler capacity exhausted", metadata: ["dk.event": "commands.route.overloaded"])
+            DiscordLog.makeLogger("commands.router").debug("Command handler capacity exhausted", metadata: ["dk.event": "commands.route.overloaded", "dk.active": .stringConvertible(activeHandlers)])
             throw DiscordError.validation(.limitExceeded)
         }
         activeHandlers += 1
-        DiscordLog.makeLogger("commands").trace("Command route admitted", metadata: ["dk.event": "commands.route.admitted"])
-        defer { activeHandlers -= 1 }
+        DiscordLog.makeLogger("commands.router").trace("Command route admitted", metadata: ["dk.event": "commands.route.admitted", "dk.active": .stringConvertible(activeHandlers)])
+        defer {
+            activeHandlers -= 1
+            DiscordLog.makeLogger("commands.router").trace("Command route admission released", metadata: ["dk.event": "commands.route.released", "dk.active": .stringConvertible(activeHandlers)])
+        }
         return try await InteractionFailureScope.withOperationCapture {
             let execute: @Sendable () async throws -> Void
+            DiscordLog.makeLogger("commands.router").trace("Preparing complete command input", metadata: ["dk.event": "commands.route.preparing"])
             do { execute = try route.prepare(context) }
-            catch { throw await InteractionFailureScope.annotate(error, at: .preparation) }
+            catch {
+                DiscordLog.makeLogger("commands.router").debug("Command input preparation failed", metadata: ["dk.event": "commands.route.preparation_failed"])
+                throw await InteractionFailureScope.annotate(error, at: .preparation)
+            }
+            DiscordLog.makeLogger("commands.router").trace("Complete command input prepared", metadata: ["dk.event": "commands.route.prepared"])
             try Task.checkCancellation()
+            DiscordLog.makeLogger("commands.router").trace("Executing prepared command", metadata: ["dk.event": "commands.route.executing"])
             do { try await execute() }
             catch {
                 if error is CancellationError {
-                    DiscordLog.makeLogger("commands").debug("Command route cancelled", metadata: ["dk.event": "commands.route.cancelled"])
+                    DiscordLog.makeLogger("commands.router").debug("Command route cancelled", metadata: ["dk.event": "commands.route.cancelled"])
                 } else {
-                    DiscordLog.makeLogger("commands").debug("Command handler failed", metadata: ["dk.event": "commands.route.failed"])
+                    DiscordLog.makeLogger("commands.router").error("Command handler failed", metadata: ["dk.event": "commands.route.failed"])
                 }
                 throw await InteractionFailureScope.annotate(error, at: .handler)
             }
-            DiscordLog.makeLogger("commands").trace("Command route completed", metadata: ["dk.event": "commands.route.completed"])
+            DiscordLog.makeLogger("commands.router").debug("Command route completed", metadata: ["dk.event": "commands.route.completed"])
             return true
         }
     }

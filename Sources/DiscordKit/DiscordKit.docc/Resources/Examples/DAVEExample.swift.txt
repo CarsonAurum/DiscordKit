@@ -38,7 +38,7 @@ extension VoiceBot {
             guard startup.count == 1, startup[0].opcode == 26, case .binary(let packageBytes) = startup[0].payload else {
                 throw ExampleFailure.invalidInvariant
             }
-            let localPackage = try MLSKeyPackage.decode(packageBytes, messageWrapped: true)
+            let localPackage = try MLSKeyPackage.decode(packageBytes, messageWrapped: false)
             let connected = try VoiceGatewayFrame(.text(#"{"op":11,"d":{"user_ids":["2"]}}"#))
             _ = try await session.receive(connected, now: 0)
             _ = try await session.receive(daveServerBinary(opcode: 25, body: external.encoded()), now: 0)

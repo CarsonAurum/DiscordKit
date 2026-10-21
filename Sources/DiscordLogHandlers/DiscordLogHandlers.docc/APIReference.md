@@ -18,6 +18,7 @@ Browse the public types and operations provided by DiscordLogHandlers.
 - ``DiscordLogHandlers/DiscordFileLogConfiguration``
 - ``DiscordLogHandlers/DiscordFileLogHandler``
 - ``DiscordLogHandlers/DiscordFileLogSnapshot``
+- ``DiscordLogHandlers/DiscordLevelFilterLogHandler``
 - ``DiscordLogHandlers/DiscordLogRecord``
 - ``DiscordLogHandlers/DiscordOSLogHandler``
 

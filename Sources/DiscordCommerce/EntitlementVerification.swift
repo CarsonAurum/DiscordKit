@@ -103,14 +103,16 @@ public enum EntitlementVerification {
     public static func verify(entitlementID: EntitlementID, requirement: EntitlementRequirement,
         now: @Sendable () -> DiscordTimestamp,
         fetch: @Sendable (Endpoint<Entitlement>) async throws -> Entitlement) async throws -> Entitlement {
-        let logger = DiscordLog.makeLogger("commerce")
+        let logger = DiscordLog.makeLogger("commerce.entitlements")
         logger.trace("Entitlement verification started", metadata: ["dk.event": "commerce.verification.started"])
         try Task.checkCancellation()
         let descriptor = try EntitlementEndpoints.get(applicationID: requirement.applicationID,
             entitlementID: entitlementID, readPolicy: nil)
         let entitlement: Entitlement
         do {
+            logger.trace("Authoritative entitlement fetch admitted", metadata: ["dk.event": "commerce.verification.fetch.admitted"])
             entitlement = try await fetch(descriptor)
+            logger.trace("Authoritative entitlement fetch completed", metadata: ["dk.event": "commerce.verification.fetch.completed"])
         } catch {
             if error is CancellationError || Task.isCancelled {
                 logger.trace("Entitlement fetch cancelled", metadata: ["dk.event": "commerce.verification.cancelled"])
@@ -121,7 +123,9 @@ public enum EntitlementVerification {
         }
         try Task.checkCancellation()
         do {
+            logger.trace("Entitlement owner offering and validity validating", metadata: ["dk.event": "commerce.verification.policy.validating"])
             try requirement.validate(entitlement, entitlementID: entitlementID, now: now())
+            logger.trace("Entitlement grant policy admitted", metadata: ["dk.event": "commerce.verification.policy.admitted"])
         } catch {
             logger.debug("Entitlement authorization rejected", metadata: ["dk.event": "commerce.verification.rejected"])
             throw error
@@ -149,9 +153,10 @@ public enum EntitlementVerification {
         guard requirement.consumable else { throw EntitlementVerificationError.consumptionNotRequested }
         let entitlement = try await verify(entitlementID: entitlementID, requirement: requirement, now: now, fetch: fetch)
         try Task.checkCancellation()
+        DiscordLog.makeLogger("commerce.entitlements").trace("Verified entitlement consumption submitting once", metadata: ["dk.event": "commerce.consumption.submitting"])
         _ = try await consume(EntitlementEndpoints.consume(applicationID: requirement.applicationID,
             entitlementID: entitlementID))
-        DiscordLog.makeLogger("commerce").debug("Entitlement consumption acknowledged", metadata: ["dk.event": "commerce.consumption.completed"])
+        DiscordLog.makeLogger("commerce.entitlements").info("Entitlement consumption acknowledged", metadata: ["dk.event": "commerce.consumption.completed"])
         return entitlement
     }
 }
@@ -176,17 +181,23 @@ public enum ActivityPurchasing {
         fetch: @Sendable (Endpoint<Entitlement>) async throws -> Entitlement) async throws -> [Entitlement]? {
         guard case .user = requirement.owner else { throw EntitlementVerificationError.invalidPurchaseAcknowledgement }
         try Task.checkCancellation()
+        let logger = DiscordLog.makeLogger("commerce.entitlements")
+        logger.trace("Activity purchase host operation starting", metadata: ["dk.event": "commerce.purchase.host.started"])
         let acknowledgement = try await startPurchase(requirement.skuID)
+        logger.trace("Activity purchase host operation returned", metadata: ["dk.event": "commerce.purchase.host.completed",
+            "dk.acknowledged": .stringConvertible(acknowledgement != nil)])
         try Task.checkCancellation()
         guard let identifiers = acknowledgement else { return nil }
         guard identifiers.count <= 100, Set(identifiers).count == identifiers.count
         else { throw EntitlementVerificationError.invalidPurchaseAcknowledgement }
+        logger.trace("Purchase acknowledgement bounds validated", metadata: ["dk.event": "commerce.purchase.verification.started",
+            "dk.count": .stringConvertible(identifiers.count)])
         var verified: [Entitlement] = []
         for identifier in identifiers {
             verified.append(try await EntitlementVerification.verify(entitlementID: identifier,
                 requirement: requirement, now: now, fetch: fetch))
         }
-        DiscordLog.makeLogger("commerce").debug("Purchase acknowledgements verified", metadata: ["dk.event": "commerce.purchase.completed",
+        DiscordLog.makeLogger("commerce.entitlements").info("Purchase acknowledgements verified", metadata: ["dk.event": "commerce.purchase.completed",
             "dk.count": .stringConvertible(verified.count)])
         return verified
     }

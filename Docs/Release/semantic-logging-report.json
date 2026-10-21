@@ -1,0 +1,355 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.18.0",
+  "verifiedOn": "2026-10-20",
+  "published": false,
+  "protocols": {
+    "DAVE": "1",
+    "Gateway": "10",
+    "MLS": "1.0",
+    "REST": "10",
+    "RPC": "1",
+    "Voice": "8"
+  },
+  "checks": [
+    {
+      "id": "root-build",
+      "status": "passed",
+      "scope": "Final local macOS Swift 6.4 root build with strict NIO passed; no manifest changes.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "root-tests",
+      "status": "passed",
+      "scope": "Final complete root run: 2469 tests across 34 test products passed, including cancellation and logging privacy/correlation regressions. Local socket peers only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "tooling",
+      "status": "passed",
+      "scope": "105 tooling Swift, 28 load Swift, 6 extension Swift, 229 tooling Python, 12 load Python, 47 CI Python and 12 Social-catalog Python tests passed; no fresh macro or benchmark qualification claimed.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "passed",
+      "scope": "18137 entries, 280 sources, 934 reviewed definitions and 0 unclassified IDs; no support promotion.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "generation",
+      "status": "passed",
+      "scope": "All 5 committed generated artifacts remain byte-identical.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "parity",
+      "status": "passed",
+      "scope": "Current parity checks pass; append-only local-feature history preserves historical entries.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "declaration-docs",
+      "status": "passed",
+      "scope": "812 Swift files and 8869 explicit callables have 0 missing comments; syntactic presence only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "docc",
+      "status": "passed",
+      "scope": "33 root public module archives pass strict DocC; 1567 curated type pages and 9127 member links match; 32 source listings synchronize.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "product-isolation",
+      "status": "passed",
+      "scope": "33 products/targets, 349 runtime Swift files, 813 imports and 14 independent consumers including benchmark pass exact graph/import audit; dependencies unchanged.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "api-baseline",
+      "status": "passed",
+      "scope": "Current macOS 0.18.0 baseline:33 modules and 14657 symbols. Versus 0.17.0 adds 19 symbols/22 relationships, removes/changes none; historical comparisons preserve prior migrations.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "status": "passed",
+      "scope": "All 13 independent examples built; affected tests and finite offline modes pass; authenticated or real-host operation is excluded.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "status": "passed",
+      "scope": "36 simulated Node browser bridge tests passed; real Discord browser/mobile hosts excluded.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "social-catalog",
+      "status": "passed",
+      "scope": "743 entries/735 baseline declarations and 87 blockers validate; no support status promoted.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "local-load",
+      "status": "passed",
+      "scope": "24 finite cache/soak/HTTP/Gateway normal/burst profiles pass existing validators; default info logging, concurrent host activity and synthetic peers only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "fixed-working-set-soak",
+      "status": "passed",
+      "scope": "Actual 1800-second Release cache/broadcast soak passes existing duration, bounded state, recovery and owned-cleanup gates with actual process memory samples; no production or absolute zero-growth claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "macos",
+      "status": "passed",
+      "scope": "Current local arm64 macOS root build/tests, independent consumers and synthetic load completed; this does not qualify every Apple target, device or system output.",
+      "evidence": [
+        {
+          "path": "Docs/Release/semantic-logging-validation.json",
+          "sha256": "8f6c30bf8781020df9c3afe827f60a47b33254cfd259eacce8a9fe548bd8ed9a"
+        }
+      ]
+    },
+    {
+      "id": "linux",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "linux"
+      ]
+    },
+    {
+      "id": "windows",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "windows"
+      ]
+    },
+    {
+      "id": "apple-simulators",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "apple-simulators"
+      ]
+    },
+    {
+      "id": "apple-devices",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "apple-devices"
+      ]
+    },
+    {
+      "id": "android-cross-build",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "android-cross-build"
+      ]
+    },
+    {
+      "id": "android-runtime",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "android-runtime"
+      ]
+    },
+    {
+      "id": "live-discord",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "live-discord"
+      ]
+    },
+    {
+      "id": "hardware",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "hardware"
+      ]
+    },
+    {
+      "id": "independent-crypto-review",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "independent-crypto-review"
+      ]
+    },
+    {
+      "id": "codec-interop",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "codec-interop"
+      ]
+    },
+    {
+      "id": "semantic-documentation",
+      "status": "unverified",
+      "scope": "Local callable presence, strict DocC and scoped review do not independently qualify semantic completeness of every API.",
+      "reason": "Local callable presence, strict DocC and scoped review do not independently qualify semantic completeness of every API.",
+      "excludedClaims": [
+        "semantic-documentation"
+      ]
+    },
+    {
+      "id": "api-other-platforms",
+      "status": "unverified",
+      "scope": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "reason": "No new qualification run or independent evidence for this gate in the local semantic logging increment.",
+      "excludedClaims": [
+        "api-other-platforms"
+      ]
+    },
+    {
+      "id": "upstream-collection",
+      "status": "unverified",
+      "scope": "This increment changes local diagnostics only and uses checked-in maintenance evidence; no new official-source collection was performed.",
+      "reason": "This increment changes local diagnostics only and uses checked-in maintenance evidence; no new official-source collection was performed.",
+      "excludedClaims": [
+        "upstream-collection"
+      ]
+    },
+    {
+      "id": "zero-resource-growth",
+      "status": "unverified",
+      "scope": "Bounded cache accounting and zero final owned counters do not prove zero process RSS/allocator growth for every workload.",
+      "reason": "Bounded cache accounting and zero final owned counters do not prove zero process RSS/allocator growth for every workload.",
+      "excludedClaims": [
+        "zero-resource-growth"
+      ]
+    },
+    {
+      "id": "performance-regression",
+      "status": "unverified",
+      "scope": "Concurrent local workloads lack a controlled matched historical comparison and do not measure sustained production trace-output cost.",
+      "reason": "Concurrent local workloads lack a controlled matched historical comparison and do not measure sustained production trace-output cost.",
+      "excludedClaims": [
+        "performance-regression"
+      ]
+    }
+  ],
+  "globalExclusions": [
+    "production-capacity",
+    "trace-output-throughput",
+    "independent-security-audit",
+    "package-publication"
+  ],
+  "claims": [
+    {
+      "id": "local-semantic-logging",
+      "description": "Hierarchical runtime logging, semantic severities, bounded diagnostic correlation and optional output floors pass the recorded local implementation checks.",
+      "checkIDs": [
+        "root-build",
+        "root-tests",
+        "product-isolation",
+        "api-baseline",
+        "docc"
+      ]
+    },
+    {
+      "id": "local-bounded-cache-broadcast-soak",
+      "description": "Recorded fixed-working-set local cache/broadcast soak passes its duration, bounded-state, recovery and owned-cleanup gates at default info logging.",
+      "checkIDs": [
+        "fixed-working-set-soak",
+        "local-load",
+        "macos"
+      ]
+    }
+  ]
+}

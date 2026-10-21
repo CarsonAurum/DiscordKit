@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 import Testing
 import DiscordTransport
@@ -158,6 +159,39 @@ private final class HTTPTestHandler: ChannelInboundHandler {
         } catch { await transport.close(); await peer.close(); throw error }
         await transport.close(); await transport.close(); await peer.close()
         let counts = await transport.connectionCounts(); #expect(counts.active == 0 && counts.idle == 0)
+    }
+
+
+    /// Captures connection allocation, response transfer, reuse and disposal while keeping request data private.
+    /// - Throws: Unexpected loopback setup, bounded body collection or adapter failure.
+    @Test func httpTraceSeparatesPoolAndBodyOwnership() async throws {
+        let recorder = LogRecorder()
+        let peer = try await HTTPTestPeer.open()
+        let transport = try NIOHTTPTransport(configuration: NIOHTTPConfiguration())
+        do {
+            try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+                for _ in 0..<2 {
+                    let request = HTTPRequest(method: "GET", url: peer.url("/ok?token=PRIVATE_QUERY"),
+                        headers: [.init(name: "X-Private", value: "PRIVATE_HEADER")])
+                    let response = try await transport.execute(request, context: TransportContext(clock: ContinuousClock()))
+                    #expect(try await collect(response) == Data("hello\0world".utf8))
+                }
+                await transport.close()
+            }
+        } catch { await transport.close(); await peer.close(); throw error }
+        await peer.close()
+        let entries = recorder.entries
+        let reservations = entries.filter { $0.metadata["dk.event"] == "nio.http.pool.reserved" }
+        #expect(reservations.map { $0.metadata["dk.reused"]?.description } == ["false", "true"])
+        #expect(entries.filter { $0.metadata["dk.event"] == "nio.http.connection.connected" }.count == 1)
+        #expect(entries.filter { $0.label == "discordkit.nio.http.body" && $0.level == .trace }.count == 2)
+        #expect(entries.filter { $0.metadata["dk.event"] == "nio.http.pool.returned" }.count == 2)
+        #expect(entries.last?.level == .info && entries.last?.metadata["dk.event"] == "nio.http.closed")
+        let counts = await transport.connectionCounts()
+        #expect(counts.active == 0 && counts.idle == 0)
+        let rendered = String(describing: entries.map { ($0.message, $0.metadata) })
+        #expect(!rendered.contains("PRIVATE_QUERY") && !rendered.contains("PRIVATE_HEADER"))
+        #expect(!rendered.contains("127.0.0.1") && !rendered.contains("hello"))
     }
 
     /// Verifies send-once uploads, zero-length chunks and no automatic redirect replay.

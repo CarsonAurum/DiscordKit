@@ -109,7 +109,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
             guard !closed else { throw TransportFailure.closed }
             wires[token] = wire
             connecting.removeValue(forKey: token)
-            DiscordLog.makeLogger("nio.websocket").debug("NIO WebSocket connected", metadata: ["dk.event": "nio.websocket.connected"])
+            DiscordLog.makeLogger("nio.websocket").info("NIO WebSocket connected", metadata: ["dk.event": "nio.websocket.connected"])
             return NIOWebSocketConnection(wire: wire, configuration: configuration, attempt: attempt,
                                           release: { await self.release(token) })
         } catch {
@@ -152,7 +152,7 @@ public actor NIOWebSocketTransport: WebSocketTransport, TransportResource {
             try? await group.shutdownGracefully()
         }
         cleanup = task; await task.value
-        DiscordLog.makeLogger("nio.websocket").debug("NIO WebSocket transport closed", metadata: ["dk.event": "nio.websocket.closed"])
+        DiscordLog.makeLogger("nio.websocket").info("NIO WebSocket transport closed", metadata: ["dk.event": "nio.websocket.closed"])
     }
 
     /// Removes one caller-owned slot and its wire after connection cleanup completes.
@@ -267,12 +267,14 @@ private actor NIOWebSocketConnection: WebSocketSessionConnection {
         guard writes < configuration.maximumPendingWrites,
               bytes.count <= configuration.maximumMessageBytes - writeBytes else { throw NIOAdapterFailure.capacityExceeded }
         writes += 1; writeBytes += bytes.count
+        DiscordLog.makeLogger("nio.websocket.write").trace("NIO WebSocket message admitted", metadata: ["dk.event": "nio.websocket.send.admitted", "dk.bytes": .stringConvertible(bytes.count), "dk.pending": .stringConvertible(writes)])
         defer { writes -= 1; writeBytes -= bytes.count }
         do {
             let wire = self.wire; let attempt = self.attempt
             try await context.run {
                 try await withTaskCancellationHandler {
                     try await wire.sendFrame(bytes, opcode: opcode)
+                    DiscordLog.makeLogger("nio.websocket.write").trace("NIO WebSocket message sent", metadata: ["dk.event": "nio.websocket.send.completed", "dk.bytes": .stringConvertible(bytes.count)])
                 } onCancel: { attempt.cancel() }
             }
         } catch { await close(); throw nioWebSocketError(error) }
@@ -288,6 +290,7 @@ private actor NIOWebSocketConnection: WebSocketSessionConnection {
     where C.Duration == Duration {
         try context.check()
         guard !closed else { return nil }
+        DiscordLog.makeLogger("nio.websocket.read").trace("NIO WebSocket receive waiting", metadata: ["dk.event": "nio.websocket.receive.wait"])
         let wire = self.wire; let attempt = self.attempt
         do {
             let message = try await context.run {
@@ -295,6 +298,7 @@ private actor NIOWebSocketConnection: WebSocketSessionConnection {
             }
             guard !closed else { return nil }
             if message == nil { await close() }
+            DiscordLog.makeLogger("nio.websocket.read").trace("NIO WebSocket receive completed", metadata: ["dk.event": "nio.websocket.receive.completed", "dk.eof": .stringConvertible(message == nil)])
             return message
         } catch {
             if closed, !Task.isCancelled { return nil }
@@ -317,6 +321,7 @@ private actor NIOWebSocketConnection: WebSocketSessionConnection {
     func close() async {
         if let cleanup { await cleanup.value; return }
         closed = true
+        DiscordLog.makeLogger("nio.websocket").trace("NIO WebSocket connection cleanup started", metadata: ["dk.event": "nio.websocket.connection.cleanup", "dk.pending_writes": .stringConvertible(writes), "dk.pending_bytes": .stringConvertible(writeBytes)])
         let wire = self.wire; let release = self.release
         let task = Task {
             await wire.close()

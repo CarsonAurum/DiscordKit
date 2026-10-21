@@ -518,10 +518,14 @@ see `Docs/Logging.md`. Applications own bootstrap, factories, levels and outputs
 Runtime products may select the logging-only foundation; they must never select
 `DiscordLogHandlers`. This narrow addition qualifies earlier Core/Models-only DSL
 graph descriptions without introducing runtime/adapters or compiler plugins.
-Reserve `info` and `notice` for application semantic events. Use trace/debug for
-normal flow and caller-visible failures; warning for autonomous degradation, error
+Use all seven severities semantically: trace for individual execution steps, debug
+for diagnostic summaries and caller-visible failures, info for significant normal
+lifecycle outcomes, notice for recovery and operational milestones, warning for autonomous degradation, error
 for terminal subsystem failures, critical only for unusable safety authorities.
-Use fixed subsystem labels and `dk.event` values with safe counts/states/statuses.
+Use fixed dotted component labels and `dk.event` values with safe counts/states/statuses.
+Keep event identities stable; scopes may add ephemeral trace/span correlation and
+monotonic durations. Apply component thresholds through application-owned factories
+or `DiscordLog.configuration`; never change process thresholds from runtime owners.
 Never log credentials, URLs/paths, headers/payloads, identifiers, keys or arbitrary
 error descriptions. Keep constructors, pure compilation, and realtime/sample/crypto
 loops quiet. Preserve native lazy filtering, cancellation and resource ownership.

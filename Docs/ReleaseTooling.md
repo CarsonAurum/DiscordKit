@@ -1,8 +1,13 @@
 # Release certification tools
 
-The invocation resilience work targets an unpublished `0.17.0` root API candidate.
-Compare current graphs against the separately named `api-baseline-0.17.0.json`
-and historical `0.14.0`, `0.15.0` and `0.16.0` snapshots at version `0.17.0`.
+The semantic logging work targets an unpublished `0.18.0` root API candidate.
+The separately named `api-baseline-0.18.0.json` records the additive component
+configuration, scoped context and correlated-operation APIs. The `0.17.0`
+invocation resilience checkpoint remains historical.
+
+The invocation resilience work targeted an unpublished `0.17.0` root API candidate.
+Compare current graphs against `api-baseline-0.18.0.json` and all preserved
+historical root snapshots at version `0.18.0`.
 Historical snapshots and hash-bound reports remain unchanged. See
 [invocation resilience validation](Release/invocation-resilience-validation.json).
 
@@ -24,7 +29,7 @@ explicit exclusions; it does not grant platform, live Discord or crypto approval
 python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
 ```
 
-This command evaluates the actual root, twelve independent example consumers and
+This command evaluates the actual root, thirteen independent example consumers and
 the independent DSL benchmark manifest using `swift package dump-package`, with
 temporary writable caches. Part 15D adds
 the independent DSLCommands consumer, including its explicitly selected separate
@@ -65,19 +70,22 @@ behavior was added.
 swift package dump-symbol-graph --minimum-access-level public
 python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot \
   --repository . --symbolgraphs .build/out/symbolgraph \
-  --version 0.17.0 --output /tmp/discordkit-current-api.json
+  --version 0.18.0 --output /tmp/discordkit-current-api.json
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline.json \
-  --candidate /tmp/discordkit-current-api.json --version 0.17.0
+  --candidate /tmp/discordkit-current-api.json --version 0.18.0
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline-0.15.0.json \
-  --candidate /tmp/discordkit-current-api.json --version 0.17.0
+  --candidate /tmp/discordkit-current-api.json --version 0.18.0
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline-0.16.0.json \
-  --candidate /tmp/discordkit-current-api.json --version 0.17.0
+  --candidate /tmp/discordkit-current-api.json --version 0.18.0
 python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
   --baseline Docs/Release/api-baseline-0.17.0.json \
-  --candidate /tmp/discordkit-current-api.json --version 0.17.0
+  --candidate /tmp/discordkit-current-api.json --version 0.18.0
+python3 Tools/DiscordKitTools/scripts/api_baseline.py check \
+  --baseline Docs/Release/api-baseline-0.18.0.json \
+  --candidate /tmp/discordkit-current-api.json --version 0.18.0
 ```
 
 Use the symbolgraph directory printed by the installed SwiftPM toolchain if it
@@ -194,6 +202,8 @@ claiming identical compiler output; a local pass is not evidence of a hosted run
 ```sh
 python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
   --report Docs/Release/phase15l-report.json
+python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . \
+  --report Docs/Release/semantic-logging-report.json
 ```
 
 The current report covers shared declarations, typed argument decoding, command

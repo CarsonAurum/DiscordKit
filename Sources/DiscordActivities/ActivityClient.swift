@@ -14,11 +14,13 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         let command: String
         let event: String?
         let bytes: Int
+        let correlation: Logger.Metadata
         let continuation: CheckedContinuation<JSONValue, any Error>
     }
     private struct Write {
         let nonce: String?
         let data: Data
+        let correlation: Logger.Metadata
     }
     private struct Group {
         var tokens: Set<UUID>
@@ -69,16 +71,25 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     /// Failure closes the exclusively owned transport and rejects all waiters. READY is retained as an ordered event.
     /// No official SDK version is impersonated; sdk_version is optional in the upstream handshake.
     public func start(timeout: Duration = .seconds(15)) async throws {
+        try await DiscordLog.withOperation("activities.client", event: "activities.handshake.operation") {
+            try await startOwned(timeout: timeout)
+        }
+    }
+
+    /// Owns handshake admission and readiness inside a correlated diagnostic scope.
+    /// - Parameter timeout: Original monotonic startup budget.
+    /// - Throws: The unchanged handshake failure after terminal cleanup.
+    private func startOwned(timeout: Duration) async throws {
         try Task.checkCancellation()
         guard timeout > .zero else { throw ActivityFailure.invalidConfiguration }
         guard state == .idle else { throw state == .closed ? ActivityFailure.closed : ActivityFailure.notReady }
-        let logger = DiscordLog.makeLogger("activities")
+        let logger = DiscordLog.makeLogger("activities.client")
         logger.trace("Activity handshake started", metadata: ["dk.event": "activities.handshake.started"])
         state = .starting
         let context = TransportContext(clock: clock, deadline: clock.now.advanced(by: timeout))
         do {
             try await context.run { try await self.awaitReady() }
-            logger.debug("Activity host ready", metadata: ["dk.event": "activities.handshake.completed"])
+            logger.info("Activity host ready", metadata: ["dk.event": "activities.handshake.completed"])
         } catch {
             await fail(error)
             throw error
@@ -93,9 +104,21 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     /// - Throws: Cancellation/deadline, closure, overload, host ERROR, correlation/protocol or codec failure.
     /// Cancellation removes an unsent tuple; a sent command is never replayed or undone. Late replies are ignored.
     public func execute<Response: Sendable>(_ request: ActivityRequest<Response>, timeout: Duration = .seconds(15)) async throws -> Response {
+        return try await DiscordLog.withOperation("activities.client", event: "activities.command.operation") {
+            try await executeOwned(request, timeout: timeout)
+        }
+    }
+
+    /// Executes one command and its explicit compatibility handling in a diagnostic scope.
+    /// - Parameters:
+    ///   - request: Validated catalog operation and decoder, never formatted into logs.
+    ///   - timeout: Original monotonic command budget.
+    /// - Returns: The unchanged decoded host response.
+    /// - Throws: Original admission, host, transport or decoder failures.
+    private func executeOwned<Response: Sendable>(_ request: ActivityRequest<Response>, timeout: Duration) async throws -> Response {
         guard timeout > .zero else { throw ActivityFailure.invalidConfiguration }
         let context = TransportContext(clock: clock, deadline: clock.now.advanced(by: timeout))
-        let logger = DiscordLog.makeLogger("activities")
+        let logger = DiscordLog.makeLogger("activities.client")
         logger.trace("Activity command started", metadata: ["dk.event": "activities.command.started"])
         let nonce = UUID().uuidString
         let data = try await context.run {
@@ -103,7 +126,7 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
                 return try await self.exchange(command: request.command.rawValue, arguments: request.arguments,
                                                event: request.event, nonce: nonce)
             } catch let error as ActivityCommandFailure where error.code == 4000 && request.command == .setOrientationLockState && request.arguments["grid_lock_state"] != nil {
-                DiscordLog.makeLogger("activities").warning("Activity orientation compatibility fallback", metadata: ["dk.event": "activities.command.compatibility_fallback"])
+                DiscordLog.makeLogger("activities.client").notice("Activity orientation compatibility fallback", metadata: ["dk.event": "activities.command.compatibility_fallback"])
                 var compatible = request.arguments; compatible.removeValue(forKey: "grid_lock_state")
                 return try await self.exchange(command: request.command.rawValue, arguments: compatible,
                                                event: request.event, nonce: UUID().uuidString)
@@ -137,9 +160,13 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         if var group = groups[key] {
             guard group.state != .unsubscribing else { throw ActivityFailure.subscriptionTransition }
             group.tokens.insert(token.id); groups[key] = group
+            DiscordLog.makeLogger("activities.client").trace("Activity subscription shared", metadata: ["dk.event": "activities.subscription.shared",
+                "dk.owners": .stringConvertible(group.tokens.count)])
         } else {
             groups[key] = Group(tokens: [token.id], waiters: [:], state: event == .ready ? .active : .subscribing,
                                 event: event, arguments: arguments)
+            DiscordLog.makeLogger("activities.client").trace("Activity subscription group reserved", metadata: ["dk.event": "activities.subscription.reserved",
+                "dk.groups": .stringConvertible(groups.count)])
             if event != .ready {
                 subscriptionTasks[key] = Task { await self.admitSubscription(key, timeout: timeout) }
             }
@@ -147,7 +174,7 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         let context = TransportContext(clock: clock, deadline: clock.now.advanced(by: timeout))
         do {
             try await context.run { try await self.waitForSubscription(token) }
-            DiscordLog.makeLogger("activities").debug("Activity subscription acquired", metadata: ["dk.event": "activities.subscription.acquired",
+            DiscordLog.makeLogger("activities.client").debug("Activity subscription acquired", metadata: ["dk.event": "activities.subscription.acquired",
                 "dk.groups": .stringConvertible(groups.count)])
             return token
         } catch {
@@ -173,6 +200,8 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
             let request = try ActivityRequest<JSONValue>(command: .unsubscribe, arguments: group.arguments, event: group.event, decode: { $0 })
             _ = try await execute(request, timeout: timeout)
             groups.removeValue(forKey: subscription.key)
+            DiscordLog.makeLogger("activities.client").debug("Activity subscription released", metadata: ["dk.event": "activities.subscription.released",
+                "dk.groups": .stringConvertible(groups.count)])
         } catch { await fail(error); throw error }
     }
 
@@ -180,7 +209,10 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     /// - Returns: All authenticated dispatches since the previous drain, including READY and unknown names.
     /// No callbacks run on the reader. Overflow fails the session rather than silently dropping state changes.
     public func drainEvents() -> [ActivityClientEvent] {
-        let result = events.map(\.0); events.removeAll(keepingCapacity: false); eventBytes = 0; return result
+        let result = events.map(\.0)
+        DiscordLog.makeLogger("activities.client").trace("Activity events drained", metadata: ["dk.event": "activities.events.drained",
+            "dk.events": .stringConvertible(events.count), "dk.event_bytes": .stringConvertible(eventBytes)])
+        events.removeAll(keepingCapacity: false); eventBytes = 0; return result
     }
 
     /// Reports bounded ownership for deterministic diagnostics without identities or payload labels.
@@ -205,8 +237,9 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 startup = continuation
+                DiscordLog.makeLogger("activities.client").trace("Activity startup waiter installed", metadata: ["dk.event": "activities.handshake.waiter.installed"])
                 reader = Task { await self.readLoop() }
-                writes.append(Write(nonce: nil, data: data)); scheduleWriter()
+                writes.append(Write(nonce: nil, data: data, correlation: Self.correlationContext())); scheduleWriter()
             }
         } onCancel: { Task { await self.fail(CancellationError()) } }
     }
@@ -225,11 +258,19 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         var fields: [String: JSONValue] = ["cmd": .string(command), "args": .object(arguments), "nonce": .string(nonce)]
         if let event { fields["evt"] = .string(event.rawValue) }
         let data = try tuple(1, .object(fields))
-        guard pending.count < limits.maximumPending, data.count <= limits.maximumPendingBytes - pendingBytes else { throw ActivityFailure.overloaded }
+        guard pending.count < limits.maximumPending, data.count <= limits.maximumPendingBytes - pendingBytes else {
+            DiscordLog.makeLogger("activities.client").debug("Activity command capacity exhausted", metadata: ["dk.event": "activities.command.overloaded",
+                "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes)])
+            throw ActivityFailure.overloaded
+        }
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
-                pending[nonce] = Pending(command: command, event: event?.rawValue, bytes: data.count, continuation: continuation)
-                pendingBytes += data.count; writes.append(Write(nonce: nonce, data: data)); scheduleWriter()
+                pending[nonce] = Pending(command: command, event: event?.rawValue, bytes: data.count, correlation: Self.correlationContext(), continuation: continuation)
+                pendingBytes += data.count; writes.append(Write(nonce: nonce, data: data, correlation: Self.correlationContext()))
+                DiscordLog.makeLogger("activities.client").trace("Activity command admitted to bounded queue", metadata: ["dk.event": "activities.command.admitted",
+                    "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes),
+                    "dk.queued": .stringConvertible(writes.count)])
+                scheduleWriter()
             }
         } onCancel: { Task { await self.cancel(nonce) } }
     }
@@ -239,6 +280,10 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     private func cancel(_ nonce: String) {
         guard let operation = pending.removeValue(forKey: nonce) else { return }
         pendingBytes -= operation.bytes; writes.removeAll { $0.nonce == nonce }
+        Self.withCorrelation(operation.correlation) {
+            DiscordLog.makeLogger("activities.client").trace("Activity command waiter cancelled", metadata: ["dk.event": "activities.command.waiter.cancelled",
+                "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes)])
+        }
         operation.continuation.resume(throwing: CancellationError())
     }
 
@@ -252,7 +297,14 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     private func writeLoop() async {
         while state != .closed, !writes.isEmpty {
             let write = writes.removeFirst()
-            do { try await transport.send(write.data) }
+            do {
+                try await Self.withCorrelation(write.correlation) {
+                    DiscordLog.makeLogger("activities.client").trace("Activity ordered write starting", metadata: ["dk.event": "activities.write.started",
+                        "dk.queued": .stringConvertible(writes.count)])
+                    try await transport.send(write.data)
+                    DiscordLog.makeLogger("activities.client").trace("Activity ordered write completed", metadata: ["dk.event": "activities.write.completed"])
+                }
+            }
             catch {
                 if state != .closed { await fail(ActivityFailure.closed) }
                 return
@@ -283,7 +335,10 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         if opcode == 2 { throw ActivityFailure.closed }
         guard opcode == 1, case .string(let command) = fields["cmd"] else { throw ActivityFailure.invalidFrame }
         if case .string(let nonce) = fields["nonce"] {
-            guard let operation = pending[nonce] else { return }
+            guard let operation = pending[nonce] else {
+                DiscordLog.makeLogger("activities.client").trace("Activity late reply ignored", metadata: ["dk.event": "activities.reply.late"])
+                return
+            }
             guard operation.command == command else { throw ActivityFailure.commandMismatch }
             let data: JSONValue
             if let value = fields["data"] { data = value }
@@ -305,6 +360,11 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
                 rejection = nil
             }
             pending.removeValue(forKey: nonce); pendingBytes -= operation.bytes
+            Self.withCorrelation(operation.correlation) {
+                DiscordLog.makeLogger("activities.client").trace("Activity reply correlated and waiter released", metadata: ["dk.event": "activities.reply.correlated",
+                    "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes),
+                    "dk.rejected": .stringConvertible(rejection != nil)])
+            }
             if let rejection { operation.continuation.resume(throwing: rejection) }
             else { operation.continuation.resume(returning: data) }
             return
@@ -317,10 +377,13 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
                   let ready = try? ActivityReady(value: data), ready.version.rawValue == "1" else {
                 throw ActivityFailure.invalidFrame
             }
+            DiscordLog.makeLogger("activities.client").trace("Activity READY envelope validated", metadata: ["dk.event": "activities.handshake.ready.validated"])
             state = .ready; startup?.resume(); startup = nil
         } else if event == "READY" { throw ActivityFailure.invalidFrame }
         guard events.count < limits.maximumEvents, bytes.count <= limits.maximumEventBytes - eventBytes else { throw ActivityFailure.overloaded }
         events.append((ActivityClientEvent(name: ActivityEventName(rawValue: event), data: data), bytes.count)); eventBytes += bytes.count
+        DiscordLog.makeLogger("activities.client").trace("Activity dispatch buffered", metadata: ["dk.event": "activities.event.buffered",
+            "dk.events": .stringConvertible(events.count), "dk.event_bytes": .stringConvertible(eventBytes)])
     }
 
     /// Produces one bounded JSON tuple, preserving numeric lexemes and rejecting excessive depth/node counts.
@@ -392,6 +455,42 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
         if group.tokens.isEmpty { await fail(ActivityFailure.subscriptionTransition) }
     }
 
+    /// Copies only finite correlation strings into already bounded request ownership.
+    /// Application metadata and Discord identifiers are never retained by this helper.
+    /// - Returns: At most three diagnostic identifiers, each at most 128 UTF-8 bytes.
+    private nonisolated static func correlationContext() -> Logger.Metadata {
+        var result: Logger.Metadata = [:]
+        for key in ["dk.trace_id", "dk.span_id", "dk.parent_span_id"] {
+            if case .string(let value) = DiscordLog.context[key], value.utf8.count <= 128 {
+                result[key] = .string(value)
+            }
+        }
+        return result
+    }
+
+    /// Rebinds diagnostic correlation without changing current output policy or execution ownership.
+    /// - Parameters:
+    ///   - correlation: Finite identifiers captured when this exact operation was admitted.
+    ///   - operation: Synchronous logging work executed once without tasks or suspension.
+    private nonisolated static func withCorrelation(_ correlation: Logger.Metadata, operation: () -> Void) {
+        var context = DiscordLog.context
+        for key in ["dk.trace_id", "dk.span_id", "dk.parent_span_id"] { context[key] = correlation[key] }
+        DiscordLog.$context.withValue(context, operation: operation)
+    }
+
+    /// Preserves exact request correlation through the existing asynchronous transport send.
+    /// - Parameters:
+    ///   - correlation: Finite diagnostic identifiers retained by bounded request ownership.
+    ///   - isolation: Original writer actor isolation, inferred without an executor hop.
+    ///   - operation: Existing send invoked once; no new task, retry or cancellation handler is introduced.
+    /// - Throws: The original unchanged transport or cancellation error.
+    private static func withCorrelation(_ correlation: Logger.Metadata,
+        isolation: isolated (any Actor)? = #isolation, operation: () async throws -> Void) async rethrows {
+        var context = DiscordLog.context
+        for key in ["dk.trace_id", "dk.span_id", "dk.parent_span_id"] { context[key] = correlation[key] }
+        try await DiscordLog.$context.withValue(context, operation: operation)
+    }
+
     /// Reserves terminal state before suspension, resumes every waiter exactly once and shares adapter cleanup.
     /// - Parameters:
     ///   - error: Sanitized terminal error or cancellation. No host payload is retained in failure messages.
@@ -399,15 +498,18 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
     ///     Failures/remote close dispose immediately; all paths reserve terminal state before suspending.
     private func fail(_ error: any Error, notifyHost: Bool = false) async {
         if state != .closed {
-            let logger = DiscordLog.makeLogger("activities")
+            let logger = DiscordLog.makeLogger("activities.client")
             if notifyHost || error as? ActivityFailure == .closed {
-                logger.debug("Activity client closing", metadata: ["dk.event": "activities.client.closing"])
+                logger.info("Activity client closing", metadata: ["dk.event": "activities.client.closing"])
             } else if error is CancellationError {
                 logger.trace("Activity client cancelled", metadata: ["dk.event": "activities.client.cancelled"])
             } else {
                 logger.error("Activity client terminated", metadata: ["dk.event": "activities.client.failed",
-                    "dk.pending": .stringConvertible(pending.count)])
+                    "dk.pending": .stringConvertible(pending.count), "dk.failure": .string(error is ActivityFailure ? "protocol_or_state" : "transport")])
             }
+            logger.trace("Activity owned waiters and queues releasing", metadata: ["dk.event": "activities.client.cleanup.releasing",
+                "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes),
+                "dk.events": .stringConvertible(events.count), "dk.groups": .stringConvertible(groups.count)])
             state = .closed
             startup?.resume(throwing: error); startup = nil
             let operations = pending.values; pending.removeAll(); pendingBytes = 0; writes.removeAll()
@@ -434,6 +536,7 @@ public actor ActivityClient<C: Clock> where C.Duration == Duration {
                         await transport.close()
                     }
                 } else { await transport.close() }
+                logger.info("Activity client resources released", metadata: ["dk.event": "activities.client.closed"])
             }
         }
         await cleanup?.value

@@ -129,7 +129,7 @@ public actor AppleLifecycle: TransportResource {
             await pending.1.value
             if cleanupTask?.0 == pending.0 { cleanupTask = nil }
         }
-        DiscordLog.makeLogger("apple.lifecycle").debug("Applying host lifecycle transition", metadata: ["dk.event": "apple.lifecycle.transition", "state": .string(newState.rawValue)])
+        DiscordLog.makeLogger("apple.lifecycle").info("Applying host lifecycle transition", metadata: ["dk.event": "apple.lifecycle.transition", "state": .string(newState.rawValue)])
         state = newState
         let invalid = resources.filter { policyAvailability(of: $0.value.0, in: newState) != .available }
         for key in invalid.keys { resources.removeValue(forKey: key) }
@@ -145,6 +145,8 @@ public actor AppleLifecycle: TransportResource {
         cleanupTask = (cleanupID, task)
         await task.value
         if cleanupTask?.0 == cleanupID { cleanupTask = nil }
+        DiscordLog.makeLogger("apple.lifecycle").trace("Host lifecycle resources released", metadata: ["dk.event": "apple.lifecycle.drain.completed",
+            "dk.resources": .stringConvertible(closing.count)])
     }
 
     /// Stops admission and closes all lifecycle-owned resources, safe to repeat.

@@ -468,14 +468,14 @@ extension DAVEProtocolSessionTests {
                 try await rejected.session.start(protocolVersion: 0)
             }
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.dave" }
+        let entries = recorder.entries.filter { $0.label == "discordkit.dave.protocol" }
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "dave.session.package_prepared" })
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "dave.epoch.activated" })
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "dave.epoch.activated" })
         #expect(entries.contains { $0.level == .error && $0.metadata["dk.event"] == "dave.session.failed" })
         let rendered = recorder.entries.map { $0.message + String(describing: $0.metadata) }.joined()
         for secret in ["synthetic-token", "synthetic-session", "voice.discord.media", "signaturePrivateKey", "epochAuthenticator"] {
             #expect(!rendered.contains(secret))
         }
-        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem"]) })
+        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem", "dk.module", "dk.opcode", "dk.participants", "dk.commands", "dk.active_epoch", "dk.pending_epoch"]) })
     }
 }

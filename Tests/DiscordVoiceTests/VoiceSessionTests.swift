@@ -1079,15 +1079,61 @@ extension VoiceSessionTests {
             await owner.stop()
             try await run.value
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.voice" }
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.session.running" })
+        let entries = recorder.entries.filter { $0.label == "discordkit.voice.session" }
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "voice.session.running" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.discovery.completed" })
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.media.authorized" })
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "voice.session.stopped" })
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "voice.media.authorized" })
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "voice.session.stopped" })
         let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
         for secret in ["synthetic-session", "synthetic-token", "voice.discord.media", "127.0.0.1", "secret_key"] {
             #expect(!rendered.contains(secret))
         }
-        #expect(entries.allSatisfy { $0.level != .info && $0.level != .notice })
+        let timeline = entries.compactMap { $0.metadata["dk.event"]?.description }
+        let ordered = ["voice.session.run.started", "voice.session.admitted", "voice.connection.opening",
+                       "voice.connection.opened", "voice.hello.waiting", "voice.discovery.started",
+                       "voice.discovery.transport.acquired", "voice.discovery.reply.validated",
+                       "voice.discovery.completed", "voice.media.configuring", "voice.e2ee.starting",
+                       "voice.media.authorized", "voice.session.cleanup.media", "voice.session.cleanup.crypto",
+                       "voice.session.cleanup.transport", "voice.session.cleanup.completed", "voice.session.run.completed"]
+        var cursor = timeline.startIndex
+        for event in ordered {
+            let index = try #require(timeline[cursor...].firstIndex(of: event))
+            cursor = timeline.index(after: index)
+        }
+        #expect(entries.contains { $0.level == .trace && $0.metadata["dk.maximum_receive_streams"]?.description == "64" })
+        #expect(entries.contains { $0.metadata["dk.phase"] == "awaiting_e2ee" })
+        let runStart = try #require(entries.first { $0.metadata["dk.event"] == "voice.session.run.started" })
+        let runTrace = try #require(runStart.metadata["dk.trace_id"])
+        #expect(entries.filter { $0.metadata["dk.event"] != "voice.session.cleanup.shared" }.allSatisfy { $0.metadata["dk.trace_id"] == runTrace || $0.metadata["dk.event"] == "voice.session.closing" })
+        #expect(entries.allSatisfy { $0.metadata["dk.module"] == "voice" })
+    }
+}
+
+extension VoiceSessionTests {
+    /// Preserves a causal handshake failure before cleanup and emits no peer payload or retry.
+    /// - Throws: Unexpected fixture construction or diagnostic timeline requirements.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func structuredLoggingKeepsTerminalCauseBeforeCleanup() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let tuple = credentials()
+            let socket = SessionTestSocket([.text(#"{"op":9,"d":{"private-voice-control":true}}"#)])
+            let backend = SessionTestE2EE(tuple.identity)
+            let udp = SessionTestDatagram(discovery())
+            let owner = try VoiceSession(credentials: tuple, webSocket: SessionTestConnector([socket]),
+                makeDatagram: { _ in udp }, e2ee: backend, clock: SessionTestClock())
+            await #expect(throws: VoiceControlFailure.invalidTransition) { try await owner.run() }
+            #expect(await owner.snapshot().reconnectAttempts == 0)
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.voice.session" }
+        let failed = try #require(entries.firstIndex { $0.metadata["dk.event"] == "voice.session.failed" })
+        let cleaned = try #require(entries.firstIndex { $0.metadata["dk.event"] == "voice.session.cleanup.completed" })
+        let terminal = try #require(entries.firstIndex { $0.metadata["dk.event"] == "voice.session.run.failed" })
+        #expect(failed < cleaned && cleaned < terminal)
+        #expect(entries[failed].level == .error)
+        #expect(entries[failed].metadata["dk.failure"] == "control")
+        #expect(entries[failed].metadata["dk.phase"] == "awaiting_hello")
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        #expect(!rendered.contains("private-voice-control"))
     }
 }

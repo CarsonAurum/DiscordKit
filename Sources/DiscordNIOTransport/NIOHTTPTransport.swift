@@ -102,6 +102,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
             let target = try NIORequestTarget(request, headerLimit: configuration.maximumHeaderBytes)
             let reservation = try reserve(target, upload: request.body)
             token = reservation.0
+            DiscordLog.makeLogger("nio.http.pool").trace("NIO HTTP connection lease reserved", metadata: ["dk.event": "nio.http.pool.reserved", "dk.reused": .stringConvertible(reservation.1.wire != nil)])
             let id = reservation.0
             let attempt = reservation.1.attempt
             let operation = Task {
@@ -125,6 +126,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
                         }
                         try context.check()
                         try await completeUpload(id)
+                        DiscordLog.makeLogger("nio.http.upload").trace("NIO HTTP upload collection completed", metadata: ["dk.event": "nio.http.upload.completed", "dk.bytes": .stringConvertible(upload.count)])
                         let metadata = try await wire.begin(request, target: target, upload: upload)
                         let stream = try await responseStream(id, wire: wire, context: context)
                         DiscordLog.makeLogger("nio.http").debug("NIO HTTP response received", metadata: ["dk.event": "nio.http.response", "http.status": "\(metadata.status)"])
@@ -177,7 +179,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
         }
         cleanup = task
         await task.value
-        DiscordLog.makeLogger("nio.http").debug("NIO HTTP transport closed", metadata: ["dk.event": "nio.http.closed"])
+        DiscordLog.makeLogger("nio.http").info("NIO HTTP transport closed", metadata: ["dk.event": "nio.http.closed"])
     }
 
     /// Reserves a slot synchronously before any suspension; rejects overload without
@@ -263,6 +265,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
         lease.operation = nil
         lease.response = stream
         leases[id] = lease
+        DiscordLog.makeLogger("nio.http.body").trace("NIO HTTP response body ownership transferred", metadata: ["dk.event": "nio.http.body.transferred"])
         return stream
     }
 
@@ -273,6 +276,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
     /// - Returns: Connected HTTP/1.1 channel; TLS completion is verified on first I/O.
     /// - Throws: Native errors, sanitized by the public operation boundary.
     private func open(_ target: NIORequestTarget, attempt: NIOConnectionAttempt) async throws -> HTTPWire {
+        DiscordLog.makeLogger("nio.http.connection").trace("NIO HTTP socket connection started", metadata: ["dk.event": "nio.http.connection.started", "dk.tls": .stringConvertible(target.secure)])
         let configuration = self.configuration
         let tls = self.tls
         let result = NIOLockedValueBox<HTTPWire?>(nil)
@@ -300,6 +304,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
         do {
             _ = try await bootstrap.connect(host: target.host, port: target.port).get()
             guard let wire = result.withLockedValue({ $0 }) else { throw NIOAdapterFailure.connectionFailed }
+            DiscordLog.makeLogger("nio.http.connection").trace("NIO HTTP socket connected", metadata: ["dk.event": "nio.http.connection.connected"])
             return wire
         } catch { attempt.cancel(); throw error }
     }
@@ -315,11 +320,13 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
         if reusable && !closed && wire.channel.isActive {
             leases.removeValue(forKey: id)
             idle[lease.origin, default: []].append(wire)
+            DiscordLog.makeLogger("nio.http.pool").trace("NIO HTTP parsed connection returned for reuse", metadata: ["dk.event": "nio.http.pool.returned", "dk.active": .stringConvertible(leases.count)])
         } else {
             // Keep the registered stream until socket closure finishes: shutdown
             // must await this same BodyStream cleanup before stopping its loop.
             try? await wire.channel.close().get()
             if leases[id]?.cleanup == nil { leases.removeValue(forKey: id) }
+            DiscordLog.makeLogger("nio.http.pool").trace("NIO HTTP connection disposed", metadata: ["dk.event": "nio.http.pool.disposed", "dk.active": .stringConvertible(leases.count)])
         }
     }
 
@@ -342,6 +349,7 @@ public actor NIOHTTPTransport: HTTPTransport, TransportResource {
     private func startDiscard(_ id: UUID) -> Task<Void, Never>? {
         guard var lease = leases[id] else { return nil }
         if let cleanup = lease.cleanup { return cleanup }
+        DiscordLog.makeLogger("nio.http.pool").trace("NIO HTTP exchange cleanup started", metadata: ["dk.event": "nio.http.pool.cleanup", "dk.has_response": .stringConvertible(lease.response != nil)])
         // A transferred stream marks itself closed before interrupting its read;
         // otherwise native cancellation could escape as an error instead of EOF.
         if lease.response == nil { lease.attempt.cancel() }

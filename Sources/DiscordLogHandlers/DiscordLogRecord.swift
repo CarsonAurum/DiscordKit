@@ -9,7 +9,7 @@ import Logging
 public struct DiscordLogRecord: Sendable {
     /// The logger's stable subsystem label.
     public let label: String
-    /// The original SwiftLog severity, including application-reserved levels.
+    /// The original semantic SwiftLog severity, preserved across output adapters.
     public let level: Logger.Level
     /// The fully interpolated message supplied by SwiftLog.
     public let message: String

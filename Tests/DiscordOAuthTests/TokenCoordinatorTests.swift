@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordTestSupport
 import Foundation
@@ -508,4 +509,41 @@ private actor TokenTestCounter {
     var value = 0
     /// Records one exchange start; concurrent callers remain serialized by the actor.
     func increment() { value += 1 }
+}
+
+extension TokenCoordinatorTests {
+    /// Traces authoritative storage, one rotation and later fresh-token reuse without credential material.
+    /// - Throws: Unexpected synthetic token exchange, storage or ordered diagnostic requirements.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func structuredLoggingTracksRotationAndFreshReuse() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let clock = ManualClock()
+            let storage = TokenTestStorage()
+            let identity = OAuthTokenIdentity(applicationID: .init(rawValue: 1))
+            let coordinator = OAuthTokenCoordinator(storage: storage, now: { tokenTestDate(clock) }, refresh: { _, _ in
+                try tokenTestResponse("private-rotated-token", lifetime: 200, refresh: "private-rotation-secret")
+            }, revoke: { _, _ in })
+            #expect(recorder.entries.isEmpty)
+            try await coordinator.install(tokenTestResponse("private-old-token", lifetime: 1), for: identity)
+            _ = try await coordinator.accessToken(for: identity)
+            _ = try await coordinator.accessToken(for: identity)
+            await coordinator.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.oauth.tokens" }
+        let events = entries.compactMap { $0.metadata["dk.event"]?.description }
+        var cursor = events.startIndex
+        for event in ["oauth.token.storage.loading", "oauth.token.storage.loaded", "oauth.refresh.started",
+                      "oauth.refresh.received", "oauth.refresh.persisting", "oauth.refresh.persisted",
+                      "oauth.token.resolve.completed", "oauth.token.fresh", "oauth.coordinator.cleanup.joined"] {
+            let index = try #require(events[cursor...].firstIndex(of: event))
+            cursor = events.index(after: index)
+        }
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "oauth.refresh.persisted" })
+        #expect(entries.contains { $0.level == .trace && $0.metadata["dk.event"] == "oauth.token.waiter.admitted" && $0.metadata["dk.waiters"]?.description == "1" })
+        let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
+        for secret in ["private-old-token", "private-rotated-token", "private-rotation-secret", "refresh-old"] {
+            #expect(!rendered.contains(secret))
+        }
+    }
 }

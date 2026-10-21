@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordHTTP
 import DiscordModels
@@ -51,6 +52,7 @@ public struct InteractionHTTPApplication: Sendable {
         continuations: (@Sendable (Interaction) -> InteractionResponseSink)? = nil,
         handler: @escaping @Sendable (InteractionContext) async throws -> Void) async throws
         where C.Duration == Duration {
+        DiscordLog.makeLogger("interactions.http").debug("Interaction HTTP application exchange started", metadata: ["dk.event": "interactions.http.started"])
         let clock = InteractionClock(context.clock)
         let slot = InlineInteractionResponseSlot(responder: exchange.responder)
         let failure = InteractionHandlerFailure()
@@ -58,8 +60,15 @@ public struct InteractionHTTPApplication: Sendable {
             let result = try await ingress.process(request: exchange.request, context: context) { verified in
                 let interaction: Interaction
                 do { interaction = try Interaction(data: verified.rawBody, limits: limits) }
-                catch { return HTTPResponse(status: 400) }
-                guard interaction.applicationID == applicationID else { return HTTPResponse(status: 403) }
+                catch {
+                    DiscordLog.makeLogger("interactions.http").debug("Authenticated interaction envelope is malformed", metadata: ["dk.event": "interactions.http.decode_rejected", "dk.status": "400"])
+                    return HTTPResponse(status: 400)
+                }
+                DiscordLog.makeLogger("interactions.http").trace("Authenticated interaction envelope decoded", metadata: ["dk.event": "interactions.http.decoded"])
+                guard interaction.applicationID == applicationID else {
+                    DiscordLog.makeLogger("interactions.http").debug("Authenticated interaction has another application owner", metadata: ["dk.event": "interactions.http.application_rejected", "dk.status": "403"])
+                    return HTTPResponse(status: 403)
+                }
                 let rest = continuations?(interaction)
                 let sink = InteractionResponseSink(initial: { response, remaining in
                     let bytes = try response.jsonValue(interactionType: interaction.type.knownValue).serialized()
@@ -70,11 +79,15 @@ public struct InteractionHTTPApplication: Sendable {
                 let responder = InteractionResponder(interaction: interaction, deliveryMode: .http,
                     clock: clock, sink: sink, admission: admission, receivedAt: .zero)
                 let normalized = try InteractionContext(interaction: interaction, deliveryMode: .http, responder: responder)
+                DiscordLog.makeLogger("interactions.http").trace("HTTP interaction response owner and context normalized", metadata: ["dk.event": "interactions.http.normalized"])
                 if interaction.type.knownValue == .ping {
+                    DiscordLog.makeLogger("interactions.http").trace("Handling authenticated protocol ping", metadata: ["dk.event": "interactions.http.ping"])
                     do { try await responder.respond(.pong) }
                     catch { await failure.store(error) }
                 } else {
                     do {
+                        DiscordLog.makeLogger("interactions.http").trace("Entering normalized interaction handler", metadata: ["dk.event": "interactions.http.handler_entered"])
+                        defer { DiscordLog.makeLogger("interactions.http").trace("Normalized interaction handler exited", metadata: ["dk.event": "interactions.http.handler_exited"]) }
                         if let autoDefer, Self.canDefer(interaction, policy: autoDefer) {
                             try await responder.runWithAutoDefer(policy: autoDefer) { try await handler(normalized) }
                         } else { try await handler(normalized) }
@@ -85,9 +98,11 @@ public struct InteractionHTTPApplication: Sendable {
             if !(await slot.wasReserved()) { try await slot.send(result, context: context) }
             else { await result.body?.close() }
             if let error = await failure.read() { throw error }
+            DiscordLog.makeLogger("interactions.http").debug("Interaction HTTP application exchange completed", metadata: ["dk.event": "interactions.http.completed"])
         } catch {
             await exchange.request.body?.close()
             await exchange.responder.close()
+            DiscordLog.makeLogger("interactions.http").trace("Failed interaction HTTP exchange closed", metadata: ["dk.event": "interactions.http.cleanup_completed"])
             throw error
         }
     }
@@ -137,7 +152,9 @@ private actor InlineInteractionResponseSlot {
     func send<C: Clock>(_ response: HTTPResponse, context: TransportContext<C>) async throws where C.Duration == Duration {
         guard !reserved else { await response.body?.close(); throw InteractionLifecycleError.alreadyAcknowledged }
         reserved = true
+        DiscordLog.makeLogger("interactions.http").trace("Inline HTTP response slot reserved", metadata: ["dk.event": "interactions.http.response_reserved", "dk.status": .stringConvertible(response.status)])
         try await responder.respond(response, context: context)
+        DiscordLog.makeLogger("interactions.http").trace("Inline HTTP response transmission completed", metadata: ["dk.event": "interactions.http.response_sent"])
     }
 }
 

@@ -30,7 +30,14 @@ import Testing
         #expect(response.status == 401)
         #expect(await ingress.activeRequestCount() == 0)
         #expect(recorder.entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "interactions.ingress.rejected" })
+        let events = recorder.entries.compactMap { $0.metadata["dk.event"]?.description }
+        #expect(events == ["interactions.ingress.started", "interactions.ingress.admitted",
+            "interactions.ingress.headers_validated", "interactions.ingress.body_reading",
+            "interactions.ingress.body_read", "interactions.ingress.verifying",
+            "interactions.ingress.cleanup_started", "interactions.ingress.cleanup_completed",
+            "interactions.ingress.rejected", "interactions.ingress.released"])
+        #expect(recorder.entries.last?.metadata["dk.active"]?.description == "0")
         #expect(!String(describing: recorder.entries.map { ($0.message, $0.metadata) }).contains(secret))
-        #expect(recorder.entries.allSatisfy { $0.label == "discordkit.interactions" && $0.level != .info && $0.level != .notice })
+        #expect(recorder.entries.allSatisfy { $0.label == "discordkit.interactions.ingress" })
     }
 }

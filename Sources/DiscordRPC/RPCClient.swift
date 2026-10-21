@@ -35,6 +35,7 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         let command: String
         let frame: RPCFrame
         let event: String?
+        let correlation: Logger.Metadata
         let continuation: CheckedContinuation<JSONValue, any Error>
     }
     private let applicationID: ApplicationID
@@ -92,6 +93,16 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     /// - Throws: Already connected/connecting, cancellation, deadline, malformed READY or redacted I/O errors.
     ///   A failed/canceled startup closes its transport and starts no reader task.
     @discardableResult public func connect(context: TransportContext<C>) async throws -> JSONValue {
+        return try await DiscordLog.withOperation("rpc.client", event: "rpc.connection.operation") {
+            try await connectOwned(context: context)
+        }
+    }
+
+    /// Performs connection admission and owned startup inside one correlated diagnostic operation.
+    /// - Parameter context: Original caller cancellation and monotonic deadline.
+    /// - Returns: The validated READY payload.
+    /// - Throws: The unchanged sanitized startup failure after cleanup.
+    private func connectOwned(context: TransportContext<C>) async throws -> JSONValue {
         try context.check()
         guard connection == nil, !connecting, closing == nil else { throw RPCFailure.alreadyConnected }
         if reader != nil || writer != nil {
@@ -99,7 +110,7 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
             try context.check()
             guard connection == nil, !connecting, closing == nil else { throw RPCFailure.alreadyConnected }
         }
-        let logger = DiscordLog.makeLogger("rpc")
+        let logger = DiscordLog.makeLogger("rpc.client")
         logger.trace("RPC connection started", metadata: ["dk.event": "rpc.connection.started"])
         connecting = true; generation = UUID(); let session = generation
         let task = Task { try await self.startSession(session: session, context: context) }
@@ -112,7 +123,7 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
             guard connecting, generation == session else { throw RPCFailure.closed }
             connecting = false; startup = nil; terminal = .connectionLost
             reader = Task { await self.readLoop(wire: wire, session: session) }
-            logger.debug("RPC connection ready", metadata: ["dk.event": "rpc.connection.ready"])
+            logger.info("RPC connection ready", metadata: ["dk.event": "rpc.connection.ready"])
             return ready
         } catch {
             if error is CancellationError || Task.isCancelled {
@@ -137,12 +148,17 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     private func startSession(session: UUID, context: TransportContext<C>) async throws -> (any RPCConnection, JSONValue) {
         var opened: (any RPCConnection)?
         do {
+            let logger = DiscordLog.makeLogger("rpc.client")
+            logger.trace("RPC transport opening", metadata: ["dk.event": "rpc.transport.opening"])
             let wire = try await connector.connect(applicationID: applicationID, context: context)
+            logger.trace("RPC transport acquired", metadata: ["dk.event": "rpc.transport.acquired"])
             opened = wire
             try context.check()
             guard connecting, generation == session else { throw RPCFailure.closed }
             connection = wire
+            logger.debug("RPC handshake starting", metadata: ["dk.event": "rpc.handshake.started"])
             try await wire.handshake(applicationID: applicationID, context: context)
+            logger.trace("RPC handshake sent awaiting READY", metadata: ["dk.event": "rpc.handshake.sent"])
             while true {
                 guard let frame = try await wire.receive(context: context) else { throw RPCFailure.connectionLost }
                 try context.check()
@@ -154,6 +170,7 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
                 guard envelope["cmd"] == .string("DISPATCH"), envelope["evt"] == .string("READY"),
                       envelope["nonce"] == nil || envelope["nonce"] == .null,
                       case .object(let data) = envelope["data"], data["v"] == .number(try JSONNumber(rawValue: "1")) else { throw RPCFailure.invalidPayload }
+                logger.trace("RPC READY envelope validated", metadata: ["dk.event": "rpc.handshake.ready.validated"])
                 return (wire, .object(data))
             }
         } catch {
@@ -167,6 +184,7 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     /// - Returns: New READY data. Authentication/subscriptions must be explicitly restored.
     /// - Throws: Startup errors; old requests are never replayed, including after process restart.
     @discardableResult public func reconnect(context: TransportContext<C>) async throws -> JSONValue {
+        DiscordLog.makeLogger("rpc.client").notice("RPC reconnect explicitly requested", metadata: ["dk.event": "rpc.connection.reconnecting"])
         await close()
         return try await connect(context: context)
     }
@@ -182,6 +200,18 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     ///   Cancellation removes this caller's waiter/queued write. An already admitted
     ///   native write remains session-owned until completion or explicit client close.
     public func request(_ request: RPCRequest, context: TransportContext<C>) async throws -> JSONValue {
+        return try await DiscordLog.withOperation("rpc.client", event: "rpc.request.operation") {
+            try await requestOwned(request, context: context)
+        }
+    }
+
+    /// Performs one explicit request within its bounded correlated diagnostic operation.
+    /// - Parameters:
+    ///   - request: Original validated command, never formatted into logs.
+    ///   - context: Caller cancellation and monotonic deadline.
+    /// - Returns: The unchanged correlated reply data.
+    /// - Throws: Original request failure without logging payloads or repeating transmission.
+    private func requestOwned(_ request: RPCRequest, context: TransportContext<C>) async throws -> JSONValue {
         try context.check()
         let nonce = UUID().uuidString
         var object: [String: JSONValue] = ["cmd": .string(request.command.rawValue), "nonce": .string(nonce), "args": .object(request.arguments)]
@@ -189,12 +219,19 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         let payload: Data
         do { payload = try JSONValue.object(object).serialized(limits: .init(maximumBytes: maximumPayloadBytes)) }
         catch { throw RPCFailure.invalidPayload }
-        let logger = DiscordLog.makeLogger("rpc")
+        let logger = DiscordLog.makeLogger("rpc.client")
         logger.trace("RPC request started", metadata: ["dk.event": "rpc.request.started"])
-        let response = try await context.run {
-            try await withTaskCancellationHandler {
-                try await self.enqueue(nonce: nonce, command: request.command.rawValue, event: request.event?.rawValue, payload: payload)
-            } onCancel: { Task { await self.cancelRequest(nonce) } }
+        let response: JSONValue
+        do {
+            response = try await context.run {
+                try await withTaskCancellationHandler {
+                    try await self.enqueue(nonce: nonce, command: request.command.rawValue, event: request.event?.rawValue, payload: payload)
+                } onCancel: { Task { await self.cancelRequest(nonce) } }
+            }
+        } catch {
+            logger.log(level: error is CancellationError || Task.isCancelled ? .trace : .debug, "RPC request ended without success", metadata: [
+                "dk.event": "rpc.request.failed", "dk.failure": .string(failureCategory(error))])
+            throw error
         }
         logger.debug("RPC request completed", metadata: ["dk.event": "rpc.request.completed"])
         return response
@@ -226,8 +263,8 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     /// Wire CLOSE is not required for disposal and is not sent ahead of pending writes.
     public func close() async {
         if let closing { await closing.value; return }
-        let logger = DiscordLog.makeLogger("rpc")
-        logger.debug("RPC client closing", metadata: ["dk.event": "rpc.client.closing",
+        let logger = DiscordLog.makeLogger("rpc.client")
+        logger.info("RPC client closing", metadata: ["dk.event": "rpc.client.closing",
             "dk.pending": .stringConvertible(pending.count)])
         let oldReader = reader; let oldWriter = writer; let oldConnection = connection; let oldStartup = startup
         generation = UUID(); connecting = false; connection = nil; reader = nil; writer = nil; startup = nil
@@ -236,13 +273,16 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         eventWaiter?.1.resume(returning: nil); eventWaiter = nil
         oldReader?.cancel(); oldWriter?.cancel(); oldStartup?.cancel()
         let cleanup = Task {
+            logger.trace("RPC transport cleanup starting", metadata: ["dk.event": "rpc.client.cleanup.transport"])
             await oldConnection?.close()
             if let oldStartup, case .success(let (wire, _)) = await oldStartup.result { await wire.close() }
             await oldReader?.value; await oldWriter?.value
+            logger.trace("RPC reader writer and startup joined", metadata: ["dk.event": "rpc.client.cleanup.joined"])
         }
         closing = cleanup
         await cleanup.value
         closing = nil
+        logger.info("RPC client closed", metadata: ["dk.event": "rpc.client.closed"])
     }
 
     /// Registers a request atomically before scheduling the sole bounded writer.
@@ -257,12 +297,16 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         try Task.checkCancellation()
         guard connection != nil, !connecting else { throw RPCFailure.notConnected }
         guard pending.count < maximumPendingRequests, payload.count <= maximumPendingBytes - pendingBytes else {
-            DiscordLog.makeLogger("rpc").trace("RPC admission rejected", metadata: ["dk.event": "rpc.request.overloaded"])
+            DiscordLog.makeLogger("rpc.client").debug("RPC admission capacity exhausted", metadata: ["dk.event": "rpc.request.overloaded",
+                "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes)])
             throw RPCFailure.overloaded
         }
         return try await withCheckedThrowingContinuation { continuation in
-            pending[nonce] = Pending(command: command, frame: .init(opcode: .frame, payload: payload), event: event, continuation: continuation)
+            pending[nonce] = Pending(command: command, frame: .init(opcode: .frame, payload: payload), event: event, correlation: Self.correlationContext(), continuation: continuation)
             pendingBytes += payload.count; outgoing.append(nonce)
+            DiscordLog.makeLogger("rpc.client").trace("RPC request admitted to bounded queue", metadata: ["dk.event": "rpc.request.admitted",
+                "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes),
+                "dk.queued": .stringConvertible(outgoing.count)])
             if writer == nil { let session = generation; writer = Task { await self.writeLoop(session: session) } }
         }
     }
@@ -273,6 +317,10 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         if let item = pending.removeValue(forKey: nonce) {
             pendingBytes -= item.frame.payload.count
             outgoing.removeAll { $0 == nonce }
+            Self.withCorrelation(item.correlation) {
+                DiscordLog.makeLogger("rpc.client").trace("RPC request waiter released", metadata: ["dk.event": "rpc.request.waiter.cancelled",
+                    "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes)])
+            }
             item.continuation.resume(throwing: CancellationError())
         }
     }
@@ -282,13 +330,21 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     private func writeLoop(session: UUID) async {
         while generation == session, let wire = connection, !controls.isEmpty || !outgoing.isEmpty {
             let frame: RPCFrame
-            if !controls.isEmpty { frame = controls.removeFirst() }
+            let correlation: Logger.Metadata
+            if !controls.isEmpty { frame = controls.removeFirst(); correlation = Self.correlationContext() }
             else {
                 let nonce = outgoing.removeFirst()
                 guard let item = pending[nonce] else { continue }
-                frame = item.frame
+                frame = item.frame; correlation = item.correlation
             }
-            do { try await wire.send(frame, context: .init(clock: clock)) }
+            do {
+                try await Self.withCorrelation(correlation) {
+                    DiscordLog.makeLogger("rpc.client").trace("RPC ordered write starting", metadata: ["dk.event": "rpc.write.started",
+                        "dk.queued": .stringConvertible(outgoing.count)])
+                    try await wire.send(frame, context: .init(clock: clock))
+                    DiscordLog.makeLogger("rpc.client").trace("RPC ordered write completed", metadata: ["dk.event": "rpc.write.completed"])
+                }
+            }
             catch { await fail(session: session, error: .connectionLost); return }
         }
         if generation == session { writer = nil }
@@ -335,7 +391,10 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         let envelope = try decode(payload)
         guard case .string(let command) = envelope["cmd"] else { throw RPCFailure.invalidPayload }
         if case .string(let nonce) = envelope["nonce"] {
-            guard let item = pending[nonce] else { return }
+            guard let item = pending[nonce] else {
+                DiscordLog.makeLogger("rpc.client").trace("RPC late reply ignored", metadata: ["dk.event": "rpc.reply.late"])
+                return
+            }
             guard command == item.command, envelope["data"] != nil else { throw RPCFailure.invalidPayload }
             if envelope["evt"] != .string("ERROR") {
                 if let event = item.event {
@@ -347,6 +406,11 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
                 }
             }
             pending.removeValue(forKey: nonce); pendingBytes -= item.frame.payload.count
+            Self.withCorrelation(item.correlation) {
+                DiscordLog.makeLogger("rpc.client").trace("RPC reply correlated and waiter released", metadata: ["dk.event": "rpc.reply.correlated",
+                    "dk.pending": .stringConvertible(pending.count), "dk.pending_bytes": .stringConvertible(pendingBytes),
+                    "dk.rejected": .stringConvertible(envelope["evt"] == .string("ERROR"))])
+            }
             outgoing.removeAll { $0 == nonce }
             if envelope["evt"] == .string("ERROR") { item.continuation.resume(throwing: serverFailure(envelope)) }
             else { item.continuation.resume(returning: envelope["data"]!) }
@@ -358,6 +422,8 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
         if let waiter = eventWaiter { eventWaiter = nil; waiter.1.resume(returning: event); return }
         guard events.count < maximumEvents, payload.count <= maximumEventBytes - eventBytes else { throw RPCFailure.overloaded }
         events.append((event, payload.count)); eventBytes += payload.count
+        DiscordLog.makeLogger("rpc.client").trace("RPC dispatch buffered", metadata: ["dk.event": "rpc.event.buffered",
+            "dk.events": .stringConvertible(events.count), "dk.event_bytes": .stringConvertible(eventBytes)])
     }
 
     /// Extracts only an integer server code; free-form messages are intentionally discarded.
@@ -381,8 +447,8 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     ///   - error: Safe terminal reason without peer-controlled descriptions.
     private func fail(session: UUID, error: RPCFailure) async {
         guard generation == session else { return }
-        DiscordLog.makeLogger("rpc").error("RPC session terminated", metadata: ["dk.event": "rpc.session.failed",
-            "dk.pending": .stringConvertible(pending.count)])
+        DiscordLog.makeLogger("rpc.client").error("RPC session terminated", metadata: ["dk.event": "rpc.session.failed",
+            "dk.pending": .stringConvertible(pending.count), "dk.failure": .string(failureCategory(error))])
         generation = UUID(); terminal = error
         let wire = connection; connection = nil
         reader?.cancel(); writer?.cancel()
@@ -410,6 +476,59 @@ public actor RPCClient<C: Clock> where C.Duration == Duration {
     private func cancelEvent(_ id: UUID) {
         guard eventWaiter?.0 == id else { return }
         eventWaiter?.1.resume(throwing: CancellationError()); eventWaiter = nil
+    }
+
+    /// Copies only finite correlation strings into already bounded request ownership.
+    /// Application metadata and Discord identifiers are never retained by this helper.
+    /// - Returns: At most three diagnostic identifiers, each at most 128 UTF-8 bytes.
+    private nonisolated static func correlationContext() -> Logger.Metadata {
+        var result: Logger.Metadata = [:]
+        for key in ["dk.trace_id", "dk.span_id", "dk.parent_span_id"] {
+            if case .string(let value) = DiscordLog.context[key], value.utf8.count <= 128 {
+                result[key] = .string(value)
+            }
+        }
+        return result
+    }
+
+    /// Rebinds diagnostic correlation without changing current output policy or execution ownership.
+    /// - Parameters:
+    ///   - correlation: Finite identifiers captured when this exact operation was admitted.
+    ///   - operation: Synchronous logging work executed once without tasks or suspension.
+    private nonisolated static func withCorrelation(_ correlation: Logger.Metadata, operation: () -> Void) {
+        var context = DiscordLog.context
+        for key in ["dk.trace_id", "dk.span_id", "dk.parent_span_id"] { context[key] = correlation[key] }
+        DiscordLog.$context.withValue(context, operation: operation)
+    }
+
+    /// Preserves exact request correlation through the existing asynchronous transport send.
+    /// - Parameters:
+    ///   - correlation: Finite diagnostic identifiers retained by bounded request ownership.
+    ///   - isolation: Original writer actor isolation, inferred without an executor hop.
+    ///   - operation: Existing send invoked once; no new task, retry or cancellation handler is introduced.
+    /// - Throws: The original unchanged transport or cancellation error.
+    private static func withCorrelation(_ correlation: Logger.Metadata,
+        isolation: isolated (any Actor)? = #isolation, operation: () async throws -> Void) async rethrows {
+        var context = DiscordLog.context
+        for key in ["dk.trace_id", "dk.span_id", "dk.parent_span_id"] { context[key] = correlation[key] }
+        try await DiscordLog.$context.withValue(context, operation: operation)
+    }
+
+    /// Maps known operational errors into fixed diagnostic classes without formatting peer data.
+    /// - Parameter error: Original operation error retained only by its caller.
+    /// - Returns: One finite lifecycle category independent of payloads and identifiers.
+    private func failureCategory(_ error: any Error) -> String {
+        if error is CancellationError { return "cancelled" }
+        if error as? TransportFailure == .deadlineExceeded { return "deadline" }
+        guard let failure = error as? RPCFailure else { return "transport" }
+        switch failure {
+        case .overloaded: return "capacity"
+        case .closed: return "closed"
+        case .notConnected, .alreadyConnected: return "state"
+        case .server: return "remote_rejection"
+        case .connectionLost: return "connection_lost"
+        default: return "protocol"
+        }
     }
 
     /// Keeps known cancellation/deadline/protocol errors and redacts arbitrary adapter errors.

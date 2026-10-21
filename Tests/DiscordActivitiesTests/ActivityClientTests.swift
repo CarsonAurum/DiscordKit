@@ -13,6 +13,8 @@ actor ActivityPeer: ActivityTransport {
     private var sent: [Data] = []
     private var observer: CheckedContinuation<Data, Never>?
     private var ended = false
+    private var holdingWrites = false
+    private var heldWrite: CheckedContinuation<Void, Never>?
     private let autoReady: Bool
     private let failSend: Bool
     private(set) var closes = 0
@@ -28,11 +30,24 @@ actor ActivityPeer: ActivityTransport {
     /// - Throws: Configured failure, closure, or malformed fixture tuple.
     func send(_ data: Data) async throws {
         guard !ended, !failSend else { throw ActivityFailure.closed }
+        let kind: String
+        if case .array(let tuple) = try? JSONValue.parse(data), tuple.first == .number(try JSONNumber(rawValue: "1")) {
+            kind = "command"
+        } else { kind = "control" }
+        DiscordLog.makeLogger("activities.test_transport").trace("Synthetic transport send entered", metadata: [
+            "dk.event": "test.activities.transport.send", "test.kind": .string(kind)])
         if let observer { self.observer = nil; observer.resume(returning: data) } else { sent.append(data) }
+        if holdingWrites { await withCheckedContinuation { heldWrite = $0 } }
         if autoReady, case .array(let tuple) = try JSONValue.parse(data), tuple[0] == .number(try JSONNumber(rawValue: "0")) {
             push("[1,{\"cmd\":\"DISPATCH\",\"evt\":\"READY\",\"nonce\":null,\"data\":{\"v\":1,\"config\":{\"api_endpoint\":\"//discord.com/api\",\"environment\":\"production\"}}}]")
         }
     }
+
+    /// Parks command writes after observation so requests share one existing ordered writer.
+    func holdWrites() { holdingWrites = true }
+
+    /// Releases the one parked writer and stops parking subsequent sends.
+    func releaseWrites() { holdingWrites = false; heldWrite?.resume(); heldWrite = nil }
 
     /// Returns one scripted tuple or waits for explicit input/close; the client owns the sole reader.
     /// - Returns: Scripted data, or nil on terminal close.
@@ -258,13 +273,66 @@ extension ActivityClientTests {
             #expect(try await operation.value == .string("private-activity-payload"))
             await client.close()
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.activities" }
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "activities.handshake.completed" })
+        let entries = recorder.entries.filter { $0.label == "discordkit.activities.client" }
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "activities.handshake.completed" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "activities.command.completed" })
         #expect(entries.contains { $0.metadata["dk.event"] == "activities.client.closing" })
+        let events = entries.compactMap { $0.metadata["dk.event"]?.description }
+        let ready = try #require(events.firstIndex(of: "activities.handshake.ready.validated"))
+        let admitted = try #require(events.firstIndex(of: "activities.command.admitted"))
+        let reply = try #require(events.firstIndex(of: "activities.reply.correlated"))
+        let closed = try #require(events.firstIndex(of: "activities.client.closed"))
+        #expect(ready < admitted && admitted < reply && reply < closed)
+        #expect(entries.contains { $0.metadata["dk.event"] == "activities.command.admitted" && $0.metadata["dk.pending"]?.description == "1" })
+        #expect(entries.contains { $0.metadata["dk.event"] == "activities.reply.correlated" && $0.metadata["dk.pending_bytes"]?.description == "0" })
+        #expect(entries.allSatisfy { $0.metadata["dk.module"] == "activities" })
         let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
         for secret in ["private-activity-payload", "frame_id", "instance_id", String(UInt64.max)] {
             #expect(!rendered.contains(secret))
         }
+    }
+}
+
+extension ActivityClientTests {
+    /// Keeps request spans distinct across one ordered writer and reverse-ordered host replies.
+    /// - Throws: Unexpected simulated exchange or missing diagnostic continuity.
+    @Test func queuedCommandsKeepIndependentDiagnosticSpans() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let peer = ActivityPeer()
+            let client = try ActivityClient(applicationID: .init(rawValue: 1), host: Self.host(), transport: peer, clock: ContinuousClock())
+            try await client.start()
+            _ = await peer.nextSent()
+            await peer.holdWrites()
+            let first = Task { try await client.execute(Self.request()) }
+            let firstWire = await peer.nextSent()
+            let second = Task { try await client.execute(Self.request()) }
+            for _ in 0..<10_000 {
+                if await client.snapshot().pending == 2 { break }
+                await Task.yield()
+            }
+            let pending = await client.snapshot().pending
+            await peer.releaseWrites()
+            #expect(pending == 2)
+            let secondWire = await peer.nextSent()
+            try await peer.reply(secondWire, value: .null)
+            _ = try await second.value
+            try await peer.reply(firstWire, value: .null)
+            _ = try await first.value
+            await client.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.activities.client" }
+        let nested = recorder.entries.filter { $0.label == "discordkit.activities.test_transport" && $0.metadata["dk.event"] == "test.activities.transport.send" && $0.metadata["test.kind"] == "command" }
+        let admitted = entries.filter { $0.metadata["dk.event"] == "activities.command.admitted" }
+        let writes = entries.filter { $0.metadata["dk.event"] == "activities.write.started" }.dropFirst()
+        let replies = entries.filter { $0.metadata["dk.event"] == "activities.reply.correlated" }
+        #expect(admitted.count == 2 && writes.count == 2 && replies.count == 2)
+        #expect(Set(admitted.compactMap { $0.metadata["dk.span_id"]?.description }).count == 2)
+        #expect(writes.map { $0.metadata["dk.span_id"] } == admitted.map { $0.metadata["dk.span_id"] })
+        #expect(nested.count == 2)
+        #expect(nested.map { $0.metadata["dk.span_id"] } == admitted.map { $0.metadata["dk.span_id"] })
+        #expect(nested.map { $0.metadata["dk.trace_id"] } == admitted.map { $0.metadata["dk.trace_id"] })
+        #expect(replies.map { $0.metadata["dk.span_id"] } == admitted.reversed().map { $0.metadata["dk.span_id"] })
+        #expect(replies.map { $0.metadata["dk.trace_id"] } == admitted.reversed().map { $0.metadata["dk.trace_id"] })
     }
 }

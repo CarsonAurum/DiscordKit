@@ -90,7 +90,7 @@ public actor CertifiedDeviceHTTPPublisher: TransportResource {
         let bytes = try JSONValue.object([
             "cmd": .string("SET_CERTIFIED_DEVICES"), "nonce": .string(nonce), "args": .object(arguments),
         ]).serialized(limits: JSONLimits(maximumBytes: maximumRequestBytes))
-        let logger = DiscordLog.makeLogger("certified_devices")
+        let logger = DiscordLog.makeLogger("certified_devices.http")
         logger.trace("Certified devices publication started", metadata: ["dk.event": "certified_devices.http.started",
             "dk.count": .stringConvertible(devices.count)])
         let transport = self.transport
@@ -108,7 +108,7 @@ public actor CertifiedDeviceHTTPPublisher: TransportResource {
             } onCancel: {
                 task.cancel()
             }
-            logger.debug("Certified devices publication acknowledged", metadata: ["dk.event": "certified_devices.http.completed"])
+            logger.info("Certified devices publication acknowledged", metadata: ["dk.event": "certified_devices.http.completed"])
         } catch {
             if error is CancellationError || Task.isCancelled {
                 logger.trace("Certified devices publication cancelled", metadata: ["dk.event": "certified_devices.http.cancelled"])
@@ -124,7 +124,7 @@ public actor CertifiedDeviceHTTPPublisher: TransportResource {
     /// caller-owned. Closing does not publish an empty array or mutate desktop state.
     public func close() async {
         if !closed {
-            DiscordLog.makeLogger("certified_devices").debug("Certified devices publisher closing", metadata: ["dk.event": "certified_devices.http.closed"])
+            DiscordLog.makeLogger("certified_devices.http").debug("Certified devices publisher closing", metadata: ["dk.event": "certified_devices.http.closed"])
         }
         closed = true
         let pending = operation
@@ -163,6 +163,8 @@ func certifiedDeviceArguments(_ devices: [CertifiedDevice], maximumDevices: Int)
 private func executeCertifiedDevicePublication<C: Clock>(bytes: Data, url: URL, nonce: String,
     transport: any HTTPTransport, maximumResponseBytes: Int, context: TransportContext<C>) async throws
     where C.Duration == Duration {
+    let logger = DiscordLog.makeLogger("certified_devices.http")
+    logger.trace("Certified device request body ownership acquired", metadata: ["dk.event": "certified_devices.http.body.acquired"])
     let source = CertifiedDeviceRequestBody(bytes)
     let requestBody = try BodyStream(maximumChunkBytes: max(1, bytes.count),
         next: { await source.take() }, close: { await source.discard() })
@@ -172,6 +174,8 @@ private func executeCertifiedDevicePublication<C: Clock>(bytes: Data, url: URL, 
                 headers: [HTTPHeader(name: "Content-Type", value: "application/json")], body: requestBody),
                 context: context)
             do {
+                logger.trace("Certified device HTTP response received", metadata: ["dk.event": "certified_devices.http.response.received",
+                    "dk.status": .stringConvertible(response.status)])
                 guard response.status == 200 else { throw CertifiedDeviceFailure.httpStatus(response.status) }
                 guard let body = response.body else { throw CertifiedDeviceFailure.invalidResponse }
                 var bytes = Data()
@@ -183,6 +187,7 @@ private func executeCertifiedDevicePublication<C: Clock>(bytes: Data, url: URL, 
                     bytes.append(chunk)
                 }
                 try context.check()
+                logger.trace("Certified device response body consumed", metadata: ["dk.event": "certified_devices.http.body.consumed"])
                 let value = try JSONValue.parse(bytes, limits: JSONLimits(maximumBytes: maximumResponseBytes))
                 guard case .object(let object) = value,
                       object["cmd"] == .string("SET_CERTIFIED_DEVICES"), object["nonce"] == .string(nonce) else {
@@ -205,8 +210,10 @@ private func executeCertifiedDevicePublication<C: Clock>(bytes: Data, url: URL, 
             }
         }
         await requestBody.close()
+        logger.trace("Certified device request body released", metadata: ["dk.event": "certified_devices.http.body.released"])
     } catch {
         await requestBody.close()
+        logger.trace("Certified device request body released", metadata: ["dk.event": "certified_devices.http.body.released"])
         if error is CancellationError { throw CancellationError() }
         if let failure = error as? CertifiedDeviceFailure { throw failure }
         if let failure = error as? TransportFailure { throw failure }

@@ -61,7 +61,11 @@ public struct InvocationPolicy<Input: Sendable>: Sendable {
         self.nodeCountOverflowed = false
         self.operation = { input in
             try Task.checkCancellation()
-            return try await predicate(input)
+            DiscordLog.makeLogger("dsl.policy").trace("Invocation predicate leaf entered", metadata: ["dk.event": "dsl.policy.leaf_entered"])
+            defer { DiscordLog.makeLogger("dsl.policy").trace("Invocation predicate leaf exited", metadata: ["dk.event": "dsl.policy.leaf_exited"]) }
+            let allowed = try await predicate(input)
+            DiscordLog.makeLogger("dsl.policy").trace("Invocation predicate leaf decided", metadata: ["dk.event": "dsl.policy.leaf_decided", "dk.allowed": .stringConvertible(allowed)])
+            return allowed
         }
     }
 
@@ -87,7 +91,11 @@ public struct InvocationPolicy<Input: Sendable>: Sendable {
         let count = policyCompositionCount(nodeCount, other.nodeCount)
         return Self(nodeCount: count.value, depth: policySaturatingAdd(max(depth, other.depth), 1),
                     nodeCountOverflowed: nodeCountOverflowed || other.nodeCountOverflowed || count.overflowed) { input in
-            guard try await operation(input) else { return false }
+            guard try await operation(input) else {
+                DiscordLog.makeLogger("dsl.policy").trace("Conjunction skipped its right predicate after denial", metadata: ["dk.event": "dsl.policy.short_circuited", "dk.operator": "and"])
+                return false
+            }
+            DiscordLog.makeLogger("dsl.policy").trace("Conjunction proceeding to its right predicate", metadata: ["dk.event": "dsl.policy.right_entered", "dk.operator": "and"])
             return try await other.operation(input)
         }
     }
@@ -100,7 +108,11 @@ public struct InvocationPolicy<Input: Sendable>: Sendable {
         let count = policyCompositionCount(nodeCount, other.nodeCount)
         return Self(nodeCount: count.value, depth: policySaturatingAdd(max(depth, other.depth), 1),
                     nodeCountOverflowed: nodeCountOverflowed || other.nodeCountOverflowed || count.overflowed) { input in
-            guard try await !operation(input) else { return true }
+            guard try await !operation(input) else {
+                DiscordLog.makeLogger("dsl.policy").trace("Disjunction skipped its right predicate after allowance", metadata: ["dk.event": "dsl.policy.short_circuited", "dk.operator": "or"])
+                return true
+            }
+            DiscordLog.makeLogger("dsl.policy").trace("Disjunction proceeding to its right predicate", metadata: ["dk.event": "dsl.policy.right_entered", "dk.operator": "or"])
             return try await other.operation(input)
         }
     }
@@ -136,10 +148,15 @@ public struct InvocationPolicy<Input: Sendable>: Sendable {
     public func evaluate(_ input: Input, limits: PolicyLimits) async throws -> Bool {
         try validate(limits: limits)
         try Task.checkCancellation()
-        DiscordLog.makeLogger("dsl").trace("Invocation policy evaluation started", metadata: ["dk.event": "dsl.policy.evaluating"])
-        let allowed = try await operation(input)
-        DiscordLog.makeLogger("dsl").trace("Invocation policy evaluation completed", metadata: ["dk.event": "dsl.policy.evaluated", "dk.allowed": .stringConvertible(allowed)])
-        return allowed
+        DiscordLog.makeLogger("dsl.policy").trace("Invocation policy evaluation started", metadata: ["dk.event": "dsl.policy.evaluating", "dk.nodes": .stringConvertible(nodeCount), "dk.depth": .stringConvertible(depth)])
+        do {
+            let allowed = try await operation(input)
+            DiscordLog.makeLogger("dsl.policy").trace("Invocation policy evaluation completed", metadata: ["dk.event": "dsl.policy.evaluated", "dk.allowed": .stringConvertible(allowed)])
+            return allowed
+        } catch {
+            DiscordLog.makeLogger("dsl.policy").debug("Invocation policy evaluation failed", metadata: ["dk.event": "dsl.policy.failed", "dk.cancelled": .stringConvertible(error is CancellationError)])
+            throw error
+        }
     }
 }
 
@@ -197,6 +214,8 @@ public struct InvocationMiddleware<Input: Sendable, Output: Sendable>: Sendable 
         self.nodeCountOverflowed = false
         self.operation = { input, next in
             try Task.checkCancellation()
+            DiscordLog.makeLogger("dsl.middleware").trace("Invocation middleware wrapper entered", metadata: ["dk.event": "dsl.middleware.wrapper_entered"])
+            defer { DiscordLog.makeLogger("dsl.middleware").trace("Invocation middleware wrapper exited", metadata: ["dk.event": "dsl.middleware.wrapper_exited"]) }
             return try await body(input, next)
         }
     }
@@ -251,10 +270,19 @@ public struct InvocationMiddleware<Input: Sendable, Output: Sendable>: Sendable 
     public func run(_ input: Input, limits: PolicyLimits, next: @escaping Next) async throws -> Output {
         try validate(limits: limits)
         try Task.checkCancellation()
-        DiscordLog.makeLogger("dsl").trace("Invocation middleware started", metadata: ["dk.event": "dsl.middleware.started"])
-        return try await operation(input) { forwarded in
-            try Task.checkCancellation()
-            return try await next(forwarded)
+        DiscordLog.makeLogger("dsl.middleware").trace("Invocation middleware started", metadata: ["dk.event": "dsl.middleware.started", "dk.nodes": .stringConvertible(nodeCount), "dk.depth": .stringConvertible(depth)])
+        do {
+            let result = try await operation(input) { forwarded in
+                try Task.checkCancellation()
+                DiscordLog.makeLogger("dsl.middleware").trace("Invocation middleware terminal entered", metadata: ["dk.event": "dsl.middleware.terminal_entered"])
+                defer { DiscordLog.makeLogger("dsl.middleware").trace("Invocation middleware terminal exited", metadata: ["dk.event": "dsl.middleware.terminal_exited"]) }
+                return try await next(forwarded)
+            }
+            DiscordLog.makeLogger("dsl.middleware").trace("Invocation middleware completed", metadata: ["dk.event": "dsl.middleware.completed"])
+            return result
+        } catch {
+            DiscordLog.makeLogger("dsl.middleware").debug("Invocation middleware failed", metadata: ["dk.event": "dsl.middleware.failed", "dk.cancelled": .stringConvertible(error is CancellationError)])
+            throw error
         }
     }
 }

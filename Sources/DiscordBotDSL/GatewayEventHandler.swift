@@ -1,3 +1,4 @@
+import DiscordLogging
 import DiscordCore
 import DiscordDSL
 import DiscordGateway
@@ -259,8 +260,14 @@ public struct GatewayHandlerRegistration: Sendable {
         decodesDispatch = selector.decodesDispatch
         invoke = { raw, dispatch in
             try Task.checkCancellation()
+            DiscordLog.makeLogger("bot.events.handler").trace("Evaluating typed Gateway event selector", metadata: ["dk.event": "bot_dsl.handler.selecting"])
             if let event = try selector.extract(raw, dispatch) {
+                DiscordLog.makeLogger("bot.events.handler").trace("Gateway event selector matched; entering handler", metadata: ["dk.event": "bot_dsl.handler.entered"])
+                defer { DiscordLog.makeLogger("bot.events.handler").trace("Gateway event handler exited", metadata: ["dk.event": "bot_dsl.handler.exited"]) }
                 try await handler.handle(event, context: .init(rawEvent: raw))
+                DiscordLog.makeLogger("bot.events.handler").trace("Gateway event handler completed", metadata: ["dk.event": "bot_dsl.handler.completed"])
+            } else {
+                DiscordLog.makeLogger("bot.events.handler").trace("Gateway event selector did not match", metadata: ["dk.event": "bot_dsl.handler.unmatched"])
             }
         }
     }

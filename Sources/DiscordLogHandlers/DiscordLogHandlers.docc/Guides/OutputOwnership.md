@@ -18,6 +18,10 @@ the process or starts a task. Attached errors contribute only an error-presence 
 messages and application metadata still require deliberate redaction.
 
 Use SwiftLog's console and multiplex handlers for standard streams or multiple outputs.
+Wrap individual outputs in ``DiscordLevelFilterLogHandler`` to preserve an immutable
+minimum severity when a component policy changes the multiplex logger's level. For
+example, an info console floor alongside a trace file keeps the console concise.
+Metadata/providers retain native semantics and filtered events never reach the output.
 The Apple-only `DiscordOSLogHandler` maps all severities to unified logging and marks
 the entire dynamic message/context payload private. Physical-device capture and
 production throughput require separate qualification.

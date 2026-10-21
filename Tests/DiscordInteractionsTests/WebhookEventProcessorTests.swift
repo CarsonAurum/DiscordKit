@@ -1,6 +1,8 @@
 import Crypto
 import DiscordCore
+import DiscordLogging
 import DiscordModels
+import DiscordTestSupport
 import DiscordTransport
 import Foundation
 import Testing
@@ -91,6 +93,35 @@ import Testing
         #expect(await work.value.status == 503)
         #expect(await pending.process(Self.request()).status == 204)
         #expect(await blocking.count() == 2)
+    }
+
+    /// Cancellation stays diagnostic while genuine durable-store degradation remains a warning.
+    /// - Parameter outcome: Explicit cancellation, cancelled-task failure or ordinary storage failure.
+    /// - Throws: Unexpected processor configuration errors fail the test.
+    @Test(arguments: ["cancellation", "cancelled_task", "failure"])
+    func persistenceFailureLogging(_ outcome: String) async throws {
+        let recorder = LogRecorder()
+        let processor = try WebhookEventProcessor(applicationID: .init(rawValue: 1)) { _, _, _ in
+            if outcome == "cancellation" { throw CancellationError() }
+            if outcome == "cancelled_task" { withUnsafeCurrentTask { $0?.cancel() } }
+            throw DiscordError.validation(.invalidValue)
+        }
+        let response = await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            await Task { await processor.process(Self.request("private_webhook_payload")) }.value
+        }
+        #expect(response.status == 503)
+        let entries = recorder.entries
+        let failure = try #require(entries.first { $0.metadata["dk.event"] == "interactions.webhook.persistence_failed" })
+        #expect(failure.level == (outcome == "failure" ? .warning : .debug))
+        #expect(failure.metadata["dk.cancelled"]?.description == (outcome == "failure" ? "false" : "true"))
+        #expect(entries.suffix(3).compactMap { $0.metadata["dk.event"]?.description } == [
+            "interactions.webhook.persistence_failed", "interactions.webhook.response_prepared",
+            "interactions.webhook.released",
+        ])
+        #expect(entries.last?.metadata["dk.active"]?.description == "0")
+        if outcome != "failure" { #expect(entries.allSatisfy { $0.level < .warning }) }
+        #expect(!String(describing: entries.map { ($0.message, $0.metadata) }).contains("private_webhook_payload"))
+        #expect(entries.allSatisfy { $0.label == "discordkit.interactions.webhooks" })
     }
 
     /// A durable commit followed by an uncertain error returns 503; a retry resolves the existing marker without duplicate effects.

@@ -140,6 +140,7 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     private var pendingMembership: [VoiceGatewayFrame] = []
     private var pendingControlBytes = 0
     private var cleanup: Task<Void, Never>?
+    private var diagnosticContext: Logger.Metadata?
     private let udpSignal = AsyncStream<Void>.makeStream(bufferingPolicy: .bufferingNewest(1))
 
     /// Creates one inert exact-identity session with injected adapters and monotonic time.
@@ -180,13 +181,27 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     ///   or transport/backend failures. All acquired sockets, media and E2EE keys close before return.
     /// Resumable retries preserve counters; session-invalidating codes require new Gateway credentials.
     public func run() async throws {
+        try await DiscordLog.withOperation("voice.session", event: "voice.session.run") {
+            try await runOwned()
+        }
+    }
+
+    /// Executes the admitted supervised lifetime inside its inherited diagnostic scope.
+    /// - Throws: Original session failure after all owned children and resources close.
+    private func runOwned() async throws {
         guard !running else { throw VoiceSessionFailure.alreadyRunning }
         guard !stopped else { throw VoiceControlFailure.closed }
-        let logger = DiscordLog.makeLogger("voice")
-        logger.debug("Voice session running", metadata: ["dk.event": "voice.session.running"])
+        diagnosticContext = DiscordLog.context
+        let logger = DiscordLog.makeLogger("voice.session")
+        logger.info("Voice session running", metadata: ["dk.event": "voice.session.running"])
+        logger.trace("Voice session ownership admitted", metadata: ["dk.event": "voice.session.admitted",
+            "dk.maximum_reconnect_attempts": .stringConvertible(configuration.maximumReconnectAttempts),
+            "dk.maximum_receive_streams": .stringConvertible(configuration.maximumReceiveStreams),
+            "dk.maximum_media_bytes": .stringConvertible(configuration.maximumMediaBytes)])
         running = true
         do {
             try await withThrowingTaskGroup(of: Void.self) { group in
+                logger.trace("Voice control and datagram children starting", metadata: ["dk.event": "voice.session.children.starting"])
                 group.addTask { try await self.runConnections() }
                 group.addTask { try await self.receiveMedia() }
                 defer { group.cancelAll() }
@@ -195,12 +210,13 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                 }
             }
             await dispose(); running = false
-            logger.debug("Voice session stopped", metadata: ["dk.event": "voice.session.stopped"])
+            logger.info("Voice session stopped", metadata: ["dk.event": "voice.session.stopped"])
         } catch {
             if error is CancellationError || Task.isCancelled {
                 logger.trace("Voice session cancelled", metadata: ["dk.event": "voice.session.cancelled"])
             } else {
-                logger.error("Voice session failed", metadata: ["dk.event": "voice.session.failed"])
+                logger.error("Voice session failed", metadata: ["dk.event": "voice.session.failed",
+                    "dk.failure": .string(Self.failureCategory(error)), "dk.phase": .string(Self.phaseCategory(state.phase))])
             }
             await dispose(); running = false
             throw error
@@ -217,6 +233,8 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     ///   cancellation or exhausted resume policy; cleanup never authorizes another retry.
     private func runConnections() async throws {
         while !stopped {
+            DiscordLog.makeLogger("voice.session").trace("Voice connection attempt admitted", metadata: ["dk.event": "voice.connection.attempt",
+                "dk.attempt": .stringConvertible(attempts + 1), "dk.phase": .string(Self.phaseCategory(state.phase))])
             do { try await attempt(); break }
             catch {
                 if stopped { break }
@@ -227,7 +245,11 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                 // causal error before sampling status that cancellation cleanup may change.
                 let lost = (error as? VoiceSessionFailure) == .connectionLost
                 let missed = (error as? VoiceControlFailure) == .missedHeartbeatACK
-                guard lost || missed else { throw error }
+                guard lost || missed else {
+                    DiscordLog.makeLogger("voice.session").trace("Voice failure cannot resume", metadata: ["dk.event": "voice.connection.resume.rejected",
+                        "dk.failure": .string(Self.failureCategory(error))])
+                    throw error
+                }
                 let code = await (connection as? any WebSocketSessionConnection)?.peerCloseCode()
                 if let code, !Self.canResume(closeCode: code) {
                     if lost { throw VoiceSessionFailure.peerClosed(code) }
@@ -240,7 +262,7 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                     throw VoiceSessionFailure.retryExhausted
                 }
                 attempts += 1; state.connectionLost()
-                DiscordLog.makeLogger("voice").warning("Voice connection resuming", metadata: ["dk.event": "voice.connection.resuming",
+                DiscordLog.makeLogger("voice.session").notice("Voice connection resuming", metadata: ["dk.event": "voice.connection.resuming",
                     "dk.attempt": .stringConvertible(attempts)])
                 await resumable.closeForReconnect(); connection = nil
                 try await clock.sleep(until: clock.now.advanced(by: configuration.retryDelay), tolerance: nil)
@@ -369,15 +391,22 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// Runs one socket generation with independent structured control/heartbeat/deadline children.
     /// - Throws: Original protocol, timeout or transport errors; children are cancelled and joined.
     private func attempt() async throws {
+        let logger = DiscordLog.makeLogger("voice.session")
+        logger.trace("Voice WebSocket opening", metadata: ["dk.event": "voice.connection.opening"])
         let socket = try await webSocket.connectWebSocket(HTTPRequest(method: "GET", url: url), context: context())
         guard !stopped else { await socket.close(); throw VoiceControlFailure.closed }
         connection = socket
+        logger.debug("Voice WebSocket acquired", metadata: ["dk.event": "voice.connection.opened"])
+        logger.trace("Voice HELLO awaiting", metadata: ["dk.event": "voice.hello.waiting"])
         let helloContext = TransportContext(clock: clock, deadline: clock.now.advanced(by: configuration.operationTimeout))
         guard let message = try await socket.receive(context: helloContext) else { throw VoiceSessionFailure.connectionLost }
         let hello = try VoiceGatewayFrame(message, limits: limits())
         guard hello.opcode == 8 else { throw VoiceControlFailure.invalidTransition }
         try await consume(hello)
+        logger.trace("Voice HELLO validated", metadata: ["dk.event": "voice.hello.validated"])
         guard let interval = state.heartbeatIntervalMilliseconds else { throw VoiceControlFailure.invalidPayload }
+        logger.trace("Voice handshake supervisors starting", metadata: ["dk.event": "voice.handshake.children.starting",
+            "dk.heartbeat_interval_ms": .stringConvertible(interval)])
         let handshakeDeadline = clock.now.advanced(by: configuration.handshakeTimeout)
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask { try await self.receiveControls(socket) }
@@ -445,35 +474,50 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// - Throws: Cancellation or deadlineExceeded unless media is ready when the deadline expires.
     private func checkHandshake(until deadline: C.Instant) async throws {
         try await clock.sleep(until: deadline, tolerance: nil)
-        guard state.phase == .ready || stopped else { throw TransportFailure.deadlineExceeded }
+        guard state.phase == .ready || stopped else {
+            DiscordLog.makeLogger("voice.session").warning("Voice handshake deadline expired", metadata: ["dk.event": "voice.handshake.expired",
+                "dk.phase": .string(Self.phaseCategory(state.phase))])
+            throw TransportFailure.deadlineExceeded
+        }
     }
 
     /// Reduces one control and executes its bounded ownership effects.
     /// - Parameter frame: Complete authenticated socket frame.
     /// - Throws: Protocol, discovery, crypto, bounds or send failures; no command is retried.
     private func consume(_ frame: VoiceGatewayFrame) async throws {
+        let logger = DiscordLog.makeLogger("voice.session")
+        logger.trace("Voice control admitted", metadata: ["dk.event": "voice.control.admitted",
+            "dk.opcode": .stringConvertible(frame.opcode), "dk.phase": .string(Self.phaseCategory(state.phase))])
         let effect = try state.receive(frame)
+        logger.trace("Voice control reduced", metadata: ["dk.event": "voice.control.reduced",
+            "dk.opcode": .stringConvertible(frame.opcode), "dk.phase": .string(Self.phaseCategory(state.phase))])
         if state.phase != .ready { await media?.setAuthorized(false) }
         guard !stopped else { throw VoiceControlFailure.closed }
         switch effect {
         case .send(let frame): try await send(frame)
         case .discoverUDP(let server):
+            logger.debug("Voice datagram discovery starting", metadata: ["dk.event": "voice.discovery.started"])
             guard datagram == nil else { throw VoiceControlFailure.invalidTransition }
             let udp = try await makeDatagram(context())
             guard !stopped else { await udp.close(); throw VoiceControlFailure.closed }
             datagram = udp; localSSRC = server.ssrc
+            logger.trace("Voice datagram transport acquired", metadata: ["dk.event": "voice.discovery.transport.acquired"])
             let destination = DatagramAddress(host: server.ip, port: server.port); peer = destination
             try await udp.sendDatagram(Datagram(bytes: VoiceDiscovery.request(ssrc: server.ssrc), peer: destination), context: context())
             guard let response = try await udp.receiveDatagram(context: context()), response.peer == destination else {
                 throw VoiceControlFailure.invalidPayload
             }
+            logger.trace("Voice datagram discovery reply received", metadata: ["dk.event": "voice.discovery.reply.received"])
             let external = try VoiceDiscovery.response(response.bytes, ssrc: server.ssrc)
+            logger.trace("Voice datagram discovery reply validated", metadata: ["dk.event": "voice.discovery.reply.validated"])
             try await e2ee.bindSSRC(server.ssrc, userID: identity.userID)
             try await send(state.selectProtocol(address: external.host, port: external.port))
+            logger.trace("Voice transport protocol selected", metadata: ["dk.event": "voice.discovery.protocol.selected"])
             discoveryComplete = true
-            DiscordLog.makeLogger("voice").debug("Voice datagram discovery completed", metadata: ["dk.event": "voice.discovery.completed"])
+            DiscordLog.makeLogger("voice.session").debug("Voice datagram discovery completed", metadata: ["dk.event": "voice.discovery.completed"])
             udpSignal.continuation.yield(())
         case .configureMedia(let description):
+            logger.debug("Voice media configuration starting", metadata: ["dk.event": "voice.media.configuring"])
             guard let datagram, let peer, let localSSRC,
                   let mode = VoiceEncryptionMode(rawValue: description.mode) else { throw VoiceControlFailure.invalidTransition }
             let keyOwner = try VoiceTransportCipher(mode: mode, key: description.secretKey,
@@ -488,10 +532,16 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                 try await pipeline.registerReceiveStream(ssrc: source,
                     maximumBytes: min(262_144, configuration.maximumMediaBytes))
             }
-            for command in try await e2ee.start(protocolVersion: description.daveProtocolVersion) { try await send(command) }
+            logger.trace("Voice E2EE establishment starting", metadata: ["dk.event": "voice.e2ee.starting"])
+            let commands = try await e2ee.start(protocolVersion: description.daveProtocolVersion)
+            logger.trace("Voice E2EE establishment commands prepared", metadata: ["dk.event": "voice.e2ee.commands.prepared",
+                "dk.commands": .stringConvertible(commands.count)])
+            for command in commands { try await send(command) }
             guard !stopped else { throw VoiceControlFailure.closed }
             e2eeStarted = true
-            DiscordLog.makeLogger("voice").debug("Voice media configured", metadata: ["dk.event": "voice.media.configured"])
+            DiscordLog.makeLogger("voice.session").debug("Voice media configured", metadata: ["dk.event": "voice.media.configured"])
+            logger.trace("Voice early controls draining", metadata: ["dk.event": "voice.control.early.draining",
+                "dk.pending": .stringConvertible(pendingMembership.count), "dk.pending_bytes": .stringConvertible(pendingControlBytes)])
             let pending = pendingMembership; pendingMembership.removeAll(); pendingControlBytes = 0
             for event in pending { try await processE2EE(event) }
             try await authorizeIfAvailable()
@@ -508,7 +558,13 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// - Parameter frame: DAVE/member server control.
     /// - Throws: Backend or transport errors; all returned commands are sent once in order.
     private func processE2EE(_ frame: VoiceGatewayFrame) async throws {
-        for command in try await e2ee.receive(frame, now: now()) { try await send(command) }
+        let logger = DiscordLog.makeLogger("voice.session")
+        logger.trace("Voice E2EE control processing", metadata: ["dk.event": "voice.e2ee.control.started",
+            "dk.opcode": .stringConvertible(frame.opcode)])
+        let commands = try await e2ee.receive(frame, now: now())
+        logger.trace("Voice E2EE control processed", metadata: ["dk.event": "voice.e2ee.control.completed",
+            "dk.commands": .stringConvertible(commands.count)])
+        for command in commands { try await send(command) }
         try await authorizeIfAvailable()
     }
 
@@ -517,18 +573,24 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// - Throws: Cancellation or an admitted Speaking write failure after readiness succeeds.
     private func authorizeIfAvailable() async throws {
         guard !stopped, state.phase == .awaitingE2EE else { return }
+        let logger = DiscordLog.makeLogger("voice.session")
+        logger.trace("Voice media authorization checking", metadata: ["dk.event": "voice.media.authorization.checking"])
         let authorized: VoiceGatewaySessionState
         do {
             authorized = try await e2ee.authorizeGateway(state)
         } catch is CancellationError { throw CancellationError() }
-        catch { await media?.setAuthorized(false); return }
+        catch {
+            await media?.setAuthorized(false)
+            logger.trace("Voice media authorization pending", metadata: ["dk.event": "voice.media.authorization.pending"])
+            return
+        }
         guard !stopped, state.phase == .awaitingE2EE else { return }
         try state.acceptAuthorization(from: authorized)
         // Speaking must precede every newly enabled outbound media path, including clients
         // that use the exposed encoded pipeline without the PCM playback convenience.
         try await setSpeaking(true)
         await media?.setAuthorized(true)
-        DiscordLog.makeLogger("voice").debug("Voice media authorized", metadata: ["dk.event": "voice.media.authorized"])
+        DiscordLog.makeLogger("voice.session").info("Voice media authorized", metadata: ["dk.event": "voice.media.authorized"])
     }
 
     /// Routes authenticated speaking/member events into bounded source and DAVE state.
@@ -555,9 +617,13 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
             }
             guard !stopped, state.phase != .closed else { throw VoiceControlFailure.closed }
             sources[user] = ssrc
+            DiscordLog.makeLogger("voice.session").trace("Voice authenticated source mapping installed", metadata: ["dk.event": "voice.membership.source.installed",
+                "dk.sources": .stringConvertible(sources.count)])
         } else if frame.opcode == 11 || frame.opcode == 13 {
             try state.suspendMedia()
             await media?.setAuthorized(false)
+            DiscordLog.makeLogger("voice.session").debug("Voice media suspended for membership transition", metadata: ["dk.event": "voice.membership.media.suspended",
+                "dk.sources": .stringConvertible(sources.count)])
             if frame.opcode == 13, case .json(.object(let data)) = frame.payload,
                case .string(let value) = data["user_id"], let rawID = UInt64(value) {
                 let user = UserID(rawValue: rawID)
@@ -576,7 +642,10 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     /// - Throws: Closure, serialization, cancellation or transport failures.
     private func send(_ frame: VoiceGatewayFrame) async throws {
         guard !stopped, let connection else { throw VoiceControlFailure.closed }
+        let logger = DiscordLog.makeLogger("voice.session")
+        logger.trace("Voice control write starting", metadata: ["dk.event": "voice.control.write.started", "dk.opcode": .stringConvertible(frame.opcode)])
         try await connection.send(frame.message(limits: limits()), context: context())
+        logger.trace("Voice control write completed", metadata: ["dk.event": "voice.control.write.completed", "dk.opcode": .stringConvertible(frame.opcode)])
         guard !stopped else { throw VoiceControlFailure.closed }
     }
 
@@ -602,13 +671,55 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
         guard pendingMembership.count < configuration.maximumReceiveStreams,
               count <= configuration.maximumFrameBytes - pendingControlBytes else { throw VoiceSessionFailure.participantCapacity }
         pendingMembership.append(frame); pendingControlBytes += count
+        DiscordLog.makeLogger("voice.session").trace("Voice early control retained", metadata: ["dk.event": "voice.control.early.retained",
+            "dk.pending": .stringConvertible(pendingMembership.count), "dk.pending_bytes": .stringConvertible(pendingControlBytes)])
+    }
+
+    /// Maps reducer phases to fixed semantic metadata without reflecting retained session state.
+    /// - Parameter phase: Current pure reducer phase.
+    /// - Returns: Stable lifecycle category with no associated session values.
+    private nonisolated static func phaseCategory(_ phase: VoiceGatewayPhase) -> String {
+        switch phase {
+        case .awaitingHello: "awaiting_hello"
+        case .identifying: "identifying"
+        case .awaitingProtocolSelection: "awaiting_protocol_selection"
+        case .awaitingSessionDescription: "awaiting_session_description"
+        case .awaitingE2EE: "awaiting_e2ee"
+        case .ready: "ready"
+        case .reconnecting: "reconnecting"
+        case .resuming: "resuming"
+        case .closed: "closed"
+        }
+    }
+
+    /// Classifies terminal failures into a finite vocabulary without rendering adapter errors.
+    /// - Parameter error: Original causal failure, which can contain private adapter data.
+    /// - Returns: A fixed diagnostic category, independent of error text and payloads.
+    private nonisolated static func failureCategory(_ error: any Error) -> String {
+        if error is CancellationError { return "cancelled" }
+        if error as? TransportFailure == .deadlineExceeded { return "deadline" }
+        if error is TransportFailure { return "transport" }
+        if error is VoiceControlFailure { return "control" }
+        if error is VoiceSessionFailure { return "session" }
+        return "dependency"
     }
 
     /// Reserves terminal closure before suspension and shares complete cleanup among all callers.
     /// Resources acquired after stop are closed by their startup guards before ownership transfer.
     private func dispose() async {
-        if let cleanup { await cleanup.value; return }
-        DiscordLog.makeLogger("voice").debug("Voice session closing", metadata: ["dk.event": "voice.session.closing",
+        await DiscordLog.$context.withValue(diagnosticContext ?? DiscordLog.context) {
+            await disposeOwned()
+        }
+    }
+
+    /// Releases terminal ownership under the explicit session lifetime diagnostic scope.
+    /// All callers share the same cancellation-independent cleanup task.
+    private func disposeOwned() async {
+        if let cleanup {
+            DiscordLog.makeLogger("voice.session").trace("Voice session cleanup shared", metadata: ["dk.event": "voice.session.cleanup.shared"])
+            await cleanup.value; return
+        }
+        DiscordLog.makeLogger("voice.session").debug("Voice session closing", metadata: ["dk.event": "voice.session.closing",
             "dk.rejected_packets": .stringConvertible(rejected), "dk.sources": .stringConvertible(sources.count)])
         stopped = true; state.close(); udpSignal.continuation.finish(); sources.removeAll(); pendingMembership.removeAll(); pendingControlBytes = 0
         let media = media, cipher = cipher, e2ee = e2ee, connection = connection, datagram = datagram
@@ -617,10 +728,15 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
         self.playback = nil
         self.media = nil; self.cipher = nil; self.connection = nil; self.datagram = nil; peer = nil
         let task = Task {
+            let logger = DiscordLog.makeLogger("voice.session")
+            logger.trace("Voice media ownership releasing", metadata: ["dk.event": "voice.session.cleanup.media"])
             await media?.close()
             _ = await playback?.result
+            logger.trace("Voice cryptographic ownership releasing", metadata: ["dk.event": "voice.session.cleanup.crypto"])
             await cipher?.close(); await e2ee.close()
+            logger.trace("Voice transport ownership releasing", metadata: ["dk.event": "voice.session.cleanup.transport"])
             await connection?.close(); await datagram?.close()
+            logger.debug("Voice owned resources released", metadata: ["dk.event": "voice.session.cleanup.completed"])
         }
         cleanup = task
         await task.value

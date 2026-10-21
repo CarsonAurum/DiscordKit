@@ -86,14 +86,22 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     ///   eviction, invalid scope or closed ownership. Promotes hits in LRU order.
     public func value(for key: EntityKey, scope: CacheScope) -> EntitySnapshot? {
         prune()
-        guard !closed, valid(scope) else { misses &+= 1; return nil }
+        guard !closed, valid(scope) else {
+            misses &+= 1
+            DiscordLog.makeLogger("cache.storage").trace("Entity cache read is ineligible", metadata: ["dk.event": "cache.read.ineligible", "dk.closed": .stringConvertible(closed)])
+            return nil
+        }
         let scoped = ScopedKey(entity: key, scope: scope)
-        guard var entry = entries[scoped] else { misses &+= 1; return nil }
+        guard var entry = entries[scoped] else {
+            misses &+= 1
+            DiscordLog.makeLogger("cache.storage").trace("Entity cache miss", metadata: ["dk.event": "cache.read.miss", "dk.entries": .stringConvertible(entries.count)])
+            return nil
+        }
         access &+= 1
         entry.access = access
         entries[scoped] = entry
         hits &+= 1
-        DiscordLog.makeLogger("cache").trace("Entity cache hit", metadata: ["dk.event": "cache.read.hit"])
+        DiscordLog.makeLogger("cache.storage").trace("Entity cache hit", metadata: ["dk.event": "cache.read.hit"])
         return entry.snapshot
     }
 
@@ -113,33 +121,43 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     public func apply(_ snapshot: EntitySnapshot, for key: EntityKey, scope: CacheScope,
                       timeToLive: Duration? = nil) throws -> CacheWriteResult {
         try validateObservation(snapshot, scope: scope)
+        DiscordLog.makeLogger("cache.storage").trace("Entity observation validated", metadata: ["dk.event": "cache.write.validated", "dk.fields": .stringConvertible(snapshot.fields.count)])
         prune()
         let scoped = ScopedKey(entity: key, scope: scope)
-        if isStale(snapshot.order, comparedTo: entries[scoped]?.snapshot.order) { return .ignoredStale }
+        if isStale(snapshot.order, comparedTo: entries[scoped]?.snapshot.order) {
+            DiscordLog.makeLogger("cache.storage").trace("Stale entity observation ignored", metadata: ["dk.event": "cache.write.stale"])
+            return .ignoredStale
+        }
         let merged = merge(snapshot, previous: entries[scoped]?.snapshot)
         let ttl = min(timeToLive ?? limits.maximumTimeToLive, limits.maximumTimeToLive)
         let retainedBytes = try accountedBytes(merged, scope: scope)
+        DiscordLog.makeLogger("cache.storage").trace("Entity observation merged and accounted", metadata: ["dk.event": "cache.write.accounted"])
         revision &+= 1
         remove(scoped)
         guard ttl > .zero, limits.maximumEntries > 0, limits.maximumEntriesPerIdentity > 0,
               let retainedBytes,
-              retainedBytes <= min(limits.maximumBytes, limits.maximumBytesPerIdentity) else { return .notRetained }
+              retainedBytes <= min(limits.maximumBytes, limits.maximumBytesPerIdentity) else {
+            DiscordLog.makeLogger("cache.storage").trace("Entity observation excluded by retention policy", metadata: ["dk.event": "cache.write.not_retained"])
+            return .notRetained
+        }
         while identityCount(scope.identity) >= limits.maximumEntriesPerIdentity
             || identityBytes(scope.identity) > limits.maximumBytesPerIdentity - retainedBytes {
             guard let oldest = entries.filter({ $0.key.scope.identity == scope.identity })
                 .min(by: { $0.value.access < $1.value.access })?.key else { return .notRetained }
             remove(oldest)
             evictions &+= 1
+            DiscordLog.makeLogger("cache.storage").trace("Entity evicted under identity budget", metadata: ["dk.event": "cache.entry.evicted", "dk.budget": "identity", "dk.entries": .stringConvertible(entries.count)])
         }
         while entries.count >= limits.maximumEntries || bytes > limits.maximumBytes - retainedBytes {
             guard let oldest = entries.min(by: { $0.value.access < $1.value.access })?.key else { return .notRetained }
             remove(oldest)
             evictions &+= 1
+            DiscordLog.makeLogger("cache.storage").trace("Entity evicted under aggregate budget", metadata: ["dk.event": "cache.entry.evicted", "dk.budget": "aggregate", "dk.entries": .stringConvertible(entries.count)])
         }
         access &+= 1
         entries[scoped] = Entry(snapshot: merged, expires: clock.now.advanced(by: ttl), bytes: retainedBytes, access: access)
         bytes += retainedBytes
-        DiscordLog.makeLogger("cache").trace("Entity snapshot retained", metadata: ["dk.event": "cache.write.stored", "dk.entries": .stringConvertible(entries.count), "dk.bytes": .stringConvertible(bytes)])
+        DiscordLog.makeLogger("cache.storage").trace("Entity snapshot retained", metadata: ["dk.event": "cache.write.stored", "dk.entries": .stringConvertible(entries.count), "dk.bytes": .stringConvertible(bytes)])
         return .stored
     }
 
@@ -160,6 +178,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     public func refresh(key: EntityKey, scope: CacheScope, requiredFields: Set<String> = [],
                         requireComplete: Bool = false,
                         loader: @escaping @Sendable () async throws -> EntitySnapshot) async throws -> EntitySnapshot {
+        DiscordLog.makeLogger("cache.refresh").debug("Explicit entity refresh requested", metadata: ["dk.event": "cache.refresh.requested", "dk.required_fields": .stringConvertible(requiredFields.count), "dk.requires_complete": .stringConvertible(requireComplete)])
         try Task.checkCancellation()
         guard !closed else { throw EntityCacheFailure.closed }
         guard valid(scope) else { throw EntityCacheFailure.invalidScope }
@@ -167,7 +186,10 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
             throw EntityCacheFailure.capacityExceeded
         }
         if let snapshot = value(for: key, scope: scope),
-           satisfies(snapshot, fields: requiredFields, complete: requireComplete) { return snapshot }
+           satisfies(snapshot, fields: requiredFields, complete: requireComplete) {
+            DiscordLog.makeLogger("cache.refresh").trace("Retained entity satisfies refresh requirements", metadata: ["dk.event": "cache.refresh.reused"])
+            return snapshot
+        }
         let scoped = ScopedKey(entity: key, scope: scope)
         let waiter = UUID()
         let snapshot = try await withTaskCancellationHandler {
@@ -179,8 +201,10 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         }
         try Task.checkCancellation()
         guard satisfies(snapshot, fields: requiredFields, complete: requireComplete) else {
+            DiscordLog.makeLogger("cache.refresh").debug("Refresh result does not satisfy caller requirements", metadata: ["dk.event": "cache.refresh.insufficient"])
             throw EntityCacheFailure.insufficientSnapshot
         }
+        DiscordLog.makeLogger("cache.refresh").debug("Entity refresh completed", metadata: ["dk.event": "cache.refresh.completed"])
         return snapshot
     }
 
@@ -188,6 +212,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     /// - Parameter scope: Exact identity/intents/visibility generation to invalidate.
     /// Existing refreshes may finish, but their old state is never returned or retained.
     public func invalidate(scope: CacheScope) {
+        DiscordLog.makeLogger("cache.storage").trace("Invalidating entity scope and fencing older refreshes", metadata: ["dk.event": "cache.invalidate.scope"])
         revision &+= 1
         for key in entries.keys.filter({ $0.scope == scope }) { remove(key) }
     }
@@ -196,6 +221,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     /// - Parameter identity: Opaque credential label, never the credential itself.
     /// A later refresh may explicitly establish new state under the current scope.
     public func invalidateVisibility(identity: String) {
+        DiscordLog.makeLogger("cache.storage").trace("Invalidating observed identity visibility", metadata: ["dk.event": "cache.invalidate.visibility"])
         revision &+= 1
         for key in entries.keys.filter({ $0.scope.identity == identity }) { remove(key) }
     }
@@ -207,6 +233,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     ///   - scope: Exact mutation visibility partition. Related views must be supplied
     ///     by the typed service; mutation equivalence is never inferred generically.
     public func invalidateLocalWrite(keys: [EntityKey], scope: CacheScope) {
+        DiscordLog.makeLogger("cache.storage").trace("Invalidating projections after local write", metadata: ["dk.event": "cache.invalidate.write", "dk.keys": .stringConvertible(keys.count)])
         revision &+= 1
         guard !keys.isEmpty, keys.count <= 256 else { invalidate(scope: scope); return }
         for key in keys { remove(ScopedKey(entity: key, scope: scope)) }
@@ -218,6 +245,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     ///   - scope: Exact visibility partition affected by the observation.
     /// No permanent guild registry is retained; old refreshes are fenced globally.
     public func invalidateGuild(_ guildID: GuildID, scope: CacheScope) {
+        DiscordLog.makeLogger("cache.storage").trace("Invalidating guild and child projections", metadata: ["dk.event": "cache.invalidate.guild"])
         revision &+= 1
         for key in entries.keys.filter({ $0.scope == scope
             && ($0.entity.guildID == guildID || ($0.entity.kind == .guild && $0.entity.id == guildID.rawValue)) }) {
@@ -229,14 +257,16 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     /// Repeated/concurrent calls wait for the same cleanup and permanently reject reads.
     /// Loaders must cooperate with cancellation; no timeout can safely abandon their resources.
     public func close() async {
-        DiscordLog.makeLogger("cache").debug("Entity cache closing", metadata: ["dk.event": "cache.closed"])
+        DiscordLog.makeLogger("cache.lifecycle").debug("Entity cache closing", metadata: ["dk.event": "cache.closing", "dk.refreshes": .stringConvertible(refreshes.count), "dk.entries": .stringConvertible(entries.count)])
         closed = true
         revision &+= 1
         entries.removeAll()
         bytes = 0
         let tasks = refreshes.values.map(\.task)
         for task in tasks { task.cancel() }
+        DiscordLog.makeLogger("cache.lifecycle").trace("Entity refresh cancellation requested", metadata: ["dk.event": "cache.cleanup.refreshes_cancelled", "dk.tasks": .stringConvertible(tasks.count)])
         for task in tasks { await task.value }
+        DiscordLog.makeLogger("cache.lifecycle").info("Entity cache closed after refresh cleanup", metadata: ["dk.event": "cache.closed", "dk.refreshes": .stringConvertible(refreshes.count), "dk.waiters": .stringConvertible(waiters)])
     }
 
     /// Reports current aggregate usage and cumulative request-reduction/eviction evidence.
@@ -406,6 +436,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
             refreshes[key] = refresh
             waiters += 1
             coalescedReads &+= 1
+            DiscordLog.makeLogger("cache.refresh").trace("Entity refresh joined existing loader", metadata: ["dk.event": "cache.refresh.coalesced", "dk.waiters": .stringConvertible(refresh.waiters.count)])
             return
         }
         guard refreshes.count < limits.maximumRefreshes,
@@ -417,7 +448,9 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         let task = Task {
             let result: Result<EntitySnapshot, any Error>
             do {
+                DiscordLog.makeLogger("cache.refresh").trace("Invoking admitted entity loader", metadata: ["dk.event": "cache.refresh.loader_started"])
                 let snapshot = try await loader()
+                DiscordLog.makeLogger("cache.refresh").trace("Entity loader returned a snapshot", metadata: ["dk.event": "cache.refresh.loader_completed"])
                 try Task.checkCancellation()
                 result = .success(snapshot)
             } catch { result = .failure(error) }
@@ -426,6 +459,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         refreshes[key] = Refresh(token: token, task: task, waiters: [waiter: continuation])
         waiters += 1
         refreshStarts &+= 1
+        DiscordLog.makeLogger("cache.refresh").trace("Entity refresh admitted", metadata: ["dk.event": "cache.refresh.admitted", "dk.refreshes": .stringConvertible(refreshes.count), "dk.waiters": .stringConvertible(waiters)])
     }
 
     /// Delivers independent cancellation; the final waiter awaits owned loader cleanup.
@@ -435,8 +469,10 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
     private func cancel(_ key: ScopedKey, waiter: UUID) async {
         guard var refresh = refreshes[key], let continuation = refresh.waiters.removeValue(forKey: waiter) else { return }
         waiters -= 1
+        DiscordLog.makeLogger("cache.refresh").trace("Entity refresh waiter cancelled", metadata: ["dk.event": "cache.refresh.waiter_cancelled", "dk.waiters": .stringConvertible(waiters)])
         refreshes[key] = refresh
         if refresh.waiters.isEmpty {
+            DiscordLog.makeLogger("cache.refresh").trace("Final refresh waiter cancelled owned loader", metadata: ["dk.event": "cache.refresh.loader_cancelling"])
             refresh.task.cancel()
             await refresh.task.value
         }
@@ -458,14 +494,15 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         switch result {
         case .failure(let error):
             if error is CancellationError {
-                DiscordLog.makeLogger("cache").debug("Entity refresh cancelled", metadata: ["dk.event": "cache.refresh.cancelled"])
+                DiscordLog.makeLogger("cache.refresh").debug("Entity refresh cancelled", metadata: ["dk.event": "cache.refresh.cancelled"])
             } else {
-                DiscordLog.makeLogger("cache").debug("Entity refresh failed", metadata: ["dk.event": "cache.refresh.failed"])
+                DiscordLog.makeLogger("cache.refresh").debug("Entity refresh failed", metadata: ["dk.event": "cache.refresh.failed"])
             }
             delivered = .failure(error)
         case .success(let snapshot):
             if captured != revision || closed {
                 staleCompletions &+= 1
+                DiscordLog.makeLogger("cache.refresh").trace("Older refresh completion fenced by newer observation", metadata: ["dk.event": "cache.refresh.superseded", "dk.closed": .stringConvertible(closed)])
                 if let current = value(for: key.entity, scope: key.scope), current.availability == .available {
                     delivered = .success(current)
                 } else { delivered = .failure(closed ? EntityCacheFailure.closed : EntityCacheFailure.superseded) }
@@ -484,6 +521,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
             }
         }
         for continuation in refresh.waiters.values { continuation.resume(with: delivered) }
+        DiscordLog.makeLogger("cache.refresh").trace("Entity refresh waiters resumed and ownership released", metadata: ["dk.event": "cache.refresh.released", "dk.resumed": .stringConvertible(refresh.waiters.count), "dk.refreshes": .stringConvertible(refreshes.count), "dk.waiters": .stringConvertible(waiters)])
     }
 
     /// Drops inclusively expired entries and all associated ordering metadata without timers.
@@ -491,7 +529,7 @@ public actor EntityCache<C: Clock> where C.Duration == Duration {
         for key in entries.filter({ $0.value.expires <= clock.now }).map(\.key) {
             remove(key)
             expirations &+= 1
-            DiscordLog.makeLogger("cache").trace("Entity cache entry expired", metadata: ["dk.event": "cache.entry.expired"])
+            DiscordLog.makeLogger("cache.storage").trace("Entity cache entry expired", metadata: ["dk.event": "cache.entry.expired"])
         }
     }
 

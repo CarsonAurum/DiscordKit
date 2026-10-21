@@ -1,10 +1,29 @@
 # Compatibility and migration
 
-The current authoring candidate is **0.15.0**, covering Parts 15A-15L. The
+The current runtime candidate is **0.18.0**. The separate authoring checkpoint is
+**0.15.0**, covering Parts 15A-15L. The
 historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
 package publication. Preserve the
 explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
 with ciphersuite **2**, and DAVE **v1** independently of the package version.
+
+## Semantic logging migration
+
+Logging now uses dotted component labels, for example `discordkit.http.execution`
+and `discordkit.gateway.session`. Update exact-label filters from the earlier flat
+labels; `dk.module` groups logical modules and `dk.subsystem` identifies the full
+component. Existing event identities remain where their meaning is unchanged.
+
+Info and notice now record significant library lifecycle outcomes and milestones,
+so default SwiftLog configuration exposes those events. Trace records fine execution
+steps; debug records diagnostic summaries. Use `DiscordLogConfiguration` to select
+thresholds by longest dotted-prefix match, and `DiscordLog.context` or correlated
+operation scopes to follow work through child components.
+
+Changing a native multiplex logger's threshold also changes child thresholds.
+Wrap outputs with `DiscordLevelFilterLogHandler` to preserve a console's minimum
+severity while enabling trace to a file. Bootstrap and output lifetime remain owned
+by the executable. See [logging adoption](Logging.md) for setup and privacy details.
 
 ## Local Swift API changes
 

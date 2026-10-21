@@ -69,9 +69,16 @@ public struct CommandApplication: Sendable {
     public func handle<C: Clock>(_ exchange: HTTPExchange, context: TransportContext<C>,
         continuations: (@Sendable (Interaction) -> InteractionResponseSink)? = nil) async throws
         where C.Duration == Duration {
-        DiscordLog.makeLogger("command_dsl").debug("Command HTTP exchange started", metadata: ["dk.event": "command_dsl.exchange.started"])
-        try await application.handle(exchange, context: context, continuations: continuations) { input in
-            guard try await router.route(input) else { throw CommandApplicationError.unmatchedCommand }
+        DiscordLog.makeLogger("command_dsl.http").debug("Command HTTP exchange started", metadata: ["dk.event": "command_dsl.exchange.started"])
+        do {
+            try await application.handle(exchange, context: context, continuations: continuations) { input in
+                DiscordLog.makeLogger("command_dsl.http").trace("Authenticated command exchange reached routing", metadata: ["dk.event": "command_dsl.exchange.routing"])
+                guard try await router.route(input) else { throw CommandApplicationError.unmatchedCommand }
+            }
+            DiscordLog.makeLogger("command_dsl.http").debug("Command HTTP exchange completed", metadata: ["dk.event": "command_dsl.exchange.completed"])
+        } catch {
+            DiscordLog.makeLogger("command_dsl.http").debug("Command HTTP exchange stopped", metadata: ["dk.event": "command_dsl.exchange.stopped", "dk.cancelled": .stringConvertible(error is CancellationError)])
+            throw error
         }
     }
 
@@ -90,7 +97,7 @@ public struct CommandApplication: Sendable {
     public func run<C: Clock>(listener: any HTTPIngress, context: TransportContext<C>,
         continuations: (@Sendable (Interaction) -> InteractionResponseSink)? = nil) async throws
         where C.Duration == Duration {
-        DiscordLog.makeLogger("command_dsl").debug("Command HTTP listener started", metadata: ["dk.event": "command_dsl.listener.started"])
+        DiscordLog.makeLogger("command_dsl.http").info("Command HTTP listener started", metadata: ["dk.event": "command_dsl.listener.started"])
         let accepted = AcceptedCommandExchange()
         do {
             try await withThrowingTaskGroup(of: CommandApplicationEvent.self) { group in
@@ -102,6 +109,7 @@ public struct CommandApplication: Sendable {
                         try context.check()
                         if !ended && !accepting && active < maximumConcurrentRequests {
                             accepting = true
+                            DiscordLog.makeLogger("command_dsl.http").trace("Waiting for command HTTP exchange", metadata: ["dk.event": "command_dsl.listener.accepting", "dk.active": .stringConvertible(active)])
                             group.addTask {
                                 guard let exchange = try await listener.accept(context: context) else { return .end }
                                 await accepted.store(exchange)
@@ -114,6 +122,7 @@ public struct CommandApplication: Sendable {
                             accepting = false
                             guard let exchange = await accepted.take() else { throw TransportFailure.closed }
                             active += 1
+                            DiscordLog.makeLogger("command_dsl.http").trace("Accepted command HTTP exchange admitted", metadata: ["dk.event": "command_dsl.listener.admitted", "dk.active": .stringConvertible(active)])
                             group.addTask {
                                 try await handle(exchange, context: context, continuations: continuations)
                                 return .handled
@@ -121,11 +130,14 @@ public struct CommandApplication: Sendable {
                         case .end:
                             accepting = false
                             ended = true
+                            DiscordLog.makeLogger("command_dsl.http").trace("Command listener reached end of input", metadata: ["dk.event": "command_dsl.listener.eof", "dk.active": .stringConvertible(active)])
                         case .handled:
                             active -= 1
+                            DiscordLog.makeLogger("command_dsl.http").trace("Command HTTP exchange child joined", metadata: ["dk.event": "command_dsl.listener.released", "dk.active": .stringConvertible(active)])
                         }
                     }
                 } catch {
+                    DiscordLog.makeLogger("command_dsl.http").trace("Cancelling listener children and closing acceptance", metadata: ["dk.event": "command_dsl.listener.children_cancelling"])
                     group.cancelAll()
                     await listener.close()
                     await accepted.close()
@@ -134,15 +146,16 @@ public struct CommandApplication: Sendable {
             }
             await accepted.close()
             await listener.close()
-            DiscordLog.makeLogger("command_dsl").debug("Command HTTP listener stopped", metadata: ["dk.event": "command_dsl.listener.stopped"])
+            DiscordLog.makeLogger("command_dsl.http").info("Command HTTP listener stopped", metadata: ["dk.event": "command_dsl.listener.stopped"])
         } catch {
             if error is CancellationError {
-                DiscordLog.makeLogger("command_dsl").debug("Command HTTP listener cancelled", metadata: ["dk.event": "command_dsl.listener.cancelled"])
+                DiscordLog.makeLogger("command_dsl.http").debug("Command HTTP listener cancelled", metadata: ["dk.event": "command_dsl.listener.cancelled"])
             } else {
-                DiscordLog.makeLogger("command_dsl").error("Command HTTP listener failed", metadata: ["dk.event": "command_dsl.listener.failed"])
+                DiscordLog.makeLogger("command_dsl.http").error("Command HTTP listener failed", metadata: ["dk.event": "command_dsl.listener.failed"])
             }
             await accepted.close()
             await listener.close()
+            DiscordLog.makeLogger("command_dsl.http").trace("Command listener acceptance and pending exchange closed", metadata: ["dk.event": "command_dsl.listener.cleanup_completed"])
             throw error
         }
     }

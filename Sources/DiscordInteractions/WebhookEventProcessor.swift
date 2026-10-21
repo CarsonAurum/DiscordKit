@@ -1,4 +1,5 @@
 import Crypto
+import DiscordLogging
 import DiscordCore
 import DiscordModels
 import DiscordTransport
@@ -73,23 +74,44 @@ public actor WebhookEventProcessor {
     /// Cancellation before admission prevents work; cancellation after a successful commit returns 503,
     /// preserving the successful duplicate marker for a later retry. Errors never enter diagnostics.
     public func process(_ request: VerifiedDiscordRequest) async -> HTTPResponse {
+        DiscordLog.makeLogger("interactions.webhooks").debug("Verified webhook event processing started", metadata: ["dk.event": "interactions.webhook.started"])
         guard !Task.isCancelled else { return response(503) }
         let envelope: WebhookEventEnvelope
         do { envelope = try WebhookEventEnvelope(data: request.rawBody, limits: limits) }
-        catch { return response(400) }
+        catch {
+            DiscordLog.makeLogger("interactions.webhooks").debug("Webhook event envelope decoding rejected", metadata: ["dk.event": "interactions.webhook.decode_rejected"])
+            return response(400)
+        }
+        DiscordLog.makeLogger("interactions.webhooks").trace("Webhook event envelope decoded", metadata: ["dk.event": "interactions.webhook.decoded"])
         guard envelope.applicationID == applicationID, envelope.version == 1 else { return response(400) }
         if envelope.type.knownValue == .ping { return response(204) }
         guard envelope.type.knownValue == .event else { return response(400) }
         let key = SHA256.hash(data: request.rawBody).map { String(format: "%02x", $0) }.joined()
-        if accepted.contains(key) { return response(204) }
-        guard pending.count < maximumConcurrentAdmissions, !pending.contains(key) else { return response(503) }
+        if accepted.contains(key) {
+            DiscordLog.makeLogger("interactions.webhooks").trace("Previously accepted webhook delivery reused", metadata: ["dk.event": "interactions.webhook.duplicate_accepted"])
+            return response(204)
+        }
+        guard pending.count < maximumConcurrentAdmissions, !pending.contains(key) else {
+            DiscordLog.makeLogger("interactions.webhooks").debug("Webhook durable admission is temporarily unavailable", metadata: ["dk.event": "interactions.webhook.admission_unavailable", "dk.active": .stringConvertible(pending.count)])
+            return response(503)
+        }
         pending.insert(key)
-        defer { pending.remove(key) }
+        DiscordLog.makeLogger("interactions.webhooks").trace("Webhook durable admission reserved", metadata: ["dk.event": "interactions.webhook.admitted", "dk.active": .stringConvertible(pending.count)])
+        defer {
+            pending.remove(key)
+            DiscordLog.makeLogger("interactions.webhooks").trace("Webhook durable admission released", metadata: ["dk.event": "interactions.webhook.released", "dk.active": .stringConvertible(pending.count)])
+        }
         do {
+            DiscordLog.makeLogger("interactions.webhooks").trace("Invoking consumer durable webhook transaction", metadata: ["dk.event": "interactions.webhook.persisting"])
             _ = try await admit(envelope, request.rawBody, key)
+            DiscordLog.makeLogger("interactions.webhooks").debug("Durable webhook admission confirmed", metadata: ["dk.event": "interactions.webhook.persisted"])
             remember(key)
             return response(Task.isCancelled ? 503 : 204)
-        } catch { return response(503) }
+        } catch {
+            let cancelled = error is CancellationError || Task.isCancelled
+            DiscordLog.makeLogger("interactions.webhooks").log(level: cancelled ? .debug : .warning, "Durable webhook admission failed; delivery remains retryable", metadata: ["dk.event": "interactions.webhook.persistence_failed", "dk.cancelled": .stringConvertible(cancelled)])
+            return response(503)
+        }
     }
 
     /// Adds a successful fixed-size digest and evicts the oldest retained digest when at capacity.
@@ -100,6 +122,7 @@ public actor WebhookEventProcessor {
         guard maximumRememberedDeliveries > 0 else { return }
         if accepted.count == maximumRememberedDeliveries {
             accepted.remove(acceptanceOrder.removeFirst())
+            DiscordLog.makeLogger("interactions.webhooks").trace("Old webhook duplicate hint evicted", metadata: ["dk.event": "interactions.webhook.hint_evicted"])
         }
         accepted.insert(key)
         acceptanceOrder.append(key)
@@ -109,6 +132,7 @@ public actor WebhookEventProcessor {
     /// - Parameter status: HTTP status selected by admission policy; only 204, 400 and 503 are used.
     /// - Returns: A body-free response with no owned streams or cleanup obligations.
     private func response(_ status: Int) -> HTTPResponse {
-        HTTPResponse(status: status, headers: [HTTPHeader(name: "Content-Type", value: "application/json")])
+        DiscordLog.makeLogger("interactions.webhooks").trace("Webhook event HTTP outcome prepared", metadata: ["dk.event": "interactions.webhook.response_prepared", "dk.status": .stringConvertible(status)])
+        return HTTPResponse(status: status, headers: [HTTPHeader(name: "Content-Type", value: "application/json")])
     }
 }

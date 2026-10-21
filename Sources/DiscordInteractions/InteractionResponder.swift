@@ -104,6 +104,7 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     ///   Discord error 10062 closes the expired token; 40060 retains unknown remote acknowledgement ownership.
     ///   At the exact three-second boundary a pending callback fails locally and its token is treated as expired.
     public func respond(_ response: InteractionResponse) async throws {
+        DiscordLog.makeLogger("interactions.response").debug("Initial response processing started", metadata: ["dk.event": "interactions.response.started", "dk.callback_type": .stringConvertible(response.type.rawValue)])
         do {
             try Task.checkCancellation()
             try validateReceipt()
@@ -120,14 +121,17 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
                 guard case .value = interaction.message else { throw InteractionLifecycleError.originalResponseUnavailable }
             }
             let bytes = try response.jsonValue(interactionType: kind).serialized().count
+            DiscordLog.makeLogger("interactions.response").trace("Initial response validated and encoded", metadata: ["dk.event": "interactions.response.validated", "dk.bytes": .stringConvertible(bytes)])
             state = .acknowledging
-            DiscordLog.makeLogger("interactions").debug("Initial interaction response reserved", metadata: ["dk.event": "interactions.response.reserved"])
+            DiscordLog.makeLogger("interactions.response").trace("Initial interaction response reserved", metadata: ["dk.event": "interactions.response.reserved"])
             let reservation: UUID
             do {
                 reservation = try await admission.acquire(encodedBytes: bytes)
+                DiscordLog.makeLogger("interactions.response").trace("Acknowledgement admission acquired", metadata: ["dk.event": "interactions.response.admission_acquired"])
             } catch {
                 // A failed acquisition never enters the delivery sink.
                 state = .pending; updateExpiry()
+                DiscordLog.makeLogger("interactions.response").debug("Acknowledgement admission rejected before delivery", metadata: ["dk.event": "interactions.response.admission_rejected"])
                 throw error
             }
             do {
@@ -135,27 +139,35 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
                 guard clock.now < acknowledgementDeadline else { throw InteractionLifecycleError.deadlineExceeded }
             } catch {
                 state = .pending; updateExpiry(); await admission.release(reservation)
+                DiscordLog.makeLogger("interactions.response").trace("Acknowledgement admission released before delivery", metadata: ["dk.event": "interactions.response.released_before_delivery"])
                 throw error
             }
             do {
                 let timeout = acknowledgementDeadline - clock.now
+                DiscordLog.makeLogger("interactions.response").trace("Invoking initial response delivery sink", metadata: ["dk.event": "interactions.response.delivering"])
                 try await clock.run(until: acknowledgementDeadline) {
                     try await InteractionFailureScope.withResponseStage(.acknowledgement) {
                         try await self.sink.initial(response, timeout)
                     }
                 }
                 state = .acknowledged(response.type)
-                DiscordLog.makeLogger("interactions").debug("Initial interaction response acknowledged", metadata: ["dk.event": "interactions.response.acknowledged"])
+                DiscordLog.makeLogger("interactions.response").debug("Initial interaction response acknowledged", metadata: ["dk.event": "interactions.response.acknowledged", "dk.callback_type": .stringConvertible(response.type.rawValue)])
                 await admission.release(reservation)
+                DiscordLog.makeLogger("interactions.response").trace("Acknowledgement admission released", metadata: ["dk.event": "interactions.response.admission_released"])
                 await InteractionFailureScope.clear()
             } catch {
                 state = stateAfterInitialFailure(error)
-                DiscordLog.makeLogger("interactions").debug("Initial interaction response failed", metadata: ["dk.event": "interactions.response.failed"])
+                DiscordLog.makeLogger("interactions.response").debug("Initial interaction response failed", metadata: ["dk.event": "interactions.response.failed"])
+                if state == .indeterminate {
+                    DiscordLog.makeLogger("interactions.response").warning("Initial response delivery outcome is uncertain", metadata: ["dk.event": "interactions.response.indeterminate"])
+                }
                 updateExpiry()
                 await admission.release(reservation)
+                DiscordLog.makeLogger("interactions.response").trace("Failed acknowledgement admission released", metadata: ["dk.event": "interactions.response.admission_released"])
                 throw error
             }
         } catch {
+            DiscordLog.makeLogger("interactions.response").debug("Initial response processing stopped", metadata: ["dk.event": "interactions.response.stopped"])
             await InteractionFailureScope.record(error, at: .acknowledgement)
             throw error
         }
@@ -182,16 +194,22 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     ///   cancellation or REST failure. Cancellation/deadline after adapter entry remains an explicit unknown mutation
     ///   outcome. Ambiguous edits propagate without changing the confirmed initial state or completing a defer locally.
     public func editOriginal(_ request: InteractionMessageEdit) async throws -> Message {
+        DiscordLog.makeLogger("interactions.response").debug("Original response edit started", metadata: ["dk.event": "interactions.response.edit_started"])
         do {
             let kind = try reserveContinuation(requireOriginal: true)
-            defer { continuationInFlight = false }
+            defer {
+                continuationInFlight = false
+                DiscordLog.makeLogger("interactions.response").trace("Response edit continuation released", metadata: ["dk.event": "interactions.response.continuation_released"])
+            }
             if request.deferredResponse, kind != .deferredChannelMessageWithSource {
                 throw InteractionLifecycleError.deferredResponseRequired
             }
             _ = try request.jsonValue()
+            DiscordLog.makeLogger("interactions.response").trace("Original response edit validated", metadata: ["dk.event": "interactions.response.edit_validated"])
             let timeout = tokenDeadline - clock.now
             let result = try await performContinuation { try await self.sink.edit(request, timeout) }
             deferredCompleted = true
+            DiscordLog.makeLogger("interactions.response").debug("Original response edit completed", metadata: ["dk.event": "interactions.response.edit_completed"])
             await InteractionFailureScope.clear()
             return result
         } catch {
@@ -206,16 +224,22 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     /// - Throws: Lifecycle/expiry/overlap errors, incomplete deferred original, validation or REST failure.
     ///   Cancellation, deadline or transport loss after adapter entry remains an explicit unknown mutation outcome.
     public func followup(_ request: InteractionMessageCreate) async throws -> Message {
+        DiscordLog.makeLogger("interactions.response").debug("Follow-up response started", metadata: ["dk.event": "interactions.response.followup_started"])
         do {
             let kind = try reserveContinuation(requireOriginal: false)
-            defer { continuationInFlight = false }
+            defer {
+                continuationInFlight = false
+                DiscordLog.makeLogger("interactions.response").trace("Follow-up continuation released", metadata: ["dk.event": "interactions.response.continuation_released"])
+            }
             guard kind != .deferredChannelMessageWithSource || deferredCompleted || originalDeleted else {
                 throw InteractionLifecycleError.completeDeferredResponseFirst
             }
             _ = try request.jsonValue()
+            DiscordLog.makeLogger("interactions.response").trace("Follow-up response validated", metadata: ["dk.event": "interactions.response.followup_validated"])
             let timeout = tokenDeadline - clock.now
             let result = try await performContinuation { try await self.sink.followup(request, timeout) }
             await InteractionFailureScope.clear()
+            DiscordLog.makeLogger("interactions.response").debug("Follow-up response completed", metadata: ["dk.event": "interactions.response.followup_completed"])
             return result
         } catch {
             await InteractionFailureScope.record(error, at: .continuation)
@@ -227,12 +251,17 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     /// - Throws: Lifecycle/expiry/overlap errors, absent original, cancellation or REST failure. An ambiguous
     ///   deletion is surfaced as explicit mutation uncertainty and does not invent local confirmed deletion.
     public func deleteOriginal() async throws {
+        DiscordLog.makeLogger("interactions.response").debug("Original response deletion started", metadata: ["dk.event": "interactions.response.delete_started"])
         do {
             _ = try reserveContinuation(requireOriginal: true)
-            defer { continuationInFlight = false }
+            defer {
+                continuationInFlight = false
+                DiscordLog.makeLogger("interactions.response").trace("Original deletion continuation released", metadata: ["dk.event": "interactions.response.continuation_released"])
+            }
             let timeout = tokenDeadline - clock.now
             try await performContinuation { try await self.sink.delete(timeout) }
             originalDeleted = true
+            DiscordLog.makeLogger("interactions.response").debug("Original response deletion completed", metadata: ["dk.event": "interactions.response.delete_completed"])
             await InteractionFailureScope.clear()
         } catch {
             await InteractionFailureScope.record(error, at: .continuation)
@@ -271,7 +300,11 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
             throw error
         }
         handlerRunning = true
-        defer { handlerRunning = false }
+        DiscordLog.makeLogger("interactions.response").trace("Automatic deferral timer and handler started", metadata: ["dk.event": "interactions.response.auto_defer_started"])
+        defer {
+            handlerRunning = false
+            DiscordLog.makeLogger("interactions.response").trace("Automatic deferral children joined", metadata: ["dk.event": "interactions.response.auto_defer_joined"])
+        }
         return try await withThrowingTaskGroup(of: AutoDeferResult<Value>.self) { group in
             group.addTask { .handled(try await operation()) }
             group.addTask {
@@ -292,7 +325,11 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     /// - Parameter response: Callback already validated against the interaction type.
     /// - Throws: Only active pending-response delivery/admission failures; a manual winner is left untouched.
     private func autoDefer(_ response: InteractionResponse) async throws {
-        guard state == .pending else { return }
+        guard state == .pending else {
+            DiscordLog.makeLogger("interactions.response").trace("Automatic deferral skipped after manual response reservation", metadata: ["dk.event": "interactions.response.auto_defer_skipped"])
+            return
+        }
+        DiscordLog.makeLogger("interactions.response").trace("Automatic deferral timer claimed pending response", metadata: ["dk.event": "interactions.response.auto_defer_triggered"])
         try await respond(response)
     }
 
@@ -304,8 +341,14 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
 
     /// Applies local protocol expiry without erasing submission uncertainty or an active initial reservation.
     private func updateExpiry() {
-        if state == .pending, clock.now >= acknowledgementDeadline { state = .expired }
-        if case .acknowledged = state, clock.now >= tokenDeadline { state = .expired }
+        if state == .pending, clock.now >= acknowledgementDeadline {
+            state = .expired
+            DiscordLog.makeLogger("interactions.response").debug("Initial acknowledgement deadline expired", metadata: ["dk.event": "interactions.response.acknowledgement_expired"])
+        }
+        if case .acknowledged = state, clock.now >= tokenDeadline {
+            state = .expired
+            DiscordLog.makeLogger("interactions.response").debug("Response continuation token expired", metadata: ["dk.event": "interactions.response.token_expired"])
+        }
     }
 
     /// Checks token/original ownership and reserves mutation ordering before the next actor suspension.
@@ -332,6 +375,7 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
         }
         guard !continuationInFlight else { throw InteractionLifecycleError.continuationInFlight }
         continuationInFlight = true
+        DiscordLog.makeLogger("interactions.response").trace("Response continuation reserved", metadata: ["dk.event": "interactions.response.continuation_reserved", "dk.requires_original": .stringConvertible(requireOriginal)])
         return kind
     }
 
@@ -344,11 +388,13 @@ public actor InteractionResponder: CustomStringConvertible, CustomDebugStringCon
     private func performContinuation<Value: Sendable>(
         operation: @escaping @Sendable () async throws -> Value) async throws -> Value {
         do {
+            DiscordLog.makeLogger("interactions.response").trace("Invoking response continuation sink", metadata: ["dk.event": "interactions.response.continuation_delivering"])
             return try await clock.run(until: tokenDeadline) {
                 try await InteractionFailureScope.withResponseStage(.continuation, operation: operation)
             }
         }
         catch {
+            DiscordLog.makeLogger("interactions.response").debug("Response continuation delivery failed", metadata: ["dk.event": "interactions.response.continuation_failed"])
             await InteractionFailureScope.recordOwnerFailure(error, at: .continuation)
             if let typed = error as? DiscordError {
                 switch typed {

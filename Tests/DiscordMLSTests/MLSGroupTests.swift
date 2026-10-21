@@ -192,14 +192,14 @@ extension MLSGroupTests {
             await group.close()
             await setup.owners[1].close()
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.mls" }
+        let entries = recorder.entries.filter { $0.label == "discordkit.mls.group" }
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "mls.group.created" })
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "mls.commit.local_selected" })
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "mls.commit.local_selected" })
         #expect(entries.filter { $0.metadata["dk.event"] == "mls.group.closed" }.count == 1)
         let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
         for secret in ["private-group-identifier", "private-export-label", "private-export-context"] {
             #expect(!rendered.contains(secret))
         }
-        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem"]) })
+        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem", "dk.module", "dk.participants", "dk.candidate"]) })
     }
 }

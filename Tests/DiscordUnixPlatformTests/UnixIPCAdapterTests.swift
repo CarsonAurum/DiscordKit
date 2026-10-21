@@ -1,4 +1,5 @@
 #if !os(Windows) && !os(WASI)
+import DiscordLogging
 import DiscordTransport
 import DiscordTestSupport
 import Foundation
@@ -119,6 +120,31 @@ private final class UnixIPCEchoHandler: ChannelInboundHandler {
             }
             #expect(received == Data([0, 128, 255, 7]))
         }
+    }
+
+
+    /// Native echo traces read/write admission and completion without socket paths or transferred content.
+    /// - Throws: Unexpected local socket setup, native I/O or cleanup failure.
+    @Test func ipcTraceSeparatesReadAndWrite() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            try await withClient { client in
+                let payload = Data("PRIVATE_IPC_PAYLOAD".utf8)
+                try await client.write(payload, context: context())
+                var received = Data()
+                while received.count < payload.count {
+                    received.append(try #require(try await client.read(maximumBytes: payload.count, context: context())))
+                }
+                #expect(received == payload)
+            }
+        }
+        let entries = recorder.entries
+        #expect(entries.contains { $0.label == "discordkit.unix.ipc.write" && $0.level == .trace && $0.metadata["dk.event"] == "unix.ipc.write.admitted" })
+        #expect(entries.contains { $0.label == "discordkit.unix.ipc.read" && $0.metadata["dk.event"] == "unix.ipc.read.completed" })
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "unix.ipc.connected" })
+        #expect(entries.last?.level == .info && entries.last?.metadata["dk.event"] == "unix.ipc.closed")
+        let rendered = String(describing: entries.map { ($0.message, $0.metadata) })
+        #expect(!rendered.contains("PRIVATE_IPC_PAYLOAD") && !rendered.contains(".sock"))
     }
 
     /// Drains data sent immediately before peer EOF without returning empty chunks.

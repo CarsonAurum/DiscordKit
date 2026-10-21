@@ -1,0 +1,692 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "0.18.0",
+  "verifiedOn": "2026-10-20",
+  "completedAtUTC": "2026-10-21T04:29:47.854783+00:00",
+  "status": "local-validation-passed",
+  "scope": "Local macOS arm64 semantic logging and correlated operation diagnostics; unpublished and untagged.",
+  "baseCommit": "eb3a44d248275682eb2a1b6ba53e741db092f233",
+  "loggingInventory": {
+    "method": "Distinct static literal dk.event and makeLogger/withOperation categories in Sources/**/*.swift; wrappers add dynamic terminal suffixes. Counts do not establish execution completeness or semantic correctness.",
+    "previousFixedEventIdentities": 222,
+    "currentFixedEventIdentities": 665,
+    "previousCategories": 30,
+    "currentCategories": 76
+  },
+  "checks": [
+    {
+      "id": "root-build",
+      "status": "passed",
+      "commands": [
+        "swift",
+        "build",
+        "--disable-sandbox",
+        "--cache-path",
+        "/tmp/discordkit-deep-logging-spm"
+      ],
+      "environment": {
+        "SWIFTNIO_STRICT": "1",
+        "TMPDIR": "/private/tmp"
+      },
+      "execution": "Approved local host; managed clang temporary-file restrictions required host access."
+    },
+    {
+      "id": "root-tests",
+      "status": "passed",
+      "commands": [
+        "swift",
+        "test",
+        "--disable-sandbox",
+        "--cache-path",
+        "/tmp/discordkit-deep-logging-spm"
+      ],
+      "passedTests": 2469,
+      "testProducts": 34,
+      "failedTests": 0,
+      "notes": [
+        "Includes final webhook cancellation fix and all three parameter cases.",
+        "Local Unix/loopback peers; no Discord credentials or live service."
+      ]
+    },
+    {
+      "id": "tooling",
+      "status": "passed",
+      "tests": {
+        "toolingSwift": 105,
+        "loadSwift": 28,
+        "extensionsSwift": 6,
+        "toolingPython": 229,
+        "loadPython": 12,
+        "ciPython": 47,
+        "socialCatalogPython": 12
+      },
+      "notes": [
+        "No macro authoring, generator, benchmark or dependency manifest changes. These results do not claim a fresh macro/compiler-fixture or DSL performance run."
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "passed",
+      "entries": 18137,
+      "sources": 280,
+      "reviewedDefinitions": 934,
+      "unclassified": 0,
+      "mappedEndpoints": 249,
+      "auditDateUTC": "2026-10-21"
+    },
+    {
+      "id": "generation",
+      "status": "passed",
+      "byteIdenticalArtifacts": 5
+    },
+    {
+      "id": "parity",
+      "status": "passed",
+      "notes": [
+        "No support promotion or upstream wire change.",
+        "Historical history prefix and frozen reports/baselines retained."
+      ]
+    },
+    {
+      "id": "declaration-docs",
+      "status": "passed",
+      "swiftFiles": 812,
+      "explicitCallables": 8869,
+      "missingComments": 0,
+      "scope": "All owned source/tests/separate packages; syntactic presence only."
+    },
+    {
+      "id": "docc",
+      "status": "passed",
+      "publicModuleArchives": 33,
+      "strictDiagnostics": true,
+      "curatedTypePages": 1567,
+      "curatedMemberLinks": 9127,
+      "sourceSynchronizedListings": 32,
+      "notes": [
+        "Refreshed logging API navigation; repaired one pre-existing stale DAVE example listing to exactly match existing source."
+      ]
+    },
+    {
+      "id": "product-isolation",
+      "status": "passed",
+      "products": 33,
+      "targets": 33,
+      "runtimeSourceFiles": 349,
+      "imports": 813,
+      "independentConsumersIncludingBenchmark": 14,
+      "notes": [
+        "Existing manifests, dependency pins and runtime product graphs unchanged."
+      ]
+    },
+    {
+      "id": "api-baseline",
+      "status": "passed",
+      "version": "0.18.0",
+      "modules": 33,
+      "publicSymbols": 14657,
+      "comparisons": [
+        {
+          "baseline": "api-baseline.json",
+          "exitCode": 0,
+          "requiredIncrement": "major",
+          "counts": {
+            "added": 1422,
+            "addedModules": 5,
+            "addedRelationships": 1922,
+            "changed": 0,
+            "removed": 0,
+            "removedModules": 0,
+            "removedRelationships": 0
+          }
+        },
+        {
+          "baseline": "api-baseline-0.15.0.json",
+          "exitCode": 0,
+          "requiredIncrement": "major",
+          "counts": {
+            "added": 414,
+            "addedModules": 2,
+            "addedRelationships": 497,
+            "changed": 0,
+            "removed": 2,
+            "removedModules": 0,
+            "removedRelationships": 2
+          }
+        },
+        {
+          "baseline": "api-baseline-0.16.0.json",
+          "exitCode": 0,
+          "requiredIncrement": "major",
+          "counts": {
+            "added": 148,
+            "addedModules": 0,
+            "addedRelationships": 165,
+            "changed": 0,
+            "removed": 2,
+            "removedModules": 0,
+            "removedRelationships": 2
+          }
+        },
+        {
+          "baseline": "api-baseline-0.17.0.json",
+          "exitCode": 0,
+          "requiredIncrement": "minor",
+          "counts": {
+            "added": 19,
+            "addedModules": 0,
+            "addedRelationships": 22,
+            "changed": 0,
+            "removed": 0,
+            "removedModules": 0,
+            "removedRelationships": 0
+          }
+        },
+        {
+          "baseline": "api-baseline-0.18.0.json",
+          "exitCode": 0,
+          "requiredIncrement": "none",
+          "counts": {
+            "added": 0,
+            "addedModules": 0,
+            "addedRelationships": 0,
+            "changed": 0,
+            "removed": 0,
+            "removedModules": 0,
+            "removedRelationships": 0
+          }
+        }
+      ],
+      "currentSnapshotMatchesBaseline": true,
+      "notes": [
+        "Compared with 0.17.0: 19 added symbols and 22 added relationships; no changed/removed symbols or relationships.",
+        "Older baseline comparisons preserve already documented pre-1.0 BotDSL initializer migrations from 0.17; no new removal in this logging increment."
+      ]
+    },
+    {
+      "id": "examples",
+      "status": "passed",
+      "built": [
+        "RESTOnly",
+        "GatewayBot",
+        "HTTPApp",
+        "CommandsApp",
+        "DSLCommands",
+        "DSLEvents",
+        "DSLBot",
+        "OAuthApp",
+        "RPCApp",
+        "ActivityHost",
+        "SocialApp",
+        "VoiceBot",
+        "LoggingApp"
+      ],
+      "tests": {
+        "CommandsApp": 3,
+        "DSLCommands": 4,
+        "DSLEvents": 3,
+        "DSLBot": 3,
+        "ActivityHost": 3,
+        "LoggingApp": 1
+      },
+      "offline": [
+        "CommandsApp",
+        "DSLCommands",
+        "DSLEvents",
+        "DSLBot",
+        "OAuthApp",
+        "RPCApp",
+        "ActivityHost",
+        "SocialApp",
+        "VoiceBot",
+        "LoggingApp"
+      ],
+      "notes": [
+        "RPC/Activity builds repeated after queued transport correlation fix; final root tests cover final code. Earlier inert/offline demonstrations remain scoped to their actual run.",
+        "LoggingApp run verifies info console floor, trace file, nested correlation, timing and explicit writer lifetime."
+      ]
+    },
+    {
+      "id": "browser",
+      "status": "passed",
+      "tests": 36,
+      "scope": "Node built-in runner with simulated browser bridge hosts."
+    },
+    {
+      "id": "social-catalog",
+      "status": "passed",
+      "entries": 743,
+      "baselineDeclarations": 735,
+      "blockers": 87
+    },
+    {
+      "id": "local-load",
+      "status": "passed",
+      "finiteCacheAndSoakProfiles": 12,
+      "httpProfiles": 6,
+      "gatewayProfiles": 6,
+      "notes": [
+        "Existing scenario-specific validators passed for normal/burst 100, 10000, 1000000 logical-account profiles.",
+        "Synthetic local workloads at default info logging; timing affected by concurrent validation."
+      ]
+    },
+    {
+      "id": "fixed-working-set-soak",
+      "status": "passed",
+      "durationSeconds": 1800.00093975,
+      "completedRounds": 149315,
+      "logicalAccounts": 1000000,
+      "selectedScopes": 4,
+      "workingSetKeysPerScope": 20,
+      "before": {
+        "cpuSeconds": 0.00732,
+        "liveAllocationBlocks": 1016,
+        "liveAllocationBytes": 111232,
+        "peakRSSBytes": 7946240,
+        "residentBytes": 7946240
+      },
+      "afterShutdown": {
+        "cpuSeconds": 1725.271992,
+        "liveAllocationBlocks": 15560,
+        "liveAllocationBytes": 1426560,
+        "peakRSSBytes": 11878400,
+        "residentBytes": 11354112
+      },
+      "peakAccountedBytes": 72512,
+      "maximumAccountedBytes": 262144,
+      "ownedCountersAfterShutdown": {
+        "entriesAfterShutdown": 0,
+        "bufferedEventsAfterShutdown": 0,
+        "refreshesAfterShutdown": 0,
+        "subscriptionsAfterShutdown": 0,
+        "waitersAfterShutdown": 0
+      },
+      "report": {
+        "path": "Docs/Release/Measurements/DeepLogging/soak-accounts-1000000-1800s-burst.json",
+        "sha256": "798269c26a1f24fe963b1bae0535b1e9a77ac520f21c4ec06ae1fa5a09e8ce16"
+      },
+      "environment": {
+        "path": "Docs/Release/Measurements/DeepLogging/soak-environment.json",
+        "sha256": "592985a7285f50daa2efec9ca45ea42efce9418af6da1776b6c94a7b81e0a7dc"
+      }
+    }
+  ],
+  "sourceSHA256": {
+    "Examples/LoggingApp/Sources/LoggingApp/LoggingApp.swift": "f2d6d30ecb42355a1fdc8753cc59020554a2b5d634e9e44a840212bb57073bc8",
+    "Sources/DiscordActivities/ActivityClient.swift": "8015969ad1d871812faaf4b1f42d8ece6cb63d1d8e8230c4f7ad82865b472958",
+    "Sources/DiscordApplePlatform/AppleAudio.swift": "3bdf9c68da72fe7d834071e6239405c37b99501072c01a27ebfb0e5917aed3dd",
+    "Sources/DiscordApplePlatform/AppleLifecycle.swift": "babceb1d9f0fd82bd63b34eb140b73823882368b77aa5c0fcaafed571b8b939a",
+    "Sources/DiscordBotDSL/BotRuntime.swift": "587dc3bec0edc8fdd8e305e25a4e8d09e121b3ecfc922cf0bcc1b10db840d36d",
+    "Sources/DiscordBotDSL/EventCompilation.swift": "106236ef6450b976085aa49f599dde27ae6146d3e0915f698cf213236bf4b685",
+    "Sources/DiscordBotDSL/GatewayEventHandler.swift": "75a572956b6d4a1b3e8aaaddc95b8659540114e53fef52a7d85e2d981954e696",
+    "Sources/DiscordBotDSL/GatewayInteractionAdapter.swift": "d74222eb355addb72892c5ac046ed957db80a3ef2801fa57d3e5bc3e0e687bde",
+    "Sources/DiscordCache/EntityCache.swift": "888dadd2aca93ff14ad1827796dddc8437d49d569a49bad0b019806b272ec188",
+    "Sources/DiscordCertifiedDevices/CertifiedDeviceHTTPPublisher.swift": "0c081a13bde43e24d80e85f2b560a2dfd54d29edd0fc20edfbf1e846a5842897",
+    "Sources/DiscordCertifiedDevices/CertifiedDeviceRPCPublisher.swift": "53b4a59abf23a9245caf524a2022a860f785f61befc2910f7417baec2b7df898",
+    "Sources/DiscordClient/DiscordClient.swift": "d15d2ff397bdc3c1fa92879e266440bc2055838286edf401ea2be26da0f456cc",
+    "Sources/DiscordCommandDSL/CommandApplication.swift": "2845d38cefe937a19b9e5824c5537eff85a9b5fb7cff1e14c8f418651cadd894",
+    "Sources/DiscordCommandDSL/CommandPolicies.swift": "efc719692fa9ae61657e624f207a5d7cf7633edd3a7cdbbdb1ec00f5b7f17b30",
+    "Sources/DiscordCommands/CommandReconciler.swift": "4376cb2bb04fed72c9d056c4713f66ee45a8433aeacdb5d8d48952012a4ec896",
+    "Sources/DiscordCommands/CommandRouter.swift": "4f5499e83732d0302f278d37628a980ef675f24d604000458b83177b358ab569",
+    "Sources/DiscordCommerce/EntitlementVerification.swift": "7b85d83a409368a20774096745c43404356c515f8f2b1431d327a1ede6231ce8",
+    "Sources/DiscordDAVE/DAVEProtocolSession.swift": "4409099be5a67e02a36bcdc7529dfcef320337e94dd27505b5e4328fb9b39e0a",
+    "Sources/DiscordDSL/PolicyComposition.swift": "4bb45d88d4cbce5566c8521289ecc87425da91386fbe2a9bccb1bcc87dc42b6c",
+    "Sources/DiscordFoundationTransport/FoundationHTTPTransport.swift": "084c09aab291a664637121b0794e462ae174b2ac8b451b36df70dde9a78fd434",
+    "Sources/DiscordFoundationTransport/FoundationWebSocketTransport.swift": "51850c66b981850863cba6857181ba20524d193b05fa9ffaa2201cfef4997f24",
+    "Sources/DiscordGateway/EventHandlers.swift": "2bcd97076996d90d2d58301c28d6f3d60698724bb5080d7aaca85a4abac7b3a1",
+    "Sources/DiscordGateway/EventHub.swift": "7be9cbef8f26d722297e1646ada8a47783c0bfa510c030819bf7f3e7d994d986",
+    "Sources/DiscordGateway/GatewayShard.swift": "4a741ec6d90d09206a01d2b6402990632395d2adc26bd6993535cf41f1d29f7c",
+    "Sources/DiscordHTTP/RESTClient.swift": "08ff323635b856af95f378a6b2b66ab4415556519d7801a8bd4ef9c95c208d45",
+    "Sources/DiscordHTTP/RateLimitCoordinator.swift": "e3abea70d0ec1311f155265732c9e65d2c7214218c44eddaa0546a75fa6d5735",
+    "Sources/DiscordHTTP/ReadCache.swift": "4de486c765749d05024e93358b9bfd5f90280420f836e6f66bcfa04756fdce35",
+    "Sources/DiscordHTTP/RequestCoalescer.swift": "a642ac557de1bf19df594e665870b0c149609efba223c1a9871049615d39f0ca",
+    "Sources/DiscordInteractions/DiscordSignedIngress.swift": "c8703d4bd66238fca9ec37edb34ba55be40ee977de4196bf7bf3222c9c862b65",
+    "Sources/DiscordInteractions/InteractionAcknowledgementAdmission.swift": "3407ba5ef8a8fc85e459d4c5d87a581cae1d387cdb1f6fc50b96c1626f28c8e4",
+    "Sources/DiscordInteractions/InteractionHTTPApplication.swift": "80a6de1ffbcf2833358646432fc5825f95ab16efa6534509ed676be7e64c7288",
+    "Sources/DiscordInteractions/InteractionResponder.swift": "bd374e29c6e3e067c332485639b1918c3d705134175e8c6cc1015f0280891364",
+    "Sources/DiscordInteractions/WebhookEventProcessor.swift": "604a3651d3680bcf5da1458c2b5ca5b67c314fd306d2935ed398a9a4f701218b",
+    "Sources/DiscordLogHandlers/DiscordLevelFilterLogHandler.swift": "e2131ba9be6a2ad82663fd2e1938a669bb1344a271477fa6ddde8b38c5334c8c",
+    "Sources/DiscordLogHandlers/DiscordLogRecord.swift": "3c505699fba9bbdac265e358657ebc429c88bc63bf9bc44565179090253d216c",
+    "Sources/DiscordLogging/DiscordLog.swift": "dcd099ab52d213ae0007e1996acdd6e50eded730ba2c05cdb1e54649a4a97cec",
+    "Sources/DiscordLogging/DiscordLogConfiguration.swift": "5cb95015f2e8434c5458645232df5d463e6d8244c4d4ef9153e4a0b3336d6620",
+    "Sources/DiscordLogging/DiscordLogOperation.swift": "9d13d4ca2331b980c5299a348fa951377f2bcb944b75752b5df46a7ead50930e",
+    "Sources/DiscordMLS/MLSGroup.swift": "65a1029f916958fc6c44032a63e7d773437b19cd65035d58a62b601934192bee",
+    "Sources/DiscordMedia/PCMFrameStream.swift": "8a4e3e8f65a236235cccc62a90a5252ce16dc21007532c59fb4710a5266fce23",
+    "Sources/DiscordNIOTransport/NIODatagramTransport.swift": "65823873cf2e716b7bc03dda7876c4e0d619c055bf441dc2692e9332aafd3efe",
+    "Sources/DiscordNIOTransport/NIOHTTPIngress.swift": "c9f38709b3a2ec744e45f75d616724fb0afde97d51feafdf1215eb8bba271297",
+    "Sources/DiscordNIOTransport/NIOHTTPTransport.swift": "798c045e19cc8d4c7b1be88e03cf6adde1bb18eadbd36c6281199af4f17ebc72",
+    "Sources/DiscordNIOTransport/NIOWebSocketTransport.swift": "e5976f97bd8c719c998a33bbd6f2f88303bbf74c6c081db8d8492dfb41f41da4",
+    "Sources/DiscordOAuth/OAuthClient.swift": "33c22aab270eebd80b49b237c18298b584e2109c71181c3aca0a57aeb01fd4c1",
+    "Sources/DiscordOAuth/OAuthDeviceAuthorization.swift": "241eff3d66ab6ff7fef7bd5fb01530b44c4c74d8f504f6a76175c3420a55d31c",
+    "Sources/DiscordOAuth/TokenCoordinator.swift": "f09d630a0f7ef1d52939593149c92559b7588d784437f8379cfe31143b20f7d1",
+    "Sources/DiscordRPC/RPCClient.swift": "42cc7baba980c83198fd68510d35b38b05b70adf8eb3822072cd13f2123c8f41",
+    "Sources/DiscordSocial/SocialClient.swift": "7cd3a043112f48836dfed483a68644f7c13b08a16f66072878153f72e1a87583",
+    "Sources/DiscordTransport/Lifecycle.swift": "60d1a9e1d12ffdd3daa5a26f9721f0982bfe61407c2bff4464f2c3475d61870d",
+    "Sources/DiscordUnixPlatform/UnixIPCTransport.swift": "a6b83c6f7ef4238f10f2f1da9c539240912dce0aabe3e423d6a24f7bd7c7a343",
+    "Sources/DiscordVoice/VoiceManager.swift": "f247a98273fa840a2d9a9402f7ccdea74c2b1bcc46182ba750b3a15455b34760",
+    "Sources/DiscordVoice/VoiceSession.swift": "d9241866e6041dca5702def30ac8e0545e241d3dbd7ad5baba93ddbab5644c9f",
+    "Tests/DiscordActivitiesTests/ActivityClientTests.swift": "8eac1d5aaa699f14f62a206c656296c338789b8fe7f40d3ffd703204fdd49c10",
+    "Tests/DiscordApplePlatformTests/AppleLoggingTests.swift": "3acf961dcb1a382275b722c76fff3a6dee0217a4403ff4173e8ae11f66b2a147",
+    "Tests/DiscordBotDSLTests/LifecycleTests.swift": "3fd5a18a478af91ad4bcf430c0063cf1be8ffa2f8c6c958a25af12b066978963",
+    "Tests/DiscordBotDSLTests/RecoveryTests.swift": "cedf03323d3939c6b7a435dbb9b72b400185bfa7e74c8c63b67fac83cb4b6df1",
+    "Tests/DiscordCacheTests/CacheLoggingTests.swift": "12ab5d1f83cdc630d5175759b8af6f8b10d70468074fe2d522c46fc898f259d3",
+    "Tests/DiscordCertifiedDevicesTests/CertifiedDeviceHTTPPublisherTests.swift": "ec42a67b985f1ae9f7779eb23a218670771e7b4df10c9cccc08f5459bc5baec6",
+    "Tests/DiscordCommandsTests/CommandLoggingTests.swift": "72f2242ff4f972237a6af5b00e93687710cf25e494318e9dbb577b3b4cb8b7e2",
+    "Tests/DiscordCommandsTests/CommandReconcilerTests.swift": "47d394632e81b68ef914a66ecd86ce541e09a0774246c3a706dbc5b9bb4ca649",
+    "Tests/DiscordCommerceTests/EntitlementVerificationTests.swift": "f394558059de8ea4a4f89afba3578190b14a2bef3064ab26f467b1f4567fa645",
+    "Tests/DiscordDAVETests/DAVEProtocolSessionTests.swift": "6e44701258e8082dd36d26fbc9808c4aa63a1eec87302efe26adc4e4d3cadcfe",
+    "Tests/DiscordDSLTests/PolicyLoggingTests.swift": "76689aaccd0302b4998149a8d75568d12048ff17fb143e5c18cb0f3ddb5f38f7",
+    "Tests/DiscordFoundationTransportTests/FoundationLoggingTests.swift": "f7f8c79b23bfc9240b2f0b7ed5817fc4e2b7bd7c3c898940f284be070cbec35f",
+    "Tests/DiscordGatewayTests/GatewayLoggingTests.swift": "6829cf636cda98db1795a21c68fa2ee5b5fa2f7a3697c20c394ea2f48f30d31a",
+    "Tests/DiscordHTTPTests/RESTLoggingTests.swift": "fc38afb3bd5480109792badc4f3176f727e0453bc44d350606a11937e1ac6e14",
+    "Tests/DiscordInteractionsTests/IngressLoggingTests.swift": "20bfa163f3f1da3c916e9640dc55b021dddde32510972d44289e8042f7d29ba3",
+    "Tests/DiscordInteractionsTests/InteractionLifecycleTests.swift": "db1cc27e090dd6d3739153f8895e53e6e15d78e3205c9c8b525a799c7d0930a4",
+    "Tests/DiscordInteractionsTests/WebhookEventProcessorTests.swift": "c4682272b0657309a51b25ded7c8bdb1274b51989abf461281b718de3a79a7de",
+    "Tests/DiscordLogHandlersTests/DiscordLogHandlersTests.swift": "bf7985225acfb5ac77dfe18dc02e4f48448cd18f153543869c317a5a767febd1",
+    "Tests/DiscordLoggingTests/DiscordLogTests.swift": "c4cfce3b115954f2261a059eac4cc67153aabdc3a7355d2a983d85519959cb12",
+    "Tests/DiscordMLSTests/MLSGroupTests.swift": "b8d16b9c6509378ce32446be4695fdb021e61e074706ac5e40644103d0d7326a",
+    "Tests/DiscordMediaTests/PCMFrameStreamTests.swift": "4e60e66c3e545265fcd85e26a4c643f56273b665c503530f9aee21e561b0461e",
+    "Tests/DiscordNIOTransportTests/HTTPAdapterTests.swift": "1150798ee2f17c5d3bcf099ef4865d8488d55827529576f99789a85549b93741",
+    "Tests/DiscordNIOTransportTests/NIOLoggingTests.swift": "daef86029a6f05c6bf211d5fc87ff0d8143ce149c6db8668c2d0a88ab8c53b45",
+    "Tests/DiscordOAuthTests/OAuthClientTests.swift": "419db687c7c637e8fb1804c873a5063e540c383dad32a969b8023627c76a5aae",
+    "Tests/DiscordOAuthTests/TokenCoordinatorTests.swift": "17acec650c76e4d824b06421c7aecd1333290321e7c236d2e83dca62070572e8",
+    "Tests/DiscordRPCTests/RPCClientTests.swift": "43de558d0f22f71a91c71e943ca5b262546267bfae60d5a98b62b5c0a3b5565a",
+    "Tests/DiscordSocialTests/SocialClientTests.swift": "43274bdd9c5d5373dcb2416adcc2bbccfdba917182375199e962867e8fdd4f8d",
+    "Tests/DiscordUnixPlatformTests/UnixIPCAdapterTests.swift": "08f37b0b956a9f0d71bf00d78a09a62cfc538c1e9c7d838cbb492b696683005f",
+    "Tests/DiscordVoiceTests/VoiceSessionTests.swift": "8a6b838a0f9f6a0ccb0a20dfb7e44954bb152261cce9579f0c81dfa4bcca156f"
+  },
+  "apiBaseline": {
+    "path": "Docs/Release/api-baseline-0.18.0.json",
+    "sha256": "aaf18fa833b9c2bc3f7121d0f38a406b1fab2d8ff2f3a2b890445ad0e62f2140"
+  },
+  "measurementArtifacts": [
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/cache-accounts-100-burst.json",
+      "sha256": "8dc4226208094f1c04f4f49e9466b109e03d077a646fd56cc0f8bffe6772f86d"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/cache-accounts-100-normal.json",
+      "sha256": "916f0887e65136e8ac6519d8bba35eea993f094f3253336ed1eef47a6ff8d570"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/cache-accounts-10000-burst.json",
+      "sha256": "c1750c748fa9321f0813506ec39b45590e5e2c9d08944c4070e912fb3061834f"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/cache-accounts-10000-normal.json",
+      "sha256": "b4ddcd21f6b974fee0aa297cb5b9b898ab20b2be230a259bdac1bc478f621599"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/cache-accounts-1000000-burst.json",
+      "sha256": "61dfcba10ff74073a0694294b3315cfcff0709da4c0ed62c595fc37dc253b0bc"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/cache-accounts-1000000-normal.json",
+      "sha256": "9faabae95511faab24ebcd60eefbea633fb6aa59d80f6820596fd154a716cc01"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/cache-environment.json",
+      "sha256": "20bacf6fbd6f4ddcc9198480d1d3a05287f4a2bc10bc140bdf71dbb35c1bfc81"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/soak-accounts-100-burst.json",
+      "sha256": "41395a93c7fd0e1eb7acce316b11a21a64fc5d11bef1fec51d76124e1aaf3776"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/soak-accounts-100-normal.json",
+      "sha256": "1d6691afaaf68003bb189b9c5d5e34a4f9a6d851e8d2866078a72f7fb781a03f"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/soak-accounts-10000-burst.json",
+      "sha256": "06fdb31b811433623b464ae2f83ab11eee795cb02ba6648c5b738dcb0b896714"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/soak-accounts-10000-normal.json",
+      "sha256": "3beca016abba6b4bf828fb2a23892bbebcc44875a2ff0e32bb9fe178ba35e747"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/soak-accounts-1000000-burst.json",
+      "sha256": "0d4c6d44f82147135e600d715f050bb143a98891d0eaea7fd81aea3723badbb1"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/Finite/soak-accounts-1000000-normal.json",
+      "sha256": "924598d963df619e69089144ebad2e382771516905a7ea1dc0697a944f3d2e35"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/GATEWAY/gateway-accounts-100-burst.json",
+      "sha256": "296de7888b16d5a01c50dce0b818c00d64c6769cf3bd65b2c78a9b4a6deff0cc"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/GATEWAY/gateway-accounts-100-normal.json",
+      "sha256": "7971fd82f6ece07fc0435e9975922034b369cef5546d12b9e8f27134c565b4aa"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/GATEWAY/gateway-accounts-10000-burst.json",
+      "sha256": "73ce0019d2915014ae252ecb3c22d016fda5d6279b1c2a66fb69346f7ea15e5f"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/GATEWAY/gateway-accounts-10000-normal.json",
+      "sha256": "6cf791d88da8296db430603b6dab401f3230f0356ec503575241655becc9cb24"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/GATEWAY/gateway-accounts-1000000-burst.json",
+      "sha256": "429387f34e0f2ab83d56614e0ab65f3deea9a4f830077faf56c1bfa2017bff25"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/GATEWAY/gateway-accounts-1000000-normal.json",
+      "sha256": "5b5f53ccceb14e73df2f7a03920f1507088813d761ce58b4f027d25106404c8a"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/GATEWAY/gateway-environment.json",
+      "sha256": "0eb6b3a4781e9f047abde2111124417bba2bc1c1384f48b7a5689ffcd56b5970"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/HTTP/http-accounts-100-burst.json",
+      "sha256": "67fe47651b0a39e23c89ef16b098a43c086ebb870384a3e47223d0e2ee87c5b9"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/HTTP/http-accounts-100-normal.json",
+      "sha256": "7b9a2c373a576f8b1bb6637d3d93ee4ea83aacbb9841a1fb157e7ad60d494707"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/HTTP/http-accounts-10000-burst.json",
+      "sha256": "4eafbb8415770cd4fe3a6b40a367130f5d926ebdb5b26848bac8a7baccd368ac"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/HTTP/http-accounts-10000-normal.json",
+      "sha256": "193f96d5194c02556ce8003466d196e4fb6f342dbe4f6a48e7ccb3f81d16e8c7"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/HTTP/http-accounts-1000000-burst.json",
+      "sha256": "8701f5e5ff24d090d9577084a445e16cb7ea4ba1f85da34da2c630acfefd88de"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/HTTP/http-accounts-1000000-normal.json",
+      "sha256": "99156735f081315d882b5abb7adce372027cdb130cafe17fa37aa40e442705b9"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/HTTP/http-environment.json",
+      "sha256": "a5b18d1386b6c70333b9f351e75df7e263436381a5731486c01c7ccbae36a30d"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/soak-accounts-1000000-1800s-burst.json",
+      "sha256": "798269c26a1f24fe963b1bae0535b1e9a77ac520f21c4ec06ae1fa5a09e8ce16"
+    },
+    {
+      "path": "Docs/Release/Measurements/DeepLogging/soak-environment.json",
+      "sha256": "592985a7285f50daa2efec9ca45ea42efce9418af6da1776b6c94a7b81e0a7dc"
+    }
+  ],
+  "localLogDigests": [
+    {
+      "name": "discordkit-deep-final-tests.log",
+      "sha256": "83d1bf4dfa0d4a08823d084b79fefb04a150132863c5e1c382c596cbce11bb45"
+    },
+    {
+      "name": "discordkit-deep-final-build.log",
+      "sha256": "7bba3ced92beec612063ab0ede43f0f569d6ea53fed056b6eefcbbf6224a0855"
+    },
+    {
+      "name": "discordkit-deep-final-symbols.log",
+      "sha256": "761f382b9ae6874b845fe114a37e22cc4d072b358bd261c6ff9fcfad2891651d"
+    },
+    {
+      "name": "discordkit-deep-docc.log",
+      "sha256": "e072468eca25b63fb851fa995c4d09c2e47fa4ea393a5d55bf2685bf391bd953"
+    },
+    {
+      "name": "discordkit-deep-docc-navigation.log",
+      "sha256": "c9cdce8a66244d305f11bbdbed7f481e2c18e5242790aa6f0c6cde78daaf3006"
+    },
+    {
+      "name": "discordkit-deep-docc-listings.log",
+      "sha256": "b1d8c26f790e05c27cb9cc23f77afbc46bffc9be236939d5c3eab7df35399420"
+    },
+    {
+      "name": "discordkit-deep-documentation-final.log",
+      "sha256": "b414487d8f0b40bc9c97b4b3b721bad7a492ebccd8f116ed80348ffe81e06e80"
+    },
+    {
+      "name": "discordkit-deep-graph.log",
+      "sha256": "ce215a03d49c21177b63b43269d0210948dd7c4b0994ef9ac21703cb36e22a7b"
+    },
+    {
+      "name": "discordkit-deep-tools-tests.log",
+      "sha256": "7101a2fbc6ca6a5cdbdd28e11ce261929cc70588e4bb95125f2dc69453f969f4"
+    },
+    {
+      "name": "discordkit-deep-tools-python.log",
+      "sha256": "57b553d96d6831b07c0b6c4b004454579cfbcbd19ca7d220456f33ac1998a103"
+    },
+    {
+      "name": "discordkit-deep-ci-python.log",
+      "sha256": "a45f152c86991935c678c0c7659f51df94780ee07190b1b765341c3a3c2759fc"
+    },
+    {
+      "name": "discordkit-deep-inventory.log",
+      "sha256": "17ef37ae074d4c355e702fa4fb7d3817a3d930ee1113538c92cb78bd4c3c9894"
+    },
+    {
+      "name": "discordkit-deep-generation.log",
+      "sha256": "4060ad309314dc485416bba0cc8454070aea8ef4d9aa9f8791363a8bea0fc817"
+    },
+    {
+      "name": "discordkit-deep-parity.log",
+      "sha256": "3ed1e64458804cb5187301bf22abfa607649a01cc21e585ece9ee8432f2327fe"
+    },
+    {
+      "name": "discordkit-deep-load-tests.log",
+      "sha256": "879cd033908fc291adbc873ef2d8454a890e0d7a89c1e01281fcf9fc26062454"
+    },
+    {
+      "name": "discordkit-deep-load-python.log",
+      "sha256": "1c6d2032127d4076bbfce69623bde33a06bfb18921be282e989c8cd39e0f9be9"
+    },
+    {
+      "name": "discordkit-deep-cache-checks.log",
+      "sha256": "71fecef23eba4540109c28c8e3967b243c02b0897d3816c375462933c6e4e27c"
+    },
+    {
+      "name": "discordkit-deep-matrices.log",
+      "sha256": "c20f636f9cb50c0b02f481fc31b1c70ec854f82e06ac6dfb50fa6bd34f5737d9"
+    },
+    {
+      "name": "discordkit-deep-restonly-build.log",
+      "sha256": "9ff56d403bb70fd4128939a7e79500ee062e131f4ba14d31ae37474ec71094fe"
+    },
+    {
+      "name": "discordkit-deep-dslcommands.log",
+      "sha256": "70d0a8c038a186ca2d41c6b8eb3241e43e0453ad5d6e23b71180bf038f092fc6"
+    },
+    {
+      "name": "discordkit-deep-dslbot-final.log",
+      "sha256": "0bfe7194a336fa115ab5769b17e25bd66a9179b9437c0eb7668b1c1fe7705391"
+    },
+    {
+      "name": "discordkit-deep-commandsapp.log",
+      "sha256": "71b680d01e3e36307ba895a3061b88724c2824d814b14e67993ebf3402a2a526"
+    },
+    {
+      "name": "discordkit-deep-dslevents.log",
+      "sha256": "0231387330979bf5763c5e7fb0d552c877235c40e5712967c3dcbe1019f73555"
+    },
+    {
+      "name": "discordkit-deep-gatewaybot-final.log",
+      "sha256": "cb5193e1370588faa7d9498e397f23c63aaa5898c7bc5542f48f143a0c252672"
+    },
+    {
+      "name": "discordkit-deep-httpapp.log",
+      "sha256": "1eab881a5c3caa4fb87dd8c3dee27eddf05f0e5b493cd3674ff54acfcf21dbb7"
+    },
+    {
+      "name": "discordkit-deep-dslextensions.log",
+      "sha256": "ecd1aa5f6e45809da7ce4d61e0bf7df2e949dadc522668a18858d7694835e26c"
+    },
+    {
+      "name": "discordkit-deep-example-logging.log",
+      "sha256": "51c360875d680274d6407e06116cd1d938b46d766fcdde6cfae73c2522f7e7c9"
+    },
+    {
+      "name": "discordkit-deep-example-logging-run.log",
+      "sha256": "55106006efef41ecd970a4aab5126949da1d864864d9383fa9ccf9a232e1a01c"
+    },
+    {
+      "name": "discordkit-services-voice-build.log",
+      "sha256": "2cc8538cfe2200f9257ec5b11c959319aa2a69b5394a060f3df0a8ffe1be785a"
+    },
+    {
+      "name": "discordkit-services-voice-offline.log",
+      "sha256": "4b6ad90961c069879bf05fe5eb143ea2640fa7987135bc9991dac256cc17a78b"
+    },
+    {
+      "name": "discordkit-services-oauth-build.log",
+      "sha256": "fb128ed017668b83171c01ad8a0672f836c300043ee5c637b932b6b0676bfc6d"
+    },
+    {
+      "name": "discordkit-services-rpc-nested-build.log",
+      "sha256": "1eb99019ac3d52ea36b274749145178ea698092531d8d718e17c3749f44c50c7"
+    },
+    {
+      "name": "discordkit-services-activity-nested-build.log",
+      "sha256": "11c55ff584bb1ad27a6360314d6234b9120e2999376e85a014856c98db14ff56"
+    },
+    {
+      "name": "discordkit-services-activity-final-tests.log",
+      "sha256": "287902714a70f6efdd893e7216097d40a871e99ef8394c9927339076c57fdda6"
+    },
+    {
+      "name": "discordkit-services-social-build.log",
+      "sha256": "865a776459b0a0a65c7f433199575c52aa1b4edc91cd304e8874c723360faae4"
+    },
+    {
+      "name": "discordkit-services-social-offline.log",
+      "sha256": "ac6a5ac7166a070220a793a272c925343233f65e308ac0976b967c89d9d6e4d1"
+    },
+    {
+      "name": "discordkit-services-browser-tests.log",
+      "sha256": "25061073077a541202c1eb199cdd4f3b5242c614bbb4495664b5e49cb299128c"
+    },
+    {
+      "name": "discordkit-services-social-catalog.log",
+      "sha256": "734c2ab25507f62331bb74aa220db9445fdcaf63e19c5c5b9378f207fa2e6e84"
+    },
+    {
+      "name": "discordkit-services-social-catalog-tests.log",
+      "sha256": "6f2469297ab2ae6572365a8e25e86cc457d7baa89a7a09b3fe0f01790c9ad55b"
+    }
+  ],
+  "executionNotes": [
+    "Root final validation uses the default SwiftBuild system and SWIFTNIO_STRICT=1; some independent package runs used the native build fallback.",
+    "Isolated writable caches and approved host access were used for managed compiler temporary-file and loopback/Unix socket restrictions.",
+    "All checks used local synthetic peers, inert consumers or public checked-in artifacts; no live Discord, credentials or authenticated external requests.",
+    "The 30-minute executable is hash-bound separately from the later finite matrix executable. Environment records preserve original measured sources and document the two-comment-only DiscordLog.swift drift.",
+    "Concurrent builds/tests and finite load runs shared the host with the sustained soak."
+  ],
+  "qualificationLimits": [
+    "No Linux, Windows, Android, Apple simulator or physical-device qualification from this increment.",
+    "No real desktop/browser/device or live Discord qualification.",
+    "No controlled historical performance comparison, production trace-output throughput, fleet capacity or absolute zero process-resource growth claim.",
+    "No independent crypto/security review or complete-client codec/MLS/DAVE interoperability qualification.",
+    "Documentation presence and local review do not prove repository-wide semantic completeness."
+  ]
+}

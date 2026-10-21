@@ -4,11 +4,15 @@
 
 ### Type properties
 
+- ``DiscordLogging/DiscordLog/configuration``
+- ``DiscordLogging/DiscordLog/context``
 - ``DiscordLogging/DiscordLog/loggerFactory``
 
 ### Type methods
 
 - ``DiscordLogging/DiscordLog/makeLogger(_:)``
+- ``DiscordLogging/DiscordLog/withOperation(_:event:isolation:operation:)``
+- ``DiscordLogging/DiscordLog/withOperation(_:event:operation:)``
 
 ## See Also
 

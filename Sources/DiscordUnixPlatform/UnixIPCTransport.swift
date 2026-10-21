@@ -91,7 +91,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
                             }
                         }.connect(unixDomainSocketPath: path).get()
                     try Task.checkCancellation()
-                    DiscordLog.makeLogger("unix.ipc").debug("Unix IPC connected", metadata: ["dk.event": "unix.ipc.connected"])
+                    DiscordLog.makeLogger("unix.ipc").info("Unix IPC connected", metadata: ["dk.event": "unix.ipc.connected"])
                     return UnixIPCTransport(channel: channel, input: input, lifetime: lifetime, slot: slot,
                                             maximumWriteBytes: maximumWriteBytes)
                 } onCancel: {
@@ -127,6 +127,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
         guard writing.withLockedValue({ value in if value { return false }; value = true; return true })
         else { throw UnixIPCFailure.concurrentWrite }
         defer { writing.withLockedValue { $0 = false } }
+        DiscordLog.makeLogger("unix.ipc.write").trace("Unix IPC write admitted", metadata: ["dk.event": "unix.ipc.write.admitted", "dk.bytes": .stringConvertible(bytes.count)])
         do {
             try await context.run { [self] in
                 try await withTaskCancellationHandler {
@@ -139,6 +140,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
                     slot.terminate()
                 }
             }
+            DiscordLog.makeLogger("unix.ipc.write").trace("Unix IPC write completed", metadata: ["dk.event": "unix.ipc.write.completed", "dk.bytes": .stringConvertible(bytes.count)])
         } catch {
             await close()
             throw unixIPCRedacted(error)
@@ -160,10 +162,13 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
         where C.Duration == Duration {
         try context.check()
         guard maximumBytes > 0 else { throw TransportFailure.invalidLimit }
+        DiscordLog.makeLogger("unix.ipc.read").trace("Unix IPC read waiting", metadata: ["dk.event": "unix.ipc.read.wait", "dk.maximum_bytes": .stringConvertible(maximumBytes)])
         do {
             return try await context.run { [self] in
                 try await withTaskCancellationHandler {
-                    try await input.read(maximumBytes: maximumBytes)
+                    let bytes = try await input.read(maximumBytes: maximumBytes)
+                    DiscordLog.makeLogger("unix.ipc.read").trace("Unix IPC read completed", metadata: ["dk.event": "unix.ipc.read.completed", "dk.bytes": .stringConvertible(bytes?.count ?? 0), "dk.eof": .stringConvertible(bytes == nil)])
+                    return bytes
                 } onCancel: {
                     input.finish(discard: true)
                     slot.terminate()
@@ -182,7 +187,7 @@ public final class UnixIPCTransport: IPCTransport, Sendable {
     public func close() async {
         input.finish(discard: true)
         await lifetime.close()
-        DiscordLog.makeLogger("unix.ipc").debug("Unix IPC transport closed", metadata: ["dk.event": "unix.ipc.closed"])
+        DiscordLog.makeLogger("unix.ipc").info("Unix IPC transport closed", metadata: ["dk.event": "unix.ipc.closed"])
     }
 }
 

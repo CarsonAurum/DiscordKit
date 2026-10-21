@@ -1,0 +1,161 @@
+{
+  "architecture": "arm64",
+  "buildConfiguration": "release",
+  "command": [
+    "DiscordKitLoadTests",
+    "--scenario",
+    "soak",
+    "--profile",
+    "accounts-1000000",
+    "--burst",
+    "--duration-seconds",
+    "1800"
+  ],
+  "completedAtUTC": "2026-10-21T04:27:53.597785+00:00",
+  "currentHTTPGatewayExecutableSHA256": "ad38aa4e878038c00f8f47b9a89929d6f5840e40eb360fc2319ea02514d6e284",
+  "dirtySource": true,
+  "documentationOnlySourceChanges": [
+    {
+      "addedDocumentationLines": [
+        "    /// replaces the native logger threshold, which also updates multiplex children.",
+        "    /// Use a fixed output-level filter to preserve a destination floor. No global state changes."
+      ],
+      "finalSHA256": "dcd099ab52d213ae0007e1996acdd6e50eded730ba2c05cdb1e54649a4a97cec",
+      "originalSHA256": "900e5aa424a5641fcc7d188ae5cf5fd062b943d352d71793ff4f784ab948d6de",
+      "path": "Sources/DiscordLogging/DiscordLog.swift",
+      "removedDocumentationLines": [
+        "    /// replaces the logger threshold but cannot lower an independently filtered output's",
+        "    /// threshold (for example, a child of `MultiplexLogHandler`). No global state changes."
+      ]
+    }
+  ],
+  "executableIdentityNote": "The long-running process retained its original executable mapping. A byte-identical saved executable verified the recorded SHA256 after the current HTTP/Gateway matrix executable was rebuilt.",
+  "executableSHA256": "6e0df7d713234f13b1de3a72bfe63e6adce542bcaaa1f0992e4ffcd9a1c127f6",
+  "finalSourceSHA256": {
+    "Sources/DiscordCache/CacheValues.swift": "aad23c15ca2decce7b72d02391c1e4f22a4187b9363aa1cbf3d56d149a8dab6c",
+    "Sources/DiscordCache/EntityCache.swift": "888dadd2aca93ff14ad1827796dddc8437d49d569a49bad0b019806b272ec188",
+    "Sources/DiscordCache/EventReducer.swift": "eeda1685642c2a4fd57a10f9c3ab3c92a3d9d75cd2586b2168f4902217490aa8",
+    "Sources/DiscordCache/PermissionResolver.swift": "043bbb14d3cf4a776e513e1ed5820101e899e2e6918327005b87ae8afe91b6e5",
+    "Sources/DiscordGateway/EventHandlers.swift": "2bcd97076996d90d2d58301c28d6f3d60698724bb5080d7aaca85a4abac7b3a1",
+    "Sources/DiscordGateway/EventHub.swift": "7be9cbef8f26d722297e1646ada8a47783c0bfa510c030819bf7f3e7d994d986",
+    "Sources/DiscordGateway/GatewayCommandCoordinator.swift": "95cb6c2129161408b956ab44664bca43a3bbbfcd188e09fd7b26ecb8a9b7fb16",
+    "Sources/DiscordGateway/GatewayCommands.swift": "2beb817e739055046f31adbfbb19b1d4d930d6401530646f211eb5f8bbb3e9f2",
+    "Sources/DiscordGateway/GatewayEndpoints.swift": "6d243184ea60fc95b92fb68481333b20d87693df696b996e1ced7d261167fe34",
+    "Sources/DiscordGateway/GatewayProtocol.swift": "40818c321eead45ac969c0e52dfde51ed6265269b765cdb9c5f461330a828b66",
+    "Sources/DiscordGateway/GatewayRequests.swift": "e785895ac6c72de5ed58d35326701708b448c80aed906349f7db5605fb76659d",
+    "Sources/DiscordGateway/GatewayShard.swift": "4a741ec6d90d09206a01d2b6402990632395d2adc26bd6993535cf41f1d29f7c",
+    "Sources/DiscordGateway/GatewayStartup.swift": "a29d20621da8224b2447e69016dc0e7f1b0d9949ca894dfcf289326786f794bf",
+    "Sources/DiscordLogging/DiscordLog.swift": "dcd099ab52d213ae0007e1996acdd6e50eded730ba2c05cdb1e54649a4a97cec",
+    "Sources/DiscordLogging/DiscordLogConfiguration.swift": "5cb95015f2e8434c5458645232df5d463e6d8244c4d4ef9153e4a0b3336d6620",
+    "Sources/DiscordLogging/DiscordLogOperation.swift": "9d13d4ca2331b980c5299a348fa951377f2bcb944b75752b5df46a7ead50930e",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/GatewayLoadRunner.swift": "d8484c74b239a134cbb4810c5beddfcfa03860fe7be16fd22235a899fe27391a",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/HTTPPolicyRunner.swift": "6f4b4eea9d01b4795961804ddd72976c0152032968c28a9d0ce6787dfc77b4ec",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/LoadRunner.swift": "e73efd6dc614769aab2d33e299cff664bbdd1406c21c08abe1b797d9cd83dcae",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/WorkloadProfile.swift": "7b6fd24cf945ac115c5169ff5efae95da9ca9184bf4dbac5aaa6fbf8cf3123be",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/main.swift": "ec76a42cf643931a368948528f84d1bd4a6515e95bceb3110186cd745f7ce063"
+  },
+  "hardwareModel": "Mac15,10",
+  "interference": "Concurrent finite cache/broadcast scenarios, independent load tests, HTTP/Gateway matrices, root Swift builds/tests, symbol extraction, documentation/API audits and example builds occurred on this host. Whole-machine load was not controlled. No performance improvement, regression comparison or production trace-output claim is made.",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "loggingConfiguration": "Existing application-owned StreamLogHandler.standardError bootstrap at default info threshold; generated warning overload diagnostics redirected to a temporary file, not retained with machine reports. Trace formatting/output performance is not qualified.",
+  "measurementScope": "One local process; four opaque scopes and twenty fixed keys per scope; cache/broadcast recovery, actual RSS/live heap and bounded accounting. No real accounts, sockets, credentials, network, live Discord, device, production or fleet capacity qualification.",
+  "observedSummary": {
+    "actualLoaderCalls": 597260,
+    "afterShutdown": {
+      "cpuSeconds": 1725.271992,
+      "liveAllocationBlocks": 15560,
+      "liveAllocationBytes": 1426560,
+      "peakRSSBytes": 11878400,
+      "residentBytes": 11354112
+    },
+    "before": {
+      "cpuSeconds": 0.00732,
+      "liveAllocationBlocks": 1016,
+      "liveAllocationBytes": 111232,
+      "peakRSSBytes": 7946240,
+      "residentBytes": 7946240
+    },
+    "capacityRefusals": 33446560,
+    "checkpointCount": 121,
+    "coalescedReads": 4180820,
+    "completedRefreshCalls": 4778080,
+    "completedRounds": 149315,
+    "durationSeconds": 1800.00093975,
+    "healthyBroadcastDeliveries": 447945,
+    "lastFiveMinutes": {
+      "firstLiveAllocationBytes": 1475216,
+      "firstResidentBytes": 11485184,
+      "lastLiveAllocationBytes": 1426560,
+      "lastResidentBytes": 11354112,
+      "maximumLiveAllocationBytes": 1493888,
+      "maximumResidentBytes": 11485184,
+      "minimumLiveAllocationBytes": 1426560,
+      "minimumResidentBytes": 11206656,
+      "sampleCount": 21
+    },
+    "maximumAccountedBytes": 262144,
+    "maximumEntries": 64,
+    "maximumSampledLiveAllocationBytes": 1497072,
+    "maximumSampledResidentBytes": 11878400,
+    "offeredRefreshCalls": 38224640,
+    "ownedCountersAfterShutdown": {
+      "bufferedEventsAfterShutdown": 0,
+      "entriesAfterShutdown": 0,
+      "refreshesAfterShutdown": 0,
+      "subscriptionsAfterShutdown": 0,
+      "waitersAfterShutdown": 0
+    },
+    "peakAccountedBytes": 72512,
+    "peakEntries": 64,
+    "recoveryReads": 597260,
+    "selectedScopes": 4,
+    "slowSubscriberResynchronizations": 149315,
+    "workingSetKeysPerScope": 20
+  },
+  "otherSourceChangesDuringRun": "RateLimitCoordinator.swift queue-full logging severity changed from warning to debug outside this measured cache/broadcast source closure. The measured soak does not execute the HTTP coordinator. Later HTTP/Gateway matrices used a separately hashed current-source executable.",
+  "physicalMemoryBytes": 38654705664,
+  "platformProvenanceNote": "Normalized platform description intentionally omits the host node name.",
+  "preservedMeasuredExecutableSHA256": "6e0df7d713234f13b1de3a72bfe63e6adce542bcaaa1f0992e4ffcd9a1c127f6",
+  "processor": "Apple M3 Max",
+  "provenanceFinalizedAtUTC": "2026-10-21T04:28:50.349543+00:00",
+  "recordedAtUTC": "2026-10-21T03:57:52.981800+00:00",
+  "reportValidation": {
+    "allExistingScenarioGatesPassed": true,
+    "jsonDocumentsParsed": 29,
+    "scenarioReportsValidated": 25
+  },
+  "runtimeSourceChangedDuringRun": [],
+  "sourceChangedDuringRun": [
+    "Sources/DiscordLogging/DiscordLog.swift"
+  ],
+  "sourceCommitBasis": "eb3a44d248275682eb2a1b6ba53e741db092f233",
+  "sourceDriftClassification": "Only two documentation-comment lines in DiscordLog.swift changed after launch; all executable Swift lines and the measured source-file inventory are unchanged. Both SHA maps are retained.",
+  "sourceSHA256": {
+    "Sources/DiscordCache/CacheValues.swift": "aad23c15ca2decce7b72d02391c1e4f22a4187b9363aa1cbf3d56d149a8dab6c",
+    "Sources/DiscordCache/EntityCache.swift": "888dadd2aca93ff14ad1827796dddc8437d49d569a49bad0b019806b272ec188",
+    "Sources/DiscordCache/EventReducer.swift": "eeda1685642c2a4fd57a10f9c3ab3c92a3d9d75cd2586b2168f4902217490aa8",
+    "Sources/DiscordCache/PermissionResolver.swift": "043bbb14d3cf4a776e513e1ed5820101e899e2e6918327005b87ae8afe91b6e5",
+    "Sources/DiscordGateway/EventHandlers.swift": "2bcd97076996d90d2d58301c28d6f3d60698724bb5080d7aaca85a4abac7b3a1",
+    "Sources/DiscordGateway/EventHub.swift": "7be9cbef8f26d722297e1646ada8a47783c0bfa510c030819bf7f3e7d994d986",
+    "Sources/DiscordGateway/GatewayCommandCoordinator.swift": "95cb6c2129161408b956ab44664bca43a3bbbfcd188e09fd7b26ecb8a9b7fb16",
+    "Sources/DiscordGateway/GatewayCommands.swift": "2beb817e739055046f31adbfbb19b1d4d930d6401530646f211eb5f8bbb3e9f2",
+    "Sources/DiscordGateway/GatewayEndpoints.swift": "6d243184ea60fc95b92fb68481333b20d87693df696b996e1ced7d261167fe34",
+    "Sources/DiscordGateway/GatewayProtocol.swift": "40818c321eead45ac969c0e52dfde51ed6265269b765cdb9c5f461330a828b66",
+    "Sources/DiscordGateway/GatewayRequests.swift": "e785895ac6c72de5ed58d35326701708b448c80aed906349f7db5605fb76659d",
+    "Sources/DiscordGateway/GatewayShard.swift": "4a741ec6d90d09206a01d2b6402990632395d2adc26bd6993535cf41f1d29f7c",
+    "Sources/DiscordGateway/GatewayStartup.swift": "a29d20621da8224b2447e69016dc0e7f1b0d9949ca894dfcf289326786f794bf",
+    "Sources/DiscordLogging/DiscordLog.swift": "900e5aa424a5641fcc7d188ae5cf5fd062b943d352d71793ff4f784ab948d6de",
+    "Sources/DiscordLogging/DiscordLogConfiguration.swift": "5cb95015f2e8434c5458645232df5d463e6d8244c4d4ef9153e4a0b3336d6620",
+    "Sources/DiscordLogging/DiscordLogOperation.swift": "9d13d4ca2331b980c5299a348fa951377f2bcb944b75752b5df46a7ead50930e",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/GatewayLoadRunner.swift": "d8484c74b239a134cbb4810c5beddfcfa03860fe7be16fd22235a899fe27391a",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/HTTPPolicyRunner.swift": "6f4b4eea9d01b4795961804ddd72976c0152032968c28a9d0ce6787dfc77b4ec",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/LoadRunner.swift": "e73efd6dc614769aab2d33e299cff664bbdd1406c21c08abe1b797d9cd83dcae",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/WorkloadProfile.swift": "7b6fd24cf945ac115c5169ff5efae95da9ca9184bf4dbac5aaa6fbf8cf3123be",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/main.swift": "ec76a42cf643931a368948528f84d1bd4a6515e95bceb3110186cd745f7ce063"
+  },
+  "stderrBytes": 34193345,
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
+  "validated": true
+}

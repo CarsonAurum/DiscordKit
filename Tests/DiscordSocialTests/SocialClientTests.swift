@@ -262,14 +262,14 @@ extension SocialClientTests {
             }
             await client.close()
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.social" }
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "social.authorization.activated" })
+        let entries = recorder.entries.filter { $0.label == "discordkit.social.client" }
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "social.authorization.activated" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "social.profile.completed" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "social.presence.failed" })
         let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
         for secret in ["private-presence-text", "sentinel-provider-secret", "rpc.activities.write", "username"] {
             #expect(!rendered.contains(secret))
         }
-        #expect(entries.allSatisfy { $0.level != .info && $0.level != .notice })
+        #expect(entries.allSatisfy { $0.metadata["dk.module"] == "social" })
     }
 }

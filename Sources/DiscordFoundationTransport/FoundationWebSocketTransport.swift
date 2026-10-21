@@ -42,6 +42,7 @@ public struct FoundationWebSocketTransport: WebSocketTransport, TransportResourc
             let platform = try foundationRequest(request, webSocket: true)
             let reserved = try await owner.reserve { await request.body?.close() }
             identifier = reserved
+            DiscordLog.makeLogger("foundation.admission").trace("Foundation operation slot reserved", metadata: ["dk.event": "foundation.admission.reserved"])
             let task = owner.session.webSocketTask(with: platform)
             task.maximumMessageSize = configuration.maximumWebSocketMessageBytes
             let handshake = FoundationWebSocketHandshake()
@@ -53,6 +54,7 @@ public struct FoundationWebSocketTransport: WebSocketTransport, TransportResourc
             catch { await connection.close(); throw error }
             try await context.run {
                 try await withTaskCancellationHandler {
+                    DiscordLog.makeLogger("foundation.websocket.handshake").trace("Foundation WebSocket handshake submitted", metadata: ["dk.event": "foundation.websocket.handshake.submitted"])
                     task.resume()
                     try await handshake.wait()
                 } onCancel: {
@@ -61,7 +63,7 @@ public struct FoundationWebSocketTransport: WebSocketTransport, TransportResourc
                     Task { await handshake.finish(.failure(CancellationError())) }
                 }
             }
-            DiscordLog.makeLogger("foundation.websocket").debug("Foundation WebSocket connected", metadata: ["dk.event": "foundation.websocket.connected"])
+            DiscordLog.makeLogger("foundation.websocket").info("Foundation WebSocket connected", metadata: ["dk.event": "foundation.websocket.connected"])
             return connection
         } catch {
             await request.body?.close()
@@ -75,7 +77,7 @@ public struct FoundationWebSocketTransport: WebSocketTransport, TransportResourc
     /// Cancels every admitted connection and awaits session invalidation exactly once.
     public func close() async {
         await owner.close()
-        DiscordLog.makeLogger("foundation.websocket").debug("Foundation WebSocket transport closed", metadata: ["dk.event": "foundation.websocket.closed"])
+        DiscordLog.makeLogger("foundation.websocket").info("Foundation WebSocket transport closed", metadata: ["dk.event": "foundation.websocket.closed"])
     }
 }
 
@@ -232,13 +234,17 @@ private actor FoundationWebSocketConnection: WebSocketSessionConnection {
         guard count <= configuration.maximumWebSocketMessageBytes else {
             throw FoundationTransportFailure.messageLimitExceeded(limit: configuration.maximumWebSocketMessageBytes)
         }
+        DiscordLog.makeLogger("foundation.websocket.write").trace("Foundation WebSocket message admitted", metadata: ["dk.event": "foundation.websocket.send.admitted", "dk.bytes": .stringConvertible(count)])
         let task = self.task
         let delegate = self.delegate
         do {
             try await context.run {
                 try await withTaskCancellationHandler {
                     try await self.acquireWrite()
-                    do { try await task.send(platform) }
+                    do {
+                        try await task.send(platform)
+                        DiscordLog.makeLogger("foundation.websocket.write").trace("Foundation WebSocket message sent", metadata: ["dk.event": "foundation.websocket.send.completed", "dk.bytes": .stringConvertible(count)])
+                    }
                     catch { await self.releaseWrite(); throw error }
                     await self.releaseWrite()
                 } onCancel: {
@@ -262,6 +268,7 @@ private actor FoundationWebSocketConnection: WebSocketSessionConnection {
         guard writers.count < configuration.maximumConcurrentOperations else {
             throw FoundationTransportFailure.admissionRejected
         }
+        DiscordLog.makeLogger("foundation.websocket.write").trace("Foundation WebSocket writer queued", metadata: ["dk.event": "foundation.websocket.writer.queued", "dk.queued": .stringConvertible(writers.count + 1)])
         try await withCheckedThrowingContinuation { writers.append($0) }
         try Task.checkCancellation()
         guard !closed else { throw TransportFailure.closed }
@@ -285,6 +292,7 @@ private actor FoundationWebSocketConnection: WebSocketSessionConnection {
         guard !closed else { return nil }
         guard !reading else { throw TransportFailure.concurrentRead }
         reading = true
+        DiscordLog.makeLogger("foundation.websocket.read").trace("Foundation WebSocket receive waiting", metadata: ["dk.event": "foundation.websocket.receive.wait"])
         defer { reading = false }
         let task = self.task
         let delegate = self.delegate
@@ -304,11 +312,13 @@ private actor FoundationWebSocketConnection: WebSocketSessionConnection {
                 guard text.utf8.count <= configuration.maximumWebSocketMessageBytes else {
                     throw FoundationTransportFailure.messageLimitExceeded(limit: configuration.maximumWebSocketMessageBytes)
                 }
+                DiscordLog.makeLogger("foundation.websocket.read").trace("Foundation WebSocket text received", metadata: ["dk.event": "foundation.websocket.receive.completed", "dk.kind": "text", "dk.bytes": .stringConvertible(text.utf8.count)])
                 return .text(text)
             case .data(let bytes):
                 guard bytes.count <= configuration.maximumWebSocketMessageBytes else {
                     throw FoundationTransportFailure.messageLimitExceeded(limit: configuration.maximumWebSocketMessageBytes)
                 }
+                DiscordLog.makeLogger("foundation.websocket.read").trace("Foundation WebSocket binary message received", metadata: ["dk.event": "foundation.websocket.receive.completed", "dk.kind": "binary", "dk.bytes": .stringConvertible(bytes.count)])
                 return .binary(bytes)
             @unknown default: throw FoundationTransportFailure.invalidResponse
             }
@@ -349,6 +359,7 @@ private actor FoundationWebSocketConnection: WebSocketSessionConnection {
     private func finishClose(code: URLSessionWebSocketTask.CloseCode) async {
         if let closeTask { await closeTask.value; return }
         closed = true
+        DiscordLog.makeLogger("foundation.websocket").trace("Foundation WebSocket connection cleanup started", metadata: ["dk.event": "foundation.websocket.connection.cleanup", "dk.pending_writers": .stringConvertible(writers.count)])
         delegate.closeState.withLock { $0.locallyClosing = true }
         task.cancel(with: code, reason: nil)
         task.cancel()

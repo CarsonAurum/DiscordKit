@@ -76,10 +76,11 @@ jobs:
           swift run --package-path Tools/DiscordKitTools DiscordKitTools parity check --repository .
           python3 Tools/DiscordKitTools/scripts/verify_social_catalog.py
           python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
-          # Keep historical hash-bound certification distinct from the current invocation resilience candidate.
+          # Keep historical hash-bound certification distinct from current semantic logging evidence.
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase14-report.json
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15-report.json
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15l-report.json
+          python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/semantic-logging-report.json
           python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json
       - name: Build independent consumers and test offline examples
         run: |
@@ -105,11 +106,12 @@ jobs:
           swift package dump-symbol-graph --minimum-access-level public
           python3 Tools/ci/curate_docc.py --check
           python3 Tools/ci/documentation_examples.py
-          python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot --repository . --symbolgraphs .build/out/symbolgraph --version 0.17.0 --output .build/current-api.json
-          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline.json --candidate .build/current-api.json --version 0.17.0
-          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.15.0.json --candidate .build/current-api.json --version 0.17.0
-          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.16.0.json --candidate .build/current-api.json --version 0.17.0
-          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.17.0.json --candidate .build/current-api.json --version 0.17.0
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py snapshot --repository . --symbolgraphs .build/out/symbolgraph --version 0.18.0 --output .build/current-api.json
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline.json --candidate .build/current-api.json --version 0.18.0
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.15.0.json --candidate .build/current-api.json --version 0.18.0
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.16.0.json --candidate .build/current-api.json --version 0.18.0
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.17.0.json --candidate .build/current-api.json --version 0.18.0
+          python3 Tools/DiscordKitTools/scripts/api_baseline.py check --baseline Docs/Release/api-baseline-0.18.0.json --candidate .build/current-api.json --version 0.18.0
           python3 Tools/ci/build_docc.py
           swift package --package-path Packages/DiscordDSLMacros dump-symbol-graph --minimum-access-level public
           python3 Tools/ci/curate_docc.py --repository Packages/DiscordDSLMacros --symbolgraphs Packages/DiscordDSLMacros/.build/out/symbolgraph --check

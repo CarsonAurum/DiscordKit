@@ -18,8 +18,10 @@ struct AppleLoggingTests {
             #expect(await resource.closeCount == 1)
             #expect(await lifecycle.retainedResourceCount() == 0)
         }
-        #expect(recorder.entries.compactMap { $0.metadata["dk.event"] } == ["apple.lifecycle.transition", "apple.lifecycle.drain"])
+        #expect(recorder.entries.compactMap { $0.metadata["dk.event"] } == ["apple.lifecycle.transition", "apple.lifecycle.drain", "apple.lifecycle.drain.completed"])
         #expect(recorder.entries.first?.metadata["state"] == "suspended")
+        #expect(recorder.entries.first?.level == .info)
+        #expect(recorder.entries.last?.metadata["dk.resources"]?.description == "1")
     }
 }
 

@@ -47,6 +47,7 @@ public struct FoundationHTTPTransport: HTTPTransport, TransportResource {
             let platform = try foundationRequest(request, webSocket: false)
             let reserved = try await owner.reserve { await request.body?.close() }
             identifier = reserved
+            DiscordLog.makeLogger("foundation.admission").trace("Foundation operation slot reserved", metadata: ["dk.event": "foundation.admission.reserved"])
             let owner = self.owner
             let configuration = self.configuration
             let result = try await context.run {
@@ -68,6 +69,8 @@ public struct FoundationHTTPTransport: HTTPTransport, TransportResource {
                 }
                 var outgoing = platform
                 if request.body != nil { outgoing.httpBody = upload }
+                DiscordLog.makeLogger("foundation.http.upload").trace("Foundation HTTP upload collection completed", metadata: ["dk.event": "foundation.http.upload.completed", "dk.bytes": .stringConvertible(upload.count)])
+                DiscordLog.makeLogger("foundation.http").trace("Foundation HTTP request submitted", metadata: ["dk.event": "foundation.http.submitted"])
                 let (bytes, metadata) = try await owner.session.bytes(for: outgoing)
                 guard let response = metadata as? HTTPURLResponse else {
                     bytes.task.cancel()
@@ -88,6 +91,7 @@ public struct FoundationHTTPTransport: HTTPTransport, TransportResource {
                                           next: { try await source.next() }, close: { await source.close() })
                 let headers = response.allHeaderFields.map { HTTPHeader(name: String(describing: $0.key),
                                                                         value: String(describing: $0.value)) }
+                DiscordLog.makeLogger("foundation.http.body").trace("Foundation HTTP response body ownership transferred", metadata: ["dk.event": "foundation.http.body.transferred", "dk.status": .stringConvertible(response.statusCode)])
                 return HTTPResponse(status: response.statusCode, headers: headers, body: body)
             }
             DiscordLog.makeLogger("foundation.http").debug("Foundation HTTP response received", metadata: ["dk.event": "foundation.http.response", "http.status": "\(result.status)"])
@@ -104,7 +108,7 @@ public struct FoundationHTTPTransport: HTTPTransport, TransportResource {
     /// Closure is idempotent; subsequent executions fail with `TransportFailure.closed`.
     public func close() async {
         await owner.close()
-        DiscordLog.makeLogger("foundation.http").debug("Foundation HTTP transport closed", metadata: ["dk.event": "foundation.http.closed"])
+        DiscordLog.makeLogger("foundation.http").info("Foundation HTTP transport closed", metadata: ["dk.event": "foundation.http.closed"])
     }
 }
 
@@ -183,6 +187,7 @@ private actor FoundationHTTPBody<C: Clock> where C.Duration == Duration {
     func close() async {
         if let closeTask { await closeTask.value; return }
         closed = true
+        DiscordLog.makeLogger("foundation.http.body").trace("Foundation HTTP body cleanup started", metadata: ["dk.event": "foundation.http.body.cleanup", "dk.bytes": .stringConvertible(count)])
         task.cancel()
         let discarded = iterator
         iterator = nil
@@ -191,6 +196,7 @@ private actor FoundationHTTPBody<C: Clock> where C.Duration == Duration {
         let cleanup = Task {
             if let discarded { await foundationDiscardBytes(discarded) }
             await owner.release(identifier)
+            DiscordLog.makeLogger("foundation.admission").trace("Foundation HTTP body operation slot released", metadata: ["dk.event": "foundation.admission.released"])
         }
         closeTask = cleanup
         await cleanup.value

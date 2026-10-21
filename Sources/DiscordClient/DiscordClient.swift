@@ -83,6 +83,7 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
     /// Discovers v10 topology and supervises all selected sessions until shutdown or failure.
     /// Only one invocation is accepted, including after a completed or failed run.
     /// Cancellation awaits socket/lease/task/queue cleanup and terminates subscriptions.
+    /// Diagnostics inherit one ephemeral operation trace through discovery, ingestion and cleanup.
     /// - Throws: Cancellation; sanitized HTTP/Gateway/ownership errors; invalid topology or
     ///   aggregate resource exhaustion. Projection failures become `invalidPayload` without
     ///   exposing dependency text. No automatic client restart resets shared budgets.
@@ -91,56 +92,64 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
             if phase == .stopped || phase == .failed { throw ClientFailure.stopped }
             throw ClientFailure.alreadyRunning
         }
-        phase = .discovering
-        DiscordLog.makeLogger("client").debug("Client run started", metadata: ["dk.event": "client.run.started"])
-        startCompletionWait()
-        var failure: (any Error)?
-        do {
-            try Task.checkCancellation()
-            try await withThrowingTaskGroup(of: Bool.self) { group in
-                group.addTask { try await self.runWork(); return true }
-                group.addTask {
-                    for await _ in self.stopSignal.stream { return false }
-                    return false
-                }
-                do {
-                    while let workFinished = try await group.next() {
-                        if workFinished { break }
-                        group.cancelAll()
-                        await self.stopShards()
-                        // Join work explicitly so a lease-release failure cannot disappear
-                        // behind the earlier shutdown signal.
+        try await DiscordLog.withOperation("client.lifecycle", event: "client.run.operation") {
+            phase = .discovering
+            DiscordLog.makeLogger("client.lifecycle").info("Client run started", metadata: ["dk.event": "client.run.started"])
+            startCompletionWait()
+            var failure: (any Error)?
+            do {
+                try Task.checkCancellation()
+                try await withThrowingTaskGroup(of: Bool.self) { group in
+                    group.addTask { try await self.runWork(); return true }
+                    group.addTask {
+                        for await _ in self.stopSignal.stream { return false }
+                        return false
                     }
-                } catch {
-                    var terminal = error
-                    group.cancelAll(); await self.stopShards()
-                    while !group.isEmpty {
-                        do { _ = try await group.next() }
-                        catch { if terminal is CancellationError { terminal = error } }
+                    do {
+                        while let workFinished = try await group.next() {
+                            if workFinished { break }
+                            DiscordLog.makeLogger("client.lifecycle").trace("Client stop signal observed", metadata: ["dk.event": "client.run.stop_observed"])
+                            group.cancelAll()
+                            await self.stopShards()
+                            // Join work explicitly so a lease-release failure cannot disappear
+                            // behind the earlier shutdown signal.
+                        }
+                    } catch {
+                        var terminal = error
+                        group.cancelAll(); await self.stopShards()
+                        while !group.isEmpty {
+                            do { _ = try await group.next() }
+                            catch { if terminal is CancellationError { terminal = error } }
+                        }
+                        if !(terminal is CancellationError && phase == .stopping && !Task.isCancelled) { throw terminal }
                     }
-                    if !(terminal is CancellationError && phase == .stopping && !Task.isCancelled) { throw terminal }
+                    group.cancelAll()
+                    await self.stopShards()
                 }
-                group.cancelAll()
-                await self.stopShards()
+                try Task.checkCancellation()
+            } catch { failure = error }
+            phase = failure == nil || failure is CancellationError ? .stopped : .failed
+            DiscordLog.makeLogger("client.lifecycle").trace("Finishing client event publication", metadata: ["dk.event": "client.cleanup.events_finishing"])
+            await events.finish()
+            DiscordLog.makeLogger("client.lifecycle").trace("Client event publication finished", metadata: ["dk.event": "client.cleanup.events_finished"])
+            if let reservation {
+                self.reservation = nil; await authority.budget.release(reservation)
+                DiscordLog.makeLogger("client.lifecycle").trace("Client aggregate reservation released", metadata: ["dk.event": "client.cleanup.reservation_released"])
             }
-            try Task.checkCancellation()
-        } catch { failure = error }
-        phase = failure == nil || failure is CancellationError ? .stopped : .failed
-        await events.finish()
-        if let reservation { self.reservation = nil; await authority.budget.release(reservation) }
-        await cleanupOnce()
-        stopSignal.continuation.finish()
-        completion.continuation.finish()
-        await completionWait?.value
-        if let failure {
-            if failure is CancellationError {
-                DiscordLog.makeLogger("client").debug("Client run cancelled", metadata: ["dk.event": "client.run.cancelled"])
-            } else {
-                DiscordLog.makeLogger("client").error("Client run failed", metadata: ["dk.event": "client.run.failed"])
+            await cleanupOnce()
+            stopSignal.continuation.finish()
+            completion.continuation.finish()
+            await completionWait?.value
+            if let failure {
+                if failure is CancellationError {
+                    DiscordLog.makeLogger("client.lifecycle").debug("Client run cancelled", metadata: ["dk.event": "client.run.cancelled"])
+                } else {
+                    DiscordLog.makeLogger("client.lifecycle").error("Client run failed", metadata: ["dk.event": "client.run.failed"])
+                }
+                throw failure
             }
-            throw failure
+            DiscordLog.makeLogger("client.lifecycle").info("Client run stopped", metadata: ["dk.event": "client.run.stopped"])
         }
-        DiscordLog.makeLogger("client").debug("Client run stopped", metadata: ["dk.event": "client.run.stopped"])
     }
 
     /// Requests stop and awaits the owning run's complete structured cleanup.
@@ -149,13 +158,14 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
     /// both belong to the same run and would await their own completion.
     /// Before `run`, shutdown permanently closes this client without discovering or leasing.
     public func shutdown() async {
-        DiscordLog.makeLogger("client").debug("Client shutdown requested", metadata: ["dk.event": "client.shutdown.requested"])
+        DiscordLog.makeLogger("client.lifecycle").debug("Client shutdown requested", metadata: ["dk.event": "client.shutdown.requested", "dk.phase": .string(phase.rawValue)])
         if phase == .idle {
             startCompletionWait()
             phase = .stopped
             await events.finish(); await cleanupOnce()
             stopSignal.continuation.finish(); completion.continuation.finish()
             await completionWait?.value
+            DiscordLog.makeLogger("client.lifecycle").info("Client stopped before startup", metadata: ["dk.event": "client.shutdown.stopped_before_run"])
             return
         }
         if phase != .stopped && phase != .failed {
@@ -164,6 +174,7 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
         }
         // Awaiting the shared owned task cannot cancel its stream when this caller is cancelled.
         await completionWait?.value
+        DiscordLog.makeLogger("client.lifecycle").trace("Client shutdown joined owner completion", metadata: ["dk.event": "client.shutdown.joined"])
     }
 
     /// Reads bounded nonsecret shard/session diagnostics; readiness can change after return.
@@ -210,17 +221,24 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
     /// Performs cancellable discovery and owns bounded shard ingestion siblings.
     /// - Throws: Existing v10 discovery/topology/admission/shard failures or cancellation.
     private func runWork() async throws {
+        DiscordLog.makeLogger("client.discovery").trace("Reserving initial client resource budget", metadata: ["dk.event": "client.discovery.reserving"])
         reservation = try await authority.budget.reserve(shards: 0, configuration: configuration.shard)
+        DiscordLog.makeLogger("client.discovery").trace("Initial client resource budget reserved", metadata: ["dk.event": "client.discovery.reserved"])
         try Task.checkCancellation()
+        DiscordLog.makeLogger("client.discovery").debug("Gateway topology discovery started", metadata: ["dk.event": "client.discovery.started"])
         let discovery = try await services.execute(GatewayEndpoints.bot())
+        DiscordLog.makeLogger("client.discovery").trace("Gateway discovery response received", metadata: ["dk.event": "client.discovery.received"])
         try Task.checkCancellation()
         let identities = try discovery.shards(botID: authority.botID,
             topologyGeneration: configuration.topologyGeneration, indices: configuration.shardIndices,
             maximumShards: configuration.maximumShards)
+        DiscordLog.makeLogger("client.discovery").trace("Gateway topology validated", metadata: ["dk.event": "client.discovery.validated", "dk.shards": .stringConvertible(identities.count)])
         guard let reservation else { throw ClientFailure.capacityExceeded }
         try await authority.budget.resize(reservation, shards: identities.count, configuration: configuration.shard)
+        DiscordLog.makeLogger("client.discovery").trace("Aggregate shard resource budget resized", metadata: ["dk.event": "client.discovery.budget_resized", "dk.shards": .stringConvertible(identities.count)])
         try Task.checkCancellation()
         let startup = try await authority.startupCoordinator(discovery: discovery)
+        DiscordLog.makeLogger("client.discovery").trace("Shared Gateway startup authority acquired", metadata: ["dk.event": "client.discovery.startup_acquired"])
         try Task.checkCancellation()
         shards = identities.map { identity in
             GatewayShard(identity: identity, token: token, intents: configuration.intents.rawValue,
@@ -228,9 +246,10 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
                 startup: startup, configuration: configuration.shard, commandCoordinator: authority.commands)
         }
         phase = .running
-        DiscordLog.makeLogger("client").debug("Client shards prepared", metadata: ["dk.event": "client.shards.prepared", "dk.shards": .stringConvertible(shards.count)])
+        DiscordLog.makeLogger("client.lifecycle").info("Client shards prepared", metadata: ["dk.event": "client.shards.prepared", "dk.shards": .stringConvertible(shards.count)])
         let bot = try GatewayBot(shards: shards, maximumShards: configuration.maximumShards)
         try await withThrowingTaskGroup(of: Bool.self) { group in
+            DiscordLog.makeLogger("client.lifecycle").trace("Starting supervised Gateway and ingestion children", metadata: ["dk.event": "client.children.starting", "dk.shards": .stringConvertible(shards.count)])
             group.addTask { try await bot.run(); return true }
             for shard in shards { group.addTask { try await self.ingest(shard); return false } }
             do {
@@ -248,6 +267,7 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
             }
             group.cancelAll(); await bot.stop()
         }
+        DiscordLog.makeLogger("client.lifecycle").trace("Supervised Gateway and ingestion children joined", metadata: ["dk.event": "client.children.joined"])
     }
 
     /// Drains each bounded raw batch in shard order, queues trusted interaction dispatches before
@@ -259,30 +279,39 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
     ///   receiver/projection failure. A failed event is not published or replayed. Actor suspension
     ///   permits other shards to progress; heartbeat/control receive remains owned by the shard.
     private func ingest(_ shard: GatewayShard<C, Leases>) async throws {
+        DiscordLog.makeLogger("client.ingestion").trace("Shard ingestion started", metadata: ["dk.event": "client.ingestion.started"])
+        defer { DiscordLog.makeLogger("client.ingestion").trace("Shard ingestion stopped", metadata: ["dk.event": "client.ingestion.stopped"]) }
         while let batch = try await shard.nextEvents(maximum: configuration.ingestionBatchSize) {
+            DiscordLog.makeLogger("client.ingestion").trace("Raw Gateway event batch received", metadata: ["dk.event": "client.ingestion.batch_received", "dk.events": .stringConvertible(batch.count)])
             for event in batch {
                 try Task.checkCancellation()
                 do {
                     if event.opcode == 0, event.name == "INTERACTION_CREATE" {
+                        DiscordLog.makeLogger("client.ingestion").trace("Offering trusted interaction to private receiver", metadata: ["dk.event": "client.ingestion.interaction_offered", "dk.receiver_present": .stringConvertible(interactionHandler != nil)])
                         try await interactionHandler?(event)
                     }
+                    DiscordLog.makeLogger("client.ingestion").trace("Projecting Gateway event before publication", metadata: ["dk.event": "client.ingestion.projecting"])
                     try await project(event)
+                    DiscordLog.makeLogger("client.ingestion").trace("Gateway event projection completed", metadata: ["dk.event": "client.ingestion.projected"])
                 }
                 catch is CancellationError { throw CancellationError() }
                 catch {
-                    DiscordLog.makeLogger("client").error("Client event projection failed", metadata: ["dk.event": "client.projection.failed"])
+                    DiscordLog.makeLogger("client.ingestion").error("Client event projection failed", metadata: ["dk.event": "client.projection.failed"])
                     throw GatewayFailure.invalidPayload
                 }
                 _ = await events.publish(event)
+                DiscordLog.makeLogger("client.ingestion").trace("Gateway event broadcast publication completed", metadata: ["dk.event": "client.ingestion.published"])
             }
         }
     }
 
     /// Requests simultaneous bounded shard drains; group scope awaits connection cleanup.
     private func stopShards() async {
+        DiscordLog.makeLogger("client.lifecycle").trace("Stopping owned shards", metadata: ["dk.event": "client.shards.stopping", "dk.shards": .stringConvertible(shards.count)])
         await withTaskGroup(of: Void.self) { group in
             for shard in shards { group.addTask { await shard.stop() } }
         }
+        DiscordLog.makeLogger("client.lifecycle").trace("Owned shard stop requests joined", metadata: ["dk.event": "client.shards.stopped"])
     }
 
     /// Releases the private interaction receiver and transfers optional dependency cleanup exactly
@@ -291,8 +320,10 @@ public actor DiscordClient<C: Clock, Leases: ShardLeaseStore>: CustomStringConve
     private func cleanupOnce() async {
         guard !cleaned else { return }
         cleaned = true
+        DiscordLog.makeLogger("client.lifecycle").trace("Releasing trusted receiver and owned dependencies", metadata: ["dk.event": "client.cleanup.dependencies_releasing"])
         interactionHandler = nil
         await cleanup()
+        DiscordLog.makeLogger("client.lifecycle").trace("Owned dependency cleanup completed", metadata: ["dk.event": "client.cleanup.dependencies_released"])
     }
 
     /// Starts one explicitly owned completion waiter when run/shutdown begins, never at construction.

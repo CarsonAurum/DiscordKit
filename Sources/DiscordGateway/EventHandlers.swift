@@ -137,7 +137,7 @@ public struct GatewayEventHandlerDispatcher: Sendable {
     ///   or the original callback error. After an error, concurrently completed side effects are not undone.
     public func run(subscription: GatewayEventSubscription,
                     handler: @escaping @Sendable (GatewayEvent) async throws -> Void) async throws {
-        DiscordLog.makeLogger("gateway").debug("Gateway handler dispatcher started", metadata: ["dk.event": "gateway.handlers.started"])
+        DiscordLog.makeLogger("gateway.handlers").info("Gateway handler dispatcher started", metadata: ["dk.event": "gateway.handlers.started"])
         do {
             try Task.checkCancellation()
             try await withThrowingTaskGroup(of: Completion.self) { group in
@@ -173,7 +173,7 @@ public struct GatewayEventHandlerDispatcher: Sendable {
                         inputScheduled = false
                         guard let event else { inputFinished = true; continue }
                         guard event.retainedByteCount <= configuration.maximumRetainedBytes - retainedBytes else {
-                            DiscordLog.makeLogger("gateway").error("Gateway handler retained capacity exhausted", metadata: ["dk.event": "gateway.handlers.overflow", "dk.retained": .stringConvertible(retainedEvents)])
+                            DiscordLog.makeLogger("gateway.handlers").error("Gateway handler retained capacity exhausted", metadata: ["dk.event": "gateway.handlers.overflow", "dk.retained": .stringConvertible(retainedEvents)])
                             throw GatewayEventDeliveryFailure.handlerCapacityExceeded
                         }
                         retainedEvents += 1
@@ -189,14 +189,14 @@ public struct GatewayEventHandlerDispatcher: Sendable {
         } catch {
             await subscription.cancel()
             if error is CancellationError {
-                DiscordLog.makeLogger("gateway").debug("Gateway handler dispatcher cancelled", metadata: ["dk.event": "gateway.handlers.cancelled"])
+                DiscordLog.makeLogger("gateway.handlers").debug("Gateway handler dispatcher cancelled", metadata: ["dk.event": "gateway.handlers.cancelled"])
             } else {
-                DiscordLog.makeLogger("gateway").error("Gateway handler dispatcher failed", metadata: ["dk.event": "gateway.handlers.failed"])
+                DiscordLog.makeLogger("gateway.handlers").error("Gateway handler dispatcher failed", metadata: ["dk.event": "gateway.handlers.failed"])
             }
             throw error
         }
         await subscription.cancel()
-        DiscordLog.makeLogger("gateway").debug("Gateway handler dispatcher stopped", metadata: ["dk.event": "gateway.handlers.stopped"])
+        DiscordLog.makeLogger("gateway.handlers").info("Gateway handler dispatcher stopped", metadata: ["dk.event": "gateway.handlers.stopped"])
     }
 
     /// Executes one callback under optional aggregate admission, releasing ownership on every path.
@@ -206,6 +206,7 @@ public struct GatewayEventHandlerDispatcher: Sendable {
     /// - Throws: Original user error, cancellation, or aggregate waiting-capacity failure.
     private func invoke(_ event: GatewayEvent,
                         handler: @Sendable (GatewayEvent) async throws -> Void) async throws {
+        DiscordLog.makeLogger("gateway.handlers").trace("Gateway event handler requesting admission", metadata: ["dk.event": "gateway.handler.admission", "dk.shared_authority": .stringConvertible(authority != nil)])
         if let authority {
             let id = UUID()
             try await withTaskCancellationHandler {
@@ -217,15 +218,20 @@ public struct GatewayEventHandlerDispatcher: Sendable {
             }
             do {
                 try Task.checkCancellation()
+                DiscordLog.makeLogger("gateway.handlers").trace("Gateway event handler invoked", metadata: ["dk.event": "gateway.handler.invoked"])
                 try await handler(event)
             } catch {
                 await authority.release()
+                DiscordLog.makeLogger("gateway.handlers").trace("Gateway event handler failed after releasing admission", metadata: ["dk.event": "gateway.handler.failed"])
                 throw error
             }
             await authority.release()
+            DiscordLog.makeLogger("gateway.handlers").trace("Gateway event handler completed after releasing admission", metadata: ["dk.event": "gateway.handler.completed"])
         } else {
             try Task.checkCancellation()
+            DiscordLog.makeLogger("gateway.handlers").trace("Gateway event handler invoked", metadata: ["dk.event": "gateway.handler.invoked"])
             try await handler(event)
+            DiscordLog.makeLogger("gateway.handlers").trace("Gateway event handler completed", metadata: ["dk.event": "gateway.handler.completed"])
         }
     }
 }

@@ -180,6 +180,16 @@ public actor OAuthTokenCoordinator {
     ///   after durable invalidation, or `OAuthTokenFailure` for overload, expiry or conflicts.
     ///   Transient/ambiguous failures retain the record and never trigger an implicit replay.
     public func accessToken(for identity: OAuthTokenIdentity) async throws -> BearerToken {
+        return try await DiscordLog.withOperation("oauth.tokens", event: "oauth.token.resolve") {
+            try await accessTokenOwned(for: identity)
+        }
+    }
+
+    /// Admits one token subscriber in a correlated diagnostic scope without logging identity.
+    /// - Parameter identity: Original private audience and authorization lineage.
+    /// - Returns: The unchanged bearer value after fresh-token or shared-refresh resolution.
+    /// - Throws: Original cancellation, capacity, storage or exchange failure.
+    private func accessTokenOwned(for identity: OAuthTokenIdentity) async throws -> BearerToken {
         try Task.checkCancellation()
         let waiter = UUID()
         let token = try await withTaskCancellationHandler {
@@ -206,6 +216,8 @@ public actor OAuthTokenCoordinator {
     public func install(_ response: OAuthTokenResponse, for identity: OAuthTokenIdentity,
                         parent: OAuthTokenIdentity? = nil, issuedAt: Date? = nil) async throws {
         try beginMutation(identity)
+        DiscordLog.makeLogger("oauth.tokens").trace("Token mutation ownership admitted", metadata: ["dk.event": "oauth.token.mutation.admitted",
+            "dk.mutations": .stringConvertible(mutations.count)])
         defer { mutations.remove(identity.authorizationID) }
         invalidateFlights(authorizationID: identity.authorizationID)
         let currentTime = try currentTime()
@@ -213,6 +225,7 @@ public actor OAuthTokenCoordinator {
         guard issuance.timeIntervalSince1970.isFinite, issuance <= currentTime else {
             throw OAuthError.malformedResponse
         }
+        DiscordLog.makeLogger("oauth.tokens").trace("Authorized token storage loading", metadata: ["dk.event": "oauth.token.install.loading"])
         let current = try await storage.load(for: identity)
         var parentRecord: OAuthStoredToken?
         if let parent {
@@ -223,11 +236,13 @@ public actor OAuthTokenCoordinator {
         }
         let replacement = try OAuthStoredToken(response: response, issuedAt: issuance,
             parent: parent, parentExpiresAt: parentRecord?.expiresAt)
+        DiscordLog.makeLogger("oauth.tokens").trace("Authorized token replacement prepared", metadata: ["dk.event": "oauth.token.install.prepared",
+            "dk.child": .stringConvertible(parent != nil)])
         let completionTime = try self.currentTime()
         guard replacement.expiresAt > completionTime else { throw OAuthTokenFailure.expired }
         guard try await storage.compareExchange(for: identity, expectedGeneration: current?.generation,
             replacement: replacement, now: completionTime) else { throw OAuthTokenFailure.conflict }
-        DiscordLog.makeLogger("oauth").debug("Authorized token installed", metadata: ["dk.event": "oauth.token.installed"])
+        DiscordLog.makeLogger("oauth.tokens").info("Authorized token installed", metadata: ["dk.event": "oauth.token.installed"])
     }
 
     /// Durably invalidates a grant before attempting one remote revocation exchange.
@@ -237,10 +252,13 @@ public actor OAuthTokenCoordinator {
     ///   and must not automatically replay an ambiguous operation. Missing records are a no-op.
     public func revokeToken(for identity: OAuthTokenIdentity) async throws {
         try beginMutation(identity)
+        DiscordLog.makeLogger("oauth.tokens").trace("Token mutation ownership admitted", metadata: ["dk.event": "oauth.token.mutation.admitted",
+            "dk.mutations": .stringConvertible(mutations.count)])
         defer { mutations.remove(identity.authorizationID) }
         guard let record = try await removeToken(for: identity) else { return }
+        DiscordLog.makeLogger("oauth.tokens").trace("Token durably removed before remote revocation", metadata: ["dk.event": "oauth.token.revocation.local_removed"])
         try await revoke(identity, record)
-        DiscordLog.makeLogger("oauth").debug("Token revocation completed", metadata: ["dk.event": "oauth.token.revoked"])
+        DiscordLog.makeLogger("oauth.tokens").notice("Token revocation completed", metadata: ["dk.event": "oauth.token.revoked"])
     }
 
     /// Applies an externally observed revocation or unmerge to local authoritative storage only.
@@ -251,9 +269,11 @@ public actor OAuthTokenCoordinator {
     ///   No revocation exchange, retry, new authorization or background network work is started.
     public func invalidateToken(for identity: OAuthTokenIdentity) async throws {
         try beginMutation(identity)
+        DiscordLog.makeLogger("oauth.tokens").trace("Token mutation ownership admitted", metadata: ["dk.event": "oauth.token.mutation.admitted",
+            "dk.mutations": .stringConvertible(mutations.count)])
         defer { mutations.remove(identity.authorizationID) }
         _ = try await removeToken(for: identity)
-        DiscordLog.makeLogger("oauth").debug("Token invalidation completed", metadata: ["dk.event": "oauth.token.invalidated"])
+        DiscordLog.makeLogger("oauth.tokens").notice("Token invalidation completed", metadata: ["dk.event": "oauth.token.invalidated"])
     }
 
     /// Rejects new work, promptly releases subscribers and joins all owned exchanges.
@@ -261,13 +281,15 @@ public actor OAuthTokenCoordinator {
     /// In-progress install/invalidate/revoke calls are caller-owned and must be awaited by that caller.
     public func close() async {
         if !closed {
-            DiscordLog.makeLogger("oauth").debug("Token coordinator closing", metadata: ["dk.event": "oauth.coordinator.closing",
+            DiscordLog.makeLogger("oauth.tokens").info("Token coordinator closing", metadata: ["dk.event": "oauth.coordinator.closing",
                 "dk.active_operations": .stringConvertible(flights.count)])
         }
         closed = true
         let current = flights
         for identity in current.keys { invalidateFlight(identity, error: OAuthTokenFailure.closed) }
         for flight in current.values { await flight.task.value }
+        DiscordLog.makeLogger("oauth.tokens").trace("Token owned exchanges joined", metadata: ["dk.event": "oauth.coordinator.cleanup.joined",
+            "dk.active_operations": .stringConvertible(flights.count), "dk.waiters": .stringConvertible(waiterCount)])
     }
 
     /// Reports bounded ownership counts without credential or account labels.
@@ -328,7 +350,8 @@ public actor OAuthTokenCoordinator {
             guard flight.waiters.count < maximumWaitersPerIdentity else {
                 continuation.resume(throwing: OAuthTokenFailure.capacityExceeded); return
             }
-            DiscordLog.makeLogger("oauth").trace("Token resolution shared", metadata: ["dk.event": "oauth.token.shared"])
+            DiscordLog.makeLogger("oauth.tokens").trace("Token resolution shared", metadata: ["dk.event": "oauth.token.shared",
+                "dk.waiters": .stringConvertible(flight.waiters.count), "dk.active_operations": .stringConvertible(flights.count)])
             flight.waiters[waiter] = continuation
             flights[identity] = flight
         } else {
@@ -345,6 +368,8 @@ public actor OAuthTokenCoordinator {
             flights[identity] = Flight(generation: generation, task: task, waiters: [waiter: continuation])
         }
         waiterCount += 1
+        DiscordLog.makeLogger("oauth.tokens").trace("Token subscriber admitted", metadata: ["dk.event": "oauth.token.waiter.admitted",
+            "dk.waiters": .stringConvertible(waiterCount), "dk.active_operations": .stringConvertible(flights.count)])
     }
 
     /// Returns a fresh record or performs exactly one fenced refresh, without implicit replay.
@@ -353,7 +378,11 @@ public actor OAuthTokenCoordinator {
     /// - Throws: Missing/expired token, invalid grant, generation conflict or injected failures.
     private func resolve(_ identity: OAuthTokenIdentity) async throws -> BearerToken {
         try Task.checkCancellation()
+        let logger = DiscordLog.makeLogger("oauth.tokens")
+        logger.trace("Token authoritative storage loading", metadata: ["dk.event": "oauth.token.storage.loading"])
         guard let record = try await storage.load(for: identity) else { throw OAuthTokenFailure.missingToken }
+        logger.trace("Token authoritative storage loaded", metadata: ["dk.event": "oauth.token.storage.loaded",
+            "dk.child": .stringConvertible(record.parent != nil)])
         var instant = try currentTime()
         if let parent = record.parent {
             let ancestor = try await storage.load(for: parent)
@@ -366,7 +395,10 @@ public actor OAuthTokenCoordinator {
                 throw OAuthTokenFailure.expired
             }
         }
-        if record.expiresAt.timeIntervalSince(instant) > refreshSkew { return record.accessToken }
+        if record.expiresAt.timeIntervalSince(instant) > refreshSkew {
+            logger.trace("Fresh stored token selected", metadata: ["dk.event": "oauth.token.fresh"])
+            return record.accessToken
+        }
         guard record.parent == nil, let refreshToken = record.refreshToken else {
             if record.expiresAt <= instant {
                 _ = try await storage.compareExchange(for: identity, expectedGeneration: record.generation,
@@ -377,29 +409,32 @@ public actor OAuthTokenCoordinator {
         }
         let response: OAuthTokenResponse
         try Task.checkCancellation()
-        let logger = DiscordLog.makeLogger("oauth")
         logger.trace("Token refresh started", metadata: ["dk.event": "oauth.refresh.started"])
         do { response = try await refresh(identity, refreshToken) }
         catch {
             if error is CancellationError {
                 logger.trace("Token refresh cancelled", metadata: ["dk.event": "oauth.refresh.cancelled"])
             } else {
-                logger.debug("Token refresh failed", metadata: ["dk.event": "oauth.refresh.failed"])
+                logger.error("Token refresh failed", metadata: ["dk.event": "oauth.refresh.failed",
+                    "dk.failure": .string(error as? OAuthError == .invalidGrant ? "invalid_grant" : "exchange")])
             }
             if let failure = error as? OAuthError, failure == .invalidGrant {
+                logger.notice("Rejected refresh invalidating durable token lineage", metadata: ["dk.event": "oauth.refresh.invalidating"])
                 _ = try await storage.compareExchange(for: identity, expectedGeneration: record.generation,
                     replacement: nil, now: currentTime())
             }
             throw error
         }
         // Persist a received rotation even if subscribers have since canceled.
+        logger.trace("Token rotation response received", metadata: ["dk.event": "oauth.refresh.received"])
         let replacement = try OAuthStoredToken(response: response, issuedAt: instant,
             retainingRefreshToken: refreshToken)
+        logger.trace("Token rotation persistence starting", metadata: ["dk.event": "oauth.refresh.persisting"])
         let completion = try currentTime()
         guard try await storage.compareExchange(for: identity, expectedGeneration: record.generation,
             replacement: replacement, now: completion) else { throw OAuthTokenFailure.conflict }
         guard replacement.expiresAt > completion else { throw OAuthTokenFailure.expired }
-        logger.debug("Token refresh persisted", metadata: ["dk.event": "oauth.refresh.persisted"])
+        logger.info("Token refresh persisted", metadata: ["dk.event": "oauth.refresh.persisted"])
         return replacement.accessToken
     }
 
@@ -411,6 +446,8 @@ public actor OAuthTokenCoordinator {
         guard var flight = flights[identity], let continuation = flight.waiters.removeValue(forKey: waiter) else { return }
         flights[identity] = flight
         waiterCount -= 1
+        DiscordLog.makeLogger("oauth.tokens").trace("Token subscriber released without replay", metadata: ["dk.event": "oauth.token.waiter.cancelled",
+            "dk.waiters": .stringConvertible(waiterCount), "dk.active_operations": .stringConvertible(flights.count)])
         continuation.resume(throwing: CancellationError())
     }
 

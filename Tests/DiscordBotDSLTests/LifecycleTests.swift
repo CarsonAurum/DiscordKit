@@ -4,6 +4,7 @@ import DiscordCore
 import DiscordDSL
 import DiscordGateway
 import DiscordHTTP
+import DiscordLogging
 import DiscordTestSupport
 import DiscordTransport
 import Foundation
@@ -12,6 +13,51 @@ import Testing
 /// Real client supervision over finite in-memory HTTP/WebSocket peers; no Discord service is contacted.
 @Suite("Supervised bot lifetime", .timeLimit(.minutes(1)))
 struct LifecycleTests {
+    /// A complete synthetic bot run exposes subscription-before-client ordering and joined cleanup across module labels.
+    /// - Throws: Unexpected offline fixture, synchronization, run or shutdown failure.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func detailedLifecycleLogging() async throws {
+        let logs = LogRecorder(maximumEntries: 2048)
+        let fixture = try BotLifecycleFixture()
+        let runtime = try DiscordLog.$loggerFactory.withValue({ logs.makeLogger($0) }) { try fixture.runtime() }
+        #expect(logs.entries.isEmpty)
+        try await DiscordLog.$loggerFactory.withValue({ logs.makeLogger($0) }) {
+            let run = Task { try await runtime.run() }
+            try await fixture.delivered.wait()
+            try await runtime.shutdown()
+            try await run.value
+        }
+        let entries = logs.entries
+        let events = entries.compactMap { $0.metadata["dk.event"]?.description }
+        let subscribed = try #require(events.firstIndex(of: "bot_dsl.events.subscribed"))
+        let clientStarted = try #require(events.firstIndex(of: "client.run.started"))
+        let cleanup = try #require(events.lastIndex(of: "bot_dsl.runtime.cleanup_completed"))
+        let stopped = try #require(events.lastIndex(of: "bot_dsl.runtime.stopped"))
+        #expect(subscribed < clientStarted)
+        #expect(cleanup < stopped)
+        for event in ["client.discovery.reserving", "client.discovery.received", "client.discovery.validated",
+            "client.discovery.budget_resized", "client.discovery.startup_acquired", "client.ingestion.projected",
+            "client.ingestion.published", "bot_dsl.handler.entered", "bot_dsl.handler.exited",
+            "bot_dsl.runtime.children_joined", "client.cleanup.dependencies_released"] {
+            #expect(events.contains(event))
+        }
+        #expect(entries.contains { $0.label == "discordkit.bot.lifecycle" && $0.level == .info && $0.metadata["dk.event"] == "bot_dsl.runtime.stopped" })
+        #expect(entries.contains { $0.label == "discordkit.client.discovery" && $0.level == .trace })
+        let botScope = try #require(entries.first { $0.metadata["dk.event"] == "bot_dsl.runtime.operation.started" })
+        let clientScope = try #require(entries.first { $0.metadata["dk.event"] == "client.run.operation.started" })
+        let clientDiscovery = try #require(entries.first { $0.metadata["dk.event"] == "client.discovery.started" })
+        #expect(botScope.metadata["dk.trace_id"] != nil)
+        #expect(clientScope.metadata["dk.trace_id"] == botScope.metadata["dk.trace_id"])
+        #expect(clientScope.metadata["dk.parent_span_id"] == botScope.metadata["dk.span_id"])
+        #expect(clientDiscovery.metadata["dk.span_id"] == clientScope.metadata["dk.span_id"])
+        #expect(entries.contains { $0.metadata["dk.event"] == "bot_dsl.runtime.operation.completed" && $0.metadata["dk.duration_ns"] != nil })
+        let rendered = String(describing: entries.map { ($0.message, $0.metadata) })
+        for privateValue in ["dsl-lifetime-offline-sentinel", "wss://gateway.discord.gg", "lifetime", "18446744073709551615"] {
+            #expect(!rendered.contains(privateValue))
+        }
+        await fixture.expectEmpty()
+    }
+
     /// Construction and pre-run stop perform no discovery; joining stop closes every owner once.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func inertConstructionAndStopBeforeRun() async throws {

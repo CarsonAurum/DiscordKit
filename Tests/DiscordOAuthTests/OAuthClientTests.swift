@@ -365,7 +365,7 @@ extension OAuthClientTests {
             #expect(clock.pendingSleepCount == 0)
             await rate.close()
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.oauth" }
+        let entries = recorder.entries.filter { $0.label == "discordkit.oauth.http" }
         #expect(entries.contains { $0.level == .trace && $0.metadata["dk.event"] == "oauth.request.started" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "oauth.request.completed" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "oauth.request.rejected" })
@@ -374,6 +374,13 @@ extension OAuthClientTests {
         for secret in ["private-refresh-secret", "private-response-secret", "private-transport-secret", "access_secret", "refresh_secret", "future.scope"] {
             #expect(!rendered.contains(secret))
         }
-        #expect(entries.allSatisfy { $0.level != .info && $0.level != .notice })
+        let events = entries.compactMap { $0.metadata["dk.event"]?.description }
+        let started = try #require(events.firstIndex(of: "oauth.exchange.started"))
+        let admitted = try #require(events.firstIndex(of: "oauth.request.http.admitted"))
+        let decoded = try #require(events.firstIndex(of: "oauth.request.response.decoded"))
+        let completed = try #require(events.firstIndex(of: "oauth.exchange.completed"))
+        #expect(started < admitted && admitted < decoded && decoded < completed)
+        #expect(entries.contains { $0.metadata["dk.event"] == "oauth.request.failed" && $0.metadata["dk.failure"] == "execution" })
+        #expect(entries.allSatisfy { $0.metadata["dk.module"] == "oauth" && $0.metadata["dk.trace_id"] != nil })
     }
 }

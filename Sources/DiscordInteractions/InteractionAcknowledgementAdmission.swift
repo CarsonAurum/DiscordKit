@@ -1,3 +1,4 @@
+import DiscordLogging
 import Foundation
 
 /// Safe lifecycle failures without callback content, continuation tokens or arbitrary transport diagnostics.
@@ -55,9 +56,11 @@ public actor InteractionAcknowledgementAdmission {
         try Task.checkCancellation()
         guard encodedBytes > 0 else { throw InteractionLifecycleError.invalidConfiguration }
         guard reservations.count < maximumConcurrent, encodedBytes <= maximumBytes - bytes else {
+            DiscordLog.makeLogger("interactions.admission").debug("Initial acknowledgement capacity exhausted", metadata: ["dk.event": "interactions.admission.overloaded", "dk.active": .stringConvertible(reservations.count), "dk.bytes": .stringConvertible(bytes)])
             throw InteractionLifecycleError.acknowledgementCapacityExceeded
         }
         let id = UUID(); reservations[id] = encodedBytes; bytes += encodedBytes
+        DiscordLog.makeLogger("interactions.admission").trace("Initial acknowledgement capacity reserved", metadata: ["dk.event": "interactions.admission.acquired", "dk.active": .stringConvertible(reservations.count), "dk.bytes": .stringConvertible(bytes)])
         return id
     }
 
@@ -66,6 +69,7 @@ public actor InteractionAcknowledgementAdmission {
     func release(_ reservation: UUID) {
         guard let count = reservations.removeValue(forKey: reservation) else { return }
         bytes -= count
+        DiscordLog.makeLogger("interactions.admission").trace("Initial acknowledgement capacity released", metadata: ["dk.event": "interactions.admission.released", "dk.active": .stringConvertible(reservations.count), "dk.bytes": .stringConvertible(bytes)])
     }
 
     /// Reports bounded aggregate counters without retaining identities or diagnostic labels.

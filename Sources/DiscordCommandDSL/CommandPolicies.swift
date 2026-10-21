@@ -52,12 +52,15 @@ public actor CommandConcurrencyLimit: CommandConcurrencyAuthority {
     public func withPermit<Value: Sendable>(operation: @Sendable () async throws -> Value) async throws -> Value {
         try Task.checkCancellation()
         guard active < maximumConcurrent else {
-            DiscordLog.makeLogger("command_dsl").debug("Command policy capacity exhausted", metadata: ["dk.event": "command_dsl.policy.overloaded"])
+            DiscordLog.makeLogger("command_dsl.admission").debug("Command policy capacity exhausted", metadata: ["dk.event": "command_dsl.policy.overloaded", "dk.active": .stringConvertible(active)])
             throw CommandPolicyError.capacityExceeded
         }
         active += 1
-        DiscordLog.makeLogger("command_dsl").trace("Command policy admission granted", metadata: ["dk.event": "command_dsl.policy.admitted"])
-        defer { active -= 1 }
+        DiscordLog.makeLogger("command_dsl.admission").trace("Command policy admission granted", metadata: ["dk.event": "command_dsl.policy.admitted", "dk.active": .stringConvertible(active)])
+        defer {
+            active -= 1
+            DiscordLog.makeLogger("command_dsl.admission").trace("Command policy admission released", metadata: ["dk.event": "command_dsl.policy.released", "dk.active": .stringConvertible(active)])
+        }
         try Task.checkCancellation()
         return try await operation()
     }
@@ -164,9 +167,11 @@ public struct CommandPolicies: Sendable {
     internal func execute(_ context: InteractionContext,
         next: @escaping @Sendable () async throws -> Void) async throws {
         let snapshot = CommandContext(context)
+        DiscordLog.makeLogger("command_dsl.policy").debug("Prepared command policy execution started", metadata: ["dk.event": "command_dsl.policy.started"])
         do {
             try Task.checkCancellation()
             if let predicate, try await !predicate.evaluate(snapshot, limits: limits) {
+                DiscordLog.makeLogger("command_dsl.policy").debug("Command invocation denied by policy", metadata: ["dk.event": "command_dsl.policy.denied"])
                 try Task.checkCancellation()
                 guard let rejection else { throw CommandPolicyError.denied }
                 let response = try rejection(snapshot)
@@ -175,17 +180,21 @@ public struct CommandPolicies: Sendable {
                 case .message(let message): try await context.responder.reply(message.message)
                 case .emptyAutocomplete: try await context.responder.respond(.autocomplete([]))
                 }
+                DiscordLog.makeLogger("command_dsl.policy").trace("Explicit command rejection response delivered", metadata: ["dk.event": "command_dsl.policy.rejection_delivered"])
                 return
             }
             try Task.checkCancellation()
+            DiscordLog.makeLogger("command_dsl.policy").trace("Command authorization stage passed", metadata: ["dk.event": "command_dsl.policy.authorized"])
             let operation: @Sendable () async throws -> Void = {
                 let continuation = CommandPolicyContinuation()
                 let terminal: @Sendable (CommandContext) async throws -> Void = { _ in
                     try await continuation.claim()
+                    DiscordLog.makeLogger("command_dsl.policy").trace("Command middleware terminal claimed", metadata: ["dk.event": "command_dsl.policy.terminal_claimed"])
                     do {
                         try Task.checkCancellation()
                         try await next()
                         await continuation.complete()
+                        DiscordLog.makeLogger("command_dsl.policy").trace("Command middleware terminal completed", metadata: ["dk.event": "command_dsl.policy.terminal_completed"])
                     } catch {
                         await continuation.complete()
                         throw error
@@ -196,18 +205,25 @@ public struct CommandPolicies: Sendable {
                         try await middleware.run(snapshot, limits: limits, next: terminal)
                     } else { try await terminal(snapshot) }
                     await continuation.close()
+                    DiscordLog.makeLogger("command_dsl.policy").trace("Command middleware terminal closed and joined", metadata: ["dk.event": "command_dsl.policy.terminal_closed"])
                     try Task.checkCancellation()
                 } catch {
                     await continuation.close()
+                    DiscordLog.makeLogger("command_dsl.policy").trace("Failed command middleware terminal closed and joined", metadata: ["dk.event": "command_dsl.policy.terminal_closed"])
                     throw error
                 }
             }
             if let concurrency { try await concurrency.withPermit(operation: operation) }
             else { try await operation() }
             try Task.checkCancellation()
+            DiscordLog.makeLogger("command_dsl.policy").debug("Command policy execution completed", metadata: ["dk.event": "command_dsl.policy.completed"])
         } catch {
+            DiscordLog.makeLogger("command_dsl.policy").debug("Command policy execution failed after cleanup", metadata: ["dk.event": "command_dsl.policy.failed"])
             if let cancellation = error as? DiscordError, cancellation == .cancelled { throw cancellation }
             if error is CancellationError || Task.isCancelled { throw CancellationError() }
+            if errorMapping != nil {
+                DiscordLog.makeLogger("command_dsl.policy").trace("Applying explicit command error translation", metadata: ["dk.event": "command_dsl.policy.mapping_error"])
+            }
             throw errorMapping?(error, snapshot) ?? error
         }
     }

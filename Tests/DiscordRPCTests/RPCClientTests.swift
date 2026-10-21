@@ -13,6 +13,8 @@ actor RPCPeer: RPCConnection {
     private var sent: [RPCFrame] = []
     private var sentWaiter: CheckedContinuation<RPCFrame, Never>?
     private var closed = false
+    private var holdingWrites = false
+    private var heldWrite: CheckedContinuation<Void, Never>?
     private var readEntered: CheckedContinuation<Void, Never>?
     private var isReading = false
     private(set) var closeCount = 0
@@ -40,9 +42,17 @@ actor RPCPeer: RPCConnection {
     /// - Throws: Cancellation/deadline or closed peer.
     func send<C: Clock>(_ frame: RPCFrame, context: TransportContext<C>) async throws where C.Duration == Duration {
         try context.check(); guard !closed else { throw RPCFailure.closed }
+        DiscordLog.makeLogger("rpc.test_transport").trace("Synthetic transport send entered", metadata: ["dk.event": "test.rpc.transport.send"])
         if let waiter = sentWaiter { sentWaiter = nil; waiter.resume(returning: frame) }
         else { sent.append(frame) }
+        if holdingWrites { await withCheckedContinuation { heldWrite = $0 } }
     }
+
+    /// Parks subsequent writes after observation so concurrent callers share the same client writer.
+    func holdWrites() { holdingWrites = true }
+
+    /// Resumes the single parked writer and permits later writes without suspension.
+    func releaseWrites() { holdingWrites = false; heldWrite?.resume(); heldWrite = nil }
 
     /// Returns queued input or suspends until explicit test input/cleanup.
     /// - Parameter context: Checked read context with independently cancellable continuation.
@@ -373,14 +383,66 @@ extension RPCClientTests {
             await #expect(throws: RPCFailure.invalidPayload) { try await failing.connect(context: context()) }
             await failing.close()
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.rpc" }
-        #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "rpc.connection.ready" })
+        let entries = recorder.entries.filter { $0.label == "discordkit.rpc.client" }
+        #expect(entries.contains { $0.level == .info && $0.metadata["dk.event"] == "rpc.connection.ready" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "rpc.request.completed" })
         #expect(entries.contains { $0.level == .error && $0.metadata["dk.event"] == "rpc.connection.failed" })
         let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
         for secret in ["private-rpc-payload", "private-rpc-error", String(UInt64.max)] {
             #expect(!rendered.contains(secret))
         }
-        #expect(entries.allSatisfy { $0.metadata["dk.event"] != nil && $0.level != .info && $0.level != .notice })
+        let events = entries.compactMap { $0.metadata["dk.event"]?.description }
+        let admission = try #require(events.firstIndex(of: "rpc.request.admitted"))
+        let write = try #require(events.firstIndex(of: "rpc.write.started"))
+        let reply = try #require(events.firstIndex(of: "rpc.reply.correlated"))
+        let completion = try #require(events.firstIndex(of: "rpc.request.operation.completed"))
+        #expect(admission < write && write < reply && reply < completion)
+        #expect(entries.contains { $0.metadata["dk.event"] == "rpc.request.admitted" && $0.metadata["dk.pending"]?.description == "1" })
+        #expect(entries.contains { $0.metadata["dk.event"] == "rpc.reply.correlated" && $0.metadata["dk.pending_bytes"]?.description == "0" })
+        #expect(entries.allSatisfy { $0.metadata["dk.event"] != nil && $0.metadata["dk.module"] == "rpc" })
+        #expect(entries.contains { $0.metadata["dk.event"] == "rpc.request.operation.completed" && $0.metadata["dk.duration_ns"] != nil })
+    }
+}
+
+extension RPCClientTests {
+    /// Correlates queued requests across one shared writer and reverse-ordered replies without peer IDs.
+    /// - Throws: Unexpected synthetic exchange or missing diagnostic continuity.
+    @Test func queuedRequestsKeepIndependentDiagnosticSpans() async throws {
+        let recorder = LogRecorder()
+        try await DiscordLog.$loggerFactory.withValue({ recorder.makeLogger($0) }) {
+            let peer = RPCPeer()
+            let rpc = try client([peer])
+            try await rpc.connect(context: context())
+            await peer.holdWrites()
+            let first = Task { try await rpc.request(.getGuilds(), context: context()) }
+            let firstWire = await peer.nextSent()
+            let second = Task { try await rpc.request(.getGuilds(), context: context()) }
+            for _ in 0..<10_000 {
+                if await rpc.resourceCounts().pending == 2 { break }
+                await Task.yield()
+            }
+            let pending = await rpc.resourceCounts().pending
+            await peer.releaseWrites()
+            #expect(pending == 2)
+            let secondWire = await peer.nextSent()
+            try await peer.reply(to: secondWire, data: .null)
+            _ = try await second.value
+            try await peer.reply(to: firstWire, data: .null)
+            _ = try await first.value
+            await rpc.close()
+        }
+        let entries = recorder.entries.filter { $0.label == "discordkit.rpc.client" }
+        let nested = recorder.entries.filter { $0.label == "discordkit.rpc.test_transport" && $0.metadata["dk.event"] == "test.rpc.transport.send" }
+        let admitted = entries.filter { $0.metadata["dk.event"] == "rpc.request.admitted" }
+        let writes = entries.filter { $0.metadata["dk.event"] == "rpc.write.started" }
+        let replies = entries.filter { $0.metadata["dk.event"] == "rpc.reply.correlated" }
+        #expect(admitted.count == 2 && writes.count == 2 && replies.count == 2)
+        #expect(Set(admitted.compactMap { $0.metadata["dk.span_id"]?.description }).count == 2)
+        #expect(writes.map { $0.metadata["dk.span_id"] } == admitted.map { $0.metadata["dk.span_id"] })
+        #expect(nested.count == 2)
+        #expect(nested.map { $0.metadata["dk.span_id"] } == admitted.map { $0.metadata["dk.span_id"] })
+        #expect(nested.map { $0.metadata["dk.trace_id"] } == admitted.map { $0.metadata["dk.trace_id"] })
+        #expect(replies.map { $0.metadata["dk.span_id"] } == admitted.reversed().map { $0.metadata["dk.span_id"] })
+        #expect(replies.map { $0.metadata["dk.trace_id"] } == admitted.reversed().map { $0.metadata["dk.trace_id"] })
     }
 }

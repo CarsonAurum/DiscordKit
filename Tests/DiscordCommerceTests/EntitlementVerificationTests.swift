@@ -227,13 +227,13 @@ extension EntitlementVerificationTests {
                     })
             }
         }
-        let entries = recorder.entries.filter { $0.label == "discordkit.commerce" }
+        let entries = recorder.entries.filter { $0.label == "discordkit.commerce.entitlements" }
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "commerce.verification.completed" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "commerce.verification.rejected" })
         #expect(entries.contains { $0.level == .debug && $0.metadata["dk.event"] == "commerce.verification.failed" })
         let rendered = entries.map { $0.message + String(describing: $0.metadata) }.joined()
         #expect(!rendered.contains("999987654"))
         #expect(!rendered.contains("private-commerce-error"))
-        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem"]) })
+        #expect(entries.allSatisfy { Set($0.metadata.keys).isSubset(of: ["dk.event", "dk.subsystem", "dk.module"]) })
     }
 }

@@ -20,6 +20,8 @@ struct NIOLoggingTests {
             } catch { await socket.close(); throw error }
             await socket.close()
         }
+        #expect(recorder.entries.contains { $0.level == .info && $0.metadata["dk.event"] == "nio.datagram.bound" })
+        #expect(recorder.entries.contains { $0.level == .info && $0.metadata["dk.event"] == "nio.datagram.closed" })
         #expect(recorder.entries.compactMap { $0.metadata["dk.event"] } == ["nio.datagram.bind", "nio.datagram.bound", "nio.datagram.closed"])
         #expect(!String(describing: recorder.entries).contains("SECRET-PACKET"))
     }

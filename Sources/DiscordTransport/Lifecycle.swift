@@ -32,7 +32,7 @@ public struct TransportContext<C: Clock>: Sendable where C.Duration == Duration 
     public func check() throws {
         try Task.checkCancellation()
         if let deadline, clock.now >= deadline {
-            DiscordLog.makeLogger("transport").trace("Transport operation deadline expired", metadata: ["dk.event": "transport.deadline.expired"])
+            DiscordLog.makeLogger("transport.deadline").trace("Transport operation deadline expired", metadata: ["dk.event": "transport.deadline.expired"])
             throw TransportFailure.deadlineExceeded
         }
     }
