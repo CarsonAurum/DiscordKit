@@ -1,3 +1,8 @@
+// File: Examples/DSLBot/Tests/DSLBotTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 @testable import DSLBot
 import DiscordBotDSL
 import Testing

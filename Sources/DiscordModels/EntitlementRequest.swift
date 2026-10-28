@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/EntitlementRequest.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// Exactly one typed recipient for a test entitlement; the wire owner discriminator is derived from its ID domain.

@@ -1,3 +1,8 @@
+// File: Sources/DiscordKit/DiscordKit.docc/Resources/Examples/DAVEExample.swift.txt
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordDAVE
 import DiscordMLS
 import DiscordModels

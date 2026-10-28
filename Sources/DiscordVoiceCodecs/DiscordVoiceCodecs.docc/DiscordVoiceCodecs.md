@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCodecs/DiscordVoiceCodecs.docc/DiscordVoiceCodecs.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoiceCodecs``
 
 Parse and encode ordinary Opus packets with owned SILK, CELT and hybrid codec state.

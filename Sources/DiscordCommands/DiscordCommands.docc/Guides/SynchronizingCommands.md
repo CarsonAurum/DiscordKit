@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommands/DiscordCommands.docc/Guides/SynchronizingCommands.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Synchronizing managed command registrations
 
 Perform one explicit fresh comparison and preserve unrelated registrations and partial progress.

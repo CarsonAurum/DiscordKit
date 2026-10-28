@@ -1,3 +1,10 @@
+<!--
+File: Examples/SocialApp/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Offline Social composition
 
 Run `swift run --package-path Examples/SocialApp SocialApp`. This independent consumer
@@ -14,5 +21,5 @@ identity operations use `SocialHTTPApplicationProvider` separately.
 Disconnect/close clears local observations and fences pending results. Callers still
 cancel and await outstanding provider operations and close their shared transports;
 a submitted mutation may already have executed. See [Social contracts](../../Docs/Social.md)
-and the [complete SDK catalog](../../Docs/Parity/phase13-social-catalog.json) for unsupported
+and the [complete SDK catalog](../../Docs/Parity/social-catalog.json) for unsupported
 native Social networking, mobile adapters and early-access Commerce requirements.

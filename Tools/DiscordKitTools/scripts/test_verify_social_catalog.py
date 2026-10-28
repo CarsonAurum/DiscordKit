@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_social_catalog.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Regression tests for exhaustive Social declaration and blocker traceability."""
 
 import copy
@@ -64,7 +69,7 @@ class SocialCatalogTests(unittest.TestCase):
         })
         (self.root / "Docs/Parity").mkdir(parents=True)
         (self.root / "Docs/Feasibility").mkdir(parents=True)
-        (self.root / "Docs/Parity/phase13-social-catalog.json").write_text(json.dumps(self.catalog))
+        (self.root / "Docs/Parity/social-catalog.json").write_text(json.dumps(self.catalog))
         (self.root / "Docs/Feasibility/method-contracts.json").write_text(json.dumps(self.baseline))
         self.assertEqual(load_and_validate(self.root), report)
 

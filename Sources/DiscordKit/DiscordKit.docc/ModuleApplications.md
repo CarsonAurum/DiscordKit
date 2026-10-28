@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/ModuleApplications.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Adopt modular command and bot authoring
 
 Choose protocol or macro syntax while preserving explicit service, response and host ownership.

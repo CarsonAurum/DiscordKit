@@ -1,12 +1,18 @@
+<!--
+File: Docs/Scalability.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Scalability and request efficiency
 
-Status: adopted design requirements, added 2026-10-15. These requirements extend
-the [architecture](Architecture.md), [concurrency policy](Concurrency.md) and
-[implementation roadmap](../.air/plans/discordkit-full-platform-roadmap.plan.md).
-Parts 1–3 supply values, owned transports, deterministic test support, bounded
-HTTP rate scheduling/read caches and a minimal sharded Gateway lifecycle.
-Fleet coordination contracts are injectable; durable adapters remain consumer-owned.
-This document does not establish a tested account or connection capacity.
+These requirements extend the [architecture](Architecture.md) and
+[concurrency policy](Concurrency.md). Portable values, injected transports,
+deterministic test support, bounded HTTP scheduling/read caches and a supervised
+sharded Gateway provide the implementation foundations. Fleet coordination
+contracts are injectable; durable adapters remain consumer-owned. This document
+does not establish tested account or connection capacity.
 
 ## Capacity model and responsibility
 
@@ -142,9 +148,8 @@ effective date is unknown. [Discord change log](https://docs.discord.com/develop
 
 ## Evidence before capacity claims
 
-Start a development-only load harness with the transport slice, extend it for
-the first HTTP and sharded Gateway milestones, and rerun it for affected runtime
-changes. Keep the harness separate from runtime products and deterministic Swift
+Use the independent load harness for transport, HTTP and sharded Gateway
+measurements, and rerun affected scenarios when their runtime changes. Keep the harness separate from runtime products and deterministic Swift
 Testing suites. It uses scripted/loopback peers, never a Discord load test.
 
 Version workload profiles for 100, 10,000 and 1,000,000 logical accounts across
@@ -155,7 +160,7 @@ logical populations through bounded active cohorts; separately qualify real
 concurrent local sockets and active identities on named hardware. A simulated
 million-account profile is not evidence of a million live connections.
 
-Before accepting each runtime milestone, commit numeric workload-specific budgets
+Define numeric workload-specific budgets for each runtime change
 for admitted concurrency, queued count/bytes, cache count/bytes, metadata,
 connections and maximum queue age. Establish measured baseline throughput,
 p50/p95/p99 latency, control delay, CPU, allocations and peak/steady RSS. Select
@@ -197,7 +202,7 @@ guild, request or secret. Attribute tenant details only through opt-in bounded
 diagnostic sampling. Publish tested profiles and remaining bottlenecks with each
 runtime release, separating design goals from measured deployment capacity.
 
-## Part 2 transport evidence
+## Transport evidence
 
 [Owned adapters](Transport.md) now implement fail-fast bounded transport admission,
 explicit body/frame/queue limits and cleanup. The optional in-process shard lease
@@ -221,7 +226,7 @@ The load report includes before/after diagnostic evidence. No fixed-working-set
 30-minute soak, comprehensive allocation trace, cross-host scale result or
 millions-of-connections capacity is inferred from this initial baseline.
 
-## Part 3 HTTP and shard implementation
+## HTTP and shard implementation
 
 [HTTP execution](HTTP.md) now implements finite rate/order admission and retry budgets,
 scoped single-flight reads, opt-in payload-bounded caches, lazy pagination and explicit
@@ -233,7 +238,7 @@ package extends local profiles, separating logical accounts from physical exchan
 No broad deployment capacity or 30-minute sustained-load qualification follows from
 short scripted/local measurements; the evidence requirements above remain in force.
 
-## Part 6 request admission and retained results
+## Request admission and retained results
 
 [Gateway requests](Gateway.md) keep application sends, presence updates, all-member
 requests and server opcode cooldowns separate from REST and Identify scheduling.
@@ -248,7 +253,7 @@ Timeout, cancellation and disconnect preserve bounded partial results and never
 imply that a submitted command was withdrawn from Discord. These finite policies
 and synthetic load observations do not establish production sharded capacity.
 
-## Part 7 consumer bounds and measured scope
+## Consumer bounds and measured scope
 
 [Consumer composition](Client.md) adds independently bounded broadcast queues,
 per-shard ordered handler execution and shared client/session reservation ceilings.
@@ -257,7 +262,7 @@ and visibility generation, with both per-identity and aggregate limits. Local
 mutations and observed visibility changes fence old refreshes; cached data and
 permission calculations never establish current authorization.
 
-The [load harness](../Tools/DiscordKitLoadTests/README.md) adds fixed sets of 20
+The [load harness](../Tools/DiscordKitLoadTests/README.md) uses fixed sets of 20
 entity keys per scope, at most four actual opaque scopes and 64 offered refresh
 callers per scope. These are bounded process-local cohorts. The logical million
 served-user profile does not create a million identities, tasks or connections.
@@ -265,8 +270,7 @@ Finite normal/burst cache and recovery runs retain actual process RSS separately
 from accounted projection bytes, and repeated Gateway scripts remain a separate
 lifecycle measurement. Handler/reducer/network throughput and distributed fairness
 require their own measurements; no whole-client capacity follows from the cache
-and broadcast subset. Exact validation and sustained-run evidence are recorded in
-the [Phase 7 execution record](../.air/plans/phase-7-execution.plan.md).
+and broadcast subset.
 
 The [thirty-minute cache/broadcast run](../Tools/DiscordKitLoadTests/Baselines/soak-accounts-1000000-1800s-burst.json)
 completed 238,427 rounds in 1,800.004 seconds, with 64 peak retained entries,

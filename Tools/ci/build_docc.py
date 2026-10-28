@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/build_docc.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Convert owned public-module graphs and guides using the installed toolchain DocC.
 
 No package plugin or runtime dependency is installed. The caller emits public

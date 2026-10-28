@@ -1,17 +1,24 @@
+<!--
+File: Docs/WebhooksInteractionsVoice.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Webhooks, interaction responses and voice control
 
-Phase 5H implements **28 current written REST operations** in API **v10**:
+DiscordKit provides **28 current written REST operations** in API **v10**:
 15 Webhook, eight Interaction response/message and five Voice operations. Current
 [Webhook](https://docs.discord.com/developers/resources/webhook),
 [Interaction](https://docs.discord.com/developers/interactions/receiving-and-responding),
 [Voice](https://docs.discord.com/developers/resources/voice),
 [reference](https://docs.discord.com/developers/reference) and
 [change log](https://docs.discord.com/developers/change-log) contracts were verified
-**2026-10-16**. Current fingerprints are independent of historical discovery pins.
-Phase 5H added no dependencies or runtime products. Phase 8 now adds independently
-adopted [signed ingress, response ownership, routing and durable webhook-event
-admission](Interactions.md). Voice networking, media and devices remain separate
-work. Phase 5J adds [lobbies and identity profiles](SocialGame.md).
+**2026-10-16**. Source fingerprints identify the reviewed contracts. Independently
+adopted [interactions](Interactions.md) provide signed ingress, response ownership,
+routing and durable webhook-event admission. [Voice sessions](VoiceSessions.md)
+provide optional networking and media ownership; [ApplePlatform](Voice.md) supplies
+separate native audio integration.
 
 ## Webhook ownership and execution
 
@@ -102,7 +109,7 @@ verify signatures or establish authority from retained permission strings.
 The initial acknowledgement must reach Discord within **three seconds**; continuation
 tokens last **15 minutes**. Callers own trusted receipt times and supply finite
 execution deadlines. Raw REST factories do not start timers or enforce token age.
-The optional Phase 8 response actor binds that receipt evidence to exclusive
+The optional response actor binds that receipt evidence to exclusive
 deadlines, one initial owner and independent initial admission; see
 [the lifecycle guide](Interactions.md#response-ownership-and-deadlines). Expiry
 cannot recall an already submitted mutation.
@@ -137,9 +144,6 @@ invalidate family tags. Deterministic Swift Testing suites exercise each operati
 request and model, failures, malformed JSON, permission/auth errors, 429 retry,
 unknown mutation outcomes, scoped reuse, uploads and concurrent cleanup.
 
-The [execution record](../.air/plans/phase-5h-execution.plan.md) records actual
-commands and results. Verification is local macOS arm64/Swift 6.4, with synthetic
-credentials and peers. Live Discord, other hosts/devices, minimum OS, distributed
-coordination and sustained capacity remain separate qualification gates. See the
-[chronological support record](Parity/changes/2026-10-16-webhooks-interactions-voice.md)
-for previous/current behavior, known upstream dates and migration.
+Verification is local macOS arm64/Swift 6.4, with synthetic credentials and peers.
+Live Discord, other hosts/devices, minimum OS, distributed coordination and
+sustained capacity require separate qualification.

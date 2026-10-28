@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordActivities/DiscordActivities.docc/Guides/HostCommands.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Commands, subscriptions and user-visible effects
 
 Preserve typed responses, explicit null semantics and independent authorization for host actions.

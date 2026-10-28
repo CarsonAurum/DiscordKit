@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_opus_conformance.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic malformed official-vector framing and pinned-archive admission tests."""
 from pathlib import Path
 import struct

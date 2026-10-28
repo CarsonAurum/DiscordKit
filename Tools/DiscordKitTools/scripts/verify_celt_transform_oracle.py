@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_transform_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in offline CELT MDCT verification against pinned official libopus 1.6.1.
 
 Provide --source-archive opus-1.6.1.tar.gz; no download occurs. The shared entropy

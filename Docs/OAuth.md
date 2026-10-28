@@ -1,6 +1,13 @@
+<!--
+File: Docs/OAuth.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # OAuth2, installations and token ownership
 
-Phase 9 adds independently adopted `DiscordOAuth`, `DiscordGameServices` and
+DiscordKit provides independently adopted `DiscordOAuth`, `DiscordGameServices` and
 `DiscordCommerce` products. Construction starts no tasks, browser sessions or
 network I/O. OAuth imports HTTP, Models, Core, Transport and the already selected
 Swift Crypto product for RFC 7636 S256. HTTP remains independently usable without
@@ -15,7 +22,7 @@ The [OAuth reference](https://docs.discord.com/developers/topics/oauth2),
 verification independently from original discovery pins. REST uses explicit **v10**;
 OAuth browser authorization is unversioned. Unknown upstream announcement/effective
 dates remain unknown. Native SDK and unpublished Commerce contracts remain
-[explicit blockers](Phase9ServiceContracts.md).
+[explicit blockers](ServiceContracts.md).
 
 ## Authorization and installation
 
@@ -62,7 +69,7 @@ implementation or physical-device qualification. The independent
 [OAuthApp example](../Examples/OAuthApp/README.md) compiles this adoption without
 Gateway, Client, Cache, Commands, Interactions or concrete network adapters.
 
-## Explicit backend device authorization (Phase 13)
+## Explicit backend device authorization
 
 Verified **2026-10-18** against the published
 [console account-linking flow](https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-consoles)
@@ -113,7 +120,7 @@ Token bodies, codes, refresh credentials and optional webhook data redact ordina
 formatting and reflection. Unsafe accessors and raw URL properties can intentionally
 expose sensitive values; consumers must keep them out of logs and metrics.
 
-Phase 11 adds `OAuthEndpoints.activityAuthorizationCode` for the confidential
+DiscordKit provides `OAuthEndpoints.activityAuthorizationCode` for the confidential
 backend exchange of a code returned by an Activity iframe AUTHORIZE command.
 The [official Activity tutorial](https://docs.discord.com/developers/activities/building-an-activity)
 uses a form grant with client authentication and no redirect URI. This separate API
@@ -169,8 +176,7 @@ legacy compatibility, one-use/concurrent callbacks, safe diagnostics, token vari
 errors, bounded admission, concurrent refresh/cancellation, expiry, CAS replacement,
 invalid grants and publisher cascades. Game/Commerce suites cover public descriptors,
 silent lobby partial results, full-replacement stats and authoritative entitlement
-ownership/expiry/consumption. The [execution record](../.air/plans/phase-9-execution.plan.md)
-records final commands and results.
+ownership/expiry/consumption. These are offline checks using injected dependencies.
 
 Local macOS compilation/deterministic tests do not establish live Discord consent,
 OS browser-session behavior, remote secure-storage durability, approval-gated publisher

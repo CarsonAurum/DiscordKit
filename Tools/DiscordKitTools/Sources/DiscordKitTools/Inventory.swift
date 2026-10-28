@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitTools/Sources/DiscordKitTools/Inventory.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A versioned discovery inventory. Entries describe upstream definitions, not SDK support.

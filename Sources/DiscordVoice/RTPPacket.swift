@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoice/RTPPacket.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Failures from bounded RTP, discovery and packet scheduling. No media bytes are included.

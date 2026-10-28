@@ -1,15 +1,19 @@
-# Activities and owned browser protocol: Phase 11
+<!--
+File: Docs/Parity/changes/2026-10-17-activities.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-17**. The iframe host protocol uses numeric
+# Activities and owned browser protocol
+
+Verified **2026-10-17**. The iframe host protocol uses numeric
 HANDSHAKE/FRAME/CLOSE/HELLO opcodes and **v1** JSON handshake, independently of REST
 and Gateway v10. Official SDK **2.5.0** source at revision
 [`14264eccbf9e68d5d58c1aadbc7579e003e0dce6`](https://github.com/discord/embedded-app-sdk/tree/14264eccbf9e68d5d58c1aadbc7579e003e0dce6)
 provides protocol/schema evidence without adding its npm runtime/dependency graph.
 The [current source fingerprints](../activities-current-sources.json) are separate
-from the unchanged historical discovery membership/revision hashes. Local release
-and commit are unknown at the time of this record.
-
-Previously the repository provided backend OAuth/token ownership, signed launch
+from the unchanged historical discovery membership/revision hashes. Previously the repository provided backend OAuth/token ownership, signed launch
 interactions and an injected Activity purchase authority without an owned iframe
 messaging implementation. The independent Activities product now provides
 transport-neutral session ownership, typed command/event values, bounded
@@ -57,7 +61,7 @@ its source codec does not establish actual event delivery. Web-only commands and
 mobile-only orientation remain explicit catalog restrictions. Diagnostics redact
 credentials, authorization codes, host context and raw user/purchase payloads.
 
-The ActivityHost consumer composes Parts 8–9 backend OAuth exchange and
+The ActivityHost consumer composes backend OAuth exchange and
 server-authoritative entitlement verification without storing client secrets in
 iframe/mobile code. Client purchase responses/events are advisory context; durable
 grants require backend entitlement checks. No live authenticated calls or real
@@ -67,7 +71,7 @@ Migration is additive: adopt Activities, inject the owned browser/platform bindi
 start and await READY, authorize/exchange server-side, authenticate and subscribe.
 Explicitly release subscriptions and await close. Existing HTTP/Gateway/RPC
 adoption is unchanged. See the [guide](../../Activities.md) and
-[execution record](../../../.air/plans/phase-11-execution.plan.md).
+[technical guide](../../Activities.md).
 
 Swift synthetic protocol suites and Node built-in simulated-host suites establish
 executed local contracts only. Approved Discord **Web, iOS and Android** tests for
@@ -75,4 +79,4 @@ handshake/auth/participants and purchase/entitlement workflows remain **not run*
 Swift/browser-Wasm, native WebKit/JNI adapters, proxy runtime policy, minimum
 OS/browser versions and mobile suspension/recovery remain separate gates. No
 standalone web view creates a Discord Activity host. These gates prevent a
-whole-platform Phase 11 completion or fleet-capacity claim.
+whole-platform Activity qualification or fleet-capacity claim.

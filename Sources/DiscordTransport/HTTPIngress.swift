@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/HTTPIngress.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// One accepted request and its exactly-once response reservation.
 public struct HTTPExchange: Sendable {
     public let request: HTTPRequest

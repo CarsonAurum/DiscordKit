@@ -1,6 +1,13 @@
+<!--
+File: Docs/Moderation.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Audit logs and Auto Moderation REST catalog
 
-Phase 5D implements all **six operations** in the current official
+DiscordKit provides all **six operations** in the current official
 [Audit Log](https://docs.discord.com/developers/resources/audit-log) and
 [Auto Moderation](https://docs.discord.com/developers/resources/auto-moderation)
 references: audit retrieval and rule list/get/create/modify/delete. Contracts were
@@ -9,11 +16,10 @@ verified **2026-10-16** against REST **v10**, the
 [API reference](https://docs.discord.com/developers/reference),
 [official OpenAPI](https://github.com/discord/discord-api-spec) and
 [change log](https://docs.discord.com/developers/change-log). Current source hashes
-are recorded separately from discovery membership pins. No dependency or product
-target was added. Phase 5E adds [emoji, stickers and soundboard](Expressions.md);
-Phase 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md).
-Phase 5J adds [lobbies and identity profiles](SocialGame.md); corresponding Gateway event catalogs remain pending.
-Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
+identify the reviewed contracts. See [expressions](Expressions.md),
+[discovery/events](DiscoveryEvents.md), [social/game](SocialGame.md) and
+[applications/users](ApplicationsUsers.md) for related REST catalogs, and
+[Gateway](Gateway.md) for dispatch coverage.
 
 Import `DiscordModels` and `DiscordHTTP`, inject a transport and shared
 credential-scoped rate/reuse authorities, then execute the descriptors. REST
@@ -156,6 +162,6 @@ They use finite fixtures and no Discord credentials or live Discord requests.
 Other hosts/devices, live API conformance, durable coordination and long-soak
 qualification remain separate [platform gates](PlatformSupport.md). Upstream
 announcement/effective dates and local support history remain distinct in the
-[Phase 5D change record](Parity/changes/2026-10-16-moderation.md).
+[change record](Parity/changes/2026-10-16-moderation.md).
 
-Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).
+DiscordKit provides [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

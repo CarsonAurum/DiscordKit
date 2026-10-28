@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKPulseTables.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /*
 Copyright (c) 2006-2011, Skype Limited. All rights reserved.
 Redistribution and use in source and binary forms, with or without

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGameServices/DiscordGameServices.docc/Guides/LobbyAndProfileWorkflows.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Reducing lobby and game-profile writes
 
 Use supplied snapshots for deliberate no-ops while preserving full replacement and partial bulk outcomes.

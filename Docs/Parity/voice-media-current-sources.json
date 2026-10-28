@@ -9,7 +9,7 @@
       "bytes": 35065,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "voice-opcodes",
@@ -18,7 +18,7 @@
       "bytes": 26845,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "change-log",
@@ -27,7 +27,7 @@
       "bytes": 308684,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "dave",
@@ -36,7 +36,7 @@
       "bytes": 124412,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "opus",
@@ -45,7 +45,7 @@
       "bytes": 977743,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "opus-updates",
@@ -54,7 +54,7 @@
       "bytes": 23578,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "rtp",
@@ -63,7 +63,7 @@
       "bytes": 259985,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "xchacha",
@@ -72,7 +72,7 @@
       "bytes": 36930,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Phase 12 initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
+      "purpose": "voice media initial media, framing and cryptographic construction evidence; no full voice/MLS/DAVE support claim."
     },
     {
       "name": "swift-crypto/Package.swift",

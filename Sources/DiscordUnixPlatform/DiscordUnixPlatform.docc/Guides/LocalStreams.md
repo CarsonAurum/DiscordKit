@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordUnixPlatform/DiscordUnixPlatform.docc/Guides/LocalStreams.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Connecting and framing local streams
 
 Keep path authorization, stream framing and native cleanup explicit.

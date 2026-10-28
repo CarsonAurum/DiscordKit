@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Guides/MessagingAndChannels.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Messages, polls, channels and threads
 
 Choose typed resource operations while retaining permission, content and replacement semantics.

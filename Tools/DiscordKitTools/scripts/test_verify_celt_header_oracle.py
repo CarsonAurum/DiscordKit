@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_celt_header_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic side-information evidence tests; no network/compiler/device/reference archive."""
 import copy
 import json

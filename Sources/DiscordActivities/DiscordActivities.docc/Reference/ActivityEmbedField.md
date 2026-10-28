@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordActivities/DiscordActivities.docc/Reference/ActivityEmbedField.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordActivities/ActivityEmbedField``
 
 ## Topics

@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitLoadTests/scripts/test_record_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Verify offline HTTP baseline gates independently from process timing and sockets."""
 import unittest
 from unittest.mock import patch

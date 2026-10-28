@@ -1,3 +1,8 @@
+// File: Sources/DiscordDSL/PolicyComposition.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 
 /// A sanitized structural admission failure that contains no invocation data or user error text.

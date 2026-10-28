@@ -1,3 +1,8 @@
+// File: Tests/Fixtures/DSLExtensionsCompile/Sources/MissingDependencies/Consumer.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCommandExtensions
 
 /// Intentionally fails because the extension's required typed dependency contract cannot be omitted.

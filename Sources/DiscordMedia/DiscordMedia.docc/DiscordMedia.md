@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordMedia/DiscordMedia.docc/DiscordMedia.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordMedia``
 
 Represent, process, stream and pace bounded portable PCM and encoded media.

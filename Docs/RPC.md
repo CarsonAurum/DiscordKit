@@ -1,6 +1,13 @@
+<!--
+File: Docs/RPC.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Local desktop RPC
 
-Part 10 adds independently adopted `DiscordRPC` and `DiscordCertifiedDevices`
+DiscordKit provides independently adopted `DiscordRPC` and `DiscordCertifiedDevices`
 products, verified against the official [RPC reference](https://docs.discord.com/developers/topics/rpc)
 and [change log](https://docs.discord.com/developers/change-log) on **2026-10-17**.
 RPC uses version **1**, independently of REST/Gateway v10. RPC has no HTTP,
@@ -18,7 +25,7 @@ precedence. Windows candidate names use `\\?\pipe\discord-ipc-{n}`. The default
 The maximum caller-selected candidate count is 100. Native Unix applications
 can inject the existing `UnixIPCTransport` from DiscordUnixPlatform. Windows
 named-pipe I/O requires a separately qualified injected implementation; no owned
-Windows named-pipe adapter or desktop support is claimed in this phase.
+Windows named-pipe adapter or desktop support is qualified by these tests.
 
 `RPCIPCConnection` owns a byte stream, encodes the 8-byte little-endian header
 and decodes split/coalesced frames. Opcode 0 sends `{v:1,client_id:...}`;

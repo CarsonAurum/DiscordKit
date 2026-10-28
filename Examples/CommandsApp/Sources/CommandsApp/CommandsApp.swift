@@ -1,3 +1,8 @@
+// File: Examples/CommandsApp/Sources/CommandsApp/CommandsApp.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCommands
 import DiscordCore
 import DiscordModels

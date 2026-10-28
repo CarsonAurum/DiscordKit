@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCrypto/DiscordVoiceCrypto.docc/Reference/XChaCha20Poly1305.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoiceCrypto/XChaCha20Poly1305``
 
 ## Topics

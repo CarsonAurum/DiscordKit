@@ -1,3 +1,8 @@
+# File: Tools/ci/test_dsl_extension_fixtures.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Deterministic qualification-runner tests; actual compiler evidence comes from its external targets."""
 
 from pathlib import Path

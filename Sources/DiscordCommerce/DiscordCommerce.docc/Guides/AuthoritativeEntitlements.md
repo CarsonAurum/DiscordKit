@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommerce/DiscordCommerce.docc/Guides/AuthoritativeEntitlements.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Authorizing features from authoritative entitlements
 
 Fetch current server data and match the exact application, SKU and user or guild owner.

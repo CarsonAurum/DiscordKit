@@ -1,11 +1,35 @@
+<!--
+File: Docs/Migration.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Compatibility and migration
 
-The current runtime candidate is **0.18.0**. The separate authoring checkpoint is
-**0.15.0**, covering Parts 15A-15L. The
-historical Phase 14 checkpoint is **0.14.0**. Neither candidate implies a tag or
-package publication. Preserve the
-explicit protocol versions REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0**
-with ciphersuite **2**, and DAVE **v1** independently of the package version.
+The current runtime candidate is **0.19.0**. Package versions are independent of
+REST/Gateway **v10**, Voice **v8**, RPC **v1**, MLS **1.0** with ciphersuite **2**,
+and DAVE **v1**. Candidate validation does not establish a published package or tag.
+
+## 0.19.0 publication candidate
+
+`RESTClient` now defaults to the library identification value
+`DiscordBot (https://github.com/CarsonAurum/DiscordKit, 0.19.0)`. Applications that
+set `userAgent` explicitly retain their chosen value. If outbound-header fixtures
+assert the previous default, update them to the new repository and candidate version.
+This default-argument change and the additive Gateway construction options require
+a pre-1.0 minor increment under the source-API policy.
+
+`GatewayEventHandlerDispatcher` preserves callback ordering within each complete
+shard identity by default. Its explicit `serializesPerShard` initializer permits
+independent same-shard callbacks to overlap when set to `false`; the configured
+concurrency, retention and shared admission limits still apply. Keep the default
+for callbacks whose completion order matters. `GatewayInteractionAdapter` also exposes
+an explicit `serializesPerShard` initializer; use `false` only when independent
+same-shard command execution may overlap. Existing interaction response ownership,
+deadlines and bounded authorities still apply. Review the
+[API comparison](Release/publication-api-comparison.json) and retain earlier
+baselines when assessing upgrades. The candidate has no publication tag.
 
 ## Semantic logging migration
 
@@ -40,8 +64,7 @@ require a patch. During 0.x, use a minor increment for breaking API design chang
 and document each affected symbol and migration. Do not silently reset a baseline
 to make a check pass. Retain the previous baseline/report for release comparison,
 review the difference, explain required edits, then adopt the new baseline as part
-of the approved release change. Phase 14 establishes the initial recorded baseline;
-it introduces tooling/docs/example composition and no intended runtime API removal.
+of the approved release change.
 
 Independent adoption remains the preferred migration path: replace umbrella imports
 with the products your consumer needs, inject the shared authorities it owns,
@@ -65,39 +88,38 @@ compiled definitions before explicit reconciliation or registration.
 To adopt an existing root slash definition and exact matching route incrementally,
 wrap them in `ExistingSlashCommand`. This adapter performs no typed decoding and
 rejects unsupported families, nesting and autocomplete. Use `ExistingCommandFamily`
-for complete low-level catalogs or the typed family adapters introduced in Part 15F.
+for complete low-level catalogs or the typed family adapters.
 Use `ManualSlashCommandHandler` with the existing `InteractionContext.responder`
-for explicit response ownership. Part 15C optionally replaces schema/metadata
+for explicit response ownership. Optional macros replace schema/metadata
 boilerplate with the separate [macro package](MacroDSL.md), retaining the same
-protocols and decoders. Part 15D adds opt-in `SlashCommandHandler` and
+protocols and decoders. DiscordKit provides opt-in `SlashCommandHandler` and
 `DeferredSlashCommandHandler` contracts; change `execute` to accept the restricted
 typed context and return `MessageResponse` or `DeferredMessageResponse`. The adapter
 owns acknowledgement and edit-original completion. Manual handlers need no changes.
 Use `CommandApplication` for signed HTTP composition and call `synchronize` separately
 when registration is intended. Do not configure application auto-defer alongside it.
-Part 15E optionally replaces direct message construction with `Text`, `Embed` and
+Message builders optionally replace direct message construction with `Text`, `Embed` and
 `Components` inside a response builder. `MessageContent` escapes ordinary strings
 and admits mentions through typed interpolation; explicit raw segments retain
 caller-owned formatting and never enable broad parsing by themselves. Existing raw
 Models remain available. See [message builders](MessageBuilders.md) for field
-presence, validation and intentional mention policies. Part 15F adds optional
+presence, validation and intentional mention policies. DiscordKit provides optional
 [command-family adapters](CommandFamilies.md) without changing existing handlers.
 Use a command tree for nested slash paths and keep partial autocomplete distinct from
 complete invocation arguments. Context menus use typed partial targets; component and
 modal routes use separate exact-ID namespaces. Synchronization still manages only
-compiled name/type pairs and never deletes unmanaged commands. Part 15G adds
-optional [policies and middleware](CommandPolicies.md) with explicit authorization,
+compiled name/type pairs and never deletes unmanaged commands. DiscordKit provides optional [policies and middleware](CommandPolicies.md) with explicit authorization,
 shared concurrency admission and rejection/error mapping. See
 [response ownership](CommandResponses.md) and [the guide](CommandDSL.md)
 for argument presence, limits, diagnostics and the custom-code contract.
 
 ## Adopt the supervised module host
 
-Existing direct Gateway/client consumers require no migration. Part 15H's
-[event modules](GatewayEventModules.md) still compile and run through explicit
-subscription owners. Part 15I expands the selected `DiscordBotDSL` graph to include
-Client and CommandDSL for [supervised bot applications](BotApplications.md); the
-shared and command-only graphs remain independent. A consumer that audits an
+Existing direct Gateway/client consumers require no migration.
+[Event modules](GatewayEventModules.md) compile and run through explicit subscription
+owners. `DiscordBotDSL` also includes Client and CommandDSL for
+[supervised bot applications](BotApplications.md); the shared and command-only
+graphs remain independent. A consumer that audits an
 event-only product closure must accept these host dependencies or retain direct
 Gateway dispatcher adoption. Selecting BotDSL starts no client or command work.
 
@@ -110,7 +132,7 @@ receives trusted input only from client ingestion, while responses remain HTTP
 callbacks. Continue to synchronize commands explicitly. The [DSLBot example](../Examples/DSLBot/README.md)
 exercises synthetic host composition without credentials or external sockets.
 
-Part 15J optionally installs reusable modules under `ModuleNamespace` and validates
+The DSL optionally installs reusable modules under `ModuleNamespace` and validates
 explicit typed `ModuleDependencies` through `DependentModule` before creating its
 body. Existing unnamespaced IDs retain their duplicate checks; namespaces preserve
 raw IDs and never rewrite command routes or runtime handler IDs. Duplicate event
@@ -139,13 +161,11 @@ reviewed before that effective date.
 
 ## Evidence carried with releases
 
-The reviewed Phase 15 API uses separately named `0.15.0` root, macro and extension
-baselines. Preserve the `0.14.0` baseline and historical checkpoint reports;
-compare fresh compiler graphs to the old baseline for migration review and the
-new baseline for same-version stability. Candidate certification adds guides,
-tutorials, audits and scoped evidence; it does not require an existing runtime
-consumer to adopt DSL products or macros. See [release tooling](ReleaseTooling.md)
-for the exact comparisons and current report selection.
+API baselines for root, macro and extension packages are checked separately.
+Compare fresh compiler graphs against the applicable reviewed baseline when
+assessing compatibility. Existing runtime consumers can continue to use direct
+APIs without adopting DSL products or macros. See [release tooling](ReleaseTooling.md)
+for the exact API comparisons.
 
 Each release includes a machine-readable report and a readable companion identifying
 toolchain, protocols, source verification day, platform matrix, public API baseline,

@@ -1,3 +1,8 @@
+# File: Tools/ci/test_curate_docc.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Exercise owned DocC curation, overload links and nonwriting drift detection."""
 
 import copy
@@ -45,6 +50,19 @@ class ReferenceCurationTests(unittest.TestCase):
         for macro in macros:
             self.assertIn("``DiscordDSLMacros/" + macro["pathComponents"][0] + "``", files[Path("APIReference.md")])
         self.assertEqual((files, stats), curate_docc.reference_files(module, [graph(list(reversed(macros)), module=module)]))
+
+    def test_publication_headers_use_each_root_or_package_page_path(self):
+        """Regeneration retains attribution and paths before DocC's first title block."""
+        for prefix in (Path(), Path("Packages/DiscordDSLExtensions")):
+            files, _ = curate_docc.reference_files("Example", [graph([symbol("Value")])], prefix)
+            for relative, contents in files.items():
+                path = prefix / "Sources/Example/Example.docc" / relative
+                expected = (f"[//]: # \"File: {path.as_posix()} | Created by Carson Rau. | "
+                            "Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com\"\n\n")
+                self.assertTrue(contents.startswith(expected))
+                self.assertTrue(contents[len(expected):].startswith("# "))
+                self.assertEqual(contents.count("Created by Carson Rau."), 1)
+                self.assertIn(curate_docc.GENERATED, contents)
 
     def test_stable_hash_matches_installed_docc_overload_identifiers(self):
         """Published DocC paths use folded FNV-1, not Python's randomized hash."""

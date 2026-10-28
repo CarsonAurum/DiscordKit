@@ -1,3 +1,8 @@
+// File: Tests/DiscordBotDSLTests/EventTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordBotDSL
 import DiscordCore
 import DiscordDSL

@@ -1,28 +1,28 @@
+<!--
+File: Docs/Voice.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Media and voice protocol foundations
 
-Verified and locally added **2026-10-17**. This is the first release of the
-multi-release [Part 12 plan](../.air/plans/phase-12-execution.plan.md), with four
-independently adopted products. **Complete Discord voice is not implemented.**
-[Phase 12D supervised sessions](VoiceSessions.md) now provide `VoiceSession`,
-`VoiceManager` and bounded network/media ownership. The independent
-[Phase 12B MLS product](MLS.md) supplies bounded group key establishment, and
-[Phase 12C DAVE](DAVE.md) now supplies signaling coordination, sender ratchets,
-codec-aware encoded-frame protection and ephemeral verification. These are
-explicitly composed protocol owners; authorized Discord and full device qualification remain open.
-Apple system-route capture/playback is independently
-available through `DiscordApplePlatform`; device qualification remains open.
+DiscordKit provides independent media, voice protocol, MLS and DAVE products.
+[Supervised sessions](VoiceSessions.md) provide `VoiceSession`, `VoiceManager` and
+bounded network/media ownership. The independent [MLS product](MLS.md) supplies
+group key establishment, and [DAVE](DAVE.md) supplies signaling coordination,
+sender ratchets, codec-aware encoded-frame protection and ephemeral verification.
+These are explicitly composed protocol owners; authorized Discord and full
+device qualification remain open. Apple capture/playback is available separately
+through `DiscordApplePlatform`.
 
-The subsequent [12A execution](../.air/plans/phase-12a-execution.plan.md) adds
-streaming media, bandlimited resampling, statistical speech detection and native
-Apple audio ownership. The [codec/loss continuation](Parity/changes/2026-10-17-phase12a-codec-loss-conformance.md)
-adds mono/stereo SILK, shared-entropy hybrid coding, ordinary mode/channel/rate
-transitions, and explicit PLC/CNG/in-band FEC recovery. Encoders have deliberately
-bounded analysis and configuration; native platform and quality qualification
-remain separate. The [encoder and native qualification continuation](Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md)
-adds bounded bitrate/DTX ownership and adaptive CELT analysis. This closure request
-excludes Windows/Android implementations. Remaining qualification is recorded
-explicitly; neither that exclusion nor a numerical comparison implies perceptual,
-minimum-OS or all-Apple-device qualification.
+Media processing includes streaming PCM, bandlimited resampling and statistical
+speech detection. The codecs support mono/stereo SILK, shared-entropy hybrid coding,
+ordinary mode/channel/rate transitions and explicit PLC/CNG/in-band FEC recovery.
+Encoders use bounded bitrate/DTX ownership and adaptive CELT analysis. Native
+platform and perceptual-quality qualification remain separate. Windows/Android
+capture/playback implementations are unavailable; numerical comparisons do not
+establish perceptual, minimum-OS or all-Apple-device qualification.
 
 ## Products and ownership
 
@@ -103,7 +103,7 @@ no audio syntax by itself; the codec stages below compose with it. Probability
 models admit up to 257 symbols for the widest CELT theta context. Frame coder
 failures are terminal; complete-frame owners use private copies to preserve stream
 history on failure. See the
-[dated media/entropy record](Parity/changes/2026-10-17-phase12a-media-entropy.md).
+[dated media/entropy record](Parity/changes/2026-10-17-codecs-media-entropy.md).
 
 `CELTPulseCodebook` implements RFC 6716 section 4.3.4.2 signed integer pulse
 ranking/unranking and uniform entropy composition. Bounds are 1...176 dimensions,
@@ -112,7 +112,7 @@ the recursive shape coder below. Forty official libopus codeword fixtures and an
 opt-in seeded oracle compare integer vectors, indices, counts and entropy output.
 This codebook supplies no band allocation or decoded audio by itself; separately
 adopted quantizers and frame codecs compose with its integer/entropy contract.
-See the [continuation record](Parity/changes/2026-10-17-phase12a-dsp-apple-pvq.md).
+See the [continuation record](Parity/changes/2026-10-17-codecs-dsp-apple-pvq.md).
 
 `CELTBandQuantizer` adds projected/greedy shape search, all four spreading levels,
 one/two/four/eight short blocks, pulse-domain collapse masks and normalized
@@ -298,9 +298,9 @@ The availability flag and observer ownership follow Apple's
 and [listener registration contract](https://developer.apple.com/documentation/coreaudio/audioobjectaddpropertylistenerblock(_:_:_:_:)).
 These checks narrow startup races; they cannot guarantee hardware remains present
 after readback. Real macOS permission, route-change and selected-device hot-unplug
-observations are recorded in the [dated qualification record](Parity/changes/2026-10-17-phase12a-encoder-native-qualification.md).
+observations are recorded in the [dated qualification record](Parity/changes/2026-10-17-codecs-encoder-native-qualification.md).
 Interruption, minimum-OS and mobile runtime checks remain separate. Windows/Android
-capture/playback remain deferred by the requested scope. Linux accepts injected PCM.
+capture/playback remain unavailable. Linux accepts injected PCM.
 Normal unit tests never request permission or open devices; the separate opt-in
 [qualification executable](../Tools/AppleAudioQualification/README.md) performs native I/O.
 
@@ -371,7 +371,7 @@ session. The independently adopted `DAVEProtocolSession` performs that binding
 through `authorizeGateway(_:)`; actual media must continue passing the actor's
 active-epoch/membership gates. Its constructor starts no network work and it does
 not own sockets itself. [The supervised adapter/session](VoiceSessions.md) now supplies
-12D network/media ownership. DAVE version zero fails closed.
+supervised network/media ownership. DAVE version zero fails closed.
 
 Discord's [E2EE requirement](https://docs.discord.com/developers/topics/voice-connections#end-to-end-encryption-dave-protocol)
 took effect for eligible conversations **2026-03-01**. Transport encryption cannot

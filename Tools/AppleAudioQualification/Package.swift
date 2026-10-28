@@ -1,4 +1,9 @@
 // swift-tools-version: 6.4
+// File: Tools/AppleAudioQualification/Package.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import PackageDescription
 

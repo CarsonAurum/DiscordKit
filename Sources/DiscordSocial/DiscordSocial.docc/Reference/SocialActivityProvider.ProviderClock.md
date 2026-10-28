@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordSocial/DiscordSocial.docc/Reference/SocialActivityProvider.ProviderClock.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordSocial/SocialActivityProvider/ProviderClock``
 
 ## See Also

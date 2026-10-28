@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/OAuthApplications.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Inject an OAuth host and token owner
 
 Keep consent, browser lifecycle and transactional secure storage explicit.

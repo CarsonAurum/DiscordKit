@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/OpusAudioDecoder.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /* Copyright (c) 2010 Xiph.Org Foundation, Skype Limited
    Copyright (c) 2024 Arm Limited
    Written by Jean-Marc Valin and Koen Vos */

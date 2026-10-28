@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordModels/DiscordModels.docc/Reference/GuildPruneCount.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordModels/GuildPruneCount``
 
 ## Topics

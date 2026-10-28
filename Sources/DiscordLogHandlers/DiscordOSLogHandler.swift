@@ -1,3 +1,8 @@
+// File: Sources/DiscordLogHandlers/DiscordOSLogHandler.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if canImport(OSLog)
 import Foundation
 import Logging

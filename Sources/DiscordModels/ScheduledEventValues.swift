@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/ScheduledEventValues.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// Identifies a live Stage instance independently of its channel.

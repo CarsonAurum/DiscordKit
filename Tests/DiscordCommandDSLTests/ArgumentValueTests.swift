@@ -1,3 +1,8 @@
+// File: Tests/DiscordCommandDSLTests/ArgumentValueTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 @testable import DiscordCommandDSL
 import DiscordCore
 import DiscordModels

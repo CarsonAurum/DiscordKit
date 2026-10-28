@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordLogHandlers/DiscordLogHandlers.docc/DiscordLogHandlers.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordLogHandlers``
 
 Choose optional file, Apple unified-log and callback outputs for native SwiftLog events.

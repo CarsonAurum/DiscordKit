@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitLoadTests/scripts/record_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Record serial normal/10x-burst release runs; never contact a remote service."""
 import argparse
 from datetime import datetime, timezone

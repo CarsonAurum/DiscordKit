@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGateway/DiscordGateway.docc/Guides/GatewayEventsAndHandlers.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Delivering events to consumers and handlers
 
 Choose single-consumer ingestion or bounded broadcast without blocking protocol control work.
@@ -20,7 +22,9 @@ Always cancel a subscription when abandoning iteration. A cancelled suspended `n
 
 ### Run handlers in a structured owner
 
-``GatewayEventHandlerDispatcher`` runs callbacks serially per complete shard identity while allowing different shards to overlap. Its default bounds are four concurrent callbacks and 128 retained events/four MiB across active/pending work. A shared ``GatewayHandlerAuthority`` bounds aggregate callbacks and permit waiters across dispatchers.
+``GatewayEventHandlerDispatcher`` defaults to serial callbacks per complete shard identity while allowing different shards to overlap. Its default bounds are four concurrent callbacks and 128 retained events/four MiB across active/pending work. A shared ``GatewayHandlerAuthority`` bounds aggregate callbacks and permit waiters across dispatchers.
+
+Hosts processing independent callbacks may explicitly choose `serializesPerShard: false` on the dispatcher. Same-shard callbacks can then overlap within the unchanged task, retained-event, retained-byte and shared-authority limits. This opts out of callback ordering; ordinary stateful Gateway event consumers should preserve the default. Finite saturation can still delay callbacks and provides no deadline or capacity guarantee.
 
 Handlers run outside publication and control tasks. A slow handler backpressures its own bounded subscription, while other subscribers and heartbeats remain independent. A hot shard can fill finite lookahead; do not assume fairness creates infinite buffering. Callback errors propagate to the dispatcher owner, and already completed side effects are not rolled back.
 

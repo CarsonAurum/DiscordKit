@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/release_check.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Fail-closed, offline release traceability, module isolation and maintenance checks.
 
 These audits inspect declared evidence. They never turn local measurements into
@@ -594,7 +599,7 @@ def main():
     parser.add_argument("command", choices=["graph", "report", "maintenance"])
     parser.add_argument("--repository", type=Path, default=Path(__file__).resolve().parents[3])
     parser.add_argument("--policy", default="Tools/DiscordKitTools/release-policy.json")
-    parser.add_argument("--report", default="Docs/Release/phase14-report.json")
+    parser.add_argument("--report", default="Docs/Release/publication-report.json")
     parser.add_argument("--record", default="Docs/Release/maintenance.json")
     parser.add_argument("--as-of", type=iso_date, default=dt.date.today())
     args = parser.parse_args()

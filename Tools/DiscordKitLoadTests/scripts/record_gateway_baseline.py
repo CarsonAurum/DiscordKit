@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitLoadTests/scripts/record_gateway_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Record bounded offline Gateway lifecycle/control evidence; never contact Discord."""
 import argparse
 import json

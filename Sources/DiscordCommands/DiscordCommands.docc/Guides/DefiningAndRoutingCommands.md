@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommands/DiscordCommands.docc/Guides/DefiningAndRoutingCommands.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Defining and routing commands
 
 Separate registration values, exact invocation identity and application authorization.

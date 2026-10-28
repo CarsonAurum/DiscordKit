@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordMLS/DiscordMLS.docc/Guides/DeliveryAndRecovery.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Proposal delivery, candidate selection and recovery
 
 Advance only the commit selected by the authenticated delivery service.

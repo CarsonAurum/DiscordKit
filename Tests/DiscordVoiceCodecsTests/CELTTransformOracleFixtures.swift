@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTTransformOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Complete independent float32 transform outputs from unmodified official libopus 1.6.1.

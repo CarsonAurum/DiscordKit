@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCrypto/DiscordVoiceCrypto.docc/Reference/VoiceTransportCipher.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoiceCrypto/VoiceTransportCipher``
 
 ## Topics

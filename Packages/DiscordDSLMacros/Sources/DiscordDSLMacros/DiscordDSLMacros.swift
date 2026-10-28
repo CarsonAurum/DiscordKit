@@ -1,3 +1,8 @@
+// File: Packages/DiscordDSLMacros/Sources/DiscordDSLMacros/DiscordDSLMacros.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCommandDSL
 
 /// Synthesizes a finite `DiscordCommandDSL.CommandArguments` schema for a nongeneric struct.

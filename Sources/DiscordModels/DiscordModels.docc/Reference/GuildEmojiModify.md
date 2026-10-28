@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordModels/DiscordModels.docc/Reference/GuildEmojiModify.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordModels/GuildEmojiModify``
 
 ## Topics

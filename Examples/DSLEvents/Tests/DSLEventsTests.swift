@@ -1,3 +1,8 @@
+// File: Examples/DSLEvents/Tests/DSLEventsTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 @testable import DSLEvents
 import Testing
 

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCodecs/DiscordVoiceCodecs.docc/Reference/SILKStereoDecodedPacket.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoiceCodecs/SILKStereoDecodedPacket``
 
 ## Topics

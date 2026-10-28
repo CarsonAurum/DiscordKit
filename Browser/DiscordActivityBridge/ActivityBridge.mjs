@@ -1,3 +1,8 @@
+// File: Browser/DiscordActivityBridge/ActivityBridge.mjs
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /** Owned Activity RPC v1 browser protocol. No construction starts listeners, timers, or I/O. */
 export const ActivityOpcodes = Object.freeze({ HANDSHAKE: 0, FRAME: 1, CLOSE: 2, HELLO: 3 });
 

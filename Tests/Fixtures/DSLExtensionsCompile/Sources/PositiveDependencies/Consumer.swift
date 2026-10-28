@@ -1,3 +1,8 @@
+// File: Tests/Fixtures/DSLExtensionsCompile/Sources/PositiveDependencies/Consumer.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordBotExtensions
 import DiscordCommandDSL
 import DiscordCommandExtensions

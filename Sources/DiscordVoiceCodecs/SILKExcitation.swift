@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKExcitation.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Rejections from bounded, exact SILK excitation reconstruction.
 public enum SILKExcitationError: Error, Sendable, Equatable {
     case invalidSeed

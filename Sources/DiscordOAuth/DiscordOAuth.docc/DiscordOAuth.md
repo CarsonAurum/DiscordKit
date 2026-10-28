@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordOAuth/DiscordOAuth.docc/DiscordOAuth.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordOAuth``
 
 Own explicit OAuth consent flows, backend token operations and coordinated secure token lifetimes.

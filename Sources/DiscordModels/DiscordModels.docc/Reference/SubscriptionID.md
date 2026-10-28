@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordModels/DiscordModels.docc/Reference/SubscriptionID.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordModels/SubscriptionID``
 
 ## See Also

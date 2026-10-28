@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/CELTFrameEncoder.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Energy probability tables, temporal masking and allocation trim adapted from
 // libopus 1.6.1 celt/quant_bands.c, celt/laplace.c and celt/celt_encoder.c.
 // Copyright (c) 2007-2008 CSIRO

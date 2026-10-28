@@ -1,3 +1,8 @@
+// File: Tests/DiscordDSLTests/PolicyCompositionTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordDSL
 import Testing
 

@@ -1,3 +1,10 @@
+<!--
+File: Tools/VoiceSessionQualification/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Local Voice session qualification
 
 This independent executable uses actual localhost UDP sockets and continuous-clock

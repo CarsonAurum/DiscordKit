@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommerce/DiscordCommerce.docc/Reference/EntitlementRequirement.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommerce/EntitlementRequirement``
 
 ## Topics

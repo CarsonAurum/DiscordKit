@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/ShardOwnership.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 import DiscordCore
 import Foundation

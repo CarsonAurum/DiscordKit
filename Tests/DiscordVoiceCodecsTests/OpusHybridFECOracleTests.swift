@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/OpusHybridFECOracleTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import Testing
 @testable import DiscordVoiceCodecs

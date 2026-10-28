@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_frame_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Offline ordinary SILK compressed-channel PCM comparison against libopus 1.6.1.
 
 Requires a separately supplied pinned archive; nothing is downloaded. Complete

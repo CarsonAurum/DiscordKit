@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordApplePlatform/DiscordApplePlatform.docc/DiscordApplePlatform.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordApplePlatform``
 
 Own Apple transport lifecycle policy and bounded native PCM capture and playback.

@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_celt_band_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic verifier regression tests: no compiler, source archive or native codec is needed."""
 import copy
 import json

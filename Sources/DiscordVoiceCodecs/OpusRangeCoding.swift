@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/OpusRangeCoding.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Failures in the bounded, owned RFC 6716 entropy primitive; none imply a complete codec.

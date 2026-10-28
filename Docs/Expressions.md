@@ -1,6 +1,13 @@
+<!--
+File: Docs/Expressions.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Emoji, stickers and soundboard REST catalog
 
-Phase 5E implements all **25 operations** in the current official
+DiscordKit provides all **25 operations** in the current official
 [Emoji](https://docs.discord.com/developers/resources/emoji),
 [Sticker](https://docs.discord.com/developers/resources/sticker) and
 [Soundboard](https://docs.discord.com/developers/resources/soundboard) references:
@@ -11,9 +18,9 @@ ten Emoji, eight Sticker and seven Soundboard operations. Contracts were verifie
 [official OpenAPI](https://github.com/discord/discord-api-spec) and
 [change log](https://docs.discord.com/developers/change-log). Current hashes are
 recorded separately from original discovery pins. No product or dependency was added.
-Phase 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md).
-Phase 5J adds [lobbies and identity profiles](SocialGame.md); expression Gateway event catalogs remain pending.
-Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
+DiscordKit provides [invites, templates, scheduled events and stages](DiscoveryEvents.md).
+DiscordKit provides [lobbies and identity profiles](SocialGame.md). See [Gateway](Gateway.md) for dispatch coverage.
+DiscordKit provides [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordModels` and `DiscordHTTP` and inject the existing bounded HTTP
 pipeline with shared credential-scoped rate/reuse authorities. REST adoption
@@ -143,12 +150,9 @@ Coverage includes multipart framing/cleanup, credential isolation, scoped read r
 invalidation, finite retries, unsafe submission outcomes, cancellation and snapshot
 no-op/changed request counts. No tests require Discord credentials or live requests.
 
-Root build/tests, the independent REST example, offline generation/parity checks and
-local HTTP policy scenarios are the completion checks for this slice. Their execution
-results are recorded in the [Phase 5E execution plan](../.air/plans/phase-5e-execution.plan.md).
-Other hosts/devices, live API conformance, durable coordination and long-soak
-qualification remain separate [platform gates](PlatformSupport.md). Upstream dates
-and local support history remain distinct in the
-[Phase 5E change record](Parity/changes/2026-10-16-expressions.md).
+Root build/tests, the independent REST example, offline generation/parity checks
+and local HTTP policy scenarios validate the implemented contracts. Other hosts
+and devices, live API conformance, durable coordination and sustained-capacity
+qualification remain separate [platform requirements](PlatformSupport.md).
 
-Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).
+DiscordKit provides [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

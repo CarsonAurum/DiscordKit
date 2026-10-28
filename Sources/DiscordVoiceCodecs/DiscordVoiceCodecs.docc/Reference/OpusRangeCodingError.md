@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCodecs/DiscordVoiceCodecs.docc/Reference/OpusRangeCodingError.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoiceCodecs/OpusRangeCodingError``
 
 ## Topics

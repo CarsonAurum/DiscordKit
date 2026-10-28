@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordClient/DiscordClient.docc/Guides/SupervisedClient.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Running a supervised consumer client
 
 Give one structured owner responsibility for discovery, shard tasks and final cleanup.

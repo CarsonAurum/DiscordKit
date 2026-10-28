@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_release_check.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Exercise release boundary failures with deterministic isolated local repositories."""
 
 import copy

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordUnixPlatform/DiscordUnixPlatform.docc/DiscordUnixPlatform.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordUnixPlatform``
 
 Connect bounded Unix-domain byte streams through the portable IPC contract.

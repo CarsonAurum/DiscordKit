@@ -1,3 +1,8 @@
+// File: Tests/DiscordHTTPTests/RateLimitTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordTransport
 import DiscordTestSupport
 import Foundation

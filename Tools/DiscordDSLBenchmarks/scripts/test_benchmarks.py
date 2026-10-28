@@ -1,3 +1,8 @@
+# File: Tools/DiscordDSLBenchmarks/scripts/test_benchmarks.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Deterministic failure, isolation and budget checks; no compiler timing assertions."""
 
 import copy

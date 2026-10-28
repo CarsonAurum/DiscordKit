@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordModels/DiscordModels.docc/Reference/FollowedChannel.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordModels/FollowedChannel``
 
 ## Topics

@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitLoadTests/scripts/test_gateway_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Deterministic validation of Gateway evidence accounting without executing workloads."""
 import unittest
 

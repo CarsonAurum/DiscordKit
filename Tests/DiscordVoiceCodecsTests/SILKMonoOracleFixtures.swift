@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/SILKMonoOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Authentic libopus 1.6.1 encoded mono packet streams with independent full silk_Decode PCM.
 /// Generated offline by verify_silk_mono_oracle.py; no native codec is used by these tests.
 struct SILKMonoOracleFixture: Sendable {

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoice/DiscordVoice.docc/Reference/VoiceSessionE2EE.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoice/VoiceSessionE2EE``
 
 ## Topics

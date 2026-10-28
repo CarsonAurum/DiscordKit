@@ -9,7 +9,7 @@
       "bytes": 32494,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "reference",
@@ -18,7 +18,7 @@
       "bytes": 36143,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "change-log",
@@ -27,7 +27,7 @@
       "bytes": 308684,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/publisher-level-account-linking",
@@ -36,7 +36,7 @@
       "bytes": 22989,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "social-commerce/overview",
@@ -45,7 +45,7 @@
       "bytes": 4389,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/provisional-accounts/overview",
@@ -54,7 +54,7 @@
       "bytes": 16618,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/provisional-accounts/bot-token-endpoint",
@@ -63,7 +63,7 @@
       "bytes": 8914,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/provisional-accounts/external-credentials-exchange",
@@ -72,7 +72,7 @@
       "bytes": 7444,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/provisional-accounts/public-client",
@@ -81,7 +81,7 @@
       "bytes": 7976,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/provisional-accounts/managing-accounts",
@@ -90,7 +90,7 @@
       "bytes": 9126,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/provisional-accounts/merging-accounts",
@@ -99,7 +99,7 @@
       "bytes": 25171,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/provisional-accounts/unmerging-accounts",
@@ -108,7 +108,7 @@
       "bytes": 16287,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/account-linking-with-discord",
@@ -117,7 +117,7 @@
       "bytes": 27743,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/account-linking-on-mobile",
@@ -126,7 +126,7 @@
       "bytes": 25438,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/account-linking-on-consoles",
@@ -135,7 +135,7 @@
       "bytes": 15419,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/development-guides/linked-channels",
@@ -144,7 +144,7 @@
       "bytes": 18737,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "social-layer/game-stats-widgets/sending-game-data",
@@ -153,7 +153,7 @@
       "bytes": 6577,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "resources/entitlement",
@@ -162,7 +162,7 @@
       "bytes": 7483,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "resources/application-identity-profile",
@@ -171,7 +171,7 @@
       "bytes": 18701,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "resources/lobby",
@@ -180,7 +180,7 @@
       "bytes": 19256,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "monetization/implementing-one-time-purchases",
@@ -189,7 +189,7 @@
       "bytes": 8628,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "monetization/implementing-iap-for-activities.md",
@@ -198,7 +198,7 @@
       "bytes": 11688,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "discord-social-sdk/core-concepts/oauth2-scopes.md",
@@ -207,7 +207,7 @@
       "bytes": 6849,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     },
     {
       "name": "oauth-server-metadata",
@@ -216,7 +216,7 @@
       "bytes": 872,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 9 contract verification; historical discovery source pins are preserved."
+      "purpose": "Current official oauth services contract verification; historical discovery source pins are preserved."
     }
   ]
 }

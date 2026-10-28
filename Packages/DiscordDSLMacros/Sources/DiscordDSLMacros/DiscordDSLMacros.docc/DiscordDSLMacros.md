@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLMacros/Sources/DiscordDSLMacros/DiscordDSLMacros.docc/DiscordDSLMacros.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDSLMacros``
 
 Generate typed argument schemas, grouped slash leaves and typed context-menu contributions using the

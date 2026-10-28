@@ -1,3 +1,10 @@
+<!--
+File: Tests/Fixtures/PlatformProbe/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Platform transport probe
 
 This development-only Swift package qualifies the exact locked Apple-origin NIO

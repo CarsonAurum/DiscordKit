@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/GuildTemplateRequest.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// Validated API v10 template creation metadata. Requires MANAGE_GUILD at execution;

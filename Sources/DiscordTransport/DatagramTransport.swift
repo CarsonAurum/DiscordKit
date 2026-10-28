@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/DatagramTransport.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// An explicit host/port address; DNS and socket-family policy belongs to adapters.

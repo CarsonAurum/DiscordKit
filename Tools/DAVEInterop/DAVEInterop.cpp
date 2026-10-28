@@ -1,3 +1,8 @@
+// File: Tools/DAVEInterop/DAVEInterop.cpp
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #include <mls/state.h>
 #include <iostream>
 #include <stdexcept>

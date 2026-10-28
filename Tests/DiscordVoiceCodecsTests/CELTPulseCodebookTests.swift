@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTPulseCodebookTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import Testing
 @testable import DiscordVoiceCodecs
@@ -64,10 +69,9 @@ struct CELTPulseCodebookTests {
     }
 
     /// Verifies exact codeword counts and vectors from independently compiled, unmodified
-    /// official libopus 1.6.1 cwrs.c, using the pinned development-only archive. These forty
+    /// official libopus 1.6.1 cwrs.c, using the pinned reference archive. These forty
     /// cases cover sign ordering, interior codewords, high pulse counts and 176 dimensions.
-    /// They are integer-codebook evidence, not decoded-PCM conformance. Reproduction and
-    /// source fingerprints are recorded in the dated Phase 12A continuation parity record.
+    /// They verify integer-codebook behavior; decoded-PCM conformance has separate coverage.
     @Test func officialCodewordFixtures() throws {
         let fixtures: [(Int, Int, UInt32, UInt32, [(Int, Int)])] = [
             (2, 2, 8, 0, [(0, 2)]),

@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/Redaction.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A deterministic, immutable filter for diagnostic strings and structured fields.

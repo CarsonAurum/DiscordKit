@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/AutoModerationValues.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// Type marker separating Auto Moderation rule identifiers from other snowflakes.

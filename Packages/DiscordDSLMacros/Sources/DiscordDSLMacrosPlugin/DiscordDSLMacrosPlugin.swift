@@ -1,3 +1,8 @@
+// File: Packages/DiscordDSLMacros/Sources/DiscordDSLMacrosPlugin/DiscordDSLMacrosPlugin.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import SwiftCompilerPlugin
 import SwiftDiagnostics

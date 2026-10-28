@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Guides/RateLimitsRetriesAndReuse.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Coordinating rate limits, retries and read reuse
 
 Share server authority across consumers and reduce requests only where the descriptor allows it.

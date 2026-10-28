@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordClient/DiscordClient.docc/Reference/ServiceContext.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordClient/ServiceContext``
 
 ## Topics

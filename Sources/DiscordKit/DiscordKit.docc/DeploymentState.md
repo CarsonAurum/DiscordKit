@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/DeploymentState.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Deploy with explicit lifecycle and freshness
 
 Bound work and identify when local observations require resynchronization.

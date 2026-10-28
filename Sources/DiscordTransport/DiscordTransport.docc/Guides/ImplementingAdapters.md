@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordTransport/DiscordTransport.docc/Guides/ImplementingAdapters.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Implementing adapters and deterministic peers
 
 Honor single-send semantics, finite admission and cleanup contracts in production and test backends.

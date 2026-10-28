@@ -245,7 +245,7 @@
         "Tests/DiscordMLSTests/MLSWelcomeTests.swift",
         "Tests/DiscordMLSTests/MLSWireTests.swift"
       ],
-      "remainingGates": "Owned DAVE-v1 MLS key-establishment implementation with pinned published component and no-PSK passive Welcome vectors plus local multi-member lifecycle tests. Independent external cryptographic review, per-platform/backend and authorized Discord qualification remain open. Phase 12C independently implements DAVE signaling/media/verification; Phase 12D now supplies supervised sessions. No production support claim."
+      "remainingGates": "Owned DAVE-v1 MLS key-establishment implementation with pinned published component and no-PSK passive Welcome vectors plus local multi-member lifecycle tests. Independent external cryptographic review, per-platform/backend and authorized Discord qualification remain open. dave independently implements DAVE signaling/media/verification; voice sessions now supplies supervised sessions. No production support claim."
     },
     {
       "id": "dave",
@@ -267,9 +267,9 @@
         "Tests/DiscordDAVETests/DAVESessionLifecycleTests.swift",
         "Tests/DiscordDAVETests/DAVESignalingTests.swift",
         "Tests/DiscordDAVETests/DAVEVerificationTests.swift",
-        "Docs/Parity/phase12c-codec-oracle.json"
+        "Docs/Parity/dave-codec-oracle.json"
       ],
-      "remainingGates": "DAVE negotiated wire version 1, Voice Gateway v8, whitepaper revision 1.1.4 verified 2026-10-18. Independent DiscordDAVE owns bounded binary signaling, exact external sender and authenticated membership, MLS candidate selection/Welcome, ready/execute transitions, stable signing identity with fresh-package recovery, per-sender MLS-style ratchets, AES128-GCM eight-byte tags, bounded clear ranges, nonce/replay/verification limits and ten-second old-key retention. Complete-frame transforms cover Opus, VP8, VP9, H264 ordinary slices, H265 and AV1; unsupported H264 VCL forms fail closed. Ephemeral pairwise scrypt fingerprints and display codes require explicit human confirmation. Construction starts no I/O/tasks. Local synthetic peers, pinned C++ codec oracle and independent media/fingerprint vectors establish only the implemented algorithms. Opcode 26 publishes a bare TLS KeyPackage, matching pinned libdave and the complete Discord.js/Davey Voice send path; the whitepaper wrapper sketch conflicts with those implementations. Independent native decoding rejects the previous wrapped publication and accepts the same package without that prefix. Complete live-service interoperability remains unverified; see Docs/Parity/changes/2026-10-19-dave-keypackage-wire.md. Independent crypto review, full-client interoperability, live Discord/device/platform and production qualification remain open. Grouped upstream introduction/announcement dates are unknown; E2EE enforcement is separately dated 2026-03-01. Locally added 2026-10-18; see Docs/DAVE.md and Docs/Parity/phase12c-current-sources.json."
+      "remainingGates": "DAVE negotiated wire version 1, Voice Gateway v8, whitepaper revision 1.1.4 verified 2026-10-18. Independent DiscordDAVE owns bounded binary signaling, exact external sender and authenticated membership, MLS candidate selection/Welcome, ready/execute transitions, stable signing identity with fresh-package recovery, per-sender MLS-style ratchets, AES128-GCM eight-byte tags, bounded clear ranges, nonce/replay/verification limits and ten-second old-key retention. Complete-frame transforms cover Opus, VP8, VP9, H264 ordinary slices, H265 and AV1; unsupported H264 VCL forms fail closed. Ephemeral pairwise scrypt fingerprints and display codes require explicit human confirmation. Construction starts no I/O/tasks. Local synthetic peers, pinned C++ codec oracle and independent media/fingerprint vectors establish only the implemented algorithms. Opcode 26 publishes a bare TLS KeyPackage, matching pinned libdave and the complete Discord.js/Davey Voice send path; the whitepaper wrapper sketch conflicts with those implementations. Independent native decoding rejects the previous wrapped publication and accepts the same package without that prefix. Complete live-service interoperability remains unverified; see Docs/Parity/changes/2026-10-19-dave-keypackage-wire.md. Independent crypto review, full-client interoperability, live Discord/device/platform and production qualification remain open. Grouped upstream introduction/announcement dates are unknown; E2EE enforcement is separately dated 2026-03-01. Locally added 2026-10-18; see Docs/DAVE.md and Docs/Parity/dave-current-sources.json."
     },
     {
       "id": "voice-control",
@@ -315,7 +315,7 @@
         "Tests/DiscordVoiceTests/VoiceMediaPipelineTests.swift",
         "Tests/DiscordDAVETests/VoiceSessionDAVETests.swift"
       ],
-      "remainingGates": "Implemented bounded per-guild supervision, join/move/leave and credential replacement, heartbeat/resume/discovery, SSRC mapping, PCM/encoded Opus, complete-frame DAVE/RTP/AEAD, jitter/PLC, receive/playback/recording and cleanup. Local synthetic and localhost UDP evidence is separate from authorized Discord, complete-client interoperability, independent crypto review and native device/platform qualification. See Phase12D validation."
+      "remainingGates": "Implemented bounded per-guild supervision, join/move/leave and credential replacement, heartbeat/resume/discovery, SSRC mapping, PCM/encoded Opus, complete-frame DAVE/RTP/AEAD, jitter/PLC, receive/playback/recording and cleanup. Local synthetic and localhost UDP evidence is separate from authorized Discord, complete-client interoperability, independent crypto review and native device/platform qualification. See voice sessions validation."
     },
     {
       "id": "native-audio-devices",
@@ -331,7 +331,7 @@
         "Tests/DiscordApplePlatformTests/AppleAudioRoutesTests.swift",
         "Tests/DiscordApplePlatformTests/AppleAudioDirectionalBindingTests.swift"
       ],
-      "remainingGates": "Apple native capture/playback, explicit macOS input/output UIDs via independent directional engines, supported preferred-input routes, exact binding/liveness readback and fail-closed observed changes. Native permission/route/unplug/duplex evidence and exclusions are recorded in the dated encoder-native qualification record; no all-Apple-device/minimum-OS or native-underrun guarantee follows from callbacks. watchOS preferred input and arbitrary nonmacOS output UIDs remain explicit public API limits. Windows/Android implementations are deferred by user scope; Linux PCM remains injected."
+      "remainingGates": "Apple native capture/playback, explicit macOS input/output UIDs via independent directional engines, supported preferred-input routes, exact binding/liveness readback and fail-closed observed changes. Native permission/route/unplug/duplex evidence and exclusions are recorded in the dated encoder-native qualification record; no all-Apple-device/minimum-OS or native-underrun guarantee follows from callbacks. watchOS preferred input and arbitrary nonmacOS output UIDs remain explicit public API limits. Windows/Android implementations are not implemented scope; Linux PCM remains injected."
     },
     {
       "id": "video-codecs-transforms",
@@ -352,8 +352,8 @@
       "status": "unsupported",
       "implementation": [],
       "evidence": [],
-      "remainingGates": "Official ordinary RFC8251 48kHz decoded-PCM corpus, independent adaptive/encoded/loss/FEC streams and selected speech/music/frame-time measurements are recorded separately. Real macOS permission, route-change, selected-device removal and local duplex accounting have separate reports; native render-underrun telemetry, true interruption, minimum-OS/mobile runtime and perceptual acceptance remain unqualified. Low-rate SILK speech fidelity is limited. External crypto audit, MLS/DAVE conformance, authorized Discord smoke and complete platform/device qualification remain open; Windows/Android implementations are deferred by user scope."
+      "remainingGates": "Official ordinary RFC8251 48kHz decoded-PCM corpus, independent adaptive/encoded/loss/FEC streams and selected speech/music/frame-time measurements are recorded separately. Real macOS permission, route-change, selected-device removal and local duplex accounting have separate reports; native render-underrun telemetry, true interruption, minimum-OS/mobile runtime and perceptual acceptance remain unqualified. Low-rate SILK speech fidelity is limited. External crypto audit, MLS/DAVE conformance, authorized Discord smoke and complete platform/device qualification remain open; Windows/Android implementations are not implemented scope."
     }
   ],
-  "phase12AClosureScope": "Portable and Apple implementations; Windows/Android implementations explicitly deferred by user. Native, perceptual and runtime evidence remains separately bounded."
+  "codecsClosureScope": "Portable and Apple implementations; Windows/Android implementations not implemented. Native, perceptual and runtime evidence remains separately bounded."
 }

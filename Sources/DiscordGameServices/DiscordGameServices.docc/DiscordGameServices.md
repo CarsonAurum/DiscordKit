@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGameServices/DiscordGameServices.docc/DiscordGameServices.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordGameServices``
 
 Compose published backend account, lobby and profile operations with explicit consent and ownership.

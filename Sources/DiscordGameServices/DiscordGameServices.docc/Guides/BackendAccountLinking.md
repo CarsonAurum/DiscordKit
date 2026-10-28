@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGameServices/DiscordGameServices.docc/Guides/BackendAccountLinking.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Backend account provisioning and publisher linking
 
 Bind approved account operations to an authenticated external identity and backend-held credentials.

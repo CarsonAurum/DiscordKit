@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordNIOTransport/DiscordNIOTransport.docc/DiscordNIOTransport.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordNIOTransport``
 
 Run bounded HTTP, WebSocket, UDP and HTTP ingress adapters over SwiftNIO.

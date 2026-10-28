@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLExtensions/Sources/DiscordCommandExtensions/DiscordCommandExtensions.docc/Reference/ExtensionCommand.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommandExtensions/ExtensionCommand``
 
 ## Topics

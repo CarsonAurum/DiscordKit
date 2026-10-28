@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_opus_conformance.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in RFC8251 full-vector decoded-PCM/range verification; never part of consumer builds."""
 import argparse
 from datetime import datetime, timezone

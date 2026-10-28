@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommands/DiscordCommands.docc/Reference/CommandOptionsBuilder.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommands/CommandOptionsBuilder``
 
 ## Topics

@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_adaptive_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in adaptive CELT interoperability and independently decoded fixture regeneration.
 
 Builds a separately supplied, SHA256-verified official libopus archive in temporary
@@ -6,6 +11,8 @@ storage. No download, native product dependency or normal-test compilation occur
 Checks exact ranges and tolerance-qualified PCM in both directions, including owned
 short-block packets. These checks do not establish perceptual or device quality.
 """
+from publication import swift_header
+
 import argparse
 from datetime import datetime, timezone
 import json
@@ -105,7 +112,7 @@ def owned_transient_count(inputs, outputs):
 
 def fixture_text(records):
     """Render compact independent PCM fixtures deterministically, without a codec runtime."""
-    return ('/// Official libopus 1.6.1 scalar decoded PCM for owned adaptive packets; little-endian float32 base64.\n'
+    return swift_header(FIXTURE_PATH) + ('/// Official libopus 1.6.1 scalar decoded PCM for owned adaptive packets; little-endian float32 base64.\n'
             'enum CELTAdaptiveOracleFixtures {\n    static let json = #"""\n'
             + json.dumps(records, separators=(',', ':')) + '\n"""#\n}\n')
 

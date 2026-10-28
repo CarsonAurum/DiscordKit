@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordOAuth/DiscordOAuth.docc/Guides/TokenExchangeAndStorage.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Exchanging tokens and coordinating secure storage
 
 Keep confidential authentication on the backend and make refresh replacement atomic.

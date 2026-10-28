@@ -1,3 +1,8 @@
+// File: Sources/DiscordHTTP/RetryPolicy.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Finite retry policy. Endpoint semantics, rather than method names, determine replay safety.

@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_celt_pulse_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic PVQ verifier tests: no archive, compiler, native executable or network."""
 
 import contextlib

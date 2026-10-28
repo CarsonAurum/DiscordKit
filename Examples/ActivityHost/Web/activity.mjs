@@ -1,3 +1,8 @@
+// File: Examples/ActivityHost/Web/activity.mjs
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import {ActivityBridge, createWindowTransport} from '../../../Browser/DiscordActivityBridge/ActivityBridge.mjs';
 
 const allowedOrigins = ['https://discord.com', 'https://ptb.discord.com', 'https://canary.discord.com'];

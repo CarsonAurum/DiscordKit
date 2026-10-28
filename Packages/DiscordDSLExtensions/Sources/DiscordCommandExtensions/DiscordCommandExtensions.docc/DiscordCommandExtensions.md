@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLExtensions/Sources/DiscordCommandExtensions/DiscordCommandExtensions.docc/DiscordCommandExtensions.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommandExtensions``
 
 Author and adopt independent command extensions using the public runtime DSL protocols.

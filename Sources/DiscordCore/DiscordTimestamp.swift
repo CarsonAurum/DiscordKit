@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/DiscordTimestamp.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Validation failures for the timestamp profile accepted by `DiscordTimestamp`.

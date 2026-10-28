@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitTools/Sources/DiscordKitTools/ReviewedEvent.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A reviewed event-to-payload relationship whose delivery lifecycle remains handwritten.

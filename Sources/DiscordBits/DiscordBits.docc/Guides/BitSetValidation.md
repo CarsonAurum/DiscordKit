@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBits/DiscordBits.docc/Guides/BitSetValidation.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Validating masks at trust boundaries
 
 Choose finite parsing and insertion limits and test rejected input explicitly.

@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitLoadTests/scripts/test_cache_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Validate exact local cache/recovery evidence without running performance work."""
 import unittest
 

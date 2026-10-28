@@ -1,3 +1,8 @@
+// File: Sources/DiscordDSL/BotDefinition.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// A synchronous, explicitly expanded piece of a bot's immutable declaration graph.
 /// Conformance is an extension point, not executable bot behavior: collection must not invoke
 /// handlers, start tasks, perform I/O, register commands or inspect ambient credentials.

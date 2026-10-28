@@ -1,6 +1,13 @@
-# Local desktop RPC and Certified Devices: Phase 10
+<!--
+File: Docs/Parity/changes/2026-10-17-rpc-devices.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-17**. These products use **RPC v1**, with
+# Local desktop RPC and Certified Devices
+
+Verified **2026-10-17**. These products use **RPC v1**, with
 JSON command/event envelopes. IPC's little-endian framing is independent of REST
 v10 and remote Gateway v10. Current [source fingerprints](../rpc-device-current-sources.json)
 are separate from the unchanged original discovery membership/revisions/hashes.
@@ -90,10 +97,10 @@ explicitly authenticate/subscribe/publish. Share existing adapter ownership wher
 appropriate and await owned cleanup. Raw JSON access and portable Windows path
 construction do not count as missing protocol or adapter support. See [RPC](../../RPC.md),
 [Certified Devices](../../CertifiedDevices.md) and the
-[execution record](../../../.air/plans/phase-10-execution.plan.md).
+[technical guide](../../RPC.md).
 
 Deterministic peers and macOS-local compilation do not establish real Discord
 desktop behavior, certified-hardware behavior, deprecated private-beta access,
-Linux/Windows/minimum-OS runtime support or fleet capacity. The roadmap's real
+Linux/Windows/minimum-OS runtime support or fleet capacity. Real
 desktop completion gate remains open on macOS, Linux and Windows. Native SDK-only
 Social features, Activity host APIs and undocumented protocols remain separate work.

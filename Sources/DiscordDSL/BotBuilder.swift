@@ -1,3 +1,8 @@
+// File: Sources/DiscordDSL/BotBuilder.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// An ordered, type-erased structural group of public definition extension points.
 /// Groups preserve their nesting until compilation so empty groups and nested expansion remain
 /// subject to structural count/depth admission. Group construction does not flatten recursively,

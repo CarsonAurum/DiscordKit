@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordActivities/DiscordActivities.docc/Guides/HostAuthentication.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Authenticating an Activity host and user
 
 Separate authenticated postMessage transport, host readiness and scoped user authorization.

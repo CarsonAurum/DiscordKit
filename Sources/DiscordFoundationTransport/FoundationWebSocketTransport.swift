@@ -1,3 +1,8 @@
+// File: Sources/DiscordFoundationTransport/FoundationWebSocketTransport.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if canImport(Darwin)
 import DiscordLogging
 import DiscordTransport

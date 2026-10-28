@@ -1,3 +1,8 @@
+// File: Sources/DiscordLogging/DiscordLogConfiguration.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Logging
 
 /// Immutable, value-semantic severity thresholds for logical modules and components.

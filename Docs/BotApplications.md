@@ -1,6 +1,13 @@
+<!--
+File: Docs/BotApplications.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Supervised bot applications
 
-Part 15I extends the independently selected `DiscordBotDSL` product with an explicit
+DiscordKit provides the independently selected `DiscordBotDSL` product with an explicit
 application host, shared typed REST access and trusted Gateway interaction delivery.
 It composes the existing `DiscordClient`, event dispatcher, command router and
 interaction response owner. It introduces no second Gateway runtime or automatic
@@ -42,7 +49,7 @@ product remains in its dependency closure, but the runtime constructs no cache
 implicitly. Shared DSL retains Core/Models-only adoption; CommandDSL retains
 independent HTTP adoption. Existing products gain no dependency on BotDSL. Concrete
 adapters, compiler plugins, voice, Social and OAuth remain application choices.
-Part 15J adds [explicit external module installation and typed dependency validation](ModuleExtensions.md).
+DiscordKit provides [explicit external module installation and typed dependency validation](ModuleExtensions.md).
 Pass the same services and aggregate authorities into each reusable module; validated
 dependency values retain those references without creating another owner.
 Application-owned Voice, Social or OAuth interfaces may be injected explicitly,
@@ -110,6 +117,18 @@ The adapter defaults to a private queue of 256 events/8 MiB, existing dispatcher
 bounds of four tasks and 128 retained events, 64 concurrent router handlers and
 1 MiB of registration definitions. These are admission defaults, not measured
 deployment capacity. Share aggregate handler authority where needed.
+
+By default the interaction dispatcher preserves complete-shard serialization.
+A slow command, including one that has already deferred, can therefore consume a
+later interaction's three-second initial-response window. Hosts whose command
+services support concurrent invocations can explicitly choose
+`serializesPerShard: false` on the interaction adapter. Independent interactions
+then share the existing finite dispatcher task cap, retained event/byte bounds,
+router limit and optional aggregate handler authority without per-shard ordering.
+An exhausted cap can still delay admission; this option guarantees no deadline
+extension or production capacity. Receipt provenance, response visibility, one
+initial response, error supervision and joined cancellation remain unchanged.
+Ordinary Gateway event pipelines retain their default complete-shard ordering.
 
 Gateway receipt changes how an interaction arrives; response callbacks still use
 the existing HTTP endpoints. Initial-response admission remains separate from
@@ -180,10 +199,6 @@ different category fall back to the escaping handler boundary. A matching finger
 cannot prove causal identity if application code replaces a caught error with another
 of the same safe category; diagnostics are operation observations, not a causal audit.
 
-The MiniCarson session's pre-existing Failed state remains unattributed. These
-changes supply evidence for future failures; its successful live commands and handled
-currency failures do not reproduce an uncaught fail-fast outage.
-
 ## Reuse typed REST services
 
 `BotServiceAdapter` takes the shared bot `ServiceContext`, clock and two explicit
@@ -219,11 +234,9 @@ Run root build/tests, callable documentation, graph/import isolation, scoped API
 and DocC checks; build/test/run DSLBot offline and affected command/event consumers.
 Gateway/cache changes retain the existing local cache/broadcast profiles and
 fixed-working-set 30-minute soak requirement. Those measurements cover their named
-harness and do not establish DSL handler capacity. Part 15J's independent extension
-package/consumer checks cover public external adoption. Part 15K adds separate
-[direct/DSL handler measurements and soak evidence](DSLBenchmarks.md). Part 15L
-adds complete [adoption guidance](DSLAdoption.md) and scoped
-[release-candidate records](Release/README.md); local measurements do not establish
-production capacity.
+harness and do not establish DSL handler capacity. Independent extension
+package/consumer checks cover public external adoption. See
+[direct/DSL handler measurements](DSLBenchmarks.md), [adoption](DSLAdoption.md) and
+[release records](Release/README.md) for their separately scoped checks.
 Local synthetic peers do not qualify live Discord, other platforms, hardware,
 independent crypto review or production capacity.

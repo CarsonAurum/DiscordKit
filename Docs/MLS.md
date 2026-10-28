@@ -1,3 +1,10 @@
+<!--
+File: Docs/MLS.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Independently adopted MLS
 
 Implemented locally: 2026-10-18. Protocol sources verified: 2026-10-17.
@@ -222,8 +229,7 @@ secret tree, tree arithmetic, tree validation and TreeKEM. Each fixture's proven
 records its source and qualification boundary. Historical expiry is disabled only
 for the historical fixture checks; authenticity remains required.
 
-The [initial DAVE follow-up](DAVEInteropFollowup.md) adds an explicit, separately
-built [Cisco MLS++ oracle](../Tools/DAVEInterop/README.md): generated commit/Welcome
+The separately built [Cisco MLS++ oracle](../Tools/DAVEInterop/README.md) checks generated commit/Welcome
 framing, signatures, references and full native Welcome acceptance with matching
 epoch authenticator. Its transient synthetic inputs are never committed or logged;
 ordinary consumers/tests fetch no native dependency. The initial membership MAC
@@ -239,5 +245,5 @@ not make those gates pass implicitly.
 Run root `swift build` and `swift test` after changes. Media/voice integration
 changes additionally build and run the offline VoiceBot example and preserve its
 independent graph. No validation here requires Discord credentials or live requests.
-The [Phase 12B validation record](Parity/phase12b-validation.json) retains the
+The [validation record](Parity/mls-validation.json) retains the
 host, check totals, fixture fingerprints and remaining qualification gates.

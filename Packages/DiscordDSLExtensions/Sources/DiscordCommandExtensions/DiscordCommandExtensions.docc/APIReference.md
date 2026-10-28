@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLExtensions/Sources/DiscordCommandExtensions/DiscordCommandExtensions.docc/APIReference.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # API Reference
 
 Browse the public types and operations provided by DiscordCommandExtensions.

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoice/DiscordVoice.docc/Reference/VoiceJitterBuffer.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoice/VoiceJitterBuffer``
 
 ## Topics

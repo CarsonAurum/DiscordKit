@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/TestingApplications.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Test applications with deterministic boundaries
 
 Validate values, policy, lifecycle and failure recovery without depending on live Discord.

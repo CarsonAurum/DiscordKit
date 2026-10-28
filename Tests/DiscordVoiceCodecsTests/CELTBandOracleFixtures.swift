@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTBandOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Independent libopus 1.6.1 band-search fixtures; generated only by the opt-in verifier.
 /// No native codec is linked or executed by normal Swift tests.
 enum CELTBandOracleFixtures {

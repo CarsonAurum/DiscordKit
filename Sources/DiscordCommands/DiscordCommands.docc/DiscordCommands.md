@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommands/DiscordCommands.docc/DiscordCommands.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommands``
 
 Define commands, route authenticated interactions and synchronize managed registrations explicitly.

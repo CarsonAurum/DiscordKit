@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_celt_plc_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic loss-concealment oracle evidence checks; no compiler/archive/network is required."""
 import base64
 import copy

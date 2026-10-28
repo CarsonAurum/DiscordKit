@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/dsl_compile_fixtures.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Compile external macro consumers and require semantic errors for negative fixtures.
 
 This checks real Swift type checking and plugin loading, not printed expansions.

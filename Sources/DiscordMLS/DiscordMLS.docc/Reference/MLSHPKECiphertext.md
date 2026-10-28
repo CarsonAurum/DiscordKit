@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordMLS/DiscordMLS.docc/Reference/MLSHPKECiphertext.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordMLS/MLSHPKECiphertext``
 
 ## Topics

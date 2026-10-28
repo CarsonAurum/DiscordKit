@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_encoder_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Offline owned mono/stereo PCM SILK encoders -> ordinary libopus 1.6.1 decode.
 
 Verifies a separately supplied pinned source archive and builds unmodified libopus

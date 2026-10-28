@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordInteractions/DiscordInteractions.docc/Reference/InteractionAcknowledgementAdmission.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordInteractions/InteractionAcknowledgementAdmission``
 
 ## Topics

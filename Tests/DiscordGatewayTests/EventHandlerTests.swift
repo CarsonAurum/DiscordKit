@@ -1,3 +1,8 @@
+// File: Tests/DiscordGatewayTests/EventHandlerTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordTestSupport
 import DiscordTransport
 import Foundation
@@ -74,6 +79,66 @@ struct EventHandlerTests {
         #expect(await hub.snapshot().subscriptions == 0)
     }
 
+    /// Explicitly unordered same-shard callbacks overlap while the unchanged task cap queues excess work.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func unorderedSameShardCallbacksRespectTaskCapacity() async throws {
+        let hub = GatewayEventHub(configuration: try .init())
+        let subscription = try await hub.subscribe()
+        let dispatcher = GatewayEventHandlerDispatcher(configuration: try .init(maximumConcurrentHandlers: 2),
+            serializesPerShard: false)
+        let first = TestBarrier(), second = TestBarrier(), blocked = TestBarrier(), final = TestBarrier()
+        let observations = HandlerObservations()
+        let task = Task {
+            try await dispatcher.run(subscription: subscription) { event in
+                await observations.begin(event)
+                if event.sequence == 1 { first.open(); try await blocked.wait() }
+                if event.sequence == 2 { second.open(); try await blocked.wait() }
+                if event.sequence == 3 { #expect(blocked.waitingCount == 0); final.open() }
+                await observations.end(event)
+            }
+        }
+        await hub.publish(try makeDeliveryEvent(1))
+        try await first.wait()
+        await hub.publish(try makeDeliveryEvent(2))
+        try await second.wait()
+        await hub.publish(try makeDeliveryEvent(3))
+        let overlap = await observations.snapshot()
+        #expect(overlap.maximumActive == 2 && overlap.sameShardOverlap)
+        blocked.open()
+        try await final.wait()
+        await hub.finish()
+        try await task.value
+        let complete = await observations.snapshot()
+        #expect(complete.begun.count == 3 && complete.ended.count == 3)
+        #expect(complete.maximumActive == 2)
+        #expect(await hub.snapshot().subscriptions == 0)
+    }
+
+    /// A failing same-shard callback cancels and joins its overlapping sibling and releases shared admission.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func unorderedSameShardFailureJoinsSiblingAndAuthority() async throws {
+        let hub = GatewayEventHub(configuration: try .init())
+        let subscription = try await hub.subscribe()
+        let authority = try GatewayHandlerAuthority(maximumActiveHandlers: 2)
+        let dispatcher = GatewayEventHandlerDispatcher(configuration: try .init(maximumConcurrentHandlers: 2),
+            authority: authority, serializesPerShard: false)
+        let blocked = TestBarrier(), started = TestBarrier()
+        let task = Task {
+            try await dispatcher.run(subscription: subscription) { event in
+                if event.sequence == 1 { started.open(); try await blocked.wait() }
+                else { throw HandlerTestFailure.callback }
+            }
+        }
+        await hub.publish(try makeDeliveryEvent(1))
+        try await started.wait()
+        await hub.publish(try makeDeliveryEvent(2))
+        await #expect(throws: HandlerTestFailure.callback) { try await task.value }
+        #expect(blocked.waitingCount == 0)
+        #expect(await authority.snapshot().activeHandlers == 0)
+        #expect(await authority.snapshot().waitingHandlers == 0)
+        #expect(await hub.snapshot().subscriptions == 0)
+    }
+
     /// Reentrant publishing from a callback is safe and remains sequential for that shard.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @MainActor @Test func reentrantHandlerAndMainActorCaller() async throws {
@@ -125,12 +190,14 @@ struct EventHandlerTests {
     }
 
     /// Cancelled execution stops callback work, releases its aggregate permit, and removes buffered events.
+    /// - Parameter serializesPerShard: Exercises both legacy ordered and explicit independent scheduling.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-    @Test func cancellationDuringCallbackAndBeforeRun() async throws {
+    @Test(arguments: [true, false]) func cancellationDuringCallbackAndBeforeRun(serializesPerShard: Bool) async throws {
         let hub = GatewayEventHub(configuration: try .init())
         let subscription = try await hub.subscribe()
         let authority = try GatewayHandlerAuthority(maximumActiveHandlers: 1)
-        let dispatcher = GatewayEventHandlerDispatcher(configuration: try .init(), authority: authority)
+        let dispatcher = GatewayEventHandlerDispatcher(configuration: try .init(), authority: authority,
+            serializesPerShard: serializesPerShard)
         let blocked = TestBarrier()
         let started = TestBarrier()
         let task = Task {

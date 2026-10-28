@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordClient/DiscordClient.docc/Reference/DiscordClient.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordClient/DiscordClient``
 
 ## Topics

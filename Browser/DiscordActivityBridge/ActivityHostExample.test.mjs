@@ -1,3 +1,8 @@
+// File: Browser/DiscordActivityBridge/ActivityHostExample.test.mjs
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import test from "node:test";
 import assert from "node:assert/strict";
 

@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_opus_encoder_policy.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic coverage for the encoder policy verifier; no compiler, archive or device access."""
 import copy
 import math

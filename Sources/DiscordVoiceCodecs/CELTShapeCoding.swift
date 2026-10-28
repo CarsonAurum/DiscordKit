@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/CELTShapeCoding.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Recursive shape coding and stereo adapted from libopus 1.6.1 celt/bands.c, celt/vq.c and celt/mathops.h.
 // Copyright (c) 2007-2008 CSIRO
 // Copyright (c) 2007-2009 Xiph.Org Foundation

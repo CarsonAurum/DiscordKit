@@ -1,3 +1,8 @@
+// File: Tests/DiscordRPCTests/RPCCatalogTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 @testable import DiscordRPC
 import Foundation

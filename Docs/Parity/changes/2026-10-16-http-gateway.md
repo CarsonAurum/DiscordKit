@@ -1,7 +1,13 @@
+<!--
+File: Docs/Parity/changes/2026-10-16-http-gateway.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # 2026-10-16 — HTTP execution and early sharded Gateway
 
-Local support date and upstream verification date: **2026-10-16**. Local release
-and commit: **unknown** (unreleased staged work). Upstream announcement/effective
+Local support date and upstream verification date: **2026-10-16**. Upstream announcement/effective
 dates for these pre-existing contracts: **unknown**. No local date is used as their
 introduction date. Explicit versions remain REST 10, Gateway 10 and Voice Gateway 8;
 voice support is unchanged and unsupported.
@@ -41,7 +47,7 @@ Official contracts verified:
 [Gateway controls](https://docs.discord.com/developers/events/gateway-events),
 [opcodes/close codes](https://docs.discord.com/developers/topics/opcodes-and-status-codes),
 [change log](https://docs.discord.com/developers/change-log).
-Source snapshot hashes/membership remain pinned to the Part 0 baseline; current semantic
+Source snapshot hashes/membership remain pinned to the original discovery baseline; current semantic
 verification and implementation evidence are an overlay, not regenerated provenance.
 
 Evidence is in root `HTTPContractTests`, `HTTPResourceTests`, `RESTClientTests`,

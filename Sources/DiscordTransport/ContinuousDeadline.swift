@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/ContinuousDeadline.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Sleeps in the supplied clock domain while bounding cancelled continuous-timer
 /// retention on runtimes that keep cancelled sleep records until their scheduled time.
 ///

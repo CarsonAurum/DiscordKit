@@ -1,3 +1,8 @@
+# File: Tools/ci/test_dsl_compile_fixtures.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Deterministic process-level tests for external Swift compilation qualification."""
 
 from pathlib import Path

@@ -1,12 +1,18 @@
-# Initial media and voice protocol release: Phase 12
+<!--
+File: Docs/Parity/changes/2026-10-17-voice-media.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-17**. Voice Gateway is explicitly **v8**;
+# Initial media and voice protocol release
+
+Verified **2026-10-17**. Voice Gateway is explicitly **v8**;
 main Gateway/REST remain v10. RTP uses v2 and audio timestamps use 48 kHz.
 The [current fingerprints](../voice-media-current-sources.json) preserve original
 discovery pins; three new reviewed groups are explicitly **partial**. The
 [capability inventory](../voice-media-capabilities.json) separates component code
-from unsupported full voice/media products. Local release/commit are unknown at
-record creation. This initial release does not complete Part 12.
+from unsupported full voice/media products. Full voice qualification remains separate from these component results.
 
 Previously voice had REST state/region operations, main-Gateway dispatches and
 primitive feasibility probes. Independent Media/VoiceCodecs/VoiceCrypto/Voice
@@ -50,4 +56,4 @@ Deterministic suites use synthetic frames and published vectors without Discord
 credentials or device access. All-host/minimum-OS builds, Opus/MLS/DAVE conformance,
 independent crypto review, authorized Discord smoke, ten-minute duplex stability,
 hardware p99/underrun/RSS measurements and real video negotiation remain open.
-See [Voice](../../Voice.md) and the [execution record](../../../.air/plans/phase-12-execution.plan.md).
+See [Voice](../../Voice.md) and the [technical guide](../../Voice.md).

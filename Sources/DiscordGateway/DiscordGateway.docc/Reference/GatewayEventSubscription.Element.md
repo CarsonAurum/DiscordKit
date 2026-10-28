@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGateway/DiscordGateway.docc/Reference/GatewayEventSubscription.Element.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordGateway/GatewayEventSubscription/Element``
 
 ## See Also

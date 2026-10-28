@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommandDSL/DiscordCommandDSL.docc/Reference/CommandCompilation.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommandDSL/CommandCompilation``
 
 ## Topics

@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTConcealmentOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Complete independent scalar libopus periodic/noise PLC and recovery sequences.
 enum CELTConcealmentOracleFixtures {
     static let json = #"""

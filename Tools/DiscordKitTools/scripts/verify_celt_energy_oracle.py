@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_energy_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in offline CELT envelope verification against unmodified libopus 1.6.1.
 
 A separately supplied archive is SHA256/path/size validated. No downloads, codec
@@ -12,6 +17,8 @@ the canonical -1/0 decoder domain; separate Swift regressions check canonicaliza
 of arbitrary admitted residuals. This is an explicit encoder bookkeeping repair,
 not a change to the normative one-bit decoder syntax.
 """
+from publication import swift_header
+
 import argparse
 from datetime import datetime, timezone
 import json
@@ -279,7 +286,7 @@ def main():
         records = [{"input": x, "output": e} for x, e in zip(fixed, expected)]
         fixture = repository / FIXTURE_PATH
         if args.write_fixtures:
-            fixture.write_text('/// Independent libopus 1.6.1 envelope fixtures, refreshed only by the opt-in verifier.\n'
+            fixture.write_text(swift_header(FIXTURE_PATH) + '/// Independent libopus 1.6.1 envelope fixtures, refreshed only by the opt-in verifier.\n'
                                'enum CELTEnergyOracleFixtures {\n    static let json = #"""\n'
                                + json.dumps(records, separators=(",", ":")) + '\n"""#\n}\n')
         if not fixture.exists():

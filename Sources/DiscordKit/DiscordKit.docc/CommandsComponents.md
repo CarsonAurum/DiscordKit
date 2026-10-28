@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/CommandsComponents.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Compose commands and components
 
 Validate definitions and message payloads offline before explicit registration.

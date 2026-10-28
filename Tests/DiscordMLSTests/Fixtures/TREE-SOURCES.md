@@ -1,3 +1,10 @@
+<!--
+File: Tests/DiscordMLSTests/Fixtures/TREE-SOURCES.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Ratchet-tree and TreeKEM vectors
 
 Retrieved from the public [MLS working-group implementation vectors](https://github.com/mlswg/mls-implementations/tree/main/test-vectors)

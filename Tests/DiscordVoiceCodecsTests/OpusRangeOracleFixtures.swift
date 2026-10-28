@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/OpusRangeOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Compact independent oracle output generated from unmodified official libopus 1.6.1.
 // https://opus-codec.org/release/stable/2026/01/14/libopus-1_6_1.html
 // Source archive SHA256: 6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1.

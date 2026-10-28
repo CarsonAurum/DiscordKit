@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_release_imports.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Regression coverage for fail-closed Swift import lexical admission."""
 
 import unittest

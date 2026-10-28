@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordInteractions/DiscordInteractions.docc/Guides/RespondingToInteractions.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Replying, deferring and completing interactions
 
 Reserve one initial response and preserve uncertainty after a possibly submitted callback.

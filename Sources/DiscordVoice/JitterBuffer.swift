@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoice/JitterBuffer.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// The deterministic outcome of one caller-paced playout slot.

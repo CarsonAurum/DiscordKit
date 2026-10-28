@@ -1,3 +1,8 @@
+// File: Tests/DiscordUnixPlatformTests/UnixRPCIntegrationTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if !os(Windows) && !os(WASI)
 import DiscordCore
 import DiscordRPC

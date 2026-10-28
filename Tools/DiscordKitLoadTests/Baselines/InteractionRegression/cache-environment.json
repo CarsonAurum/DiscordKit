@@ -1,0 +1,27 @@
+{
+  "architecture": "arm64",
+  "buildConfiguration": "release",
+  "cacheRounds": 8,
+  "concurrentWork": "Other repository validation and a separate sustained cache process ran concurrently; timing is local regression evidence, not an isolated throughput qualification. Process RSS is per executable instance.",
+  "dirtySource": true,
+  "executableSHA256": "321cb1f4043288d2fa50abef67eaab533d7ebc0250bb1ac96544a52c6d3675ed",
+  "hardwareModel": "Mac15,10",
+  "kernel": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "measurementScope": "one shared cache; 1/2/4 scopes and 20 fixed keys per scope; exact finite refresh, eviction, TTL, invalidation and subscriber recovery rounds; separate accounted bytes and actual process RSS; no fleet or 30-minute qualification inferred",
+  "peer": "offline fixed-key cache/broadcast scripts; no credentials or sockets",
+  "physicalMemoryBytes": 38654705664,
+  "processor": "Apple M3 Max",
+  "qualification": "Existing HTTP policy or cache/broadcast regression only; does not measure signed ingress, routing, durable admission, live Discord or fleet capacity.",
+  "recordedAtUTC": "2026-10-17T16:50:30.798754+00:00",
+  "soakRounds": 512,
+  "sourceCommitBasis": "aa4325a9f690475a360d5560fe3654db1eea001d",
+  "sourceSHA256": {
+    "Sources/DiscordCache/CacheValues.swift": "aad23c15ca2decce7b72d02391c1e4f22a4187b9363aa1cbf3d56d149a8dab6c",
+    "Sources/DiscordCache/EntityCache.swift": "0dad36484aa3663f9ab5dce99c194dc5bacb0618df0974e6d762024acda64658",
+    "Sources/DiscordCache/EventReducer.swift": "eeda1685642c2a4fd57a10f9c3ab3c92a3d9d75cd2586b2168f4902217490aa8",
+    "Sources/DiscordGateway/EventHandlers.swift": "3feb0dd719b48c737030a6a16d48e183464238f8a6ba596f3f715335acdef475",
+    "Sources/DiscordGateway/EventHub.swift": "b2310b764554a6453d61f1a1684fdfe7c4f8af201916879ad42b17841911df59",
+    "Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/CacheLoadRunner.swift": "bd28333bd1e9c2a293a91c530f4acaa197dbe0c7a2c8e78a333be467292d5f08"
+  },
+  "toolchain": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0"
+}

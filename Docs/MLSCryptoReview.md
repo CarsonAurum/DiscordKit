@@ -1,10 +1,17 @@
+<!--
+File: Docs/MLSCryptoReview.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # MLS and voice cryptography review packet
 
 Prepared 2026-10-18. This packet identifies the owned constructions and the
 questions an independent reviewer must resolve. **No external cryptographic audit
 has been completed. Production cryptographic support remains gated on that
 review**, including compiler timing and protocol usage limits. Published component
-vectors, local tests and agent code review do not discharge this gate.
+vectors, local tests and source review do not discharge this gate.
 
 ## Primitive boundary
 
@@ -122,15 +129,14 @@ per key across all instances. Attempts include authentication failures, not just
 accepted frames. The table is an upper operational constraint, not a security
 audit or a claim that every use of 64-bit tags is acceptable.
 
-Phase 12C now implements the independent [DAVE owner](DAVE.md). Its enforced
+DiscordKit implements the independent [DAVE owner](DAVE.md). Its enforced
 combined ciphertext-plus-AAD cap is `2^19` bytes (default `2^14`). Its enforced
 per-sender/per-generation total authenticated-decryption cap is `2^26`, matching
 Appendix C Table 2's `2^19` row, and its separate failed-verification cap is
 `2^17`. Applications may reduce these limits. Every actual AEAD attempt consumes
 the total allowance before cryptography, and a failed tag consumes the failure
 allowance. Malformed/replayed input rejected before AEAD consumes no cryptographic
-attempt. The earlier Phase 12B proposed review profile was not an approved policy;
-these current enforced bounds likewise remain subject to external review.
+attempt. These enforced bounds remain subject to independent external review.
 
 One `DAVEFrameCipher` actor owns each sender/exporter domain. Its counter spans
 audio/video and consumes a fresh nonce even when an H26x collision requires another
@@ -161,7 +167,7 @@ approved operating profile.
 
 ## DAVE protocol composition review status
 
-The [verified source record](Parity/phase12c-current-sources.json) pins the official
+The [verified source record](Parity/dave-current-sources.json) pins the official
 DAVE whitepaper, current Voice documentation/changelog and libdave commit
 `8de72b1f8a2ac3c5a5270755bb8091a62e3c6169`. The owned implementation binds exact
 Voice identity/context, authenticated expected membership and the trusted external
@@ -190,7 +196,7 @@ it does not establish live service acceptance or explain a past service outcome.
 No alternate encoding is probed or ambiguous mutation replayed at runtime.
 
 Independent Python HMAC/scrypt answers, a Node/OpenSSL AES-GCM media vector and
-[exact pinned C++/Swift codec comparisons](Parity/phase12c-codec-oracle.json) check
+[exact pinned C++/Swift codec comparisons](Parity/dave-codec-oracle.json) check
 algorithm bytes. They do not constitute independent protocol review, a full
 libdave client handshake, compiler timing analysis, platform/device evidence or
 approved Discord smoke. No reviewer, audit report or production approval is claimed.

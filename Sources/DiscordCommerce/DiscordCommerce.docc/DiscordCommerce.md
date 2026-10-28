@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommerce/DiscordCommerce.docc/DiscordCommerce.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommerce``
 
 Authorize premium features from authoritative entitlements and coordinate explicit consumption or Activity purchase checks.

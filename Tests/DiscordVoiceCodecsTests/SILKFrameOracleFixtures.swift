@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/SILKFrameOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Scalar PCM/state fixtures decoded by complete unmodified libopus 1.6.1
 // decode_indices/decode_pulses/decode_parameters/decode_core, with ordinary
 // output-history updates. Compressed input originates from unmodified

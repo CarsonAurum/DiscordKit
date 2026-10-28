@@ -1,6 +1,13 @@
+<!--
+File: Docs/DiscoveryEvents.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Discovery and event REST catalog
 
-Phase 5F implements all **25 current operations** in the official
+DiscordKit provides all **25 current operations** in the official
 [Invite](https://docs.discord.com/developers/resources/invite),
 [Guild Template](https://docs.discord.com/developers/resources/guild-template),
 [Guild Scheduled Event](https://docs.discord.com/developers/resources/guild-scheduled-event)
@@ -18,8 +25,8 @@ Import `DiscordModels` and `DiscordHTTP`, inject a transport and shared credenti
 rate/reuse authorities, then execute resource descriptors. This slice adds no
 products or dependencies and requires no Gateway connection. Related User and
 Application projections remain partial; event dispatch catalogs, voice connections,
-Phase 5J adds [lobbies and identity profiles](SocialGame.md); platform/live/soak qualification remains separate.
-Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
+DiscordKit provides [lobbies and identity profiles](SocialGame.md); platform/live/soak qualification remains separate.
+DiscordKit provides [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 ## Operations and authority
 
@@ -150,13 +157,10 @@ separately scoped anonymous cache; unobserved external actions remain subject to
 Shards do not raise REST quotas, and these operations introduce no unbounded queues,
 automatic per-resource tasks or generic mutation packing.
 
-Deterministic Swift Testing fixtures cover all descriptors, model presence and
+Deterministic Swift Testing fixtures cover descriptors, model presence and
 unknown variants, request limits, CSV framing/jobs, recurrence and transitions,
-multiple-page continuation, errors, finite retries, cancellation, scoped reuse/
-invalidation and actual no-op request counts. No test requires Discord credentials
-or live Discord traffic. Validation results are recorded in the
-[Phase 5F execution plan](../.air/plans/phase-5f-execution.plan.md); upstream dates
-and local support dates remain distinct in the
-[change record](Parity/changes/2026-10-16-discovery-events.md).
+multiple-page continuation, errors, finite retries, cancellation, scoped reuse,
+invalidation and actual no-op request counts. Tests use no Discord credentials
+or live traffic. Local results do not qualify live API behavior or production capacity.
 
-Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).
+DiscordKit provides [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

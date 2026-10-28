@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDAVE/DiscordDAVE.docc/Reference/DAVESignaling.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDAVE/DAVESignaling``
 
 ## Topics

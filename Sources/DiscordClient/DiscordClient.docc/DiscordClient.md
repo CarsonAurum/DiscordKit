@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordClient/DiscordClient.docc/DiscordClient.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordClient``
 
 Compose REST services, supervised shards, optional projections and independent event consumers.

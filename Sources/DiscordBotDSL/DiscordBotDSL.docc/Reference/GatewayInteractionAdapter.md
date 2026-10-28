@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBotDSL/DiscordBotDSL.docc/Reference/GatewayInteractionAdapter.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordBotDSL/GatewayInteractionAdapter``
 
 ## Topics
@@ -5,6 +7,7 @@
 ### Creating a value
 
 - ``DiscordBotDSL/GatewayInteractionAdapter/init(applicationID:commands:services:clock:admission:guildID:configuration:authority:maximumPendingInteractions:maximumPendingBytes:maximumConcurrentHandlers:maximumDefinitionBytes:limits:failurePolicy:failureObserver:)``
+- ``DiscordBotDSL/GatewayInteractionAdapter/init(applicationID:commands:services:clock:admission:guildID:configuration:authority:maximumPendingInteractions:maximumPendingBytes:maximumConcurrentHandlers:maximumDefinitionBytes:limits:serializesPerShard:failurePolicy:failureObserver:)``
 
 ### Instance methods
 

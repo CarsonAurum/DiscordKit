@@ -1,17 +1,23 @@
+<!--
+File: Docs/DSLBenchmarks.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Offline DSL measurements
 
-Part 15K supplies the independent development package
+DiscordKit provides the independent development package
 [`DiscordDSLBenchmarks`](../Tools/DiscordDSLBenchmarks/README.md). Runtime products
 never depend on the benchmark, its compiler fixtures or its scripts. The package
 uses public APIs and synthetic interactions; no credentials or Discord calls are
-required. Part 15L's [release records](Release/README.md) complete local authoring
-candidate certification while preserving external qualification exclusions.
+required. [Release records](Release/README.md) preserve workload and external
+qualification limits.
 
-The implementation plan is to establish identical direct/DSL workloads, assert
-functional invariants before accepting timings, measure manual/macro compiler costs,
-record the first observations, then select explicit finite regression tolerances.
-The existing cache/broadcast workload and the new handler workload have independent
-artifacts and qualification limits.
+Direct/DSL workloads use identical inputs and check functional invariants before
+accepting timings. Manual/macro compiler costs have separate measurements and
+finite regression tolerances. Cache/broadcast and handler workloads retain
+independent artifacts and qualification limits.
 
 The runtime matrix declares 10, 100 and 1,000 handlers. Each path reuses a compiled
 catalog and a bounded aggregate router. Direct routes capture their schemas once;
@@ -54,10 +60,10 @@ three comparable runs before attributing it to a change, as required by
 [scalability guidance](Scalability.md). Hosted CI runs functional tests and a small
 smoke matrix without comparing another machine against this host's baseline.
 
-The [15K validation record](Release/phase15k-validation.json) identifies exact
+The [validation record](Release/dsl-benchmarks-validation.json) identifies exact
 commands, source/executable hashes, compiler/hardware, measurements and limitations.
 [Runtime and compiler budgets](../Tools/DiscordDSLBenchmarks/README.md) provide the
-reproduction commands. Earlier milestone reports remain historical.
+reproduction commands. Compare runs only when toolchain, hardware and workload are compatible.
 
 Local synthetic handler and cache/broadcast measurements do not qualify live Discord,
 HTTP signature/transport throughput, supervised Gateway event execution, devices,

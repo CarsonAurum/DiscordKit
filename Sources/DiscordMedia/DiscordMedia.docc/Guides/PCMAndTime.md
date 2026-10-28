@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordMedia/DiscordMedia.docc/Guides/PCMAndTime.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # PCM samples, frames and exact media time
 
 Keep channel layout, duration and physical scheduling separate.

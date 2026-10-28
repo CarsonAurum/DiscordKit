@@ -1,3 +1,8 @@
+// File: Tools/DiscordDSLBenchmarks/Sources/DiscordDSLBenchmarks/Measurements.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 #if canImport(Darwin)
 import Darwin

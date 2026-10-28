@@ -1,3 +1,10 @@
+<!--
+File: Browser/DiscordActivityBridge/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # DiscordKit Activity browser bridge
 
 This is an owned, dependency-free implementation of the Activity iframe RPC v1

@@ -1,3 +1,8 @@
+// File: Sources/DiscordBotDSL/BotServiceAdapter.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordClient
 import DiscordCore
 import DiscordHTTP

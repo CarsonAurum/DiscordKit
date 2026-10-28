@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/CELTPulseCodebook.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Rejections from the bounded RFC 6716 section 4.3.4.2 pulse enumeration primitive.
 public enum CELTPulseCodebookError: Error, Sendable, Equatable {
     case invalidDimensions

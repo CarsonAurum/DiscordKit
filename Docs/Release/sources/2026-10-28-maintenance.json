@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-28",
+  "scope": "Weekly maintenance review of the eight existing official release, HTTP transition, command-family, message/component, interaction and Gateway composition sources. No discovery-wide refresh or protocol implementation change.",
+  "collectionMethod": "Official HTML pages were opened and inspected. Original URLs and canonical Markdown alternatives were fetched read-only over HTTPS with system curl certificate validation. Selected current contracts were compared against the 2026-10-18 recorded contract findings.",
+  "comparisonLimits": "Five original Markdown sources have different byte hashes. Three original HTML sources had semantic-only historical records. Previous raw response bodies were not committed, so no byte-identical or complete historical text-diff assertion is made.",
+  "protocolVersions": {
+    "REST": "10",
+    "Gateway": "10"
+  },
+  "sources": [
+    {
+      "url": "https://docs.discord.com/developers/reference.md",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/reference.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 31517,
+      "retrievedSHA256": "2ed3180963977cc17a3771255c1ddfc2b6c17e10a86f38a43dbf3c862383eb83",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-command-families.json",
+      "reviewedContracts": [
+        "REST and Gateway API version 10 remains available; explicit versioned API origins remain appropriate."
+      ],
+      "rawSnapshotCommitted": false,
+      "previousRetrievedSHA256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8",
+      "sameRemoteBytes": false,
+      "comparison": "Changed remote bytes. Current selected contract text was compared with prior recorded contract findings; old raw response bodies were not committed, so no complete historical text diff is claimed."
+    },
+    {
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/change-log.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 265801,
+      "retrievedSHA256": "8c4d922e00ad0b450a5def14b4f7fca2190c9d1e91076f22c6d7a825aa98bf43",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-command-families.json",
+      "reviewedContracts": [
+        "The newest changelog entry remains the 2026-10-14 OAuth issuer response addition, already covered by the previous review.",
+        "The 2026-08-12 channel-obfuscation announcement still permits Gateway opt-in and keeps HTTP omission effective on 2026-11-16 without HTTP early opt-in."
+      ],
+      "rawSnapshotCommitted": false,
+      "previousRetrievedSHA256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4",
+      "sameRemoteBytes": false,
+      "comparison": "Changed remote bytes. Current selected contract text was compared with prior recorded contract findings; old raw response bodies were not committed, so no complete historical text diff is claimed."
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/application-commands.md",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/interactions/application-commands.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 80614,
+      "retrievedSHA256": "f2089b2c0b35e2b4068e5d93aed2747c91a2c58da8712a6d2db4647fd1127eb0",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-command-families.json",
+      "reviewedContracts": [
+        "Command identity remains application, type, name and global or guild scope. POST remains an upsert within that identity.",
+        "Options and choices retain a maximum of 25. Group nesting permits groups containing subcommands and does not permit arbitrary deeper groups.",
+        "Autocomplete retains partial supplied arguments and the focused marker; otherwise required arguments may be absent. No change to existing strict invocation decoding or explicit synchronization is required by these reviewed contracts."
+      ],
+      "rawSnapshotCommitted": false,
+      "previousRetrievedSHA256": "55c50c6b38feae40728a40c16480af889d086760913e19735894b7963736e473",
+      "sameRemoteBytes": false,
+      "comparison": "Changed remote bytes. Current selected contract text was compared with prior recorded contract findings; old raw response bodies were not committed, so no complete historical text diff is claimed."
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "retrievedBytes": 371635,
+      "retrievedSHA256": "6f470f897d39fb26107399668fa553554052f5b76a8bfd6f5b85e8433b3e4d09",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-bot-applications.json",
+      "reviewedContracts": [
+        "Gateway receipt and outgoing-webhook receipt remain mutually exclusive, and Gateway interactions still respond through HTTP.",
+        "The initial response deadline remains three seconds from receipt; continuation tokens remain valid for fifteen minutes.",
+        "Autocomplete, modal and message-update response kinds remain distinct. Deferred message acknowledgement permits only EPHEMERAL, with Components V2 supplied using edit-original."
+      ],
+      "rawSnapshotCommitted": false,
+      "comparison": "The previous snapshot recorded a semantic page review without remote byte hashes. Current selected contract text was compared with its recorded findings; historical byte identity cannot be determined.",
+      "canonicalMarkdown": {
+        "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+        "resolvedURL": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+        "status": 200,
+        "contentType": "text/markdown; charset=utf-8",
+        "bytes": 37440,
+        "sha256": "cf7cc54085f5114e09df7d759327b652a5712d01a739ae3e4d5590ebffa16cd1"
+      }
+    },
+    {
+      "url": "https://docs.discord.com/developers/components/reference.md",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/components/reference.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 104015,
+      "retrievedSHA256": "7728d3ebc2293cf025c9288af9b5f84052e56485773ae2be939487062eb892a0",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-command-families.json",
+      "reviewedContracts": [
+        "Components V2 still requires IS_COMPONENTS_V2, permits at most forty total components and disables legacy content, embeds, poll and stickers.",
+        "Action rows retain up to five buttons or one select. Interactive custom IDs retain a one-to-one-hundred-character limit.",
+        "Label, file-upload, radio-group, checkbox-group and checkbox modal components remain documented; no expanded model-support classification follows from this scoped review."
+      ],
+      "rawSnapshotCommitted": false,
+      "previousRetrievedSHA256": "5ef3c56131881ad3dab3cdae9e8b28f03362cdf6528ef1adc0b60b2e99293013",
+      "sameRemoteBytes": false,
+      "comparison": "Changed remote bytes. Current selected contract text was compared with prior recorded contract findings; old raw response bodies were not committed, so no complete historical text diff is claimed."
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/message.md",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/resources/message.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 77923,
+      "retrievedSHA256": "888f00758fd6e7fc5a5e6229745a6dd83aedc4a15ec4492c979752498550f2ff",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-message-builders.json",
+      "reviewedContracts": [
+        "Message content retains a two-thousand-character limit, with up to ten embeds and a shared six-thousand-character text budget.",
+        "Allowed mentions remain constrained by the visible content and permissions and do not guarantee push notifications. Editing without an explicit allowed_mentions value uses default allowances, so existing explicit mention policies remain appropriate."
+      ],
+      "rawSnapshotCommitted": false,
+      "previousRetrievedSHA256": "d22addd4022d1e93f0e3c7d2fbf7d701a00b8f3dabfceec5a000f4e63ff30872",
+      "sameRemoteBytes": false,
+      "comparison": "Changed remote bytes. Current selected contract text was compared with prior recorded contract findings; old raw response bodies were not committed, so no complete historical text diff is claimed."
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/events/gateway",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "retrievedBytes": 515763,
+      "retrievedSHA256": "caceb12399488fa353e992a3e30661715abc0c5aaf352b8a125d7d1edc3f76c4",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-bot-applications.json",
+      "reviewedContracts": [
+        "Gateway connection ownership still requires explicit identify, heartbeat and resume handling; selected intents determine received event classes.",
+        "The documented API remains version 10. This review does not qualify live shard operation, capacity or any other protocol surface."
+      ],
+      "rawSnapshotCommitted": false,
+      "comparison": "The previous snapshot recorded a semantic page review without remote byte hashes. Current selected contract text was compared with its recorded findings; historical byte identity cannot be determined.",
+      "canonicalMarkdown": {
+        "url": "https://docs.discord.com/developers/events/gateway.md",
+        "resolvedURL": "https://docs.discord.com/developers/events/gateway.md",
+        "status": 200,
+        "contentType": "text/markdown; charset=utf-8",
+        "bytes": 54861,
+        "sha256": "26f576ed264a1bf960dd0585af40aeaf09212d9def426352e4376967a562e782"
+      }
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
+      "verifiedOn": "2026-10-28",
+      "resolvedURL": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "retrievedBytes": 840688,
+      "retrievedSHA256": "c5e1a20c1f2c8e301789621e2865f776f6d6da2ec80cf7293112446a8ceba34b",
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-18-bot-applications.json",
+      "reviewedContracts": [
+        "Interaction Create still dispatches the existing Interaction as its inner payload. No separate envelope or authentication contract replaces the owned client-ingestion boundary."
+      ],
+      "rawSnapshotCommitted": false,
+      "comparison": "The previous snapshot recorded a semantic page review without remote byte hashes. Current selected contract text was compared with its recorded findings; historical byte identity cannot be determined.",
+      "canonicalMarkdown": {
+        "url": "https://docs.discord.com/developers/events/gateway-events.md",
+        "resolvedURL": "https://docs.discord.com/developers/events/gateway-events.md",
+        "status": 200,
+        "contentType": "text/markdown; charset=utf-8",
+        "bytes": 85141,
+        "sha256": "9352a77330d734831debdd043549120c74566906c3937d18bd5358ef21d51708"
+      }
+    }
+  ],
+  "outcome": "No current change requiring protocol implementation was identified within the selected recorded contracts. Latest changelog entry remains 2026-10-14; HTTP channel obfuscation remains future-effective on 2026-11-16.",
+  "excludedClaims": [
+    "full API semantic parity",
+    "freshness of all discovery or reviewed-inventory rows",
+    "new protocol support",
+    "authorized live Discord qualification",
+    "platform or device qualification",
+    "production capacity"
+  ]
+}

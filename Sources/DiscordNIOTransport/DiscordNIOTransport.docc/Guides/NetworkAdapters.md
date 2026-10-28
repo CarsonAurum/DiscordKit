@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordNIOTransport/DiscordNIOTransport.docc/Guides/NetworkAdapters.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Owning HTTP and WebSocket adapters
 
 Choose explicit transport budgets, retain response bodies correctly and shut down native resources.

@@ -1,3 +1,8 @@
+// File: Tests/DiscordBotDSLTests/RecoveryTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordClient
 import DiscordCommandDSL
 import DiscordCommands

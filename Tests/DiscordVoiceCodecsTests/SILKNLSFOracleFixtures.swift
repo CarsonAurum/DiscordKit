@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/SILKNLSFOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Independent unmodified libopus 1.6.1 scalar fixed-point NLSF/gain fixtures.
 /// Generated only by the opt-in offline verifier; no native codec in normal tests.
 enum SILKNLSFOracleFixtures {

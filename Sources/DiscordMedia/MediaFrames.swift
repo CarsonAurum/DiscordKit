@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/MediaFrames.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Codec labels carried as metadata; no encoder or decoder is implied by a case.

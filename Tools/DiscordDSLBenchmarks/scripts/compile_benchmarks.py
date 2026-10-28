@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordDSLBenchmarks/scripts/compile_benchmarks.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Measure finite external DSL consumers; no credentials, sockets or handlers run.
 
 The bootstrap is separately reported. Measured clean builds remove only the named

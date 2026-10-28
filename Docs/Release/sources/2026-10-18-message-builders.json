@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "scope": "message builders pure message/component authoring, safe typed string interpolation and lowering to existing validated API v10 models; no new Discord wire operation.",
+  "protocolVersions": {
+    "REST": "10",
+    "Gateway": "10"
+  },
+  "sources": [
+    {
+      "url": "https://docs.discord.com/developers/reference.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 36143,
+      "retrievedSHA256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8"
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/message.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 77363,
+      "retrievedSHA256": "d22addd4022d1e93f0e3c7d2fbf7d701a00b8f3dabfceec5a000f4e63ff30872"
+    },
+    {
+      "url": "https://docs.discord.com/developers/components/reference.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 111348,
+      "retrievedSHA256": "5ef3c56131881ad3dab3cdae9e8b28f03362cdf6528ef1adc0b60b2e99293013"
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 35721,
+      "retrievedSHA256": "1dd54be770724955aec33c96cf763be5a9774e62b590b2c5ff82d670c6eccae0"
+    },
+    {
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 308684,
+      "retrievedSHA256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/swiftlang/swift-evolution/main/proposals/0228-fix-expressiblebystringinterpolation.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 32222,
+      "retrievedSHA256": "de0802b008e9e5c072325c5b29b557245ace6497a37cdfce7f3b438e615429a6"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/swiftlang/swift-evolution/main/proposals/0289-result-builders.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 66721,
+      "retrievedSHA256": "30e2d940c9daedd45778a7669931ae1b8f9b425efd8826c0b773a61c8c9dc68f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/swiftlang/swift-evolution/main/proposals/0348-buildpartialblock.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 18991,
+      "retrievedSHA256": "7ac97ec124ce314a4705dcf610eba362d2d949cf6869ea680152f9ef4cdbd446"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/swiftlang/swift-book/main/TSPL.docc/LanguageGuide/StringsAndCharacters.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 52347,
+      "retrievedSHA256": "45a009419cda5959c8cce619b3191dc5104440dddc0bdedd9c4e854ddb328b3b"
+    },
+    {
+      "url": "https://www.swift.org/blog/swift-6.4-released/",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 16989,
+      "retrievedSHA256": "07e62bb322fba92a8cbc99ed23a4a48e09efebd3e0235b780b889e13b3fb30cf"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/testing.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 4740,
+      "retrievedSHA256": "b500e803bbae2adb2fbbb50e55b7d60108fa627b03fb786b7d69e015f318afaa"
+    }
+  ],
+  "reviewedContracts": [
+    "API v10 remains the newest officially available API version; versions are explicit and existing endpoint, event, permission and intent classifications are unchanged.",
+    "Message content is bounded to 2000 characters; at most ten embeds have a shared 6000-character aggregate text budget alongside per-field limits.",
+    "Explicit allowed_mentions parse [] disables broad parsing. Typed user and role mentions require their explicit identifiers in corresponding bounded allowlists; channel mentions have no allowed_mentions category.",
+    "Allowed mentions are checked against actual message content and permissions; allowlisting cannot guarantee notification delivery. User and role identifier lists admit at most 100 entries each.",
+    "Action rows admit up to five buttons or one select; Components V2 admits at most forty total components and disables legacy content, embeds, poll and stickers.",
+    "Components V2 requires the explicit IS_COMPONENTS_V2 flag. New component-only messages may use type-4 replies; deferred type-5 acknowledgement permits only EPHEMERAL, with V2 content supplied through edit-original.",
+    "Swift ExpressibleByStringLiteral and ExpressibleByStringInterpolation initializers are nonthrowing; admission failures are deferred to explicit validated lowering. Custom interpolation overloads retain typed segments rather than flattening through String.",
+    "Swift result builders support conditional branches, optional branches and finite loops through their explicit transformation methods; arbitrary application code inside builders remains ordinary Swift and must terminate cooperatively.",
+    "Swift Character counts extended grapheme clusters; DiscordKit existing payload validators count Unicode scalars for message/embed text limits and UTF-8 bytes for authoring admission. Offline Unicode regression coverage does not prove Discord rendering or server-side Unicode behavior."
+  ],
+  "qualification": "Official-source review and local authoring contract only. Builders add no endpoint, hydration, upload transport, registration, task, network or device ownership. Local payload parity and synthetic signed HTTP tests do not establish live Discord rendering, notification delivery, platform, production, capacity or full dsl qualification."
+}

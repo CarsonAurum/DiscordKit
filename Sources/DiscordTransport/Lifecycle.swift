@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/Lifecycle.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 /// Failures owned by transport infrastructure rather than Discord endpoint policy.
 public enum TransportFailure: Error, Equatable, Sendable {

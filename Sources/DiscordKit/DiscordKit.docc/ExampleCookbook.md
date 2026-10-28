@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/ExampleCookbook.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Explore the example cookbook
 
 Choose a runnable program, a tested backend composition or a contextual snippet for your task.

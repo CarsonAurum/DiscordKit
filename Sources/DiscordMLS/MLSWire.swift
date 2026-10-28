@@ -1,3 +1,8 @@
+// File: Sources/DiscordMLS/MLSWire.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Failures detected before MLS state may be published or plaintext released.

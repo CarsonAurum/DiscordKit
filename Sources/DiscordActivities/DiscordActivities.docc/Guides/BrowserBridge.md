@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordActivities/DiscordActivities.docc/Guides/BrowserBridge.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Use the JavaScript browser bridge
 
 Choose one session owner, authenticate the browser message source, and map network calls explicitly.

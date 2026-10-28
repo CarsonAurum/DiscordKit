@@ -1,3 +1,8 @@
+// File: Tools/AppleAudioQualification/Tests/QualificationSupportTests/QualificationTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordApplePlatform
 import QualificationSupport
 import Testing

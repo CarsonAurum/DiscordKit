@@ -1,7 +1,14 @@
-# Invites, templates, scheduled events and stages: Phase 5F
+<!--
+File: Docs/Parity/changes/2026-10-16-discovery-events.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
+# Invites, templates, scheduled events and stages
 
 Local implementation and verification: **2026-10-16**. REST API version: **10**.
-Local release/commit: unknown until committed/released. No dependency changes.
+No dependency changes.
 
 Previously channel invite creation/listing and guild invite listing were available
 with explicitly partial related projections. The remaining Invite family and the
@@ -69,5 +76,5 @@ or permission.
 No removed guild-creation route is recreated. Tests use deterministic local fixtures,
 without Discord credentials or live Discord traffic. Live API conformance, other
 platforms/devices, durable distributed coordination and long-soak qualification
-remain separate gates. See the discovery/event contracts and execution plan for
+remain separate gates. See the discovery/event contracts for
 exact permissions, compatibility boundaries and validation evidence.

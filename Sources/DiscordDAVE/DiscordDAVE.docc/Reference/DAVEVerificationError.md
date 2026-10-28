@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDAVE/DiscordDAVE.docc/Reference/DAVEVerificationError.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDAVE/DAVEVerificationError``
 
 ## Topics

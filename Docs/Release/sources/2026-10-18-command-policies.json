@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "scope": "command policies local policy and middleware authoring over existing API v10 command/interaction contracts.",
+  "protocolVersions": {
+    "REST": "10",
+    "Gateway": "10"
+  },
+  "sources": [
+    {
+      "url": "https://docs.discord.com/developers/reference",
+      "verifiedOn": "2026-10-18",
+      "reviewMethod": "Current page opened with web browsing tool; reference version table, command default permissions, interaction context values and callback deadlines inspected."
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/application-commands",
+      "verifiedOn": "2026-10-18",
+      "reviewMethod": "Current page opened with web browsing tool; reference version table, command default permissions, interaction context values and callback deadlines inspected."
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "verifiedOn": "2026-10-18",
+      "reviewMethod": "Current page opened with web browsing tool; reference version table, command default permissions, interaction context values and callback deadlines inspected."
+    },
+    {
+      "url": "https://docs.discord.com/developers/change-log",
+      "verifiedOn": "2026-10-18",
+      "reviewMethod": "Current page opened with web browsing tool; reference version table, command default permissions, interaction context values and callback deadlines inspected."
+    }
+  ],
+  "reviewedContracts": [
+    "API v10 remains the latest available published version. No new wire capability is introduced.",
+    "Interaction context 0 guild, 1 bot DM and 2 private channel is an optional observed field. Missing/null/unknown context fails exact policy checks. Guild ID presence is a separate observation.",
+    "Registration default_member_permissions controls Discord defaults; it is distinct from current injected application authorization.",
+    "Initial responses remain family-constrained and due within three seconds. Continuation tokens remain valid for fifteen minutes; policy execution extends neither deadline.",
+    "Autocomplete denies through an explicit empty type-8 result. Message denial is available to commands/components/modal submits. Existing responder atomically enforces compatibility, one initial slot and delivery uncertainty."
+  ],
+  "qualification": "Current official-source review and local/offline authoring only. No raw upstream-byte archive, live service, independent audit, other-platform or capacity qualification."
+}

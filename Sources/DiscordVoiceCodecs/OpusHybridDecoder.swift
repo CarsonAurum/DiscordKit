@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/OpusHybridDecoder.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Admission errors specific to ordinary shared-entropy SILK/CELT hybrid decoding.

@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_pulse_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in offline CELT integer-pulse differential verification against libopus 1.6.1.
 
 Supply the official source archive separately, then run this script with

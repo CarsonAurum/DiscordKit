@@ -1,3 +1,8 @@
+// File: Tests/DiscordSocialTests/SocialAudioControlsTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordMedia
 import DiscordSocial
 import Testing

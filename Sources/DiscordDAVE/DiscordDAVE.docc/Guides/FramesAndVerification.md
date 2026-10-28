@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDAVE/DiscordDAVE.docc/Guides/FramesAndVerification.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Frame protection, ratchets and human verification
 
 Transform complete encoded frames with one sender nonce domain and explicit verification limits.

@@ -1,6 +1,13 @@
+<!--
+File: Docs/CommandResponses.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Command responses and signed HTTP applications
 
-Part 15D extends `DiscordCommandDSL` with separate immediate, deferred and manual
+DiscordKit provides `DiscordCommandDSL` with separate immediate, deferred and manual
 slash-handler contracts. Each contribution still lowers to the existing validated
 `CommandDefinition` and exact `CommandRoute`. The existing interaction responder
 owns the initial slot, token expiry and continuation state; the DSL adds no parallel
@@ -20,7 +27,7 @@ raw path token for deliberate application inspection; redacted formatting is not
 a secret-removal boundary. Returning a value gives
 the adapter the single transmission owner. `MessageResponse` validates an existing
 `InteractionMessageCreate`; `DeferredMessageResponse` validates an existing
-`InteractionMessageEdit`. Part 15E also accepts
+`InteractionMessageEdit`. also accepts
 [validated message/component builder closures](MessageBuilders.md) for both response
 families. Both are JSON-only; multipart upload ownership remains in
 the existing low-level APIs. Their constructors preserve omission/null/value behavior
@@ -67,7 +74,7 @@ The route checks the trusted application-command envelope and complete argument
 schema before acknowledgement or handler work. Invalid options, wrong command
 identity, unsupported nesting and incompatible interaction kinds fail before user
 execution. This preflight does not infer authorization from registration defaults or
-partial resolved resources. Part 15G adds [explicit authorization, policies and middleware](CommandPolicies.md),
+partial resolved resources. DiscordKit provides [explicit authorization, policies and middleware](CommandPolicies.md),
 with complete input admission before policy execution and deferral.
 
 The finite declaration fingerprint includes the response family and deferred
@@ -120,12 +127,11 @@ The independent [DSLCommands consumer](../Examples/DSLCommands/README.md) compil
 macro-authored `/ping` and exercises a synthetic Ed25519-signed HTTP exchange without
 credentials. Its explicit listener mode owns local ingress; it does not register
 commands. The example and response tests are offline evidence. Live Discord, other
-platforms, Gateway hosts, capacity and full Phase 15
-certification remain separate [milestones](DSLImplementationRoadmap.md).
+platforms and production capacity require separate qualification.
 
 Current response kinds, deadlines, ephemeral behavior and edit-original semantics
 were reviewed against the official [interaction reference](https://docs.discord.com/developers/interactions/receiving-and-responding),
 [API reference](https://docs.discord.com/developers/reference) and
 [change log](https://docs.discord.com/developers/change-log) on **2026-10-18**.
-[Source hashes](Release/sources/2026-10-18-phase15d.json) identify the exact reviewed
+[Source hashes](Release/sources/2026-10-18-command-responses.json) identify the exact reviewed
 inputs; unchanged discovery classifications are not promoted to new parity claims.

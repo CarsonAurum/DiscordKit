@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKLongTermPrediction.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// A bounded five-tap voiced SILK residual synthesis primitive.
 ///
 /// The tap order and recurrence follow RFC 6716 section 4.2.7.9.1:

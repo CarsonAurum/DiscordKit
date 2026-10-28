@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordOAuth/DiscordOAuth.docc/Guides/AuthorizationAndInstallation.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Authorization, installation and callback ownership
 
 Generate fresh state and proof keys and consume only the initiating session's exact callback.

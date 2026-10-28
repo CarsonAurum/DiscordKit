@@ -1,3 +1,10 @@
+<!--
+File: Docs/RESTCatalog.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Typed REST catalog: messages and polls
 
 Verified 2026-10-16 against the official [message](https://docs.discord.com/developers/resources/message),
@@ -5,14 +12,12 @@ Verified 2026-10-16 against the official [message](https://docs.discord.com/deve
 [component](https://docs.discord.com/developers/components/reference),
 [API reference](https://docs.discord.com/developers/reference) and
 [change log](https://docs.discord.com/developers/change-log). All descriptors explicitly
-use API v10. This is Phase 5A, the first independent REST catalog work package;
-5B adds [channels and threads](Channels.md), 5C adds [guild administration](Guilds.md),
-5D adds [audit logs and Auto Moderation](Moderation.md), and 5E adds
-[emoji, stickers and soundboard](Expressions.md), and 5F adds
-[invites, templates, scheduled events and stages](DiscoveryEvents.md); [lobbies and identity profiles](SocialGame.md) complete batch 5J.
-Models and descriptors are committed handwritten semantic
-contracts linked through the reviewed inventory. Consumer builds fetch nothing.
-Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
+use API v10. Models and descriptors are committed semantic contracts linked through
+the reviewed inventory; consumer builds fetch nothing. Related REST guides cover
+[channels/threads](Channels.md), [guild administration](Guilds.md),
+[audit logs/Auto Moderation](Moderation.md), [expressions](Expressions.md),
+[discovery/events](DiscoveryEvents.md), [applications/users](ApplicationsUsers.md)
+and [lobbies/identity profiles](SocialGame.md).
 
 ## Adoption
 
@@ -101,7 +106,7 @@ is rejected. Forward requests require the source channel and message IDs. Poll
 requests validate text/answer/duration/emoji constraints separately from response
 schemas. Components V2 use the correct flag and reject incompatible traditional
 content fields. Modal-only component types are decoded for forward access but
-are rejected by message-request validation; [Phase 8 interaction/modal lifecycle](Interactions.md)
+are rejected by message-request validation; [interaction/modal lifecycle](Interactions.md)
 provides independent signed ingress, response ownership and command routing.
 
 `MessageUploadFile` owns materialized bytes or a fresh bounded producer factory.
@@ -151,4 +156,4 @@ HTTP policy; they do not establish additional deployment capacity. Non-macOS,
 physical-device, minimum-OS, network replacement and long-soak gates remain in
 [platform support](PlatformSupport.md) and [transport contracts](Transport.md).
 
-Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).
+DiscordKit provides [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

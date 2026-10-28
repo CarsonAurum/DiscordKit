@@ -1,3 +1,8 @@
+// File: Sources/DiscordApplePlatform/AppleAudioRoutes.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if os(macOS) && canImport(AVFoundation) && canImport(os)
 import CoreAudio
 import Foundation

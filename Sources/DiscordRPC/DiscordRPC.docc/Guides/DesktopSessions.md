@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordRPC/DiscordRPC.docc/Guides/DesktopSessions.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Connecting a desktop RPC session
 
 Keep desktop discovery, application identity and user authorization separate.

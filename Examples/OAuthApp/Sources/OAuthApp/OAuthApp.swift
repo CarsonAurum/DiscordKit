@@ -1,3 +1,8 @@
+// File: Examples/OAuthApp/Sources/OAuthApp/OAuthApp.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import DiscordOAuth
 import Foundation

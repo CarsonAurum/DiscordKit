@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTFrameOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Complete independently decoded scalar PCM stored as little-endian float32 base64.
 enum CELTFrameOracleFixtures {
     static let json = #"""

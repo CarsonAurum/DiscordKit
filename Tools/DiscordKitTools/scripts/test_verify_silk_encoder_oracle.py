@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_silk_encoder_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Native-free regression tests for conservative SILK encoder oracle admission checks."""
 import copy
 import unittest

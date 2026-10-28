@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCache/DiscordCache.docc/Reference/CacheCompleteness.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCache/CacheCompleteness``
 
 ## Topics

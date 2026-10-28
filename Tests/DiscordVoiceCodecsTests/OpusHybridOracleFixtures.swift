@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/OpusHybridOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Pinned libopus 1.6.1 authentic hybrid packets, full 48kHz float PCM and final ranges.
 /// Generated offline; normal tests never fetch or link the reference codec.
 let opusHybridOracleFixtures: [String] = [

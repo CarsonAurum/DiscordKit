@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTHeaderOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Independent unmodified libopus 1.6.1 segmented CELT header fixtures.
 enum CELTHeaderOracleFixtures {
     static let json = #"""

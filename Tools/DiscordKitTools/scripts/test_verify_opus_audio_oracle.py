@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_opus_audio_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Native-free regression checks for ordinary Opus oracle evidence validation."""
 import copy
 import unittest

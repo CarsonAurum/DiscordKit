@@ -1,3 +1,8 @@
+// File: Sources/DiscordDAVE/DAVEError.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Payload-free failures from DAVE v1 sender ratchets and encoded-frame transforms.

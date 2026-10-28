@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommandDSL/DiscordCommandDSL.docc/AdoptingCommands.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Adopt typed commands over existing response owners
 
 Move one command at a time into an inert compiled catalog and choose its host explicitly.

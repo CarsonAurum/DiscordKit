@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoice/DiscordVoice.docc/DiscordVoice.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoice``
 
 Supervise Voice v8 sessions and bounded authenticated Opus media over injected transports.

@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/InvocationOwnerFailureScope.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Closed package-only owner evidence shared across transport, HTTP and invocation boundaries.
 /// It contains no error objects, URLs, credentials or request/response content.
 package enum InvocationOwnerFailure: Sendable {

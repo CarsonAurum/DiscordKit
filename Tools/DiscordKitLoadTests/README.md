@@ -1,3 +1,10 @@
+<!--
+File: Tools/DiscordKitLoadTests/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Local runtime measurements
 
 This development-only Swift package exercises the implemented NIO HTTP adapter
@@ -54,14 +61,14 @@ process RSS and live malloc gauges appear separately in `ProcessSample`. These
 local scenarios allocate no account population, create at most 64 storm tasks,
 use no sockets/credentials and establish no distributed or fleet capacity claim.
 
-Part 7 cache/soak measurements and their source/executable checksums are retained
+Cache/soak measurements and their source/executable checksums are retained
 in `Baselines/cache-*.json`, `Baselines/soak-*.json` and the cache/soak environment
-records. Part 7's repeated finite Gateway lifecycle checks are retained separately
-under `Baselines/Part7Gateway`; the original Gateway baseline files and scenario
-description below document the historical Part 6 run. Reproduce new Gateway evidence with
-`python3 Tools/DiscordKitLoadTests/scripts/record_gateway_baseline.py --output-dir Tools/DiscordKitLoadTests/Baselines/Part7Gateway`.
+records. Repeated finite Gateway lifecycle checks are retained separately
+under `Baselines/Gateway`; the original Gateway baseline files and scenario
+description below document the original Gateway run. Reproduce new Gateway evidence with
+`python3 Tools/DiscordKitLoadTests/scripts/record_gateway_baseline.py --output-dir Tools/DiscordKitLoadTests/Baselines/Gateway`.
 
-The Part 7 four-scope burst soak completed 238,427 rounds over 1,800.004 seconds:
+The four-scope burst soak completed 238,427 rounds over 1,800.004 seconds:
 953,708 loaders served 7,629,664 admitted reads, while 53,407,648 excess offers
 were explicitly refused. Peak retained state was 64 entries, 72,512 accounted
 bytes, one refresh, eight waiters and two broadcast events; all owned counters
@@ -155,7 +162,7 @@ time and source-commit basis. The working tree was dirty because these are
 measurements of the change being prepared. A short local baseline does not
 qualify a distributed fleet, a million simultaneous identities/connections,
 Gateway control delay, request reduction, minimum-OS behavior or a 30-minute
-fixed-working-set soak. Later scenario sections and Part 7 cache/soak records
+fixed-working-set soak. Later scenario sections and cache/soak records
 provide evidence for their independently measured subsets.
 
 Allocation diagnostics preserve the same workload and allow isolation without
@@ -183,7 +190,7 @@ capacity results. Allocator RSS can stay elevated after live blocks are freed.
 
 ## Offline HTTP policy measurements
 
-The HTTP scenario exercises the phase-3 execution pipeline with an entirely local
+The HTTP scenario exercises the HTTP execution pipeline with an entirely local
 scripted HTTP adapter: zero credentials, zero network requests and zero sockets.
 It measures policy overhead separately from the existing loopback transport
 measurements. Run all three logical populations in normal and tenfold-burst modes:
@@ -231,7 +238,7 @@ policy and lifecycle work; sustained deployment capacity remains unqualified.
 The final release measurements below were recorded serially on 2026-10-16 using
 Apple Swift 6.4 on an Apple M3 Max (38,654,705,664 bytes RAM). The checked-in
 [HTTP environment](Baselines/http-environment.json) records the source revision
-basis and the uncommitted phase-3 working tree used for this run. Each JSON report
+basis and exact source fingerprints used for this run. Each JSON report
 in [Baselines](Baselines) includes raw counts, CPU time, latency quantiles for successful requests,
 configured budgets and sampled resource peaks.
 

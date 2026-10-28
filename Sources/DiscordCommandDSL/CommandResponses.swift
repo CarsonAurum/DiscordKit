@@ -1,3 +1,8 @@
+// File: Sources/DiscordCommandDSL/CommandResponses.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordModels
 
 /// Visibility of an explicit deferred-message acknowledgement. Discord fixes this state when

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordOAuth/DiscordOAuth.docc/Reference/OAuthPKCEVerifier.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordOAuth/OAuthPKCEVerifier``
 
 ## See Also

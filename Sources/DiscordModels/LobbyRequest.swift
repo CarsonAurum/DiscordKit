@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/LobbyRequest.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// API v10 lobby request payload. Construction validates published local constraints synchronously;

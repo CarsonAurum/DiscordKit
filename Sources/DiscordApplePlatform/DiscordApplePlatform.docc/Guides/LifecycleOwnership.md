@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordApplePlatform/DiscordApplePlatform.docc/Guides/LifecycleOwnership.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Forwarding application lifecycle
 
 Transfer transport ownership only while both host policy and actual adapter qualification allow it.

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCore/DiscordCore.docc/Reference/ApplicationID.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCore/ApplicationID``
 
 ## See Also

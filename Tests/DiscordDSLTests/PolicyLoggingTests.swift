@@ -1,3 +1,8 @@
+// File: Tests/DiscordDSLTests/PolicyLoggingTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordDSL
 import DiscordLogging
 import DiscordTestSupport

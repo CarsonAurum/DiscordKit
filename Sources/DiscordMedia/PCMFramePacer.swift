@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/PCMFramePacer.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Admission failures for caller-driven PCM pacing; no internal waiter queue is retained.
 public enum PCMPacingError: Error, Sendable, Equatable {
     case invalidFrameCount

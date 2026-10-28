@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKLinearPrediction.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Rejections from the bounded SILK prediction primitives.
 public enum SILKPredictionError: Error, Sendable, Equatable {
     case invalidOrder

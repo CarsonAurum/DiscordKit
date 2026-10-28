@@ -1,3 +1,10 @@
+<!--
+File: Docs/Dependencies.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Dependency policy and qualification
 
 Integrated logging adds the official [SwiftLog 1.16.1](https://github.com/apple/swift-log/releases/tag/1.16.1)
@@ -7,69 +14,75 @@ selects no external dependencies for `Logging`; it supports the required Swift 6
 toolchain. The [pinned license](https://github.com/apple/swift-log/blob/4038b6a4f74a1426f47eb1dd5b4bb5628a15d597/LICENSE.txt)
 is Apache-2.0. Preserve upstream notices in redistribution. `DiscordLogging` and
 optional `DiscordLogHandlers` select only this product; existing operation owners
-select the logging foundation and never the outputs. Pure Bits/Core/Models and
-codec/crypto transforms remain independent. Existing dependency versions/revisions
-are unchanged. Local builds do not establish other-platform or device qualification;
+select the logging foundation and never the outputs. Bits, Core, Models and
+VoiceCrypto do not select the logging foundation. Media and its codec consumers
+select it through their declared product graph. Local builds do not establish other-platform or device qualification;
 see [logging](Logging.md) and its validation record.
 
-Phase 14 adds exact **swift-syntax 604.0.0** solely to the independent
-DiscordKitTools package for the owned SwiftSyntax/SwiftParser declaration audit.
+The separate DiscordDSLMacros authoring package and DiscordKitTools audit package
+select exact **swift-syntax 604.0.0**. The macro package uses its compiler-plugin
+products; the audit tool uses SwiftSyntax/SwiftParser.
 The [official release](https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0)
 was reverified 2026-10-18; this version matches Swift 6.4. Its tool lock pins
 revision `050f1a346fbbac0ca2cfb15a95274f7bd1cf0ccf`; upstream Apache-2.0 terms
-and notices remain applicable. No production product selects the tool,
+and notices remain applicable. No root runtime product selects the tool,
 DocC plugin or SwiftSyntax. Root dependency pins remain unchanged. The
 [actual graph audit](ReleaseTooling.md) covers direct imports, target DAG,
 approved resolved packages and selected consumer product closures.
 
-Phase 13 adds no external dependency. The independent Social product composes existing
-Core/Models/Transport, HTTP/OAuth/GameServices/Commerce, RPC/Activities and Media.
+The independent Social product adds no package requirement and composes existing
+Core/Models/Transport, HTTP/OAuth/GameServices/Commerce, RPC/Activities, Media and
+DiscordLogging. Its selected dependencies include SwiftLog and Swift Crypto through
+those existing products.
 It selects neither concrete adapters nor Gateway/Client/Cache/Voice/MLS/DAVE, and no
 existing product selects Social. The independent Social example audits this selected
 graph. Device authorization reuses OAuth's existing HTTP/form/redaction policy. No
 Discord-distributed native runtime or third-party Social SDK wrapper is selected.
 
-Updated: 2026-10-18. Part 2 adds approved Apple SwiftNIO/TLS dependencies only
+Updated: 2026-10-18. DiscordKit provides approved Apple SwiftNIO/TLS dependencies only
 to the concrete NIO/Unix adapters. Bits, Core, Transport, DiscordKit and Foundation
 products do not import or link NIO. Separate development probes retain their
 independent exact graphs. Runtime qualification remains capability/host-specific;
 see [owned adapters](Transport.md) and [platform evidence](PlatformSupport.md).
 
-Part 8 adds Swift Crypto only to Interactions, and consequently to Commands and the
-umbrella facade. Bits/Core/Transport, Models, HTTP and Foundation transport remain
-independent of Crypto. Its selected products and conditional native graph are recorded
-[below](#part-8-signed-ingress-addition).
+Signed HTTP ingress selects Swift Crypto through Interactions, and consequently
+through Commands and the umbrella facade. OAuth, VoiceCrypto, MLS and DAVE also
+select Swift Crypto for their independently adopted capabilities. Bits/Core/Transport,
+Models, HTTP and Foundation transport remain independent of Crypto. Its selected products and conditional native graph are recorded
+[below](#signed-ingress-addition).
 
-Part 9 additionally selects the existing Swift Crypto product in OAuth for RFC 7636
-S256. GameServices depends on OAuth; Commerce depends only on HTTP/Models/Core/Transport.
+OAuth additionally selects the existing Swift Crypto product for RFC 7636
+S256. GameServices depends on OAuth; Commerce selects
+DiscordLogging/HTTP/Models/Core/Transport.
 The locked versions and native/transitive graph remain unchanged. The independent
 OAuthApp graph excludes Gateway, Cache, Client, Commands and Interactions. Browser
 presentation and encrypted transactional token storage remain application supplied;
 no native Social SDK or third-party storage dependency is introduced.
 
-Part 10 adds no package dependency. RPC depends on portable Core/Transport and
-CertifiedDevices depends on RPC/Core/Transport. Applications inject an existing
+RPC adds no package requirement beyond the existing logging foundation. It depends
+on DiscordLogging/Core/Transport; CertifiedDevices depends on
+DiscordLogging/RPC/Core/Transport. Applications inject an existing
 Unix IPC or WebSocket/HTTP adapter; importing either product does not select NIO,
 Foundation networking, OAuth, Gateway or the umbrella facade. The independent
 RPCApp consumer verifies the portable graph. Native Windows named-pipe I/O,
 audio-device enumeration and Discord's distributed SDK remain outside this graph.
 
-Part 11 adds no package or npm runtime dependency. Activities selects only Core
-and Transport. The owned browser bridge uses browser APIs and JavaScript built-ins;
+Activities adds no package requirement beyond the existing logging foundation and
+selects DiscordLogging/Core/Transport. The browser bridge has no npm runtime
+dependency and uses browser APIs and JavaScript built-ins;
 Node's built-in runner is development-only. Official Embedded App SDK source is
 pinned as protocol/schema evidence, without importing or vendoring its runtime or
 transitive packages. Native/WebAssembly Swift-to-browser bindings are injected and
 qualified separately. ActivityHost composes backend OAuth/Commerce explicitly.
 
-Part 12 additionally selects the existing **CryptoExtras** product for public
-AES block permutation in the experimental truncated-tag adapter. Media is
-Foundation-only; VoiceCodecs depends on Media; Voice selects Core/Models/Transport
-and those media/crypto products. Existing REST/Gateway/Client/Kit do not select
+VoiceCrypto additionally selects the existing **CryptoExtras** product for public
+AES block permutation in the experimental truncated-tag adapter. Media uses
+Foundation and DiscordLogging; VoiceCodecs depends on Media. Voice selects
+DiscordLogging/Core/Models/Transport and those media/crypto products. Existing REST/Gateway/Client/Kit do not select
 voice. This is a real native-graph expansion on Apple hosts: CryptoExtras imports
 CCryptoBoringSSL, CryptoBoringWrapper, Crypto and SwiftASN1 even where Crypto alone
 uses platform CryptoKit. No BoringSSL internal API is called from DiscordKit.
-No package version or root resolved pin changes. The official latest release
-remains [Crypto 5.0.1](https://github.com/apple/swift-crypto/releases/tag/5.0.1),
+The recorded release is [Crypto 5.0.1](https://github.com/apple/swift-crypto/releases/tag/5.0.1),
 published 2026-10-12 and reverified 2026-10-17; its Swift tools 6.2 manifest is
 compatible with this package's Swift 6.4 baseline and preserves lower deployment
 minima. The `from: "5.0.1"` requirement retains a next-major upper bound.
@@ -79,8 +92,9 @@ The existing Apache-2.0/NOTICE and bundled BoringSSL ISC/OpenSSL attribution ter
 apply to this newly selected native graph; preserve upstream component notices.
 Full binary redistribution audit and other-host qualification remain open.
 Current source/manifest hashes are in [voice sources](Parity/voice-media-current-sources.json).
-Phase 12A adds no package dependency: entropy, pulse codebooks and DSP are owned
-Swift. ApplePlatform selects Media plus system AVFoundation/CoreAudio for the
+The codec and DSP implementations add no external codec package: entropy, pulse
+codebooks and processing use owned Swift. VoiceCodecs selects Media and its logging
+foundation. ApplePlatform uses Media plus system AVFoundation/CoreAudio for the
 explicit Apple audio adapter. Portable products never select that adapter.
 Owned Swift adaptations of normative SILK/CELT tables and algorithms retain the
 applicable Skype/Xiph/CSIRO BSD notices in their source files; preserve these notices
@@ -93,7 +107,7 @@ fixtures are development evidence, never a runtime dependency.
 Published AEAD/AES vector tests establish local primitive behavior, not an external
 crypto audit or MLS/DAVE interoperability. See [Voice](Voice.md).
 
-Phase 12B adds independently adopted [DiscordMLS](MLS.md), selecting only the
+The independently adopted [DiscordMLS](MLS.md) selects DiscordLogging and the
 existing Swift Crypto product. Owned Swift implements MLS framing, labeled
 derivations, HPKE base-mode composition and restricted group-handshake policy using
 public P-256, SHA-256/HMAC/HKDF and AES-GCM APIs. It imports neither CryptoExtras
@@ -106,7 +120,7 @@ with pinned provenance. They do not become runtime dependencies or require consu
 build-time downloads. Independent crypto review, complete-client interoperability
 and other-platform/minimum-OS runtime qualification remain separate gates.
 
-Phase 12C adds independently adopted [DiscordDAVE](DAVE.md), selecting
+DiscordKit provides independently adopted [DiscordDAVE](DAVE.md), selecting
 Voice/MLS/VoiceCrypto/Core/Transport plus the existing Crypto and CryptoExtras
 products. CryptoExtras supplies public scrypt for version-zero verification
 fingerprints, and VoiceCrypto supplies its existing truncated-tag adapter. Voice
@@ -197,9 +211,9 @@ identifies bundled BoringSSL under combined ISC/OpenSSL terms. Preserve the
 applicable license and attribution notices when distributing those components.
 This identifies reviewed files rather than certifying a complete redistribution
 audit: selected binaries' complete native-component attribution requirements remain
-to be reviewed for distribution. The Part 8 addition below records the selected
-Crypto product. Part 12 subsequently selects CryptoExtras for the experimental
-truncated-tag adapter described above; MLS selects only Crypto.
+to be reviewed for distribution. The addition below records the selected
+Crypto product. VoiceCrypto additionally selects CryptoExtras for the experimental
+truncated-tag adapter described above; MLS selects Crypto and DiscordLogging.
 
 ## Requirements, resolved pins and provenance
 
@@ -252,7 +266,7 @@ host, belong in [platform support](PlatformSupport.md) and the
 probe evidence above; it makes no cross-platform adapter, production dependency
 qualification or voice interoperability claim.
 
-## Part 2 production adapter addition
+## Production adapter addition
 
 Verified official latest stable tags on **2026-10-15**:
 [NIO 2.104.0](https://github.com/apple/swift-nio/releases/tag/2.104.0)
@@ -281,30 +295,29 @@ verified latest-release links. The existing Apache-2.0, Swift Runtime Library
 Exception, NIO NOTICE and BoringSSL attribution obligations apply to distribution.
 There are no dependency migrations for consumers of the portable products.
 
-Native compiler cache/temp files and loopback tests required approved host access
-in the managed workspace. Resolution reused the existing verified local repository
-cache for a stalled transitive fetch; no checkout was vendored or substituted
-for the official lockfile revisions. The independent load package resolves the
-same approved graph and remains outside runtime products.
+The independent load package resolves its own graph and remains outside runtime
+products. Consumer product selection and exact root revisions are audited separately.
 
-## Part 3 products (2026-10-16)
+## Products (2026-10-16)
 
-Models, HTTP and Gateway introduce no external package dependency. They use existing
-Core/Transport, Swift standard concurrency and Foundation JSON/date/URL facilities.
+Models selects Core. HTTP and Gateway select DiscordLogging, Core/Models/Transport
+and their existing SwiftLog dependency, alongside Swift standard concurrency and
+Foundation JSON/date/URL facilities.
 Gateway depends on HTTP only for authenticated discovery; HTTP does not import
 Gateway or a concrete adapter. The RESTOnly example selects Foundation transport;
 the separate load harness adopts HTTP/Gateway explicitly. Existing approved NIO/TLS
 versions remain unchanged. Example resolution is pinned independently and build/test
 support is excluded from all runtime products.
 
-## Part 8 signed ingress addition
+## Signed ingress addition
 
-The official latest stable [Swift Crypto release](https://github.com/apple/swift-crypto/releases/tag/5.0.1)
+The recorded stable [Swift Crypto release](https://github.com/apple/swift-crypto/releases/tag/5.0.1)
 was verified as **5.0.1 on 2026-10-17**; its upstream publication date is unknown in
 this record. The root requirement is `from: "5.0.1"`, allowing compatible releases
-below 6.0.0. `DiscordInteractions` selects only `Crypto` for Ed25519 signature
-verification and SHA-256 webhook delivery digests. No CryptoExtras or SwiftASN1
-product is linked by that selection. Package-level resolution still includes ASN.1
+below 6.0.0. `DiscordInteractions` selects `Crypto` for Ed25519 signature
+verification and SHA-256 webhook delivery digests, alongside its logging foundation.
+The interaction product does not select CryptoExtras or SwiftASN1 products.
+Package-level resolution still includes ASN.1
 because CryptoExtras declares it; the committed root and HTTPApp lockfiles retain
 the exact two new pins:
 
@@ -341,7 +354,7 @@ example execution, other-host native Crypto build, physical-device result or
 voice/MLS interoperability is established by these checks. Existing NIO/TLS pins
 are unchanged; see [the interaction guide](Interactions.md) for the implemented scope.
 
-## Phase 12D supervised composition (2026-10-18)
+## Supervised composition (2026-10-18)
 
 [Supervised voice](VoiceSessions.md) adds no package dependency or product. Voice
 composes existing Core/Models/Transport/Media/VoiceCodecs/VoiceCrypto; DAVE supplies

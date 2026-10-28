@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGameServices/DiscordGameServices.docc/Reference/PartnerAccountAcknowledgement.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordGameServices/PartnerAccountAcknowledgement``
 
 ## Topics

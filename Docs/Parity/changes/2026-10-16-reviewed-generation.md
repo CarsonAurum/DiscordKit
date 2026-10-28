@@ -1,15 +1,22 @@
+<!--
+File: Docs/Parity/changes/2026-10-16-reviewed-generation.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Reviewed inventory and deterministic generation — 2026-10-16
 
 Local support date: **2026-10-16**. Release and commit: **unknown** (unreleased).
 Upstream REST/Gateway: **v10**; Voice Gateway: **v8**, unaffected by this work.
 Upstream announcement/effective dates: **unknown**. No new upstream feature or
-operation is inferred from this local tooling milestone.
+operation is inferred from this local tooling change.
 
 Previously, the discovery schema tracked broad source membership and implementation
 status. Handwritten partial User/Application projections and three typed descriptors
 had file-name evidence, with no reviewed field graph or generation drift check.
 
-Part 4 adds a separately versioned reviewed inventory with pinned revision/hash
+The reviewed catalog adds a separately versioned reviewed inventory with pinned revision/hash
 references, stable field/model/enum/variant/endpoint IDs, real source declarations
 and named Swift tests/structured fixture cases. The schema also links handwritten
 event contracts to payload models and variants, with synthetic tooling tests and no
@@ -59,8 +66,8 @@ Reviewed records retain the pinned source catalog's exact official revision/hash
 baseline; preview specification precedence remains documented in the
 [parity guide](../README.md).
 
-Swift 6.4 and existing concurrency settings are preserved. This tooling milestone
+Swift 6.4 and existing concurrency settings are preserved. This tooling change
 does not close full semantic discovery review, complete model/event catalog,
 other-host runtime qualification, distributed coordinator or sustained-capacity gates.
-See [generation verification](../../Generation.md) and the execution plan for the
+See [generation verification](../../Generation.md) for the
 completed local checks.

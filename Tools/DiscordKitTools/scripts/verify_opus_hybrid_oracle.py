@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_opus_hybrid_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in bidirectional ordinary hybrid Opus PCM/range comparison with pinned libopus.
 
 Builds only an independently supplied verified archive in temporary storage. Owned
@@ -6,6 +11,8 @@ mono/stereo hybrid encoders and decoders cover both bandwidths and 10/20ms frame
 this is syntax/interoperability evidence, not perceptual-quality, complete Opus
 mode/loss/FEC conformance, device or realtime qualification. No download occurs.
 """
+from publication import swift_header
+
 import argparse
 import base64
 from datetime import datetime, timezone
@@ -287,7 +294,7 @@ def owned_fec_fixture_text(cases, encoded, references):
                            selectedLBRR=operation['selectedLBRR'], pcm=expected['pcm'], range=expected['range'])
                       for operation, expected in zip(stream['recoveries'], reference)]
         fixtures.append(dict(channels=case['channels'], bandwidth=case['bandwidth'], samples=case['samples'], operations=operations))
-    return ('/// Owned hybrid FEC packets with independently decoded libopus 1.6.1 full PCM and ranges.\n'
+    return swift_header(OWNED_FEC_FIXTURE_PATH) + ('/// Owned hybrid FEC packets with independently decoded libopus 1.6.1 full PCM and ranges.\n'
             '/// Generated offline; normal tests call no native codec.\n'
             'let opusHybridFECOracleFixtures: [String] = [\n'
             + ''.join('    "' + base64.b64encode(json.dumps(stream, separators=(',', ':')).encode()).decode() + '",\n'
@@ -389,7 +396,7 @@ def main():
         fixtures = [streams[index] for index in (0, args.variants, 2 * args.variants, 3 * args.variants)]
         fixture = repository / FIXTURE_PATH
         if args.write_fixtures:
-            fixture.write_text('/// Pinned libopus 1.6.1 authentic hybrid packets, full 48kHz float PCM and final ranges.\n'
+            fixture.write_text(swift_header(FIXTURE_PATH) + '/// Pinned libopus 1.6.1 authentic hybrid packets, full 48kHz float PCM and final ranges.\n'
                 '/// Generated offline; normal tests never fetch or link the reference codec.\n'
                 'let opusHybridOracleFixtures: [String] = [\n' + ''.join('    "' + base64.b64encode(json.dumps(stream, separators=(',', ':')).encode()).decode() + '",\n' for stream in fixtures) + ']\n')
         else:

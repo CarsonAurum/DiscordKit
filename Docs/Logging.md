@@ -1,3 +1,10 @@
+<!--
+File: Docs/Logging.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Semantic logging and trace diagnostics
 
 DiscordKit uses Apple's [SwiftLog](https://github.com/apple/swift-log) for Swift
@@ -301,9 +308,7 @@ value semantics/provider precedence, multiplexing, bounded concurrent writes, Un
 JSON structure, rotation, oversized records, file validation, failures and closure.
 The standalone example tests bootstrap/provider propagation in a separate process.
 
-See [semantic logging validation](Release/semantic-logging-validation.json) for
-current commands and observed results. The first [logging validation](Release/logging-validation.json)
-remains a historical checkpoint. Local macOS compilation/tests, synthetic peers and bounded cache/broadcast
-soaks do not qualify Linux/Windows/Android, physical iOS devices, unified-log capture,
+Local macOS compilation/tests, synthetic peers and bounded cache/broadcast soaks
+do not qualify Linux/Windows/Android, physical iOS devices, unified-log capture,
 live Discord, independent crypto review or production logging throughput. Default
 handler semantics and active sink costs are separate from production capacity.

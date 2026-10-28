@@ -1,8 +1,15 @@
+<!--
+File: Docs/GatewayEventModules.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Typed Gateway event modules
 
-Part 15H adds the independently adopted `DiscordBotDSL` product. It composes typed
+DiscordKit provides the independently adopted `DiscordBotDSL` product. It composes typed
 protocol handlers with the shared `BotModule`/`BotBuilder` structure and the existing
-bounded Gateway hub/dispatcher. Part 15I broadens the explicitly selected BotDSL
+bounded Gateway hub/dispatcher. The bot host broadens the explicitly selected BotDSL
 product with [supervised bot applications](BotApplications.md), Client and CommandDSL
 composition. Existing shared/command products gain no upward dependency. Event-only
 execution still creates no client, cache, command runtime, concrete adapter or macros,
@@ -100,14 +107,14 @@ the hub's existing semantics; already admitted callbacks are joined.
 
 The event compilation and pipeline APIs own event delivery only. They never start
 or stop a client, consume raw shard queues, bridge interactions, read credentials
-or register commands. Explicitly adopt Part 15I's [bot runtime](BotApplications.md)
+or register commands. Explicitly adopt [bot runtime](BotApplications.md)
 for shared services, trusted interaction delivery and supervised client lifetime.
-Part 15J adds [independent extension libraries and typed dependency validation](ModuleExtensions.md),
+DiscordKit provides [independent extension libraries and typed dependency validation](ModuleExtensions.md),
 including a custom typed selector and reusable event handlers in the separately
 selected `DiscordBotExtensions` product. Namespaces scope structural identity;
 event handler IDs retain their existing global uniqueness and group behavior.
-Part 15K adds [paired direct/DSL command-handler measurements](DSLBenchmarks.md)
+DiscordKit provides [paired direct/DSL command-handler measurements](DSLBenchmarks.md)
 and separate sustained-handler evidence. These do not measure Gateway event-host
-throughput. Part 15L adds complete [adoption guidance](DSLAdoption.md) and scoped
+throughput. DiscordKit provides complete [adoption guidance](DSLAdoption.md) and scoped
 [release-candidate records](Release/README.md). Local synthetic tests and named
 soak workloads do not qualify live Discord, other platforms or production capacity.

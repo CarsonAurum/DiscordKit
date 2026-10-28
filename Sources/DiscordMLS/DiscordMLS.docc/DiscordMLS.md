@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordMLS/DiscordMLS.docc/DiscordMLS.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordMLS``
 
 Establish bounded MLS 1.0 ciphersuite-2 epochs with trusted membership and owned key material.

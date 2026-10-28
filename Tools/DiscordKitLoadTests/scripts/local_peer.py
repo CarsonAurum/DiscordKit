@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitLoadTests/scripts/local_peer.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Credential-free loopback HTTP/1.1 peer for the separate transport load package."""
 import argparse
 import json

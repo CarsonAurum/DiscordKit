@@ -1,7 +1,14 @@
-# Audit logs and Auto Moderation: Phase 5D
+<!--
+File: Docs/Parity/changes/2026-10-16-moderation.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
+# Audit logs and Auto Moderation
 
 Local implementation and verification: **2026-10-16**. REST API version: **10**.
-Local release/commit: unknown until committed/released. No dependency changes.
+No dependency changes.
 
 Previously Audit Log and Auto Moderation resource operations were unsupported.
 This change exposes all **six** current written-reference operations: one audit-log
@@ -10,7 +17,7 @@ entries, changes, options and action identifiers have typed contracts; the envel
 retains explicitly partial User, application-command, scheduled-event and webhook
 projections. Auto Moderation has complete rule/action/trigger contracts and validated
 outgoing payloads. These resource APIs do not implement the corresponding Gateway
-catalog or complete referenced resource families; batches 5E–5J remain separate.
+catalog or complete referenced resource families.
 
 Upstream chronology, distinct from local support:
 

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCrypto/DiscordVoiceCrypto.docc/Reference/TruncatedAESGCM.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordVoiceCrypto/TruncatedAESGCM``
 
 ## Topics

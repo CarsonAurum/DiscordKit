@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCore/DiscordCore.docc/DiscordCore.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCore``
 
 Represent Discord identifiers, field presence, exact JSON and redacted credentials as portable values.

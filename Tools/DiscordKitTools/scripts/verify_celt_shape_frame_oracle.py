@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_shape_frame_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in ordinary CELT quant_all_bands/anti_collapse comparison; no native runtime adoption."""
+from publication import swift_header
+
 import argparse
 from datetime import datetime, timezone
 import json
@@ -225,7 +232,7 @@ def main():
         actual=parse_outputs(run([str(owned)],'\n'.join(map(json.dumps,inputs)).encode()),len(inputs),'Owned all-band driver')
         compare_results(inputs,expected,actual)
         records=[{'input':x,'output':e} for x,e in zip(fixed,expected)];fixture=repository/FIXTURE_PATH
-        if args.write_fixtures:fixture.write_text('/// Independent libopus 1.6.1 all-band shape/anti-collapse fixtures.\nenum CELTShapeFrameOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
+        if args.write_fixtures:fixture.write_text(swift_header(FIXTURE_PATH) + '/// Independent libopus 1.6.1 all-band shape/anti-collapse fixtures.\nenum CELTShapeFrameOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
         if not fixture.exists() or json.loads(fixture.read_text().split('#"""',1)[1].split('"""#',1)[0])!=records:raise ValueError('fixture differs; review and explicitly --write-fixtures')
         report={'verifiedAt':datetime.now(timezone.utc).isoformat(),'scope':'ordinary CELT quant_all_bands and anti_collapse components',
             'version':VERSION,'releaseURL':RELEASE_URL,'sourceURL':SOURCE_URL,'archiveSHA256':ARCHIVE_SHA256,

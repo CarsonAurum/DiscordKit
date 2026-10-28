@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_silk_stereo_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic stereo verifier checks; no compiler, native codec, archive or network."""
 import json
 from pathlib import Path

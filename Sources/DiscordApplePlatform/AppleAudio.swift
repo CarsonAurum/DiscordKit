@@ -1,3 +1,8 @@
+// File: Sources/DiscordApplePlatform/AppleAudio.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 #if canImport(AVFoundation) && canImport(os)
 import AVFoundation

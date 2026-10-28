@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.19.0",
+  "verifiedOn": "2026-10-28",
+  "published": false,
+  "tagged": false,
+  "protocols": {
+    "DAVE": "1",
+    "Gateway": "10",
+    "MLS": "1.0",
+    "REST": "10",
+    "RPC": "1",
+    "Voice": "8"
+  },
+  "checks": [
+    {
+      "id": "root-build",
+      "status": "passed",
+      "scope": "The current 0.19.0 root package compiled successfully on the recorded macOS arm64 host.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "root-tests",
+      "status": "passed",
+      "scope": "2472 Swift tests passed across 34 root test products with zero issues. Local deterministic and loopback tests do not establish live Discord qualification.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "tooling",
+      "status": "passed",
+      "scope": "105 Swift tooling tests, 229 Python tooling tests, 48 CI helper tests and 34 macro-package Swift tests passed locally. Load, external compile-fixture and benchmark qualification remain separate.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "passed",
+      "scope": "Local inventory validation passed for the existing committed source classifications. This is not a new discovery-wide upstream collection.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "generation",
+      "status": "passed",
+      "scope": "All 5 committed reviewed-definition artifacts match the current generator, including publication headers.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "parity",
+      "status": "passed",
+      "scope": "Local parity validation passed without support promotion; the cleaned historical entries remain pinned by the release policy.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "declaration-docs",
+      "status": "passed",
+      "scope": "812 Swift files and 8876 explicit callables have zero missing documentation comments. This audit establishes syntactic presence only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "docc",
+      "status": "passed",
+      "scope": "Strict analysis and warnings-as-errors conversion passed for all 33 root public-module archives; the merged archive succeeded. Authoring-package conversion and complete semantic accuracy remain separate.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/root-docc.json",
+          "sha256": "19a46b0b372588ad058d98e72061715f9d32e3dc9899cd9092110034d2612fb3"
+        }
+      ]
+    },
+    {
+      "id": "product-isolation",
+      "status": "passed",
+      "scope": "Current root, consumer and authoring manifest/import isolation validation passed. The reviewed policy retains 33 root products/targets and 14 independent consumers.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "api-baseline",
+      "status": "passed",
+      "scope": "The current compiler-produced 0.19.0 root baseline contains 14659 public symbols in 33 modules. The 0.18.0 comparison records two added initializers, one changed RESTClient default and no removals; the explicit pre-1.0 minor increment passes policy. Baseline self-comparison is unchanged.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        },
+        {
+          "path": "Docs/Release/api-baseline-0.19.0.json",
+          "sha256": "3fd2c5684e92f0d69bd0c865f1610e170d2abf407af21931cfd7614def1b515a"
+        },
+        {
+          "path": "Docs/Release/publication-api-comparison.json",
+          "sha256": "6083d60c7d6cbfbb5b95f0083eaa72a80feab8e6d2ca8d43f7a5951fbc08e2e9"
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "status": "passed",
+      "scope": "Seven independent consumers built: RESTOnly, HTTPApp, GatewayBot, CommandsApp, VoiceBot, DSLCommands and DSLBot. VoiceBot and DSLCommands passed offline execution; RESTOnly and HTTPApp were rebuilt after the final library identification update. This is a selected consumer matrix, not the complete example matrix or authenticated Discord qualification.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/consumers.json",
+          "sha256": "2e5bd05a5748d76f70b860538883a6602c66d68eb051666d6491c0b0f54c1cc6"
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "status": "passed",
+      "scope": "All 36 browser bridge tests passed with simulated message hosts; no approved Discord Web/iOS/Android host execution is claimed.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "social-catalog",
+      "status": "passed",
+      "scope": "Offline structural catalog verification passed for 743 entries against 735 baseline declarations: 225 blocked, 209 language-specific and 309 partial. No native SDK implementation or support promotion.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "local-load",
+      "status": "unverified",
+      "scope": "Historical finite measurements remain separate. No fresh local load matrix is claimed for this candidate.",
+      "reason": "Historical finite measurements remain separate. No fresh local load matrix is claimed for this candidate.",
+      "excludedClaims": [
+        "local-load"
+      ]
+    },
+    {
+      "id": "fixed-working-set-soak",
+      "status": "unverified",
+      "scope": "No fresh fixed-working-set thirty-minute soak is recorded for this candidate.",
+      "reason": "No fresh fixed-working-set thirty-minute soak is recorded for this candidate.",
+      "excludedClaims": [
+        "fixed-working-set-soak"
+      ]
+    },
+    {
+      "id": "macos",
+      "status": "passed",
+      "scope": "The current root build and 2472 tests passed on this macOS arm64 host with Swift 6.4. Minimum-OS runtime, signed release and physical-device execution remain unverified.",
+      "evidence": [
+        {
+          "path": "Docs/Release/publication-validation.json",
+          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+        }
+      ]
+    },
+    {
+      "id": "linux",
+      "status": "unverified",
+      "scope": "No current-candidate Linux build/test execution is recorded.",
+      "reason": "No current-candidate Linux build/test execution is recorded.",
+      "excludedClaims": [
+        "linux"
+      ]
+    },
+    {
+      "id": "windows",
+      "status": "unverified",
+      "scope": "No current-candidate Windows execution or named-pipe host qualification is recorded.",
+      "reason": "No current-candidate Windows execution or named-pipe host qualification is recorded.",
+      "excludedClaims": [
+        "windows"
+      ]
+    },
+    {
+      "id": "apple-simulators",
+      "status": "unverified",
+      "scope": "No current-candidate simulator graph build or runtime qualification is recorded.",
+      "reason": "No current-candidate simulator graph build or runtime qualification is recorded.",
+      "excludedClaims": [
+        "apple-simulators"
+      ]
+    },
+    {
+      "id": "apple-devices",
+      "status": "unverified",
+      "scope": "No current-candidate physical Apple device execution or minimum-OS runtime qualification is recorded.",
+      "reason": "No current-candidate physical Apple device execution or minimum-OS runtime qualification is recorded.",
+      "excludedClaims": [
+        "apple-devices"
+      ]
+    },
+    {
+      "id": "android-cross-build",
+      "status": "unverified",
+      "scope": "No current-candidate Android cross-build is recorded.",
+      "reason": "No current-candidate Android cross-build is recorded.",
+      "excludedClaims": [
+        "android-cross-build"
+      ]
+    },
+    {
+      "id": "android-runtime",
+      "status": "unverified",
+      "scope": "No current-candidate Android device or emulator execution is recorded.",
+      "reason": "No current-candidate Android device or emulator execution is recorded.",
+      "excludedClaims": [
+        "android-runtime"
+      ]
+    },
+    {
+      "id": "live-discord",
+      "status": "unverified",
+      "scope": "No authorized live Discord REST, Gateway, interaction, RPC, Activity or voice qualification was performed.",
+      "reason": "No authorized live Discord REST, Gateway, interaction, RPC, Activity or voice qualification was performed.",
+      "excludedClaims": [
+        "live-discord"
+      ]
+    },
+    {
+      "id": "hardware",
+      "status": "unverified",
+      "scope": "No current physical audio device, route, desktop IPC or duplex hardware qualification was performed.",
+      "reason": "No current physical audio device, route, desktop IPC or duplex hardware qualification was performed.",
+      "excludedClaims": [
+        "hardware"
+      ]
+    },
+    {
+      "id": "independent-crypto-review",
+      "status": "unverified",
+      "scope": "No independent cryptographic security review has been completed.",
+      "reason": "No independent cryptographic security review has been completed.",
+      "excludedClaims": [
+        "independent-crypto-review"
+      ]
+    },
+    {
+      "id": "codec-interop",
+      "status": "unverified",
+      "scope": "No complete independent codec, MLS or DAVE interoperability qualification is established by these local checks.",
+      "reason": "No complete independent codec, MLS or DAVE interoperability qualification is established by these local checks.",
+      "excludedClaims": [
+        "codec-interop"
+      ]
+    },
+    {
+      "id": "semantic-documentation",
+      "status": "unverified",
+      "scope": "Callable presence and navigation checks do not establish complete semantic accuracy of every public contract.",
+      "reason": "Callable presence and navigation checks do not establish complete semantic accuracy of every public contract.",
+      "excludedClaims": [
+        "semantic-documentation"
+      ]
+    },
+    {
+      "id": "api-other-platforms",
+      "status": "unverified",
+      "scope": "The root API baseline covers only its captured macOS arm64 compiler/platform scope.",
+      "reason": "The root API baseline covers only its captured macOS arm64 compiler/platform scope.",
+      "excludedClaims": [
+        "api-other-platforms"
+      ]
+    },
+    {
+      "id": "upstream-collection",
+      "status": "unverified",
+      "scope": "The eight-source maintenance review is current; a fresh discovery-wide official documentation/spec collection and classification was not performed.",
+      "reason": "The eight-source maintenance review is current; a fresh discovery-wide official documentation/spec collection and classification was not performed.",
+      "excludedClaims": [
+        "upstream-collection"
+      ]
+    },
+    {
+      "id": "zero-resource-growth",
+      "status": "unverified",
+      "scope": "No current sustained memory-retention or production resource-growth qualification is recorded.",
+      "reason": "No current sustained memory-retention or production resource-growth qualification is recorded.",
+      "excludedClaims": [
+        "zero-resource-growth"
+      ]
+    },
+    {
+      "id": "performance-regression",
+      "status": "unverified",
+      "scope": "No controlled before/after performance measurements were repeated on matching hardware for this candidate.",
+      "reason": "No controlled before/after performance measurements were repeated on matching hardware for this candidate.",
+      "excludedClaims": [
+        "performance-regression"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "local-publication-validation",
+      "description": "The current candidate passed the named local root build/tests, tooling, source and catalog audits, strict root DocC, root API comparison, selected consumer and simulated-browser checks within their recorded scopes.",
+      "checkIDs": [
+        "root-build",
+        "root-tests",
+        "tooling",
+        "inventory",
+        "generation",
+        "parity",
+        "declaration-docs",
+        "docc",
+        "product-isolation",
+        "api-baseline",
+        "examples",
+        "browser",
+        "social-catalog",
+        "macos"
+      ]
+    }
+  ],
+  "globalExclusions": [
+    "package-publication",
+    "release-tag",
+    "production-qualification",
+    "production-capacity",
+    "fleet-capacity",
+    "binary-ABI",
+    "full-api-parity",
+    "full-platform-parity",
+    "minimum-OS-runtime",
+    "complete-example-matrix",
+    "authoring-package-docc",
+    "external-compile-fixture-qualification"
+  ],
+  "publicationNote": "Current candidate evidence is scoped to the named local checks. Earlier reports retain their dates, measured identities and exclusions; no historical measurement is promoted to current qualification."
+}

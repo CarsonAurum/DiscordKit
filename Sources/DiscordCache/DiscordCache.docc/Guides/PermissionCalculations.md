@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCache/DiscordCache.docc/Guides/PermissionCalculations.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Calculating permissions from complete facts
 
 Resolve the implemented permission arithmetic or return explicit indeterminacy.

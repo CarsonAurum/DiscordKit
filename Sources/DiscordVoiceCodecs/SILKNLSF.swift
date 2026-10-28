@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKNLSF.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /*
  Copyright (c) 2006-2011, Skype Limited. All rights reserved.
  Copyright (c) 2013, Koen Vos. All rights reserved.

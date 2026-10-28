@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/DiscordHTTP.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordHTTP``
 
 Execute typed API v10 REST operations with bounded admission, replay policy and optional read reuse.

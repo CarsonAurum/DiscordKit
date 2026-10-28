@@ -148,7 +148,7 @@
         }
       ],
       "impact": "Source-only methods cannot be represented as uniformly available on web/iOS/Android.",
-      "interimPolicy": "Phase 11 implements published source codecs over the owned iframe bridge, while retaining named availability blockers and unspecified platform/scope metadata. Codec implementation is independent from approved host availability. Qualify actual Discord hosts before access/support claims.",
+      "interimPolicy": "activities implements published source codecs over the owned iframe bridge, while retaining named availability blockers and unspecified platform/scope metadata. Codec implementation is independent from approved host availability. Qualify actual Discord hosts before access/support claims.",
       "requiredResolution": "Official scope/platform/approval and rollout documentation, or approved conformance evidence, for each source-only export.",
       "verifiedAt": "2026-10-17",
       "announcementDate": "unknown",

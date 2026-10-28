@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/SILKStereoOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Complete independent libopus 1.6.1 SILK API outputs. Regenerated only by the
 // pinned offline oracle; compressed inputs and every PCM16 sample are literal.
 // Covers all rates/durations, real LBRR, mixed-rate and channel state transitions.

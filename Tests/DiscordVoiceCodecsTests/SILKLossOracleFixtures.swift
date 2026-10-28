@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/SILKLossOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Independent scalar libopus 1.6.1 SILK API literal operation evidence.
 // Covers normal audio, consecutive PLC/CNG, selected/missing LBRR and recovery.
 struct SILKLossOracleFixture: Sendable {

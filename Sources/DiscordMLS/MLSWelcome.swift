@@ -1,3 +1,8 @@
+// File: Sources/DiscordMLS/MLSWelcome.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Public RFC Welcome fields. The encrypted bytes reveal no authenticated secrets

@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitLoadTests/Tests/DiscordKitLoadTestsTests/CacheLoadRunnerTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 @testable import DiscordKitLoadTests
 import DiscordCache
 import DiscordModels

@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/PCM.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Validation and bounded-admission failures for portable media values and queues.

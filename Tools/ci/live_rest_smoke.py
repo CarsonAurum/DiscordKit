@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/live_rest_smoke.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Run only the built RESTOnly reads and require confirmed dedicated application IDs.
 
 The example deliberately prints categorized failures and returns normally, so a

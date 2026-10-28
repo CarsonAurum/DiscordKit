@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_synthesis_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in ordinary CELT floating synthesis against pinned unmodified libopus 1.6.1.
 
 Verbatim synthesis/deemphasis functions are extracted; original denormalization,
@@ -7,6 +12,8 @@ cover duration/short-block/postfilter transitions, coded/output channel conversi
 and exact signal-domain scaling with retained independent output histories.
 No entropy, packet, PLC/FEC, resampler, device or full-codec evidence is implied.
 """
+from publication import swift_header
+
 import argparse
 import base64
 from datetime import datetime, timezone
@@ -190,7 +197,7 @@ def main():
         expected=parse_outputs(run([str(reference)],commands(inputs)),len(inputs),'Official synthesis driver')
         actual=parse_outputs(run([str(owned)],'\n'.join(map(json.dumps,inputs)).encode()),len(inputs),'Owned synthesis driver')
         statistics=compare_results(inputs,expected,actual);records=encode_fixture(zip(fixed,expected));fixture=repository/FIXTURE_PATH
-        if args.write_fixtures:fixture.write_text('/// Complete independent libopus float32 synthesis sequences, including retained histories.\nenum CELTSynthesisOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
+        if args.write_fixtures:fixture.write_text(swift_header(FIXTURE_PATH) + '/// Complete independent libopus float32 synthesis sequences, including retained histories.\nenum CELTSynthesisOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
         if not fixture.exists() or json.loads(fixture.read_text().split('#"""',1)[1].split('"""#',1)[0])!=records:raise ValueError('fixtures missing or differ; review --write-fixtures')
         report=dict(verifiedAt=datetime.now(timezone.utc).isoformat(),scope='ordinary CELT floating-point multiframe synthesis',version=VERSION,releaseURL=RELEASE_URL,sourceURL=SOURCE_URL,archiveSHA256=ARCHIVE_SHA256,seed=args.seed,randomSequences=args.cases,fixedSequences=len(fixed),totalSequences=len(inputs),totalFrames=sum(len(x['frames']) for x in inputs),tolerance=dict(absoluteTimesSequenceMaximum=ABSOLUTE_TOLERANCE,relative=RELATIVE_TOLERANCE),**statistics,excluded=['entropy/packets','full Opus codec','PLC/FEC','resampling','devices/realtime'],ownedSources={p:digest(repository/p) for p in OWNED_PATHS},upstreamSources={p:digest(upstream/p) for p in UPSTREAM_PATHS},fixture=dict(path=FIXTURE_PATH,sha256=digest(fixture)),verifierSHA256=digest(Path(__file__)),ccVersion=run(['cc','--version']).decode().splitlines()[0],swiftVersion=run(['swiftc','--version']).decode().splitlines()[0])
         if args.report:args.report.write_text(json.dumps(report,indent=2)+'\n')

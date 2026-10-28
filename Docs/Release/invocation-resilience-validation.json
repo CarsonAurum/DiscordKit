@@ -8,7 +8,7 @@
   "platform": {
     "compiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx27.0.0",
     "operatingSystem": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434",
-    "execution": "Synthetic peers and local loopback. Approved host access used where compiler plugins, temporary files or local socket tests required it; no credentials or live Discord requests."
+    "execution": "Synthetic peers and local loopback. Local host execution provided compiler-plugin, temporary-file and socket capabilities; no credentials or live Discord requests."
   },
   "implemented": [
     "Explicit failFast default and continueInvocations policy",
@@ -192,9 +192,9 @@
       "name": "historical release and maintenance records",
       "status": "passed",
       "commands": [
-        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase14-report.json",
-        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15-report.json",
-        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15l-report.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/release-report-0.14.0.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/release-report-0.15.0.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/release-report-0.15.0-final.json",
         "python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json"
       ],
       "notes": [
@@ -271,11 +271,11 @@
     {
       "status": "superseded",
       "attempt": "Managed default compiler or loopback execution",
-      "result": "Sandbox denied compiler/plugin temporary work or local sockets. Isolated writable caches and approved host access completed the affected checks."
+      "result": "Sandbox denied compiler/plugin temporary work or local sockets. The affected checks completed on the local host with writable caches and local socket support."
     }
   ],
   "qualificationLimits": [
-    "No live Discord acceptance or cause attribution for MiniCarson's pre-existing Failed state",
+    "Live Discord acceptance remains unverified",
     "No independent security or crypto review, complete-client interoperability, or device/hardware qualification",
     "No Linux, Windows, Android, full Apple package/runtime or production/fleet capacity qualification",
     "Safe response fingerprints describe observed categories and cannot prove causal identity after same-category application replacement; unknown/differently replaced errors fall back to the escaping handler boundary",

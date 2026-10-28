@@ -1,7 +1,13 @@
-# Applications, users, linked roles and commands: Phase 5G
+<!--
+File: Docs/Parity/changes/2026-10-16-applications-users.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-16**, REST API **v10**. Local release and commit
-are unknown until release/commit creation. The clean 5F baseline is 9542e90.
+# Applications, users, linked roles and commands
+
+Verified **2026-10-16**, REST API **v10**.
 Current source fingerprints are recorded separately in
 [application/user sources](../application-user-current-sources.json); historical
 discovery revision/hash membership remains unchanged.
@@ -63,8 +69,8 @@ malformed nondecimal strings. Related partial-resource projections are labeled,
 and original raw fields remain available for deliberate inspection.
 
 No dependencies or targets were added. Command routers, interaction handlers,
-OAuth2 token acquisition, full referenced/event catalogs and batches 5H–5J remain
+OAuth2 token acquisition, full referenced/event catalogs and related REST families remain
 separate. Validation is deterministic/local on macOS and uses no live Discord
 credentials. Device/other-host, distributed coordination and sustained-capacity
 qualification remain open; see [contracts](../../ApplicationsUsers.md) and the
-[execution evidence](../../../.air/plans/phase-5g-execution.plan.md).
+[technical guide](../../ApplicationsUsers.md).

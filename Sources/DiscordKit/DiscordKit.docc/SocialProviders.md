@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/SocialProviders.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Coordinate public Social providers
 
 Model explicit consent and host capabilities without inventing native SDK wire.

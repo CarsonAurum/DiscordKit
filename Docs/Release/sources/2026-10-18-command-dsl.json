@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-18",
+  "scope": "command dsl application-command metadata, leaf option schemas, submitted interaction options and resolved references; no comprehensive source or entire-platform parity claim.",
+  "protocolVersions": {
+    "REST": "10",
+    "Gateway": "10"
+  },
+  "sources": [
+    {
+      "url": "https://docs.discord.com/developers/reference.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 36143,
+      "retrievedSHA256": "80b22d3056b6a114a4c559c9f8dc3f26f71b655ce4a77ca019044ad2695034e8"
+    },
+    {
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 308684,
+      "retrievedSHA256": "0383301ade9e80e36fc5c9d911576a637fdde8d462d338a672306b608ce8ebc4"
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/application-commands.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 85981,
+      "retrievedSHA256": "55c50c6b38feae40728a40c16480af889d086760913e19735894b7963736e473"
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+      "verifiedOn": "2026-10-18",
+      "retrievedBytes": 35721,
+      "retrievedSHA256": "1dd54be770724955aec33c96cf763be5a9774e62b590b2c5ff82d670c6eccae0"
+    }
+  ],
+  "reviewedContracts": [
+    "Explicit API v10 remains the latest available HTTP API version in the reference.",
+    "Slash definitions preserve source order, at most 25 options, required-before-optional ordering, unique names and existing model validation.",
+    "Integer arguments admit exact -9007199254740991 through 9007199254740991; number arguments admit finite values from -9007199254740992 through 9007199254740992.",
+    "Interaction leaf values and nested options are mutually exclusive; focused partial autocomplete input is outside manual slash invocation decoding.",
+    "Resolved references remain partial local snapshots, preserve exact snowflake IDs and require no resource hydration.",
+    "Attachment file_types filters remain supported through the existing validated model; matching file extensions never establishes file contents."
+  ],
+  "knownGaps": [
+    "Subcommands/groups, autocomplete routes, remaining command families, macros, response families, policies and supervised HTTP/Gateway hosts remain separately planned."
+  ],
+  "qualification": "Fetched-source hashes identify the exact local review inputs; no upstream introduction date is inferred and no live Discord request or independent conformance qualification is claimed."
+}

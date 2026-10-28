@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordInteractions/DiscordInteractions.docc/Guides/WebhookEventsAndPreviews.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Durable webhook events and display-only previews
 
 Acknowledge recoverable work only after durable admission and keep previews outside command routing.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "verifiedOn": "2026-10-18",
-  "scope": "Affected Phase 14 release/transition sources; existing resource source records retain their own dates. Raw remote response hashes are provenance, not full API semantic reclassification.",
+  "scope": "Affected certification release/transition sources; existing resource source records retain their own dates. Raw remote response hashes are provenance, not full API semantic reclassification.",
   "sources": [
     {
       "url": "https://docs.discord.com/developers/reference.md",

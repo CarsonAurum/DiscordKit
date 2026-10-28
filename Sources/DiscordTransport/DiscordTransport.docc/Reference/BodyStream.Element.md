@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordTransport/DiscordTransport.docc/Reference/BodyStream.Element.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordTransport/BodyStream/Element``
 
 ## See Also

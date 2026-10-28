@@ -1,10 +1,12 @@
+[//]: # "File: Sources/DiscordCommandDSL/DiscordCommandDSL.docc/DiscordCommandDSL.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommandDSL``
 
 Compile typed command families into existing definitions and routes, with explicit response and HTTP ownership.
 
 ## Overview
 
-Part 15B adds handwritten ``CommandArguments`` and ``ArgumentValue`` protocols,
+The handwritten ``CommandArguments`` and ``ArgumentValue`` protocols supply
 finite typed option schemas and strict invocation-local decoding. A
 ``ManualSlashCommandHandler`` contributes explicit registration metadata through
 ``SlashCommand``. ``CommandCompilation`` lowers finite shared modules into
@@ -12,7 +14,7 @@ finite typed option schemas and strict invocation-local decoding. A
 bounded-router factory. ``ExistingSlashCommand`` supports incremental adoption of
 validated low-level root slash definitions/routes without adding typed decoding.
 
-Part 15D adds ``SlashCommandHandler`` and ``DeferredSlashCommandHandler`` with
+``SlashCommandHandler`` and ``DeferredSlashCommandHandler`` use
 restricted ``CommandContext`` and ``DeferredCommandContext`` snapshots. Immediate
 handlers return ``MessageResponse`` for one initial reply. Deferred handlers are
 acknowledged before user work and return ``DeferredMessageResponse`` for
@@ -34,18 +36,18 @@ metadata, while executable captures and their memory size are outside those boun
 
 Select this library independently. Existing products and the Core/Models-only shared
 DSL retain their adoption graphs. The runtime selects no compiler plugin; optional
-macro authoring lives in its separate package. Part 15E adds builder initializers for
+macro authoring lives in its separate package. Use builder initializers for
 ``MessageResponse`` and ``DeferredMessageResponse`` with pure ``MessageBuilder`` and
 ``ComponentBuilder`` authoring. Shared `DiscordDSL.MessageContent` supplies typed
 interpolation and explicit mention policy; existing payload validation remains
 authoritative.
-Part 15F adds ``SlashCommandTree``, ``UserCommand``, ``MessageCommand``,
+Command families include ``SlashCommandTree``, ``UserCommand``, ``MessageCommand``,
 ``AutocompleteCommand``, ``ComponentCommand`` and ``ModalCommand``. Complete arguments,
 partial autocomplete and typed modal values retain separate admission contracts.
 ``CommandFamily`` catalogs account for exact routes, including route-only handlers;
 ``ExistingCommandFamily`` supports explicit low-level adoption. Family-specific response
-protocols retain legal callback kinds and the unique existing responder. Part 15G adds
-``CommandPolicies`` after complete input preparation, with ``CommandPolicy`` observations
+protocols retain legal callback kinds and the unique existing responder. ``CommandPolicies`` run after complete input preparation,
+with ``CommandPolicy`` observations
 and injected authorization, ordered shared middleware, ``CommandConcurrencyAuthority``
 and explicit denial/error translation. ``CommandConcurrencyLimit`` supplies fixed-count,
 fail-fast local admission. Separately selected BotDSL provides Gateway hosts. Local tests do not

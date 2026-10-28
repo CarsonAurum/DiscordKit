@@ -1,3 +1,10 @@
+<!--
+File: Docs/Parity/changes/2026-10-19-gateway-zero-reset.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Gateway discovery with a zero reset interval
 
 On 2026-10-19, DiscordKit accepts Gateway discovery responses whose session-start

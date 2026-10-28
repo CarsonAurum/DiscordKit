@@ -1,25 +1,29 @@
+<!--
+File: Docs/CommandDSL.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Typed command authoring
 
-Part 15B adds the independently adopted `DiscordCommandDSL` product over
+DiscordKit provides the independently adopted `DiscordCommandDSL` product over
 DSL/Core/Models/Commands/Interactions, with HTTP/Transport for application composition.
 A handwritten argument schema drives both
 validated registration options and strict invocation decoding. Finite module
 compilation produces existing `CommandDefinition` and `CommandRoute` values.
 Construction and compilation start no tasks, I/O, registration or handler execution.
 
-Root slash commands retain their typed leaf schemas. Part 15C adds
-optional [macro authoring](MacroDSL.md); Part 15D adds
-[immediate/deferred/manual response ownership and signed HTTP applications](CommandResponses.md).
-Part 15E adds [message/component builders and safe typed content](MessageBuilders.md)
-with thin adapters to those response values. Part 15F adds [command trees, context
-menus, autocomplete, components and modal submissions](CommandFamilies.md). Part 15G adds
-[bounded policies and middleware](CommandPolicies.md). Part 15I supplies separately
-adopted [Gateway bot hosts](BotApplications.md); Part 15J adds
-[external module installation and typed dependencies](ModuleExtensions.md).
-Part 15K records [local measurements](DSLBenchmarks.md); Part 15L adds complete
-[adoption guidance](DSLAdoption.md) and scoped [release records](Release/README.md).
-Production capacity and external qualification remain excluded. Existing low-level
-APIs remain independently usable for their broader implemented surfaces.
+The same catalog supports [command families](CommandFamilies.md),
+[immediate/deferred/manual responses and HTTP applications](CommandResponses.md),
+[message/component builders](MessageBuilders.md), [policies and middleware](CommandPolicies.md)
+and [external modules](ModuleExtensions.md). Optional [macro authoring](MacroDSL.md)
+reduces boilerplate in a separate package. Select [BotDSL](BotApplications.md)
+explicitly for Gateway bot hosts.
+
+Existing low-level APIs remain independently usable. See [adoption](DSLAdoption.md)
+for migration examples and [measurements](DSLBenchmarks.md) for scoped local workloads;
+local tests do not establish live service, platform or production-capacity qualification.
 
 ## Declare arguments once
 
@@ -91,7 +95,7 @@ when an application constructor does not request every field.
 
 A `ManualSlashCommandHandler` supplies metadata and executes with the existing
 `InteractionContext`. It retains the established response owner and must reply,
-defer or otherwise complete explicitly with `context.responder`. This milestone
+defer or otherwise complete explicitly with `context.responder`. This library
 does not choose a response policy or automatically acknowledge a failed decoder.
 
 ```swift
@@ -132,7 +136,7 @@ router, and no mutation is retried or replayed.
 `ExistingSlashCommand(id:definition:route:source:)` is an explicit incremental
 adapter for a validated low-level root slash definition and its exact matching
 route. It performs no typed decoding and retains its original root-only contract.
-Part 15F adds `ExistingCommandFamily` for complete catalogs and exact routes. External
+DiscordKit provides `ExistingCommandFamily` for complete catalogs and exact routes. External
 extensions can conform to `CommandContribution`; their deterministic raw payload,
 validated definition and route must agree. Compilation validates those snapshots
 and rejects a raw metadata leaf that merely claims the slash-command kind.
@@ -173,12 +177,12 @@ The affected contracts were reviewed on **2026-10-18** against the official
 [interaction reference](https://docs.discord.com/developers/interactions/receiving-and-responding),
 [API versions](https://docs.discord.com/developers/reference#api-versioning) and
 [change log](https://docs.discord.com/developers/change-log). Exact fetched-source
-hashes and scope are in [the review record](Release/sources/2026-10-18-phase15b.json).
+hashes and scope are in [the review record](Release/sources/2026-10-18-command-dsl.json).
 This additive authoring layer does not introduce new endpoints/events or upgrade
-unchanged discovery support classifications. See [the dated history](Parity/changes/phase15b-command-dsl.md).
+unchanged discovery support classifications.
 
 Deterministic local tests cover definitions/routes, argument edge cases and synthetic
 router invocations. They do not establish authorized live Discord behavior, platform
-qualification, full Phase 15 completion or capacity. Part 15C adds optional
+qualification, full completion or capacity. DiscordKit provides optional
 [macro authoring](MacroDSL.md) in a separate package, with its own compiled
 expansion/diagnostic evidence; this runtime product remains macro free.

@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/CELTPacketLossConcealment.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Periodic PLC, pitch whitening and LPC prediction adapted from libopus 1.6.1
 // celt/celt_decoder.c, celt/pitch.c and celt/celt_lpc.c.
 // Copyright (c) 2007-2010 Xiph.Org Foundation

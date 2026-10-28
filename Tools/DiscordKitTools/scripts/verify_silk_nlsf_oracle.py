@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_nlsf_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in offline fixed-point SILK NLSF/LPC verification against libopus 1.6.1.
 
 The archive is supplied separately and validated by size/hash/member policy before
@@ -6,6 +11,8 @@ unmodified reference routines compile in temporary storage. Products and normal
 tests never download, vendor or link native codec code. This verifies coefficient
 conversion and stability, not full SILK/Opus decoded-PCM conformance or realtime.
 """
+
+from publication import swift_header
 
 import argparse
 from datetime import datetime, timezone
@@ -166,7 +173,7 @@ def main():
         records = [{"input": c, "output": e} for c, e in zip(fixed, expected)]
         fixture = repository/FIXTURE_PATH
         if args.write_fixtures:
-            fixture.write_text('/// Independent unmodified libopus 1.6.1 scalar fixed-point NLSF/gain fixtures.\n'
+            fixture.write_text(swift_header(FIXTURE_PATH) + '/// Independent unmodified libopus 1.6.1 scalar fixed-point NLSF/gain fixtures.\n'
                                '/// Generated only by the opt-in offline verifier; no native codec in normal tests.\n'
                                'enum SILKNLSFOracleFixtures {\n    static let json = #"""\n'
                                + json.dumps(records, separators=(",", ":"))+'\n"""#\n}\n')

@@ -1,3 +1,8 @@
+// File: Tests/DiscordHTTPTests/RESTClientTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import DiscordModels
 import DiscordTestSupport
@@ -9,11 +14,13 @@ import Testing
 /// End-to-end HTTP policy tests use finite scripts and virtual time; no credentials or Discord requests.
 @Suite(.timeLimit(.minutes(1)))
 struct RESTClientTests {
-    /// Verifies MainActor adoption, explicit v10 routing, bot auth, model decoding and completed ownership.
+    /// Verifies MainActor adoption, v10 routing, default library identification, bot auth, decoding and ownership.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @MainActor @Test func typedUserAndApplication() async throws {
         let transport = try ScriptedHTTPTransport(steps: [ { request in
             #expect(request.url.absoluteString == "https://discord.com/api/v10/users/@me")
+            #expect(request.headers.filter { $0.name == "User-Agent" }.map(\.value) ==
+                ["DiscordBot (https://github.com/CarsonAurum/DiscordKit, 0.19.0)"])
             #expect(request.headers.contains { $0.name == "Authorization" && $0.value == "Bot synthetic_token" })
             return try response("{\"id\":\"18446744073709551615\",\"username\":\"test\",\"discriminator\":\"0\",\"global_name\":null,\"avatar\":null}")
         }, { request in

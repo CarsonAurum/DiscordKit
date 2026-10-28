@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_plc_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in bounded CELT periodic/noise loss synthesis against pinned scalar libopus.
 
 The archive is supplied explicitly, checked by SHA256, and never downloaded.
 Upstream PLC is included verbatim in a development-only C driver, with no native
 codec dependency in a product. This does not claim full Opus conformance or FEC.
 """
+from publication import swift_header
+
 import argparse
 import base64
 from datetime import datetime, timezone
@@ -212,7 +219,7 @@ def main():
         expected=parse_outputs(run([str(reference)],commands(inputs)),len(inputs),'Official PLC driver')
         actual=parse_outputs(run([str(owned)],'\n'.join(map(json.dumps,inputs)).encode()),len(inputs),'Owned PLC driver')
         statistics=compare_results(inputs,expected,actual);records=fixture_records(fixed,expected[:len(fixed)]);fixture=repository/FIXTURE_PATH
-        if args.write_fixtures:fixture.write_text('/// Complete independent scalar libopus periodic/noise PLC and recovery sequences.\nenum CELTConcealmentOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
+        if args.write_fixtures:fixture.write_text(swift_header(FIXTURE_PATH) + '/// Complete independent scalar libopus periodic/noise PLC and recovery sequences.\nenum CELTConcealmentOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
         if not fixture.exists() or json.loads(fixture.read_text().split('#"""',1)[1].split('"""#',1)[0])!=records:raise ValueError('PLC fixture differs; review --write-fixtures')
         report=dict(verifiedAt=datetime.now(timezone.utc).isoformat(),scope='ordinary CELT periodic/noise PLC, TDAC recovery and duration changes',version=VERSION,releaseURL=RELEASE_URL,sourceURL=SOURCE_URL,archiveSHA256=ARCHIVE_SHA256,seed=args.seed,fixedSequences=len(fixed),randomSequences=args.cases,totalSequences=len(inputs),totalFrames=sum(len(x['frames']) for x in inputs),**statistics,tolerance=dict(absoluteTimesSequenceMaximum=ABSOLUTE_TOLERANCE,relative=RELATIVE_TOLERANCE),exact=['pitch lag','loss path','loss duration','band envelopes','random seeds'],excluded=['SILK/hybrid','FEC','full Opus conformance','devices/realtime'],ownedSources=compiled_hashes,sourceDriftAtCompletion=source_drift(repository,compiled_hashes),upstreamSources={p:digest(upstream/p) for p in UPSTREAM_PATHS},fixture=dict(path=FIXTURE_PATH,sha256=digest(fixture)),verifierSHA256=digest(Path(__file__)),referenceBuild=dict(librarySHA256=digest(reference_source/'.libs/libopus.a'),configurationSHA256=digest(reference_source/'config.h')))
         if args.report:args.report.write_text(json.dumps(report,indent=2)+'\n')

@@ -1,3 +1,10 @@
+<!--
+File: Examples/VoiceBot/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Offline VoiceBot protocol example
 
 Build without credentials, network calls or audio-device access:
@@ -53,4 +60,4 @@ This offline consumer does not start the separately implemented
 [supervised network session](../../Docs/VoiceSessions.md),
 microphone/playback adapter or perceptual/realtime qualification. Discord
 requires DAVE for eligible live sessions; this offline example cannot join one.
-It is not the roadmap's ten-minute duplex or authorized Discord smoke qualification.
+It is not the ten-minute duplex or authorized Discord smoke qualification.

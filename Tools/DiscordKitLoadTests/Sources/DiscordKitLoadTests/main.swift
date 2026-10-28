@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitLoadTests/Sources/DiscordKitLoadTests/main.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 import DiscordNIOTransport
 import Foundation

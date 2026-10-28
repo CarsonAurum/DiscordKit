@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDSL/DiscordDSL.docc/Reference/MessageContentError.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDSL/MessageContentError``
 
 ## Topics

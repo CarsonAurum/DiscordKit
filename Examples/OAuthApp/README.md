@@ -1,3 +1,10 @@
+<!--
+File: Examples/OAuthApp/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Independent OAuth application
 
 Build from the repository root:

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/GatewayBots.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Own a supervised Gateway bot
 
 Select explicit intents, bounded subscriptions and shared startup ownership.

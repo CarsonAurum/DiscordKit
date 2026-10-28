@@ -1,3 +1,10 @@
+<!--
+File: Examples/GatewayBot/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Gateway bot consumer
 
 Build from the repository root with `swift build --package-path Examples/GatewayBot`.

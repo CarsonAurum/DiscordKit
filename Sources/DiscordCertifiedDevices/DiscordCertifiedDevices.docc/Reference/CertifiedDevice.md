@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCertifiedDevices/DiscordCertifiedDevices.docc/Reference/CertifiedDevice.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCertifiedDevices/CertifiedDevice``
 
 ## Topics

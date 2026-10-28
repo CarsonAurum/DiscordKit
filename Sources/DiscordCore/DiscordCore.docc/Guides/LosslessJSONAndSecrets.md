@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCore/DiscordCore.docc/Guides/LosslessJSONAndSecrets.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Lossless JSON and credential boundaries
 
 Preserve unknown wire data while keeping sensitive values out of ordinary diagnostics.

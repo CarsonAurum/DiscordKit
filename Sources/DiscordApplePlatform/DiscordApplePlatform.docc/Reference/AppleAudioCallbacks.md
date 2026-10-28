@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordApplePlatform/DiscordApplePlatform.docc/Reference/AppleAudioCallbacks.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordApplePlatform/AppleAudioCallbacks``
 
 ## Topics

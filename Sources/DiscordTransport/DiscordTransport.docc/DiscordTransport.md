@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordTransport/DiscordTransport.docc/DiscordTransport.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordTransport``
 
 Define bounded, injectable HTTP, WebSocket, datagram, ingress and IPC ownership contracts.

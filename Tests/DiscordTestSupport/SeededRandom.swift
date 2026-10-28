@@ -1,3 +1,8 @@
+// File: Tests/DiscordTestSupport/SeededRandom.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Reproducible SplitMix64 randomness for jitter tests; never use for credentials.
 public struct SeededRandom: RandomNumberGenerator, Sendable {
     private var state: UInt64

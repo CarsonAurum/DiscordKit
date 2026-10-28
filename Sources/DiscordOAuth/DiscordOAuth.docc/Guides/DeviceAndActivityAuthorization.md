@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordOAuth/DiscordOAuth.docc/Guides/DeviceAndActivityAuthorization.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Device grants and Activity code exchange
 
 Drive specialized authorization explicitly and retain backend ownership of secrets and polling.

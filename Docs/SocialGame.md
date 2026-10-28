@@ -1,6 +1,13 @@
+<!--
+File: Docs/SocialGame.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Lobbies and application identity profiles
 
-Phase 5J implements **21 current written REST operations** in API **v10**:
+DiscordKit provides **21 current written REST operations** in API **v10**:
 16 Lobby operations, including the separate link/unlink descriptors sharing one
 route, and five Application Identity/Profile operations. The current
 [Lobby reference](https://docs.discord.com/developers/resources/lobby),
@@ -8,9 +15,8 @@ route, and five Application Identity/Profile operations. The current
 [API reference](https://docs.discord.com/developers/reference) and
 [change log](https://docs.discord.com/developers/change-log) were verified
 **2026-10-16**. [Current fingerprints](Parity/social-game-current-sources.json)
-remain separate from historical discovery pins. No dependencies or runtime products
-are added. Native Social SDK, OAuth consent acquisition and Gateway event dispatch
-remain independent roadmap work.
+identify the reviewed contracts. Native Social SDK support remains unavailable.
+[OAuth consent](OAuth.md) and [Gateway dispatch](Gateway.md) are separate products.
 
 ## Owned models and authorization
 
@@ -111,8 +117,6 @@ subsequent 204. The descriptor accepts those statuses without requiring a body;
 when a body is supplied it validates the typed profile. This is an explicit
 compatibility policy, not a claim that Discord always supplies an object.
 
-The [dated support record](Parity/changes/2026-10-16-social-game.md) preserves
-upstream/local chronology and the [execution record](../.air/plans/phase-5j-execution.plan.md)
-records validation. Scripted tests and finite offline HTTP measurements do not
-qualify live Discord, native Social SDK interoperability, production approval,
-other-host/device behavior, distributed coordination or sustained capacity.
+Scripted tests and finite offline HTTP measurements do not qualify live Discord,
+native Social SDK interoperability, production approval, other-host/device behavior,
+distributed coordination or sustained capacity.

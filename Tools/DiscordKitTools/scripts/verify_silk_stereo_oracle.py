@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_stereo_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Offline complete ordinary stereo SILK packets -> 48kHz PCM against libopus 1.6.1.
 
 A separately supplied pinned archive is verified and built only in temporary

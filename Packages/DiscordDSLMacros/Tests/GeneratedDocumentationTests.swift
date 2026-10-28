@@ -1,3 +1,8 @@
+// File: Packages/DiscordDSLMacros/Tests/GeneratedDocumentationTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordDSLMacrosPlugin
 import Foundation
 import SwiftParser

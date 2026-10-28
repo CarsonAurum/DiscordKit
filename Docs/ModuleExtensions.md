@@ -1,6 +1,13 @@
+<!--
+File: Docs/ModuleExtensions.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # External modules and typed dependencies
 
-Part 15J adds explicit namespace installation and validated typed dependencies to
+DiscordKit provides explicit namespace installation and validated typed dependencies to
 the independently selected `DiscordDSL` product. External packages can implement
 ordinary Swift modules, contributions, command handlers, event selectors, policies
 and builders through the existing public extension points. Applications select
@@ -166,10 +173,7 @@ direct-versus-extension payloads/routes and cooperative runtime cancellation.
 Keep command-only extension adoption independent of Gateway/Client/Cache and
 concrete adapters; adding an event extension is an explicit broader selection.
 
-These local and offline checks introduce no new Discord wire contract and establish
-no authorized live service, other platform, hardware or production capacity claim.
-Part 15K adds [local compile/runtime measurements](DSLBenchmarks.md), finite budgets
-and separate handler/cache soak evidence. Part 15L adds complete
-[adoption/migration guidance](DSLAdoption.md) and scoped [release records](Release/README.md). See
-the [implementation roadmap](DSLImplementationRoadmap.md) and
-[dated history](Parity/changes/phase15j-module-extensions.md).
+Local and offline checks introduce no new Discord wire contract and establish
+no authorized live service, other-platform, hardware or production-capacity claim.
+See [local compile/runtime measurements](DSLBenchmarks.md) for finite budgets and
+separate handler/cache soaks, and the [adoption guide](DSLAdoption.md) for integration.

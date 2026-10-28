@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordRPC/DiscordRPC.docc/Reference/RPCCatalogError.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordRPC/RPCCatalogError``
 
 ## Topics

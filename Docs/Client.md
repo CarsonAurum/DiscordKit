@@ -1,3 +1,10 @@
+<!--
+File: Docs/Client.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Consumer client, state and event delivery
 
 Implemented **2026-10-16** for the existing REST/Gateway **v10** JSON session.
@@ -163,10 +170,8 @@ obfuscation announced 2026-08-12 for mandatory behavior on 2026-11-16.
 ## Example and validation
 
 The independent [Gateway bot example](../Examples/GatewayBot/README.md) starts,
-receives READY, calls a typed service and awaits cleanup. Validation builds it
-without real tokens or authenticated calls. [Phase 7 execution](../.air/plans/phase-7-execution.plan.md)
-records exact test counts, local soak measurements and qualifications. The separate
-[load harness](../Tools/DiscordKitLoadTests/README.md) records actual RSS alongside
-accounted cache bytes. These local scripted tests and measurements do not establish
-live Discord behavior, distributed storage conformance, other-host/device runtime,
-background execution or a deployment serving millions of concurrent connections.
+receives READY, calls a typed service and awaits cleanup. Build it without real
+tokens or authenticated calls. The separate [load harness](../Tools/DiscordKitLoadTests/README.md)
+records actual RSS alongside accounted cache bytes. Local scripted tests and
+measurements do not establish live Discord behavior, distributed storage conformance,
+other-host/device runtime, background execution or production deployment capacity.

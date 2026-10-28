@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGateway/DiscordGateway.docc/Guides/GatewayLifecycle.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Owning Gateway discovery, sharding and session lifetime
 
 Use explicit topology, shared Identify authority and bounded heartbeat/resume supervision.

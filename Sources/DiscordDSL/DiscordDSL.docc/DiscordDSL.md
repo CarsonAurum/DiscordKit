@@ -1,10 +1,12 @@
+[//]: # "File: Sources/DiscordDSL/DiscordDSL.docc/DiscordDSL.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDSL``
 
 Compose finite Swift modules into a deterministic, bounded declaration description.
 
 ## Overview
 
-Part 15A provides synchronous structural authoring over Core and Models.
+Use synchronous structural authoring over Core and Models.
 ``BotModule`` and ``BotBuilder`` compose ordered definitions; ``DefinitionPlan``
 validates explicit identities, supported metadata kinds, host capabilities and
 finite structural/text budgets. An immutable ``DefinitionDescription`` records
@@ -23,18 +25,18 @@ bodies and metadata getters must terminate and remain free of side effects;
 arbitrary Swift is not sandboxed. Structural bounds govern admitted compilation
 state rather than temporary allocations in caller code.
 
-This milestone adds no new Discord endpoint, event, permission, intent or wire
+This library adds no new Discord endpoint, event, permission, intent or wire
 schema support. Separately adopted `DiscordCommandDSL` adds typed arguments and
 command lowering, typed responses and signed HTTP applications over this foundation.
-The separate macro package remains downstream. Part 15E adds ``MessageContent`` with
+The separate macro package remains downstream. ``MessageContent`` provides
 safe typed mention interpolation; the separately selected CommandDSL adds pure
 message/component builders over existing validated Models. Explicit lowering rejects
 illegal layouts and limits before transmission; response ownership remains with
-Interactions. Part 15G adds ``InvocationPolicy`` and ``InvocationMiddleware`` with
+Interactions. ``InvocationPolicy`` and ``InvocationMiddleware`` have
 finite ``PolicyLimits``. Named and operator composition are inert; explicit evaluation
 uses caller-owned tasks and cancellation. Command-specific authorization/admission
 lives in the separately selected CommandDSL. The separately selected BotDSL supplies
-explicit Gateway event/application ownership. Part 15J adds ``ModuleNamespace`` for
+explicit Gateway event/application ownership. Use ``ModuleNamespace`` for
 reusable local identities and ``DependentModule`` for lazy bodies over explicit
 ``ModuleDependencies``. Dependencies validate after module admission and before body
 creation. ``DefinitionIdentity`` retains exact namespace components without changing

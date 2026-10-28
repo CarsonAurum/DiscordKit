@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordLogHandlers/DiscordLogHandlers.docc/Guides/OutputOwnership.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Own output lifetime and retention
 
 Open outputs deliberately and close them after their runtime producers have joined.

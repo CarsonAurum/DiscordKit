@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCore/DiscordCore.docc/Guides/IdentifiersAndPresence.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Identifiers, timestamps and field presence
 
 Keep exact identity and represent omitted, cleared and supplied fields separately.

@@ -1,3 +1,10 @@
+<!--
+File: Docs/Parity/changes/2026-10-20-semantic-logging.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Semantic logging and detailed runtime traces
 
 Recorded locally: 2026-10-20. This changes local diagnostics, not an upstream
@@ -21,7 +28,7 @@ floors fixed when a multiplex logger changes level.
 
 The unpublished runtime candidate advances to 0.18.0 with a separate API baseline.
 Update exact-label filters and default-level output expectations. Existing report
-and baseline checkpoints stay historical. See [adoption](../../Logging.md),
+and baseline reports stay historical. See [adoption](../../Logging.md),
 [migration](../../Migration.md) and [validation](../../Release/semantic-logging-validation.json).
 
 Pure construction/compilation, sample/packet processing and crypto primitives remain

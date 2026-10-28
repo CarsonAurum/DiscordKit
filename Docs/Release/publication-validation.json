@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "0.19.0",
+  "verifiedOn": "2026-10-28",
+  "status": "awaiting-authoring-package-validation",
+  "published": false,
+  "tagged": false,
+  "scope": "Publication candidate metadata, documentation and current local compatibility validation. Historical measurement and platform records are retained separately.",
+  "baseCommit": "c0e242f5d25e9970d76febc793e534d271b7eb81",
+  "toolchain": {
+    "compiler": "Apple Swift 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+    "hostTarget": "arm64-apple-macosx27.0.0"
+  },
+  "changes": [
+    "Creator Carson Rau and Copyright (c) 2026 Aurum Studios attribution, website and full repository-relative headers.",
+    "Publication documentation, license terms, third-party notices and consistent public terminology.",
+    "RESTClient library identification default uses the public repository URL and 0.19.0.",
+    "Reviewed additive Gateway dispatcher and interaction adapter construction exposes explicit per-shard serialization."
+  ],
+  "curation": {
+    "status": "passed",
+    "rootPublicModules": 33,
+    "typePages": 1567,
+    "memberLinks": 9129,
+    "staleFiles": 0,
+    "macroPublicModules": 1,
+    "extensionPublicModules": 2,
+    "extensionTypePages": 12,
+    "extensionMemberLinks": 48,
+    "sourceSynchronizedListings": 32,
+    "qualification": "Compiler-derived navigation and source-listing consistency. Strict root conversion is recorded separately; authoring-package conversions are pending."
+  },
+  "maintenance": {
+    "status": "passed",
+    "reviewedOn": "2026-10-28",
+    "nextReviewDue": "2026-11-04",
+    "officialSources": 8,
+    "transitions": 1,
+    "sourceSnapshot": "Docs/Release/sources/2026-10-28-maintenance.json",
+    "qualification": "Selected current contract review only; prior raw source bodies were not committed and five comparable remote hashes changed."
+  },
+  "api": {
+    "status": "passed",
+    "baseline": "Docs/Release/api-baseline-0.19.0.json",
+    "comparison": "Docs/Release/publication-api-comparison.json",
+    "previousBaseline": "Docs/Release/api-baseline-0.18.0.json",
+    "publicModules": 33,
+    "publicSymbols": 14659,
+    "addedDeclarations": 2,
+    "changedDeclarations": 1,
+    "removedDeclarations": 0,
+    "addedRelationships": 2,
+    "removedRelationships": 0,
+    "requiredIncrement": "major",
+    "versionPolicy": "The changed RESTClient default requires the conservative incompatible-change classification. The explicit pre-1.0 minor increment from 0.18.0 to 0.19.0 satisfies policy.",
+    "selfComparison": "unchanged",
+    "scope": "Root public symbol graphs emitted on the recorded macOS arm64 Swift 6.4 host. Other platforms and binary ABI remain unverified."
+  },
+  "checks": [
+    {
+      "id": "root-build",
+      "status": "passed",
+      "scope": "The current 0.19.0 root package compiled successfully on the recorded macOS arm64 host.",
+      "command": "swift build",
+      "durationSeconds": 22.07
+    },
+    {
+      "id": "root-tests",
+      "status": "passed",
+      "scope": "2472 Swift tests passed across 34 root test products with zero issues. Local deterministic and loopback tests do not establish live Discord qualification.",
+      "tests": 2472,
+      "testProducts": 34,
+      "issues": 0,
+      "command": "swift test"
+    },
+    {
+      "id": "tooling",
+      "status": "passed",
+      "scope": "105 Swift tooling tests, 229 Python tooling tests, 48 CI helper tests and 34 macro-package Swift tests passed locally. Load, external compile-fixture and benchmark qualification remain separate.",
+      "tests": {
+        "toolingSwift": 105,
+        "toolingSwiftSuites": 8,
+        "toolingPython": 229,
+        "ciPython": 48,
+        "macrosSwift": 34,
+        "macrosSwiftSuites": 5
+      },
+      "commands": [
+        "swift test --package-path Tools/DiscordKitTools",
+        "python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'",
+        "python3 -m unittest discover -s Tools/ci -p 'test_*.py'",
+        "swift test --package-path Packages/DiscordDSLMacros"
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "passed",
+      "scope": "Local inventory validation passed for the existing committed source classifications. This is not a new discovery-wide upstream collection.",
+      "command": "swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository ."
+    },
+    {
+      "id": "generation",
+      "status": "passed",
+      "scope": "All 5 committed reviewed-definition artifacts match the current generator, including publication headers.",
+      "byteIdenticalArtifacts": 5,
+      "command": "swift run --package-path Tools/DiscordKitTools DiscordKitTools generate --check --repository ."
+    },
+    {
+      "id": "parity",
+      "status": "passed",
+      "scope": "Local parity validation passed without support promotion; the cleaned historical entries remain pinned by the release policy.",
+      "command": "swift run --package-path Tools/DiscordKitTools DiscordKitTools parity check --repository ."
+    },
+    {
+      "id": "declaration-docs",
+      "status": "passed",
+      "scope": "812 Swift files and 8876 explicit callables have zero missing documentation comments. This audit establishes syntactic presence only.",
+      "swiftFiles": 812,
+      "explicitCallables": 8876,
+      "missingComments": 0,
+      "command": "swift run --package-path Tools/DiscordKitTools DiscordKitTools documentation audit --repository ."
+    },
+    {
+      "id": "docc",
+      "status": "passed",
+      "scope": "Strict analysis and warnings-as-errors conversion passed for all 33 root public-module archives; the merged archive succeeded. Authoring-package conversion and complete semantic accuracy remain separate.",
+      "archives": 33,
+      "warningsAsErrors": true,
+      "analyze": true,
+      "failedModules": 0,
+      "mergeStatus": "succeeded",
+      "report": "Docs/Release/Measurements/Publication/root-docc.json"
+    },
+    {
+      "id": "product-isolation",
+      "status": "passed",
+      "scope": "Current root, consumer and authoring manifest/import isolation validation passed. The reviewed policy retains 33 root products/targets and 14 independent consumers.",
+      "products": 33,
+      "targets": 33,
+      "independentConsumersIncludingBenchmark": 14,
+      "command": "python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository ."
+    },
+    {
+      "id": "api-baseline",
+      "status": "passed",
+      "scope": "The current compiler-produced 0.19.0 root baseline contains 14659 public symbols in 33 modules. The 0.18.0 comparison records two added initializers, one changed RESTClient default and no removals; the explicit pre-1.0 minor increment passes policy. Baseline self-comparison is unchanged.",
+      "baseline": "Docs/Release/api-baseline-0.19.0.json",
+      "comparison": "Docs/Release/publication-api-comparison.json",
+      "publicModules": 33,
+      "publicSymbols": 14659,
+      "addedDeclarations": 2,
+      "changedDeclarations": 1,
+      "removedDeclarations": 0
+    },
+    {
+      "id": "examples",
+      "status": "passed",
+      "scope": "Seven independent consumers built: RESTOnly, HTTPApp, GatewayBot, CommandsApp, VoiceBot, DSLCommands and DSLBot. VoiceBot and DSLCommands passed offline execution; RESTOnly and HTTPApp were rebuilt after the final library identification update. This is a selected consumer matrix, not the complete example matrix or authenticated Discord qualification.",
+      "builtPackages": [
+        "RESTOnly",
+        "HTTPApp",
+        "GatewayBot",
+        "CommandsApp",
+        "VoiceBot",
+        "DSLCommands",
+        "DSLBot"
+      ],
+      "offlineExecutions": [
+        "VoiceBot",
+        "DSLCommands"
+      ],
+      "finalRebuilds": [
+        "RESTOnly",
+        "HTTPApp"
+      ],
+      "report": "Docs/Release/Measurements/Publication/consumers.json"
+    },
+    {
+      "id": "browser",
+      "status": "passed",
+      "scope": "All 36 browser bridge tests passed with simulated message hosts; no approved Discord Web/iOS/Android host execution is claimed.",
+      "tests": 36,
+      "failures": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "command": "node --test Browser/DiscordActivityBridge/*.test.mjs"
+    },
+    {
+      "id": "social-catalog",
+      "status": "passed",
+      "scope": "Offline structural catalog verification passed for 743 entries against 735 baseline declarations: 225 blocked, 209 language-specific and 309 partial. No native SDK implementation or support promotion.",
+      "entries": 743,
+      "baselineDeclarations": 735,
+      "statuses": {
+        "blocked": 225,
+        "language_specific": 209,
+        "partial": 309
+      },
+      "command": "python3 Tools/DiscordKitTools/scripts/verify_social_catalog.py"
+    },
+    {
+      "id": "local-load",
+      "status": "unverified",
+      "reason": "Historical finite measurements remain separate. No fresh local load matrix is claimed for this candidate."
+    },
+    {
+      "id": "fixed-working-set-soak",
+      "status": "unverified",
+      "reason": "No fresh fixed-working-set thirty-minute soak is recorded for this candidate."
+    },
+    {
+      "id": "macos",
+      "status": "passed",
+      "scope": "The current root build and 2472 tests passed on this macOS arm64 host with Swift 6.4. Minimum-OS runtime, signed release and physical-device execution remain unverified.",
+      "hostTarget": "arm64-apple-macosx27.0.0"
+    },
+    {
+      "id": "linux",
+      "status": "unverified",
+      "reason": "No current-candidate Linux build/test execution is recorded."
+    },
+    {
+      "id": "windows",
+      "status": "unverified",
+      "reason": "No current-candidate Windows execution or named-pipe host qualification is recorded."
+    },
+    {
+      "id": "apple-simulators",
+      "status": "unverified",
+      "reason": "No current-candidate simulator graph build or runtime qualification is recorded."
+    },
+    {
+      "id": "apple-devices",
+      "status": "unverified",
+      "reason": "No current-candidate physical Apple device execution or minimum-OS runtime qualification is recorded."
+    },
+    {
+      "id": "android-cross-build",
+      "status": "unverified",
+      "reason": "No current-candidate Android cross-build is recorded."
+    },
+    {
+      "id": "android-runtime",
+      "status": "unverified",
+      "reason": "No current-candidate Android device or emulator execution is recorded."
+    },
+    {
+      "id": "live-discord",
+      "status": "unverified",
+      "reason": "No authorized live Discord REST, Gateway, interaction, RPC, Activity or voice qualification was performed."
+    },
+    {
+      "id": "hardware",
+      "status": "unverified",
+      "reason": "No current physical audio device, route, desktop IPC or duplex hardware qualification was performed."
+    },
+    {
+      "id": "independent-crypto-review",
+      "status": "unverified",
+      "reason": "No independent cryptographic security review has been completed."
+    },
+    {
+      "id": "codec-interop",
+      "status": "unverified",
+      "reason": "No complete independent codec, MLS or DAVE interoperability qualification is established by these local checks."
+    },
+    {
+      "id": "semantic-documentation",
+      "status": "unverified",
+      "reason": "Callable presence and navigation checks do not establish complete semantic accuracy of every public contract."
+    },
+    {
+      "id": "api-other-platforms",
+      "status": "unverified",
+      "reason": "The root API baseline covers only its captured macOS arm64 compiler/platform scope."
+    },
+    {
+      "id": "upstream-collection",
+      "status": "unverified",
+      "reason": "The eight-source maintenance review is current; a fresh discovery-wide official documentation/spec collection and classification was not performed."
+    },
+    {
+      "id": "zero-resource-growth",
+      "status": "unverified",
+      "reason": "No current sustained memory-retention or production resource-growth qualification is recorded."
+    },
+    {
+      "id": "performance-regression",
+      "status": "unverified",
+      "reason": "No controlled before/after performance measurements were repeated on matching hardware for this candidate."
+    }
+  ],
+  "qualification": "Only explicitly passed current local checks are claimed. This candidate has not been published or tagged; historical measurements and unrun platform, hardware, live, crypto, interop and capacity gates remain excluded."
+}

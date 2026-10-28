@@ -1,3 +1,10 @@
+<!--
+File: Docs/CertifiedDevices.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Certified Devices
 
 `DiscordCertifiedDevices` is an independently adopted local desktop integration.

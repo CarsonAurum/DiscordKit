@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGateway/DiscordGateway.docc/Reference/GatewayEventHandlerDispatcher.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordGateway/GatewayEventHandlerDispatcher``
 
 ## Topics
@@ -5,6 +7,7 @@
 ### Creating a value
 
 - ``DiscordGateway/GatewayEventHandlerDispatcher/init(configuration:authority:)``
+- ``DiscordGateway/GatewayEventHandlerDispatcher/init(configuration:authority:serializesPerShard:)``
 
 ### Instance methods
 

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCertifiedDevices/DiscordCertifiedDevices.docc/DiscordCertifiedDevices.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCertifiedDevices``
 
 Publish validated, priority-ordered native device descriptions to a local desktop host.

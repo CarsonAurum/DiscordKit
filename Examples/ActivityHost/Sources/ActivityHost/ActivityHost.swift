@@ -1,3 +1,8 @@
+// File: Examples/ActivityHost/Sources/ActivityHost/ActivityHost.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import ActivityHostSupport
 
 /// Build-only portable Activity consumer. A Discord-owned iframe and qualified browser binding are required at runtime.

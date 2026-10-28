@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLExtensions/Sources/DiscordCommandExtensions/DiscordCommandExtensions.docc/SharingCommandModules.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Share a command module and its actor dependencies
 
 Build a downstream protocol library that both signed HTTP and Gateway hosts can adopt.

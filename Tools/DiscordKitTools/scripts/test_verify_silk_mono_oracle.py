@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_silk_mono_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic mono packet verifier tests; no archive, compiler, native library or network."""
 import json
 from pathlib import Path

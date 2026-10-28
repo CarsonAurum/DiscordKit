@@ -18,7 +18,7 @@
       "bytes": 5161,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+      "purpose": "Current official activities Activity contract verification; original discovery source pins are preserved."
     },
     {
       "name": "activities/how-activities-work",
@@ -27,7 +27,7 @@
       "bytes": 6290,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+      "purpose": "Current official activities Activity contract verification; original discovery source pins are preserved."
     },
     {
       "name": "change-log",
@@ -36,7 +36,7 @@
       "bytes": 308684,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+      "purpose": "Current official activities Activity contract verification; original discovery source pins are preserved."
     },
     {
       "name": "developer-tools/embedded-app-sdk",
@@ -45,7 +45,7 @@
       "bytes": 43160,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+      "purpose": "Current official activities Activity contract verification; original discovery source pins are preserved."
     },
     {
       "name": "reference",
@@ -54,7 +54,7 @@
       "bytes": 36143,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+      "purpose": "Current official activities Activity contract verification; original discovery source pins are preserved."
     },
     {
       "name": "resources/entitlement",
@@ -63,7 +63,7 @@
       "bytes": 7483,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+      "purpose": "Current official activities Activity contract verification; original discovery source pins are preserved."
     },
     {
       "name": "topics/oauth2",
@@ -72,7 +72,7 @@
       "bytes": 32494,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current official Phase 11 Activity contract verification; original discovery source pins are preserved."
+      "purpose": "Current official activities Activity contract verification; original discovery source pins are preserved."
     },
     {
       "name": "embedded-app-sdk/src/Discord.ts",

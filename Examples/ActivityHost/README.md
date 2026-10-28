@@ -1,3 +1,10 @@
+<!--
+File: Examples/ActivityHost/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # ActivityHost
 
 Build with `swift build --package-path Examples/ActivityHost`. The executable starts
@@ -8,10 +15,10 @@ backend target and its client secret out of browser/mobile bundles.
 
 ActivityHostSession demonstrates AUTHORIZE → authenticated backend exchange →
 AUTHENTICATE and START_PURCHASE → backend entitlement verification. ActivityBackend
-uses Part 9's confidential Activity code descriptor and authoritative grant policy.
+uses confidential Activity code descriptor and authoritative grant policy.
 The server must authenticate its user session, enforce CSRF/replay protection and
 derive the expected user/SKU from its own state. Return only scoped access tokens
-and application grant results. Part 8 durable webhook ingress can trigger the same
+and application grant results. durable webhook ingress can trigger the same
 grant recheck when ENTITLEMENT_CREATE arrives asynchronously.
 
 The Web folder is a dependency-free browser entry point using the owned bridge.

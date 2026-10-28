@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCache/DiscordCache.docc/DiscordCache.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCache``
 
 Maintain optional bounded entity projections and calculate permissions from explicit supplied facts.

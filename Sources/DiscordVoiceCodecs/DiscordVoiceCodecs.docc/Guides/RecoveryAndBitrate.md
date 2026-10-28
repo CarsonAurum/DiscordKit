@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCodecs/DiscordVoiceCodecs.docc/Guides/RecoveryAndBitrate.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Bitrate, DTX and packet-loss recovery
 
 Keep codec allocation separate from network overhead and make missing intervals explicit.

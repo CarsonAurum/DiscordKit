@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBits/DiscordBits.docc/Guides/WorkingWithBitSets.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Working with arbitrary-width bitsets
 
 Read, combine and serialize masks while preserving every unsigned bit.

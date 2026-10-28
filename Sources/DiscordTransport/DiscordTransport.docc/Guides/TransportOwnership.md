@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordTransport/DiscordTransport.docc/Guides/TransportOwnership.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Owning transport operations and bodies
 
 Make resource transfer, cancellation and cleanup explicit at every asynchronous boundary.

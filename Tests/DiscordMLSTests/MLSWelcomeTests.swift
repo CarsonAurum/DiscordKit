@@ -1,3 +1,8 @@
+// File: Tests/DiscordMLSTests/MLSWelcomeTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Crypto
 import Foundation
 import Testing

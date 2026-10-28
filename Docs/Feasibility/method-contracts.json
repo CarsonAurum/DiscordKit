@@ -15071,7 +15071,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15092,7 +15092,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15113,7 +15113,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15134,7 +15134,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15155,7 +15155,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15176,7 +15176,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15197,7 +15197,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15218,7 +15218,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15239,7 +15239,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15260,7 +15260,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15281,7 +15281,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15302,7 +15302,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15323,7 +15323,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15344,7 +15344,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15365,7 +15365,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15386,7 +15386,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15407,7 +15407,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15428,7 +15428,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15449,7 +15449,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15470,7 +15470,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15491,7 +15491,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15512,7 +15512,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15533,7 +15533,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15554,7 +15554,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15575,7 +15575,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15596,7 +15596,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15620,7 +15620,7 @@
         "id": "activity-source-only.getQuest",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15644,7 +15644,7 @@
         "id": "activity-source-only.getQuestEnrollmentStatus",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15665,7 +15665,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15686,7 +15686,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15710,7 +15710,7 @@
         "id": "activity-source-only.getUser",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15731,7 +15731,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15755,7 +15755,7 @@
         "id": "activity-source-only.inviteUserEmbedded",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15776,7 +15776,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15797,7 +15797,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15818,7 +15818,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15842,7 +15842,7 @@
         "id": "activity-source-only.questStartTimer",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15866,7 +15866,7 @@
         "id": "activity-source-only.requestProxyTicketRefresh",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15887,7 +15887,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15908,7 +15908,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15929,7 +15929,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15953,7 +15953,7 @@
         "id": "activity-source-only.shareInteraction",
         "requiredEvidence": "Official reference entry specifying supported hosts, scopes/approval, errors, rate limits and compatibility; exported source schema does not certify host rollout."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15974,7 +15974,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -15995,7 +15995,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -16016,7 +16016,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -16037,7 +16037,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17010,7 +17010,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17031,7 +17031,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17052,7 +17052,7 @@
       "implementationStatus": "unsupported",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Historical source utility remains unimplemented by Phase 11. Core bitset operations are available, but no SDK-compatible permission/locale-price utility parity is claimed. See Docs/Activities.md.",
+      "notes": "Historical source utility remains unimplemented by activities. Core bitset operations are available, but no SDK-compatible permission/locale-price utility parity is claimed. See Docs/Activities.md.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17073,7 +17073,7 @@
       "implementationStatus": "unsupported",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Historical source utility remains unimplemented by Phase 11. Core bitset operations are available, but no SDK-compatible permission/locale-price utility parity is claimed. See Docs/Activities.md.",
+      "notes": "Historical source utility remains unimplemented by activities. Core bitset operations are available, but no SDK-compatible permission/locale-price utility parity is claimed. See Docs/Activities.md.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17094,7 +17094,7 @@
       "implementationStatus": "unsupported",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 adds explicit ActivityURLMapper/createActivityFetch/createActivityWebSocket helpers, not SDK-compatible global fetch/WebSocket/XHR monkey patching. This method remains unimplemented; see Docs/Activities.md. Historical source/signature pins are preserved.",
+      "notes": "activities adds explicit ActivityURLMapper/createActivityFetch/createActivityWebSocket helpers, not SDK-compatible global fetch/WebSocket/XHR monkey patching. This method remains unimplemented; see Docs/Activities.md. Historical source/signature pins are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17115,7 +17115,7 @@
       "implementationStatus": "partial",
       "upstreamStatus": "available",
       "blocker": null,
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17139,7 +17139,7 @@
         "id": "activity-source-only.ACTIVITY_JOIN",
         "requiredEvidence": "Official written host/platform/scope and rollout contract for this source-only event; source schema alone does not certify availability."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]
@@ -17163,7 +17163,7 @@
         "id": "activity-source-only.QUEST_ENROLLMENT_STATUS_UPDATE",
         "requiredEvidence": "Official written host/platform/scope and rollout contract for this source-only event; source schema alone does not certify availability."
       },
-      "notes": "Phase 11 local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
+      "notes": "activities local implementation added 2026-10-17; see Docs/Activities.md and Docs/Parity/activity-catalog.json for codecs, platform/scope/status and tests. Approved Discord Web/iOS/Android host qualification remains unrun; source-only access blockers and explicit partial child projections remain. Original source and signature hashes are preserved. The named upstream blocker is retained independently from local codec support.",
       "accessConditions": [
         "public_protocol"
       ]

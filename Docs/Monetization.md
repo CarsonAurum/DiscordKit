@@ -1,6 +1,13 @@
+<!--
+File: Docs/Monetization.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # SKUs, entitlements and subscriptions
 
-Phase 5I implements **eight current written REST operations** in API **v10**:
+DiscordKit provides **eight current written REST operations** in API **v10**:
 one SKU read, five Entitlement operations and two Subscription reads. The current
 [SKU](https://docs.discord.com/developers/resources/sku),
 [Entitlement](https://docs.discord.com/developers/resources/entitlement),
@@ -9,8 +16,8 @@ one SKU read, five Entitlement operations and two Subscription reads. The curren
 [reference](https://docs.discord.com/developers/reference) and
 [change log](https://docs.discord.com/developers/change-log) contracts were verified
 **2026-10-16**. [Current fingerprints](Parity/monetization-current-sources.json)
-are separate from historical discovery pins. No dependencies or runtime products
-are added. This is Premium Apps REST coverage; broader Social Commerce, SDK-only
+identify the reviewed contracts. This is Premium Apps REST coverage; broader
+Social Commerce, SDK-only
 purchase/fulfillment and missing public wire contracts remain separate blockers.
 
 ## Owned models and premium interaction data
@@ -49,7 +56,7 @@ JSON. This tightens fixtures that supplied only an ID; supply the documented cor
 entitlement shape. Premium buttons and the deprecated PREMIUM_REQUIRED callback
 retain their existing validation and compatibility behavior. Signature verification,
 interaction routing/acknowledgement and entitlement/subscription event dispatch are
-separate roadmap work.
+separately adopted functionality.
 
 ## REST descriptors and authorization
 
@@ -112,10 +119,8 @@ only_active, current-user entitlement routes, preview-only quest-reward kind 10
 and Commerce fulfillment/parent/gifter fields remain unsupported typed contracts; raw preservation does not count as parity.
 
 Tests cover written model fields and variants, exact unknown values, null/absence,
-malformed inputs and document bounds; request owner encoding; all eight descriptor
-wire shapes, auth/API/rate/transport failures, cancellation, read reuse/invalidation
-and finite traversal failure paths. The [dated support record](Parity/changes/2026-10-16-monetization.md)
-links chronology and migration; the [execution plan](../.air/plans/phase-5i-execution.plan.md)
-records executed checks. Local scripted evidence does not qualify live Discord,
-other hosts/devices, distributed storage, sustained capacity or early-access Commerce.
-Phase 5J adds [lobbies and identity profiles](SocialGame.md); later catalog/event/platform work remains open.
+malformed inputs and document bounds; request-owner encoding; descriptor wire
+shapes, auth/API/rate/transport failures, cancellation, read reuse/invalidation
+and finite traversal failures. Local scripted evidence does not qualify live
+Discord, other hosts/devices, distributed storage, sustained capacity or early-access
+Commerce. See [lobbies and identity profiles](SocialGame.md) for the related catalog.

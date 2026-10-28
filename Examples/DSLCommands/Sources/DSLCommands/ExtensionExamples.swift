@@ -1,3 +1,8 @@
+// File: Examples/DSLCommands/Sources/DSLCommands/ExtensionExamples.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCommandDSL
 import DiscordCommandExtensions
 import DiscordCore

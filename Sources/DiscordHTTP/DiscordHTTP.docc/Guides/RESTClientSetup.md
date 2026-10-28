@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Guides/RESTClientSetup.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Setting up an independent REST client
 
 Bind a typed credential to one shared rate authority and an explicitly owned transport.

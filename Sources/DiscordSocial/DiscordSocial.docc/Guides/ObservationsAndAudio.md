@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordSocial/DiscordSocial.docc/Guides/ObservationsAndAudio.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Maintaining scoped observations and PCM controls
 
 Use finite local state without turning display observations into remote authority.

@@ -1,3 +1,8 @@
+// File: Tests/DiscordDAVETests/DAVEProtocolSessionTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordTestSupport
 import DiscordLogging
 import Crypto

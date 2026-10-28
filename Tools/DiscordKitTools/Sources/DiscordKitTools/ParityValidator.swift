@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitTools/Sources/DiscordKitTools/ParityValidator.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// One validated kind/status combination, counted without merging unrelated source records.

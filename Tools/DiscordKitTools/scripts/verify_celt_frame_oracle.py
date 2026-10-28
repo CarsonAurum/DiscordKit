@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_frame_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in bidirectional ordinary CELT interoperability with pinned scalar libopus; no runtime dependency."""
+from publication import swift_header
+
 import argparse
 import base64
 from datetime import datetime,timezone
@@ -245,7 +252,7 @@ def main():
         reverse=parse_outputs(run([str(reference)],commands(inputs,actual)),len(inputs),'Official decoder on owned frames')
         statistics=compare_results(inputs,native,actual,reverse)
         records=fixture_records(fixed,native[:len(fixed)],reverse[:len(fixed)]);fixture=repository/FIXTURE_PATH
-        if args.write_fixtures:fixture.write_text('/// Complete independently decoded scalar PCM stored as little-endian float32 base64.\nenum CELTFrameOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
+        if args.write_fixtures:fixture.write_text(swift_header(FIXTURE_PATH) + '/// Complete independently decoded scalar PCM stored as little-endian float32 base64.\nenum CELTFrameOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
         if not fixture.exists() or json.loads(fixture.read_text().split('#"""',1)[1].split('"""#',1)[0])!=records:raise ValueError('fixture differs; review and explicitly --write-fixtures')
         report=dict(verifiedAt=datetime.now(timezone.utc).isoformat(),scope='bidirectional ordinary CELT raw frame interoperability with full official Opus entry points',version=VERSION,releaseURL=RELEASE_URL,sourceURL=SOURCE_URL,archiveSHA256=ARCHIVE_SHA256,
             seed=args.seed,randomSequences=args.cases,fixedSequences=len(fixed),totalSequences=len(inputs),totalFrames=sum(len(x['frames']) for x in inputs),**statistics,

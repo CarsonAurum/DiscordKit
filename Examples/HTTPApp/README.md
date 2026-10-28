@@ -1,3 +1,10 @@
+<!--
+File: Examples/HTTPApp/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Signed HTTP application
 
 This independently resolved example imports Commands/Interactions and a NIO ingress

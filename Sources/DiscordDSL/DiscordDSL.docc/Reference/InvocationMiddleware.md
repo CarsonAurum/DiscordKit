@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDSL/DiscordDSL.docc/Reference/InvocationMiddleware.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDSL/InvocationMiddleware``
 
 ## Topics

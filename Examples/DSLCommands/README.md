@@ -1,3 +1,10 @@
+<!--
+File: Examples/DSLCommands/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Macro-authored HTTP commands
 
 Run a signed synthetic `/ping` without credentials, sockets or registration:
@@ -27,7 +34,7 @@ by this application rather than by the runtime DSL product.
 The evidence is local/offline. Authorized Discord behavior, other platforms,
 deployment security and DSL capacity remain separately qualified gates.
 
-Part 15F's `FamilyExamples.swift` also executes a complete slash invocation, an empty
+`FamilyExamples.swift` also executes a complete slash invocation, an empty
 nested group/subcommand, macro-authored user/message context menus, partial typed
 autocomplete, an exact-ID button and a label-wrapped typed modal submission. Every
 case passes genuine synthetic Ed25519 verification and checks exact callback JSON.
@@ -37,14 +44,14 @@ contacts Discord. Run the same offline mode or `swift test --package-path Exampl
 These checks establish local protocol composition only; live registration/rendering,
 other platforms and Gateway hosts remain separate.
 
-Part 15G's `PolicyExamples.swift` adds signed allow/deny exchanges with injected
+`PolicyExamples.swift` adds signed allow/deny exchanges with injected
 authorization, `audit >>> metrics` ordering and one shared fixed-count concurrency
 authority. Construction executes no service checks; denial sends an explicit ephemeral
 message before middleware/handler work. The example asserts exact successful traversal,
 denial effects and zero active permits after cleanup. See the
 [policy guide](../../Docs/CommandPolicies.md) for finite bounds, cancellation and response ownership.
 
-Part 15J's `ExtensionExamples.swift` imports `DiscordCommandExtensions` from the
+`ExtensionExamples.swift` imports `DiscordCommandExtensions` from the
 separate `Packages/DiscordDSLExtensions` package. Signed exchanges exercise its
 custom uppercase-code `ArgumentValue`, reusable namespaced `BotModule`, explicit
 typed dependencies, actor-backed custom policy and direct `CommandDefinition`/

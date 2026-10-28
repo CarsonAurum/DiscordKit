@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoice/DiscordVoice.docc/Guides/MediaAndPlayout.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Sending, playout and recording
 
 Transform complete frames before packetization and retain independent receive histories.

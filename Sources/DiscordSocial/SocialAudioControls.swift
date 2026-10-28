@@ -1,3 +1,8 @@
+// File: Sources/DiscordSocial/SocialAudioControls.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordMedia
 
 /// Local PCM controls; these values never mutate a Discord account or remote call.

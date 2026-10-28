@@ -1,4 +1,9 @@
 // swift-tools-version: 6.4
+// File: Packages/DiscordDSLMacros/Package.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import CompilerPluginSupport
 import PackageDescription
 

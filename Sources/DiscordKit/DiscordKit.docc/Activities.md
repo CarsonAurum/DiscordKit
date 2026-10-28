@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/Activities.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Embed an Activity in its Discord host
 
 Keep browser source/origin authentication and the confidential backend separate.

@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitTools/Sources/DiscordKitTools/ToolCommand.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Explicit developer operations. Only `generateWrite` is allowed to change output files.

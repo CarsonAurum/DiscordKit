@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitTools/Tests/DiscordKitToolsTests/GeneratorTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import Testing
 @testable import DiscordKitTools
@@ -208,7 +213,7 @@ import Testing
     }
 
     /// Reads the frozen generation seed as an editable dictionary for independent mutations.
-    /// The fixture retains positive model/endpoint generation coverage after Phase 5G migrates runtime models to handwritten codecs.
+    /// The fixture retains positive model/endpoint generation coverage for runtime models with handwritten codecs.
     /// - Returns: The root reviewed JSON object.
     /// - Throws: File, JSON or setup-container failures.
     private func seedObject() throws -> [String: Any] {

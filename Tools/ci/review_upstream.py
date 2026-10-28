@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/review_upstream.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Fetch read-only official docs/spec diffs for human weekly review, never apply them.
 
 This scheduled evidence collector does not refresh inventory verification dates,

@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLMacros/Sources/DiscordDSLMacros/DiscordDSLMacros.docc/AdoptingMacros.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Add macros to a protocol command
 
 Select authoring syntax separately while keeping runtime response and lifetime ownership.

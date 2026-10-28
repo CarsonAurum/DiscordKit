@@ -1,3 +1,8 @@
+// File: Examples/DSLBot/Sources/DSLBot/DSLBot.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordBotDSL
 import DiscordBotExtensions
 import DiscordClient

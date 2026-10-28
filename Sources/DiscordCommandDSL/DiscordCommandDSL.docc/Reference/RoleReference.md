@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommandDSL/DiscordCommandDSL.docc/Reference/RoleReference.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommandDSL/RoleReference``
 
 ## Topics

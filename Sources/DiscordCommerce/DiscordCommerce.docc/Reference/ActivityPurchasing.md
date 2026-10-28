@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommerce/DiscordCommerce.docc/Reference/ActivityPurchasing.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommerce/ActivityPurchasing``
 
 ## Topics

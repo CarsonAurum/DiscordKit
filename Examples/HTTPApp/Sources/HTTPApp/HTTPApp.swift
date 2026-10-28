@@ -1,3 +1,8 @@
+// File: Examples/HTTPApp/Sources/HTTPApp/HTTPApp.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCommands
 import DiscordCore
 import DiscordInteractions

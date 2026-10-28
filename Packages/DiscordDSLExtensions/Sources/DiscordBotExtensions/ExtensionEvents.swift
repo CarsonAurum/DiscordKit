@@ -1,3 +1,8 @@
+// File: Packages/DiscordDSLExtensions/Sources/DiscordBotExtensions/ExtensionEvents.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordBotDSL
 import DiscordDSL
 import DiscordGateway

@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKStereoEncoder.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A conservative stereo SILK frame before Opus framing or optional hybrid CELT.

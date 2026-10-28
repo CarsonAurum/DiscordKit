@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_pulse_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Offline compressed SILK pulse verification against unmodified libopus 1.6.1.
 
 Supply the pinned source archive separately. No network or native codec enters

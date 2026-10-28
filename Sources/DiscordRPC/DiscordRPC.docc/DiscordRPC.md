@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordRPC/DiscordRPC.docc/DiscordRPC.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordRPC``
 
 Speak local desktop RPC v1 with bounded framing, correlated commands and explicit sessions.

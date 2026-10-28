@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommandDSL/DiscordCommandDSL.docc/Reference/AutocompleteValue.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommandDSL/AutocompleteValue``
 
 ## See Also

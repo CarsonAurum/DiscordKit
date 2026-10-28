@@ -1,6 +1,13 @@
+<!--
+File: Docs/Foundation.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Portable foundation contracts
 
-Part 1, verified 2026-10-15 with Swift 6.4 on macOS arm64. These products perform
+Verified with Swift 6.4 on macOS arm64. These products perform
 local computation and define injectable I/O contracts. They do not connect to
 Discord. The production dependency graph is `DiscordBits <- DiscordCore <-
 DiscordTransport`, with `DiscordKit` depending on Core for common public aliases.
@@ -110,8 +117,6 @@ iOS/tvOS 18, watchOS 11 or visionOS 2 on Apple hosts, without raising production
 minima. Scripts exercise deterministic ordering, cancellation and stale completion
 races without live Discord requests or timing-dependent sleeps.
 
-Root `swift build` and `swift test` validate these foundations; the separate
-tooling and feasibility commands remain documented in the repository guidance.
-Results and remaining qualification limits are recorded in the
-[Part 1 history](Parity/changes/2026-10-15-foundations.md). Other-host builds and
-runtime network qualification remain open for the relevant adapter phase.
+Run root `swift build` and `swift test` to validate these foundations. The separate
+tooling and feasibility packages have independent checks. Other-host builds and
+runtime networking require their own qualification.

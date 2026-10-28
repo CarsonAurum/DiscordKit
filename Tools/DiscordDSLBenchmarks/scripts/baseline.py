@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordDSLBenchmarks/scripts/baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Record complete local DSL evidence, then explicitly derive and check finite budgets.
 
 Recording measurements never approves a threshold. Budget derivation is a separate

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Guides/WebhooksCommerceAndLobbies.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Webhooks, interaction responses, monetization and lobbies
 
 Keep token scopes, server entitlement authority and full-replacement game state explicit.

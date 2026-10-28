@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/dsl_extension_fixtures.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Compile public, macro-free extension consumers and reject missing or wrong dependency injection."""
 
 import argparse

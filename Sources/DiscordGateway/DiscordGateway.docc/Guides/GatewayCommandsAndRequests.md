@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGateway/DiscordGateway.docc/Guides/GatewayCommandsAndRequests.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Sending commands and correlating responses
 
 Use typed outbound payloads, independent opcode admission and bounded request ownership.

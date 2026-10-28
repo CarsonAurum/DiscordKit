@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTSynthesisOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Complete independent libopus float32 synthesis sequences, including retained histories.
 enum CELTSynthesisOracleFixtures {
     static let json = #"""

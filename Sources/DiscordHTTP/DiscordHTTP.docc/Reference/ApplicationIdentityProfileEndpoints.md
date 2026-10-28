@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Reference/ApplicationIdentityProfileEndpoints.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordHTTP/ApplicationIdentityProfileEndpoints``
 
 ## Topics

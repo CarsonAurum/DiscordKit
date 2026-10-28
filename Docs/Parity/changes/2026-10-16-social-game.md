@@ -1,7 +1,13 @@
-# Lobbies and application identity profiles: Phase 5J
+<!--
+File: Docs/Parity/changes/2026-10-16-social-game.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-16**, REST API **v10**. Local release/commit
-remain unknown until creation. [Current source fingerprints](../social-game-current-sources.json)
+# Lobbies and application identity profiles
+
+Verified **2026-10-16**, REST API **v10**. [Current source fingerprints](../social-game-current-sources.json)
 are recorded separately from unchanged historical discovery pins.
 
 ## Previous and current behavior
@@ -47,5 +53,5 @@ an optional object according to the explicit [ambiguity policy](../ambiguities.j
 The [contract guide](../../SocialGame.md) records limits, authorization, replacement
 and cleanup semantics. Native Social SDK, OAuth flows, Gateway dispatch, production
 approval, other-host/device, live Discord, distributed and sustained-capacity gates
-remain separate. See the [execution record](../../../.air/plans/phase-5j-execution.plan.md)
+remain separate. See the [technical guide](../../SocialGame.md)
 for validation evidence.

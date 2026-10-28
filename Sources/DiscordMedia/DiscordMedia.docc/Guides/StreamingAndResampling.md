@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordMedia/DiscordMedia.docc/Guides/StreamingAndResampling.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Streaming, resampling and pacing
 
 Bound both producer memory and processing history while preserving a continuous timeline.

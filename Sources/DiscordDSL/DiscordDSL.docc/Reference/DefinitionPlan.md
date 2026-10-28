@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDSL/DiscordDSL.docc/Reference/DefinitionPlan.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDSL/DefinitionPlan``
 
 ## Topics

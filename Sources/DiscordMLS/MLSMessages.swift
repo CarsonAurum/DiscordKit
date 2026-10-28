@@ -1,3 +1,8 @@
+// File: Sources/DiscordMLS/MLSMessages.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// DAVE v1's permitted MLS proposals; arbitrary MLS proposal types are rejected.

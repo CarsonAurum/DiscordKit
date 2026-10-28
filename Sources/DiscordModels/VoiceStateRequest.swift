@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/VoiceStateRequest.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// API v10 PATCH /guilds/{guild.id}/voice-states/@me, for an already joined Stage channel.

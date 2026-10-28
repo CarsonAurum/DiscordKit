@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/DiscordKitTutorials.tutorial | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 @Tutorials(name: "DiscordKit") {
     @Intro(title: "Build with DiscordKit") {
         Learn the library through twelve focused examples. Start with offline definitions and modular authoring, inspect network compositions without credentials, then explore consent-scoped hosts and synthetic media. Each tutorial connects an independently buildable package to its API and lifecycle contracts.

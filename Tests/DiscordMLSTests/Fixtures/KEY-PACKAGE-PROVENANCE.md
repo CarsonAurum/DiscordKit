@@ -1,3 +1,10 @@
+<!--
+File: Tests/DiscordMLSTests/Fixtures/KEY-PACKAGE-PROVENANCE.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Independent signed key-package vectors
 
 `mlswg-key-packages-suite2.json` retains the eight `key_package` fields whose

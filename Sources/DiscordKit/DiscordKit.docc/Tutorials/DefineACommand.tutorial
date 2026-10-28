@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/Tutorials/DefineACommand.tutorial | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 @Tutorial(time: 15) {
     @Intro(title: "Define and validate a command") {
         Build a slash-command definition and an interaction reply without registering a command or opening a connection.

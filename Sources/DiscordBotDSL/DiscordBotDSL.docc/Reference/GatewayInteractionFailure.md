@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBotDSL/DiscordBotDSL.docc/Reference/GatewayInteractionFailure.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordBotDSL/GatewayInteractionFailure``
 
 ## Topics

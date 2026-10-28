@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_allocation_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in offline CELT bit-allocation verification against unmodified libopus 1.6.1.
 
 The separately supplied archive is pinned, bounded and path-validated by the shared
@@ -7,6 +12,8 @@ caps, all allocation outputs, skip/stereo syntax, encoded bytes and exact entrop
 state; arbitrary bytes also exercise the mandatory decoder independently of the
 owned encoder. It supplies no full codec, PCM, PLC/FEC or realtime/device evidence.
 """
+from publication import swift_header
+
 import argparse
 from datetime import datetime, timezone
 import json
@@ -245,7 +252,7 @@ def main():
         records = [{'input': x, 'output': e} for x, e in zip(fixed, expected)]
         fixture = repository/FIXTURE_PATH
         if args.write_fixtures:
-            fixture.write_text('/// Independent unmodified libopus 1.6.1 ordinary allocation fixtures.\n'
+            fixture.write_text(swift_header(FIXTURE_PATH) + '/// Independent unmodified libopus 1.6.1 ordinary allocation fixtures.\n'
                                'enum CELTAllocationOracleFixtures {\n    static let json = #"""\n'
                                + json.dumps(records, separators=(',', ':')) + '\n"""#\n}\n')
         if not fixture.exists() or json.loads(fixture.read_text().split('#"""', 1)[1].split('"""#', 1)[0]) != records:

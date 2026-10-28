@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/compile_apple.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Compile selected logging/foundation/Apple modules at device and simulator minima.
 
 Uses installed Xcode SDKs without signing, running devices, linking NIO or

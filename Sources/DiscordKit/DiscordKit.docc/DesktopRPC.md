@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/DesktopRPC.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Compose a desktop RPC application
 
 Use a real local Discord host with explicitly injected IPC ownership.

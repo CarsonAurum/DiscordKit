@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/CELTBandQuantizer.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Pulse search and spreading adapted from libopus 1.6.1 celt/vq.c.
 // Copyright (c) 2007-2008 CSIRO
 // Copyright (c) 2007-2009 Xiph.Org Foundation

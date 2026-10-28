@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordSocial/DiscordSocial.docc/Reference/SocialClient.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordSocial/SocialClient``
 
 ## Topics

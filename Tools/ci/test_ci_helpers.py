@@ -1,3 +1,8 @@
+# File: Tools/ci/test_ci_helpers.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Deterministic planning tests for CI commands; no compiler or network needed."""
 
 import json
@@ -87,10 +92,10 @@ class CIHelpersTests(unittest.TestCase):
         self.assertEqual(merged[2:5], [str(umbrella), *map(str, archives)])
 
     def test_tutorial_listings_preserve_executable_code_and_regular_comments(self):
-        """Historical doc-comment labels are omitted; executable literals stay intact."""
-        original = '/// Phase 12 overview\n  /// Detail\nlet value = "Part 9 literal"\n// retained\n'
+        """Tutorial listings preserve documentation, executable literals and ordinary comments."""
+        original = '/// Example overview\n  /// Detail\nlet value = "example literal"\n// retained\n'
         self.assertEqual(documentation_examples.displayed_source(original),
-                         '/// overview\n  /// Detail\nlet value = "Part 9 literal"\n// retained\n')
+                         original)
 
     def test_tutorial_snapshot_check_is_nonwriting_and_reports_all_stale_files(self):
         """Missing, changed and matching listings are distinguished deterministically."""
@@ -137,17 +142,26 @@ class CIHelpersTests(unittest.TestCase):
                 path.write_text("actor TutorialDependency {}\n")
             snapshots = documentation_examples.snapshots(repository)
             for example in ("DSLCommands", "DSLEvents", "DSLBot"):
-                self.assertEqual(snapshots[f"{example}.swift.txt"], f"// compiled {example}\n")
+                self.assertTrue(snapshots[f"{example}.swift.txt"].endswith(f"// compiled {example}\n"))
                 self.assertIn(f"{example}-Package.swift.txt", snapshots)
-            self.assertEqual(snapshots["ExtensionCommands.swift.txt"], "actor TutorialDependency {}\n")
+            self.assertTrue(snapshots["ExtensionCommands.swift.txt"].endswith("actor TutorialDependency {}\n"))
             (repository / documentation_examples.PACKAGE_SUPPORT[0]).unlink()
             with self.assertRaises(OSError):
                 documentation_examples.snapshots(repository)
 
-    def test_tutorial_comment_rewrite_preserves_line_boundaries(self):
-        """A label at a comment's end must not absorb the next executable line."""
-        self.assertEqual(documentation_examples.displayed_source('/// Phase 12\nlet value = 1\n'),
-                         '/// \nlet value = 1\n')
+    def test_tutorial_listing_header_uses_resource_path(self):
+        """A copied source header is replaced without changing the example body."""
+        source = ("// File: Examples/Example.swift\n// Created by Carson Rau.\n"
+                  "// Copyright (c) 2026 Aurum Studios.\n// https://aurum-studios.com\n\n"
+                  "/// Example overview\nlet value = 1\n")
+        listing = documentation_examples.listing_source(source, "Example.swift.txt")
+        self.assertTrue(listing.startswith("// File: Sources/DiscordKit/DiscordKit.docc/Resources/Examples/Example.swift.txt\n"))
+        self.assertNotIn("// File: Examples/Example.swift", listing)
+        self.assertTrue(listing.endswith("/// Example overview\nlet value = 1\n"))
+        manifest = documentation_examples.listing_source("// swift-tools-version: 6.4\n" + source,
+                                                         "Example-Package.swift.txt")
+        self.assertTrue(manifest.startswith("// swift-tools-version: 6.4\n// File: Sources/"))
+        self.assertEqual(manifest.count("// swift-tools-version:"), 1)
 
     def test_obsolete_swift_snapshots_fail_check_and_are_removed_only_on_write(self):
         """Retired listings cannot remain current; unrelated resource kinds survive."""

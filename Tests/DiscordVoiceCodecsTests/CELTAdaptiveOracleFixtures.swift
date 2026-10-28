@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTAdaptiveOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Official libopus 1.6.1 scalar decoded PCM for owned adaptive packets; little-endian float32 base64.
 enum CELTAdaptiveOracleFixtures {
     static let json = #"""

@@ -1,3 +1,8 @@
+// File: Examples/DSLCommands/Sources/DSLCommands/DSLCommands.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Crypto
 import DiscordCommandDSL
 import DiscordCore

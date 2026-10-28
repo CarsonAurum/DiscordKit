@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordMLS/DiscordMLS.docc/Guides/GroupsAndIdentity.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Establishing groups and trusted identity
 
 Bind authenticated participants and external sender keys before processing MLS messages.

@@ -1,31 +1,29 @@
+<!--
+File: Docs/DSL.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Shared module declarations
 
-Part 15A adds the independently adopted `DiscordDSL` product. Ordinary Swift
+DiscordKit provides the independently adopted `DiscordDSL` product. Ordinary Swift
 protocols and a result builder compose declarations into a reproducible, immutable
 metadata description. The only direct dependencies are `DiscordCore` and
 `DiscordModels`; existing products have no upward dependency on the DSL.
 
-The shared product implements structural authoring and validation. Part 15B adds
-[typed arguments and command lowering](CommandDSL.md) through the separately
-selected `DiscordCommandDSL` product. The separate [macro package](MacroDSL.md)
-adds authoring syntax; [typed response ownership and HTTP applications](CommandResponses.md)
-compose existing runtime owners. Part 15E adds safe typed interpolation in this
-shared product and [validated message/component builders](MessageBuilders.md) in
-CommandDSL. Part 15F adds [command families](CommandFamilies.md) in CommandDSL.
-Part 15G adds [bounded policies and middleware](CommandPolicies.md) in the shared
-product, with explicit command authorization/admission adapters. Part 15H adds
-[typed Gateway event modules](GatewayEventModules.md) through the separately selected
-`DiscordBotDSL`. Part 15I adds [supervised bot applications](BotApplications.md)
-through that product, without changing the shared DSL's Core/Models-only graph.
-Part 15J adds [external module installation and typed dependencies](ModuleExtensions.md),
-with separate downstream extension libraries and consumer adoption. Part 15K adds
-[offline direct/DSL measurements](DSLBenchmarks.md) and finite regression budgets.
-Part 15L adds the [design](DSLDesign.md), [adoption](DSLAdoption.md) and migration
-guides, compiler-curated DocC and separately scoped local release-candidate evidence.
-Production capacity and external qualification remain explicit
-[release exclusions](Release/README.md).
-An application can use the raw contribution API now to validate its own finite
-metadata catalog, without pretending that a custom kind implements a Discord API.
+The shared product owns structural authoring, safe typed message content and
+bounded policy/middleware values. [CommandDSL](CommandDSL.md) supplies typed
+arguments, command families, message/component builders and HTTP applications over
+existing response owners. [BotDSL](BotApplications.md) adds explicit Gateway event
+and application ownership. Optional [macros](MacroDSL.md) live in a separate package.
+[Namespaces and typed dependencies](ModuleExtensions.md) support reusable modules
+without changing wire names or runtime adoption boundaries.
+
+An application can use raw contributions to validate its own finite metadata
+catalog. A custom metadata kind does not itself implement a Discord API. See
+[design](DSLDesign.md), [adoption](DSLAdoption.md) and [local measurements](DSLBenchmarks.md)
+for product selection and workload limits.
 
 ## Declare and compile a finite catalog
 
@@ -157,4 +155,3 @@ scopes. Qualified module/declaration identities retain their original metadata.
 Equality does not compare executable behavior retained by custom
 leaf values. Structural limits and local tests provide no network throughput,
 platform, live Discord, macro, command/event execution or fleet-capacity evidence.
-See [the authoring-only history](Parity/changes/phase15-dsl.md).

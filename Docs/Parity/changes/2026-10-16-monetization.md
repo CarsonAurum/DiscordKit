@@ -1,7 +1,13 @@
-# SKUs, entitlements and subscriptions: Phase 5I
+<!--
+File: Docs/Parity/changes/2026-10-16-monetization.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-16**, REST API **v10**. Local release/commit
-remain unknown until creation. Current [source fingerprints](../monetization-current-sources.json)
+# SKUs, entitlements and subscriptions
+
+Verified **2026-10-16**, REST API **v10**. Current [source fingerprints](../monetization-current-sources.json)
 are separate from historical discovery pins; no historical revision is rewritten.
 
 ## Previous and current behavior
@@ -53,5 +59,5 @@ and spec-only gap is recorded in the [contract guide](../../Monetization.md).
 This slice does not create a DiscordCommerce product, publish SKUs, initiate purchases,
 implement SDK checkout/fulfillment or close Social Commerce early-access/missing-wire
 blockers. Typed event dispatch, ingress and other-host/live/distributed/soak gates
-remain open; 5J is pending. See the [execution record](../../../.air/plans/phase-5i-execution.plan.md)
+remain open. See the [technical guide](../../Monetization.md)
 for local validation and [coverage](../coverage.md) for historical qualification limits.

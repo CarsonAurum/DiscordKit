@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordRPC/DiscordRPC.docc/Reference/RPCPayload.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordRPC/RPCPayload``
 
 ## Topics

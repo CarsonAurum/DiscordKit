@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordSocial/DiscordSocial.docc/Guides/ConsentAndProviders.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Composing consent and providers
 
 Bind one verified application/account consent domain to explicitly selected provider clients.

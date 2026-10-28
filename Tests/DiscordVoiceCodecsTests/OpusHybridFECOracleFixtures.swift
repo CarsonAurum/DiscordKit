@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/OpusHybridFECOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Owned hybrid FEC packets with independently decoded libopus 1.6.1 full PCM and ranges.
 /// Generated offline; normal tests call no native codec.
 let opusHybridFECOracleFixtures: [String] = [

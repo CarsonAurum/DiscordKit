@@ -1,3 +1,8 @@
+// File: Sources/DiscordDAVE/DAVEOperationAdmissionPolicy.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Actor-confined scheduling policy for one bounded, control-prioritized DAVE owner.
 ///
 /// This reducer owns reservations, not tasks, continuations or cryptography. Its actor

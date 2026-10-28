@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordApplePlatform/DiscordApplePlatform.docc/Guides/NativeAudio.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Capturing and playing native audio
 
 Start audio explicitly, preserve sample units and respond to permission and route changes.

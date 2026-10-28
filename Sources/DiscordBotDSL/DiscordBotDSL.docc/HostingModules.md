@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBotDSL/DiscordBotDSL.docc/HostingModules.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Host modules with an explicit supervised lifetime
 
 Compile intent-checked events and commands, then start one owner for the client and its pipelines.

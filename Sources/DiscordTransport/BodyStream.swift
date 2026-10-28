@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/BodyStream.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A pull-based, single-consumer body with a bounded chunk size and no internal queue.

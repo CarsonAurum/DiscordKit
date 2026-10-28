@@ -1,14 +1,21 @@
-# Gateway dispatch, outgoing commands and correlated requests: Phase 6
+<!--
+File: Docs/Parity/changes/2026-10-16-gateway-catalog.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-16**, Gateway API **v10**, JSON/uncompressed.
-Local release and commit are unknown until creation. [Current source fingerprints](../gateway-current-sources.json)
+# Gateway dispatch, outgoing commands and correlated requests
+
+Verified **2026-10-16**, Gateway API **v10**, JSON/uncompressed.
+[Current source fingerprints](../gateway-current-sources.json)
 remain separate from unchanged historical discovery provenance and membership.
 
 ## Previous and current behavior
 
-The Part 3 slice provided sharded Identify/Resume, heartbeats, raw ordered dispatch
+The initial Gateway implementation provided sharded Identify/Resume, heartbeats, raw ordered dispatch
 ingestion, leases and coordinated starts. It did not expose a typed receive catalog,
-validated application commands or request completion. This phase adds all 79 written
+validated application commands or request completion. This implementation adds all 79 written
 opcode-zero dispatch names, the 13 documented opcode values, all 21 named intents,
 Identify capabilities and typed presence/voice/member/soundboard/channel-info sends.
 Exact raw unknown values remain available; related partial-resource projections
@@ -47,4 +54,4 @@ Only documented JSON/uncompressed sessions are implemented; compression and alte
 encodings remain separate qualified protocol choices. Native voice media, caches,
 handler routing, distributed storage adapters, live Discord, other-host/device and
 sustained-capacity qualification remain separate. See the [Gateway guide](../../Gateway.md)
-and [execution record](../../../.air/plans/phase-6-execution.plan.md) for bounds and checks.
+and [technical guide](../../Gateway.md) for bounds and checks.

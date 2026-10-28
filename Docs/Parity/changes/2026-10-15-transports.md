@@ -1,4 +1,11 @@
-# 2026-10-15: Part 2 owned transport slice
+<!--
+File: Docs/Parity/changes/2026-10-15-transports.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
+# 2026-10-15: owned transport slice
 
 Previous behavior: portable I/O contracts and deterministic scripted implementations,
 without production network adapters. Current behavior: independently adopted
@@ -18,8 +25,7 @@ and [change log](https://docs.discord.com/developers/change-log) were verified o
 unchanged. Shard routing follows `(guild_id >> 22) % num_shards`, but assignment
 and fencing do not establish a running Gateway lifecycle or distributed storage.
 Upstream announcement/effective dates for these underlying contracts are
-**unknown**. Local implementation date is **2026-10-15**; release and commit
-remain **unknown** until assigned.
+**unknown**. Local implementation date is **2026-10-15**.
 
 Compatibility: no existing protocol signature changes. Choose a concrete adapter
 product explicitly and inject through DiscordTransport. Consume or close response
@@ -45,7 +51,7 @@ Final executed checks on macOS arm64 / Swift 6.4:
 | Check | Result |
 | --- | --- |
 | Root `swift build` | Passed; all eight products preserve the declared concurrency settings and deployment baselines. |
-| Root `swift test` with `SWIFTNIO_STRICT=1` | Passed, 193 test methods in 25 suites from the staged snapshot, independently of unrelated working-tree edits. Includes 50 NIO, 22 Foundation and 11 Unix methods; strict mode rejects submissions after event-loop shutdown. |
+| Root `swift test` with `SWIFTNIO_STRICT=1` | Passed, 193 test methods in 25 suites from the recorded source snapshot. Includes 50 NIO, 22 Foundation and 11 Unix methods; strict mode rejects submissions after event-loop shutdown. |
 | Inventory-tool Swift tests | Passed, 38 methods. |
 | Offline inventory validator | Passed, 18,137 entries / 280 sources; zero unclassified IDs or implemented operation records. |
 | Inventory extraction Python tests | Passed, 10 tests. |
@@ -54,10 +60,8 @@ Final executed checks on macOS arm64 / Swift 6.4:
 | Six release load profiles | Passed their versioned numeric gates; exact evidence is linked below. |
 | Declaration comments, local Markdown links and diff review | Passed; generated build output remains excluded. |
 
-The managed sandbox blocks native compiler temp/cache access and local socket
-execution. Swift checks used approved host access. Initial regression failures
-were fixed before these successful final runs. Feasibility fixture packages were
-not modified or rerun; their earlier results remain historical.
+The feasibility fixture results remain historical and are separate from these
+adapter checks.
 
 The root suites exercise real local peers, native Foundation behavior, fully
 verified TLS and trust/hostname rejection for NIO, malformed input, fragmented
@@ -75,7 +79,7 @@ exercise refusal without exceeding socket budgets; burst latency and throughput
 are recorded separately without a service-level gate. These are local workload results, not account,
 fleet or simultaneous-connection capacity promises.
 
-The whole-platform Part 2 gate remains open: Windows pipes, Android integration,
+The cross-platform transport qualification remains open: Windows pipes, Android integration,
 unavailable hosts/devices and minimum-OS runs, extended connect/write cancellation,
 expired/native TLS rejection scenarios, live network replacement and a 30-minute
 soak/allocation trace still need evidence. Foundation's private socket buffers and

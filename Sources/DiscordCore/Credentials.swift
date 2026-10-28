@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/Credentials.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// A secret string whose ordinary descriptions and reflection conceal its value.
 ///
 /// Secrets deliberately do not conform to `Codable` or `RawRepresentable`.

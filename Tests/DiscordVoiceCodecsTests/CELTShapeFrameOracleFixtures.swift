@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTShapeFrameOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Independent libopus 1.6.1 all-band shape/anti-collapse fixtures.
 enum CELTShapeFrameOracleFixtures {
     static let json = #"""

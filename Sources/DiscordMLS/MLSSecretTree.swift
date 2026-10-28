@@ -1,3 +1,8 @@
+// File: Sources/DiscordMLS/MLSSecretTree.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A single-use RFC 9420 sender-ratchet key and provisional nonce.

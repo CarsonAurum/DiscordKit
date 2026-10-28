@@ -1,7 +1,14 @@
-# Consumer runtime, state and event delivery: Phase 7
+<!--
+File: Docs/Parity/changes/2026-10-16-consumer-runtime.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-16** using existing explicit REST/Gateway **v10**
-contracts. Local release/commit remain unknown until creation. This local runtime
+# Consumer runtime, state and event delivery
+
+Verified **2026-10-16** using existing explicit REST/Gateway **v10**
+contracts. This local runtime
 change introduces no new Discord endpoint, dispatch name or promotion of discovery
 inventory records; reviewed child-resource classifications retain their prior scope.
 
@@ -40,7 +47,7 @@ snapshot semantics. The independent bot example receives READY, fetches a typed
 resource and awaits cleanup; repository validation never supplies real credentials.
 
 See the [client contracts](../../Client.md) and
-[execution record](../../../.air/plans/phase-7-execution.plan.md) for numeric limits,
+[technical guide](../../Client.md) for numeric limits,
 deterministic evidence, local RSS/accounted-byte measurements and qualification limits.
 Live Discord, distributed stores, other hosts/devices and endpoint-specific
 authorization remain separate gates.

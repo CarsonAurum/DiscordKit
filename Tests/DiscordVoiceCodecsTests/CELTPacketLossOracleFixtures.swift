@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTPacketLossOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Complete independent actual compressed CELT packet loss/recovery PCM vectors.
 enum CELTPacketLossOracleFixtures {
     static let json = #"""

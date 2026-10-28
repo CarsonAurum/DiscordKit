@@ -1,8 +1,13 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/DiscordKit.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordKit``
 
 Build Discord applications with independently adoptable Swift libraries and explicit ownership of asynchronous work.
 
 ## Overview
+
+Created by Carson Rau at [Aurum Studios](https://aurum-studios.com).
+Copyright (c) 2026 Aurum Studios.
 
 Start with a REST service, a supervised bot, a signed HTTP command handler, or a host integration. Import only the products your application needs. The umbrella product provides convenient aliases for common values, bot clients, commands, interactions, OAuth, game accounts and entitlement verification; desktop, Activity and voice products remain separate choices.
 

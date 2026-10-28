@@ -1,16 +1,24 @@
+<!--
+File: Docs/Channels.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Channel and thread REST catalog
 
-Phase 5B adds all 24 operations in the official [Channel reference](https://docs.discord.com/developers/resources/channel)
+DiscordKit provides all 24 operations in the official [Channel reference](https://docs.discord.com/developers/resources/channel)
 and [active guild threads](https://docs.discord.com/developers/resources/guild#list-active-guild-threads).
 Contracts were verified **2026-10-16** against API **v10**, the
 [API reference](https://docs.discord.com/developers/reference), official specification
 and [change log](https://docs.discord.com/developers/change-log).
 The two thread-start variants sharing a route remain separate typed operations.
-No dependencies or product targets were added. Part 5C adds [guild administration](Guilds.md),
-Part 5D adds [audit logs and Auto Moderation](Moderation.md), and Part 5E adds
-[emoji, stickers and soundboard](Expressions.md), and Part 5F adds
-[invites, templates, scheduled events and stages](DiscoveryEvents.md); [lobbies and identity profiles](SocialGame.md) complete batch 5J.
-Phase 5G adds [applications, users, linked roles and commands](ApplicationsUsers.md).
+See [guild administration](Guilds.md) for related operations.
+Related catalogs cover [audit logs and Auto Moderation](Moderation.md),
+[emoji, stickers and soundboard](Expressions.md),
+[invites, templates, scheduled events and stages](DiscoveryEvents.md), and
+[lobbies and identity profiles](SocialGame.md).
+DiscordKit provides [applications, users, linked roles and commands](ApplicationsUsers.md).
 
 Import `DiscordHTTP` and `DiscordModels`, inject a transport and credential-sharing
 rate/reuse authority, then execute `ChannelEndpoints` descriptors. REST adoption
@@ -160,4 +168,4 @@ local scripts and injected clocks, with no credentials or live Discord traffic.
 Full resource-family parity, cross-platform/device qualification, live API and
 long-soak gates remain separate in [platform support](PlatformSupport.md).
 
-Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).
+DiscordKit provides [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

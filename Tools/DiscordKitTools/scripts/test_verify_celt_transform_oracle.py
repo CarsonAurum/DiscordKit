@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_celt_transform_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic CELT transform verifier tests; no compiler, source archive or network required."""
 
 import base64

@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKMonoPacketDecoder.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A complete ordinary mono SILK Opus packet at the mandatory 48kHz sample clock.

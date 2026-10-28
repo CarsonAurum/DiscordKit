@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/HTTPTransport.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// One ordered HTTP header. Duplicate names and original casing are preserved.

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCache/DiscordCache.docc/Guides/ScopedEntityState.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Maintaining scoped entity state
 
 Treat cached resources as bounded observations with explicit visibility and freshness.

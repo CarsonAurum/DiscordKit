@@ -1,3 +1,8 @@
+// File: Sources/DiscordGateway/EventHandlers.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 import DiscordTransport
 import Foundation
@@ -96,10 +101,12 @@ public actor GatewayHandlerAuthority {
     }
 }
 
-/// Structured bounded scheduling with serial callbacks per complete shard identity.
+/// Structured bounded scheduling with optional serialization per complete shard identity.
 ///
-/// Different shards may execute concurrently; all callbacks for one shard, including its bot
-/// identity/topology generation, complete in subscription order. There is no global event order.
+/// By default, different shards may execute concurrently while callbacks for one complete shard
+/// identity finish in subscription order. Explicitly disabling serialization admits independent
+/// same-shard callbacks concurrently under the same task, retention and aggregate authority limits.
+/// This opt-in provides no callback completion order; ordinary event consumers should retain ordering.
 /// A finite pending queue permits other shards to progress while one callback suspends; once
 /// retained bounds are reached, input pauses and the subscription's explicit overflow policy applies.
 /// Callback errors propagate unchanged and cancel sibling work. Callbacks must cooperate with
@@ -113,14 +120,28 @@ public struct GatewayEventHandlerDispatcher: Sendable {
 
     private let configuration: GatewayEventHandlerConfiguration
     private let authority: GatewayHandlerAuthority?
+    /// True preserves subscription order within each complete shard identity.
+    private let serializesPerShard: Bool
+
+    /// Preserves complete-shard callback ordering with explicit scheduling bounds and shared admission.
+    /// - Parameters:
+    ///   - configuration: Validated local task, retained count and retained byte limits.
+    ///   - authority: Optional shared process callback limit.
+    public init(configuration: GatewayEventHandlerConfiguration, authority: GatewayHandlerAuthority? = nil) {
+        self.init(configuration: configuration, authority: authority, serializesPerShard: true)
+    }
 
     /// Stores explicit scheduling bounds and an optional shared aggregate callback authority.
     /// - Parameters:
     ///   - configuration: Validated local task, retained count, and retained byte limits.
     ///   - authority: Optional shared process limit; nil applies only the local concurrency cap.
-    public init(configuration: GatewayEventHandlerConfiguration, authority: GatewayHandlerAuthority? = nil) {
+    ///   - serializesPerShard: True by default; false permits independent same-shard callbacks to overlap
+    ///     without changing task, retained-event, retained-byte or shared authority limits.
+    public init(configuration: GatewayEventHandlerConfiguration, authority: GatewayHandlerAuthority? = nil,
+                serializesPerShard: Bool) {
         self.configuration = configuration
         self.authority = authority
+        self.serializesPerShard = serializesPerShard
     }
 
     /// Consumes one owned subscription until completion, cancellation, admission failure, or user error.
@@ -142,7 +163,8 @@ public struct GatewayEventHandlerDispatcher: Sendable {
             try Task.checkCancellation()
             try await withThrowingTaskGroup(of: Completion.self) { group in
                 var pending: [GatewayEvent] = []
-                var active: Set<ShardIdentity> = []
+                var active: [ShardIdentity: Int] = [:]
+                var activeCount = 0
                 var retainedEvents = 0
                 var retainedBytes = 0
                 var inputScheduled = false
@@ -150,10 +172,11 @@ public struct GatewayEventHandlerDispatcher: Sendable {
                 defer { group.cancelAll() }
                 while true {
                     try Task.checkCancellation()
-                    while active.count < configuration.maximumConcurrentHandlers,
-                          let index = pending.firstIndex(where: { !active.contains($0.shard) }) {
+                    while activeCount < configuration.maximumConcurrentHandlers,
+                          let index = pending.firstIndex(where: { !serializesPerShard || active[$0.shard] == nil }) {
                         let event = pending.remove(at: index)
-                        active.insert(event.shard)
+                        active[event.shard, default: 0] += 1
+                        activeCount += 1
                         group.addTask {
                             try await invoke(event, handler: handler)
                             return .handled(event.shard, event.retainedByteCount)
@@ -180,7 +203,10 @@ public struct GatewayEventHandlerDispatcher: Sendable {
                         retainedBytes += event.retainedByteCount
                         pending.append(event)
                     case .handled(let shard, let bytes):
-                        active.remove(shard)
+                        let remaining = active[shard, default: 1] - 1
+                        if remaining == 0 { active.removeValue(forKey: shard) }
+                        else { active[shard] = remaining }
+                        activeCount -= 1
                         retainedEvents -= 1
                         retainedBytes -= bytes
                     }

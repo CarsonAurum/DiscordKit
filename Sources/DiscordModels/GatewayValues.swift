@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/GatewayValues.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// Documented received activity kinds. RawValue retains future integral variants.

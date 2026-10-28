@@ -1,13 +1,19 @@
+<!--
+File: Docs/DSLDesign.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Modular authoring design
 
-The Phase 15 DSL is an authoring layer over DiscordKit's existing values, command
+The DSL is an authoring layer over DiscordKit's existing values, command
 router, interaction responder and supervised client. A module describes finite
 contributions. A compiler validates those contributions. An explicitly started
 host invokes them through the existing runtime owners. Selecting syntax does not
 select a Discord connection, register commands or grant authorization.
 
-See [adoption](DSLAdoption.md) for independently compiled examples and
-[the implementation roadmap](DSLImplementationRoadmap.md) for milestone accounting.
+See [adoption](DSLAdoption.md) for independently compiled examples and product selection.
 
 ## Choose the layer that owns the requirement
 

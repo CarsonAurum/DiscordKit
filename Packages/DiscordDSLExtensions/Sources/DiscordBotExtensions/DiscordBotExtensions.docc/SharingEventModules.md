@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLExtensions/Sources/DiscordBotExtensions/DiscordBotExtensions.docc/SharingEventModules.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Share event modules without creating another host
 
 Inject callbacks into a downstream module and retain startup and cleanup at the composition root.

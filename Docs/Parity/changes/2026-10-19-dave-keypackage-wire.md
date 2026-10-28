@@ -1,3 +1,10 @@
+<!--
+File: Docs/Parity/changes/2026-10-19-dave-keypackage-wire.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # DAVE opcode 26 native wire correction — 2026-10-19
 
 `DAVEProtocolSession` now sends opcode 26 followed directly by a bare TLS

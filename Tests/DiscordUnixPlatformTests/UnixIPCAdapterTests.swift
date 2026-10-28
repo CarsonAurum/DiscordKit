@@ -1,3 +1,8 @@
+// File: Tests/DiscordUnixPlatformTests/UnixIPCAdapterTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if !os(Windows) && !os(WASI)
 import DiscordLogging
 import DiscordTransport

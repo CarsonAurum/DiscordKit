@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKMonoEncoder.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Admission failures from the conservative ordinary mono SILK PCM encoder.

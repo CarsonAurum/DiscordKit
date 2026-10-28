@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordInteractions/DiscordInteractions.docc/Guides/AuthenticatingIngress.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Authenticating exact signed request bytes
 
 Verify before decoding and bound ingress independently from application handlers.

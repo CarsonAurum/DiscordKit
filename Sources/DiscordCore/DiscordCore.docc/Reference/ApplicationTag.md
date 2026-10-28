@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCore/DiscordCore.docc/Reference/ApplicationTag.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCore/ApplicationTag``
 
 ## See Also

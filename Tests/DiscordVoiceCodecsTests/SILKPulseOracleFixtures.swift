@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/SILKPulseOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 // Independent compressed-pulse fixtures from unmodified official libopus 1.6.1.
 // Source: https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz
 // Archive SHA256: 6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1.

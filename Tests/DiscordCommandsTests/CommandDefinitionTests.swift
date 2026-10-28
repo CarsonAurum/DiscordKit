@@ -1,3 +1,8 @@
+// File: Tests/DiscordCommandsTests/CommandDefinitionTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import DiscordModels
 import Foundation

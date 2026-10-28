@@ -1,10 +1,17 @@
+<!--
+File: Docs/VoiceSessions.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Supervised voice sessions
 
 Implemented and verified **2026-10-18**. `DiscordVoice` provides bounded per-guild
 network/media ownership; `DiscordDAVE` supplies the independently selected actual
 E2EE adapter. Voice Gateway **v8**, DAVE **v1** and MLS **1.0/ciphersuite 2** are
 explicit. Current official source fingerprints are in
-[the Phase 12D source record](Parity/phase12d-current-sources.json).
+[the source record](Parity/voice-sessions-current-sources.json).
 
 ## Construction and account ownership
 
@@ -57,7 +64,7 @@ The finite retry budget never silently becomes an unbounded reconnect storm.
 A protocol or handshake deadline remains the first causal failure when cancelling
 sibling receives exposes a later local close status. Only actual socket-loss
 results use peer status to replace their generic loss category; a terminal numeric
-code never permits a retry. See the [initial DAVE follow-up](DAVEInteropFollowup.md).
+code never permits a retry. See [DAVE ownership](DAVE.md) for signaling and media boundaries.
 
 DAVE imports Voice; Voice imports no DAVE or MLS. `DAVEVoiceSession` implements the
 injected protocol using `DAVEProtocolSession`. Supply the trusted external sender,
@@ -124,7 +131,7 @@ injected source disappearance and repeated cleanup. Real MLS/DAVE adapter tests
 exercise complete PCM/Opus/RTP/AEAD duplex, replay/tamper and bounded admission.
 [The qualification harness](../Tools/VoiceSessionQualification/README.md) performs
 actual localhost UDP with synthetic PCM and a two-member owned MLS/DAVE exchange.
-[The validation record](Parity/phase12d-validation.json) states results and limits.
+[The validation record](Parity/voice-sessions-validation.json) states results and limits.
 
 The final release measurement on the published Mac15,10 reference host completed
 600 measured seconds after a separate two-second warmup: 60,000 packets sent and
@@ -134,10 +141,10 @@ jitter buffers and all reported owners closed. Two-direction tick p99 was
 main-loop schedule slots. Tick wall time includes pipeline pacing suspension and
 UDP latency; it is not pure codec/crypto CPU cost. Actual RSS rose from 15,319,040
 to 20,021,248 bytes after warmup, so **zero resource growth was not demonstrated**.
-The raw [final report](Parity/phase12d-local-duplex.json) and
-[hardware/source provenance](Parity/phase12d-local-duplex-environment.json) retain
-these observations. Earlier failed/intermediate runs remain in the validation
-record. Full roadmap qualification remains incomplete.
+The raw [final report](Parity/voice-sessions-local-duplex.json) and
+[hardware/source provenance](Parity/voice-sessions-local-duplex-environment.json) retain
+these observations. The measurements do not establish full hardware, live-service or production
+qualification.
 
 An authorized Discord smoke is still required: use an application-owned bot/shard,
 a permitted test guild/channel and a consenting peer; inject verified participant

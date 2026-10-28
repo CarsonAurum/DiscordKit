@@ -1,3 +1,10 @@
+<!--
+File: Examples/DSLBot/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Supervised bot modules
 
 This independent package imports handwritten command and event protocol modules from
@@ -36,5 +43,5 @@ and client budgets. Construction and catalog compilation execute no callbacks or
 The tests also exercise the protocol's inherited `main` and pre-cancelled startup.
 
 This establishes local protocol composition and cleanup only. Live Discord,
-privileged intents, cross-platform transport, throughput and Phase 15K capacity
+privileged intents, cross-platform transport, throughput and capacity
 qualification remain separate.

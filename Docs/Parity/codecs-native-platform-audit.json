@@ -1,0 +1,194 @@
+{
+  "verifiedAt": "2026-10-18T01:30:18.044252+00:00",
+  "scope": "codecs.3 Windows/Android native audio implementation prerequisites; this is an availability audit, not an adapter implementation or qualification result",
+  "host": {
+    "operatingSystem": "macOS/Darwin",
+    "architecture": "arm64",
+    "swiftVersion": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)",
+    "installedSwiftSDKs": [],
+    "toolsAbsent": [
+      "adb",
+      "sdkmanager",
+      "swiftly",
+      "clang-cl",
+      "x86_64-w64-mingw32-gcc",
+      "cmake",
+      "ninja",
+      "docker"
+    ],
+    "androidNDKLocated": false,
+    "androidSDKLocated": false,
+    "windowsSDKLocated": false,
+    "androidExecutionPathEstablished": false,
+    "windowsExecutionPathEstablished": false
+  },
+  "compileProbes": [
+    {
+      "command": [
+        "swiftc",
+        "-typecheck",
+        "-target",
+        "aarch64-unknown-linux-android28",
+        "<temporary-probe.swift>"
+      ],
+      "source": "import Foundation\npublic let sample = 1\n",
+      "exitCode": 1,
+      "diagnostic": "unable to load standard library for target 'aarch64-unknown-linux-android28'"
+    },
+    {
+      "command": [
+        "swiftc",
+        "-typecheck",
+        "-target",
+        "x86_64-unknown-windows-msvc",
+        "<temporary-probe.swift>"
+      ],
+      "source": "import Foundation\npublic let sample = 1\n",
+      "exitCode": 1,
+      "diagnostic": "unable to load standard library for target 'x86_64-unknown-windows-msvc'"
+    },
+    {
+      "command": [
+        "clang",
+        "-fsyntax-only",
+        "-target",
+        "aarch64-unknown-linux-android28",
+        "<temporary-android.c>"
+      ],
+      "source": "#include <aaudio/AAudio.h>\nint main(void) { return 0; }\n",
+      "exitCode": 1,
+      "diagnostic": "fatal error: 'aaudio/AAudio.h' file not found"
+    },
+    {
+      "command": [
+        "clang",
+        "-fsyntax-only",
+        "-target",
+        "x86_64-unknown-windows-msvc",
+        "<temporary-windows.c>"
+      ],
+      "source": "#include <mmdeviceapi.h>\n#include <audioclient.h>\nint main(void) { return 0; }\n",
+      "exitCode": 1,
+      "diagnostic": "fatal error: 'mmdeviceapi.h' file not found"
+    }
+  ],
+  "bootstrapAssessment": {
+    "officialAndroidSwiftSDKDownloadHTTPStatus": 200,
+    "officialAndroidSwiftSDKArchiveBytes": 340319010,
+    "officialAndroidNDKDownloadHTTPStatus": 200,
+    "officialAndroidNDKArchiveBytes": 974984488,
+    "downloadBlocked": false,
+    "performed": false,
+    "reason": "Current host lacks the matching open-source compiler, native SDK/linker and execution environment. Large toolchain downloads were not substituted for an executable native implementation and test path. Availability of downloadable tools means Android cross-compilation can be provisioned later; it is not an intrinsic platform impossibility."
+  },
+  "architecture": {
+    "currentPortableTargets": [
+      "DiscordMedia",
+      "DiscordVoiceCodecs"
+    ],
+    "currentNativeAudioTarget": "DiscordApplePlatform",
+    "windowsNativeAudioTargetPresent": false,
+    "androidNativeAudioTargetPresent": false,
+    "dependencyConstraint": "Native adapter targets may adopt DiscordMedia and foundational Core/Transport as needed; portable Media/VoiceCodecs must not import native frameworks or gain concrete-adapter dependencies.",
+    "injectedBoundaryLimitation": "A new generic backend protocol or conditional module excluded on macOS would not implement missing native I/O, permission, route or interruption behavior. No nominal targets, placeholder adapters or uncompiled native calls were introduced."
+  },
+  "remainingPaths": {
+    "Android": {
+      "implementationStatus": "unimplemented",
+      "compilePrerequisites": [
+        "Install an open-source Swift toolchain and exactly matching Android Swift SDK; the installed Xcode compiler is not the documented matching toolchain.",
+        "Install the Android NDK and configure its toolchain/sysroot/linker; the current official guide specifies NDK LTS r30.",
+        "Compile the full native adapter target for aarch64 and x86_64 at the adopted Android API floor."
+      ],
+      "nativeImplementation": [
+        "Use owned AAudio C calls to open independent input/output streams, select device IDs and verify actual sample format, channel count, rate and selected ID after opening.",
+        "Implement bounded preallocated callback buffers and cross-thread ownership; close streams only after callback use has ended, never from the AAudio error callback thread.",
+        "Use a small owned JNI/host boundary for AudioManager device enumeration/change notifications and audio focus, app lifecycle and explicit RECORD_AUDIO runtime permission result. AAudio does not provide enumeration, automatic endpoint routing or runtime permission UI.",
+        "Fail closed on route loss, disconnection, interruption, denied/revoked permission or focus loss; require explicit restart and keep host foreground-service/background policy explicit."
+      ],
+      "qualification": [
+        "Run permission grant/deny/revoke, route replacement/unplug, interruption/focus loss and capture/playback cancellation on an Android app/device.",
+        "Measure bounded queues and duplex PCM under actual callbacks. Cross-compilation alone does not qualify routing or hardware."
+      ]
+    },
+    "Windows": {
+      "implementationStatus": "unimplemented",
+      "compilePrerequisites": [
+        "Provide a Windows Swift 6.4-or-newer toolchain, MSVC C++ build tools and Windows SDK on a Windows execution host.",
+        "Compile an owned WASAPI/COM bridge and Swift adapter against actual SDK interfaces before exposing the product."
+      ],
+      "nativeImplementation": [
+        "Enumerate and resolve endpoint IDs through IMMDeviceEnumerator; activate IAudioClient and initialize capture/render streams with explicit format/routing validation.",
+        "Use IAudioCaptureClient/IAudioRenderClient with bounded buffers and a serialized COM/native-thread lifetime; release each acquired buffer and interface on every failure and stop path.",
+        "Handle device invalidation and IMMNotificationClient/IAudioSessionEvents notifications without deadlocking COM callback threads.",
+        "Represent microphone privacy/capability denial accurately for the embedding app model; do not equate generic Windows desktop privacy settings with an Apple-style permission prompt."
+      ],
+      "qualification": [
+        "Run endpoint selection, privacy denial, default-route replacement, hot unplug, session disconnection and cancellation on Windows.",
+        "Run actual full-duplex capture/playback with bounded queue accounting. SDK headers alone do not qualify COM/native-thread ownership or hardware."
+      ]
+    }
+  },
+  "sources": [
+    {
+      "url": "https://www.swift.org/documentation/articles/swift-sdk-for-android-getting-started.html",
+      "supports": [
+        "matching open-source compiler/SDK/NDK prerequisites",
+        "Android app/JNI integration and deployment"
+      ]
+    },
+    {
+      "url": "https://www.swift.org/install/windows/manual/",
+      "supports": [
+        "Windows Swift toolchain, MSVC and Windows SDK prerequisites"
+      ]
+    },
+    {
+      "url": "https://developer.android.com/ndk/guides/audio/aaudio/aaudio",
+      "supports": [
+        "AAudio direction/device/format configuration",
+        "AAudio omits enumeration and automatic routing",
+        "close/thread/error callback constraints"
+      ]
+    },
+    {
+      "url": "https://developer.android.com/media/optimize/audio-focus",
+      "supports": [
+        "audio focus admission/loss and app lifecycle requirements"
+      ]
+    },
+    {
+      "url": "https://developer.android.com/media/platform/mediarecorder",
+      "supports": [
+        "manifest and runtime RECORD_AUDIO permission requirement"
+      ]
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/coreaudio/wasapi",
+      "supports": [
+        "WASAPI endpoint activation, audio client/services, device invalidation"
+      ]
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/coreaudio/device-events",
+      "supports": [
+        "IMMNotificationClient endpoint event registration/lifetime"
+      ]
+    },
+    {
+      "url": "https://support.microsoft.com/en-us/windows/privacy/windows-camera-microphone-and-privacy",
+      "supports": [
+        "Windows microphone privacy controls differ by app model"
+      ]
+    }
+  ],
+  "reviewedSourceSHA256": {
+    "Package.swift": "709d4d1cb7a5413efe58002e22dab566ed642ea795a5a47cb364a96740113b0c",
+    "Sources/DiscordMedia/PCM.swift": "ae83b88cfee07074b18e7c59827f37a638f5915b25f9d57f6eec509c2f23f997",
+    "Sources/DiscordMedia/PCMFrameStream.swift": "db70bb76e8695f98e8ee227b919a0454e67ec67cafb0d80ac19477406134bf31",
+    "Sources/DiscordApplePlatform/AppleAudio.swift": "e39d49d23f4addffc106f240287b83ae46e655b48c848dbbf9308c1febd1d2f0",
+    "Sources/DiscordApplePlatform/AppleAudioDevices.swift": "b7620f7c0dfe0a1ef9d833a2c57bf028baf15b509aa025f7d052180819444065",
+    "Sources/DiscordApplePlatform/AppleAudioRoutes.swift": "e43f58c5d9f145d2773d43645e29e37c6394b97775ef34a3487fc720012dbe4c"
+  },
+  "qualificationClaim": "none; current Windows/Android native audio remains unimplemented and codecs.3 remains open"
+}

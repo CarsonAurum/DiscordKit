@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/PCMSpeechActivityDetector.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// One complete analysis frame's statistical speech decision, with inspectable diagnostics.

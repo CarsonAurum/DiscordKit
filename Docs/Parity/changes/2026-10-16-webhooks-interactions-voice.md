@@ -1,7 +1,13 @@
-# Webhooks, interaction responses and voice control: Phase 5H
+<!--
+File: Docs/Parity/changes/2026-10-16-webhooks-interactions-voice.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-16**, REST API **v10**. Local release/commit
-remain unknown until creation. Clean Phase 5G baseline: a33989a. Current
+# Webhooks, interaction responses and voice control
+
+Verified **2026-10-16**, REST API **v10**. Current
 [source fingerprints](../webhook-voice-interaction-current-sources.json) are separate
 from historical discovery membership pins; no historical source revision is rewritten.
 
@@ -67,6 +73,6 @@ Callers own trusted receipt times, three-second acknowledgement and 15-minute to
 lifetimes, prior response/ephemeral state, install/application eligibility and server
 permissions. This REST work does not implement an ingress signature verifier,
 router, durable acknowledgement owner or voice media stack. No dependencies or
-products were added; 5I–5J and platform/live/distributed/soak qualification remain
+products were added; platform/live/distributed/soak qualification remains
 open. See [contracts](../../WebhooksInteractionsVoice.md) and
-[execution evidence](../../../.air/plans/phase-5h-execution.plan.md).
+[technical guide](../../WebhooksInteractionsVoice.md).

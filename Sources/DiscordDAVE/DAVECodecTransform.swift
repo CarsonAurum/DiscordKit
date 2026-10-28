@@ -1,3 +1,8 @@
+// File: Sources/DiscordDAVE/DAVECodecTransform.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Encoded media formats whose packetizer-visible prefixes DAVE v1 understands.

@@ -1,3 +1,8 @@
+// File: Tests/DiscordBotDSLTests/BridgeTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordClient
 import DiscordCommandDSL
 import DiscordCommands
@@ -92,15 +97,17 @@ private struct BridgeFixture {
     /// - Parameters:
     ///   - maximumPending: Positive private queue count, default two.
     ///   - maximumBytes: Positive private queue byte bound, default 1 MiB.
+    ///   - serializesPerShard: True retains legacy ordering; false allows independent same-shard handlers.
     ///   - handler: Cooperative callback, default an original distinguishable failure.
     /// - Returns: Unprepared owner that has not invoked factories, handlers, REST or client startup.
     /// - Throws: Invalid queue, router or registration bounds.
-    func adapter(maximumPending: Int = 2, maximumBytes: Int = 1_048_576,
+    func adapter(maximumPending: Int = 2, maximumBytes: Int = 1_048_576, serializesPerShard: Bool = true,
                  handler: @escaping @Sendable (InteractionContext) async throws -> Void = { _ in throw BridgeTestFailure.handler })
         throws -> GatewayInteractionAdapter<ManualClock> {
         try GatewayInteractionAdapter(applicationID: .init(rawValue: 9), commands: commands(handler),
             services: services, clock: clock, admission: admission,
-            maximumPendingInteractions: maximumPending, maximumPendingBytes: maximumBytes)
+            maximumPendingInteractions: maximumPending, maximumPendingBytes: maximumBytes,
+            serializesPerShard: serializesPerShard)
     }
 
     /// Creates an internal socket-equivalent receipt observation for isolated private queue tests.
@@ -201,6 +208,46 @@ private actor BridgeSocket: WebSocketConnection {
 /// Proves trusted admission, existing HTTP response ownership and bounded cancellation with offline scripts.
 @Suite("Gateway interaction bridge", .timeLimit(.minutes(1)))
 struct BridgeTests {
+    /// Independent dispatch acknowledges a second same-shard interaction while the first already deferred handler waits.
+    /// Advancing the clock afterward does not recreate either initial response; cancellation joins both owners.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func independentInteractionsDoNotWaitForPriorDeferredWork() async throws {
+        let fixture = try BridgeFixture(initialSteps: [
+            { _ in try BridgeFixture.response("", status: 204) },
+            { _ in try BridgeFixture.response("", status: 204) }
+        ])
+        let first = TestBarrier(), second = TestBarrier(), blocked = TestBarrier()
+        let commands = try fixture.commands { context in
+            try await context.responder.deferResponse()
+            if context.interaction.id.rawValue == 1 { first.open() }
+            else { second.open() }
+            try await blocked.wait()
+        }
+        let adapter = try GatewayInteractionAdapter(applicationID: .init(rawValue: 9), commands: commands,
+            services: fixture.services, clock: fixture.clock, admission: fixture.admission,
+            configuration: try .init(maximumConcurrentHandlers: 2), serializesPerShard: false)
+        try await adapter.prepare(client: fixture.client)
+        let task = Task { try await adapter.run() }
+        try await adapter.receive(fixture.event())
+        try await first.wait()
+        let secondJSON = BridgeFixture.interactionJSON().replacingOccurrences(of: "\"id\":\"1\"", with: "\"id\":\"2\"")
+        try await adapter.receive(fixture.event(payload: secondJSON))
+        try await second.wait()
+        #expect(await fixture.initialHTTP.executionCount == 2)
+        #expect(await adapter.snapshot().activeHandlers == 2)
+        try fixture.clock.advance(by: .seconds(4))
+        #expect(await fixture.initialHTTP.executionCount == 2)
+        await adapter.cancel()
+        await #expect(throws: CancellationError.self) { try await task.value }
+        #expect(blocked.waitingCount == 0)
+        #expect(await adapter.snapshot().activeHandlers == 0)
+        #expect(await adapter.snapshot().bufferedEvents == 0)
+        #expect(await adapter.snapshot().bufferedBytes == 0)
+        #expect(await adapter.snapshot().subscriptions == 0)
+        #expect(await fixture.admission.snapshot().activeCount == 0)
+        #expect(fixture.clock.pendingSleepCount == 0)
+    }
+
     /// Construction/preparation starts no I/O, replay events cannot gain receipt provenance and
     /// publication to the client's ordinary public hub cannot dispatch a command.
     /// - Throws: Unexpected valid configuration/preparation or cancellation cleanup errors.
@@ -282,11 +329,12 @@ struct BridgeTests {
 
     /// Age includes private/raw queue delay; reaching exactly three seconds never refreshes
     /// the acknowledgement budget or submits an HTTP callback after late dispatch admission.
+    /// - Parameter serializesPerShard: Verifies receipt-relative expiry under both scheduling modes.
     /// - Throws: Unexpected fixture/admission errors or a different response expiry category.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
-    @Test func receiptDeadlineSurvivesQueueDelay() async throws {
+    @Test(arguments: [true, false]) func receiptDeadlineSurvivesQueueDelay(serializesPerShard: Bool) async throws {
         let fixture = try BridgeFixture()
-        let adapter = try fixture.adapter { context in
+        let adapter = try fixture.adapter(serializesPerShard: serializesPerShard) { context in
             #expect(context.deliveryMode == .gateway)
             try await context.responder.reply(InteractionMessageCreate(content: .value("late")))
         }

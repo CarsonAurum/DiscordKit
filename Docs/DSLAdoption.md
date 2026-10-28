@@ -1,9 +1,16 @@
+<!--
+File: Docs/DSLAdoption.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Adopt modular commands and bots
 
 Start from one independently compiled example, keep its existing response and
 service owners, then move reusable declarations into explicit modules. Swift 6.4
-or newer is required. The [design](DSLDesign.md) explains the layers; the
-[roadmap](DSLImplementationRoadmap.md) records delivery and qualification boundaries.
+or newer is required. The [design guide](DSLDesign.md) explains the layers and
+independent adoption boundaries.
 
 ## Select a working starting point
 

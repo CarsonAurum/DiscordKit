@@ -1,6 +1,13 @@
+<!--
+File: Docs/CommandFamilies.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Command-family authoring
 
-Part 15F extends `DiscordCommandDSL` with slash trees, typed user/message context
+DiscordKit provides `DiscordCommandDSL` with slash trees, typed user/message context
 menus, partial autocomplete providers, exact component handlers and typed modal
 submissions. All families lower into the existing bounded `CommandRouter` and
 `CommandReconciler`. Compilation is synchronous and inert. `CommandApplication`
@@ -120,15 +127,15 @@ Shared structural limits account for full definition, schema, response-policy an
 exact-route metadata. Route count/text admission remains finite and one shared
 router supplies the aggregate concurrency bound. Captured user closures and injected
 services remain caller-owned; these limits establish no memory or throughput
-qualification. Part 15G adds [bounded policies and middleware](CommandPolicies.md).
-Part 15I adds [Gateway hosts](BotApplications.md), Part 15K records
-[local measurements](DSLBenchmarks.md), and Part 15L supplies complete
+qualification. DiscordKit provides [bounded policies and middleware](CommandPolicies.md).
+DiscordKit provides [Gateway hosts](BotApplications.md), records
+[local measurements](DSLBenchmarks.md), and DiscordKit provides complete
 [adoption guidance](DSLAdoption.md) and scoped [release records](Release/README.md).
 Those records preserve live/platform and production-capacity exclusions.
 
 The reviewed [command reference](https://docs.discord.com/developers/interactions/application-commands),
 [interaction reference](https://docs.discord.com/developers/interactions/receiving-and-responding)
 and [component reference](https://docs.discord.com/developers/components/reference)
-are recorded with [exact source hashes](Release/sources/2026-10-18-phase15f.json).
+are recorded with [exact source hashes](Release/sources/2026-10-18-command-families.json).
 No new endpoint, intent, permission, model-parity classification or protocol version
 is introduced by these authoring adapters.

@@ -1,3 +1,5 @@
+[//]: # "File: Packages/DiscordDSLExtensions/Sources/DiscordBotExtensions/DiscordBotExtensions.docc/Reference/ExtensionEvents.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordBotExtensions/ExtensionEvents``
 
 ## Topics

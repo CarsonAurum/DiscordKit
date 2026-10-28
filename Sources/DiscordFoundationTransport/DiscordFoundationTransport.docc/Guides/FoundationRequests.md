@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordFoundationTransport/DiscordFoundationTransport.docc/Guides/FoundationRequests.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Sending requests with an owned Foundation adapter
 
 Create the adapter explicitly, consume response bodies and await session cleanup.

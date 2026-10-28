@@ -1,6 +1,13 @@
-# Signed ingress, interactions and commands: Phase 8
+<!--
+File: Docs/Parity/changes/2026-10-17-interaction-runtime.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-17**. REST callbacks and command registration
+# Signed ingress, interactions and commands
+
+Verified **2026-10-17**. REST callbacks and command registration
 use **API v10**; incoming interaction payload version **1** and webhook-event
 envelope version **1** are separate protocols. Original discovery snapshots and
 source revision/hash pins are preserved. Current written source fingerprints are
@@ -62,4 +69,4 @@ cleanup. Existing typed endpoints handle bounded multipart callbacks/follow-ups;
 convenience response sinks are JSON-only. Local deterministic/macOS evidence does
 not qualify live Discord, rendered previews, remote durable stores, other hosts or
 devices, or fleet capacity. See [contracts](../../Interactions.md) and the
-[execution record](../../../.air/plans/phase-8-execution.plan.md).
+[technical guide](../../Interactions.md).

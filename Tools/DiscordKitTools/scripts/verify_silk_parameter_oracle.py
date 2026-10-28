@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_parameter_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Offline complete SILK channel syntax/parameter verification against libopus 1.6.1.
 
 The separately supplied pinned archive is never downloaded. C sources compile only

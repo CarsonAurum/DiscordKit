@@ -1,19 +1,25 @@
+<!--
+File: Docs/ApplicationsUsers.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Applications, users, linked roles and commands
 
-Phase 5G completes the written API v10 application/user and command REST slice
+DiscordKit provides the written API v10 application/user and command REST slice
 within the independently adopted DiscordModels and DiscordHTTP products: **32
 available written operations** (3 Application, 12 User, 2 linked-role metadata and
 15 Application Command operations). Current
 official references and the change log were verified **2026-10-16**; source hashes
-are separate from historical discovery membership pins. No new dependencies,
-runtime products or consumer generation steps are introduced.
+identify the reviewed contracts. Consumer builds use committed source.
 
 The [Application reference](https://docs.discord.com/developers/resources/application),
 [Team reference](https://docs.discord.com/developers/topics/teams),
 [User reference](https://docs.discord.com/developers/resources/user),
 [linked-role metadata reference](https://docs.discord.com/developers/resources/application-role-connection-metadata)
 and [Application Commands reference](https://docs.discord.com/developers/interactions/application-commands)
-define this batch. Written references control conflicts with the official preview;
+define these operations. Written references control conflicts with the official preview;
 explicit compatibility overlays preserve additional response data without turning
 preview-only routes into available operations.
 
@@ -115,13 +121,12 @@ their uncertainty and are never silently retried as safe requests.
 Deterministic tests exercise field presence, malformed inputs, unknown variants,
 large IDs, request construction, authorization, exact statuses, API/transport
 failures, retries, cancellation, cleanup, request reduction and bounded workflows.
-The [execution plan](../.air/plans/phase-5g-execution.plan.md) records final commands
-and results. Local tests use synthetic credentials and injected peers, never
-authenticated Discord requests. Platform/device, live API, distributed coordination
-and sustained-capacity qualification remain open; interaction handlers, command
-routers remain later work; Phase 5J adds [lobbies and identity profiles](SocialGame.md).
+Tests use synthetic credentials and injected peers. Platform/device, live API,
+distributed coordination and sustained-capacity qualification remain open.
+See [interactions and command routing](Interactions.md) and
+[lobbies and identity profiles](SocialGame.md) for separately adopted capabilities.
 
 The [chronological change record](Parity/changes/2026-10-16-applications-users.md)
 separates known upstream announcements/effective dates from local support dates.
 
-Phase 5H adds [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).
+DiscordKit provides [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md).

@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/MediaClock.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Rounding for nonnegative rational media timestamps; no floating point is involved.

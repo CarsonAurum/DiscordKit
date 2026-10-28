@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_api_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Regression tests for scoped symbol-graph extraction and conservative source semver."""
 
 import copy

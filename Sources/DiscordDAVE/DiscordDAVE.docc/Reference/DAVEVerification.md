@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDAVE/DiscordDAVE.docc/Reference/DAVEVerification.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDAVE/DAVEVerification``
 
 ## Topics

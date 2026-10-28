@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/qualify_android.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Cross-build and run only the offline CommandsApp on an explicitly selected Android.
 
 Requires a matching open-source Swift toolchain/SDK, NDK r30 and adb-connected API28+
@@ -13,7 +18,7 @@ import subprocess
 from pathlib import Path
 
 TRIPLE = "aarch64-unknown-linux-android28"
-REMOTE = "/data/local/tmp/discordkit-phase14-commands"
+REMOTE = "/data/local/tmp/discordkit-commands"
 
 
 def adb_command(serial, *arguments):

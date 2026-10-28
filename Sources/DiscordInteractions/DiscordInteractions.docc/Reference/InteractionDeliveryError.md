@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordInteractions/DiscordInteractions.docc/Reference/InteractionDeliveryError.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordInteractions/InteractionDeliveryError``
 
 ## Topics

@@ -9,7 +9,7 @@
       "bytes": 35721,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     },
     {
       "name": "application-commands",
@@ -18,7 +18,7 @@
       "bytes": 85981,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     },
     {
       "name": "webhook-events",
@@ -27,7 +27,7 @@
       "bytes": 25431,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     },
     {
       "name": "component-embeds",
@@ -36,7 +36,7 @@
       "bytes": 10581,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     },
     {
       "name": "overview",
@@ -45,7 +45,7 @@
       "bytes": 13751,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     },
     {
       "name": "component-reference",
@@ -54,7 +54,7 @@
       "bytes": 111348,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     },
     {
       "name": "api-reference",
@@ -63,7 +63,7 @@
       "bytes": 36143,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     },
     {
       "name": "change-log",
@@ -72,7 +72,7 @@
       "bytes": 308684,
       "verifiedOn": "2026-10-17",
       "revision": "unknown",
-      "purpose": "Current written Phase 8 contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
+      "purpose": "Current written interactions contracts; API v10 REST, interaction payload version 1 and webhook envelope version 1 remain distinct. Historical discovery provenance unchanged; full upstream content is not redistributed."
     }
   ]
 }

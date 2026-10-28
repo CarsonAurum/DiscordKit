@@ -1,3 +1,8 @@
+// File: Sources/DiscordUnixPlatform/UnixIPCTransport.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 #if !os(Windows) && !os(WASI)
 import DiscordTransport

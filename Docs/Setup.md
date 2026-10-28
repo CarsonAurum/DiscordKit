@@ -1,3 +1,10 @@
+<!--
+File: Docs/Setup.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Application setup and deployment
 
 Verified **2026-10-18** against Discord's [getting-started guide](https://docs.discord.com/developers/quick-start/getting-started),
@@ -6,6 +13,26 @@ Verified **2026-10-18** against Discord's [getting-started guide](https://docs.d
 [Activities overview](https://docs.discord.com/developers/activities/overview).
 This is application configuration guidance; deployment and access approval are
 separate from the package's local test results.
+
+## Package installation
+
+DiscordKit is available from the [official repository](https://github.com/CarsonAurum/DiscordKit).
+For a licensed application, add a reviewed commit or a published release tag using
+Swift Package Manager. The source currently carries the 0.19.0 API candidate; a
+version number in documentation does not create a release tag.
+
+```swift
+.package(
+    url: "https://github.com/CarsonAurum/DiscordKit.git",
+    revision: "<full-reviewed-commit-revision>"
+)
+```
+
+Replace the revision placeholder with the full commit you reviewed. For a local
+checkout, use `.package(path: "../DiscordKit")`. Add selected products such as
+`.product(name: "DiscordHTTP", package: "DiscordKit")` to your target dependencies.
+The separate macro package is selected through its own package manifest.
+See the [license](../LICENSE) before using or redistributing the library.
 
 ## Choose an independent consumer
 
@@ -38,12 +65,12 @@ independently compiled source packages and synchronized DocC tutorials.
 Select `DiscordCommandDSL` and `DiscordDSL` explicitly for [typed command
 authoring](CommandDSL.md). Compilation produces existing validated registration
 definitions and exact routes. It does not register commands, verify ingress, bind
-a listener or choose a Gateway client. Part 15D's `CommandApplication` explicitly
+a listener or choose a Gateway client. `CommandApplication` explicitly
 composes signed ingress and the bounded router. Inject the shared admission authority
 and an HTTP listener; `run` owns and closes that listener. Call `synchronize` separately
 for registration. Use [DSLCommands](../Examples/DSLCommands/README.md) in its default
 offline mode to exercise a signed exchange; `--listen` explicitly opts into listener
-ownership. Its response uses Part 15E's [message builder](MessageBuilders.md), with
+ownership. Its response uses [message builder](MessageBuilders.md), with
 explicit mention suppression by default. See [response/application contracts](CommandResponses.md).
 For optional `@CommandArguments`/`@SlashCommand` authoring, select the separate
 [DiscordDSLMacros package](MacroDSL.md); the root package does not select its plugin.
@@ -94,7 +121,7 @@ session, and inject browser and transactional token storage. Public clients keep
 secrets on the backend and use an explicitly enabled public-client flow. Activity
 URL mappings and real host embedding are distinct from standalone browser hosting.
 SDK-only Social and unpublished Commerce operations remain named gaps in the
-[Social catalog](Parity/phase13-social-catalog.json).
+[Social catalog](Parity/social-catalog.json).
 
 ## Lifecycle, freshness and overload
 
@@ -135,6 +162,6 @@ review for accuracy.
 
 The [CI guide](CI.md) describes enabled jobs, infrastructure gates, and the optional
 manually invoked live read-only smoke. The [migration guide](Migration.md) separates
-local API changes from upstream protocol transitions. The current `0.15.0`
+local API changes from upstream protocol transitions. The current
 [release records](Release/README.md) retain exact local evidence and external
 exclusions; building or validating the guides publishes no package or documentation site.

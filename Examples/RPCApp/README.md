@@ -1,3 +1,10 @@
+<!--
+File: Examples/RPCApp/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Independent desktop RPC adoption
 
 Build with `swift build --package-path Examples/RPCApp`. The executable only

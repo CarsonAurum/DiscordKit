@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/PCMBandlimitedResampler.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// An owned, synchronous streaming PCM converter using a finite windowed-sinc low-pass filter.

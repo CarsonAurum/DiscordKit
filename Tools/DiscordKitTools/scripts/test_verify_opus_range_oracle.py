@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_opus_range_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic oracle-tool tests; no release archive, compiler, subprocess or network is needed."""
 
 import contextlib

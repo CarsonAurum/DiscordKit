@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_silk_parameter_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic parameter oracle workflow tests; no native compiler/archive/network work."""
 import json
 from pathlib import Path

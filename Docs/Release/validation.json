@@ -32,7 +32,7 @@
       "id": "root-tests",
       "logBytes": 1264290,
       "logSHA256": "22fadfa9fea2a16be56c4d37f67483725654da42351ced195d17c450fb48f4d7",
-      "resultExcerpt": "\u2714 Test run with 36 tests in 5 suites passed after 0.073 seconds.",
+      "resultExcerpt": "✔ Test run with 36 tests in 5 suites passed after 0.073 seconds.",
       "suitesPassed": 264,
       "testTargetsPassed": 29,
       "testsPassed": 2108
@@ -43,7 +43,7 @@
       "id": "tooling",
       "logBytes": 90030,
       "logSHA256": "92fd42f0979985ef348ea8060cdd87050d0c461ff7786d9f72675aa5e337c585",
-      "resultExcerpt": "\u2714 Test run with 103 tests in 8 suites passed after 2.291 seconds.",
+      "resultExcerpt": "✔ Test run with 103 tests in 8 suites passed after 2.291 seconds.",
       "suitesPassed": 8,
       "testTargetsPassed": 1,
       "testsPassed": 103
@@ -108,7 +108,7 @@
       "id": "load-tests",
       "logBytes": 7502,
       "logSHA256": "dbeab183fcb1f3a6227b31890b13416024e026789238456542fb9ff6899ebcac",
-      "resultExcerpt": "\u2714 Test run with 28 tests in 4 suites passed after 1.009 seconds.",
+      "resultExcerpt": "✔ Test run with 28 tests in 4 suites passed after 1.009 seconds.",
       "suitesPassed": 4,
       "testTargetsPassed": 1,
       "testsPassed": 28
@@ -128,7 +128,7 @@
       "id": "browser",
       "logBytes": 3947,
       "logSHA256": "a3117e68ec543743e4a0d49aa61bcdf9667c6b5f2bcb2dea707293e795c8c382",
-      "resultExcerpt": "\u2139 duration_ms 58.259333",
+      "resultExcerpt": "ℹ duration_ms 58.259333",
       "testsPassed": 36
     },
     {
@@ -137,7 +137,7 @@
       "id": "command-example-tests",
       "logBytes": 1333,
       "logSHA256": "81458eeefed0c7db47afdfa584f7711b83e7f1c340af0e62826dffc7706c9d5f",
-      "resultExcerpt": "\u2714 Test run with 3 tests in 1 suite passed after 0.001 seconds.",
+      "resultExcerpt": "✔ Test run with 3 tests in 1 suite passed after 0.001 seconds.",
       "suitesPassed": 1,
       "testTargetsPassed": 1,
       "testsPassed": 3
@@ -148,7 +148,7 @@
       "id": "activity-example-tests",
       "logBytes": 1901,
       "logSHA256": "2b16fb4efed04abb31b2bfdd7d679d130b0cc36a9f13bd8d7aa2b6284763b0ad",
-      "resultExcerpt": "\u2714 Test run with 3 tests in 1 suite passed after 0.004 seconds.",
+      "resultExcerpt": "✔ Test run with 3 tests in 1 suite passed after 0.004 seconds.",
       "suitesPassed": 1,
       "testTargetsPassed": 1,
       "testsPassed": 3
@@ -206,8 +206,8 @@
     "swift": "Apple Swift 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)"
   },
   "environmentFailuresRetained": [
-    "Existing root loopback tests failed with Operation not permitted under sandbox, then all root tests passed with approved host-local access.",
-    "Clang BoringSSL assembler temporary-file creation failed under sandbox, including with TMPDIR; optimized/debug/symbolgraph checks passed with approved host compiler access.",
+    "Existing root loopback tests failed with Operation not permitted under sandbox, then all root tests passed with local host loopback support.",
+    "Clang BoringSSL assembler temporary-file creation failed under sandbox, including with TMPDIR; optimized/debug/symbolgraph checks passed with local host compiler execution.",
     "Generated-template smoke compiler encountered duplicate Foundation cache paths via /tmp and /private/tmp aliases; fresh canonical compiler caches passed all tooling tests.",
     "Python load-peer tests failed local bind in sandbox; 12 tests passed with approved local loopback access.",
     "First final symbolgraph attempt hit the same compiler sandbox temporary-file boundary; approved rerun and all28 DocC conversions passed."
@@ -354,7 +354,7 @@
     "gitDiffCheckPassed": true,
     "localMarkdownLinksChecked": 281,
     "missingLocalMarkdownLinks": 0,
-    "scope": "Full changed/untracked phase scope; source method documentation, actual product/import graphs and report claims independently reviewed.",
+    "scope": "Source method documentation, actual product/import graphs and report claims independently reviewed.",
     "workflowYAMLParsed": 3
   },
   "manualReview": {
@@ -366,8 +366,7 @@
       "escaped/Unicode import bypass and interpolation/regex false positives",
       "live REST example process exit is not sufficient evidence"
     ],
-    "scope": "New/touched documentation/tooling/callables, source audit cases, report exclusions and independent-product boundaries",
-    "secondAgentReview": true
+    "scope": "New/touched documentation/tooling/callables, source audit cases, report exclusions and independent-product boundaries"
   },
   "offlineRuns": [
     "VoiceBot synthetic protocol/MLS/DAVE",

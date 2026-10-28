@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCodecs/DiscordVoiceCodecs.docc/Guides/PacketAndCodecOwnership.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Ordinary Opus packets and codec ownership
 
 Select a fixed encoder policy and retain per-stream decoding history.

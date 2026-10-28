@@ -1,3 +1,10 @@
+<!--
+File: Packages/DiscordDSLExtensions/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Independently compiled DSL extensions
 
 This package is an ordinary downstream consumer of DiscordKit public APIs. It
@@ -40,4 +47,4 @@ wrong typed dependencies. The example actor bounds both observation counts to ei
 and retains no credential, submitted value, per-user key or queue.
 
 This establishes local cross-package extensibility and ownership behavior. Live
-Discord, platform deployment and Part 15K capacity qualification remain separate.
+Discord, platform deployment and capacity qualification remain separate.

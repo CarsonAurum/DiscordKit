@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/ApplicationCommandValues.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// API v10 ApplicationCommandType wire values, verified 2026-10-16; response RawValue wrappers retain future values.

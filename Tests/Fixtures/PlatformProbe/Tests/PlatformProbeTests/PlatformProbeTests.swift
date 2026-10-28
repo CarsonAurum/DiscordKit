@@ -1,3 +1,8 @@
+// File: Tests/Fixtures/PlatformProbe/Tests/PlatformProbeTests/PlatformProbeTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import Testing
 import NIOCore

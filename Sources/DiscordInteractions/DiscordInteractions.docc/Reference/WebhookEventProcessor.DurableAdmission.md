@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordInteractions/DiscordInteractions.docc/Reference/WebhookEventProcessor.DurableAdmission.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordInteractions/WebhookEventProcessor/DurableAdmission``
 
 ## See Also

@@ -1,6 +1,13 @@
+<!--
+File: Docs/Feasibility/PlatformContracts.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Social, Activity and Commerce protocol feasibility
 
-Verified on **2026-10-15**. This report classifies potential owned providers for roadmap Part 0. No Social, Activity or Commerce implementation is added or certified by these records.
+Verified on **2026-10-15**. This report classifies potential owned providers for the discovery baseline. No Social, Activity or Commerce implementation is added or certified by these records.
 
 ## Per-method inventory
 
@@ -56,7 +63,7 @@ The [written Embedded App reference](https://docs.discord.com/developers/develop
 
 The [official bridge implementation](https://github.com/discord/embedded-app-sdk/blob/14264eccbf9e68d5d58c1aadbc7579e003e0dce6/src/Discord.ts) is evidence for iframe `postMessage` framing, version-1 handshake, per-command nonces, dispatch/error routing and subscription reference counts. DiscordKit must author its own JavaScript bridge without the npm runtime graph. A native Swift object, a local web page or a successful mock cannot establish a Discord-hosted Activity session. Browser bindings or a WebKit adapter must use the actual Discord iframe host and its permitted origins.
 
-Host-specific restrictions remain method-specific: for example, hardware-acceleration prompting differs from commands supported on mobile hosts, guild/DM channel reads require their own scopes, and relationships access is gated. `getInstanceConnectedParticipants` is a compatibility alias, not an additional backend operation. Permission checks, price formatting and URL remapping are owned local utilities; their source dependencies are not imported. No Activity host conformance test ran in Part 0.
+Host-specific restrictions remain method-specific: for example, hardware-acceleration prompting differs from commands supported on mobile hosts, guild/DM channel reads require their own scopes, and relationships access is gated. `getInstanceConnectedParticipants` is a compatibility alias, not an additional backend operation. Permission checks, price formatting and URL remapping are owned local utilities; their source dependencies are not imported. No Activity host conformance test ran in this probe.
 
 ## Commerce contracts
 
@@ -68,4 +75,4 @@ The public [SKU](https://docs.discord.com/developers/resources/sku), [Entitlemen
 
 The [ambiguity register](../Parity/ambiguities.json) records the Identity Profile success-response contradiction, conflicting RPC/Certified Device port upper bound, preview-spec precedence, missing SDK protocols, server/public-client equivalence, source-only Activity availability, RPC presence clearing and DAVE document/wire-version distinction. It states interim policies and explicit resolution requirements.
 
-Public API mapping is feasible without the Discord native runtime. Entire-platform parity remains blocked by unresolved upstream contracts/access and unqualified host behavior. Complete public-provider implementation, deterministic fixtures, approved host/runtime conformance and platform-specific capability reporting in the later roadmap parts before changing any operation's unsupported status.
+Public API mapping is feasible without the Discord native runtime. Entire-platform parity remains blocked by unresolved upstream contracts/access and unqualified host behavior. A support claim requires implemented public providers, deterministic fixtures, approved host/runtime conformance and platform-specific capability reporting.

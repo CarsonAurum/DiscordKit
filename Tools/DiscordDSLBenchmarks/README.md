@@ -1,6 +1,13 @@
+<!--
+File: Tools/DiscordDSLBenchmarks/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Independent offline DSL benchmarks
 
-Part 15K development tooling compares direct handwritten routes and real DSL
+The benchmark package compares direct handwritten routes and real DSL
 lowering through the same typed decoder, manual handler, existing `CommandRouter`
 and `InteractionResponder`. It is a downstream package; no runtime product selects
 it. It starts no listener and uses no credentials, hydration provider, registration
@@ -102,9 +109,9 @@ A single overrun fails the local check. Three matching runs are required before
 attributing a >10% regression to a change. A first baseline self-check validates
 budget wiring; it does not establish a comparison against a previous implementation.
 
-The committed [15K evidence](../../Docs/Release/phase15k-validation.json) records
+The committed [benchmark evidence](../../Docs/Release/dsl-benchmarks-validation.json) records
 actual commands, sources, executable identities, timings and limitations. The
 existing [cache/broadcast 30-minute soak](../DiscordKitLoadTests/README.md) and the
 new handler soak remain independent evidence. Neither establishes production/fleet
 capacity, live Discord, HTTP/Gateway host throughput, another platform, hardware,
-independent crypto review or full Phase 15 release certification.
+independent crypto review or full release certification.

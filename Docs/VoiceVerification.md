@@ -1,3 +1,10 @@
+<!--
+File: Docs/VoiceVerification.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Owned Opus verification
 
 Normal package builds and Swift Testing use committed synthetic fixtures and owned
@@ -72,7 +79,7 @@ numerical agreement and are not a speech-quality or perceptual MOS measurement.
 
 Apple adapter property/backend tests and cross-SDK compilation remain separate
 from real microphone permission, routing, interruption and hot-unplug qualification.
-The [native availability audit](Parity/phase12a-native-platform-audit.json) records
+The [native availability audit](Parity/codecs-native-platform-audit.json) records
 actual missing Windows/Android Swift libraries and audio SDK headers on this host,
 plus concrete WASAPI and AAudio/JNI implementation prerequisites. It does not count
 an injected backend or a failed compile probe as a native audio implementation.

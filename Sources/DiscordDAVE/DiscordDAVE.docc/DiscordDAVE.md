@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDAVE/DiscordDAVE.docc/DiscordDAVE.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordDAVE``
 
 Coordinate authenticated DAVE v1 transitions and protect complete encoded media frames.

@@ -1,16 +1,21 @@
+<!--
+File: Docs/Concurrency.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Concurrency and ownership
 
-Status: adopted implementation policy, updated 2026-10-16. Part 1 implements
-Sendable values, pull-body ownership and deadline contexts with deterministic
-test support. Part 2 adds actor/event-loop-owned adapters and fenced shard leases;
-see [transport ownership](Transport.md). Part 3 adds partitioned rate authority,
-bounded scheduling/read reuse and supervised shard actors. Part 7 adds independent
-bounded broadcast queues, structured per-shard ordered handlers, optional scoped
-entity projections and the supervised consumer client. Raw shard polling remains
-available; the client uses a single bounded wake-up stream for ingestion. See
-[client ownership and bounds](Client.md) for cancellation, aggregate authority and
-stale-fetch guarantees.
-See [HTTP](HTTP.md) and [Gateway](Gateway.md) for implemented ownership boundaries.
+Sendable values, pull-body ownership and deadline contexts define portable
+boundaries. Actors and event loops own adapters, shard leases, rate authorities,
+bounded queues and session state. Structured handlers, scoped entity projections
+and supervised clients retain explicit cancellation and cleanup ownership.
+
+Raw shard polling remains available; Client uses a single bounded wake-up stream
+for ingestion. See [client ownership and bounds](Client.md) for aggregate authority,
+stale-fetch guarantees and shutdown, and [transport](Transport.md), [HTTP](HTTP.md)
+and [Gateway](Gateway.md) for protocol-specific ownership.
 
 ## Target settings and isolation
 
@@ -90,7 +95,7 @@ after suspension and stop new sends when authority is lost.
 The [scalability requirements](Scalability.md) define deterministic overload,
 cross-worker admission, lease-failover and request-reduction gates. Keep local
 performance/soak measurements separate from virtual-time correctness tests;
-qualify aggregate budgets and control latency from the first runtime milestones.
+qualify aggregate budgets and control latency throughout runtime development.
 
 Use deterministic Swift Testing suites with injected clocks and scripted
 transports. Cover success, errors, cancellation before and during work, deadlines,

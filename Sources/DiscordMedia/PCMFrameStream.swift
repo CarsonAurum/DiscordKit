@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/PCMFrameStream.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 /// Failures specific to terminal-aware, single-consumer PCM streaming.
 public enum PCMStreamError: Error, Sendable, Equatable {

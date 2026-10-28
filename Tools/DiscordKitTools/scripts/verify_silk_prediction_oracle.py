@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_prediction_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Offline SILK prediction/excitation differential verification against libopus 1.6.1.
 
 Supply --source-archive /path/to/opus-1.6.1.tar.gz separately. This script never

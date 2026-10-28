@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordUnixPlatform/DiscordUnixPlatform.docc/Reference/UnixIPCFailure.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordUnixPlatform/UnixIPCFailure``
 
 ## Topics

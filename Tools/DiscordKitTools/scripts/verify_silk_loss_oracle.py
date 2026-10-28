@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_silk_loss_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Offline scalar SILK PLC/CNG, post-loss recovery and in-band FEC verification.
 
 Builds unmodified pinned libopus 1.6.1 from a separately supplied verified archive

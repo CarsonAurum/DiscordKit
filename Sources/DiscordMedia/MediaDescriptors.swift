@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/MediaDescriptors.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// A caller-asserted spatial/temporal identity attached to an opaque encoded video frame.
 ///
 /// Index bounds are DiscordKit storage policy, not an RTP field layout, a codec's permitted

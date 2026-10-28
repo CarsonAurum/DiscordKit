@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_packet_loss_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in actual compressed CELT loss/recovery interoperability with pinned scalar libopus.
 
 Every missing packet is encoded but withheld from the reference and owned decoders,
@@ -6,6 +11,8 @@ so subsequent predictive frames exercise real loss recovery. No codec is linked 
 products or ordinary tests. Official full Opus conformance, SILK/FEC and devices
 remain outside this bounded local check.
 """
+from publication import swift_header
+
 import argparse
 import base64
 from datetime import datetime,timezone
@@ -163,7 +170,7 @@ def main():
         prepared=[dict(channels=x['channels'],frames=[dict(n=f['n'],end=f['end'],lost=f['lost'],packet=e['packet']) for f,e in zip(x['frames'],out['frames'])]) for x,out in zip(inputs,expected)]
         actual=parse_outputs(run([str(owned)],'\n'.join(map(json.dumps,prepared)).encode()),len(inputs),'Owned compressed-loss driver')
         statistics=compare_results(inputs,expected,actual);records=fixture_records(fixed,expected[:len(fixed)]);fixture=repository/FIXTURE_PATH
-        if args.write_fixtures:fixture.write_text('/// Complete independent actual compressed CELT packet loss/recovery PCM vectors.\nenum CELTPacketLossOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
+        if args.write_fixtures:fixture.write_text(swift_header(FIXTURE_PATH) + '/// Complete independent actual compressed CELT packet loss/recovery PCM vectors.\nenum CELTPacketLossOracleFixtures {\n    static let json = #"""\n'+json.dumps(records,separators=(',',':'))+'\n"""#\n}\n')
         if not fixture.exists() or json.loads(fixture.read_text().split('#"""',1)[1].split('"""#',1)[0])!=records:raise ValueError('packet-loss fixture differs; review --write-fixtures')
         report=dict(verifiedAt=datetime.now(timezone.utc).isoformat(),scope='actual compressed CELT packets withheld and recovered through full official Opus API',version=VERSION,releaseURL=RELEASE_URL,sourceURL=SOURCE_URL,archiveSHA256=ARCHIVE_SHA256,seed=args.seed,fixedSequences=len(fixed),randomSequences=args.cases,totalSequences=len(inputs),totalFrames=sum(len(x['frames']) for x in inputs),**statistics,tolerance=dict(absoluteTimesSequenceMaximum=ABSOLUTE_TOLERANCE,relative=RELATIVE_TOLERANCE),exact=['every received and lost packet final range'],excluded=['SILK/hybrid','FEC','full decoded-PCM conformance','devices/realtime'],ownedSources=compiled_hashes,sourceDriftAtCompletion=source_drift(repository,compiled_hashes),upstreamSources={p:digest(upstream/p) for p in UPSTREAM_PATHS},fixture=dict(path=FIXTURE_PATH,sha256=digest(fixture)),verifierSHA256=digest(Path(__file__)),referenceBuild=dict(librarySHA256=digest(source/'.libs/libopus.a'),configurationSHA256=digest(source/'config.h')))
         if args.report:args.report.write_text(json.dumps(report,indent=2)+'\n')

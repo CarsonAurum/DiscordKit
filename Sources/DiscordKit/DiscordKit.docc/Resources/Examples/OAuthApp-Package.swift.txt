@@ -1,4 +1,9 @@
 // swift-tools-version: 6.4
+// File: Sources/DiscordKit/DiscordKit.docc/Resources/Examples/OAuthApp-Package.swift.txt
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import PackageDescription
 
 let package = Package(

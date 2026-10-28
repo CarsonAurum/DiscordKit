@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/SILKPulseCoding.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Rejections from independently adopted RFC 6716 SILK pulse entropy syntax.
 public enum SILKPulseCodingError: Error, Sendable, Equatable {
     case invalidSampleCount

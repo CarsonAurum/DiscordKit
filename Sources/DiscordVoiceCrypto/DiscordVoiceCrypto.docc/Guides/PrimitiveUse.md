@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCrypto/DiscordVoiceCrypto.docc/Guides/PrimitiveUse.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Using low-level authenticated primitives
 
 Reserve primitive APIs for callers that already own keys, nonces and protocol framing.

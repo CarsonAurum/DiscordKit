@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_harvest_inventory.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Deterministic extractor regression tests; only standard-library unittest is required."""
 
 import json

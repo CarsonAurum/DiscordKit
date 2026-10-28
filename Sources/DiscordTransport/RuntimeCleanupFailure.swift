@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/RuntimeCleanupFailure.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Package-only opt-in provenance for supervised cleanup errors; ordinary lower-level public errors stay unchanged.
 /// The task-local value is inherited only by owned structured children and creates no tasks or retained queue.
 package enum RuntimeCleanupFailureScope {

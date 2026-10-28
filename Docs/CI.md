@@ -1,69 +1,46 @@
-# Continuous validation and unavailable gates
+<!--
+File: Docs/CI.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Phase 14 adds three workflows. Their definitions are committed infrastructure;
-local checks do not establish that a hosted runner, self-hosted machine, protected
-environment or Discord account has been configured or executed. Review actual
-workflow artifacts before upgrading a platform claim.
+# Continuous validation and platform qualification
 
-## Offline certification
+The repository defines offline validation, optional platform qualification and
+upstream-maintenance workflows. A workflow definition does not establish that a
+hosted runner, self-hosted machine, protected environment or Discord account has
+been configured or executed. Review actual artifacts before changing support claims.
 
-[Offline certification](../.github/workflows/ci.yml) runs on push, pull request and
+## Offline validation
+
+[Offline validation](../.github/workflows/ci.yml) runs on push, pull request and
 manual dispatch with read-only repository permissions and no Discord secrets.
 Hosted macOS 26/Ubuntu 24.04 jobs install Swift 6.4.1, build/test the root, test
-tooling/load packages and Python helpers, run browser bridge tests, validate
-documentation presence/inventory/generation/parity/Social catalog, audit the actual
-manifest/import DAG, validate release/maintenance records, and build every consumer.
-CommandsApp/DSLCommands/DSLEvents/DSLBot/ActivityHost/LoggingApp tests and
-CommandsApp/DSLCommands/DSLEvents/DSLBot/VoiceBot/SocialApp/LoggingApp offline runs are
-explicit. Credential-bearing examples are built only. Integrated SwiftLog adds a
-root `0.16.0` API baseline and optional output handlers; macro/extension baselines
-remain `0.15.0`. Existing runtime products never select the output library.
+independent tooling/load packages and Python helpers, run browser-bridge tests,
+validate documentation/inventory/generation/parity, audit manifest/import isolation,
+validate release records and build independent consumers. Credential-bearing
+examples are built only; explicit offline modes use synthetic peers and payloads.
 
-Parts 15A and 15B add independently selected `DiscordDSL` and `DiscordCommandDSL`
-products and their root tests. CI compares the current root candidate against
-the frozen `0.14.0`/`0.15.0` API snapshots and the new `0.16.0` baseline, validates
-historical release/maintenance records, and discovers the public DocC modules
-from the manifest. The authoring checkpoint covers shared
-declarations, typed argument decoding, explicit command lowering and Part 15C's
-separate macro authoring package. Part 15D adds typed immediate/deferred/manual
-responses and signed HTTP application composition with explicit synchronization.
-The independent DSLCommands consumer runs its synthetic signed exchange in explicit
-offline mode; listener startup and registration are never part of routine CI.
-CI tests compiled macro expansions and external
-positive/negative fixtures, including Sendable checks and a cross-module codec.
-Part 15E adds safe text/typed-mention, layout and direct-payload-parity root suites,
-and the independent DSLCommands exchange now exercises a builder-authored response.
-Part 15F adds family routing/input/response and catalog reconciliation regressions,
-compiled family macros and external incompatible-response fixtures. Part 15G adds
-policy ordering, rejection, cancellation and terminal-ownership tests. Part 15H adds
-typed Gateway event compilation, explicit intents, ordered bounded dispatch and the
-independent DSLEvents offline consumer. Part 15I adds supervised client/event/interaction
-lifecycle tests and the independently compiled DSLBot offline consumer, whose synthetic
-host uses no credentials or external sockets. Part 15J tests the separate
-`DiscordDSLExtensions` libraries and genuine external positive/negative dependency
-compile fixtures. DSLCommands and macro-free DSLBot import reusable command/event
-modules through their explicitly selected products; shared actor state, custom
-codecs/policies and raw command adoption execute only in their offline modes.
-Graph auditing includes the separate package's exact imports and product selections;
-its public API and DocC are collected independently from runtime and macro APIs.
-Part 15K adds independent benchmark Swift/Python tests and a small paired offline
-runtime smoke matrix. Full runtime/compiler measurements are explicit local qualification
-commands; compare numerical budgets only on matching hardware, toolchain and workload.
-Part 15L preserves `Docs/Release/phase15l-report.json` as authoring checkpoint
-evidence and keeps the Phase 14 and 15K reports intact and separately validated.
-The semantic logging candidate records current local checks in
-[semantic logging validation](Release/semantic-logging-validation.json); the first
-[logging validation](Release/logging-validation.json) stays historical. It also checks freshly emitted macro and extension APIs against their
-separate `0.15.0` baselines. The root comparison retains the historical `0.14.0`
-migration checks, then rejects same-version root API drift against the reviewed
-`0.18.0` snapshot. None of these checks replaces running the current source validation or
-establishes a passed platform run, publication or production capacity.
+Checks cover typed arguments, command-family routing, response ownership,
+message/mention safety, policies, bounded Gateway dispatch, supervised bot cleanup
+and external module adoption. Separate macro tests compile expansions and external
+positive/negative fixtures, including Sendable and dependency checks. Runtime
+products never select SwiftSyntax or compiler plugins. Independent extension
+libraries receive their own graph, public API and DocC checks.
+
+The benchmark package has independent Swift/Python tests and a small paired
+runtime smoke matrix. Full runtime/compiler measurements use explicit local
+commands and are compared only with matching hardware, toolchain and workload.
+API checks compare fresh compiler output to the applicable reviewed root, macro
+and extension baselines; changing an existing baseline requires compatibility
+review. None of these checks establishes publication or production capacity.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to
 arm64 macOS 13 module availability. If a runner architecture or platform scope
 changes, the comparison must fail and receive review rather than resetting the
 baseline silently. Compiler/SDK changes can also produce conservative differences.
-The committed Phase 15 baselines were emitted locally with Apple Swift 6.4;
+The committed baselines were emitted locally with Apple Swift 6.4;
 hosted CI requests Swift 6.4.1. A workflow definition does not demonstrate that
 these toolchains emit identical signatures. Review actual same-version comparison
 results before accepting hosted compatibility; do not regenerate a baseline to
@@ -135,7 +112,7 @@ RESTOnly's normal process exit on a categorized failure cannot pass qualificatio
 GitHub environment protection is operator configuration, not something
 the workflow can silently create. A missing credential fails; it is not treated as
 successful smoke. Only numeric public IDs are printed by RESTOnly; never log tokens.
-No live smoke was invoked as part of local Phase 14 validation.
+No live smoke was invoked as part of local validation.
 
 ## Weekly official review
 

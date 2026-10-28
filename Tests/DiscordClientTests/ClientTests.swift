@@ -1,3 +1,8 @@
+// File: Tests/DiscordClientTests/ClientTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordClient
 import DiscordCore
 import DiscordGateway
@@ -228,10 +233,10 @@ private struct ClientFixture {
         budget = try ClientResourceBudget()
         leases = try InProcessShardLeaseStore(clock: clock, maximumLeases: 4)
         let authority = try ClientAuthority(botID: UserID(rawValue: 42), clock: clock, budget: budget)
-        let rest = RESTClient(credential: .bot(try BotToken("phase7-test-sentinel")), identity: RateLimitIdentity(),
+        let rest = RESTClient(credential: .bot(try BotToken("client-test-sentinel")), identity: RateLimitIdentity(),
             transport: http, coordinator: RateLimitCoordinator(clock: clock), clock: clock)
         let cleanup = cleanup
-        client = DiscordClient(token: try BotToken("phase7-test-sentinel"),
+        client = DiscordClient(token: try BotToken("client-test-sentinel"),
             configuration: try ClientConfiguration(intents: [.guilds]), services: ServiceContext(rest: rest),
             transport: ScriptedWebSocketTransport(connection: socket), clock: clock, leases: leases,
             authority: authority, events: hub, cleanup: { await cleanup.increment() })

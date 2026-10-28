@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBotDSL/DiscordBotDSL.docc/DiscordBotDSL.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordBotDSL``
 
 Compose finite typed Gateway modules and explicit supervised bot applications over existing owners.

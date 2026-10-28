@@ -1,174 +1,98 @@
+<!--
+File: Docs/Architecture.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Architecture and API conventions
 
-Phase 14's [release tooling](ReleaseTooling.md) independently audits the actual
-manifest/import DAG and consumer isolation. SwiftSyntax is confined to the separate
-development package; public runtime products select no documentation tooling.
-The [release report](Release/2026-10-18.md) distinguishes compiled products from
-unverified platform capabilities and preserves the existing adoption boundaries.
+DiscordKit separates portable values, protocol ownership, concrete adapters and
+application composition into independently adoptable products. The
+[release tools](ReleaseTooling.md) audit the actual manifest/import graph and
+consumer isolation. Runtime products select no compiler plugin or documentation
+tooling. Applications inject concrete transports, credentials, clocks and shared
+resource authorities at their composition root.
 
-[Integrated logging](Logging.md) adds `DiscordLogging -> swift-log/Logging` to explicit
-operation owners, including shared DSL policy execution. Pure Bits/Core/Models,
-codec/crypto transforms and authoring compilation remain independent and quiet.
-This is a narrow logging-only addition to earlier product diagrams and Core/Models-only
-DSL descriptions. It introduces no upward service, compiler plugin or concrete-adapter
-edge. The independently selected `DiscordLogHandlers -> swift-log/Logging` owns optional
-outputs; no existing runtime product selects it. The executable configures SwiftLog,
-thresholds and output lifetimes; library constructors never bootstrap or emit.
+`DiscordBits`, `DiscordCore` and `DiscordTransport` provide identifiers, exact
+values, field presence, bounded payloads and transport contracts. Models retain
+unknown protocol fields and distinguish absent, null and supplied values.
+[Foundation/NIO networking, Unix IPC and Apple lifecycle adapters](Transport.md)
+remain separate from portable products.
 
-Status: adopted design, updated 2026-10-19. `DiscordBits`, `DiscordCore` and
-`DiscordTransport` implement the Part 1 foundations; `DiscordKit` exposes common
-Core aliases. Part 2 adds independently injected Foundation/NIO adapters, Unix IPC
-and Apple lifecycle ownership. Part 3 adds [HTTP execution](HTTP.md), partial Models
-and the required [minimal Gateway lifecycle](Gateway.md). Discovery in Gateway
-depends on HTTP while the HTTP product remains independent. Part 4 adds separate
-[reviewed generation tooling](Generation.md), with committed outputs and no consumer
-build-time generator or network access. Part 5A adds the independently adopted
-[message/poll REST catalog](RESTCatalog.md), handwritten semantic request/response
-contracts, uploads and bounded operation helpers within Models/HTTP. Part 5B adds
-[channel/thread contracts](Channels.md) in the same independent products, including
-type-aware edits, membership/archive workflows and forum/media creation. Part 5C adds
-[guild administration](Guilds.md), typed member/role/ban/settings contracts, explicit
-partial bulk outcomes and finite lazy traversal in those same independent products.
-Part 5D adds [audit logs and Auto Moderation](Moderation.md), typed audit changes,
-validated rule requests and bounded directional audit traversal without adding targets.
-Part 5E adds [emoji, stickers and soundboard](Expressions.md), complete written
-resource-owned contracts, bounded media and opt-in snapshot reconciliation in Models/HTTP.
-Part 5F adds [invites, templates, scheduled events and stages](DiscoveryEvents.md),
-with bounded CSV jobs, recurrence/status contracts, finite user traversal and snapshot
-reconciliation in the same independent products. Part 5G adds
-[applications/users, linked roles and commands](ApplicationsUsers.md), typed profile and
-configuration contracts, finite guild traversal and explicit registration reconciliation
-without adding dependencies or command-routing targets. Part 5H adds
-[webhook/interaction/voice REST contracts](WebhooksInteractionsVoice.md) with typed
-path-token scopes. Part 5I adds [monetization contracts](Monetization.md), complete
-written SKU/Entitlement/Subscription fields, premium interaction data and finite
-traversal in Models/HTTP. Subscription lifecycle state is separate from entitlement
-decisions; broader Commerce products remain planned. Part 5J adds
-[lobbies and application identity profiles](SocialGame.md), bounded member bulk
-workflows and full-replacement profile statistics in the same products. Part 6 adds
-[typed Gateway dispatches and commands](Gateway.md), bounded request correlation
-and independent opcode admission in Models/Gateway. Gateway continues to depend on
-HTTP only for discovery and never imports cache, user handler implementations or concrete transports.
-Part 7 adds [consumer composition and optional state](Client.md): independent Cache
-and Client products, bounded broadcast/ordered handler infrastructure in Gateway,
-explicit scoped cache bridging and typed service access. The umbrella now composes
-Client; REST-only consumers retain the independent HTTP graph.
-Part 8 adds [signed ingress, response ownership and command workflows](Interactions.md)
-in independent Interactions/Commands products. HTTP applications adopt neither Gateway
-nor Client/Cache. Interactions selects Swift Crypto for signed requests and digests;
-HTTP itself keeps its existing dependency graph. Webhook-event admission requires an
-injected durable commit authority; display-only preview values remain in Models.
-Part 9 adds [OAuth](OAuth.md), [public game-account services and entitlement helpers](Phase9ServiceContracts.md)
-in independently adopted OAuth/GameServices/Commerce products. OAuth uses Swift Crypto
-for S256; the HTTP graph remains independent of OAuth and Crypto. Browser UI and
-secure transactional storage are injected. Native SDK-only and missing Commerce
-wire contracts remain blocked.
-Part 10 adds independently adopted [local RPC](RPC.md) and
-[Certified Devices](CertifiedDevices.md) products. RPC uses injected Transport
-IPC/WebSocket contracts and Core values; CertifiedDevices depends on RPC/Core/Transport.
-Neither product selects HTTP, Gateway, OAuth, Client, Cache or a concrete adapter.
-Local authorization is explicit and separate from bot credentials. Desktop-host
-access, deprecated WebSocket availability and platform adapters remain qualified
-separately from portable protocol code.
-Part 11 adds [Activities](Activities.md) over Core/Transport contracts and an owned
-minimal browser bridge. Applications inject a Swift/browser binding and an authorized
-Discord Activity host. The portable product selects no HTTP, Gateway, RPC, OAuth,
-Client or Cache. Backend auth and entitlement verification are composed explicitly.
-See [transport contracts](Transport.md). The complete
-graph below remains the intended architecture, beyond
-the current manifest. Introduce further targets and products with implementations
-and tests. See [foundation contracts](Foundation.md) for current scope and limits.
+[HTTP](HTTP.md) owns typed request execution, rate admission, retries and bounded
+reuse. Its resource catalogs cover messages/polls, channels/threads, guilds,
+moderation, expressions, discovery/events, applications/users, webhooks,
+monetization and game-account operations. [Gateway](Gateway.md) depends on HTTP
+for discovery and owns supervised sharding, typed dispatches, opcode admission
+and bounded correlated requests. HTTP remains independently usable.
 
-Part 12's initial [media/voice release](Voice.md) adds Media, VoiceCodecs,
-VoiceCrypto and pure Voice protocol components. ApplePlatform additionally adopts
-Media for native capture/playback and supported explicit device routing; Media selects no Apple frameworks.
-VoiceCodecs owns ordinary SILK/CELT/hybrid arithmetic, synthesis and loss recovery;
-its unified decoder starts no tasks or I/O and retains fixed output channels while
-coded channels and modes change. Native Opus is used only by opt-in development
-comparisons, never by product or ordinary test linkage. Encoder analysis limits and
-the remaining native adapter gates are recorded in the voice capability inventory.
-Voice uses Core/Models/Transport plus those media products; existing Gateway dispatch models supply narrow join
-inputs without a Gateway runtime dependency. VoiceCrypto uses Crypto/CryptoExtras.
-Phase 12B adds independently adopted [MLS](MLS.md): owned MLS 1.0/ciphersuite-2
-wire, credentials, key establishment, ratchet trees, secret trees and the restricted
-group-handshake profile required by DAVE v1. MLS selects only Swift Crypto and
-starts no tasks or I/O. Phase 12C adds independently adopted [DAVE](DAVE.md):
-authenticated Voice signaling/MLS coordination, sender ratchets, encoded-frame
-transforms and bounded ephemeral identity verification. DAVE selects Voice, MLS,
-VoiceCrypto, Core/Transport and existing Crypto/CryptoExtras. Voice and VoiceCrypto
-remain independent of MLS/DAVE, preserving adoption without a dependency cycle.
-Phase 12D adds [supervised voice sessions](VoiceSessions.md) with an injected
-main-Gateway opcode-4 sender; Voice imports no Gateway or client facade.
-The DAVE adapter implements Voice's injected E2EE interface, preserving DAVE -> Voice.
-HTTP/Gateway/Client/Kit remain independent of voice,
-MLS and DAVE. Independent crypto review, complete-client/live interoperability,
-platform/device and ten-minute duplex qualification remain open.
+[Client](Client.md) composes Gateway ingestion, typed services and optional entity
+state. Cache owns scoped bounded projections and permission resolution without
+importing HTTP, Gateway or Client. Gateway supplies bounded broadcast and ordered
+handler infrastructure without importing user handler implementations or adapters.
+The umbrella exposes common values and composition aliases; consumers can select
+narrower products directly.
 
-Phase 13 adds independently adopted [Social composition](Social.md) over narrow
-HTTP/RPC/Activity provider contracts, explicit consent/host admission, bounded scoped
-relationship observations and local PCM controls. It imports Core/Models/Transport,
-HTTP/OAuth/GameServices/Commerce, RPC/Activities and Media; no existing product depends
-upward on Social. Social does not select Gateway/Client/Cache, Voice/MLS/DAVE or concrete
-adapters. Applications compose qualified voice separately rather than making Social
-account capabilities imply SDK-only lobby-call signaling. OAuth additionally owns the
-published confidential backend device flow with explicit bounded polling.
+[Interactions and Commands](Interactions.md) own signed HTTP ingress, response
+lifetimes, exact routing and explicit command reconciliation. HTTP applications
+select neither Gateway nor Client/Cache. Interactions uses Swift Crypto for
+signature verification and delivery digests; HTTP remains independent of Crypto.
+Webhook-event admission requires an injected durable commit authority.
 
-Phase 15A adds independently adopted [shared authoring declarations](DSL.md) in
-`DiscordDSL`. Its only direct dependencies are Core and Models; existing products
-have no upward DSL dependency. Synchronous module composition produces a finite,
-immutable description with stable explicit identities, source diagnostics and
-configurable structural admission limits. It owns no tasks, transport, command
-registration or event execution. Part 15B adds independently selected
-[typed command authoring](CommandDSL.md) in `DiscordCommandDSL`, depending on
-DSL/Core/Models/Commands/Interactions. It compiles finite argument schemas and manual
-slash handlers to existing command definitions/routes; `makeRouter` explicitly creates
-the existing bounded router. Response ownership stays with Interactions. Neither
-existing products nor the shared DSL acquire upward dependencies. Part 15C's separate
-[macro package](MacroDSL.md) consumes these runtime products; only its host plugin
-selects SwiftSyntax 604.0.0. Part 15D adds typed immediate/deferred response adapters
-and a signed HTTP `CommandApplication` over the existing application/router, adding
-direct HTTP/Transport imports. Initial response admission remains independent and
-command synchronization is explicit. Constructors and ordinary run register nothing;
-the host injects and owns concrete ingress. Existing runtime graphs remain macro free.
-Part 15E adds typed content interpolation to the Core/Models-only shared DSL,
-with pure message/component builders and thin immediate/deferred response adapters
-in CommandDSL. Existing payload validation owns layout, field presence and aggregate
-limits; explicit mention allowlists accompany rendered text. The builders own no
-transport, registration or handler lifetime. Part 15F extends the same compiled catalog
-to command trees, typed context-menu targets, partial autocomplete and exact component/modal
-routes, retaining independent response families and the existing reconciler. Part 15G
-adds pure shared policy/middleware values and command execution adapters after complete
-input admission. The existing Commands route owner provides synchronous preparation and
-execution interception without any DSL dependency. Injected concurrency authorities
-remain independent of HTTP rate limits. Policies create no tasks or I/O.
-Part 15H adds independently adopted [Gateway event modules](GatewayEventModules.md)
-in `DiscordBotDSL`. It validates explicit intents,
-flattens modules to one default bounded subscription, and delegates complete-shard
-serialization and cross-shard concurrency to the existing dispatcher. Named independent
-groups opt into extra bounded subscriptions. Part 15I adds [supervised bot applications](BotApplications.md),
-shared typed services and a trusted Gateway interaction bridge. BotDSL now explicitly
-selects Client, CommandDSL, Commands, Interactions, HTTP and Transport in addition to
-DSL/Gateway/Models/Core. Existing products remain independently adopted and gain no
-upward dependency. An inert `BotRuntime` subscribes before client startup, supervises
-the existing client and pipelines, and closes/joins them on all exits. A package-only
-client ingestion boundary supplies interaction provenance; ordinary public event-hub
-publication cannot authenticate input. Callbacks retain existing HTTP response ownership.
-No concrete transport, compiler plugin, credential discovery or automatic registration
-is introduced. Part 15J adds [external module namespaces and typed dependencies](ModuleExtensions.md)
-without changing those runtime graphs. Namespace component paths qualify structural
-identities while original declaration metadata and wire names remain unchanged.
-Dependency validation occurs synchronously after module admission and before lazy
-body creation. Separately selected `DiscordDSLExtensions` libraries depend downstream
-on shared/command/bot products; root products never select that package. Application-owned
-Voice, Social and OAuth interfaces can be injected into typed dependency values
-without a DSL import or runtime service locator. Part 15K adds an independent
-[offline measurement package](DSLBenchmarks.md); runtime products select no benchmark
-or compiler-cost tooling. Part 15L adds complete [design](DSLDesign.md),
-[adoption](DSLAdoption.md) and migration guidance, independent compiled tutorial
-listings, compiler-curated public DocC, reviewed `0.15.0` API baselines and scoped
-[release-candidate evidence](Release/README.md). Historical checkpoint records remain
-frozen. No publication or tag is implied, and local certification does not close
-external platform/live/device/crypto/interop or production-capacity gates.
+[OAuth](OAuth.md), [GameServices and Commerce](ServiceContracts.md) provide
+state/issuer-bound authentication, public account operations and authoritative
+entitlement decisions. Browser UI and transactional secure storage are injected.
+[Local RPC](RPC.md), [Certified Devices](CertifiedDevices.md) and
+[Activities](Activities.md) retain independent protocol and host boundaries.
+Activities uses Core/Transport and an owned browser bridge; backend authorization
+and entitlement verification are composed explicitly.
+
+[Media and Voice](Voice.md) separate PCM processing, codec operations, transport
+crypto and supervised protocol sessions. ApplePlatform adopts Media for native
+capture/playback while Media remains independent of Apple frameworks. Voice
+imports no Gateway or client facade; applications inject a main-Gateway sender.
+[MLS](MLS.md) selects Swift Crypto and owns group key establishment without
+transport/media ownership. [DAVE](DAVE.md) depends on Voice and MLS; its adapter
+implements Voice's injected encryption interface, preserving the dependency
+direction. HTTP, Gateway, Client and the umbrella remain independent of voice,
+MLS and DAVE. Native Opus is used only by opt-in development comparisons.
+
+[Social](Social.md) composes narrow HTTP/RPC/Activity providers, explicit consent
+and host admission, bounded relationship observations and local PCM controls.
+It selects Core/Models/Transport, HTTP/OAuth/GameServices/Commerce, RPC/Activities
+and Media. It selects no Gateway/Client/Cache, Voice/MLS/DAVE or concrete adapter.
+Native-only SDK protocols and missing Commerce wire contracts remain unavailable.
+
+The [shared DSL](DSL.md) provides finite synchronous module composition over Core
+and Models. [CommandDSL](CommandDSL.md) compiles typed commands to existing
+Commands/Interactions owners and explicitly composes signed HTTP applications.
+[BotDSL](BotApplications.md) composes existing Client, CommandDSL and HTTP response
+owners for supervised bots. Construction and compilation start no tasks, transport,
+registration or handler execution. `BotRuntime` subscribes before client startup
+and closes/joins its client and pipelines on every exit. Only Client's internal
+Gateway ingestion boundary authenticates interaction provenance; public event
+publication cannot authenticate input.
+
+The separate [macro package](MacroDSL.md) consumes runtime products and confines
+SwiftSyntax to its compiler plugin. [External module libraries](ModuleExtensions.md)
+remain downstream; namespaces qualify structural identities while retaining
+original metadata and wire names. Typed dependencies validate before lazy body
+creation. Optional application-owned Voice, Social and OAuth services can be
+injected without runtime service discovery or automatic product selection.
+
+[Integrated logging](Logging.md) adds the SwiftLog foundation to explicit operation
+owners. Pure values, codec/crypto transforms and authoring compilation remain quiet.
+The independently selected output-handler product owns optional outputs; no runtime
+product selects it. Applications configure SwiftLog and output lifetimes. Library
+constructors never bootstrap logging or emit events.
+
+The [generation tool](Generation.md) produces reviewed committed output offline.
+Consumers do not fetch documentation or regenerate code. The independent
+[benchmark package](DSLBenchmarks.md) measures selected workloads; runtime products
+select no benchmark tooling. Local results do not qualify live Discord,
+platform/device behavior, external crypto review, full interoperability or
+production capacity. See [platform support](PlatformSupport.md) for those limits.
 
 ## Product boundaries
 
@@ -359,7 +283,7 @@ reuse must work without Gateway or the entity-cache product. Shared coordination
 is injectable with in-process defaults; shard ownership, Identify admission and
 rate reservations cannot silently become independent during coordinator failure.
 Start the sharded lifecycle alongside the first HTTP slice, before completing
-the endpoint catalog. Measure each runtime milestone against versioned load and
+the endpoint catalog. Measure runtime changes against versioned load and
 resource budgets in the scalability requirements.
 
 The [concurrency policy](Concurrency.md) supplies execution/ownership rules; the

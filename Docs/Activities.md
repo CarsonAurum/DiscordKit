@@ -1,6 +1,13 @@
+<!--
+File: Docs/Activities.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Activities and the owned browser bridge
 
-Part 11 adds an independently adopted `DiscordActivities` product and a minimal
+DiscordKit provides an independently adopted `DiscordActivities` product and a minimal
 owned JavaScript bridge. Contracts were verified against the official
 [Embedded App SDK reference](https://docs.discord.com/developers/developer-tools/embedded-app-sdk),
 [Activity lifecycle](https://docs.discord.com/developers/activities/how-activities-work),
@@ -163,11 +170,11 @@ authentication, plus a verifier when PKCE was requested. It omits a redirect URI
 because this iframe grant does not redirect through the ordinary browser OAuth
 callback. Ordinary redirect-bound OAuth continues to use its own stricter API. Never embed a
 client secret or server token storage in iframe/mobile code. Signed HTTP launch
-interactions and command definitions continue through [Parts 8–9](Interactions.md);
+interactions and command definitions continue through [interaction and command owners](Interactions.md);
 Activity startup does not require a remote Gateway session.
 
 A purchase response or ENTITLEMENT_CREATE event is client context. Use
-[DiscordCommerce's server entitlement verification](Phase9ServiceContracts.md)
+[DiscordCommerce's server entitlement verification](ServiceContracts.md)
 with the expected application, user/SKU and validity/consumption policy before
 granting durable value. Subscription status alone is not authorization. The
 injected Activity purchase operation remains separate from authoritative backend
@@ -183,5 +190,5 @@ executed local contracts. Approved Discord **Web, iOS and Android** host tests f
 handshake, auth, participants and purchase/entitlement workflows remain **not run**.
 Native UI adapters, actual Swift/browser-Wasm builds, minimum OS/browser versions,
 mobile suspension/recovery and real proxy behavior remain separate gates. These
-gates prevent a whole-platform Phase 11 completion claim while the implemented
+requirements prevent a whole-platform qualification claim while the implemented
 local protocol slice is independently adoptable.

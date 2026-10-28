@@ -1,3 +1,8 @@
+// File: Tools/DiscordDSLBenchmarks/Sources/DiscordDSLBenchmarks/Configuration.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Explicit finite dimensions shared by every paired workload; changing one invalidates baseline comparison.

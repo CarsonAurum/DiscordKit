@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "entries": [
     {
-      "id": "2026-10-15-part-0-baseline",
+      "id": "2026-10-15-baseline",
       "recordedOn": "2026-10-15",
       "upstreamVersions": {
         "rest": "10",
@@ -16,12 +16,12 @@
       "localRelease": "unknown",
       "localCommit": "unknown",
       "changeType": "discovery_baseline",
-      "previousBehavior": "Only hello() and an empty test scaffold; no inventory or implemented Discord integration.",
+      "previousBehavior": "No inventory or implemented Discord integration.",
       "currentBehavior": "Versioned discovery inventory, structural validator, capability matrix, local feasibility probes and named upstream blockers. No Discord operation has been implemented.",
       "affectedSymbols": [],
       "affectedPayloads": "All discovered upstream surfaces are inventoried as unsupported; this baseline introduces no runtime payload behavior.",
       "breakingChanges": [],
-      "migration": "No consumer migration required; the original runtime scaffold remains. Future support entries must link symbols and tests.",
+      "migration": "No consumer migration required. Support entries link implemented symbols and tests.",
       "sources": [
         "https://docs.discord.com/developers/reference",
         "https://docs.discord.com/developers/events/gateway",
@@ -33,7 +33,7 @@
       "remainingGates": "coverage.md"
     },
     {
-      "id": "2026-10-15-part-1-foundations",
+      "id": "2026-10-15-foundations",
       "recordedOn": "2026-10-15",
       "upstreamVersions": {
         "rest": "10",
@@ -47,7 +47,7 @@
       "localRelease": "unknown",
       "localCommit": "unknown",
       "changeType": "foundation_implementation",
-      "previousBehavior": "A hello() greeting and empty runtime test scaffold; only development tooling and feasibility probes had meaningful verification.",
+      "previousBehavior": "No portable Discord runtime; only inventory tooling and platform feasibility probes were available.",
       "currentBehavior": "Independent Bits, Core and Transport products provide local portable values, safe diagnostics, bounded bodies and injectable I/O contracts with deterministic test support. No Discord operation or network adapter is implemented.",
       "affectedSymbols": [
         "UnsignedBitSet",
@@ -75,7 +75,7 @@
       ],
       "affectedPayloads": "Local primitive formats and field-presence representations only; discovery inventory operation statuses remain unsupported.",
       "breakingChanges": [
-        "Remove hello() scaffold.",
+        "Remove the original greeting entry point.",
         "Declare documented Apple deployment minima in Package.swift."
       ],
       "migration": "Remove greeting calls and adopt the portable products as needed. Use JSONValue.parse/serialized for lossless numeric data; generic Codable numeric decoding is intentionally refused.",
@@ -88,7 +88,7 @@
       "remainingGates": "../Foundation.md"
     },
     {
-      "id": "2026-10-15-part-2-transports",
+      "id": "2026-10-15-transports",
       "recordedOn": "2026-10-15",
       "upstreamVersions": {
         "rest": "10",
@@ -134,7 +134,7 @@
       "remainingGates": "../Transport.md"
     },
     {
-      "id": "2026-10-16-part-3-http-early-gateway",
+      "id": "2026-10-16-http-early-gateway",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -193,7 +193,7 @@
       "remainingGates": "../HTTP.md"
     },
     {
-      "id": "2026-10-16-part-4-reviewed-generation",
+      "id": "2026-10-16-reviewed-generation",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -235,7 +235,7 @@
       "remainingGates": "../Generation.md"
     },
     {
-      "id": "2026-10-16-part-5a-messages-polls",
+      "id": "2026-10-16-messages-polls",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -278,7 +278,7 @@
       "remainingGates": "../RESTCatalog.md"
     },
     {
-      "id": "2026-10-16-part-5b-channels",
+      "id": "2026-10-16-channels",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -321,7 +321,7 @@
       "remainingGates": "../Channels.md"
     },
     {
-      "id": "2026-10-16-part-5c-guilds",
+      "id": "2026-10-16-guilds",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -369,7 +369,7 @@
       "remainingGates": "../Guilds.md"
     },
     {
-      "id": "2026-10-16-part-5d-moderation",
+      "id": "2026-10-16-moderation",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -417,7 +417,7 @@
       "remainingGates": "../Moderation.md"
     },
     {
-      "id": "2026-10-16-part-5e-expressions",
+      "id": "2026-10-16-expressions",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -462,7 +462,7 @@
       "remainingGates": "../Expressions.md"
     },
     {
-      "id": "2026-10-16-part-5f-discovery-events",
+      "id": "2026-10-16-discovery-events",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -531,7 +531,7 @@
       "remainingGates": "../DiscoveryEvents.md"
     },
     {
-      "id": "2026-10-16-part-5g-applications-users",
+      "id": "2026-10-16-applications-users",
       "recordedOn": "2026-10-16",
       "upstreamVersions": {
         "rest": "10",
@@ -960,7 +960,7 @@
         "https://docs.discord.com/developers/change-log"
       ],
       "details": "changes/2026-10-17-oauth-game-commerce.md",
-      "remainingGates": "../Phase9ServiceContracts.md"
+      "remainingGates": "../ServiceContracts.md"
     },
     {
       "id": "2026-10-17-rpc-devices",
@@ -1009,7 +1009,7 @@
       "remainingGates": "../RPC.md"
     },
     {
-      "id": "2026-10-17-part-11-activities",
+      "id": "2026-10-17-activities",
       "recordedOn": "2026-10-17",
       "upstreamVersions": {
         "rest": "10",
@@ -1049,7 +1049,7 @@
       "remainingGates": "coverage.md"
     },
     {
-      "id": "2026-10-17-part-12-voice-media-foundations",
+      "id": "2026-10-17-voice-media-foundations",
       "recordedOn": "2026-10-17",
       "upstreamVersions": {
         "rest": "10",
@@ -1063,8 +1063,8 @@
       "localRelease": "unknown",
       "localCommit": "unknown",
       "changeType": "added",
-      "previousBehavior": "No owned media, Opus framing, voice crypto or voice session protocol components; Part0 primitive probes only.",
-      "currentBehavior": "Initial multi-release Phase12 foundations: bounded portable media/Opus framing, XChaCha/AES transport primitives, experimental truncated AES128-GCM, pure Voicev8 control/rendezvous and RTP/discovery/reorder components. Complete codecs, MLS/DAVE, sessions/devices and qualification remain unimplemented.",
+      "previousBehavior": "No owned media, Opus framing, voice crypto or voice session protocol components; inventory primitive probes only.",
+      "currentBehavior": "Initial multi-release voice media foundations: bounded portable media/Opus framing, XChaCha/AES transport primitives, experimental truncated AES128-GCM, pure Voicev8 control/rendezvous and RTP/discovery/reorder components. Complete codecs, MLS/DAVE, sessions/devices and qualification remain unimplemented.",
       "affectedSymbols": [
         "PCMBuffer",
         "OpusPacket",
@@ -1095,7 +1095,7 @@
       "remainingGates": "../Voice.md"
     },
     {
-      "id": "2026-10-18-phase12b-mls",
+      "id": "2026-10-18-mls-mls",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1132,11 +1132,11 @@
         "https://docs.discord.com/developers/topics/voice-connections.md",
         "https://docs.discord.com/developers/change-log.md"
       ],
-      "details": "changes/2026-10-18-phase12b-mls.md",
+      "details": "changes/2026-10-18-mls.md",
       "remainingGates": "../MLSCryptoReview.md"
     },
     {
-      "id": "2026-10-18-phase13-social",
+      "id": "2026-10-18-social-social",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1181,11 +1181,11 @@
         "https://docs.discord.com/developers/social-commerce/overview",
         "https://docs.discord.com/developers/change-log"
       ],
-      "details": "changes/2026-10-18-phase13-social.md",
-      "remainingGates": "phase13-social-catalog.json"
+      "details": "changes/2026-10-18-social.md",
+      "remainingGates": "social-catalog.json"
     },
     {
-      "id": "2026-10-18-phase14-release-certification",
+      "id": "2026-10-18-certification-release-certification",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1219,11 +1219,11 @@
         "https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0",
         "https://docs.swift.org/latest/documentation/docc/"
       ],
-      "details": "changes/2026-10-18-phase14-certification.md",
-      "remainingGates": "../Release/phase14-report.json"
+      "details": "changes/2026-10-18-certification.md",
+      "remainingGates": "../Release/release-report-0.14.0.json"
     },
     {
-      "id": "2026-10-18-phase15a-shared-dsl",
+      "id": "2026-10-18-dsl-shared-dsl",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1237,7 +1237,7 @@
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-18",
       "localSupportDate": "2026-10-18",
-      "localRelease": "0.15.0 candidate; unpublished; shared declaration milestone only",
+      "localRelease": "0.15.0 candidate; unpublished; shared declaration features only",
       "localCommit": "unknown",
       "changeType": "authoring_layer_only",
       "previousBehavior": "Consumers composed existing low-level command definitions/routes and Gateway runtimes directly; no shared protocol-led structural module product.",
@@ -1256,16 +1256,15 @@
       ],
       "affectedPayloads": "Local inert authoring metadata only. No new Discord endpoint, payload field, permission, intent, Gateway event or opcode support.",
       "breakingChanges": [],
-      "migration": "Additively select DiscordDSL for offline structural authoring. Existing consumers require no changes. Command lowering, macros, response/policy builders and HTTP/Gateway execution remain later milestones.",
+      "migration": "Additively select DiscordDSL for offline structural authoring. Existing consumers require no changes. Command lowering, macros, response/policy builders and HTTP/Gateway execution remain separate capabilities.",
       "sources": [
         "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md",
         "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0348-buildpartialblock.md"
       ],
-      "details": "changes/phase15-dsl.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/dsl.md"
     },
     {
-      "id": "2026-10-18-phase15b-command-dsl",
+      "id": "2026-10-18-command dsl-command-dsl",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1279,10 +1278,10 @@
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-18",
       "localSupportDate": "2026-10-18",
-      "localRelease": "0.15.0 candidate; unpublished; shared declarations and typed-command milestones",
+      "localRelease": "0.15.0 candidate; unpublished; shared declarations and typed-command features",
       "localCommit": "unknown",
       "changeType": "authoring_and_local_decoding_only",
-      "previousBehavior": "Part 15A supplied structural declarations; consumers authored command registration options, routes and invocation decoding directly.",
+      "previousBehavior": "dsl supplied structural declarations; consumers authored command registration options, routes and invocation decoding directly.",
       "currentBehavior": "Independent DiscordCommandDSL adds finite typed argument schemas, strict fresh per-invocation decoding, scalar/default/choice/partial-reference codecs, manual root slash handlers, exact low-level adapters and deterministic lowering to existing validated definitions/routes with an explicit bounded router factory. Existing products and unchanged upstream classifications retain their boundaries.",
       "affectedSymbols": [
         "CommandArguments",
@@ -1309,27 +1308,26 @@
       ],
       "affectedPayloads": "Existing API v10 slash registration options and submitted interaction leaf/resolved data; local authoring descriptors, defaults and bounded diagnostics. No new endpoint, field, permission, intent, event or opcode support.",
       "breakingChanges": [],
-      "migration": "Additively select DiscordCommandDSL and DiscordDSL. Adopt manual root slash handlers with one typed schema or explicitly adapt existing matching low-level definitions/routes; preserve explicit registration, trusted ingress, response ownership and router limits. Macros, typed response builders, policies and supervised HTTP/Gateway hosts remain later milestones.",
+      "migration": "Additively select DiscordCommandDSL and DiscordDSL. Adopt manual root slash handlers with one typed schema or explicitly adapt existing matching low-level definitions/routes; preserve explicit registration, trusted ingress, response ownership and router limits. Macros, typed response builders, policies and supervised HTTP/Gateway hosts remain separate capabilities.",
       "sources": [
         "https://docs.discord.com/developers/interactions/application-commands",
         "https://docs.discord.com/developers/interactions/receiving-and-responding",
         "https://docs.discord.com/developers/reference",
         "https://docs.discord.com/developers/change-log"
       ],
-      "details": "changes/phase15b-command-dsl.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/command-dsl.md"
     },
     {
-      "id": "phase15c-macros",
+      "id": "command macros-macros",
       "upstreamVersion": "REST/Gateway v10; unchanged",
       "upstreamAnnouncementDate": "unknown",
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-18",
       "localSupportDate": "2026-10-18",
-      "localRelease": "0.15.0 candidate; unpublished; separate macro authoring milestone",
+      "localRelease": "0.15.0 candidate; unpublished; separate macro authoring features",
       "localCommit": "unknown",
       "changeType": "authoring_only",
-      "previousBehavior": "Part 15B supplied explicit schemas, invocation decoding and manual slash contributions.",
+      "previousBehavior": "command dsl supplied explicit schemas, invocation decoding and manual slash contributions.",
       "currentBehavior": "Separate DiscordDSLMacros generates typed schemas, fresh aggregate construction, manual slash metadata and contribution plumbing through existing runtime protocols. Real compiled parity and external positive/negative fixtures preserve decoding, diagnostics, custom codec and Sendable contracts.",
       "affectedSymbols": [
         "CommandArguments macro",
@@ -1346,11 +1344,10 @@
         "https://docs.discord.com/developers/change-log",
         "https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0"
       ],
-      "details": "changes/phase15c-macros.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/command-macros-macros.md"
     },
     {
-      "id": "2026-10-18-phase15d-command-responses",
+      "id": "2026-10-18-command responses-command-responses",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1364,10 +1361,10 @@
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-18",
       "localSupportDate": "2026-10-18",
-      "localRelease": "0.15.0 candidate; unpublished; typed command responses and signed HTTP application milestone",
+      "localRelease": "0.15.0 candidate; unpublished; typed command responses and signed HTTP application features",
       "localCommit": "unknown",
       "changeType": "authoring_and_owned_http_composition",
-      "previousBehavior": "Part 15C compiled macro-authored manual slash handlers; consumers explicitly composed signed ingress, routing, response acknowledgement and registration.",
+      "previousBehavior": "command macros compiled macro-authored manual slash handlers; consumers explicitly composed signed ingress, routing, response acknowledgement and registration.",
       "currentBehavior": "DiscordCommandDSL adds separate typed immediate/deferred and existing manual handler contracts, restricted redacted contexts, validated JSON response values and lowering through the existing unique responder. CommandApplication composes signed ingress and bounded routing/listener ownership, rejects competing auto-defer and exposes only explicit synchronization through the existing reconciler. The independent macro-authored DSLCommands consumer defaults to a synthetic signed offline exchange.",
       "affectedSymbols": [
         "SlashCommandHandler",
@@ -1385,7 +1382,7 @@
       ],
       "affectedPayloads": "Existing API v10 type-4 initial messages, type-5 deferred channel messages and PATCH original-response edits; unchanged wire schemas, deadlines, visibility, independent acknowledgement admission and signed ingress. No new permission, intent, endpoint, event or opcode support.",
       "breakingChanges": [],
-      "migration": "Existing manual handlers require no change. Opt into the immediate or deferred protocol, return the validated response value and leave acknowledgement to the adapter. Explicitly select HTTP/Transport where imported; inject shared ingress/admission and concrete listener at the composition root. Do not configure application auto-defer. Registration remains a separate explicit synchronize call; Gateway hosts, message builders and 15E+ remain later milestones.",
+      "migration": "Existing manual handlers require no change. Opt into the immediate or deferred protocol, return the validated response value and leave acknowledgement to the adapter. Explicitly select HTTP/Transport where imported; inject shared ingress/admission and concrete listener at the composition root. Do not configure application auto-defer. Registration remains a separate explicit synchronize call; Gateway hosts, message builders and message builders+ remain separate capabilities.",
       "sources": [
         "https://docs.discord.com/developers/interactions/application-commands",
         "https://docs.discord.com/developers/interactions/receiving-and-responding",
@@ -1393,11 +1390,10 @@
         "https://docs.discord.com/developers/change-log",
         "https://docs.swift.org/latest/documentation/the-swift-programming-language/concurrency/"
       ],
-      "details": "changes/phase15d-command-responses.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/command-responses.md"
     },
     {
-      "id": "2026-10-18-phase15e-message-builders",
+      "id": "2026-10-18-message builders-message-builders",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1411,10 +1407,10 @@
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-18",
       "localSupportDate": "2026-10-18",
-      "localRelease": "0.15.0 candidate; unpublished; pure message/component authoring milestone",
+      "localRelease": "0.15.0 candidate; unpublished; pure message/component authoring features",
       "localCommit": "unknown",
       "changeType": "authoring_and_validated_payload_lowering_only",
-      "previousBehavior": "Part 15D typed handlers returned validated direct InteractionMessageCreate and InteractionMessageEdit models; applications manually authored text, allowed mentions, embeds and component trees.",
+      "previousBehavior": "command responses typed handlers returned validated direct InteractionMessageCreate and InteractionMessageEdit models; applications manually authored text, allowed mentions, embeds and component trees.",
       "currentBehavior": "DiscordDSL adds finite MessageContent templates with trusted literal/raw segments, escaped dynamic text, typed user/role/channel references and narrow allowed-mentions synthesis, while DiscordCommandDSL adds typed message/embed/component builders over existing Models. Explicit lowering preserves field presence and uses existing payload validation; thin CommandDSL initializers adapt builders to the established immediate/deferred response owners. Raw model construction remains supported.",
       "affectedSymbols": [
         "MessageContent",
@@ -1431,7 +1427,7 @@
       ],
       "affectedPayloads": "Existing API v10 message content, embeds, allowed_mentions and legacy/Components V2 payloads, type-4 initial messages and PATCH original-response edits. No new endpoint, field, permission, intent, event, opcode, upload transport or notification guarantee.",
       "breakingChanges": [],
-      "migration": "Existing raw Models and typed/manual handlers require no changes. Optionally select DiscordDSL content and builders; pass untrusted strings through ordinary interpolation or MessageContent(String), preserve trusted formatting only through literals or explicit raw segments, and use typed mention opt-ins. Validate the full built payload before the existing responder transmits it. Broader command families, policies, Gateway hosts and 15F+ remain separate.",
+      "migration": "Existing raw Models and typed/manual handlers require no changes. Optionally select DiscordDSL content and builders; pass untrusted strings through ordinary interpolation or MessageContent(String), preserve trusted formatting only through literals or explicit raw segments, and use typed mention opt-ins. Validate the full built payload before the existing responder transmits it. Broader command families, policies, Gateway hosts and command families+ remain separate.",
       "sources": [
         "https://docs.discord.com/developers/resources/message",
         "https://docs.discord.com/developers/components/reference",
@@ -1441,11 +1437,10 @@
         "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0228-fix-expressiblebystringinterpolation.md",
         "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md"
       ],
-      "details": "changes/phase15e-message-builders.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/message-builders.md"
     },
     {
-      "id": "2026-10-18-phase15f-command-families",
+      "id": "2026-10-18-command families-command-families",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1459,11 +1454,11 @@
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-18",
       "localSupportDate": "2026-10-18",
-      "localRelease": "0.15.0 candidate; unpublished; command-family authoring milestone",
+      "localRelease": "0.15.0 candidate; unpublished; command-family authoring features",
       "localCommit": "unknown",
       "changeType": "authoring_and_existing_command_runtime_composition_only",
-      "previousBehavior": "Parts 15A-15E offered typed root slash commands, optional macros, response ownership, signed HTTP composition and validated message builders; other command families required direct lower-level construction.",
-      "currentBehavior": "Part 15F adds finite slash trees, typed user/message context menus, partial autocomplete, exact component/modal handlers, family-specific response wrappers and complete catalog validation. Optional macros author context menus and grouped slash leaves. Explicit reconciliation reuses existing managed type/name pairs, preserves unmanaged registrations and reports partial outcomes. Zero-argument nested slash paths with omitted leaf options now route as empty arguments.",
+      "previousBehavior": "Parts dsl-message builders offered typed root slash commands, optional macros, response ownership, signed HTTP composition and validated message builders; other command families required direct lower-level construction.",
+      "currentBehavior": "command families adds finite slash trees, typed user/message context menus, partial autocomplete, exact component/modal handlers, family-specific response wrappers and complete catalog validation. Optional macros author context menus and grouped slash leaves. Explicit reconciliation reuses existing managed type/name pairs, preserves unmanaged registrations and reports partial outcomes. Zero-argument nested slash paths with omitted leaf options now route as empty arguments.",
       "affectedSymbols": [
         "CommandFamily",
         "CommandFamilyContribution",
@@ -1480,7 +1475,7 @@
       ],
       "affectedPayloads": "Existing API v10 command registration/options, command/context-menu/autocomplete/component/modal interactions and callback kinds. No new endpoint, field, permission, intent or model-parity classification.",
       "breakingChanges": [],
-      "migration": "Existing root handlers remain valid. Add explicit typed family contributions to the same inert module, keep autocomplete partial arguments distinct from complete schemas and call synchronization separately. Existing raw Models/Commands remain independently adoptable. Policies, Gateway hosts and remaining 15G+ qualification stay separate.",
+      "migration": "Existing root handlers remain valid. Add explicit typed family contributions to the same inert module, keep autocomplete partial arguments distinct from complete schemas and call synchronization separately. Existing raw Models/Commands remain independently adoptable. Policies, Gateway hosts and remaining command policies+ qualification stay separate.",
       "sources": [
         "https://docs.discord.com/developers/interactions/application-commands",
         "https://docs.discord.com/developers/interactions/receiving-and-responding",
@@ -1488,11 +1483,10 @@
         "https://docs.discord.com/developers/reference",
         "https://docs.discord.com/developers/change-log"
       ],
-      "details": "changes/phase15f-command-families.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/command-families.md"
     },
     {
-      "id": "phase15g-command-policies",
+      "id": "command policies-command-policies",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1506,11 +1500,11 @@
       "upstreamEffectiveDate": "unknown",
       "verifiedOn": "2026-10-18",
       "localSupportDate": "2026-10-18",
-      "localRelease": "0.15.0 candidate; unpublished; policy and middleware authoring milestone",
+      "localRelease": "0.15.0 candidate; unpublished; policy and middleware authoring features",
       "localCommit": "unknown",
       "changeType": "authoring_and_existing_command_runtime_composition_only",
-      "previousBehavior": "Parts 15A-15F provided typed command families and existing response ownership; authorization and middleware were handwritten inside handlers.",
-      "currentBehavior": "Part 15G adds bounded named/operator policies and middleware, complete typed admission before execution interception, injected current authorization, shared finite concurrency, explicit denial callbacks and error translation without fallback or replay. Construction and policy adoption execute no work.",
+      "previousBehavior": "Parts dsl-command families provided typed command families and existing response ownership; authorization and middleware were handwritten inside handlers.",
+      "currentBehavior": "command policies adds bounded named/operator policies and middleware, complete typed admission before execution interception, injected current authorization, shared finite concurrency, explicit denial callbacks and error translation without fallback or replay. Construction and policy adoption execute no work.",
       "affectedSymbols": [
         "InvocationPolicy",
         "InvocationMiddleware",
@@ -1525,18 +1519,17 @@
       ],
       "affectedPayloads": "Existing API v10 command registration/options, command/context-menu/autocomplete/component/modal interactions and callback kinds. No new endpoint, field, permission, intent or model-parity classification.",
       "breakingChanges": [],
-      "migration": "Apply CommandPolicies explicitly to a compiled catalog or exact route subset. Reuse aggregate authorities. Low-level routes requiring admission before wrappers use init(key:prepare:). Existing handler and route initializers remain valid; remaining 15H-15L and external gates stay separate.",
+      "migration": "Apply CommandPolicies explicitly to a compiled catalog or exact route subset. Reuse aggregate authorities. Low-level routes requiring admission before wrappers use init(key:prepare:). Existing handler and route initializers remain valid; remaining gateway events-authoring release and external gates stay separate.",
       "sources": [
         "https://docs.discord.com/developers/interactions/application-commands",
         "https://docs.discord.com/developers/interactions/receiving-and-responding",
         "https://docs.discord.com/developers/reference",
         "https://docs.discord.com/developers/change-log"
       ],
-      "details": "changes/phase15g-command-policies.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/command-policies.md"
     },
     {
-      "id": "2026-10-18-phase15h-gateway-event-modules",
+      "id": "2026-10-18-gateway events-gateway-event-modules",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1572,11 +1565,10 @@
         "https://docs.discord.com/developers/reference",
         "https://docs.discord.com/developers/change-log"
       ],
-      "details": "changes/phase15h-gateway-event-modules.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/gateway-events-gateway-event-modules.md"
     },
     {
-      "id": "2026-10-18-phase15i-supervised-bot-applications",
+      "id": "2026-10-18-bot applications-supervised-bot-applications",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1616,11 +1608,10 @@
         "https://docs.discord.com/developers/events/gateway",
         "https://docs.discord.com/developers/events/gateway-events#interaction-create"
       ],
-      "details": "changes/phase15i-supervised-bot-applications.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/bot-applications-supervised-bot-applications.md"
     },
     {
-      "id": "2026-10-18-phase15j-module-extensions",
+      "id": "2026-10-18-module extensions-module-extensions",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1661,11 +1652,10 @@
         "https://docs.discord.com/developers/events/gateway",
         "https://docs.discord.com/developers/events/gateway-events#interaction-create"
       ],
-      "details": "changes/phase15j-module-extensions.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/module-extensions.md"
     },
     {
-      "id": "2026-10-18-part-15k-dsl-measurements",
+      "id": "2026-10-18-dsl-measurements",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1682,7 +1672,7 @@
       "localRelease": "unpublished 0.15.0 candidate",
       "localCommit": "unknown",
       "changeType": "local_qualification",
-      "previousBehavior": "Parts 15A-15J have local structural, command/event, supervised host and external extension evidence. Existing cache/broadcast measurements do not execute DSL handlers.",
+      "previousBehavior": "Parts dsl-module extensions have local structural, command/event, supervised host and external extension evidence. Existing cache/broadcast measurements do not execute DSL handlers.",
       "currentBehavior": "Independent offline direct/DSL handler workloads, manual/macro compiler costs, finite regression budgets and separate handler/cache soak artifacts qualify only their named local workloads. Runtime APIs and wire classifications are unchanged.",
       "affectedSymbols": [
         "RuntimeBenchmark",
@@ -1698,11 +1688,10 @@
         "https://docs.discord.com/developers/events/gateway",
         "https://docs.discord.com/developers/events/gateway-events#interaction-create"
       ],
-      "details": "changes/phase15k-dsl-measurements.md",
-      "remainingGates": "../DSLImplementationRoadmap.md"
+      "details": "changes/dsl-benchmarks-dsl-measurements.md"
     },
     {
-      "id": "2026-10-18-part-15l-authoring-candidate",
+      "id": "2026-10-18-authoring-candidate",
       "recordedOn": "2026-10-18",
       "upstreamVersions": {
         "rest": "10",
@@ -1719,8 +1708,8 @@
       "localRelease": "unpublished 0.15.0 candidate",
       "localCommit": "unknown",
       "changeType": "local_qualification",
-      "previousBehavior": "Parts 15A-15K have independently adopted authoring/runtime products and local measurements, with final adoption documentation and candidate baseline capture still open.",
-      "currentBehavior": "Part 15L adds design/adoption/migration guidance, independently compiled tutorial listings, emitted macro callable documentation checks, separately reviewed 0.15.0 root/macro/extension API baselines and current scoped local release certification. Historical reports and baselines remain unchanged.",
+      "previousBehavior": "Parts dsl-dsl benchmarks have independently adopted authoring/runtime products and local measurements, with final adoption documentation and candidate baseline capture still open.",
+      "currentBehavior": "authoring release adds design/adoption/migration guidance, independently compiled tutorial listings, emitted macro callable documentation checks, separately reviewed 0.15.0 root/macro/extension API baselines and current scoped local release certification. Historical reports and baselines remain unchanged.",
       "affectedSymbols": [
         "BotModule",
         "CommandArguments",
@@ -1738,8 +1727,8 @@
         "https://docs.discord.com/developers/events/gateway",
         "https://docs.discord.com/developers/events/gateway-events#interaction-create"
       ],
-      "details": "changes/phase15l-authoring-candidate.md",
-      "remainingGates": "../Release/phase15l-report.json"
+      "details": "changes/authoring-release-authoring-candidate.md",
+      "remainingGates": "../Release/release-report-0.15.0-final.json"
     },
     {
       "id": "2026-10-19-gateway-zero-reset",
@@ -1848,7 +1837,7 @@
       ],
       "affectedPayloads": "Local diagnostic metadata only; no Discord protocol, resource schema, endpoint, opcode or registration change.",
       "breakingChanges": [
-        "Exact logger labels become dotted components; info and notice now include library lifecycle and milestone events."
+        "Exact logger labels become dotted components; info and notice now include library lifecycle and features events."
       ],
       "migration": "Update exact-label filters; select dotted component thresholds and wrap multiplex destinations with fixed level floors when needed. Application bootstrap, output lifetime and secrets remain application-owned.",
       "sources": [],

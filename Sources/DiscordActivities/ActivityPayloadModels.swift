@@ -1,3 +1,8 @@
+// File: Sources/DiscordActivities/ActivityPayloadModels.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import Foundation
 // Reviewed against Discord Embedded App SDK revision 14264eccbf9e68d5d58c1aadbc7579e003e0dce6.

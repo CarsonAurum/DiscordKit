@@ -1,3 +1,8 @@
+// File: Tests/DiscordTransportTests/ShardOwnershipTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import DiscordTestSupport
 import DiscordTransport

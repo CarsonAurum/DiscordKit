@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/Field.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Presence of a request or partial-update field, preserving omission separately from JSON null.
 ///
 /// Use the keyed-container helpers when encoding model properties: a single-value

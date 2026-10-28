@@ -1,58 +1,58 @@
 {
   "schemaVersion": 1,
-  "reviewedOn": "2026-10-18",
-  "nextReviewDue": "2026-10-25",
+  "reviewedOn": "2026-10-28",
+  "nextReviewDue": "2026-11-04",
   "unclassifiedEntries": [],
   "historyPath": "Docs/Parity/history.json",
-  "reviewScope": "Affected release/HTTP transition sources and Parts 15F-15I command-family, Gateway event and supervised bot composition contracts. Part 15I refresh is limited to the three named official Gateway/interaction pages; historical reviews and transitions are retained. Discovery status is not full semantic parity.",
+  "reviewScope": "Weekly maintenance review of the eight existing official release, HTTP transition, command-family, message/component, interaction and Gateway composition sources. No discovery-wide refresh or protocol implementation change.",
   "officialSources": [
     {
       "url": "https://docs.discord.com/developers/reference.md",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
-      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     },
     {
       "url": "https://docs.discord.com/developers/change-log.md",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
-      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     },
     {
       "url": "https://docs.discord.com/developers/interactions/application-commands.md",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
-      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     },
     {
       "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15i.json",
-      "sha256": "e10cfc532c0081652c88f46c397ab0300a16d350f91bc238b7b6551e8f8324e3"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     },
     {
       "url": "https://docs.discord.com/developers/components/reference.md",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15f.json",
-      "sha256": "17c952d7483bb7ac322df9deaf1ba2fea04bc41e8a2c0111921403476e4397ad"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     },
     {
       "url": "https://docs.discord.com/developers/resources/message.md",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15e.json",
-      "sha256": "51e9aead1048fa9f5d9228eee7783d2a21c0b156f7e827d63250602601d43828"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     },
     {
       "url": "https://docs.discord.com/developers/events/gateway",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15i.json",
-      "sha256": "e10cfc532c0081652c88f46c397ab0300a16d350f91bc238b7b6551e8f8324e3"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     },
     {
       "url": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
-      "verifiedOn": "2026-10-18",
-      "snapshotPath": "Docs/Release/sources/2026-10-18-phase15i.json",
-      "sha256": "e10cfc532c0081652c88f46c397ab0300a16d350f91bc238b7b6551e8f8324e3"
+      "verifiedOn": "2026-10-28",
+      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
     }
   ],
   "transitions": [
@@ -80,5 +80,6 @@
         "Tests/DiscordCacheTests/DiscordCacheTests.swift"
       ]
     }
-  ]
+  ],
+  "reviewComparisonLimits": "Five original Markdown sources have different byte hashes. Three original HTML sources had semantic-only historical records. Previous raw response bodies were not committed, so no byte-identical or complete historical text-diff assertion is made."
 }

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBits/DiscordBits.docc/DiscordBits.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordBits``
 
 Preserve arbitrary-width unsigned masks without losing future permission bits.

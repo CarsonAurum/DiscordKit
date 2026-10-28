@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoiceCrypto/DiscordVoiceCrypto.docc/Guides/TransportProtection.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Protecting an exact transport-key lifetime
 
 Share one counter owner per key and authenticate the exact RTP header.

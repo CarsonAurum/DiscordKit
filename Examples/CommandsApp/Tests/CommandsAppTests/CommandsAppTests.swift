@@ -1,3 +1,8 @@
+// File: Examples/CommandsApp/Tests/CommandsAppTests/CommandsAppTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import Testing
 @testable import CommandsApp

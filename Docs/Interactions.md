@@ -1,6 +1,13 @@
+<!--
+File: Docs/Interactions.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Signed ingress, interaction lifecycle and commands
 
-Phase 8 adds independently adopted `DiscordInteractions` and `DiscordCommands`
+DiscordKit provides independently adopted `DiscordInteractions` and `DiscordCommands`
 products. HTTP interaction applications need no Gateway, Client, Cache or voice
 product. Construction starts no listeners, timers, handler tasks, registration
 writes or network requests. Applications inject and own those resources.

@@ -1,3 +1,8 @@
+// File: Sources/DiscordMedia/PCMStreamingResampler.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// A synchronous bounded linear PCM converter with phase continuity across input blocks.
 ///
 /// Input frame zero and output frame zero share an origin. Output frame `k` samples input

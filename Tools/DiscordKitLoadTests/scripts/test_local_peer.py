@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitLoadTests/scripts/test_local_peer.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Deterministic HTTP framing and validation checks for the local load peer."""
 import http.client
 import threading

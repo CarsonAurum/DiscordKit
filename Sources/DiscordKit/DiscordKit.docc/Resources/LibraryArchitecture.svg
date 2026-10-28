@@ -1,1 +1,8 @@
+<!--
+File: Sources/DiscordKit/DiscordKit.docc/Resources/LibraryArchitecture.svg
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title desc"><title id="title">DiscordKit composition</title><desc id="desc">An application owns lifecycle and injects adapters into domain products, which use transport contracts backed by core values and exact bitsets.</desc><rect width="960" height="360" rx="20" fill="#f1f5f9"/><g font-family="system-ui, sans-serif" text-anchor="middle" font-size="19" fill="#0f172a"><rect x="290" y="20" width="380" height="55" rx="10" fill="#dbeafe" stroke="#2563eb"/><text x="480" y="54">Application: authority and lifecycle</text><rect x="60" y="125" width="350" height="65" rx="10" fill="#e0e7ff" stroke="#4f46e5"/><text x="235" y="153">Domain products</text><text x="235" y="176" font-size="15">REST · Gateway · HTTP · Hosts · Voice</text><rect x="550" y="125" width="350" height="65" rx="10" fill="#dcfce7" stroke="#15803d"/><text x="725" y="153">Injected adapters</text><text x="725" y="176" font-size="15">Foundation · NIO · Unix · Apple</text><rect x="290" y="235" width="380" height="45" rx="10" fill="#fff" stroke="#475569"/><text x="480" y="264">DiscordTransport contracts</text><rect x="290" y="300" width="380" height="40" rx="10" fill="#fff" stroke="#475569"/><text x="480" y="327">DiscordCore ← DiscordBits</text></g><g stroke="#475569" stroke-width="2" fill="none"><path d="M400 75 L235 125 M560 75 L725 125 M235 190 L400 235 M725 190 L560 235 M480 280 L480 300"/></g></svg>

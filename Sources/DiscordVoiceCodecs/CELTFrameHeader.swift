@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/CELTFrameHeader.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /* Copyright (c) 2007-2008 CSIRO
    Copyright (c) 2007-2010 Xiph.Org Foundation
    Copyright (c) 2008 Gregory Maxwell

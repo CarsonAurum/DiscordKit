@@ -677,7 +677,7 @@
   ],
   "executionNotes": [
     "Root final validation uses the default SwiftBuild system and SWIFTNIO_STRICT=1; some independent package runs used the native build fallback.",
-    "Isolated writable caches and approved host access were used for managed compiler temporary-file and loopback/Unix socket restrictions.",
+    "Validation used isolated writable caches and a local host supporting compiler temporary files and loopback/Unix sockets.",
     "All checks used local synthetic peers, inert consumers or public checked-in artifacts; no live Discord, credentials or authenticated external requests.",
     "The 30-minute executable is hash-bound separately from the later finite matrix executable. Environment records preserve original measured sources and document the two-comment-only DiscordLog.swift drift.",
     "Concurrent builds/tests and finite load runs shared the host with the sustained soak."

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Guides/GuildsModerationAndExpressions.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Guild administration, moderation and expressions
 
 Build narrow administrative workflows with current authorization and explicit partial progress.

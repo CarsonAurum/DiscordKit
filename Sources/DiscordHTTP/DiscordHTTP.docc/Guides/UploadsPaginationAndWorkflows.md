@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Guides/UploadsPaginationAndWorkflows.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Uploading files and traversing bounded workflows
 
 Preserve full-request byte bounds, operation-specific continuation and partial mutation outcomes.

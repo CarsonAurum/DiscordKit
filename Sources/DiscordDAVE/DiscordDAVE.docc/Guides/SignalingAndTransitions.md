@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordDAVE/DiscordDAVE.docc/Guides/SignalingAndTransitions.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Coordinating authenticated DAVE transitions
 
 Keep Voice control identity, MLS candidate selection and media readiness in one owner.

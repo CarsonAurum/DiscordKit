@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitTools/Sources/DiscordKitTools/main.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 // The executable dispatches only implemented offline operations. Usage failures remain

@@ -1,3 +1,8 @@
+// File: Tests/DiscordApplePlatformTests/AppleAudioDevicesTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if canImport(AVFoundation) && canImport(os)
 @testable import DiscordApplePlatform
 import DiscordMedia

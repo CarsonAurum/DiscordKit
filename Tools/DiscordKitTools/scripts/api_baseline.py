@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/api_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Normalize public Swift symbol graphs and conservatively enforce source semver.
 
 The baseline is scoped to the compiler target that emitted its graphs. Conditional

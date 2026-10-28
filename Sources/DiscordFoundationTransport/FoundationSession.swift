@@ -1,3 +1,8 @@
+// File: Sources/DiscordFoundationTransport/FoundationSession.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if canImport(Darwin)
 import DiscordTransport
 import Foundation

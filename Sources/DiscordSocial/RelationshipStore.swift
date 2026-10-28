@@ -1,3 +1,8 @@
+// File: Sources/DiscordSocial/RelationshipStore.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// Bounded account-local social reducer for trusted application-supplied observations.

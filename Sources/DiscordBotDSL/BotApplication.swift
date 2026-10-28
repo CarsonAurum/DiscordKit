@@ -1,3 +1,8 @@
+// File: Sources/DiscordBotDSL/BotApplication.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// An `@main`-compatible application with explicitly constructed host dependencies.
 /// Modules, credentials, adapters, services and shared authorities belong to the application
 /// factory. Merely conforming to this protocol performs no environment access or runtime work.

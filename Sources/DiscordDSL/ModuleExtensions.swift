@@ -1,3 +1,8 @@
+// File: Sources/DiscordDSL/ModuleExtensions.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// A collision-safe declaration or module identity in an explicit namespace.
 /// Components retain their exact spelling and boundaries. This value never joins IDs using a
 /// delimiter, rewrites wire names, discovers services or grants runtime capabilities. Identity

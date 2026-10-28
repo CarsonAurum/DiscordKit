@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/DiscordError.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Stable validation categories containing no untrusted input or secret strings.
 public enum ValidationFailure: String, Error, Sendable, Codable {
     /// A required credential was an empty string.

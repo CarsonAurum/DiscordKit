@@ -1,6 +1,13 @@
+<!--
+File: Docs/CommandPolicies.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Policies and middleware
 
-Part 15G adds generic `InvocationPolicy<Input>` and
+DiscordKit provides generic `InvocationPolicy<Input>` and
 `InvocationMiddleware<Input, Output>` to `DiscordDSL`, preserving its Core/Models-only
 graph. `DiscordCommandDSL` applies them explicitly to compiled command routes through
 `CommandPolicies`. Existing products remain independently adoptable. Construction,
@@ -106,7 +113,7 @@ to obtain an aggregate bound; the existing router additionally keeps its own han
 bound. `CommandConcurrencyAuthority` supports externally owned distributed coordination
 with explicit bounded state, fairness, cancellation and cleanup behavior. Persistent
 or keyed policy stores require injected count/TTL bounds; no such store is created by
-this milestone. Predicate work precedes this execution admission and remains bounded
+this library. Predicate work precedes this execution admission and remains bounded
 by the existing router and the injected authorization provider.
 
 Optional `mapError` translates an error into an application error after middleware and
@@ -120,7 +127,6 @@ blind retry middleware.
 Local tests cover named/operator behavior, skipped branches, bounds, malformed input,
 denial compatibility, shared overload, cancellation, continuation closure and partial
 effects. Gateway host composition has separate [bot application tests](BotApplications.md),
-and [local measurements](DSLBenchmarks.md) name their exact workload. Part 15L adds
-complete [adoption guidance](DSLAdoption.md) and scoped [release records](Release/README.md).
+and [local measurements](DSLBenchmarks.md) name their exact workload. DiscordKit provides complete [adoption guidance](DSLAdoption.md) and scoped [release records](Release/README.md).
 Live authorization services, live Discord, other platforms and production capacity
 remain separately qualified gates.

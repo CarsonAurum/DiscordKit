@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/LibraryArchitecture.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Understand the library architecture
 
 Compose a small product graph around your application's authority and lifecycle needs.

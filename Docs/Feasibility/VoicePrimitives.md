@@ -1,11 +1,16 @@
+<!--
+File: Docs/Feasibility/VoicePrimitives.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Voice primitive feasibility
 
-Verified on 2026-10-15. This is a historical feasibility baseline for roadmap Part 0
-and work breakdown for Part 12. The subsequent 2026-10-17 [initial media/voice release](../Voice.md)
-implements some owned primitives and protocol components; it does not implement
-full codecs, MLS/DAVE or a runnable voice session. The statements below describe
-the original probe, not the later component inventory. Passing these small
-public-API probes does not establish cryptographic interoperability or production readiness.
+Verified on 2026-10-15. This report records a primitive feasibility probe, with no
+voice-session, codec or cryptographic-interoperability qualification. See the current
+[voice](../Voice.md), [MLS](../MLS.md), [DAVE](../DAVE.md) and
+[session](../VoiceSessions.md) guides for implemented components and their limits.
 
 ## Evidence and executed probe
 
@@ -17,7 +22,7 @@ Executed with Apple Swift 6.4 (`swiftlang-6.4.0.34.1`), arm64 macOS 27.0.1 build
 swift test --package-path Tests/Fixtures/VoiceProbe
 ```
 
-All **5 Swift Testing tests / 10 parameterized invocations** passed. The first isolated source-path experiment passed, then the committed URL-based exact-version package resolved and passed independently. The final run also includes explicit nonisolated default isolation and ApproachableConcurrency. There were no live Discord calls, timing sleeps or user credentials. Tests use fixed test key/nonce fixtures where the API accepts them; HPKE internally generates an ephemeral sender key. No other operating system or device runtime was tested.
+All **5 Swift Testing tests / 10 parameterized invocations** passed with explicit nonisolated default isolation and ApproachableConcurrency. There were no live Discord calls, timing sleeps or user credentials. Tests use fixed test key/nonce fixtures where the API accepts them; HPKE internally generates an ephemeral sender key. No other operating system or device runtime was tested.
 
 | Public API exercised | Observed result | Limit of the evidence |
 | --- | --- | --- |
@@ -27,7 +32,7 @@ All **5 Swift Testing tests / 10 parameterized invocations** passed. The first i
 | `AES.permute` from CryptoExtras | FIPS 197 AES-128 known answer matches `69c4e0d86a7b0430d8cdb78070b4c55a`; 0/15/17-byte blocks fail | Only proves the public AES block primitive; no GHASH construction is tested |
 | `HPKE.Ciphersuite(kem: .P256_HKDF_SHA256, kdf: .HKDF_SHA256, aead: .AES_GCM_128)` | Public Sender/Recipient round trip succeeds | Exact primitive tuple is callable; MLS is not implemented or certified |
 
-Re-run on every promised platform before assigning runtime qualification. On this host SwiftPM initially could not write its default module cache and then could not nest its sandbox; the successful run used temporary cache/scratch paths and the environment's approved build escalation. These are tooling constraints, not protocol failures.
+Re-run on every advertised platform before assigning runtime qualification.
 
 ## Transport AEAD
 
@@ -55,10 +60,10 @@ The whitepaper identifies itself as protocol text version 1.1 while its ciphersu
 
 ## Codecs and media processing
 
-Swift Crypto is not a codec or media engine. Under the approved dependency policy, author the portable Opus parser, encoder/decoder, range coder and SILK/CELT/hybrid work, PCM conversion/resampling/mixing, bounded buffers, jitter/pacing, gain/VAD and packet-loss handling. Use the [Opus specification](https://www.rfc-editor.org/rfc/rfc6716), its errata and updates, and separately obtained official conformance vectors. Those codec tests and performance measurements have **not** run in Part 0.
+Swift Crypto is not a codec or media engine. Under the approved dependency policy, author the portable Opus parser, encoder/decoder, range coder and SILK/CELT/hybrid work, PCM conversion/resampling/mixing, bounded buffers, jitter/pacing, gain/VAD and packet-loss handling. Use the [Opus specification](https://www.rfc-editor.org/rfc/rfc6716), its errata and updates, and separately obtained official conformance vectors. Those codec tests and performance measurements have **not** run in this probe.
 
 The pinned [Discord codec-transform source](https://github.com/discord/libdave/blob/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169/cpp/src/codec_utils.cpp) has handlers for Opus, VP8, VP9, H.264, H.265 and AV1. It is protocol evidence only; no implementation is copied or linked. Frame transform/parsing, encoding/decoding, RTP packetization, video signaling, hardware providers and end-to-end Discord camera/Go Live behavior are separate capabilities. A working DAVE transform cannot certify a codec or a publishable video session. Concrete video codec/provider work remains gated on established negotiated signaling and format requirements.
 
 ## Release gate and remaining evidence
 
-All voice functionality remains unsupported. Before a voice support claim, require public-protocol fixtures and vectors; malformed/tampered/replayed data rejection; independent crypto review; cancellation and resource cleanup; real negotiated send/receive on each advertised surface; per-platform codec qualification; frame-budget measurements and the roadmap's ten-minute duplex stability run. None of those results may be inferred from this probe's success. No Discord native runtime, prohibited package or handwritten cryptographic primitive was added in Part 0.
+This primitive probe qualifies no complete voice functionality. Before a voice support claim, require public-protocol fixtures and vectors; malformed/tampered/replayed data rejection; independent crypto review; cancellation and resource cleanup; real negotiated send/receive on each advertised surface; per-platform codec qualification; frame-budget measurements and a ten-minute duplex stability run. None of those results may be inferred from this probe's success. No Discord native runtime, prohibited package or handwritten cryptographic primitive was added in this probe.

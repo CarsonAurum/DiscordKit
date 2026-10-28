@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordLogging/DiscordLogging.docc/Reference/DiscordLogConfiguration.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordLogging/DiscordLogConfiguration``
 
 ## Topics

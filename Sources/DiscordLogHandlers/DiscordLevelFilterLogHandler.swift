@@ -1,3 +1,8 @@
+// File: Sources/DiscordLogHandlers/DiscordLevelFilterLogHandler.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Logging
 
 /// Preserves an output's minimum severity when a logger's component threshold changes.

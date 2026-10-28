@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordVoice/DiscordVoice.docc/Guides/SessionsAndRendezvous.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Joining and supervising voice sessions
 
 Bind main-Gateway rendezvous, exact connection identity and cleanup to explicit owners.

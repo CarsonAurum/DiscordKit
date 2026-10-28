@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTShapeOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Independent libopus 1.6.1 recursive shape fixtures; refreshed only by the opt-in verifier.
 enum CELTShapeOracleFixtures {
     static let json = #"""

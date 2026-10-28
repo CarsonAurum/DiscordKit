@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_celt_band_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in, offline CELT band quantizer verification against unmodified libopus 1.6.1.
 
 The separately supplied official archive is size/SHA256/path-validated by the
@@ -8,6 +13,8 @@ normalized coefficients, entropy bytes, final range and decode reconstruction.
 It does not establish complete Opus, band allocation, recursive splitting,
 SILK/hybrid, PLC/FEC, decoded-PCM conformance or realtime/device qualification.
 """
+
+from publication import swift_header
 
 import argparse
 from datetime import datetime, timezone
@@ -209,7 +216,7 @@ def main():
         records = [{"input": c, "output": e} for c, e in zip(fixed, expected)]
         fixture = repository / FIXTURE_PATH
         if args.write_fixtures:
-            fixture.write_text('/// Independent libopus 1.6.1 band-search fixtures; generated only by the opt-in verifier.\n'
+            fixture.write_text(swift_header(FIXTURE_PATH) + '/// Independent libopus 1.6.1 band-search fixtures; generated only by the opt-in verifier.\n'
                                '/// No native codec is linked or executed by normal Swift tests.\n'
                                'enum CELTBandOracleFixtures {\n    static let json = #"""\n'
                                + json.dumps(records, separators=(",", ":")) + '\n"""#\n}\n')

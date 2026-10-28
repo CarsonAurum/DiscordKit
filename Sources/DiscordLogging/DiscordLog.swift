@@ -1,3 +1,8 @@
+// File: Sources/DiscordLogging/DiscordLog.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 @_exported import Logging
 
 /// Native SwiftLog entry points shared by independently adopted DiscordKit products.

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordGateway/DiscordGateway.docc/DiscordGateway.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordGateway``
 
 Supervise bounded Gateway v10 sessions, typed commands and ordered event delivery.

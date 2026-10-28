@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCertifiedDevices/DiscordCertifiedDevices.docc/Guides/DevicePublication.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Publishing complete device state
 
 Report actual host metadata, preserve priority and replace the entire device array.

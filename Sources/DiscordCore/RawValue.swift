@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/RawValue.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// A forward-compatible wire value retaining raw values unknown to this library version.
 ///
 /// Wrap a typed, `RawRepresentable` enum to recognize existing cases without making

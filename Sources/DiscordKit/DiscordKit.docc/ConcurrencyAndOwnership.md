@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/ConcurrencyAndOwnership.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Own concurrency and resource lifetimes
 
 Assign one supervisor to started work and await cleanup when that work ends.

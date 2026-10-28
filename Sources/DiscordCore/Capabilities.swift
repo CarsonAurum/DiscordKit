@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/Capabilities.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Runtime capabilities that implementations must qualify on their actual host.
 /// These names do not claim the corresponding transport or feature is implemented.
 public enum PlatformCapability: String, CaseIterable, Sendable, Codable {

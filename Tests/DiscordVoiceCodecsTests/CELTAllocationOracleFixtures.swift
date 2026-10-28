@@ -1,3 +1,8 @@
+// File: Tests/DiscordVoiceCodecsTests/CELTAllocationOracleFixtures.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// Independent unmodified libopus 1.6.1 ordinary allocation fixtures.
 enum CELTAllocationOracleFixtures {
     static let json = #"""

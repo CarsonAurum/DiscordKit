@@ -1,3 +1,8 @@
+// File: Sources/DiscordVoiceCodecs/CELTPacketCodec.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A valid Opus packet requests a mode/channel layout outside this CELT-only codec.

@@ -1,6 +1,13 @@
+<!--
+File: Docs/Generation.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Reviewed definitions and offline generation
 
-Part 4 adds development tooling around the existing API v10 User/Application
+DiscordKit provides development tooling around the existing API v10 User/Application
 projection and HTTP descriptors. It does not expand the REST catalog. Gateway
 discovery and runtime policies remain handwritten. All generator inputs and outputs
 are committed; consumer builds neither fetch documentation nor run generation.
@@ -13,7 +20,7 @@ classified definitions, including unsupported and unreviewed entries. The smalle
 [versioned schema](Parity/reviewed.schema.json), is the generation authority.
 Its stable IDs link model fields, enum variants, endpoints, source pins, source
 declarations and specific test or fixture evidence. Handwritten event contracts can
-also link to payload models and variants; this phase seeds no supported Discord event.
+also link to payload models and variants; the finite generator does not emit event implementations.
 It keeps upstream announcement
 and effective dates separate from local support dates. Unknown upstream dates stay
 `unknown`; a local implementation date cannot establish an upstream introduction.
@@ -25,7 +32,7 @@ fields. Partial projections stay partial even when all generated declarations
 compile. Endpoint records classify authentication, request and response models,
 success and error statuses, rate policy, retry semantics and pagination.
 
-Phases 5A–5G also record handwritten semantic models through optional `manual.fields`
+Handwritten semantic models are also recorded through optional `manual.fields`
 contracts. They carry the same field-level presence, nullability, default, constraint,
 access and unknown-value decisions, each linked to an actual discovery field and Swift
 declaration. The validator rejects empty or duplicate field lists, unsafe metadata,
@@ -80,8 +87,7 @@ swift run --package-path Tools/DiscordKitTools DiscordKitTools generate --check 
 The writer is restricted to the generator's output allowlist and refuses symlink
 destinations. Review its diff and run the root `swift build` and `swift test` before
 staging. There is no SwiftPM build plugin, consumer network dependency or automatic
-regeneration. Documentation and dependency-audit commands from later roadmap work
-remain unsupported and return usage status 64.
+regeneration. Unsupported commands return usage status 64.
 
 ## Generated structure and handwritten semantics
 
@@ -106,7 +112,7 @@ their counts are not unique operations or an API parity percentage. See the
 [generated reviewed report](Parity/generated-reviewed.md) and
 [reviewed API documentation](Generated/ReviewedAPI.md).
 
-## Phase 5G seed migration
+## Reviewed-model seed migration
 
 The original partial User/Application projections and current-profile descriptors
 now have handwritten bounded implementations, recorded through manual contracts.

@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordLogHandlers/DiscordLogHandlers.docc/Reference/DiscordFileLogHandler.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordLogHandlers/DiscordFileLogHandler``
 
 ## Topics

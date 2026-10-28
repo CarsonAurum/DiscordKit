@@ -1,6 +1,13 @@
-# OAuth2, game services and entitlement ownership: Phase 9
+<!--
+File: Docs/Parity/changes/2026-10-17-oauth-game-commerce.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Verified and locally added **2026-10-17**. REST uses **API v10**; browser OAuth is
+# OAuth2, game services and entitlement ownership
+
+Verified **2026-10-17**. REST uses **API v10**; browser OAuth is
 unversioned. Current [source fingerprints](../oauth-game-commerce-current-sources.json)
 remain separate from original discovery membership/revisions/hashes. The publisher
 guide's initial release is **2026-02-18**; its effective date and other upstream
@@ -52,12 +59,12 @@ Subscription status alone never authorizes a premium feature.
 Social Commerce catalog/storefront, pricing, gifts, wishlists, commerce-specific
 purchases and fulfillment webhooks/acknowledgements retain **awaiting schema/access**
 blockers. Existing ordinary entitlement consumption does not implement fulfillment.
-The [capability inventory](../../Phase9ServiceContracts.md) identifies each boundary.
+The [capability inventory](../../ServiceContracts.md) identifies each boundary.
 
 Migration is additive: import independent products, share rate/refresh authorities,
 inject secure CAS storage and main-actor browser UI, and explicitly invalidate
 lineage after observed deauthorization/unmerge. Consumers own OS UI, distributed
 coordination, durable game delivery and adapter/store cleanup. See [OAuth contracts](../../OAuth.md)
-and [execution evidence](../../../.air/plans/phase-9-execution.plan.md). Local macOS
+and [technical guide](../../OAuth.md). Local macOS
 results do not qualify live Discord, OS browser sessions, distributed secure storage,
 approval-gated publisher access, other hosts/devices, payment fulfillment or fleet capacity.

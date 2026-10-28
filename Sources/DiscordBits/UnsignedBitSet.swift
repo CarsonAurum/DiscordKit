@@ -1,3 +1,8 @@
+// File: Sources/DiscordBits/UnsignedBitSet.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /// An unsigned, arbitrary-width set of bits, serialized as a canonical decimal string.
 ///
 /// Storage grows by 32-bit words and never narrows to a machine integer. Zero has no

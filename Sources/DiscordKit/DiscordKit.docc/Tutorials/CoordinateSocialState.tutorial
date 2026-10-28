@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/Tutorials/CoordinateSocialState.tutorial | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 @Tutorial(time: 20) {
     @Intro(title: "Coordinate consent-scoped Social state") {
         Synchronize local relationships and apply PCM controls under an explicit account and consent generation.

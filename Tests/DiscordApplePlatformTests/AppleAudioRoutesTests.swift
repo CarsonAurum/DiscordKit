@@ -1,3 +1,8 @@
+// File: Tests/DiscordApplePlatformTests/AppleAudioRoutesTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if os(macOS) && canImport(AVFoundation) && canImport(os)
 import CoreAudio
 @testable import DiscordApplePlatform

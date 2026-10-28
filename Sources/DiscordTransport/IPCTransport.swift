@@ -1,3 +1,8 @@
+// File: Sources/DiscordTransport/IPCTransport.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A local byte stream. Adapters select Unix sockets or named pipes, never Discord framing.

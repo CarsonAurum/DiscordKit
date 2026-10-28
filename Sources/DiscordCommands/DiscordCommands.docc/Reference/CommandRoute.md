@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordCommands/DiscordCommands.docc/Reference/CommandRoute.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordCommands/CommandRoute``
 
 ## Topics

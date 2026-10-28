@@ -1,3 +1,8 @@
+// File: Tests/DiscordLoggingTests/DiscordLogTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Testing
 import DiscordLogging
 import DiscordTestSupport

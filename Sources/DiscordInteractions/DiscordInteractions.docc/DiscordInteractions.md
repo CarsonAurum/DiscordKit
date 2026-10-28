@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordInteractions/DiscordInteractions.docc/DiscordInteractions.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordInteractions``
 
 Authenticate signed HTTP ingress and own one bounded interaction response lifecycle.

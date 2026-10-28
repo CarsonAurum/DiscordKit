@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordNIOTransport/DiscordNIOTransport.docc/Guides/ServerAndDatagramIO.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Serving requests and preserving datagrams
 
 Adopt native UDP and HTTP listeners with bounded admission and explicit resource transfer.

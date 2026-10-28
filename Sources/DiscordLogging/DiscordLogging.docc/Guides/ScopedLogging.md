@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordLogging/DiscordLogging.docc/Guides/ScopedLogging.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Configure logging at the application boundary
 
 Choose a native SwiftLog handler before starting subsystem work.

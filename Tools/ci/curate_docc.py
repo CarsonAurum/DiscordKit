@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/ci/curate_docc.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Maintain DocC reference navigation from public, owned Swift symbol graphs.
 
 Run SwiftPM's public ``dump-symbol-graph`` first, then use ``--write`` to refresh
@@ -195,8 +200,17 @@ def topic_sections(groups, order=None):
     return lines
 
 
-def reference_files(module, graphs):
+def publication_header(path):
+    """Identify each page without placing a rendered block before its DocC title."""
+    return (f"[//]: # \"File: {path.as_posix()} | Created by Carson Rau. | "
+            "Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com\"\n\n")
+
+
+def reference_files(module, graphs, repository_prefix=Path()):
     """Return relative generated filenames, contents and exact curation counts.
+
+    Publication headers identify paths relative to the root repository, including
+    an optional prefix for independently selected packages.
 
     Parent relationships determine nesting rather than name-prefix guesses.
     Default implementations receive their own group; protocol requirements keep
@@ -286,6 +300,9 @@ def reference_files(module, graphs):
         if filename in files:
             raise ValueError(f"Type reference filename collision: {filename}")
         files[filename] = "\n".join(lines).rstrip() + "\n"
+    catalog_path = Path(repository_prefix) / "Sources" / module / f"{module}.docc"
+    files = {path: publication_header(catalog_path / path) + contents
+             for path, contents in files.items()}
     return files, {"module": module, "typePages": len(types), "memberLinks": member_count,
                    "topLevelLinks": len(top_level), "externalExtensionLinks": len(extensions)}
 
@@ -334,6 +351,11 @@ def main():
     arguments = parser.parse_args()
     repository = arguments.repository.resolve()
     modules = build_docc.public_modules(repository)
+    publication_root = Path(__file__).resolve().parents[2]
+    try:
+        repository_prefix = repository.relative_to(publication_root)
+    except ValueError:
+        repository_prefix = Path()
     if arguments.module:
         unknown = set(arguments.module) - set(modules)
         if unknown:
@@ -344,7 +366,7 @@ def main():
     differences = []
     for module in modules:
         graphs = [json.loads(path.read_text()) for path in build_docc.module_graphs(directory, module)]
-        expected, report = reference_files(module, graphs)
+        expected, report = reference_files(module, graphs, repository_prefix)
         catalog = repository / "Sources" / module / f"{module}.docc"
         changes = synchronize(catalog, expected, write=arguments.write)
         differences.extend(f"{module}/{path}" for path in changes)

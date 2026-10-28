@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/Contributing.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Contribute and verify changes
 
 Keep implementation, API contracts, examples, generated outputs and compatibility records synchronized.

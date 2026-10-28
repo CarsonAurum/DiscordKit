@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/Tutorials/ComposeAnActivity.tutorial | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 @Tutorial(time: 25) {
     @Intro(title: "Compose an Activity and its backend") {
         Keep host authentication, code exchange and purchase authorization on their respective trust boundaries.

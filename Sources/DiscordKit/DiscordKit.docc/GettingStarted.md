@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/GettingStarted.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Get started with DiscordKit
 
 Choose a product, add it to your Swift package, and run a local example before connecting to Discord.

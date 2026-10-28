@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBits/DiscordBits.docc/Reference/UnsignedBitSet.ValidationError.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordBits/UnsignedBitSet/ValidationError``
 
 ## Topics

@@ -1,6 +1,13 @@
+<!--
+File: Docs/MacroDSL.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Macro command authoring
 
-Part 15C adds `DiscordDSLMacros` as a separate Swift package under
+DiscordKit provides `DiscordDSLMacros` as a separate Swift package under
 `Packages/DiscordDSLMacros`. It consumes the existing runtime products; neither the
 root package nor a macro-free consumer selects a compiler plugin or SwiftSyntax.
 Swift 6.4 and the pinned SwiftSyntax **604.0.0** are the verified local combination.
@@ -13,7 +20,7 @@ application's SwiftPM dependencies. Select `DiscordDSLMacros` from the latter an
 `DiscordCommandDSL`, `DiscordDSL` and `DiscordInteractions` from the root as needed
 by your source imports. The macro package's local root dependency is `../..`;
 repository consumers use a local path to this separate package. A standalone remote
-macro-package distribution is not established by this milestone.
+macro-package distribution is not established by this library.
 
 ```swift
 import DiscordCommandDSL
@@ -82,22 +89,20 @@ cannot replace them with decoded invocation state. Computed/static/lazy properti
 property wrappers, destructuring, unsupported metadata and arbitrary executable
 default expressions are rejected with source diagnostics. An enum-member spelling can
 refer to an author-defined computed member; that code must remain finite and inert,
-just like a custom codec. Syntactic admission does not sandbox application Swift. Use explicit Part 15B
-schemas for unsupported forms or advanced metadata rather than relying on reflection.
+just like a custom codec. Syntactic admission does not sandbox application Swift. Use explicit schemas for unsupported forms or advanced metadata rather than relying on reflection.
 
 `@SlashCommand` generates `SlashCommandMetadata`, handler conformance and
 `contribution(id:source:)` plumbing. It references the handler's `Arguments`
 protocol instead of inspecting that type. The behavior stays in `execute`; the
 Swift compiler checks its signature, Sendable captures and every generated codec
-use. In Part 15D, explicitly conform to `SlashCommandHandler` for an immediate
+use. Explicitly conform to `SlashCommandHandler` for an immediate
 `MessageResponse`, `DeferredSlashCommandHandler` for acknowledged-before-execution
 `DeferredMessageResponse`, or `ManualSlashCommandHandler` for raw responder ownership.
 Omitting the family preserves the original manual default. The macro factory uses
 the same `SlashCommand` runtime adapters as handwritten code; it does not create
 another response owner. See [response modes and HTTP applications](CommandResponses.md).
-Part 15E composes the same handlers with [message/component builders](MessageBuilders.md)
-without changing macro expansion or response ownership. Part 15F adds
-[family-specific runtime and macro adapters](CommandFamilies.md).
+composes the same handlers with [message/component builders](MessageBuilders.md)
+without changing macro expansion or response ownership. DiscordKit provides [family-specific runtime and macro adapters](CommandFamilies.md).
 
 ## Verification and scope
 
@@ -120,9 +125,8 @@ The [SwiftSyntax release](https://github.com/swiftlang/swift-syntax/releases/tag
 [attached macro proposal](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0389-attached-macros.md)
 and affected [Discord command contracts](https://docs.discord.com/developers/interactions/application-commands)
 were reviewed on **2026-10-18**. Exact review input hashes are recorded in
-[the source record](Release/sources/2026-10-18-phase15c.json). Local Swift 6.4/macOS
+[the source record](Release/sources/2026-10-18-command-macros.json). Local Swift 6.4/macOS
 build and synthetic parity evidence do not establish other toolchains/platforms,
-live Discord interoperability or production capacity. Part 15L's
-[adoption guide](DSLAdoption.md) and [release records](Release/README.md) connect
+live Discord interoperability or production capacity. [adoption guide](DSLAdoption.md) and [release records](Release/README.md) connect
 the independently compiled examples, generated callable-documentation checks and
 current scoped certification without closing those external gates.

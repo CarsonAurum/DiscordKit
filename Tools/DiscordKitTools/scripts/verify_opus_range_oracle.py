@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_opus_range_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in, offline comparison of owned entropy coding with official libopus 1.6.1.
 
 Obtain the source archive separately from the release linked below, then run:
@@ -21,6 +26,8 @@ a test_ prefix: ordinary Python unit-test discovery needs no network or compiler
 This proves entropy-primitive agreement only. It does not decode PCM or establish
 SILK/CELT/hybrid, PLC/FEC, complete Opus conformance or Discord voice readiness.
 """
+
+from publication import swift_header
 
 import argparse
 from datetime import datetime, timezone
@@ -210,7 +217,7 @@ def fixture_cases():
 
 def fixture_text(executable):
     """Regenerate the complete Swift fixture source, including exact per-call accounting."""
-    lines = [
+    lines = swift_header(FIXTURE_PATH).splitlines() + [
         "// Compact independent oracle output generated from unmodified official libopus 1.6.1.",
         f"// {RELEASE_URL}", f"// Source archive SHA256: {ARCHIVE_SHA256}.",
         "// Generated 2026-10-17 by invoking ec_encode/ec_enc_bit_logp/ec_enc_uint/ec_enc_bits,",

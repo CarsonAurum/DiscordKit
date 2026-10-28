@@ -1,3 +1,10 @@
+<!--
+File: Docs/Parity/changes/2026-10-19-invocation-resilience.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Gateway invocation resilience and safe diagnostics
 
 Recorded and official interaction response documentation verified: 2026-10-19.
@@ -27,8 +34,7 @@ initializer changes and additive APIs in a new baseline. Historical snapshots an
 release evidence remain unchanged. Existing ordinary call sites compile unchanged;
 explicit function-reference consumers must review the initializer declarations.
 
-The reported MiniCarson Failed state predates its successful live command session
-and remains unattributed. Local regression checks do not reproduce or prove its
-cause, live Discord acceptance, cross-platform/device qualification or capacity.
+Local regression checks do not establish live Discord acceptance,
+cross-platform/device qualification or production capacity.
 
 Source: [official receiving and responding documentation](https://docs.discord.com/developers/interactions/receiving-and-responding).

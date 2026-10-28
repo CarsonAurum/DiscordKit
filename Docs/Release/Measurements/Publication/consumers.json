@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "0.19.0",
+  "verifiedOn": "2026-10-28",
+  "scope": "Seven independent consumer package builds, two offline executions and final RESTOnly/HTTPApp rebuilds. Other example packages and authenticated execution are unverified.",
+  "commandPaths": "Repository-relative paths normalized from the recorded invocations; exit codes, durations and statuses are unchanged.",
+  "results": [
+    {
+      "name": "RESTOnly",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 34.1,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/RESTOnly",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "HTTPApp",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 68.2,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/HTTPApp",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "GatewayBot",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 8.0,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/GatewayBot",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "CommandsApp",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 4.0,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/CommandsApp",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "VoiceBot",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 54.1,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/VoiceBot",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "DSLCommands",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 56.1,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/DSLCommands",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "DSLBot",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 18.0,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/DSLBot",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "VoiceBot-offline",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.0,
+      "command": [
+        "swift",
+        "run",
+        "--skip-build",
+        "--package-path",
+        "Examples/VoiceBot",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "VoiceBot"
+      ]
+    },
+    {
+      "name": "DSLCommands-offline",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 4.0,
+      "command": [
+        "swift",
+        "run",
+        "--skip-build",
+        "--package-path",
+        "Examples/DSLCommands",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "DSLCommands",
+        "--offline"
+      ]
+    },
+    {
+      "name": "RESTOnly-final",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.0,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/RESTOnly",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    },
+    {
+      "name": "HTTPApp-final",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.0,
+      "command": [
+        "swift",
+        "build",
+        "--package-path",
+        "Examples/HTTPApp",
+        "--scratch-path",
+        ".build/publication-consumers",
+        "--jobs",
+        "2"
+      ]
+    }
+  ]
+}

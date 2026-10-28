@@ -1,3 +1,10 @@
+<!--
+File: Tests/DiscordMLSTests/Fixtures/CRYPTO-SOURCES.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Published suite-2 cryptography vectors
 
 Source: the IETF MLS working group's public implementation interoperability repository,

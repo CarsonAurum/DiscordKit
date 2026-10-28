@@ -1,3 +1,10 @@
+<!--
+File: Tools/DAVEInterop/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Offline initial DAVE candidate interoperability
 
 This explicit development tool uses unmodified
@@ -58,4 +65,4 @@ cannot be independently checked without the creator's prior secret; this test
 neither exports that secret nor claims that check. Full peer commit acceptance,
 all membership transitions, DAVE media, native libdave session behavior, live
 Discord acceptance and independent cryptographic review remain separate gates.
-See [the scoped follow-up](../../Docs/DAVEInteropFollowup.md).
+See [the scoped follow-up](../../Docs/DAVE.md).

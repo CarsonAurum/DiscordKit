@@ -1,6 +1,13 @@
+<!--
+File: Docs/Transport.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Owned transport adapters
 
-Implementation date: **2026-10-15**, Swift 6.4, macOS arm64. Part 2 adds real
+Implementation date: **2026-10-15**, Swift 6.4, macOS arm64. DiscordKit provides real
 network adapters without implementing any Discord endpoint, Gateway session,
 interaction handler, OAuth flow, voice protocol or desktop RPC framing. Protocol
 versions and operation statuses in the discovery inventory remain unchanged.
@@ -88,11 +95,12 @@ admission/consumed-body limits are application limits. Foundation response
 metadata collapses duplicate header fields; duplicate request names are rejected
 rather than silently normalized. Choose NIO when exact duplicate fields and
 owned socket buffering matter. Foundation has no production Linux WebSocket
-qualification in this change.
+qualification.
 The WebSocket adapter marks local cancellation/disposal before native cancellation.
 Later native close callbacks cannot manufacture peer status from the requested
 local code; peer evidence already observed before cleanup remains available.
-See the [voice/DAVE causality follow-up](DAVEInteropFollowup.md).
+[Voice sessions](VoiceSessions.md) preserve the first causal protocol failure
+when cancellation later closes a signaling socket.
 
 Ingress does not terminate TLS, negotiate upgrades, accept trailers/Expect,
 reuse keep-alive connections or run application handlers on its event loop.
@@ -137,7 +145,7 @@ Exact results and the local transport baseline are recorded in
 profiles select bounded active cohorts; they do not create one task/socket per
 account or qualify millions of simultaneous connections.
 
-Part 2's whole-platform completion gate remains **open**. This host cannot execute
+whole-platform completion gate remains **open**. This host cannot execute
 Linux, Windows, Android or physical Apple-device qualification. Windows named
 pipes, Android JNI/lifecycle/browser/media integration, native authentication and
 media UI adapters, IPv6 beyond local UDP/DNS/network-change/minimum-OS coverage,

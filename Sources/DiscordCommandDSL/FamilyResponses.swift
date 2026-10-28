@@ -1,3 +1,8 @@
+// File: Sources/DiscordCommandDSL/FamilyResponses.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordModels
 
 /// Immediate command callbacks, constrained separately from component and modal submissions.

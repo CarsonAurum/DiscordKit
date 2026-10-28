@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordModels/DiscordModels.docc/Guides/ConstructingPayloads.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Constructing validated request payloads
 
 Express an operation's legal fields and validate combinations before acquiring network resources.

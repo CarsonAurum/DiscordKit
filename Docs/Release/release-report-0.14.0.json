@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.14.0",
+  "verifiedOn": "2026-10-18",
+  "published": false,
+  "protocols": {
+    "REST": "10",
+    "Gateway": "10",
+    "Voice": "8",
+    "RPC": "1",
+    "MLS": "1.0",
+    "DAVE": "1"
+  },
+  "checks": [
+    {
+      "id": "root-build",
+      "status": "passed",
+      "scope": "Debug with direct dependency imports as errors; optimized host build.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "root-tests",
+      "status": "passed",
+      "scope": "2,108 strict root tests in 264 suites across 29 test targets; coverage enabled; macOS local only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "tooling",
+      "status": "passed",
+      "scope": "103 Swift tool tests; 218 Python tools tests; 8 CI helper tests; 28 load Swift tests; 12 local peer Python tests.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "status": "passed",
+      "scope": "18,137 entries, 280 sources; 0 unclassified discovery IDs; semantic review remains partial.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "generation",
+      "status": "passed",
+      "scope": "5 committed generated artifacts byte-identical; no regeneration.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "parity",
+      "status": "passed",
+      "scope": "Offline reviewed inventory and parity validations.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "declaration-docs",
+      "status": "passed",
+      "scope": "665 Swift files, 7,255 explicit callables, 0 missing comments; presence only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "docc",
+      "status": "passed",
+      "scope": "All 28 owned public module archives strict warnings/analyze/coverage conversion.",
+      "evidence": [
+        {
+          "path": "Docs/Release/docc-report.json",
+          "sha256": "c2feb154cf39161529ce5da3366953a5380df06ae08aa5c4b0340c369f0d5e4d"
+        },
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "product-isolation",
+      "status": "passed",
+      "scope": "Actual 28 product/target DAG; 661 imports, 310 source files, 7 pins; 9 consumer selections and independent strict builds.",
+      "evidence": [
+        {
+          "path": "Docs/Release/graph-audit.json",
+          "sha256": "5ebe10515e0968ef0e62f39fbedf854b572831d1be13d0a9da154997106eae21"
+        },
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "api-baseline",
+      "status": "passed",
+      "scope": "Initial 28 module, 13,235 symbol macOS arm64 baseline and identical current snapshot; no historical compatibility/ABI claim.",
+      "evidence": [
+        {
+          "path": "Docs/Release/api-baseline.json",
+          "sha256": "352b475dcddf0588c5d02a75b290e561543f36fe3398ef63be014647fa67a6eb"
+        },
+        {
+          "path": "Docs/Release/api-comparison.json",
+          "sha256": "4c83c909914416b07d6baa3d5b2d621a60d35f8f3c6d094ba510239ffc4c0eca"
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "status": "passed",
+      "scope": "All 9 independent packages build; CommandsApp/ActivityHost tests and VoiceBot/SocialApp/CommandsApp offline runs.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "status": "passed",
+      "scope": "36 simulated host Node bridge tests; no approved Discord browser/mobile host.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        }
+      ]
+    },
+    {
+      "id": "social-catalog",
+      "status": "passed",
+      "scope": "743 rows, 87 named blockers; narrower partial/language-specific/blocked catalog only.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        },
+        {
+          "path": "Docs/Parity/social-catalog.json",
+          "sha256": "096c747679d3777e876da31bfe5e6713716d14f73e1204952a1889f579cada46"
+        }
+      ]
+    },
+    {
+      "id": "local-load",
+      "status": "passed",
+      "scope": "24 finite synthetic/loopback profiles; arithmetic populations with bounded cohort/resource reports; no controlled regression or fleet capacity.",
+      "evidence": [
+        {
+          "path": "Docs/Release/Measurements/environment.json",
+          "sha256": "52e38a8e4ba761289f834aab003fb252d92c068a9539f673edb6fc57ee0f70f9"
+        }
+      ]
+    },
+    {
+      "id": "fixed-working-set-soak",
+      "status": "passed",
+      "scope": "1,800.007 seconds, 201,291 rounds; four scopes, 20 keys each; bounded accounting and empty final owned counters. Zero RSS growth excluded.",
+      "evidence": [
+        {
+          "path": "Docs/Release/Measurements/soak-accounts-1000000-1800s-burst.json",
+          "sha256": "26696db784043dc58dbf26a5e3423eecdb962a919c4c0371ef40b93be217e1b2"
+        },
+        {
+          "path": "Docs/Release/Measurements/environment.json",
+          "sha256": "52e38a8e4ba761289f834aab003fb252d92c068a9539f673edb6fc57ee0f70f9"
+        }
+      ]
+    },
+    {
+      "id": "macos",
+      "status": "passed",
+      "scope": "Current macOS arm64 host-local build/tests; selected Apple cross-SDK module compilation is separate and not runtime qualification.",
+      "evidence": [
+        {
+          "path": "Docs/Release/validation.json",
+          "sha256": "2134bc5db10991d8ef4caa4b6035efbb954ce41d264449d2f5db7d101f4200c0"
+        },
+        {
+          "path": "Docs/Release/apple-compile.json",
+          "sha256": "d1998518ab467417537efb6a7cb1468791a58b15a319798cdd3ebfa208d02ebb"
+        }
+      ]
+    },
+    {
+      "id": "linux",
+      "status": "unverified",
+      "scope": "No Linux host/toolchain execution in this session; hosted workflow definition only.",
+      "reason": "No Linux host/toolchain execution in this session; hosted workflow definition only.",
+      "excludedClaims": [
+        "linux"
+      ]
+    },
+    {
+      "id": "windows",
+      "status": "unverified",
+      "scope": "No Windows host execution or owned named-pipe qualification; trusted self-hosted gate only.",
+      "reason": "No Windows host execution or owned named-pipe qualification; trusted self-hosted gate only.",
+      "excludedClaims": [
+        "windows"
+      ]
+    },
+    {
+      "id": "apple-simulators",
+      "status": "unverified",
+      "scope": "45 selected device/simulator module emissions passed, but no full-package/linked-app or simulator runtime qualification.",
+      "reason": "45 selected device/simulator module emissions passed, but no full-package/linked-app or simulator runtime qualification.",
+      "excludedClaims": [
+        "apple-simulators"
+      ]
+    },
+    {
+      "id": "apple-devices",
+      "status": "unverified",
+      "scope": "Selected device SDK module compilation passed; no physical device/native routing/minimum OS runtime/full graph qualification.",
+      "reason": "Selected device SDK module compilation passed; no physical device/native routing/minimum OS runtime/full graph qualification.",
+      "excludedClaims": [
+        "apple-devices"
+      ]
+    },
+    {
+      "id": "android-cross-build",
+      "status": "unverified",
+      "scope": "No matching Swift Android SDK/NDK 30 host available/executed; explicit prerequisite helper and runner gate only.",
+      "reason": "No matching Swift Android SDK/NDK 30 host available/executed; explicit prerequisite helper and runner gate only.",
+      "excludedClaims": [
+        "android-cross-build"
+      ]
+    },
+    {
+      "id": "android-runtime",
+      "status": "unverified",
+      "scope": "No selected API 28+ Android device/emulator execution or native app/media qualification.",
+      "reason": "No selected API 28+ Android device/emulator execution or native app/media qualification.",
+      "excludedClaims": [
+        "android-runtime"
+      ]
+    },
+    {
+      "id": "live-discord",
+      "status": "unverified",
+      "scope": "No authenticated/live Discord calls, approved Activity/RPC/voice hosts, purchase or live media smoke.",
+      "reason": "No authenticated/live Discord calls, approved Activity/RPC/voice hosts, purchase or live media smoke.",
+      "excludedClaims": [
+        "live-discord"
+      ]
+    },
+    {
+      "id": "hardware",
+      "status": "unverified",
+      "scope": "No native hardware/media route qualification or broad hardware matrix.",
+      "reason": "No native hardware/media route qualification or broad hardware matrix.",
+      "excludedClaims": [
+        "hardware"
+      ]
+    },
+    {
+      "id": "independent-crypto-review",
+      "status": "unverified",
+      "scope": "No independent cryptographic review or audit completed.",
+      "reason": "No independent cryptographic review or audit completed.",
+      "excludedClaims": [
+        "independent-crypto-review"
+      ]
+    },
+    {
+      "id": "codec-interop",
+      "status": "unverified",
+      "scope": "Existing published vectors/local development oracle coverage does not establish complete-client codec/MLS/DAVE interoperability.",
+      "reason": "Existing published vectors/local development oracle coverage does not establish complete-client codec/MLS/DAVE interoperability.",
+      "excludedClaims": [
+        "codec-interop"
+      ]
+    },
+    {
+      "id": "semantic-documentation",
+      "status": "unverified",
+      "scope": "Manual semantic review covered new/touched declarations and guides, not every pre-existing declaration in the repository.",
+      "reason": "Manual semantic review covered new/touched declarations and guides, not every pre-existing declaration in the repository.",
+      "excludedClaims": [
+        "semantic-documentation"
+      ]
+    },
+    {
+      "id": "api-other-platforms",
+      "status": "unverified",
+      "scope": "Initial emitted API baseline is macOS arm64 only; conditional other-platform APIs/binary ABI/historical compatibility unverified.",
+      "reason": "Initial emitted API baseline is macOS arm64 only; conditional other-platform APIs/binary ABI/historical compatibility unverified.",
+      "excludedClaims": [
+        "api-other-platforms"
+      ]
+    },
+    {
+      "id": "upstream-collection",
+      "status": "unverified",
+      "scope": "Weekly collector did not complete locally: sandbox DNS and then stalled approved public Git fetch; bounded deadlines added. Affected official reference/changelog fetched separately.",
+      "reason": "Weekly collector did not complete locally: sandbox DNS and then stalled approved public Git fetch; bounded deadlines added. Affected official reference/changelog fetched separately.",
+      "excludedClaims": [
+        "upstream-collection"
+      ]
+    },
+    {
+      "id": "zero-resource-growth",
+      "status": "unverified",
+      "scope": "Fresh 30 minute soak accounted ownership was empty, but actual RSS increased 16,384 bytes during final five minutes; absence of leaks/zero resident growth unverified.",
+      "reason": "Fresh 30 minute soak accounted ownership was empty, but actual RSS increased 16,384 bytes during final five minutes; absence of leaks/zero resident growth unverified.",
+      "excludedClaims": [
+        "zero-resource-growth"
+      ]
+    },
+    {
+      "id": "performance-regression",
+      "status": "unverified",
+      "scope": "Profiles overlapped builds/tests; no three controlled matching-hardware baseline reruns or attributed greater than 10 percent regression review.",
+      "reason": "Profiles overlapped builds/tests; no three controlled matching-hardware baseline reruns or attributed greater than 10 percent regression review.",
+      "excludedClaims": [
+        "performance-regression"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "owned-release-tooling",
+      "description": "Locally tested documentation/release/maintenance tooling for the bounded public-protocol candidate.",
+      "checkIDs": [
+        "root-build",
+        "root-tests",
+        "tooling",
+        "inventory",
+        "generation",
+        "parity",
+        "declaration-docs",
+        "docc",
+        "product-isolation",
+        "api-baseline",
+        "examples",
+        "browser",
+        "social-catalog",
+        "macos"
+      ]
+    },
+    {
+      "id": "bounded-local-measurements",
+      "description": "Published named-hardware finite profiles and completed 30 minute fixed-working-set accounting/cleanup evidence; no zero RSS growth/regression/fleet claim.",
+      "checkIDs": [
+        "local-load",
+        "fixed-working-set-soak",
+        "macos"
+      ]
+    }
+  ],
+  "globalExclusions": [
+    "entire-platform-parity",
+    "production-qualification",
+    "fleet-capacity",
+    "binary-ABI",
+    "historical-API-compatibility"
+  ],
+  "publicationNote": "Historical validation report. Metadata references were renamed and their file digests refreshed for publication; verification dates, measured source identities, results and qualification exclusions retain their historical scope."
+}

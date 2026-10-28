@@ -1,3 +1,10 @@
+<!--
+File: Examples/RESTOnly/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # REST-only consumer
 
 Build with Swift 6.4: `swift build --package-path Examples/RESTOnly`.

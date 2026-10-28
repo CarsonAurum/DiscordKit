@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordBotDSL/DiscordBotDSL.docc/Guides/InvocationRecovery.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Recover invocation failures and observe diagnostics
 
 Select `failurePolicy: .continueInvocations` when constructing

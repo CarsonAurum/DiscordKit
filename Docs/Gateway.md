@@ -1,10 +1,17 @@
+<!--
+File: Docs/Gateway.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Sharded Gateway lifecycle, dispatches and requests
 
 Implemented 2026-10-16 against the current
 [Gateway reference](https://docs.discord.com/developers/events/gateway),
 [event controls](https://docs.discord.com/developers/events/gateway-events) and
 [close codes](https://docs.discord.com/developers/topics/opcodes-and-status-codes).
-The protocol is explicitly **v10**, JSON and uncompressed. Phase 6 extends the early
+The protocol is explicitly **v10**, JSON and uncompressed. DiscordKit provides the early
 lifecycle with typed recognition of all **79 documented opcode-zero dispatch names**,
 all **13 documented Gateway opcode values**, **21 named intents**, Identify
 capabilities and bounded member/soundboard/channel-info requests. Named catalog
@@ -30,7 +37,7 @@ operation supervises socket receive, authentication, heartbeat and lease renewal
 `GatewayBot.run` supervises the finite selected subset in a task group; failure
 cancels and awaits sibling cleanup. Construction launches no tasks or socket work.
 
-Part 7 adds [consumer composition, broadcast and handlers](Client.md). Existing raw
+DiscordKit provides [consumer composition, broadcast and handlers](Client.md). Existing raw
 consumers can keep `drainEvents`; the client instead owns `nextEvents`, a bounded
 single-consumer wake-up API. Public `GatewayEvent` construction supports bounded
 offline replay and exposes local socket-generation provenance. It authenticates
@@ -215,11 +222,10 @@ configured aggregate ceilings are also reported.
 Release evidence and hardware/toolchain context are preserved in
 [Gateway baselines](../Tools/DiscordKitLoadTests/Baselines/gateway-environment.json).
 The 2026-10-16 release captures used an Apple M3 Max, macOS 27.0.1 and Swift 6.4.
-Every refreshed Phase 6 run delivered its exact synthetic dispatch target,
+Every refreshed run delivered its exact synthetic dispatch target,
 completed two Resumes per selected session and retained zero connections, pending
-requests, application writes or leases after shutdown. These are refreshed Phase 6
-captures; the earlier one-Resume/control-per-eight-dispatch measurements described
-a different fixture and are not directly comparable. CPU is relative to
+requests, application writes or leases after shutdown. Compare measurements only
+when fixture, workload and toolchain match. CPU is relative to
 one core and can exceed 100%; peak RSS is an un-settled process high-water mark.
 
 | Logical users | Mode | Sessions / bots | Control p99, ms | Event lag p99, ms | CPU, one-core % | Peak RSS, MiB |

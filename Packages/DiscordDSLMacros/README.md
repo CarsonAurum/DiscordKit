@@ -1,11 +1,18 @@
+<!--
+File: Packages/DiscordDSLMacros/README.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # DiscordDSLMacros
 
-Part 15C's optional authoring package supplies `@CommandArguments`, `@Option` and
-`@SlashCommand`. Part 15F adds `@UserCommand`, `@MessageCommand` and generated
-`slashSubcommand()` factories for explicit slash trees. The package generates
-existing typed argument schemas and command contributions. Part 15D preserves explicit immediate, deferred and manual response
-contracts. The runtime products never depend on this package,
-its compiler plugin or SwiftSyntax.
+This optional authoring package supplies `@CommandArguments`, `@Option`,
+`@SlashCommand`, `@UserCommand` and `@MessageCommand`, plus generated
+`slashSubcommand()` factories for explicit slash trees. It generates existing typed
+argument schemas and command contributions while preserving explicit immediate,
+deferred and manual response contracts. Runtime products remain independent of
+this package, its compiler plugin and SwiftSyntax.
 
 Use Swift 6.4 or newer. The compiler-host dependency is pinned exactly to
 [SwiftSyntax 604.0.0](https://github.com/swiftlang/swift-syntax/releases/tag/604.0.0),
@@ -16,7 +23,7 @@ For a local checkout, add `.package(path: "../DiscordKit/Packages/DiscordDSLMacr
 to your consumer manifest and select
 `.product(name: "DiscordDSLMacros", package: "DiscordDSLMacros")` alongside the
 runtime products your application uses. The package retains its sibling root
-checkout dependency; remote standalone publication is not provided in this slice.
+checkout dependency; remote standalone publication requires packaging this dependency separately.
 Import `DiscordDSLMacros` and the runtime modules used by your declarations.
 
 The [authoring guide](../../Docs/MacroDSL.md) describes supported forms, migration

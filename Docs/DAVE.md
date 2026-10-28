@@ -1,7 +1,14 @@
+<!--
+File: Docs/DAVE.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Independently adopted DAVE
 
 Implemented locally: **2026-10-18**. Official sources verified: **2026-10-18**.
-[Validation record](Parity/phase12c-validation.json): final root build, 1,976 strict
+[Validation record](Parity/dave-validation.json): final root build, 1,976 strict
 tests, tooling/parity checks and the offline VoiceBot passed on macOS arm64.
 
 `DiscordDAVE` implements DAVE wire version **1** over the separately adopted
@@ -16,15 +23,15 @@ The [official whitepaper](https://daveprotocol.com/) revision and Voice Gateway
 **v8** are distinct from negotiated DAVE version 1. The verified official
 `libdave` implementation is pinned to
 [`8de72b1f8a2ac3c5a5270755bb8091a62e3c6169`](https://github.com/discord/libdave/tree/8de72b1f8a2ac3c5a5270755bb8091a62e3c6169).
-[Source fingerprints](Parity/phase12c-current-sources.json) retain exact fetched
+[Source fingerprints](Parity/dave-current-sources.json) retain exact fetched
 bytes, hashes and verification dates. Upstream grouped algorithm introduction and
 effective dates are unknown; the local implementation date is separate.
 
 This is an implemented protocol backend, with local deterministic and independent
-algorithm evidence. [Phase 12D supervised sessions](VoiceSessions.md) now compose
+algorithm evidence. [supervised sessions](VoiceSessions.md) now compose
 this backend with network/media ownership. Independent cryptographic review,
 complete-client/live Discord interoperability and hardware/platform qualification
-remain open. The roadmap's full qualified voice and video product remains incomplete.
+remain open. A fully qualified voice and video product remains incomplete.
 
 ## Dependency and ownership boundaries
 
@@ -50,7 +57,7 @@ flowchart LR
 DAVE transforms one complete encoded frame before packetization and after
 depacketization. An RTP fragment cannot be substituted for a frame. Voice v8
 socket ownership, heartbeat scheduling, SSRC-to-user routing and network retry/
-rejoin deadlines now belong to [Phase 12D supervised sessions](VoiceSessions.md).
+rejoin deadlines now belong to [supervised sessions](VoiceSessions.md).
 Audio capture/playback remains in injected platform adapters; complete video
 packetization/provider work remains in 12E. The offline
 [VoiceBot consumer](../Examples/VoiceBot/README.md) performs no Discord join.
@@ -232,21 +239,20 @@ Swift Testing covers synthetic signaling/MLS peers, epoch ownership, transition
 and recovery failures, media wire/tamper/replay/counter limits, malformed codec
 structures and verification-state changes. The independently generated Node/OpenSSL
 AES-GCM media fixture and pinned ratchet/fingerprint vectors validate external
-algorithm bytes. The [codec oracle record](Parity/phase12c-codec-oracle.json) records
+algorithm bytes. The [codec oracle record](Parity/dave-codec-oracle.json) records
 eight exact comparisons between production Swift transforms and the unmodified
 pinned C++ codec/LEB128 algorithms with minimal collection adapters. That comparison
 does not build a complete libdave client or exercise an RTP packetizer.
 
 After changes, run root `swift build`/`swift test`, build and run the offline
 VoiceBot, and run inventory/generation/parity checks when their records change.
-The [phase execution plan](../.air/plans/phase-12c-execution.plan.md) separates
-implementation from qualification. Independent crypto review, compiler/backend
-timing review, complete-client interoperability, real Discord handshakes, approved
-media smoke, per-platform/minimum-OS device results and ten-minute hardware duplex
-remain open. Swift value storage provides logical key teardown without guaranteeing
-physical memory erasure. No local result establishes production or fleet capacity.
+Independent crypto review, compiler/backend timing review, complete-client
+interoperability, real Discord handshakes, approved media smoke, per-platform and
+minimum-OS device results, and ten-minute hardware duplex remain open. Swift value
+storage provides logical key teardown without guaranteeing physical memory erasure.
+No local result establishes production or fleet capacity.
 
-## Phase 12D composition
+## Composition
 
 `DAVEVoiceSession` now implements Voice's injected session/frame protocols with
 bounded control-priority admission and authenticated SSRC/account routing. It

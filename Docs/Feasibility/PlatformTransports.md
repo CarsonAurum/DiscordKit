@@ -1,3 +1,10 @@
+<!--
+File: Docs/Feasibility/PlatformTransports.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Native transport feasibility
 
 Verified **2026-10-15**. The tested candidate is SwiftNIO **2.104.0**, released
@@ -98,11 +105,7 @@ first; retain and review the committed lockfile. Use Swift 6.4 or newer and allo
 local loopback sockets. This fixture is not part of the production target graph or
 the root `swift test`; CI must invoke it separately on each native host.
 
-In this managed workspace the restricted shell initially denied the normal Clang
-module cache and temporary-file locations, and sandboxed Git could not resolve
-github.com. Resolution and the successful test run used approved host build/network
-access. These environmental failures were not classified as NIO compatibility
-failures. No unavailable-host result has been filled in from a macOS success.
+No unavailable-host result is inferred from the macOS tests.
 
 ## Open qualification gates
 
@@ -114,7 +117,7 @@ failures. No unavailable-host result has been filled in from a macOS success.
    scenarios on devices. A watch simulator cannot establish watchOS networking
    rights. Qualify a Network-framework/Foundation path where POSIX networking is
    prohibited. Test Android with its matching official SDK/toolchain/NDK.
-3. When Part 2 implements adapters, add cancellation before/during connect,
+3. Adapter qualification requires cancellation before/during connect,
    read/write/close, invalid/expired certificates, failed HTTP upgrades, fragmented
    and multiple WebSocket frames, ping/pong/close, half closes, backpressure,
    repeated start/stop, network replacement and resource counts returning to

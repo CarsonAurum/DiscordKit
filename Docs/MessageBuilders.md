@@ -1,6 +1,13 @@
+<!--
+File: Docs/MessageBuilders.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Message/component builders and safe text
 
-Part 15E adds pure message authoring to the unpublished **0.15.0 candidate**.
+DiscordKit provides pure message authoring to the unpublished **0.15.0 candidate**.
 `DiscordDSL.MessageContent` retains text and typed mention intent using only Core
 and Models. `DiscordCommandDSL` supplies `MessageBuilder`, `ComponentBuilder` and
 thin immediate/deferred response initializers. Existing products retain their
@@ -154,8 +161,7 @@ escaping, typed opt-in, Unicode limits, empty/invalid layouts and response owner
 The independent [DSLCommands consumer](../Examples/DSLCommands/README.md) uses an
 actual compiled macro command and a builder-authored response in its synthetic
 signed HTTP exchange. This evidence does not establish live Discord rendering,
-notification delivery, platform qualification, production capacity or the remaining
-[Phase 15 milestones](DSLImplementationRoadmap.md).
+notification delivery, platform qualification or production capacity.
 
 The affected [message](https://docs.discord.com/developers/resources/message),
 [component](https://docs.discord.com/developers/components/reference) and
@@ -163,6 +169,6 @@ The affected [message](https://docs.discord.com/developers/resources/message),
 contracts and Swift's [interpolation](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0228-fix-expressiblebystringinterpolation.md)
 and [result-builder](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md)
 contracts were reviewed on **2026-10-18**. The
-[source record](Release/sources/2026-10-18-phase15e.json) identifies exact inputs;
-[parity history](Parity/changes/phase15e-message-builders.md) records the additive
+[source record](Release/sources/2026-10-18-message-builders.json) identifies exact inputs;
+[parity history](Parity/changes/message-builders.md) records the additive
 local authoring change without promoting wire coverage.

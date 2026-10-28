@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitTools/scripts/verify_opus_encoder_policy.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Opt-in owned encoder policy, objective signal quality and frame-time measurements.
 
 Uses pinned separately supplied libopus only as an independent decoder. Generated

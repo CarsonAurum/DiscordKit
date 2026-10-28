@@ -1,3 +1,8 @@
+// File: Sources/DiscordHTTP/RESTClient.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordLogging
 import DiscordCore
 import DiscordTransport
@@ -55,7 +60,7 @@ public final class RESTClient<C: Clock>: Sendable, CustomStringConvertible, Cust
                 coalescer: RequestCoalescer? = nil, retryPolicy: RetryPolicy = .init(),
                 maximumResponseBytes: Int = 8 * 1_024 * 1_024,
                 maximumExchangeDuration: Duration = .seconds(30),
-                egress: UUID? = nil, userAgent: String = "DiscordBot (https://github.com/CarsonAurum/DiscordKit, 0.3.0-dev)") {
+                egress: UUID? = nil, userAgent: String = "DiscordBot (https://github.com/CarsonAurum/DiscordKit, 0.19.0)") {
         precondition(maximumResponseBytes > 0 && maximumExchangeDuration > .zero)
         self.credential = credential; self.identity = identity; self.transport = transport
         self.coordinator = coordinator; self.clock = clock; self.cache = cache; self.coalescer = coalescer

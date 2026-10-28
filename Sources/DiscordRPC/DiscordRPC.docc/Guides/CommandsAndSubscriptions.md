@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordRPC/DiscordRPC.docc/Guides/CommandsAndSubscriptions.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Executing commands and consuming desktop events
 
 Use typed builders, exact correlation and bounded ordered delivery.

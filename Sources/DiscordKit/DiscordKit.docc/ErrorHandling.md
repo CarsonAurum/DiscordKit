@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/ErrorHandling.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Handle failures without losing outcomes
 
 Separate validation, admission, transport, server and indeterminate-operation failures.

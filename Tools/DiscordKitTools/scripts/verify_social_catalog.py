@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Validate Phase 13 Social mappings offline without expanding SDK support claims.
+# File: Tools/DiscordKitTools/scripts/verify_social_catalog.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
+"""Validate Social mappings offline without expanding SDK support claims.
 
 The historical method catalog remains the declaration-membership authority. This
 audit checks every Social declaration and callback and all Commerce capabilities,
@@ -124,7 +129,7 @@ def load_and_validate(repository):
     does not regenerate data, fetch sources, or alter historical discovery records.
     """
     return validate_catalog(
-        json.loads((repository / "Docs/Parity/phase13-social-catalog.json").read_text()),
+        json.loads((repository / "Docs/Parity/social-catalog.json").read_text()),
         json.loads((repository / "Docs/Feasibility/method-contracts.json").read_text()),
         repository,
     )

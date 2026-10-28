@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordModels/DiscordModels.docc/Guides/ReadingResources.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Reading resources without losing future data
 
 Decode immutable snapshots while preserving optionality, unknown fields and future discriminators.

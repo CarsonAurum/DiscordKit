@@ -1,3 +1,10 @@
+<!--
+File: Docs/HTTP.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # HTTP execution and request reuse
 
 Implemented 2026-10-16 with Swift 6.4. REST **v10** is explicit and verified against
@@ -29,18 +36,11 @@ explicit unsafe evidence inspectors transfer the logging responsibility to calle
 
 The first typed descriptors are `DiscordEndpoints.currentUser()` and
 `currentApplication()` plus `GatewayEndpoints.bot()` in the optional Gateway product.
-Phase 5G completes User/Application owned projections while retaining explicit
+DiscordKit provides User/Application owned projections while retaining explicit
 partial referenced resources, exact unknown JSON, large string snowflakes and
 absent/null/value states. Resource
-catalog expansion includes Part 5A [messages and polls](RESTCatalog.md) and Part 5B
-[channels and threads](Channels.md), Part 5C [guild administration](Guilds.md), and
-Part 5D [audit logs and Auto Moderation](Moderation.md), and Part 5E
-[emoji, stickers and soundboard](Expressions.md), and Part 5F
-[invites, templates, scheduled events and stages](DiscoveryEvents.md), and Part 5G
-[applications, users, linked roles and commands](ApplicationsUsers.md), and Part 5H
-[webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md), and Part 5I
-[SKUs, entitlements and subscriptions](Monetization.md), and Part 5J
-[lobbies and application identity profiles](SocialGame.md);
+catalog expansion includes [messages and polls](RESTCatalog.md) and [channels and threads](Channels.md), [guild administration](Guilds.md), and
+[audit logs and Auto Moderation](Moderation.md), and [emoji, stickers and soundboard](Expressions.md), and [invites, templates, scheduled events and stages](DiscoveryEvents.md), and [applications, users, linked roles and commands](ApplicationsUsers.md), and [webhooks, interaction responses and voice control](WebhooksInteractionsVoice.md), and [SKUs, entitlements and subscriptions](Monetization.md), and [lobbies and application identity profiles](SocialGame.md);
 these initial descriptors do not imply full resource-family parity.
 
 `AssetClient` accepts HTTPS destinations without credential/header customization.

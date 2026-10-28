@@ -1,10 +1,16 @@
+<!--
+File: CONTRIBUTING.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Contributing
 
-DiscordKit is implementing its roadmap incrementally. Read the
-[architecture](Docs/Architecture.md), [concurrency](Docs/Concurrency.md),
-[dependency](Docs/Dependencies.md), [platform](Docs/PlatformSupport.md) and
-[parity](Docs/Parity/README.md) records before changing a public contract.
-Repository agent guidance also applies to every contribution.
+Read the [architecture](Docs/Architecture.md), [concurrency](Docs/Concurrency.md),
+[dependency](Docs/Dependencies.md) and [platform](Docs/PlatformSupport.md) guides
+before changing a public contract. Contributions should preserve independent
+product adoption and document observable behavior and compatibility.
 
 ## Focus and evidence
 
@@ -49,8 +55,8 @@ does not establish accuracy; review its contents with the implementation.
 
 Use [Swift Testing](https://developer.apple.com/documentation/testing):
 `import Testing`, `@Suite`, `@Test`, `#expect`, `#require`, parameterized cases and
-direct `async`/`await`. Use `@testable import DiscordKit` for the current internal
-API; future suites import the module under test. Exercise private behavior through
+direct `async`/`await`. Use `@testable import DiscordKit` for its internal
+API; other suites import the module under test. Exercise private behavior through
 observable callers without widening visibility solely for tests.
 
 Every new or modified production method needs meaningful tests for applicable
@@ -59,7 +65,7 @@ Concurrent operations need deterministic cancellation before/during work, error,
 timeout, ordering, reentrancy, cleanup and concurrent-caller tests. Protocol work
 also covers request/response codecs, unknown variants, large IDs, authentication,
 API/transport failures, rate limits, retries and pagination. Gateway work covers
-duplicates, reconnect and resume as those features arrive.
+duplicates, reconnect and resume across supported connection states.
 
 Inject transports, clocks and scripted peers. Unit tests need no live Discord
 requests, real credentials or timing-dependent sleeps; they must be safe to run

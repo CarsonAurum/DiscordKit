@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# File: Tools/DiscordKitLoadTests/scripts/record_cache_baseline.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Record finite local cache/broadcast recovery evidence without credentials or sockets."""
 import argparse
 import hashlib

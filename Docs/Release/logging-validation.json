@@ -110,7 +110,7 @@
       "macroFixtures": 26,
       "dependencyFixtures": 3,
       "notes": [
-        "Approved host execution used an isolated cache and a Swift wrapper adding --disable-sandbox/--skip-update/--jobs 2. Genuine positive/negative external compilation, not text-only expansion."
+        "Local host execution used an isolated cache and a Swift wrapper adding --disable-sandbox/--skip-update/--jobs 2. Genuine positive/negative external compilation, not text-only expansion."
       ]
     },
     {
@@ -238,9 +238,9 @@
       "name": "historical certification remains valid",
       "status": "passed",
       "commands": [
-        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase14-report.json",
-        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15-report.json",
-        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/phase15l-report.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/release-report-0.14.0.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/release-report-0.15.0.json",
+        "python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/release-report-0.15.0-final.json",
         "python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json"
       ],
       "notes": [
@@ -333,13 +333,13 @@
       ]
     },
     {
-      "name": "final review and staged handoff",
+      "name": "final source and validation review",
       "status": "passed",
       "commands": [
         "git diff --check",
         "git diff --cached --check"
       ],
-      "review": "Independent runtime and handler/privacy/ownership reviews found no actionable issues. Local Markdown links and changed JSON/lockfiles validate. Only requested scope is staged; build/cache/log artifacts excluded."
+      "review": "Independent runtime and handler/privacy/ownership reviews found no actionable issues. Local Markdown links and changed JSON/lockfiles validate. Build, cache and log artifacts are excluded from the source distribution."
     }
   ],
   "exclusions": [
@@ -366,7 +366,7 @@
       "SWIFTPM_MODULECACHE_OVERRIDE": "/tmp/discordkit-logging-module",
       "SWIFTNIO_STRICT": "1"
     },
-    "access": "Approved host access only where local loopback/cache/dependency resolution or tool execution required it. No live Discord requests or credentials."
+    "access": "Local host execution provided loopback sockets, writable caches, dependency resolution and tool execution. No live Discord requests or credentials."
   },
   "published": false,
   "tagged": false,
@@ -375,10 +375,6 @@
     {
       "path": ".github/workflows/ci.yml",
       "sha256": "3a64b0ee689c4d06bf7e28b356aa51cb53f60a7946c4a6c5b20bfc4469baf6cc"
-    },
-    {
-      "path": "AGENTS.md",
-      "sha256": "629452bfd65c94a9ace10edfcbc1a2279b833f0349777463b09e636555b3627a"
     },
     {
       "path": "Docs/Architecture.md",

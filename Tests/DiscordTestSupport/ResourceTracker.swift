@@ -1,3 +1,8 @@
+// File: Tests/DiscordTestSupport/ResourceTracker.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// Exactly-once resource accounting, isolated per test rather than globally shared.

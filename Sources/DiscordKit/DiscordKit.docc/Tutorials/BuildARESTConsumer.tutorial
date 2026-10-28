@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordKit/DiscordKit.docc/Tutorials/BuildARESTConsumer.tutorial | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 @Tutorial(time: 20) {
     @Intro(title: "Build a REST consumer") {
         Compose typed REST reads, a shared rate authority and an explicitly owned Foundation adapter.

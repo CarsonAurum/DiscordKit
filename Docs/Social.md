@@ -1,12 +1,19 @@
+<!--
+File: Docs/Social.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
 # Owned Social composition
 
-Phase 13 adds independently adopted `DiscordSocial`, verified **2026-10-18** against
+DiscordKit provides independently adopted `DiscordSocial`, verified **2026-10-18** against
 the [Social reference](https://discord.com/developers/docs/social-sdk/classdiscordpp_1_1Client.html),
 [current change log](https://docs.discord.com/developers/change-log),
 [RPC reference](https://docs.discord.com/developers/topics/rpc),
 [Activity reference](https://docs.discord.com/developers/developer-tools/embedded-app-sdk)
 and the account/mobile/Commerce sources pinned in
-[current sources](Parity/phase13-current-sources.json).
+[current sources](Parity/social-current-sources.json).
 HTTP descriptors select REST **v10**, desktop RPC handshakes select **v1** and the
 existing owned Activity bridge selects **v1**. The native Social session and
 early-access Commerce protocols have no published equivalent version negotiated
@@ -58,7 +65,7 @@ Close permanently disables this coordinator. Replacing providers requires a new 
 | `SocialActivityProvider` | Presence/explicit clear, relationships, Activity participants, invite dialog and external-link prompt | Existing exact-source/origin bridge and authorized host; command-specific host/scope checks. Immutable application name must match common presence updates. |
 | `OAuthDeviceAuthorizationFlow` in OAuth | Published confidential console device authorization and explicit token polling | Application backend only, approved application configuration, published device grant. No SDK-managed public-client or console runtime integration. |
 
-The complete [SDK method/event catalog](Parity/phase13-social-catalog.json) keeps each
+The complete [SDK method/event catalog](Parity/social-catalog.json) keeps each
 method declaration and callback alias visible, including overloads. Public equivalents
 are classified separately from exact SDK behavior. A profile REST call does not provide
 an SDK live user handle; lobby messaging does not establish SDK DMs or call signaling.
@@ -121,13 +128,11 @@ wishlist/fulfillment wire schemas. Those named rows remain blocked. Existing ord
 premium entitlements do not satisfy Commerce-specific purchase/fulfillment contracts.
 No forms are submitted, credentials requested or live purchases made by this work.
 
-Local tests exercise real owned protocol clients against scripted peers, explicit
+Local tests exercise owned protocol clients against scripted peers, explicit
 consent/host failures, account replacement, cancellation/deadline cleanup, bounded
 state overflow/resync and PCM policy. They establish no authorized Discord/mobile/
 console session, production purchase, physical device or sustained/fleet capacity.
-The [validation record](Parity/phase13-validation.json) and
-[execution plan](../.air/plans/phase-13-execution.plan.md) record exact checks.
-**Entire-platform parity remains incomplete while the catalog's required blockers remain.**
+Required native SDK and unpublished Commerce contracts remain unavailable.
 
 Build/run the credential-free [independent Social example](../Examples/SocialApp/README.md).
 Its graph excludes Gateway, Client, Cache, Voice/MLS/DAVE and concrete adapters. Existing

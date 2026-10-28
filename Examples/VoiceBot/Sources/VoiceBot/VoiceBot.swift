@@ -1,10 +1,15 @@
+// File: Examples/VoiceBot/Sources/VoiceBot/VoiceBot.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import DiscordMedia
 import DiscordVoice
 import DiscordVoiceCodecs
 import DiscordVoiceCrypto
 
-/// Offline integration example for Phase 12 media/protocol components, without a Discord session.
+/// Offline integration example for media and voice protocol components, without a Discord session.
 @main struct VoiceBot {
     /// Round-trips synthetic Opus silence through RTP-size protection and a bounded reorder queue.
     /// First checks a bounded bandlimited PCM/resampling timeline, silence activity decisions,

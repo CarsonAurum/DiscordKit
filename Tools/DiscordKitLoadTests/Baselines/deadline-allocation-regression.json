@@ -2,7 +2,7 @@
   "dirtySource": true,
   "environmentBasis": "environment.json",
   "notes": [
-    "Diagnostic runs captured during implementation on the same local hardware/toolchain; sourceVariant identifies uncommitted before/after deadline-helper implementations.",
+    "Diagnostic before/after runs use the same local hardware/toolchain; sourceVariant identifies the compared deadline-helper implementations.",
     "The original native sleep used the full ten-second deadline; canceled timer records remained until that deadline. Deadline-free controls isolated this from sockets and portable response bodies.",
     "The final helper preserves ContinuousClock semantics and checkpoints sleeps no farther than 100 ms ahead; generic injected clocks are unchanged.",
     "Portable 100,000-operation EOF and one-second settled heap did not scale tenfold relative to 10,000 operations. Short diagnostics do not establish a steady-state or thirty-minute soak result.",

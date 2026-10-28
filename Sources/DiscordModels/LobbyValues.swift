@@ -1,3 +1,8 @@
+// File: Sources/DiscordModels/LobbyValues.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 
 /// Marker separating lobby identifiers from ordinary channel identifiers despite shared wire representation.

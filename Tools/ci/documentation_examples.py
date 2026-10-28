@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
+# File: Tools/ci/documentation_examples.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Keep DocC tutorial listings synchronized with independently buildable examples.
 
-Development milestone labels are omitted from documentation comments in the
-displayed listings. Executable code is byte-for-byte preserved. Run without --write to
+Executable code is byte-for-byte preserved in the displayed listings. Run without --write to
 reject missing or stale snapshots; no compiler, credentials or network is used.
 Build/test the originating example packages separately to validate their code.
 """
 
 import argparse
-import re
 from pathlib import Path
 
 
@@ -32,16 +35,30 @@ PACKAGE_SUPPORT = (
 
 
 def displayed_source(source):
-    """Keep documented code while omitting historical labels from doc comments.
+    """Preserve the complete example source, including comments and line boundaries."""
+    return source
 
-    Parameters:
-        source: UTF-8 Swift source text, including its original final newline.
-    Returns:
-        Text for a contextual tutorial listing, never a rewritten implementation.
+
+def listing_source(source, resource_name):
+    """Use the listing's repository path while preserving its executable source.
+
+    A publication header copied from the original source is replaced so each
+    generated listing identifies its own location in the repository.
     """
-    return "".join(re.sub(r"\b(?:Phase|Part) [0-9]+[A-Z]?[ \t]?", "", line)
-                   if line.lstrip().startswith("///") else line
-                   for line in source.splitlines(keepends=True))
+    lines = source.splitlines(keepends=True)
+    header_index = 1 if lines and lines[0].startswith("// swift-tools-version:") else 0
+    if len(lines) >= header_index + 4 and lines[header_index].startswith("// File: "):
+        expected = ["// Created by Carson Rau.\n", "// Copyright (c) 2026 Aurum Studios.\n",
+                    "// https://aurum-studios.com\n"]
+        if lines[header_index + 1:header_index + 4] == expected:
+            del lines[header_index:header_index + 4]
+            if header_index < len(lines) and lines[header_index] == "\n":
+                del lines[header_index]
+    tools_version = lines.pop(0) if header_index == 1 else ""
+    path = "Sources/DiscordKit/DiscordKit.docc/Resources/Examples/" + resource_name
+    return (tools_version + f"// File: {path}\n// Created by Carson Rau.\n"
+            "// Copyright (c) 2026 Aurum Studios.\n// https://aurum-studios.com\n\n"
+            + "".join(lines))
 
 
 def snapshots(repository):
@@ -62,7 +79,7 @@ def snapshots(repository):
     for source in PACKAGE_SUPPORT:
         path = repository / source
         sources[path.name + ".txt"] = displayed_source(path.read_text())
-    return sources
+    return {name: listing_source(source, name) for name, source in sources.items()}
 
 
 def synchronize(repository, write=False):

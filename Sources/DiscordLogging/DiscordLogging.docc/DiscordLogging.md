@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordLogging/DiscordLogging.docc/DiscordLogging.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # ``DiscordLogging``
 
 Emit native SwiftLog diagnostics with application-owned outputs and task-scoped routing.

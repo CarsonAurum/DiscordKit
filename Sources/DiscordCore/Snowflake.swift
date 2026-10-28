@@ -1,3 +1,8 @@
+// File: Sources/DiscordCore/Snowflake.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 
 /// A Discord snowflake retaining all 64 unsigned bits and its resource type.

@@ -1,3 +1,8 @@
+// File: Tests/DiscordDSLTests/DefinitionTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import DiscordDSL
 import Synchronization

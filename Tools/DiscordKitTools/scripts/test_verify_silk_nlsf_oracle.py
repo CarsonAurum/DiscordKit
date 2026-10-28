@@ -1,3 +1,8 @@
+# File: Tools/DiscordKitTools/scripts/test_verify_silk_nlsf_oracle.py
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 """Hermetic independent-evidence tests; no compiler, archive or network is used."""
 import copy
 from pathlib import Path

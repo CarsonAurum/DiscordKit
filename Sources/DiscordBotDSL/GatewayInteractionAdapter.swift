@@ -1,3 +1,8 @@
+// File: Sources/DiscordBotDSL/GatewayInteractionAdapter.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordClient
 import DiscordCommandDSL
 import DiscordCommands
@@ -60,30 +65,24 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
     private var stopped = false
     private var runTask: Task<Void, any Error>?
 
-    /// Validates a finite command host and stores shared authorities without invoking injected work.
+    /// Preserves legacy complete-shard interaction ordering while retaining all existing finite authorities.
     /// - Parameters:
-    ///   - applicationID: Expected interaction and explicit registration application owner.
-    ///   - commands: Complete compiled command/interaction catalog, including route-only families.
-    ///   - services: Shared bot REST services and separately admitted exact-token HTTP response factories.
-    ///   - clock: Monotonic clock shared with the client and HTTP clients; socket receipt age is preserved.
-    ///   - admission: Shared initial-only acknowledgement count/byte authority, independent of ordinary REST.
-    ///   - guildID: Explicit registration scope, default nil for global; dispatch still checks application ID.
-    ///   - configuration: Existing dispatcher task/retained-event bounds, default four tasks and 128 events.
-    ///     Complete-shard serialization is preserved; different shards may progress concurrently.
-    ///   - authority: Optional aggregate handler authority, shared explicitly with other event pipelines.
-    ///   - maximumPendingInteractions: Positive private input queue cap, default 256, in addition to
-    ///     the dispatcher's separately bounded retained events. Overflow fails the supervised host closed.
-    ///   - maximumPendingBytes: Positive private queue envelope-byte cap, default 8 MiB.
-    ///   - maximumConcurrentHandlers: Positive existing command-router aggregate cap, default 64.
-    ///   - maximumDefinitionBytes: Positive explicit registration JSON bound, default 1 MiB.
-    ///   - limits: Existing interaction JSON decoding bounds, default standard model limits.
-    ///   - failurePolicy: Fail-fast by default; explicit continuation isolates ordinary invocation failures.
-    ///     Preparation, untrusted/malformed input, wrong identity, cancellation and host failures stay terminal.
-    ///   - failureObserver: Optional synchronous nonthrowing safe diagnostic callback. It runs inline once
-    ///     per failed invocation, may run concurrently across shards, and must return promptly. No original
-    ///     error or interaction is passed, and the adapter retains no diagnostic history or observer tasks.
-    /// - Throws: Existing router/catalog/reconciler or nonpositive queue-bound validation errors.
-    /// No application auto-defer timer exists; typed deferred handlers retain their explicit ownership.
+    ///   - applicationID: Expected application and explicit registration owner.
+    ///   - commands: Validated inert command catalog.
+    ///   - services: Shared bot services and exact-token response factories.
+    ///   - clock: Shared monotonic response clock; original socket receipt age is retained.
+    ///   - admission: Shared initial-only acknowledgement authority.
+    ///   - guildID: Explicit registration scope; does not filter incoming interactions.
+    ///   - configuration: Finite dispatcher task, retained event and retained byte bounds.
+    ///   - authority: Optional shared aggregate callback authority.
+    ///   - maximumPendingInteractions: Positive private input event cap.
+    ///   - maximumPendingBytes: Positive private input byte cap.
+    ///   - maximumConcurrentHandlers: Positive router invocation cap.
+    ///   - maximumDefinitionBytes: Positive explicit registration JSON bound.
+    ///   - limits: Existing interaction model decoding bounds.
+    ///   - failurePolicy: Explicit fail-fast or isolated invocation handling.
+    ///   - failureObserver: Finite synchronous redacted failure observer.
+    /// - Throws: Existing catalog, router, queue-bound or registration validation errors.
     public init(applicationID: ApplicationID, commands: CompiledCommands, services: BotServiceAdapter<C>,
         clock: C, admission: InteractionAcknowledgementAdmission, guildID: GuildID? = nil,
         configuration: GatewayEventHandlerConfiguration = try! .init(), authority: GatewayHandlerAuthority? = nil,
@@ -105,6 +104,59 @@ public actor GatewayInteractionAdapter<C: Clock> where C.Duration == Duration {
             maximumBufferedEvents: maximumPendingInteractions, maximumBufferedBytes: maximumPendingBytes,
             maximumEventsPerSubscription: maximumPendingInteractions, maximumBytesPerSubscription: maximumPendingBytes))
         dispatcher = GatewayEventHandlerDispatcher(configuration: configuration, authority: authority)
+    }
+
+    /// Validates a finite command host and stores shared authorities without invoking injected work.
+    /// - Parameters:
+    ///   - applicationID: Expected interaction and explicit registration application owner.
+    ///   - commands: Complete compiled command/interaction catalog, including route-only families.
+    ///   - services: Shared bot REST services and separately admitted exact-token HTTP response factories.
+    ///   - clock: Monotonic clock shared with the client and HTTP clients; socket receipt age is preserved.
+    ///   - admission: Shared initial-only acknowledgement count/byte authority, independent of ordinary REST.
+    ///   - guildID: Explicit registration scope, default nil for global; dispatch still checks application ID.
+    ///   - configuration: Existing dispatcher task/retained-event bounds, default four tasks and 128 events.
+    ///     Complete-shard serialization is preserved by default; explicit concurrent interaction
+    ///     dispatch retains these same task and event bounds.
+    ///   - authority: Optional aggregate handler authority, shared explicitly with other event pipelines.
+    ///   - maximumPendingInteractions: Positive private input queue cap, default 256, in addition to
+    ///     the dispatcher's separately bounded retained events. Overflow fails the supervised host closed.
+    ///   - maximumPendingBytes: Positive private queue envelope-byte cap, default 8 MiB.
+    ///   - maximumConcurrentHandlers: Positive existing command-router aggregate cap, default 64.
+    ///   - maximumDefinitionBytes: Positive explicit registration JSON bound, default 1 MiB.
+    ///   - limits: Existing interaction JSON decoding bounds, default standard model limits.
+    ///   - serializesPerShard: True preserves legacy complete-shard ordering. False allows independent
+    ///     interaction callbacks on one shard to overlap, preventing an already acknowledged slow command
+    ///     from consuming a later command's initial-response window. Handlers must support concurrency;
+    ///     response ownership, receipt deadlines, shared admission and joined cleanup remain unchanged.
+    ///   - failurePolicy: Fail-fast by default; explicit continuation isolates ordinary invocation failures.
+    ///     Preparation, untrusted/malformed input, wrong identity, cancellation and host failures stay terminal.
+    ///   - failureObserver: Optional synchronous nonthrowing safe diagnostic callback. It runs inline once
+    ///     per failed invocation, may run concurrently across shards, and must return promptly. No original
+    ///     error or interaction is passed, and the adapter retains no diagnostic history or observer tasks.
+    /// - Throws: Existing router/catalog/reconciler or nonpositive queue-bound validation errors.
+    /// No application auto-defer timer exists; typed deferred handlers retain their explicit ownership.
+    public init(applicationID: ApplicationID, commands: CompiledCommands, services: BotServiceAdapter<C>,
+        clock: C, admission: InteractionAcknowledgementAdmission, guildID: GuildID? = nil,
+        configuration: GatewayEventHandlerConfiguration = try! .init(), authority: GatewayHandlerAuthority? = nil,
+        maximumPendingInteractions: Int = 256, maximumPendingBytes: Int = 8 * 1_024 * 1_024,
+        maximumConcurrentHandlers: Int = 64, maximumDefinitionBytes: Int = 1_048_576,
+        limits: JSONLimits = .default, serializesPerShard: Bool, failurePolicy: GatewayInvocationFailurePolicy = .failFast,
+        failureObserver: BotFailureObserver? = nil) throws {
+        self.applicationID = applicationID
+        self.services = services
+        self.clock = InteractionClock(clock)
+        self.admission = admission
+        self.limits = limits
+        self.failurePolicy = failurePolicy
+        self.failureObserver = failureObserver
+        router = try commands.makeRouter(maximumConcurrentHandlers: maximumConcurrentHandlers)
+        reconciler = try CommandReconciler(applicationID: applicationID, guildID: guildID,
+            definitions: commands.definitions, maximumDefinitionBytes: maximumDefinitionBytes)
+        hub = GatewayEventHub(configuration: try .init(maximumSubscriptions: 1,
+            maximumBufferedEvents: maximumPendingInteractions, maximumBufferedBytes: maximumPendingBytes,
+            maximumEventsPerSubscription: maximumPendingInteractions, maximumBytesPerSubscription: maximumPendingBytes))
+        dispatcher = GatewayEventHandlerDispatcher(configuration: configuration, authority: authority,
+            serializesPerShard: serializesPerShard)
     }
 
     /// Explicitly reconciles this catalog through the existing bot REST service and managed-name owner.

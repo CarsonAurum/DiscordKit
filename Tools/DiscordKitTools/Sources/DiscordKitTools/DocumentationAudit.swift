@@ -1,3 +1,8 @@
+// File: Tools/DiscordKitTools/Sources/DiscordKitTools/DocumentationAudit.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import Foundation
 import SwiftParser
 import SwiftSyntax
@@ -49,7 +54,7 @@ enum DocumentationAudit {
     /// Directory names excluded anywhere in the tree because they contain fetched, generated
     /// build/IDE or external dependency data. Authored `Generated` source remains in scope.
     static let excludedDirectories: Set<String> = [
-        ".git", ".build", ".swiftpm", ".idea", ".air", "node_modules", "DerivedData",
+        ".git", ".build", ".swiftpm", ".idea", "node_modules", "DerivedData",
     ]
 
     /// Parses one source file and inventories every explicitly authored callable declaration.

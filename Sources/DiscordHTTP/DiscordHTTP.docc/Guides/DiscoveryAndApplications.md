@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordHTTP/DiscordHTTP.docc/Guides/DiscoveryAndApplications.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Discovery, events, applications and users
 
 Coordinate invitations and configuration without conflating installation, identity or current consent.

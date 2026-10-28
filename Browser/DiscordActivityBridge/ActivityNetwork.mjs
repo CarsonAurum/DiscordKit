@@ -1,3 +1,8 @@
+// File: Browser/DiscordActivityBridge/ActivityNetwork.mjs
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 /** Safe, explicit Activity proxy URL mapping and injected networking; no globals are patched. */
 export class ActivityURLMapper {
     #origin; #routes;

@@ -1,7 +1,13 @@
-# Messages and polls: Phase 5A
+<!--
+File: Docs/Parity/changes/2026-10-16-messages-polls.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
 
-Local implementation/verification date: **2026-10-16**. Local release/commit:
-unknown until committed/released. REST version: **10**. Existing consumers remain
+# Messages and polls
+
+Verified **2026-10-16**. REST version: **10**. Existing consumers remain
 source compatible; this adds opt-in Models/HTTP APIs without new dependencies.
 
 Previously only current-user/current-application and Gateway discovery descriptors

@@ -1,3 +1,8 @@
+// File: Tests/DiscordFoundationTransportTests/FoundationLoopbackPeer.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 #if canImport(Darwin)
 import Foundation
 import Network

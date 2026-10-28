@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordClient/DiscordClient.docc/Guides/ClientStateAndServices.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Composing services, projections and event consumers
 
 Keep request policy, optional observations and user handlers under separate bounded owners.

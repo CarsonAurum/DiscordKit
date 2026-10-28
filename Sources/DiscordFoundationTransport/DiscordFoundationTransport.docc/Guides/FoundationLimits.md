@@ -1,3 +1,5 @@
+[//]: # "File: Sources/DiscordFoundationTransport/DiscordFoundationTransport.docc/Guides/FoundationLimits.md | Created by Carson Rau. | Copyright (c) 2026 Aurum Studios. | https://aurum-studios.com"
+
 # Choosing Foundation limits and understanding failures
 
 Distinguish application admission and byte limits from platform-managed networking behavior.

@@ -1,7 +1,14 @@
-# Emoji, stickers and soundboard: Phase 5E
+<!--
+File: Docs/Parity/changes/2026-10-16-expressions.md
+Created by Carson Rau.
+Copyright (c) 2026 Aurum Studios.
+https://aurum-studios.com
+-->
+
+# Emoji, stickers and soundboard
 
 Local implementation and verification: **2026-10-16**. REST API version: **10**.
-Local release/commit: unknown until committed/released. No dependency changes.
+No dependency changes.
 
 Previously these resource operations were unsupported, with explicitly partial
 emoji/sticker projections used by messages, polls and guilds. This change exposes
@@ -9,7 +16,7 @@ all **25** current written-reference operations: ten Emoji, eight Sticker and se
 Soundboard. New complete written resource-owned contracts preserve Unicode/deleted/
 animated emoji, guild/application ownership, premium and availability state,
 sticker packs and formats, and default/guild sound metadata. User projections and
-corresponding Gateway events remain partial or pending; batches 5F–5J are separate.
+corresponding Gateway events remain partial or pending.
 
 Upstream chronology, distinct from local support:
 
@@ -61,4 +68,4 @@ Creation uses 201, reads/edits 200, and delete/play 204 empty responses. Sticker
 uses direct multipart fields; Emoji/Soundboard use bounded data URIs. No public API
 is removed or renamed. Local fixture validation cannot qualify live Discord, other
 platforms or long-soak behavior. See [expression contracts](../../Expressions.md)
-and the execution plan for detailed behavior and validation evidence.
+for detailed behavior and validation evidence.

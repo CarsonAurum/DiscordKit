@@ -1,16 +1,21 @@
+// File: Tests/DiscordModelsTests/ReviewedGeneratedTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import DiscordCore
 import Foundation
 import Testing
 @testable import DiscordModels
 
-/// Executes the preserved generated seed contracts against the expanded handwritten projections.
+/// Verifies scalar decoding contracts against the model projections.
 ///
-/// The Phase 5G migration freezes these scalar regression cases; current nested fields have separate tests.
+/// These scalar regression cases complement the nested-field tests.
 /// Every case supplies independent complete JSON bytes. Fixtures and metadata are local,
-/// deterministic and credential-free; each generated field contract receives meaningful
+/// deterministic and credential-free; each field contract receives meaningful
 /// value, omission, null and wrong-type assertions through the public bounded initializer.
 @Suite struct ReviewedGeneratedTests {
-    /// Exercises every original generated scalar scenario using a fixed nonduplicate regression index.
+    /// Exercises every scalar scenario using a fixed nonduplicate regression index.
     ///
     /// The index drives actual decoding rather than acting as a declaration-only support claim.
     /// Existing projection tests additionally assert concrete typed values, redaction and unknown enums.

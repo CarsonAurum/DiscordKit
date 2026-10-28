@@ -1,3 +1,8 @@
+// File: Examples/ActivityHost/Tests/ActivityHostTests/ActivityHostTests.swift
+// Created by Carson Rau.
+// Copyright (c) 2026 Aurum Studios.
+// https://aurum-studios.com
+
 import ActivityBackend
 import ActivityHostSupport
 import DiscordActivities
