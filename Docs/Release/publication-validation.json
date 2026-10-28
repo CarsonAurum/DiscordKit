@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "candidateVersion": "0.19.0",
   "verifiedOn": "2026-10-28",
-  "status": "awaiting-authoring-package-validation",
+  "status": "local-validation-passed",
   "published": false,
   "tagged": false,
   "scope": "Publication candidate metadata, documentation and current local compatibility validation. Historical measurement and platform records are retained separately.",
@@ -28,7 +28,7 @@
     "extensionTypePages": 12,
     "extensionMemberLinks": 48,
     "sourceSynchronizedListings": 32,
-    "qualification": "Compiler-derived navigation and source-listing consistency. Strict root conversion is recorded separately; authoring-package conversions are pending."
+    "qualification": "Compiler-derived navigation and source-listing consistency passed for the root, macro and extension catalogs. Strict conversion results are recorded separately."
   },
   "maintenance": {
     "status": "passed",
@@ -76,20 +76,22 @@
     {
       "id": "tooling",
       "status": "passed",
-      "scope": "105 Swift tooling tests, 229 Python tooling tests, 48 CI helper tests and 34 macro-package Swift tests passed locally. Load, external compile-fixture and benchmark qualification remain separate.",
+      "scope": "105 Swift tooling tests, 229 Python tooling tests, 48 CI helper tests, 34 macro-package Swift tests and 6 extension-package Swift tests passed locally. Load, external compile-fixture and benchmark qualification remain separate.",
       "tests": {
         "toolingSwift": 105,
         "toolingSwiftSuites": 8,
         "toolingPython": 229,
         "ciPython": 48,
         "macrosSwift": 34,
-        "macrosSwiftSuites": 5
+        "macrosSwiftSuites": 5,
+        "extensionsSwift": 6
       },
       "commands": [
         "swift test --package-path Tools/DiscordKitTools",
         "python3 -m unittest discover -s Tools/DiscordKitTools/scripts -p 'test_*.py'",
         "python3 -m unittest discover -s Tools/ci -p 'test_*.py'",
-        "swift test --package-path Packages/DiscordDSLMacros"
+        "swift test --package-path Packages/DiscordDSLMacros",
+        "swift test --package-path Packages/DiscordDSLExtensions"
       ]
     },
     {
@@ -123,13 +125,21 @@
     {
       "id": "docc",
       "status": "passed",
-      "scope": "Strict analysis and warnings-as-errors conversion passed for all 33 root public-module archives; the merged archive succeeded. Authoring-package conversion and complete semantic accuracy remain separate.",
-      "archives": 33,
+      "scope": "Strict analysis and warnings-as-errors conversion passed for 33 root, 1 macro and 2 extension public-module archives. All three merged archives succeeded; private documentation presence and complete semantic accuracy remain unverified.",
+      "archives": 36,
       "warningsAsErrors": true,
       "analyze": true,
       "failedModules": 0,
       "mergeStatus": "succeeded",
-      "report": "Docs/Release/Measurements/Publication/root-docc.json"
+      "rootArchives": 33,
+      "macroArchives": 1,
+      "extensionArchives": 2,
+      "mergedArchives": 3,
+      "reports": [
+        "Docs/Release/Measurements/Publication/root-docc.json",
+        "Docs/Release/Measurements/Publication/macros-docc.json",
+        "Docs/Release/Measurements/Publication/extensions-docc.json"
+      ]
     },
     {
       "id": "product-isolation",
@@ -143,14 +153,15 @@
     {
       "id": "api-baseline",
       "status": "passed",
-      "scope": "The current compiler-produced 0.19.0 root baseline contains 14659 public symbols in 33 modules. The 0.18.0 comparison records two added initializers, one changed RESTClient default and no removals; the explicit pre-1.0 minor increment passes policy. Baseline self-comparison is unchanged.",
+      "scope": "The current compiler-produced 0.19.0 root baseline contains 14659 public symbols in 33 modules. The 0.18.0 comparison records two added initializers, one changed RESTClient default and no removals; the explicit pre-1.0 minor increment passes policy. Root baseline self-comparison is unchanged. Fresh separate macro (1 module, 5 symbols) and extension (2 modules, 86 symbols) snapshots match their retained 0.15.0 baselines without changes.",
       "baseline": "Docs/Release/api-baseline-0.19.0.json",
       "comparison": "Docs/Release/publication-api-comparison.json",
       "publicModules": 33,
       "publicSymbols": 14659,
       "addedDeclarations": 2,
       "changedDeclarations": 1,
-      "removedDeclarations": 0
+      "removedDeclarations": 0,
+      "authoringReport": "Docs/Release/Measurements/Publication/authoring.json"
     },
     {
       "id": "examples",
@@ -290,5 +301,57 @@
       "reason": "No controlled before/after performance measurements were repeated on matching hardware for this candidate."
     }
   ],
-  "qualification": "Only explicitly passed current local checks are claimed. This candidate has not been published or tagged; historical measurements and unrun platform, hardware, live, crypto, interop and capacity gates remain excluded."
+  "qualification": "Only explicitly passed current local checks are claimed. This candidate has not been published or tagged; historical measurements and unrun platform, hardware, live, crypto, interop and capacity gates remain excluded.",
+  "authoring": {
+    "status": "passed",
+    "packages": [
+      {
+        "package": "Packages/DiscordDSLMacros",
+        "baselineVersion": "0.15.0",
+        "publicModules": 1,
+        "publicSymbols": 5,
+        "comparison": {
+          "baselineVersion": "0.15.0",
+          "candidateVersion": "0.15.0",
+          "changes": {
+            "added": [],
+            "addedModules": [],
+            "addedRelationships": [],
+            "changed": [],
+            "removed": [],
+            "removedModules": [],
+            "removedRelationships": []
+          },
+          "requiredIncrement": "none"
+        },
+        "tests": 34,
+        "apiSnapshot": "Docs/Release/Measurements/Publication/macros-api.json",
+        "doccReport": "Docs/Release/Measurements/Publication/macros-docc.json"
+      },
+      {
+        "package": "Packages/DiscordDSLExtensions",
+        "baselineVersion": "0.15.0",
+        "publicModules": 2,
+        "publicSymbols": 86,
+        "comparison": {
+          "baselineVersion": "0.15.0",
+          "candidateVersion": "0.15.0",
+          "changes": {
+            "added": [],
+            "addedModules": [],
+            "addedRelationships": [],
+            "changed": [],
+            "removed": [],
+            "removedModules": [],
+            "removedRelationships": []
+          },
+          "requiredIncrement": "none"
+        },
+        "tests": 6,
+        "apiSnapshot": "Docs/Release/Measurements/Publication/extensions-api.json",
+        "doccReport": "Docs/Release/Measurements/Publication/extensions-docc.json"
+      }
+    ],
+    "report": "Docs/Release/Measurements/Publication/authoring.json"
+  }
 }

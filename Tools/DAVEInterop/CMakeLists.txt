@@ -1,3 +1,8 @@
+# File: Tools/DAVEInterop/CMakeLists.txt
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
 cmake_minimum_required(VERSION 3.20)
 project(DiscordKitDAVEInterop LANGUAGES CXX)
 

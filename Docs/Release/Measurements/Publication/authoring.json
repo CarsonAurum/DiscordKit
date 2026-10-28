@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "0.19.0",
+  "verifiedOn": "2026-10-28",
+  "scope": "Current separate authoring-package public APIs, strict documentation conversion and unit tests. Macro and extension package version baselines remain independently scoped at 0.15.0. External compiler diagnostic fixtures are not included.",
+  "packages": [
+    {
+      "package": "Packages/DiscordDSLMacros",
+      "baselineVersion": "0.15.0",
+      "publicModules": 1,
+      "publicSymbols": 5,
+      "comparison": {
+        "baselineVersion": "0.15.0",
+        "candidateVersion": "0.15.0",
+        "changes": {
+          "added": [],
+          "addedModules": [],
+          "addedRelationships": [],
+          "changed": [],
+          "removed": [],
+          "removedModules": [],
+          "removedRelationships": []
+        },
+        "requiredIncrement": "none"
+      },
+      "tests": 34,
+      "apiSnapshot": "Docs/Release/Measurements/Publication/macros-api.json",
+      "doccReport": "Docs/Release/Measurements/Publication/macros-docc.json"
+    },
+    {
+      "package": "Packages/DiscordDSLExtensions",
+      "baselineVersion": "0.15.0",
+      "publicModules": 2,
+      "publicSymbols": 86,
+      "comparison": {
+        "baselineVersion": "0.15.0",
+        "candidateVersion": "0.15.0",
+        "changes": {
+          "added": [],
+          "addedModules": [],
+          "addedRelationships": [],
+          "changed": [],
+          "removed": [],
+          "removedModules": [],
+          "removedRelationships": []
+        },
+        "requiredIncrement": "none"
+      },
+      "tests": 6,
+      "apiSnapshot": "Docs/Release/Measurements/Publication/extensions-api.json",
+      "doccReport": "Docs/Release/Measurements/Publication/extensions-docc.json"
+    }
+  ],
+  "executions": [
+    {
+      "name": "macros-symbolgraphs",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 22.0
+    },
+    {
+      "name": "macros-snapshot",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "macros-api-check",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "macros-fresh-curation",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "macros-docc",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "extensions-symbolgraphs",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 16.0
+    },
+    {
+      "name": "extensions-snapshot",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "extensions-api-check",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "extensions-fresh-curation",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "extensions-docc",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 2.0
+    },
+    {
+      "name": "extensions-tests",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 28.1
+    }
+  ]
+}

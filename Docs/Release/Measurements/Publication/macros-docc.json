@@ -1,0 +1,13 @@
+{
+  "modules": [
+    "DiscordDSLMacros"
+  ],
+  "archiveCount": 1,
+  "warningsAsErrors": true,
+  "analyze": true,
+  "publicSymbolsOnly": true,
+  "failedModules": [],
+  "mergeStatus": "succeeded",
+  "mergedArchive": "DiscordKitLibrary.doccarchive",
+  "limits": "DocC conversion does not prove private documentation presence or semantic completeness"
+}

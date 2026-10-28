@@ -40,13 +40,12 @@ The negative targets cover nonliteral/invalid command metadata, computed, inferr
 unmarked or multiply bound properties, initialized `let` defaults, dynamic or
 incompatible defaults, missing codec conformance, non-Sendable captured handler
 state, duplicate external option names, unsupported option metadata and a missing
-explicit argument alias. Part 15D adds forbidden responder access from immediate
-and deferred contexts, a wrong return family and incompatible explicit handler
-families. These are deliberately invalid Swift consumers, so a
+explicit argument alias. Response fixtures cover forbidden responder access from
+immediate and deferred contexts, a wrong return family and incompatible explicit
+handler families. These are deliberately invalid Swift consumers, so a
 whole-package `swift build` is expected to fail; use the runner.
 
 The separate macro package's Swift Testing suite executes actual generated schemas
 and routes against handwritten implementations. This fixture package supplies
 external compilation evidence. Neither check claims live Discord qualification,
-authenticated hosted deployment, macro capacity measurements or complete
-Phase 15 support.
+authenticated hosted deployment or macro capacity measurements.

@@ -20,7 +20,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
@@ -31,18 +31,22 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
     {
       "id": "tooling",
       "status": "passed",
-      "scope": "105 Swift tooling tests, 229 Python tooling tests, 48 CI helper tests and 34 macro-package Swift tests passed locally. Load, external compile-fixture and benchmark qualification remain separate.",
+      "scope": "105 Swift tooling tests, 229 Python tooling tests, 48 CI helper tests, 34 macro-package Swift tests and 6 extension-package Swift tests passed locally. Load, external compile-fixture and benchmark qualification remain separate.",
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/authoring.json",
+          "sha256": "096c4ea9d230ec8753637e0d4c34eed81f1994a6efa5643401cbb0f1547600cc"
         }
       ]
     },
@@ -53,7 +57,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
@@ -64,7 +68,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
@@ -75,7 +79,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
@@ -86,22 +90,30 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
     {
       "id": "docc",
       "status": "passed",
-      "scope": "Strict analysis and warnings-as-errors conversion passed for all 33 root public-module archives; the merged archive succeeded. Authoring-package conversion and complete semantic accuracy remain separate.",
+      "scope": "Strict analysis and warnings-as-errors conversion passed for 33 root, 1 macro and 2 extension public-module archives. All three merged archives succeeded; private documentation presence and complete semantic accuracy remain unverified.",
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         },
         {
           "path": "Docs/Release/Measurements/Publication/root-docc.json",
           "sha256": "19a46b0b372588ad058d98e72061715f9d32e3dc9899cd9092110034d2612fb3"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/macros-docc.json",
+          "sha256": "47636344798e34191d393402b5b204cb5f45881d7225152ec2ebbc9fd0cfa8cc"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/extensions-docc.json",
+          "sha256": "f80052e427ede21abfa94e30ab8e3baaa42aa71550b3de66987ce58400f5e99d"
         }
       ]
     },
@@ -112,18 +124,18 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
     {
       "id": "api-baseline",
       "status": "passed",
-      "scope": "The current compiler-produced 0.19.0 root baseline contains 14659 public symbols in 33 modules. The 0.18.0 comparison records two added initializers, one changed RESTClient default and no removals; the explicit pre-1.0 minor increment passes policy. Baseline self-comparison is unchanged.",
+      "scope": "The current compiler-produced 0.19.0 root baseline contains 14659 public symbols in 33 modules. The 0.18.0 comparison records two added initializers, one changed RESTClient default and no removals; the explicit pre-1.0 minor increment passes policy. Root baseline self-comparison is unchanged. Fresh separate macro (1 module, 5 symbols) and extension (2 modules, 86 symbols) snapshots match their retained 0.15.0 baselines without changes.",
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         },
         {
           "path": "Docs/Release/api-baseline-0.19.0.json",
@@ -132,6 +144,18 @@
         {
           "path": "Docs/Release/publication-api-comparison.json",
           "sha256": "6083d60c7d6cbfbb5b95f0083eaa72a80feab8e6d2ca8d43f7a5951fbc08e2e9"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/authoring.json",
+          "sha256": "096c4ea9d230ec8753637e0d4c34eed81f1994a6efa5643401cbb0f1547600cc"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/macros-api.json",
+          "sha256": "fba96de61b83bbaff44d27bfb93a04a28fa983a2502e92d4e416da5f4073cba6"
+        },
+        {
+          "path": "Docs/Release/Measurements/Publication/extensions-api.json",
+          "sha256": "88fd202763a6aa2046966f2b7bfd1b372a718ccc501fd5bbbdcc86cd1833f736"
         }
       ]
     },
@@ -142,7 +166,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         },
         {
           "path": "Docs/Release/Measurements/Publication/consumers.json",
@@ -157,7 +181,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
@@ -168,7 +192,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
@@ -197,7 +221,7 @@
       "evidence": [
         {
           "path": "Docs/Release/publication-validation.json",
-          "sha256": "94038bcbf3c36dce28ca1a0b8fc0d966fabec900530bdb328c11e3b7ca0f384f"
+          "sha256": "b962b3e75d359235b845d2180ee8f7160265e459f1d42b2f17acfe8554a5aa0e"
         }
       ]
     },
@@ -340,7 +364,7 @@
   "claims": [
     {
       "id": "local-publication-validation",
-      "description": "The current candidate passed the named local root build/tests, tooling, source and catalog audits, strict root DocC, root API comparison, selected consumer and simulated-browser checks within their recorded scopes.",
+      "description": "The current candidate passed the named local root build/tests, tooling and authoring-package tests, source and catalog audits, strict root and authoring DocC, root and authoring API comparisons, selected consumer builds/offline execution and simulated-browser checks within their recorded scopes.",
       "checkIDs": [
         "root-build",
         "root-tests",
@@ -370,7 +394,6 @@
     "full-platform-parity",
     "minimum-OS-runtime",
     "complete-example-matrix",
-    "authoring-package-docc",
     "external-compile-fixture-qualification"
   ],
   "publicationNote": "Current candidate evidence is scoped to the named local checks. Earlier reports retain their dates, measured identities and exclusions; no historical measurement is promoted to current qualification."
