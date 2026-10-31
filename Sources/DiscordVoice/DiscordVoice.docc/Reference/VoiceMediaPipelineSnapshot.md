@@ -10,9 +10,14 @@
 - ``DiscordVoice/VoiceMediaPipelineSnapshot/bufferedBytes``
 - ``DiscordVoice/VoiceMediaPipelineSnapshot/closed``
 - ``DiscordVoice/VoiceMediaPipelineSnapshot/concealedPackets``
+- ``DiscordVoice/VoiceMediaPipelineSnapshot/encodedFrameCount``
+- ``DiscordVoice/VoiceMediaPipelineSnapshot/encodingDeadlineMissCount``
+- ``DiscordVoice/VoiceMediaPipelineSnapshot/maximumEncodingDurationMilliseconds``
+- ``DiscordVoice/VoiceMediaPipelineSnapshot/maximumSendIntervalMilliseconds``
 - ``DiscordVoice/VoiceMediaPipelineSnapshot/receivedPackets``
 - ``DiscordVoice/VoiceMediaPipelineSnapshot/receiveStreamCount``
 - ``DiscordVoice/VoiceMediaPipelineSnapshot/sendingAllowed``
+- ``DiscordVoice/VoiceMediaPipelineSnapshot/sendIntervalOverrunCount``
 - ``DiscordVoice/VoiceMediaPipelineSnapshot/sentPackets``
 
 ## See Also

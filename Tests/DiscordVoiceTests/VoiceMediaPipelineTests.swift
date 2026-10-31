@@ -9,11 +9,213 @@ import DiscordTransport
 import DiscordVoiceCodecs
 import DiscordVoiceCrypto
 import Foundation
+import Synchronization
 import Testing
 @testable import DiscordVoice
 
 /// Synthetic full-duplex media tests use manual clocks, bounded peers and explicit fake E2EE.
 @Suite struct VoiceMediaPipelineTests {
+    /// An injected owner uses the ordinary encrypted transport and receives exactly one reset at close.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func injectedEncoderUsesSecurePathAndExclusiveReset() async throws {
+        let clock = ManualClock(), transport = PipelineDatagrams(), transformer = PipelineTransform()
+        let state = PipelineEncoderState()
+        let output = OpusAudioEncodedPacket(data: Data([0xF8, 0xFF, 0xFE]),
+            shouldTransmit: true, isDTX: false, packetByteBudget: 3, finalRange: 0)
+        let encoder = PipelinePacketEncoder(output: output, state: state)
+        let pipeline = try makePipeline(clock: clock, transport: transport, transformer: transformer, encoder: encoder)
+        #expect(state.counts.withLock { $0.encoded } == 0)
+        await pipeline.setAuthorized(true)
+        #expect(try await pipeline.send(pcm(), context: .init(clock: clock)))
+        #expect(state.counts.withLock { $0.encoded } == 1)
+        #expect(await transformer.sealed == [output.data])
+        #expect(await transport.packets.count == 1)
+        #expect(await pipeline.snapshot().encodedFrameCount == 1)
+        await pipeline.close()
+        await pipeline.close()
+        #expect(state.counts.withLock { $0.reset } == 1)
+    }
+
+    /// External encoders cannot smuggle oversized packets, a new format or inconsistent DTX decisions past admission.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func injectedEncoderOutputIsValidatedBeforeProtection() async throws {
+        let valid = Data([0xF8, 0xFF, 0xFE])
+        let invalid: [OpusAudioEncodedPacket] = [
+            .init(data: Data(), shouldTransmit: true, isDTX: false, packetByteBudget: 3, finalRange: 0),
+            .init(data: valid, shouldTransmit: true, isDTX: false, packetByteBudget: 0, finalRange: 0),
+            .init(data: valid, shouldTransmit: true, isDTX: false, packetByteBudget: 2, finalRange: 0),
+            .init(data: valid, shouldTransmit: true, isDTX: false, packetByteBudget: 1_277, finalRange: 0),
+            .init(data: valid + Data(repeating: 0, count: 1_274), shouldTransmit: true,
+                  isDTX: false, packetByteBudget: 1_276, finalRange: 0),
+            .init(data: Data([0xFF]), shouldTransmit: true, isDTX: false, packetByteBudget: 3, finalRange: 0),
+            .init(data: Data([0xF0, 0xFF, 0xFE]), shouldTransmit: true, isDTX: false, packetByteBudget: 3, finalRange: 0),
+            .init(data: Data([0xFC, 0xFF, 0xFE]), shouldTransmit: true, isDTX: false, packetByteBudget: 3, finalRange: 0),
+            .init(data: valid, shouldTransmit: true, isDTX: true, packetByteBudget: 3, finalRange: 0),
+            .init(data: valid, shouldTransmit: false, isDTX: false, packetByteBudget: 3, finalRange: 0),
+        ]
+        for output in invalid {
+            let clock = ManualClock(), transport = PipelineDatagrams(), transformer = PipelineTransform()
+            let encoder = PipelinePacketEncoder(output: output, state: PipelineEncoderState())
+            let pipeline = try makePipeline(clock: clock, transport: transport, transformer: transformer, encoder: encoder)
+            await pipeline.setAuthorized(true)
+            await #expect(throws: VoiceMediaPipelineError.invalidEncoderOutput) {
+                try await pipeline.send(pcm(), context: .init(clock: clock))
+            }
+            #expect(await transformer.sealed.isEmpty)
+            #expect(await transport.packets.isEmpty)
+            #expect(await pipeline.snapshot().sentPackets == 0)
+            await pipeline.close()
+        }
+    }
+
+    /// Fixed format is validated at construction and cannot change inside an injected encode call.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func injectedEncoderGeometryRemainsFixed() async throws {
+        let output = OpusAudioEncodedPacket(data: Data([0xF8, 0xFF, 0xFE]),
+            shouldTransmit: true, isDTX: false, packetByteBudget: 3, finalRange: 0)
+        for (channels, frames) in [(0, 960), (3, 960), (1, 0), (1, 121), (1, 1_920)] {
+            let encoder = PipelinePacketEncoder(channelCount: channels, frameSampleCount: frames,
+                output: output, state: PipelineEncoderState())
+            #expect(throws: VoiceMediaPipelineError.invalidConfiguration) {
+                try makePipeline(clock: ManualClock(), transport: PipelineDatagrams(),
+                    transformer: PipelineTransform(), encoder: encoder)
+            }
+        }
+        let clock = ManualClock(), transformer = PipelineTransform()
+        let changing = PipelinePacketEncoder(output: output, state: PipelineEncoderState(), changesGeometry: true)
+        let pipeline = try makePipeline(clock: clock, transport: PipelineDatagrams(), transformer: transformer, encoder: changing)
+        await pipeline.setAuthorized(true)
+        await #expect(throws: VoiceMediaPipelineError.invalidEncoderOutput) {
+            try await pipeline.send(pcm(), context: .init(clock: clock))
+        }
+        #expect(await transformer.sealed.isEmpty)
+        await pipeline.close()
+    }
+
+    /// Valid suppressed DTX advances RTP time without encryption, UDP or sequence consumption.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func injectedEncoderDTXAdvancesOnlyMediaTime() async throws {
+        let clock = ManualClock(), transport = PipelineDatagrams(), transformer = PipelineTransform()
+        let output = OpusAudioEncodedPacket(data: Data([0xF8]),
+            shouldTransmit: false, isDTX: true, packetByteBudget: 3, finalRange: 0)
+        let encoder = PipelinePacketEncoder(output: output, state: PipelineEncoderState())
+        let pipeline = try makePipeline(clock: clock, transport: transport, transformer: transformer, encoder: encoder)
+        await pipeline.setAuthorized(true)
+        #expect(try await pipeline.send(pcm(), context: .init(clock: clock)) == false)
+        #expect(await transformer.sealed.isEmpty)
+        #expect(await transport.packets.isEmpty)
+        try clock.advance(by: .milliseconds(20))
+        try await pipeline.sendOpus(Data([0xF8, 0xFF, 0xFE]), context: .init(clock: clock))
+        let packet = try #require(await transport.packets.first)
+        #expect(packet.bytes[2] == 0 && packet.bytes[3] == 0)
+        #expect(Array(packet.bytes[4..<8]) == [0, 0, 3, 0xC0])
+        await pipeline.close()
+    }
+
+    /// Encoding budgets follow each PCM duration, and forty-millisecond dispatch equality is not an overrun.
+    @Test func timingThresholdsUseFrameDurationAndStrictOverruns() {
+        var timing = VoiceMediaPipelineTiming()
+        timing.recordEncoding(duration: .nanoseconds(2_500_000), frameCount: 120)
+        timing.recordEncoding(duration: .nanoseconds(2_500_001), frameCount: 120)
+        timing.recordEncoding(duration: .milliseconds(20), frameCount: 960)
+        timing.recordEncoding(duration: .milliseconds(21), frameCount: 960)
+        #expect(timing.encodedFrameCount == 4)
+        #expect(timing.encodingDeadlineMissCount == 2)
+        #expect(timing.maximumEncodingDurationMilliseconds == 21)
+        timing.recordSendInterval(.milliseconds(40))
+        #expect(timing.sendIntervalOverrunCount == 0)
+        timing.recordSendInterval(.nanoseconds(40_000_001))
+        timing.recordSendInterval(.milliseconds(20))
+        #expect(timing.sendIntervalOverrunCount == 1)
+        #expect(timing.maximumSendIntervalMilliseconds > 40)
+        #expect(timing.maximumSendIntervalMilliseconds < 40.001)
+    }
+
+    /// Actual encode calls and successful UDP dispatches update bounded diagnostics without counting paused gates.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func outboundTimingObservesSuccessFailureAndTalkspurtBoundaries() async throws {
+        let clock = ManualClock()
+        let transport = PipelineDatagrams()
+        let pipeline = try makePipeline(clock: clock, transport: transport, transformer: PipelineTransform())
+        let empty = await pipeline.snapshot()
+        #expect(empty.encodedFrameCount == 0 && empty.maximumEncodingDurationMilliseconds == 0)
+        #expect(empty.encodingDeadlineMissCount == 0 && empty.maximumSendIntervalMilliseconds == 0)
+        #expect(empty.sendIntervalOverrunCount == 0)
+        await pipeline.setAuthorized(true)
+        try await sendFrame(pipeline, encoded: false, clock: clock)
+        try clock.advance(by: .milliseconds(20))
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        try clock.advance(by: .milliseconds(40))
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        let regular = await pipeline.snapshot()
+        #expect(regular.encodedFrameCount == 1)
+        #expect(regular.maximumEncodingDurationMilliseconds.isFinite)
+        #expect(regular.maximumEncodingDurationMilliseconds >= 0)
+        #expect(regular.encodingDeadlineMissCount <= regular.encodedFrameCount)
+        #expect(regular.maximumSendIntervalMilliseconds == 40 && regular.sendIntervalOverrunCount == 0)
+
+        try clock.advance(by: .milliseconds(41))
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        #expect(await pipeline.snapshot().sendIntervalOverrunCount == 1)
+        await transport.setFailing(true)
+        try clock.advance(by: .milliseconds(100))
+        await #expect(throws: PipelineFixtureError.transport) {
+            try await sendFrame(pipeline, encoded: true, clock: clock)
+        }
+        #expect(await pipeline.snapshot().maximumSendIntervalMilliseconds == 41)
+        await transport.setFailing(false)
+        try clock.advance(by: .milliseconds(20))
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        let interrupted = await pipeline.snapshot()
+        #expect(interrupted.maximumSendIntervalMilliseconds == 120)
+        #expect(interrupted.sendIntervalOverrunCount == 2)
+
+        await pipeline.setAuthorized(false)
+        try clock.advance(by: .seconds(3))
+        await pipeline.setAuthorized(true)
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        await pipeline.setSendingAllowed(false)
+        try clock.advance(by: .seconds(4))
+        await pipeline.setSendingAllowed(true)
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        let restarted = await pipeline.snapshot()
+        #expect(restarted.maximumSendIntervalMilliseconds == interrupted.maximumSendIntervalMilliseconds)
+        #expect(restarted.sendIntervalOverrunCount == interrupted.sendIntervalOverrunCount)
+        await pipeline.close()
+        let closed = await pipeline.snapshot()
+        #expect(closed.encodedFrameCount == restarted.encodedFrameCount)
+        #expect(closed.maximumEncodingDurationMilliseconds == restarted.maximumEncodingDurationMilliseconds)
+        #expect(closed.encodingDeadlineMissCount == restarted.encodingDeadlineMissCount)
+        #expect(closed.maximumSendIntervalMilliseconds == restarted.maximumSendIntervalMilliseconds)
+        #expect(closed.sendIntervalOverrunCount == restarted.sendIntervalOverrunCount)
+    }
+
+    /// A successful UDP call finishing after revocation cannot restore the previous talkspurt's timing origin.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func revokedInFlightDispatchDoesNotRestoreTimingOrigin() async throws {
+        let started = TestBarrier()
+        let release = TestBarrier()
+        let clock = ManualClock()
+        let transport = PipelineDatagrams(started: started, release: release)
+        let pipeline = try makePipeline(clock: clock, transport: transport, transformer: PipelineTransform())
+        await pipeline.setAuthorized(true)
+        let first = Task { try await sendFrame(pipeline, encoded: true, clock: clock) }
+        defer { first.cancel() }
+        try await started.wait()
+        await pipeline.setAuthorized(false)
+        await pipeline.setAuthorized(true)
+        try clock.advance(by: .seconds(5))
+        release.open()
+        try await first.value
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        #expect(await pipeline.snapshot().sentPackets == 2)
+        #expect(await pipeline.snapshot().maximumSendIntervalMilliseconds == 0)
+        #expect(await pipeline.snapshot().sendIntervalOverrunCount == 0)
+        try clock.advance(by: .milliseconds(20))
+        try await sendFrame(pipeline, encoded: true, clock: clock)
+        #expect(await pipeline.snapshot().maximumSendIntervalMilliseconds == 20)
+    }
+
     /// Verifies encode/E2EE/RTP/AEAD ordering, sequence rollover, decoded recording and two sinks.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     @Test func authenticatedRoundTripAndLoss() async throws {
@@ -370,6 +572,7 @@ import Testing
         try await termination.value
         let packets = await transport.packets
         #expect(packets.count == 6)
+        #expect(await pipeline.snapshot().encodedFrameCount == 2)
         #expect(await transform.sealed.suffix(5).allSatisfy { $0 == Data([0xF8, 0xFF, 0xFE]) })
         #expect(packets[1].bytes[3] == 1)
         #expect(Array(packets[1].bytes[4..<8]) == [0, 0, 7, 128])
@@ -643,14 +846,14 @@ import Testing
     ///   - maximumBufferedBytes: Aggregate bound under test; default four MiB.
     ///   - initialSequence: Outbound rollover position under test; default zero.
     ///   - initialTimestamp: Outbound timestamp position under test; default zero.
-    ///   - encoder: Optional preconfigured DTX encoder; nil selects ordinary mono CELT.
+    ///   - encoder: Optional exclusively owned fixed-format encoder; nil selects ordinary mono CELT.
     /// - Returns: Initially unauthorized local stream with SSRC seven.
     /// - Throws: Codec, cipher or pipeline configuration errors.
     @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
     private func makePipeline(clock: ManualClock, transport: PipelineDatagrams,
                               transformer: PipelineTransform, maximumReceiveStreams: Int = 64,
                               maximumBufferedBytes: Int = 4_194_304, initialSequence: UInt16 = 0,
-                              initialTimestamp: UInt32 = 0, encoder: OpusAudioEncoder? = nil) throws -> VoiceMediaPipeline<ManualClock> {
+                              initialTimestamp: UInt32 = 0, encoder: (any OpusPCMEncoding)? = nil) throws -> VoiceMediaPipeline<ManualClock> {
         try VoiceMediaPipeline(clock: clock, transport: transport, peer: peer, cipher: cipher(),
                                transformer: transformer, ssrc: 7, encoder: encoder ?? OpusAudioEncoder(),
                                maximumReceiveStreams: maximumReceiveStreams,
@@ -707,6 +910,40 @@ import Testing
 }
 
 private enum PipelineFixtureError: Error { case transform, transport }
+
+/// Independent lock-protected invocation evidence for an exclusively owned test codec.
+@available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+private final class PipelineEncoderState: Sendable {
+    /// Successful fake encodes and idempotent pipeline-close reset invocations.
+    let counts = Mutex((encoded: 0, reset: 0))
+}
+
+/// Fixed result encoder exercising external ownership and rejected contract violations.
+@available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+private struct PipelinePacketEncoder: OpusPCMEncoding {
+    /// Declared fixed input/packet channel geometry, altered only by the malicious test mode.
+    var channelCount = 1
+    /// Declared fixed 48-kHz samples per channel, altered only by the malicious test mode.
+    var frameSampleCount = 960
+    /// Synthetic complete packet or rejected output returned to the real pipeline.
+    let output: OpusAudioEncodedPacket
+    /// Lock-protected observation with no PCM or codec history.
+    let state: PipelineEncoderState
+    /// Deliberately violates the immutable format contract during the next encode.
+    var changesGeometry = false
+
+    /// Records one synchronous invocation and returns the deliberately configured fixture.
+    /// - Parameter samples: Already normalized fixed-duration PCM admitted by the real pipeline.
+    /// - Returns: The test's immutable valid or invalid encoded result.
+    mutating func encode(_ samples: [Float]) throws -> OpusAudioEncodedPacket {
+        state.counts.withLock { $0.encoded += 1 }
+        if changesGeometry { frameSampleCount = 480 }
+        return output
+    }
+
+    /// Records exclusive owner cleanup without retaining media or starting tasks.
+    mutating func reset() { state.counts.withLock { $0.reset += 1 } }
+}
 
 /// Observes actual sleep/send entry so regressions fail without depending on task start order.
 private enum PipelinePacingEvent: Sendable, Equatable { case sleep, sent }
@@ -794,17 +1031,29 @@ private actor PipelineSink: PCMSink {
 }
 
 /// A single-test synthetic UDP peer which records exactly once and never opens a socket.
+@available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
 private actor PipelineDatagrams: DatagramTransport {
     var packets: [Datagram] = []
     var closed = false
     var attempts = 0
     private var failing = false
     private let onSend: @Sendable () -> Void
+    /// Optional deterministic notification after the synthetic write has been accepted.
+    private let started: TestBarrier?
+    /// Optional deterministic completion gate, modeling an already executing UDP call.
+    private let release: TestBarrier?
 
     /// Creates an inert recording peer with an optional synchronous send-observation hook.
-    /// - Parameter onSend: Invoked after a successful recorded send; must not block. The
-    ///   default performs no work. Tests use a finite stream to observe pacing order.
-    init(onSend: @escaping @Sendable () -> Void = {}) { self.onSend = onSend }
+    /// - Parameters:
+    ///   - onSend: Invoked after a successful recorded send; must not block. The
+    ///     default performs no work. Tests use a finite stream to observe pacing order.
+    ///   - started: Optional notification after a write is recorded and before completion suspension.
+    ///   - release: Optional completion gate; nil makes accepted writes finish immediately.
+    init(onSend: @escaping @Sendable () -> Void = {}, started: TestBarrier? = nil, release: TestBarrier? = nil) {
+        self.onSend = onSend
+        self.started = started
+        self.release = release
+    }
 
     /// Toggles a deterministic send failure with an observable attempt count.
     /// - Parameter value: True makes sends throw after counting one attempt.
@@ -815,12 +1064,14 @@ private actor PipelineDatagrams: DatagramTransport {
     ///   - datagram: Complete encrypted packet to record.
     ///   - context: Caller-owned clock and cancellation/deadline policy.
     /// - Throws: Expiration, cancellation, closed state or a scripted ambiguous send failure.
-    func sendDatagram<C: Clock>(_ datagram: Datagram, context: TransportContext<C>) throws where C.Duration == Duration {
+    func sendDatagram<C: Clock>(_ datagram: Datagram, context: TransportContext<C>) async throws where C.Duration == Duration {
         try context.check()
         guard !closed else { throw TransportFailure.closed }
         attempts += 1
         guard !failing else { throw PipelineFixtureError.transport }
         packets.append(datagram)
+        started?.open()
+        if let release { try await release.wait() }
         onSend()
     }
 

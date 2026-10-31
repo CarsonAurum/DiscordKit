@@ -6,7 +6,7 @@
 
 ### Creating a value
 
-- ``DiscordVoice/VoiceSession/init(credentials:webSocket:makeDatagram:e2ee:clock:configuration:encoder:now:)``
+- ``DiscordVoice/VoiceSession/init(credentials:webSocket:makeDatagram:e2ee:clock:configuration:encoder:now:makeEncoder:)``
 
 ### Instance properties
 

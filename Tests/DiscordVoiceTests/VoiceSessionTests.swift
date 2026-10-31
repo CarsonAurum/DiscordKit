@@ -8,6 +8,7 @@ import DiscordCore
 import DiscordMedia
 import DiscordTestSupport
 import DiscordTransport
+import DiscordVoiceCodecs
 import Foundation
 import Synchronization
 import Testing
@@ -24,6 +25,13 @@ private func sessionServerFrame(_ opcode: UInt8, _ data: JSONValue, sequence: UI
     var object: [String: JSONValue] = ["op": voiceControlNumber(opcode), "d": data]
     if let sequence { object["seq"] = voiceControlNumber(sequence) }
     return .text(String(decoding: try JSONValue.object(object).serialized(), as: UTF8.self))
+}
+
+/// Lock-protected allocation evidence for a deferred, per-pipeline encoder factory.
+@available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+private final class SessionEncoderFactoryState: Sendable {
+    /// Number of independent codec owners requested after media configuration begins.
+    let count = Mutex(0)
 }
 
 /// Cancellation-cooperative blocking peer with explicit read/send observation gates.
@@ -497,6 +505,57 @@ private struct SessionWaitingPCMSource: AsyncSequence, Sendable {
 /// Exercises actual session supervision over deterministic complete-message/socket peers.
 @Suite("Supervised Voice v8 session")
 struct VoiceSessionTests {
+    /// Custom factories defer allocation until authenticated media composition and create one codec per pipeline.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func customEncoderFactoryDefersAllocationAndKeepsSessionOwnership() async throws {
+        let factoryState = SessionEncoderFactoryState()
+        for expectedCount in 1...2 {
+            let tuple = credentials(), socket = SessionTestSocket(try initialFrames())
+            let backend = SessionTestE2EE(tuple.identity), clock = SessionTestClock()
+            let udp = SessionTestDatagram(discovery())
+            let owner = try VoiceSession(credentials: tuple, webSocket: SessionTestConnector([socket]),
+                makeDatagram: { _ in udp }, e2ee: backend, clock: clock, makeEncoder: {
+                    factoryState.count.withLock { $0 += 1 }
+                    return try OpusAudioEncoder(channelCount: 1)
+                })
+            #expect(factoryState.count.withLock { $0 } == expectedCount - 1)
+            let run = Task { try await owner.run() }
+            try await socket.waitForRead(4)
+            let media = try #require(await owner.mediaPipeline())
+            #expect(factoryState.count.withLock { $0 } == expectedCount)
+            let mono = try PCMBuffer(format: PCMFormat(sampleRate: 48_000, channelCount: 1),
+                samples: Array(repeating: 0.1, count: 960))
+            #expect(try await media.send(mono, context: .init(clock: clock)))
+            #expect(await media.snapshot().encodedFrameCount == 1)
+            await owner.stop()
+            try await run.value
+            #expect(await media.snapshot().closed)
+            #expect(await backend.recorded().0)
+            #expect(clock.base.pendingSleepCount == 0)
+        }
+    }
+
+    /// An unavailable native codec fails media configuration and releases every acquired owner without retry.
+    @available(macOS 15, iOS 18, tvOS 18, watchOS 11, visionOS 2, *)
+    @Test func customEncoderFactoryFailureJoinsSecureSessionCleanup() async throws {
+        let tuple = credentials(), socket = SessionTestSocket(try initialFrames())
+        let backend = SessionTestE2EE(tuple.identity), clock = SessionTestClock()
+        let connector = SessionTestConnector([socket]), udp = SessionTestDatagram(discovery())
+        let factoryState = SessionEncoderFactoryState()
+        let owner = try VoiceSession(credentials: tuple, webSocket: connector,
+            makeDatagram: { _ in udp }, e2ee: backend, clock: clock, makeEncoder: {
+                factoryState.count.withLock { $0 += 1 }
+                throw TransportFailure.scriptExhausted
+            })
+        #expect(factoryState.count.withLock { $0 } == 0)
+        await #expect(throws: TransportFailure.scriptExhausted) { try await owner.run() }
+        #expect(factoryState.count.withLock { $0 } == 1)
+        #expect(await connector.recorded().count == 1)
+        #expect(await owner.snapshot().phase == .closed)
+        #expect(await backend.recorded().0)
+        #expect(clock.base.pendingSleepCount == 0)
+    }
+
     /// Constructs one bounded synthetic credential tuple, never a real account credential.
     /// - Parameter endpoint: Secure-upgrade authority to validate, default the Discord fixture host.
     /// - Returns: Complete guild/account/channel/session identity and ephemeral fake token.

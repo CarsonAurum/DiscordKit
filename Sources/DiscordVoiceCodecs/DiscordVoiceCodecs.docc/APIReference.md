@@ -112,6 +112,10 @@ Browse the public types and operations provided by DiscordVoiceCodecs.
 - ``DiscordVoiceCodecs/OpusPacket``
 - ``DiscordVoiceCodecs/OpusPacketError``
 
+### Opus PCM Encoding
+
+- ``DiscordVoiceCodecs/OpusPCMEncoding``
+
 ### Opus Range Coding
 
 - ``DiscordVoiceCodecs/OpusProbabilityModel``

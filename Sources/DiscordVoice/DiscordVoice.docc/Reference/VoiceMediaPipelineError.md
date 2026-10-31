@@ -12,6 +12,7 @@
 - ``DiscordVoice/VoiceMediaPipelineError/concurrentReceive``
 - ``DiscordVoice/VoiceMediaPipelineError/concurrentSend``
 - ``DiscordVoice/VoiceMediaPipelineError/invalidConfiguration``
+- ``DiscordVoice/VoiceMediaPipelineError/invalidEncoderOutput``
 - ``DiscordVoice/VoiceMediaPipelineError/invalidPCM``
 - ``DiscordVoice/VoiceMediaPipelineError/staleOperation``
 - ``DiscordVoice/VoiceMediaPipelineError/streamExists``

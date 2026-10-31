@@ -40,6 +40,8 @@ public enum VoiceMediaPipelineError: Error, Sendable, Equatable {
     case invalidConfiguration, unauthorized, closed, unknownStream, streamExists
     case concurrentSend, concurrentReceive, concurrentPlayout, unexpectedPeer
     case invalidPCM, unexpectedPayloadType, capacityExceeded, staleOperation
+    /// An injected encoder returned inconsistent framing, geometry, DTX flags or byte bounds.
+    case invalidEncoderOutput
 }
 
 /// One caller-paced, authenticated receive slot, with explicit packet-loss synthesis.
@@ -64,6 +66,57 @@ public struct VoiceMediaPipelineSnapshot: Sendable, Equatable {
     public let sentPackets: UInt64
     public let receivedPackets: UInt64
     public let concealedPackets: UInt64
+    /// Successfully encoded PCM frames, including frames suppressed by the configured DTX policy.
+    public let encodedFrameCount: UInt64
+    /// Longest synchronous Opus encoding call in monotonic elapsed milliseconds, excluding pacing and I/O.
+    public let maximumEncodingDurationMilliseconds: Double
+    /// Encoded frames whose synchronous encoding took longer than that frame's audio duration.
+    public let encodingDeadlineMissCount: UInt64
+    /// Longest interval between successful UDP dispatch starts within an uninterrupted outbound talkspurt.
+    public let maximumSendIntervalMilliseconds: Double
+    /// Successful UDP dispatch intervals longer than forty milliseconds within an outbound talkspurt.
+    /// Long encoded packets and configured DTX can intentionally produce such intervals.
+    public let sendIntervalOverrunCount: UInt64
+}
+
+/// Fixed-size outbound timing totals with saturating counters and no per-frame history.
+struct VoiceMediaPipelineTiming: Sendable {
+    /// Successful synchronous encoder invocations, including DTX-suppressed results.
+    private(set) var encodedFrameCount: UInt64 = 0
+    /// Longest successful synchronous encoding duration, excluding source wait and transport work.
+    private(set) var maximumEncodingDurationMilliseconds: Double = 0
+    /// Successful encoder calls exceeding their own PCM frame duration.
+    private(set) var encodingDeadlineMissCount: UInt64 = 0
+    /// Longest successful dispatch interval reported by the owner within one talkspurt.
+    private(set) var maximumSendIntervalMilliseconds: Double = 0
+    /// Reported successful dispatch intervals strictly longer than forty milliseconds.
+    private(set) var sendIntervalOverrunCount: UInt64 = 0
+
+    /// Records one completed encoder call using its exact 48kHz PCM duration as the elapsed-time budget.
+    /// - Parameters:
+    ///   - duration: Nonnegative monotonic elapsed time around the synchronous encoder alone.
+    ///   - frameCount: Validated 48kHz samples per channel; channel count does not change duration.
+    mutating func recordEncoding(duration: Duration, frameCount: Int) {
+        if encodedFrameCount < .max { encodedFrameCount += 1 }
+        maximumEncodingDurationMilliseconds = max(maximumEncodingDurationMilliseconds, Self.milliseconds(duration))
+        let frameDuration = Duration.nanoseconds(Int64(frameCount) * 1_000_000_000 / 48_000)
+        if duration > frameDuration, encodingDeadlineMissCount < .max { encodingDeadlineMissCount += 1 }
+    }
+
+    /// Records a successful dispatch interval without retaining its source instant or packet.
+    /// - Parameter duration: Nonnegative elapsed time between successful dispatch starts.
+    mutating func recordSendInterval(_ duration: Duration) {
+        maximumSendIntervalMilliseconds = max(maximumSendIntervalMilliseconds, Self.milliseconds(duration))
+        if duration > .milliseconds(40), sendIntervalOverrunCount < .max { sendIntervalOverrunCount += 1 }
+    }
+
+    /// Converts a monotonic duration to fractional milliseconds without reducing it to whole milliseconds.
+    /// - Parameter duration: Elapsed time from the same monotonic clock domain.
+    /// - Returns: Fractional milliseconds; zero elapsed time remains exactly zero.
+    private static func milliseconds(_ duration: Duration) -> Double {
+        let components = duration.components
+        return Double(components.seconds) * 1_000 + Double(components.attoseconds) / 1_000_000_000_000_000
+    }
 }
 
 /// Caller-supervised full-duplex Opus/E2EE/RTP media over an injected UDP transport.
@@ -97,7 +150,16 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
     private let transformer: any VoiceFrameTransformer
     private let clock: C
     private var nextSendDeadline: C.Instant?
-    private var encoder: OpusAudioEncoder
+    /// Last successful dispatch start in the current uninterrupted outbound talkspurt.
+    private var previousSendInstant: C.Instant?
+    /// Fixed-size observations only; timing never changes pacing, codec or transport admission.
+    private var timing = VoiceMediaPipelineTiming()
+    /// Exclusively owned fixed-format encoder; reference-backed implementations must not be shared.
+    private var encoder: any OpusPCMEncoding
+    /// Admitted channel geometry cannot be changed by a mutable injected implementation.
+    private let encoderChannelCount: Int
+    /// Admitted 48-kHz frame duration remains fixed for this pipeline's lifetime.
+    private let encoderFrameSampleCount: Int
     private var nextSequence: UInt16
     private var nextTimestamp: UInt32
     private var authorized = false
@@ -136,19 +198,22 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
     ///   - cipher: Shared exact-session transport AEAD and nonwrapping nonce authority.
     ///   - transformer: Required authenticated complete-frame E2EE boundary.
     ///   - ssrc: Local synchronization source assigned by Voice Ready.
-    ///   - encoder: Fixed-format 48kHz Opus encoder; its state becomes this owner's copy.
+    ///   - encoder: Exclusively transferred fixed-format 48kHz Opus encoder. Reference-backed
+    ///     implementations must be fresh for this pipeline and must not be retained by callers.
     ///   - maximumReceiveStreams: Hard stream-history bound in `1...4096`, default 64.
     ///   - maximumBufferedBytes: Hard aggregate retained RTP byte bound in `1...67108864`.
     ///   - initialSequence: Initial RTP sequence, default zero; wraps independently of crypto.
     ///   - initialTimestamp: Initial 48kHz RTP timestamp, default zero.
-    /// - Throws: `invalidConfiguration` for invalid aggregate bounds.
+    /// - Throws: `invalidConfiguration` for invalid aggregate bounds or encoder geometry.
     public init(clock: C, transport: any DatagramTransport, peer: DatagramAddress,
                 cipher: VoiceTransportCipher, transformer: any VoiceFrameTransformer,
-                ssrc: UInt32, encoder: OpusAudioEncoder, maximumReceiveStreams: Int = 64,
+                ssrc: UInt32, encoder: any OpusPCMEncoding, maximumReceiveStreams: Int = 64,
                 maximumBufferedBytes: Int = 4_194_304, initialSequence: UInt16 = 0,
                 initialTimestamp: UInt32 = 0) throws {
         guard (1...4_096).contains(maximumReceiveStreams),
-              (1...67_108_864).contains(maximumBufferedBytes) else {
+              (1...67_108_864).contains(maximumBufferedBytes),
+              (1...2).contains(encoder.channelCount),
+              [120, 240, 480, 960].contains(encoder.frameSampleCount) else {
             throw VoiceMediaPipelineError.invalidConfiguration
         }
         self.ssrc = ssrc
@@ -158,6 +223,8 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
         self.cipher = cipher
         self.transformer = transformer
         self.encoder = encoder
+        encoderChannelCount = encoder.channelCount
+        encoderFrameSampleCount = encoder.frameSampleCount
         self.maximumReceiveStreams = maximumReceiveStreams
         self.maximumBufferedBytes = maximumBufferedBytes
         nextSequence = initialSequence
@@ -175,6 +242,7 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
         authorizationGeneration &+= 1
         if !authorized {
             nextSendDeadline = nil
+            previousSendInstant = nil
             for id in Array(streams.keys) {
                 streams[id]?.jitter = nil
                 streams[id]?.nextTimestamp = nil
@@ -194,7 +262,10 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
         guard !closed, sendingAllowed != allowed else { return }
         sendingAllowed = allowed
         sendingGeneration &+= 1
-        if !allowed { nextSendDeadline = nil }
+        if !allowed {
+            nextSendDeadline = nil
+            previousSendInstant = nil
+        }
     }
 
     /// Registers a trusted receive stream without inferring identity from untrusted RTP.
@@ -252,13 +323,17 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
         let generation = try admit()
         let outboundGeneration = try admitSending()
         guard !sending else { throw VoiceMediaPipelineError.concurrentSend }
-        guard pcm.format.sampleRate == 48_000, pcm.format.channelCount == encoder.channelCount,
-              pcm.frameCount == encoder.frameSampleCount else { throw VoiceMediaPipelineError.invalidPCM }
+        guard pcm.format.sampleRate == 48_000, pcm.format.channelCount == encoderChannelCount,
+              pcm.frameCount == encoderFrameSampleCount else { throw VoiceMediaPipelineError.invalidPCM }
         sending = true
         defer { sending = false }
         try await pace(frameCount: pcm.frameCount, generation: generation,
                        outboundGeneration: outboundGeneration, context: context)
+        let encodingClock = ContinuousClock()
+        let encodingStarted = encodingClock.now
         let encoded = try encoder.encode(pcm.samples)
+        timing.recordEncoding(duration: encodingStarted.duration(to: encodingClock.now), frameCount: pcm.frameCount)
+        try validateEncoderOutput(encoded)
         let timestamp = nextTimestamp
         nextTimestamp &+= UInt32(pcm.frameCount)
         guard encoded.shouldTransmit else { return false }
@@ -467,12 +542,16 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
     }
 
     /// Returns bounded counters without exposing media or stream identities.
-    /// - Returns: Current admission state, retained bytes and saturating lifetime packet counts.
+    /// - Returns: Current admission state, retained bytes, saturating counts and fixed-size timing maxima.
     public func snapshot() -> VoiceMediaPipelineSnapshot {
         VoiceMediaPipelineSnapshot(authorized: authorized, sendingAllowed: sendingAllowed, closed: closed,
                                    receiveStreamCount: streams.count, bufferedBytes: bufferedBytes,
                                    sentPackets: sentPackets, receivedPackets: receivedPackets,
-                                   concealedPackets: concealedPackets)
+                                   concealedPackets: concealedPackets, encodedFrameCount: timing.encodedFrameCount,
+                                   maximumEncodingDurationMilliseconds: timing.maximumEncodingDurationMilliseconds,
+                                   encodingDeadlineMissCount: timing.encodingDeadlineMissCount,
+                                   maximumSendIntervalMilliseconds: timing.maximumSendIntervalMilliseconds,
+                                   sendIntervalOverrunCount: timing.sendIntervalOverrunCount)
     }
 
     /// Permanently revokes admission and releases bounded local receive/codec histories.
@@ -485,6 +564,7 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
         sendingAllowed = false
         authorizationGeneration &+= 1
         nextSendDeadline = nil
+        previousSendInstant = nil
         streams.removeAll(keepingCapacity: false)
         bufferedBytes = 0
         encoder.reset()
@@ -524,6 +604,24 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
     private func validateSending(_ generation: UInt64, outboundGeneration: UInt64) throws {
         try validate(generation)
         guard try admitSending() == outboundGeneration else { throw VoiceMediaPipelineError.staleOperation }
+    }
+
+    /// Rejects inconsistent injected encoder results before RTP or cryptographic state changes.
+    /// - Parameter encoded: One synchronous codec result for the admitted PCM frame.
+    /// - Throws: `invalidEncoderOutput` for empty, oversized, over-budget, malformed or
+    ///   geometry-changing data, or inconsistent DTX decisions. Codec and pacing work may
+    ///   already have advanced, so callers treat rejection as terminal instead of replaying.
+    private func validateEncoderOutput(_ encoded: OpusAudioEncodedPacket) throws {
+        guard (1...1_276).contains(encoded.packetByteBudget),
+              !encoded.data.isEmpty, encoded.data.count <= encoded.packetByteBudget,
+              encoded.shouldTransmit != encoded.isDTX,
+              encoder.channelCount == encoderChannelCount,
+              encoder.frameSampleCount == encoderFrameSampleCount,
+              let packet = try? OpusPacket(encoded.data),
+              packet.sampleCount == encoderFrameSampleCount,
+              packet.channelCount == encoderChannelCount else {
+            throw VoiceMediaPipelineError.invalidEncoderOutput
+        }
     }
 
     /// Reserves one bounded 48kHz interval without accumulating catch-up debt across idle time.
@@ -580,7 +678,13 @@ public actor VoiceMediaPipeline<C: Clock> where C.Duration == Duration {
         let sealed = try await cipher.seal(payload: Data(plain.dropFirst(12)), authenticatedHeader: header)
         try validateSending(generation, outboundGeneration: outboundGeneration)
         try context.check()
+        let dispatched = clock.now
         try await transport.sendDatagram(Datagram(bytes: header + sealed, peer: peer), context: context)
         if sentPackets < .max { sentPackets += 1 }
+        if !closed, authorized, sendingAllowed, authorizationGeneration == generation,
+           sendingGeneration == outboundGeneration {
+            if let previousSendInstant { timing.recordSendInterval(previousSendInstant.duration(to: dispatched)) }
+            previousSendInstant = dispatched
+        }
     }
 }

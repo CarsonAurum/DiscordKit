@@ -49,6 +49,31 @@ Encoder calls are synchronous and stateful. Serialize mutation; a value copy for
 
 The high-level policy bounds packet allocation and exposes specific admission failures. It does not guarantee every SILK signal fits every small bitrate, automatic encoder mode switching, psychoacoustic equivalence to libopus, multistream support or hard realtime behavior.
 
+### Supply an application-owned encoder
+
+``OpusPCMEncoding`` is the synchronous boundary for an application-provided encoder, including a separately linked native implementation. Its immutable geometry is one or two channels and 120, 240, 480 or 960 samples per channel at 48 kHz. ``OpusAudioEncoder`` conforms, preserving the ordinary default and its transactional value semantics.
+
+```swift
+import DiscordVoiceCodecs
+
+/// Constructs one independent stream owner without I/O or background work.
+func makeStreamEncoder() throws -> any OpusPCMEncoding {
+    try OpusAudioEncoder(channelCount: 2, targetBitrate: 128_000)
+}
+
+var streamEncoder = try makeStreamEncoder()
+let output = try streamEncoder.encode(Array(repeating: 0.1, count: 1_920))
+let validated = try OpusPacket(output.data)
+assert(validated.channelCount == 2 && validated.sampleCount == 960)
+streamEncoder.reset()
+```
+
+Return a fresh owner for every stream. A reference-backed implementation must own its native allocation, serialize mutation and free it after its last use; copying its Swift wrapper does not create an independent codec history. A Voice session's encoder factory is invoked when its secure media pipeline is composed, and session teardown resets the pipeline's exclusive encoder. Factory failure terminates the session and joins acquired resources.
+
+``OpusAudioEncodedPacket/init(data:shouldTransmit:isDTX:packetByteBudget:finalRange:)`` describes externally produced output. A transmitted complete packet must match the fixed duration and channel geometry and fit its declared allocation of at most 1,276 bytes. Deliberately suppressed DTX uses `shouldTransmit: false` and `isDTX: true`, retaining a matching nonempty TOC. The Voice pipeline validates those bounds and framing before consuming RTP or cryptographic counters; invalid output is terminal for supervised playback and is never replayed.
+
+Injecting a different codec leaves pacing, authorization, secure transport and joined source ownership with the existing Voice session. It does not establish a CPU-time bound, real-time scheduling, perceptual quality or listener delivery. Measure optimized builds on the actual host under representative concurrent load and distinguish encoding time from source starvation, packet gaps and network latency.
+
 ### Retain decoder history across ordinary changes
 
 ``OpusAudioDecoder`` has a fixed one- or two-channel output layout at 48 kHz while accepting ordinary coded-channel, mode, bandwidth and duration changes. It retains SILK/CELT history and coordinates transition redundancy. Decode returns one result per packed payload; concatenate the samples in wire order for the complete packet.

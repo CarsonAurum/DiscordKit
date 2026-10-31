@@ -4,6 +4,10 @@
 
 ## Topics
 
+### Creating a value
+
+- ``DiscordVoiceCodecs/OpusAudioEncodedPacket/init(data:shouldTransmit:isDTX:packetByteBudget:finalRange:)``
+
 ### Instance properties
 
 - ``DiscordVoiceCodecs/OpusAudioEncodedPacket/data``

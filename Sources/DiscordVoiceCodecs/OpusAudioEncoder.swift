@@ -50,6 +50,24 @@ public struct OpusAudioEncodedPacket: Sendable, Equatable {
     public let packetByteBudget: Int
     /// Arithmetic final range for transmitted audio; zero for a suppressed interval.
     public let finalRange: UInt32
+
+    /// Describes one complete encoder result without acquiring a codec or transport.
+    /// - Parameters:
+    ///   - data: Nonempty complete ordinary Opus data; suppressed DTX may retain only TOC.
+    ///   - shouldTransmit: Whether this interval sends a packet or advances media time only.
+    ///   - isDTX: True only for a deliberately suppressed inactive interval.
+    ///   - packetByteBudget: Complete packet allocation, including TOC, through 1,276 bytes.
+    ///   - finalRange: Codec arithmetic final range, or zero for suppressed DTX.
+    /// The consuming pipeline validates framing, fixed geometry and byte bounds before
+    /// using RTP or cryptographic counters. This initializer retains only the supplied data.
+    public init(data: Data, shouldTransmit: Bool, isDTX: Bool,
+                packetByteBudget: Int, finalRange: UInt32) {
+        self.data = data
+        self.shouldTransmit = shouldTransmit
+        self.isDTX = isDTX
+        self.packetByteBudget = packetByteBudget
+        self.finalRange = finalRange
+    }
 }
 
 /// Fixed-format ordinary SILK/CELT/hybrid encoding with bounded rate and DTX policies.
@@ -77,7 +95,7 @@ public struct OpusAudioEncodedPacket: Sendable, Equatable {
 /// Construction starts no I/O/tasks and links no native codec. Calls are synchronous;
 /// callers serialize mutation, copies fork histories, and every failure preserves
 /// codec, resampler, rate-carry and DTX state atomically. Storage stays frame-bounded.
-public struct OpusAudioEncoder: Sendable {
+public struct OpusAudioEncoder: OpusPCMEncoding {
     public let mode: OpusMode
     public let bandwidth: OpusBandwidth
     public let frameSampleCount: Int

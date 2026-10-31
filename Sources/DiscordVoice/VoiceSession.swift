@@ -120,7 +120,8 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     private let e2ee: any VoiceSessionE2EE
     private let clock: C
     private let configuration: VoiceSessionConfiguration
-    private let encoder: OpusAudioEncoder
+    /// Creates a fresh exclusive codec owner whenever a secure media pipeline is constructed.
+    private let makeEncoder: @Sendable () throws -> any OpusPCMEncoding
     private let now: @Sendable () -> TimeInterval
     private let url: URL
     private var state: VoiceGatewaySessionState
@@ -161,13 +162,18 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
     ///   - now: Optional shared monotonic seconds source, using the same origin as the DAVE
     ///     adapter. Nil uses elapsed time since session construction; callers composing a
     ///     DAVE adapter should inject one shared closure into both owners.
+    ///   - makeEncoder: Optional synchronous factory for a fresh exclusively owned fixed-format
+    ///     encoder per secure media pipeline. When supplied, it takes precedence over `encoder`.
+    ///     The factory must perform no I/O or task work and must not return shared mutable state.
+    ///     Factory and geometry errors propagate during media configuration and join cleanup.
     /// - Throws: Invalid endpoint, configuration or codec errors before acquiring resources.
     public init(credentials: VoiceConnectionCredentials, webSocket: any WebSocketTransport,
                 makeDatagram: @escaping @Sendable (TransportContext<C>) async throws -> any DatagramTransport,
                 e2ee: any VoiceSessionE2EE, clock: C,
                 configuration: VoiceSessionConfiguration = .standard,
                 encoder: OpusAudioEncoder? = nil,
-                now: (@Sendable () -> TimeInterval)? = nil) throws {
+                now: (@Sendable () -> TimeInterval)? = nil,
+                makeEncoder: (@Sendable () throws -> any OpusPCMEncoding)? = nil) throws {
         self.credentials = credentials; identity = credentials.identity
         self.webSocket = webSocket; self.makeDatagram = makeDatagram; self.e2ee = e2ee
         self.clock = clock; self.configuration = configuration
@@ -176,7 +182,12 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
             let elapsed = origin.duration(to: clock.now).components
             return Double(elapsed.seconds) + Double(elapsed.attoseconds) / 1e18
         }
-        self.encoder = try encoder ?? OpusAudioEncoder(channelCount: 2)
+        if let makeEncoder {
+            self.makeEncoder = makeEncoder
+        } else {
+            let builtin = try encoder ?? OpusAudioEncoder(channelCount: 2)
+            self.makeEncoder = { builtin }
+        }
         url = try Self.endpointURL(credentials.endpoint)
         state = try VoiceGatewaySessionState(credentials: credentials, maximumDAVEProtocolVersion: 1)
     }
@@ -529,7 +540,7 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
                 maximumReceiveStreams: configuration.maximumReceiveStreams)
             cipher = keyOwner
             let pipeline = try VoiceMediaPipeline(clock: clock, transport: datagram, peer: peer, cipher: keyOwner,
-                transformer: e2ee, ssrc: localSSRC, encoder: encoder,
+                transformer: e2ee, ssrc: localSSRC, encoder: makeEncoder(),
                 maximumReceiveStreams: configuration.maximumReceiveStreams, maximumBufferedBytes: configuration.maximumMediaBytes)
             media = pipeline; await pipeline.setSendingAllowed(false)
             for (user, source) in sources {
