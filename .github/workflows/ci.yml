@@ -87,7 +87,6 @@ jobs:
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/release-report-0.15.0-final.json
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/semantic-logging-report.json
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/publication-report.json
-          python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json
       - name: Build independent consumers and test offline examples
         run: |
           for example in RESTOnly GatewayBot HTTPApp CommandsApp DSLCommands DSLEvents DSLBot OAuthApp VoiceBot RPCApp ActivityHost SocialApp LoggingApp; do
@@ -146,6 +145,34 @@ jobs:
           include-hidden-files: true
       - name: Verify tracked generated source remains unchanged
         run: git diff --exit-code
+      - name: Build Linux release packages after Linux checks
+        if: runner.os == 'Linux' && github.event_name != 'pull_request'
+        run: |
+          swift build --configuration release --force-resolved-versions
+          swift build --configuration release --package-path Packages/DiscordDSLMacros --force-resolved-versions
+          swift build --configuration release --package-path Packages/DiscordDSLExtensions --force-resolved-versions
+          python3 Tools/ci/package_source.py --repository . --output .build/packages
+      - name: Upload Linux SwiftPM source bundle
+        if: runner.os == 'Linux' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: DiscordKit-linux-source-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .build/packages/*
+          if-no-files-found: error
+          include-hidden-files: true
+          compression-level: 0
+          retention-days: 14
+
+  maintenance:
+    name: Upstream maintenance review freshness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Require a current upstream review for certification
+        run: python3 Tools/DiscordKitTools/scripts/release_check.py maintenance --repository . --record Docs/Release/maintenance.json
 
   apple-compilation:
     name: Apple minima / device and simulator modules

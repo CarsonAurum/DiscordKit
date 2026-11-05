@@ -29,17 +29,17 @@ private struct HTTPTestPeer: Sendable {
     /// - Returns: Owned local peer; caller must await close on every test exit path.
     /// - Throws: Fixture decoding, bind, TLS or pipeline construction failures.
     static func open(tls: Bool = false) async throws -> HTTPTestPeer {
+        let ssl: NIOSSLContext?
+        if tls {
+            let certificate = try NIOSSLCertificate.fromPEMFile(fixtureURL(named: "localhost-cert").path)
+            let key = try NIOSSLPrivateKey(file: fixtureURL(named: "localhost-key").path, format: .pem)
+            ssl = try NIOSSLContext(configuration: .makeServerConfiguration(certificateChain: certificate.map { .certificate($0) }, privateKey: .privateKey(key)))
+        } else { ssl = nil }
+        // Resolve fallible TLS fixtures before allocating loop and promise ownership.
         let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         let requests = NIOLockedValueBox(0)
         let arrived = group.next().makePromise(of: Void.self)
         let arrivalCompleted = NIOLockedValueBox(false)
-        let ssl: NIOSSLContext?
-        if tls {
-            let directory = Bundle.module.resourceURL!.appendingPathComponent("Resources")
-            let certificate = try NIOSSLCertificate.fromPEMFile(directory.appendingPathComponent("localhost-cert.pem").path)
-            let key = try NIOSSLPrivateKey(file: directory.appendingPathComponent("localhost-key.pem").path, format: .pem)
-            ssl = try NIOSSLContext(configuration: .makeServerConfiguration(certificateChain: certificate.map { .certificate($0) }, privateKey: .privateKey(key)))
-        } else { ssl = nil }
         do {
             let channel = try await ServerBootstrap(group: group).childChannelInitializer { channel in
                 channel.eventLoop.makeCompletedFuture {
@@ -53,7 +53,19 @@ private struct HTTPTestPeer: Sendable {
                 }
             }.bind(host: "127.0.0.1", port: 0).get()
             return HTTPTestPeer(group: group, channel: channel, requests: requests, arrived: arrived, arrivalCompleted: arrivalCompleted)
-        } catch { try? await group.shutdownGracefully(); throw error }
+        } catch {
+            if !arrivalCompleted.withLockedValue({ old in let previous = old; old = true; return previous }) { arrived.succeed(()) }
+            try? await group.shutdownGracefully()
+            throw error
+        }
+    }
+
+    /// Locates copied fixtures through Bundle so Linux and Apple resource layouts agree.
+    /// - Parameter name: PEM fixture basename without its extension.
+    /// - Returns: The packaged fixture URL.
+    /// - Throws: A test issue when the fixture is missing.
+    static func fixtureURL(named name: String) throws -> URL {
+        try #require(Bundle.module.url(forResource: name, withExtension: "pem", subdirectory: "Resources"))
     }
 
     /// Builds a valid loopback origin with a caller-selected request target.
@@ -470,7 +482,7 @@ private final class HTTPTestHandler: ChannelInboundHandler {
     @Test(arguments: [(true, true), (false, true), (true, false)])
     func tlsVerification(_ trusted: Bool, _ hostname: Bool) async throws {
         let peer = try await HTTPTestPeer.open(tls: true)
-        let bytes = try Data(contentsOf: Bundle.module.resourceURL!.appendingPathComponent("Resources/localhost-cert.pem"))
+        let bytes = try Data(contentsOf: HTTPTestPeer.fixtureURL(named: "localhost-cert"))
         let policy = try TLSPolicy(additionalTrustRootsPEM: trusted ? Array(bytes) : nil)
         let transport = try NIOHTTPTransport(configuration: NIOHTTPConfiguration(), tls: policy)
         let url = hostname ? peer.url(tls: true) : URL(string: "https://127.0.0.1:\(peer.channel.localAddress!.port!)/ok")!

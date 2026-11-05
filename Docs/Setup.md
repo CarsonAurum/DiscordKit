@@ -16,14 +16,14 @@ separate from the package's local test results.
 
 ## Package installation
 
-DiscordKit is available from the [official repository](https://github.com/CarsonAurum/DiscordKit).
+DiscordKit is available from the [official repository](https://github.com/Aurum-Studios/DiscordKit).
 For a licensed application, add a reviewed commit or a published release tag using
 Swift Package Manager. The source currently carries the 0.19.0 API candidate; a
 version number in documentation does not create a release tag.
 
 ```swift
 .package(
-    url: "https://github.com/CarsonAurum/DiscordKit.git",
+    url: "https://github.com/Aurum-Studios/DiscordKit.git",
     revision: "<full-reviewed-commit-revision>"
 )
 ```
@@ -33,6 +33,11 @@ checkout, use `.package(path: "../DiscordKit")`. Add selected products such as
 `.product(name: "DiscordHTTP", package: "DiscordKit")` to your target dependencies.
 The separate macro package is selected through its own package manifest.
 See the [license](../LICENSE) before using or redistributing the library.
+
+Successful Linux push CI also provides a tested SwiftPM source bundle with
+dependency pins, licenses, revision metadata and a checksum. Download it from
+the workflow run's **Artifacts** section; see the
+[CI packaging instructions](../CONTRIBUTING.md#push-ci-and-linux-source-packages).
 
 ## Choose an independent consumer
 

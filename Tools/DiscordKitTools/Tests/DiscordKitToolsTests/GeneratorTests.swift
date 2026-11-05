@@ -194,8 +194,13 @@ import Testing
         let generated = directory.appendingPathComponent("Generated.swift")
         try artifact.data.write(to: generated)
         let core = repository().appendingPathComponent("Sources/DiscordCore/Field.swift")
+        #if os(Linux)
+        let coreLibraryName = "libDiscordCore.so"
+        #else
+        let coreLibraryName = "libDiscordCore.dylib"
+        #endif
         _ = try run(["swiftc", "-swift-version", "6", "-emit-library", "-emit-module", "-module-name", "DiscordCore", core.path,
-                     "-o", directory.appendingPathComponent("libDiscordCore.dylib").path,
+                     "-o", directory.appendingPathComponent(coreLibraryName).path,
                      "-emit-module-path", directory.appendingPathComponent("DiscordCore.swiftmodule").path], directory: directory)
         let main = directory.appendingPathComponent("main.swift")
         try Data(codableSmoke.utf8).write(to: main)

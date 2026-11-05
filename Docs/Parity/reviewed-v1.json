@@ -90670,7 +90670,7 @@
     {
       "id": "symbol.codecs.OpusAudioEncoder",
       "path": "Sources/DiscordVoiceCodecs/OpusAudioEncoder.swift",
-      "declaration": "public struct OpusAudioEncoder: Sendable {"
+      "declaration": "public struct OpusAudioEncoder: OpusPCMEncoding {"
     },
     {
       "id": "symbol.codecs.OpusAudioEncoderError",

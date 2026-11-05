@@ -105,6 +105,36 @@ Keep build outputs, IDE metadata, credentials and local smoke-test secrets out o
 commits. Include reviewed deterministic generated source and fixture provenance
 when those become part of an implemented feature.
 
+### Push CI and Linux source packages
+
+Every push runs the offline certification workflow. Its Ubuntu 24.04 x86_64 job
+uses Swift 6.4.1 and must pass all Linux tests, independent consumer builds,
+inventory, documentation, generation, parity and release-record checks before
+packaging. The separate macOS jobs retain their existing checks. Pull requests
+run certification without packaging; a manual workflow run also creates a bundle.
+
+After Linux validation, the job builds the root library, authoring macros and DSL
+extensions in release mode using committed dependency pins. It uploads a
+`DiscordKit-linux-source-<revision>-<run>-<attempt>` artifact for 14 days under the
+workflow run's **Artifacts** section. The artifact contains a `.tar.gz` SwiftPM
+source bundle, a SHA-256 checksum and JSON provenance recording the exact Git
+revision, Swift compiler, Linux host, target triple and release configuration.
+The archive preserves tracked manifests, pins, sources, tests, subpackages,
+examples, tools, documentation and license notices. Local build caches, untracked
+files and Air task data are excluded.
+
+Verify the download with `sha256sum -c *.tar.gz.sha256`, then extract it with
+`tar -xzf DiscordKit-<revision>-linux-source.tar.gz`. The extracted `DiscordKit`
+directory works as a local SwiftPM dependency; optional authoring packages remain
+under `Packages` with their relative dependencies intact. Swift and dependency
+downloads are required to compile it. This is a source distribution validated on
+the recorded Linux host, not a precompiled library or a versioned release.
+
+Upstream maintenance freshness runs as a separate certification job. When its
+recorded deadline passes, that job fails until a real review is recorded. Linux
+tests and source packaging can still finish, and the overall workflow continues
+to report the failed review gate. CI does not extend review dates automatically.
+
 For HTTP/Gateway changes also build `swift build --package-path Examples/RESTOnly`
 and run the affected local-only load scenarios. Never run an example with real
 credentials as a repository check. Keep fixed API/Gateway versions, exact partial
