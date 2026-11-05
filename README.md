@@ -50,6 +50,14 @@ Tests use deterministic clocks, injected transports and local peers; ordinary
 tests need no Discord credentials. See the [concurrency policy](Docs/Concurrency.md)
 and [contribution guide](CONTRIBUTING.md) for ownership and validation requirements.
 
+## Releases
+
+Maintainers can manually run the [Release workflow](.github/workflows/release.yml)
+to package an exact certified commit and publish a GitHub release with a chosen
+`Major.Minor.Build` version, such as `1.2.37`. See the
+[release instructions](Docs/ReleaseTooling.md#manual-github-releases) for inputs,
+source assets and recovery after an interrupted publication.
+
 ## Documentation
 
 The DocC catalogs include product guides, tutorials, an example cookbook and public

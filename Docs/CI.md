@@ -7,8 +7,9 @@ https://aurum-studios.com
 
 # Continuous validation and upstream review
 
-The repository defines three workflows: offline CI validation, documentation
-publication and weekly official upstream review. A workflow definition does not establish that a hosted runner
+The repository defines four workflows: offline CI validation, documentation
+publication, manual GitHub releases and weekly official upstream review.
+A workflow definition does not establish that a hosted runner
 has executed. Review actual artifacts before changing support claims.
 
 ## Offline validation
@@ -188,6 +189,26 @@ repository name or use an empty base path when serving at a domain root. A
 custom domain also requires updating `DOCUMENTATION_BASE_PATH` in the workflow.
 The documentation job compiles packages to emit symbol graphs; its success does
 not establish that the independent build/test certification has passed.
+
+## Manual GitHub releases
+
+The [Release workflow](../.github/workflows/release.yml) runs only by manual
+dispatch from the default branch. It accepts a chosen `Major.Minor.Build` version
+and a full commit SHA, requires an existing successful **Offline certification**
+run of [CI](../.github/workflows/ci.yml) at that exact commit from a push or manual
+dispatch, then packages source and publishes a versioned tag and GitHub release.
+The target may be any commit present in the repository with that certification.
+The workflow reuses certification evidence without repeating compilation or tests.
+
+The preparation job has `actions: read` and `contents: read`; only publication
+receives `contents: write`. Reads use the standard `GITHUB_TOKEN`. For targets
+that add or modify workflow files relative to the default branch, maintainers can
+configure the optional `RELEASE_TOKEN` for publication with Contents and Workflows
+write permissions; ordinary targets need no additional secret.
+Publication is serialized per version without canceling a running
+release, and existing tags or releases cannot be overwritten. See the
+[release instructions](ReleaseTooling.md#manual-github-releases) for dispatch,
+asset contents, qualification limits and recovery after an interrupted run.
 
 ## Weekly official review
 

@@ -1,0 +1,99 @@
+# File: .github/workflows/release.yml
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
+name: Release
+run-name: Release ${{ inputs.version }} from ${{ inputs.commit }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version: Major.Minor.Build (e.g. 1.2.37, without v)'
+        required: true
+        type: string
+      commit:
+        description: 'Full 40-character commit SHA with successful Offline certification'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ inputs.version }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  RELEASE_VERSION: ${{ inputs.version }}
+  RELEASE_COMMIT: ${{ inputs.commit }}
+  RELEASE_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+
+jobs:
+  prepare:
+    name: Verify commit and package source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate version, exact CI result and unused release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 Tools/ci/github_release.py prepare \
+            --repository . --output "$RUNNER_TEMP/release-assets" \
+            --version "$RELEASE_VERSION" --commit "$RELEASE_COMMIT"
+      - name: Preserve versioned release assets
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release-assets/*
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+
+  publish:
+    name: Publish GitHub release
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      # Run the workflow revision's tooling, even when releasing an older commit.
+      # Target source is read with git archive; no target code runs with this token.
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release-assets
+      - name: Verify assets, create exact tag and publish release
+        env:
+          # Only needed for commits whose workflow changes require Workflows write.
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 Tools/ci/github_release.py publish \
+            --repository . --output "$RUNNER_TEMP/release-assets" \
+            --version "$RELEASE_VERSION" --commit "$RELEASE_COMMIT"
+      - name: Record published release
+        run: |
+          printf 'Published **DiscordKit %s** from commit `%s`.\n' \
+            "$RELEASE_VERSION" "$RELEASE_COMMIT" >> "$GITHUB_STEP_SUMMARY"
