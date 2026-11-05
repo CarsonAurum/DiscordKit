@@ -25,6 +25,14 @@ Consumers keep independent manifests and import checks while sharing one sequent
 SwiftPM scratch directory to reuse compiled dependencies. Desktop jobs allow up to
 120 minutes for cold builds, documentation conversion and Linux release packages.
 
+Before installing Swift on Linux, the job imports the official Swift signing keys
+into the runner's GnuPG keyring, as described in the
+[Swiftly verification instructions](https://www.swift.org/install/linux/swiftly/).
+`setup-swift@v3` verifies the Swiftly archive before installing the toolchain but
+does not import those keys itself. A fresh Ubuntu runner otherwise fails with
+`gpg: Can't check signature: No public key` before any package build. Key-download,
+import and signature-verification failures all fail the job.
+
 Checks cover typed arguments, command-family routing, response ownership,
 message/mention safety, policies, bounded Gateway dispatch, supervised bot cleanup
 and external module adoption. Separate macro tests compile expansions and external
