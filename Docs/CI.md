@@ -16,10 +16,11 @@ been configured or executed. Review actual artifacts before changing support cla
 
 [Offline validation](../.github/workflows/ci.yml) runs on push, pull request and
 manual dispatch with read-only repository permissions and no Discord secrets.
-Separate macOS 26 and Ubuntu 24.04 jobs use Swift 6.4.1, build/test the root, test
-independent tooling/load packages and Python helpers, run browser-bridge tests,
-validate documentation/inventory/generation/parity, audit manifest/import isolation,
-validate release records and build independent consumers. Credential-bearing
+The desktop matrix includes macOS 26 and Ubuntu 24.04 jobs. Both use Swift 6.4.1,
+build/test the root, test independent tooling/load packages and Python helpers,
+run browser-bridge tests, validate documentation/inventory/generation/parity,
+audit manifest/import isolation, validate release records and build independent
+consumers. Credential-bearing
 examples are built only; explicit offline modes use synthetic peers and payloads.
 Consumers keep independent manifests and import checks while sharing one sequential
 SwiftPM scratch directory to reuse compiled dependencies. Each desktop job allows

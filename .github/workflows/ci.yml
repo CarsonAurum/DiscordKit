@@ -22,37 +22,65 @@ jobs:
     name: Swift 6.4.1 / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-26]
+        os: [macos-26, ubuntu-24.04]
     env:
       SWIFTNIO_STRICT: '1'
+      PYTHONUNBUFFERED: '1'
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - name: Install Ubuntu build and validation dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends \
+            binutils ca-certificates clang curl git gnupg2 libc6-dev \
+            libcurl4-openssl-dev libedit2 libgcc-13-dev libncurses-dev \
+            libpython3-dev libsqlite3-0 libstdc++-13-dev libxml2-dev \
+            libz3-dev pkg-config python3 tzdata unzip zlib1g-dev
+      - name: Import Swift signing keys before verifying the Swiftly installer
+        if: runner.os == 'Linux'
+        run: |
+          # setup-swift v3 verifies Swiftly before it imports any signing keys.
+          # Decode compressed responses as in Swift's official signing guide.
+          curl --compressed --fail --show-error --silent --location --retry 3 \
+            --output "$RUNNER_TEMP/swift-signing-keys.asc" https://www.swift.org/keys/all-keys.asc
+          gpg --batch --import "$RUNNER_TEMP/swift-signing-keys.asc"
+          gpg --batch --list-keys E813C892820A6FA13755B268F167DF1ACF9CE069
       - uses: swift-actions/setup-swift@v3
         with:
           swift-version: '6.4.1'
+          skip-verify-signature: false
       - uses: actions/setup-node@v6
         with:
           node-version: '24'
       - name: Record compiler and host
+        if: runner.os == 'macOS'
         run: swift --version
       - name: Build and test root
+        if: runner.os == 'macOS'
         run: |
           swift build
           swift test
       - name: Test separate authoring macros and external compile fixtures
+        if: runner.os == 'macOS'
         run: |
           swift test --package-path Packages/DiscordDSLMacros --explicit-target-dependency-import-check error
           python3 Tools/ci/dsl_compile_fixtures.py --repository .
       - name: Test independently adopted DSL extensions and typed injection fixtures
+        if: runner.os == 'macOS'
         run: |
           swift test --package-path Packages/DiscordDSLExtensions --explicit-target-dependency-import-check error
           python3 Tools/ci/dsl_extension_fixtures.py --repository .
       - name: Test tooling, Python helpers and browser bridge
+        if: runner.os == 'macOS'
         run: |
           swift test --package-path Tools/DiscordKitTools
           swift test --package-path Tools/DiscordKitLoadTests
@@ -61,12 +89,14 @@ jobs:
           python3 -m unittest discover -s Tools/ci -p 'test_*.py'
           node --test Browser/DiscordActivityBridge/*.test.mjs
       - name: Test independent DSL benchmark and finite offline smoke matrix
+        if: runner.os == 'macOS'
         run: |
           swift test --package-path Tools/DiscordDSLBenchmarks --explicit-target-dependency-import-check error
           python3 -m unittest discover -s Tools/DiscordDSLBenchmarks/scripts -p 'test_*.py'
           mkdir -p .build/dsl-measurements
           swift run -c release --package-path Tools/DiscordDSLBenchmarks DiscordDSLBenchmarks --invocations 1000 --output .build/dsl-measurements/runtime-smoke.json
       - name: Upload offline DSL smoke measurements
+        if: runner.os == 'macOS'
         uses: actions/upload-artifact@v7
         with:
           name: dsl-smoke-${{ matrix.os }}
@@ -74,6 +104,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
       - name: Validate documentation, inventory, generation and parity
+        if: runner.os == 'macOS'
         run: |
           swift run --package-path Tools/DiscordKitTools DiscordKitTools documentation audit --repository .
           swift run --package-path Tools/DiscordKitTools DiscordKitTools inventory validate --repository .
@@ -88,6 +119,7 @@ jobs:
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/semantic-logging-report.json
           python3 Tools/DiscordKitTools/scripts/release_check.py report --repository . --report Docs/Release/publication-report.json
       - name: Build independent consumers and test offline examples
+        if: runner.os == 'macOS'
         env:
           CONSUMER_SCRATCH_PATH: ${{ github.workspace }}/.build/consumers
         run: |
@@ -145,69 +177,37 @@ jobs:
             .build/current-extensions-api.json
           if-no-files-found: error
           include-hidden-files: true
-      - name: Verify tracked generated source remains unchanged
-        run: git diff --exit-code
-
-  ubuntu:
-    name: Swift 6.4.1 / ubuntu-24.04
-    runs-on: ubuntu-24.04
-    timeout-minutes: 120
-    defaults:
-      run:
-        shell: bash
-    env:
-      SWIFTNIO_STRICT: '1'
-      PYTHONUNBUFFERED: '1'
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-      - name: Install Ubuntu build and validation dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends \
-            binutils ca-certificates clang curl git gnupg2 libc6-dev \
-            libcurl4-openssl-dev libedit2 libgcc-13-dev libncurses-dev \
-            libpython3-dev libsqlite3-0 libstdc++-13-dev libxml2-dev \
-            libz3-dev pkg-config python3 tzdata unzip zlib1g-dev
-      - name: Import Swift signing keys before verifying the Swiftly installer
-        run: |
-          # setup-swift v3 verifies Swiftly before it imports any signing keys.
-          # Decode compressed responses as in Swift's official signing guide.
-          curl --compressed --fail --show-error --silent --location --retry 3 \
-            --output "$RUNNER_TEMP/swift-signing-keys.asc" https://www.swift.org/keys/all-keys.asc
-          gpg --batch --import "$RUNNER_TEMP/swift-signing-keys.asc"
-          gpg --batch --list-keys E813C892820A6FA13755B268F167DF1ACF9CE069
-      - uses: swift-actions/setup-swift@v3
-        with:
-          swift-version: '6.4.1'
-          skip-verify-signature: false
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '24'
       - name: Verify Ubuntu host, compiler and native target
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage preflight
       - name: Build and test root
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage root
       - name: Test authoring packages and external compile fixtures
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage authoring
       - name: Test tooling, Python helpers and browser bridge
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage tooling
       - name: Test DSL benchmark and finite offline smoke matrix
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage benchmarks
       - name: Validate documentation, inventory, generation and parity
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage audit
       - name: Build independent consumers and test offline examples
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage consumers
       - name: Build optimized root, macro and extension packages
+        if: runner.os == 'Linux'
         run: python3 Tools/ci/linux_ci.py --stage release
       - name: Verify tracked generated source and dependency pins remain unchanged
         run: git diff --exit-code
       - name: Package checked Linux source
-        if: github.event_name != 'pull_request'
+        if: runner.os == 'Linux' && github.event_name != 'pull_request'
         run: python3 Tools/ci/package_source.py --repository . --output .build/packages
       - name: Upload Ubuntu logs and host evidence
-        if: always()
+        if: always() && runner.os == 'Linux'
         uses: actions/upload-artifact@v7
         with:
           name: ubuntu-build-evidence-${{ github.run_id }}-${{ github.run_attempt }}
@@ -218,7 +218,7 @@ jobs:
           include-hidden-files: true
           retention-days: 14
       - name: Upload Linux SwiftPM source bundle
-        if: success() && github.event_name != 'pull_request'
+        if: success() && runner.os == 'Linux' && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v7
         with:
           name: DiscordKit-linux-source-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
