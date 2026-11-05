@@ -374,6 +374,7 @@ public actor VoiceSession<C: Clock>: VoiceManagedSession where C.Duration == Dur
             try Task.checkCancellation()
             guard !stopped, state.phase != .closed else { throw VoiceControlFailure.closed }
             let snapshot = await media.snapshot()
+            try Task.checkCancellation()
             guard !stopped, !snapshot.closed else { throw VoiceControlFailure.closed }
             if state.phase == .ready, snapshot.authorized, snapshot.sendingAllowed { return }
             guard clock.now < deadline else { throw TransportFailure.deadlineExceeded }
