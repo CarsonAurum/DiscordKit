@@ -26,7 +26,7 @@ import Testing
             (try MessageEndpoints.deleteUserReaction(channelID: channel, messageID: message, emoji: emoji, userID: UserID(rawValue: UInt64.max)), "DELETE", "/messages/\(message)/reactions/%F0%9F%94%A5/18446744073709551615"),
             (try MessageEndpoints.deleteAllReactions(channelID: channel, messageID: message), "DELETE", "/messages/\(message)/reactions"),
             (try MessageEndpoints.deleteEmojiReactions(channelID: channel, messageID: message, emoji: emoji), "DELETE", "/messages/\(message)/reactions/%F0%9F%94%A5"),
-            (try MessageEndpoints.delete(channelID: channel, messageID: message, auditReason: "review + reason"), "DELETE", "/messages/\(message)"),
+            (try MessageEndpoints.delete(channelID: channel, messageID: message), "DELETE", "/messages/\(message)"),
             (try MessageEndpoints.pin(channelID: channel, messageID: message, auditReason: "review + reason"), "PUT", "/messages/pins/\(message)"),
             (try MessageEndpoints.unpin(channelID: channel, messageID: message), "DELETE", "/messages/pins/\(message)"),
             (try MessageEndpoints.legacyPin(channelID: channel, messageID: message), "PUT", "/pins/\(message)"),
@@ -174,7 +174,28 @@ import Testing
         let hundred = (0..<100).map { MessageID(rawValue: newest.rawValue + UInt64($0)) }
         #expect(try MessageEndpoints.bulkDelete(channelID: channel, messageIDs: hundred, nowMilliseconds: now).bulk?.maximumItems == 100)
         #expect(throws: DiscordError.self) { try MessageEndpoints.bulkDelete(channelID: channel, messageIDs: hundred + [oldest], nowMilliseconds: now) }
-        #expect(throws: DiscordError.self) { try MessageEndpoints.delete(channelID: channel, messageID: message, auditReason: "\n") }
+        #expect(throws: DiscordError.self) {
+            try MessageEndpoints.bulkDelete(channelID: channel, messageIDs: [oldest, newest], nowMilliseconds: now, auditReason: "\n")
+        }
+    }
+
+    /// Single-message deletion omits unsupported audit metadata, including through the compatibility overload.
+    /// Bulk deletion retains its separately documented reason header and validation.
+    /// - Throws: Unexpected descriptor or wire-request construction failures fail the test.
+    @Test func deleteMessageOmitsAuditReason() throws {
+        let current = try MessageEndpoints.delete(channelID: channel, messageID: message)
+        let oldCalls = try [nil, "moderation", "\n", String(repeating: "x", count: 513)].map {
+            try MessageEndpoints.delete(channelID: channel, messageID: message, auditReason: $0)
+        }
+        for endpoint in [current] + oldCalls {
+            #expect(endpoint.auditReason == nil)
+            #expect(endpoint.method == "DELETE")
+            #expect(endpoint.route == "/channels/{channel.id}/messages/{message.id}")
+            #expect(endpoint.successStatuses == [204])
+            #expect(endpoint.retrySafety == .unsafe)
+            #expect(endpoint.invalidates == current.invalidates)
+            #expect(try wire(endpoint).headers.allSatisfy { $0.name.lowercased() != "x-audit-log-reason" })
+        }
     }
 
     /// Search's two success shapes are distinct; filters repeat without brackets and never enable caching.

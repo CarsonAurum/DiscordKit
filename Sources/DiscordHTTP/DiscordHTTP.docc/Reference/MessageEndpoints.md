@@ -10,6 +10,7 @@
 - ``DiscordHTTP/MessageEndpoints/create(channelID:request:files:limits:)``
 - ``DiscordHTTP/MessageEndpoints/createReaction(channelID:messageID:emoji:)``
 - ``DiscordHTTP/MessageEndpoints/crosspost(channelID:messageID:)``
+- ``DiscordHTTP/MessageEndpoints/delete(channelID:messageID:)``
 - ``DiscordHTTP/MessageEndpoints/delete(channelID:messageID:auditReason:)``
 - ``DiscordHTTP/MessageEndpoints/deleteAllReactions(channelID:messageID:)``
 - ``DiscordHTTP/MessageEndpoints/deleteEmojiReactions(channelID:messageID:emoji:)``

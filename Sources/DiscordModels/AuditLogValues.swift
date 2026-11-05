@@ -18,8 +18,8 @@ public enum GuildScheduledEventTag: Sendable {}
 /// Exact unsigned scheduled event snowflake shared by audit references and the scheduled-event REST catalog.
 public typealias GuildScheduledEventID = Snowflake<GuildScheduledEventTag>
 
-/// Known API v10 administrative action codes, verified 2026-10-16 against the official Audit Log
-/// reference and discord-api-spec OpenAPI preview. Recognition describes the action identifier only;
+/// Known API v10 administrative action codes, verified 2026-11-05 against the official Audit Log
+/// reference. Recognition describes the action identifier only;
 /// it does not claim typed change schemas or REST/Gateway support for the affected resource family.
 /// `RawValue<AuditLogEvent>` preserves future integral action codes without assigning guessed semantics.
 public enum AuditLogEvent: Int, Sendable, CaseIterable {
@@ -37,6 +37,8 @@ public enum AuditLogEvent: Int, Sendable, CaseIterable {
     case channelOverwriteUpdate = 14
     /// CHANNEL_OVERWRITE_DELETE (15).
     case channelOverwriteDelete = 15
+    /// CHANNEL_POSITION_UPDATE (16); successive reorder operations may merge into one audit entry.
+    case channelPositionUpdate = 16
     /// MEMBER_KICK (20).
     case memberKick = 20
     /// MEMBER_PRUNE (21).
@@ -61,6 +63,8 @@ public enum AuditLogEvent: Int, Sendable, CaseIterable {
     case roleUpdate = 31
     /// ROLE_DELETE (32).
     case roleDelete = 32
+    /// ROLE_POSITION_UPDATE (33); successive reorder operations may merge into one audit entry.
+    case rolePositionUpdate = 33
     /// INVITE_CREATE (40).
     case inviteCreate = 40
     /// INVITE_UPDATE (41).

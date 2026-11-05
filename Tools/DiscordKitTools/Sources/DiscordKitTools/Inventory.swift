@@ -64,6 +64,7 @@ struct InventoryEntry: Decodable, Sendable {
 }
 
 /// Pinned sources and their complete discovery membership, used to detect lost definitions.
+/// The catalog date identifies the baseline; later source snapshots retain their own dates.
 struct SourceCatalog: Decodable, Sendable {
     let schemaVersion: Int
     let verifiedOn: String
@@ -118,6 +119,9 @@ enum InventoryValidator {
     /// performs linear scans with sets proportional to the inventory size. Discovery membership
     /// catches accidentally omitted definitions; it does not prove that an extractor understood
     /// every upstream contract. A passing result must never be labeled full API parity.
+    /// Sources added after the baseline retain their actual verification dates; those
+    /// dates cannot predate the catalog. Reviewed validation separately enforces freshness
+    /// against the audit date, so adding a snapshot never refreshes older source pins.
     /// Source versions and any entry overrides use the schema-v1 vocabulary. An absent
     /// override inherits its source version; an explicit null or nonstring is rejected.
     ///
@@ -163,7 +167,7 @@ enum InventoryValidator {
                   source.sha256.count == 64,
                   source.sha256.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) }),
                   !source.revision.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, isDate(source.verifiedOn),
-                  source.verifiedOn == catalog.verifiedOn,
+                  source.verifiedOn >= catalog.verifiedOn,
                   isDate(source.announcementDate, allowUnknown: true),
                   isDate(source.effectiveDate, allowUnknown: true),
                   protocolVersions.contains(source.protocolVersion),

@@ -24,6 +24,7 @@
 - ``DiscordModels/AuditLogEvent/channelOverwriteCreate``
 - ``DiscordModels/AuditLogEvent/channelOverwriteDelete``
 - ``DiscordModels/AuditLogEvent/channelOverwriteUpdate``
+- ``DiscordModels/AuditLogEvent/channelPositionUpdate``
 - ``DiscordModels/AuditLogEvent/channelUpdate``
 - ``DiscordModels/AuditLogEvent/creatorMonetizationRequestCreated``
 - ``DiscordModels/AuditLogEvent/creatorMonetizationTermsAccepted``
@@ -68,6 +69,7 @@
 - ``DiscordModels/AuditLogEvent/onboardingUpdate``
 - ``DiscordModels/AuditLogEvent/roleCreate``
 - ``DiscordModels/AuditLogEvent/roleDelete``
+- ``DiscordModels/AuditLogEvent/rolePositionUpdate``
 - ``DiscordModels/AuditLogEvent/roleUpdate``
 - ``DiscordModels/AuditLogEvent/soundboardSoundCreate``
 - ``DiscordModels/AuditLogEvent/soundboardSoundDelete``

@@ -141,6 +141,10 @@ Browse the public types and operations provided by DiscordModels.
 - ``DiscordModels/ThreadStartWithoutMessage``
 - ``DiscordModels/VoiceChannelStatus``
 
+### Computed Permissions
+
+- ``DiscordModels/ComputedPermissions``
+
 ### Expressions and soundboards
 
 - ``DiscordModels/ApplicationEmojiCreate``
@@ -532,6 +536,8 @@ Browse the public types and operations provided by DiscordModels.
 - ``DiscordModels/RoleSubscriptionListingTag``
 - ``DiscordModels/StickerID``
 - ``DiscordModels/StickerTag``
+- ``DiscordModels/UnfurledMediaContentScanFlags``
+- ``DiscordModels/UnfurledMediaContentScanMetadata``
 - ``DiscordModels/UnfurledMediaItem``
 
 ### Monetization

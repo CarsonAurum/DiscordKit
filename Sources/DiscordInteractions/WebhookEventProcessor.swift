@@ -133,7 +133,8 @@ public actor WebhookEventProcessor {
         acceptanceOrder.append(key)
     }
 
-    /// Constructs an empty response with the content type required by Discord's PING validation.
+    /// Constructs an empty response, retaining the processor's application/json header for consistency.
+    /// Discord's current PING contract requires an empty 204; it no longer requires a content type.
     /// - Parameter status: HTTP status selected by admission policy; only 204, 400 and 503 are used.
     /// - Returns: A body-free response with no owned streams or cleanup obligations.
     private func response(_ status: Int) -> HTTPResponse {

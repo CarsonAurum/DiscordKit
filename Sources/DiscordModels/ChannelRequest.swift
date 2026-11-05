@@ -359,11 +359,15 @@ public struct ForumThreadStart: Sendable {
     public let message: MessageCreate
 
     /// Validates thread metadata and context-independent message restrictions without opening uploads.
+    /// API v10 permits Components V2 starters as verified on 2026-11-05; permissions and tag
+    /// requirements remain Discord decisions. See
+    /// https://docs.discord.com/developers/resources/channel#start-thread-in-forum-or-media-channel.
     /// - Parameters:
     ///   - name: Required 1...100 scalar thread name.
     ///   - message: Initial message; only content, embeds, allowed mentions, components, stickers, attachments and
-    ///     SUPPRESS_EMBEDS/SUPPRESS_NOTIFICATIONS flags are accepted. TTS, nonce, references, polls, themes,
-    ///     voice messages and Components V2 are excluded by this helper's current validation.
+    ///     SUPPRESS_EMBEDS/SUPPRESS_NOTIFICATIONS/IS_COMPONENTS_V2 flags are accepted. Components V2 uses
+    ///     the shared message compatibility rules, excluding content, embeds and stickers. TTS, nonce,
+    ///     references, polls, themes and voice messages are excluded by the endpoint schema.
     ///   - autoArchiveDuration: Optional 60, 1440, 4320 or 10080 minute inactivity duration.
     ///   - rateLimitPerUser: Omitted/null or 0...21,600 second slowmode.
     ///   - appliedTags: Optional up to five distinct forum tag IDs; an empty array explicitly selects no tags.
@@ -376,7 +380,7 @@ public struct ForumThreadStart: Sendable {
               case .absent = message.messageReference, case .absent = message.enforceNonce,
               case .absent = message.poll, case .absent = message.sharedClientTheme
         else { throw DiscordError.validation(.invalidValue) }
-        if case .value(let flags) = message.flags, flags.rawValue & ~UInt64((1 << 2) | (1 << 12)) != 0 {
+        if case .value(let flags) = message.flags, flags.rawValue & ~UInt64((1 << 2) | (1 << 12) | (1 << 15)) != 0 {
             throw DiscordError.validation(.invalidValue)
         }
         if let appliedTags { result["applied_tags"] = try channelRequestTags(appliedTags) }

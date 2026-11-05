@@ -81,6 +81,14 @@ from empty arrays. UserConnectionAccount preserves a required nullable provider
 name without widening the older Guild integration-account contract. Linked-role
 localization keys include the explicitly documented preview locale overlay.
 
+The **2026-11-05** [Application Role Connection review](https://docs.discord.com/developers/resources/user#application-role-connection-object)
+confirms the existing optional `platformName`, `platformUsername` and `metadata`
+response fields. Platform names and usernames can also be null; metadata retains
+absence separately from an empty map. The written response table now includes
+`platform_username`, so it no longer depends on a preview-only interpretation.
+The existing 50-character platform-name and 100-character username update bounds
+are unchanged.
+
 Linked-role schemas enforce at most five records, unique valid keys and bounded
 localized metadata. Explicit user metadata updates preserve strings, empty maps,
 omission and permitted null values; role assignment remains Discord's decision.

@@ -6,6 +6,7 @@
 
 ### Creating a value
 
+- ``DiscordModels/GuildChannelPosition/init(id:position:lockPermissions:parentID:)``
 - ``DiscordModels/GuildChannelPosition/init(id:position:lockPermissions:parentID:flags:)``
 
 ### Instance properties

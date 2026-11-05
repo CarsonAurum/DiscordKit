@@ -9,6 +9,29 @@ https://aurum-studios.com
 
 ## Unreleased
 
+### Discord API documentation update — 2026-11-05
+
+- Add guild and channel member/role permission endpoints, including optional
+  channel masking and exact arbitrary-width permission responses.
+- Add attachment/embed content-scanning flags and typed scan metadata for
+  component media, including results delivered in later message updates.
+- Support Components V2 messages when starting forum and media threads.
+- Recognize channel-position and role-position audit events, and document merged
+  audit counts and Gateway notification behavior.
+- Support audit reasons when reordering guild channels. Stop sending the removed
+  channel-position `flags` field; the deprecated initializer accepts only absent
+  flags. Use channel modification for supported flag changes.
+- Stop sending audit reasons for single-message deletion. The deprecated overload
+  ignores its reason; use the overload without that argument. Bulk deletion keeps
+  its documented audit-reason support.
+- Refresh OAuth issuer, linked-role, guild availability, voice-status and native
+  Social SDK guidance against the official documentation. Preserve existing
+  access boundaries and the November 16 channel-obfuscation transition.
+- Record pinned source hashes, supplemental parity contracts, migration notes,
+  regression coverage and updated API documentation.
+
+### Initial publication
+
 Original DiscordKit material is now licensed under the [Apache License, Version
 2.0](LICENSE), allowing use, modification and redistribution in open source and paid
 products with the required license and attribution notices. [NOTICE](NOTICE)

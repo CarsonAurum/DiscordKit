@@ -71,7 +71,7 @@ public struct AuditLogEntryOptions: MessageResponseValue, MessageTreeProjectable
     public let autoModerationRuleTriggerType: Field<String>
     /// Targeted channel for voice moves, message actions, Stage actions, Auto Moderation or voice statuses.
     public let channelID: Field<ChannelID>
-    /// Number of targeted entities as an exact string; no local overflow, rounding or numeric normalization.
+    /// Number of targeted entities or position updates as an exact string; no numeric normalization.
     public let count: Field<String>
     /// Prune inactivity threshold in days as the original string.
     public let deleteMemberDays: Field<String>

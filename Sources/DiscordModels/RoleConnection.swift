@@ -74,14 +74,14 @@ public struct ApplicationRoleConnectionMetadata: MessageResponseValue, MessageTr
     }
 }
 
-/// API v10 user/application linked-role record, with all official preview fields typed.
-/// The prose nullable platform_name/metadata and preview optional properties are preserved
-/// without inventing missing values; platform_username supplements the prose response table.
+/// API v10 linked-role snapshot with optional platform name, username and metadata, verified
+/// 2026-11-05 against https://docs.discord.com/developers/resources/user#application-role-connection-object.
+/// Omitted values remain distinct from nullable names and an empty metadata object.
 /// Snapshot metadata strings do not grant role eligibility, OAuth2 approval or current access.
 public struct ApplicationRoleConnection: MessageResponseValue, MessageTreeProjectable, Equatable {
     /// Optional nullable connected-platform display name; no local ownership inference.
     public let platformName: Field<String>
-    /// Optional nullable platform username from the official preview overlay.
+    /// Optional nullable platform username from the written response contract.
     public let platformUsername: Field<String>
     /// Optional string-valued metadata dictionary; absence remains distinct from an empty object.
     public let metadata: Field<[String: String]>
@@ -90,11 +90,11 @@ public struct ApplicationRoleConnection: MessageResponseValue, MessageTreeProjec
 
     /// Parses one immutable API v10 object, retaining exact unknown fields and redacting diagnostics.
     /// - Parameters:
-    ///   - data: Complete UTF-8 object; required nullable keys must still be present.
+    ///   - data: Complete UTF-8 object; all three modeled fields may be absent.
     ///   - limits: Whole-document bounds, default 1 MiB, depth 64 and 100,000 nodes, including unknown data.
-    /// - Throws: JSON syntax/bounds errors, or sanitized invalid-response errors for missing required keys,
-    ///   forbidden nulls, wrong types or out-of-range exact integers. Parsing is synchronous, does not
-    ///   suspend or observe cancellation, and owns no network resources, credentials, cache or mutable state.
+    /// - Throws: JSON syntax/bounds errors, or sanitized invalid-response errors for null metadata or
+    ///   wrong field types. Parsing is synchronous, does not suspend or observe cancellation, and owns
+    ///   no network resources, credentials, cache or mutable state.
     public init(data: Data, limits: JSONLimits = .default) throws {
         try self.init(value: JSONValue.parse(data, limits: limits), limits: limits)
     }

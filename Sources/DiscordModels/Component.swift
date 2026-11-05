@@ -93,7 +93,8 @@ public struct ComponentDefaultValue: Sendable, Equatable, CustomStringConvertibl
     public var customMirror: Mirror { Mirror(self, children: ["redacted": true]) }
 }
 
-/// Complete documented component media projection. Only url is developer-settable; all other fields are response metadata.
+/// Complete API v10 component media projection, reviewed on 2026-11-05.
+/// Only url is developer-settable; all other fields, including delayed content scans, are response metadata.
 public struct UnfurledMediaItem: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {
     /// Arbitrary media URL or attachment reference; parsing performs no fetch.
     public let url: String
@@ -111,12 +112,15 @@ public struct UnfurledMediaItem: Sendable, Equatable, CustomStringConvertible, C
     public let contentType: Field<String>
     /// Optional flags retaining unknown bits.
     public let flags: Field<UInt64>
+    /// Optional response-only scan results, which can arrive in a later Message Update.
+    /// Absence does not establish that the media has been scanned or is safe to repost.
+    public let contentScanMetadata: Field<UnfurledMediaContentScanMetadata>
     /// Optional exact attachment snowflake string.
     public let attachmentID: Field<String>
     /// Complete original object with unknown fields and exact numeric spellings.
     public let rawFields: [String: JSONValue]
 
-    /// Projects a bounded API v10 object without I/O, suspension, or payload diagnostics.
+    /// Projects bounded API v10 media, including delayed content-scan metadata, without I/O or suspension.
     /// - Parameters:
     ///   - data: Complete UTF-8 object; malformed modeled fields fail safely.
     ///   - limits: Shared parser and nested projection bounds, defaulting to 1 MiB/64 depth/100,000 nodes.
@@ -125,7 +129,7 @@ public struct UnfurledMediaItem: Sendable, Equatable, CustomStringConvertible, C
         try self.init(value: JSONValue.parse(data, limits: limits), limits: limits)
     }
 
-    /// Projects one exact subtree already bounded by its containing document.
+    /// Projects one bounded media subtree, validating present scan results and retaining unknown fields.
     /// - Parameters:
     ///   - value: Original object subtree; unknown keys are retained.
     ///   - limits: Bounds used by the containing model.
@@ -140,6 +144,9 @@ public struct UnfurledMediaItem: Sendable, Equatable, CustomStringConvertible, C
         placeholderVersion = try object.field("placeholder_version", Int.self)
         contentType = try object.field("content_type", String.self)
         flags = try object.field("flags", UInt64.self)
+        contentScanMetadata = try object.nested("content_scan_metadata") {
+            try UnfurledMediaContentScanMetadata(value: $0, limits: limits)
+        }
         attachmentID = try object.field("attachment_id", String.self)
         if case .value(let id) = attachmentID {
             guard !id.isEmpty, id.utf8.allSatisfy({ (48...57).contains($0) }), UInt64(id) != nil

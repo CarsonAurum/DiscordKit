@@ -10,6 +10,9 @@
 
 ### Type properties
 
+- ``DiscordModels/MessageAttachmentFlags/containsExplicitContent``
+- ``DiscordModels/MessageAttachmentFlags/containsGoreContent``
+- ``DiscordModels/MessageAttachmentFlags/containsSelfHarmContent``
 - ``DiscordModels/MessageAttachmentFlags/isAnimated``
 - ``DiscordModels/MessageAttachmentFlags/isClip``
 - ``DiscordModels/MessageAttachmentFlags/isRemix``

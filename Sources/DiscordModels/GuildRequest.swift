@@ -234,28 +234,41 @@ public struct GuildChannelPosition: GuildRequestPayload {
     public let parentID: Field<ChannelID>
     private let fields: [String: JSONValue]
 
-    /// Validates one position/parent/flags entry without fetching current channel state.
+    /// Validates one API v10 position/parent entry without fetching current channel state.
     /// All `Field` parameters default to `.absent`, preserving server defaults or current values unless stated otherwise.
     /// - Parameters:
     ///   - id: Required channel snowflake, preserving all unsigned bits.
     ///   - position: Nullable signed sorting position; equal positions are sorted by ID upstream.
     ///   - lockPermissions: Nullable permission-sync switch when moving to a new category.
     ///   - parentID: Absent leaves the parent unchanged; null moves out of a category.
-    ///   - flags: Nullable writable channel bits; type-specific eligibility remains a server check.
-    /// - Throws: Safe validation errors for read-only/unknown flag bits or numeric formatting failure.
+    /// - Throws: Safe validation errors for numeric formatting failure.
     ///   At most one entry may send `parent_id` in a request; the endpoint validates the complete list.
     public init(id: ChannelID, position: Field<Int> = .absent, lockPermissions: Field<Bool> = .absent,
-                parentID: Field<ChannelID> = .absent, flags: Field<ChannelFlags> = .absent) throws {
+                parentID: Field<ChannelID> = .absent) throws {
         self.id = id; self.parentID = parentID
         var result: [String: JSONValue] = ["id": .string(id.description)]
         try guildRequestField(position, name: "position", nullable: true, into: &result) { try guildRequestNumber($0) }
         try guildRequestField(lockPermissions, name: "lock_permissions", nullable: true, into: &result) { .bool($0) }
         try guildRequestField(parentID, name: "parent_id", nullable: true, into: &result) { .string($0.description) }
-        try guildRequestField(flags, name: "flags", nullable: true, into: &result) {
-            guard $0.rawValue & ~UInt64((1 << 1) | (1 << 4) | (1 << 15) | (1 << 21)) == 0 else { throw DiscordError.validation(.invalidValue) }
-            return try guildRequestNumber($0.rawValue)
-        }
         fields = result
+    }
+
+    /// Preserves source compatibility for the former position initializer while rejecting unsupported flags.
+    /// Discord's API v10 channel-position contract no longer includes `flags`, verified 2026-11-05.
+    /// Use `ChannelModify` and `ChannelEndpoints.modify` for channel flag changes.
+    /// - Parameters:
+    ///   - id: Required exact channel snowflake.
+    ///   - position: Optional nullable signed sorting position; defaults to absent.
+    ///   - lockPermissions: Optional nullable permission-sync switch; defaults to absent.
+    ///   - parentID: Optional nullable category ID; defaults to absent, while null removes the category.
+    ///   - flags: Only `.absent` is accepted; null and values fail before a request can be submitted.
+    /// - Throws: `DiscordError.validation(.invalidValue)` for supplied flags, or numeric encoding failures.
+    ///   Construction is synchronous and performs no I/O or permission checks.
+    @available(*, deprecated, message: "Channel positions no longer accept flags; use ChannelModify for flag changes.")
+    public init(id: ChannelID, position: Field<Int> = .absent, lockPermissions: Field<Bool> = .absent,
+                parentID: Field<ChannelID> = .absent, flags: Field<ChannelFlags>) throws {
+        guard case .absent = flags else { throw DiscordError.validation(.invalidValue) }
+        try self.init(id: id, position: position, lockPermissions: lockPermissions, parentID: parentID)
     }
 
     /// Produces one immutable array entry, preserving null parent and null sorting settings.

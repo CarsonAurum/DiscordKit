@@ -10,6 +10,9 @@
 
 ### Type properties
 
+- ``DiscordModels/MessageEmbedFlags/containsExplicitContent``
+- ``DiscordModels/MessageEmbedFlags/containsGoreContent``
+- ``DiscordModels/MessageEmbedFlags/containsSelfHarmContent``
 - ``DiscordModels/MessageEmbedFlags/isContentInventoryEntry``
 
 ### Instance properties

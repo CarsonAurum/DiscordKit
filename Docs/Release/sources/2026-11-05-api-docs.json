@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-11-05",
+  "repository": "https://github.com/discord/discord-api-docs",
+  "baselineRevision": "37148620d2324292b76047541d5f8331f81ea77a",
+  "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+  "reviewScope": "Complete main-branch diff since the pinned documentation baseline, plus the eight maintained API/Gateway/interaction sources. SDK-native clarifications remain separate from implemented REST and portable protocols.",
+  "sources": [
+    {
+      "path": "developers/change-log.mdx",
+      "url": "https://docs.discord.com/developers/change-log",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/change-log.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 312462,
+      "sha256": "558ff24ebbdc68a5f75b766e9d7dcb9d189ad42a368cfac0db6891a9d3dccd37",
+      "changedSinceBaseline": true,
+      "disposition": "reviewed",
+      "reviewedContracts": [
+        "October 14 issuer, October 28 scanning, October 29 audit/status and October 30 computed-permissions announcements classified."
+      ]
+    },
+    {
+      "path": "developers/components/reference.mdx",
+      "url": "https://docs.discord.com/developers/components/reference",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/components/reference.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 144181,
+      "sha256": "193faf3b0c57f4eabcb7a07382af92f2a3de8a13a73daa86ea319ee7511c12df",
+      "changedSinceBaseline": true,
+      "disposition": "implemented",
+      "reviewedContracts": [
+        "Typed response-only content_scan_metadata and flags; delayed message updates and unscanned modal upload behavior covered."
+      ]
+    },
+    {
+      "path": "developers/discord-social-sdk/development-guides/account-linking-on-web.mdx",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-web",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/discord-social-sdk/development-guides/account-linking-on-web.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 11725,
+      "sha256": "b0230c3b360ec6493ab451c2f27133da343937d0b8f9788d85b5ce69faa73bcb",
+      "changedSinceBaseline": true,
+      "disposition": "already_supported",
+      "reviewedContracts": [
+        "Web OAuth callback examples now include iss=https://discord.com and require issuer verification, already enforced by OAuthAuthorizationFlow."
+      ]
+    },
+    {
+      "path": "developers/discord-social-sdk/development-guides/account-linking-with-discord.mdx",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-with-discord",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/discord-social-sdk/development-guides/account-linking-with-discord.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 26806,
+      "sha256": "42210080bccd3c7197f4f2b4c62e3f699441cee9b56e4fae4b112720e7cb2500",
+      "changedSinceBaseline": true,
+      "disposition": "native_guidance",
+      "reviewedContracts": [
+        "Native SetTokenExpirationCallback now applies to full Discord account tokens as well as provisional tokens. Existing portable token coordination retains its own bounded refresh ownership; no new wire schema is published."
+      ]
+    },
+    {
+      "path": "developers/discord-social-sdk/development-guides/managing-game-invites.mdx",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/managing-game-invites",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/discord-social-sdk/development-guides/managing-game-invites.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 26548,
+      "sha256": "5aa392d4bf895bcf8d693986933f280282471db1d0efff7ae7111ba60fe09eb2",
+      "changedSinceBaseline": true,
+      "disposition": "native_guidance",
+      "reviewedContracts": [
+        "Native guide clarifies cold-launch Activity joins, the 180-second join window, provisional recipients and SetActivityInviteCreatedCallback. Existing native-host/access restrictions remain explicit."
+      ]
+    },
+    {
+      "path": "developers/discord-social-sdk/development-guides/managing-lobbies.mdx",
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/managing-lobbies",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/discord-social-sdk/development-guides/managing-lobbies.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 18527,
+      "sha256": "8487bb0304145ee120f1c7668d544afe55f6d6316b0639c6c946cbe797f234d0",
+      "changedSinceBaseline": true,
+      "disposition": "native_guidance",
+      "reviewedContracts": [
+        "Native lobby creation/deletion/update and member callbacks are clarified. Existing HTTP lobby operations do not imply availability of the native callback runtime."
+      ]
+    },
+    {
+      "path": "developers/events/gateway-events.mdx",
+      "url": "https://docs.discord.com/developers/events/gateway-events",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/events/gateway-events.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 135811,
+      "sha256": "bca290a9ea7f7f49232a61f8e3ab5c48089cd613396e5d6ec08fd61a6eacc9cd",
+      "changedSinceBaseline": true,
+      "disposition": "clarified",
+      "reviewedContracts": [
+        "Guild unavailable=true describes present availability, without inferring outage/removal cause; later Guild Create restores availability."
+      ]
+    },
+    {
+      "path": "developers/events/gateway.mdx",
+      "url": "https://docs.discord.com/developers/events/gateway",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/events/gateway.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 52760,
+      "sha256": "6f54f5a3ddfdeb44c9ac32498ccfd9db904652f35b05c7d9f6a36b2802e18592",
+      "changedSinceBaseline": false,
+      "disposition": "unchanged",
+      "reviewedContracts": [
+        "Sharding, intents, supervision, session control and explicit Gateway obfuscation capability retained."
+      ]
+    },
+    {
+      "path": "developers/events/webhook-events.mdx",
+      "url": "https://docs.discord.com/developers/events/webhook-events",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/events/webhook-events.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 32326,
+      "sha256": "cbcc8aaa48aecaade6d6616947514bf1c50bdb97877940181e24837e67206d21",
+      "changedSinceBaseline": true,
+      "disposition": "already_supported",
+      "reviewedContracts": [
+        "Empty HTTP 204 PING remains compatible; removed claim that the retained content-type header is required."
+      ]
+    },
+    {
+      "path": "developers/gateway/getting-started-with-privileged-intent-review.mdx",
+      "url": "https://docs.discord.com/developers/gateway/getting-started-with-privileged-intent-review",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/gateway/getting-started-with-privileged-intent-review.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 13547,
+      "sha256": "bbc50e66c4c7eaa277ef44241063483fb2d38bfb86713ce0e42b31bb41dd85e9",
+      "changedSinceBaseline": true,
+      "disposition": "native_or_editorial",
+      "reviewedContracts": [
+        "Native SDK guide clarification or presentation-only change; no new public wire contract. See dated review record for access boundaries."
+      ]
+    },
+    {
+      "path": "developers/gateway/you-might-not-need-a-privileged-intent.mdx",
+      "url": "https://docs.discord.com/developers/gateway/you-might-not-need-a-privileged-intent",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/gateway/you-might-not-need-a-privileged-intent.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 10555,
+      "sha256": "950e8de63033255eead886dee2b97876e4cf0d5d1dd0860d181cd7f8c92827d2",
+      "changedSinceBaseline": true,
+      "disposition": "native_or_editorial",
+      "reviewedContracts": [
+        "Native SDK guide clarification or presentation-only change; no new public wire contract. See dated review record for access boundaries."
+      ]
+    },
+    {
+      "path": "developers/interactions/application-commands.mdx",
+      "url": "https://docs.discord.com/developers/interactions/application-commands",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/interactions/application-commands.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 107733,
+      "sha256": "0edb6e1ab81f4313780d514206510ff1e065578d2f17c1273d16a0fac62edff8",
+      "changedSinceBaseline": false,
+      "disposition": "unchanged",
+      "reviewedContracts": [
+        "Finite command counts, nesting, registration identity and routing contracts retained."
+      ]
+    },
+    {
+      "path": "developers/interactions/receiving-and-responding.mdx",
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/interactions/receiving-and-responding.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 59589,
+      "sha256": "f9c9efe2d882830ae14649f22ee1e33a156ac789eeba5174ca9fb72d34c99a13",
+      "changedSinceBaseline": false,
+      "disposition": "unchanged",
+      "reviewedContracts": [
+        "Three-second acknowledgment, fifteen-minute tokens, modal/autocomplete and response-kind boundaries retained."
+      ]
+    },
+    {
+      "path": "developers/reference.mdx",
+      "url": "https://docs.discord.com/developers/reference",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/reference.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 40118,
+      "sha256": "b0ac645b5e85d1d05fbf07b7e78a25e4e22987560e05e6b0c8d238b6a1e0675d",
+      "changedSinceBaseline": false,
+      "disposition": "unchanged",
+      "reviewedContracts": [
+        "REST/Gateway remain v10; upload limits, shared HTTP policy and future channel-obfuscation transition retained."
+      ]
+    },
+    {
+      "path": "developers/resources/audit-log.mdx",
+      "url": "https://docs.discord.com/developers/resources/audit-log",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/resources/audit-log.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 42448,
+      "sha256": "4b4c3556ce4e880598c95bd184f181083967f951a8437db0567f0dc4b7ab5fa7",
+      "changedSinceBaseline": true,
+      "disposition": "implemented",
+      "reviewedContracts": [
+        "Position event codes 16/33, exact merged count and documented merging/Gateway notification semantics."
+      ]
+    },
+    {
+      "path": "developers/resources/channel.mdx",
+      "url": "https://docs.discord.com/developers/resources/channel",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/resources/channel.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 88726,
+      "sha256": "5f71708ea0de97b63d8ad2f1f62d0275ef97f736f955c5e5aee9a6564514a908",
+      "changedSinceBaseline": true,
+      "disposition": "implemented",
+      "reviewedContracts": [
+        "Channel role/member permission GETs, Components V2 thread starters, retained connected-user voice status exception and optional thread edit fields."
+      ]
+    },
+    {
+      "path": "developers/resources/guild.mdx",
+      "url": "https://docs.discord.com/developers/resources/guild",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/resources/guild.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 131645,
+      "sha256": "fbd13144dda0541f0f80a9a286b8c1947b8d7b0a33d0aca45468a86ff4cfaf70",
+      "changedSinceBaseline": true,
+      "disposition": "implemented",
+      "reviewedContracts": [
+        "Guild role/member permission GETs, channel-position flags rejection and supported channel-position audit reason."
+      ]
+    },
+    {
+      "path": "developers/resources/message.mdx",
+      "url": "https://docs.discord.com/developers/resources/message",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/resources/message.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 129413,
+      "sha256": "e4e2f2abb242096896b152e9c9d0d7e8b19e9ff07d4c337f0af580bd2d6d9a71",
+      "changedSinceBaseline": true,
+      "disposition": "implemented",
+      "reviewedContracts": [
+        "Attachment/embed scan bits added; single-message deletion no longer sends an audit reason. Bulk deletion retains its separate reason."
+      ]
+    },
+    {
+      "path": "developers/resources/user.mdx",
+      "url": "https://docs.discord.com/developers/resources/user",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/resources/user.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 30357,
+      "sha256": "13cb7d08e88c573aca182b640d052fea715842b174c0dfa3148b99fb1d59a4c9",
+      "changedSinceBaseline": true,
+      "disposition": "already_supported",
+      "reviewedContracts": [
+        "Written reference confirms optional nullable platform name/username and optional nonnull metadata already implemented."
+      ]
+    },
+    {
+      "path": "developers/social-layer/game-stats-widgets/overview.mdx",
+      "url": "https://docs.discord.com/developers/social-layer/game-stats-widgets/overview",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/social-layer/game-stats-widgets/overview.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 6627,
+      "sha256": "4c8bebea588a0f3e4251b440c7c9a97360cbb784204299e01d71b1969553f2eb",
+      "changedSinceBaseline": true,
+      "disposition": "editorial",
+      "reviewedContracts": [
+        "Adds an instructional video without changing profile/widget wire fields."
+      ]
+    },
+    {
+      "path": "developers/topics/oauth2.mdx",
+      "url": "https://docs.discord.com/developers/topics/oauth2",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/topics/oauth2.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 43320,
+      "sha256": "4019da739dcd4361f9bb95b167b0d268351cd4e34404a81dd54b31b897e7de4b",
+      "changedSinceBaseline": true,
+      "disposition": "already_supported",
+      "reviewedContracts": [
+        "Existing exact issuer enforcement on code and implicit callbacks already satisfies RFC 9207; discovery references documented."
+      ]
+    },
+    {
+      "path": "developers/topics/permissions.mdx",
+      "url": "https://docs.discord.com/developers/topics/permissions",
+      "revisionURL": "https://github.com/discord/discord-api-docs/blob/da52492ced82d375981c46618cc3e182daada9a2/developers/topics/permissions.mdx",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "verifiedOn": "2026-11-05",
+      "bytes": 36781,
+      "sha256": "0f8b3a3ca850d25793b0eac96e45a5a594e12be5cb46e148fc1647868ae4d1a8",
+      "changedSinceBaseline": true,
+      "disposition": "already_supported",
+      "reviewedContracts": [
+        "CONNECT denial already preserves SET_VOICE_CHANNEL_STATUS; existing deterministic resolver evidence retained."
+      ]
+    }
+  ],
+  "editorialFiles": [
+    "package-lock.json",
+    "package.json",
+    "snippets/youtube.jsx",
+    "styles/imagecard.css",
+    "styles/linkbutton.css",
+    "styles/route.css",
+    "styles/snowflake.css"
+  ],
+  "rawSnapshotCommitted": false,
+  "comparisonLimits": "Exact Git revisions and SHA-256 hashes identify reviewed source bytes. Supplemental inventory membership covers selected current contracts; the original discovery inventory and unrelated source verification dates are retained. This review does not certify complete API parity, native SDK availability or live-service/platform qualification."
+}

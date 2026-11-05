@@ -90,16 +90,19 @@ public enum GuildEndpoints {
     ///   - guildID: Guild major rate partition.
     ///   - positions: Explicit array of 1...1,000 unique channel entries (local finite body policy).
     ///     At most one entry may supply parentID, including explicit null. No unrelated channel is fetched.
+    ///   - auditReason: Optional supported reason, at most 512 Unicode scalars; defaults to absent.
     /// - Returns: An unsafe PATCH descriptor requiring exactly empty HTTP 204 success.
     /// - Throws: Invalid duplicate/count/multiple-parent configuration or descriptor errors before I/O;
-    ///   API/transport or uncertain mutation errors on execution. No audit header is documented for this route.
+    ///   API/transport or uncertain mutation errors on execution. Successive position updates may merge
+    ///   into one audit entry; only the first request's reason is retained upstream.
     public static func modifyChannelPositions(guildID: GuildID,
-                                              positions: [GuildChannelPosition]) throws -> Endpoint<EmptyResponse> {
+                                              positions: [GuildChannelPosition],
+                                              auditReason: String? = nil) throws -> Endpoint<EmptyResponse> {
         guard (1...1_000).contains(positions.count), Set(positions.map(\.id)).count == positions.count,
               positions.filter({ if case .absent = $0.parentID { return false }; return true }).count <= 1
         else { throw DiscordError.validation(.invalidValue) }
         return try guildEmpty("PATCH", guildID, suffix: ["channels"], route: "/guilds/{guild.id}/channels",
-            payload: .array(positions.map { $0.jsonValue() }))
+            payload: .array(positions.map { $0.jsonValue() }), auditReason: auditReason)
     }
 
     /// Lists accessible active public/private threads, ordered by descending ID without pagination.

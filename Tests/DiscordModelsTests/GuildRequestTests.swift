@@ -204,21 +204,38 @@ import Testing
     /// - Throws: Unexpected request/number validation fails the test.
     @Test func orderingEntries() throws {
         let channel = try GuildChannelPosition(id: .init(rawValue: .max), position: .value(Int.min), lockPermissions: .value(false),
-            parentID: .null, flags: .value(.requireTag))
+            parentID: .null)
         #expect(channel.id.rawValue == .max)
         #expect(channel.parentID == .null)
         #expect(channel.jsonValue() == .object(["id": .string("18446744073709551615"), "position": number(Int.min),
-            "lock_permissions": .bool(false), "parent_id": .null, "flags": number(16)]))
+            "lock_permissions": .bool(false), "parent_id": .null]))
         #expect(try GuildChannelPosition(id: .init(rawValue: 0)).jsonValue() == .object(["id": .string("0")]))
         #expect(try GuildChannelPosition(id: .init(rawValue: 1), position: .null, lockPermissions: .null,
-            parentID: .value(.init(rawValue: .max)), flags: .null).jsonValue() == .object(["id": .string("1"),
-                "position": .null, "lock_permissions": .null, "parent_id": .string("18446744073709551615"), "flags": .null]))
+            parentID: .value(.init(rawValue: .max))).jsonValue() == .object(["id": .string("1"),
+                "position": .null, "lock_permissions": .null, "parent_id": .string("18446744073709551615")]))
         let role = try GuildRolePosition(id: .init(rawValue: .max), position: .value(Int.max))
         #expect(role.id.rawValue == .max)
         #expect(role.jsonValue() == .object(["id": .string("18446744073709551615"), "position": number(Int.max)]))
         #expect(try GuildRolePosition(id: .init(rawValue: 0)).jsonValue() == .object(["id": .string("0")]))
         #expect(try GuildRolePosition(id: .init(rawValue: 1), position: .null).jsonValue() == .object(["id": .string("1"), "position": .null]))
-        #expect(throws: DiscordError.validation(.invalidValue)) { try GuildChannelPosition(id: .init(rawValue: 1), flags: .value(.init(rawValue: .max))) }
+    }
+
+    /// The compatibility initializer accepts omission but rejects every supplied flag, including null and zero.
+    /// Unsupported channel-position fields must fail before an endpoint can be constructed.
+    /// - Throws: Unexpected construction or encoding errors fail the test.
+    @Test func channelPositionFlagsCompatibility() throws {
+        let id = ChannelID(rawValue: .max)
+        let expected = try GuildChannelPosition(id: id, position: .null, parentID: .null)
+        let compatible = try GuildChannelPosition(id: id, position: .null, parentID: .null, flags: .absent)
+        #expect(compatible.id == expected.id)
+        #expect(compatible.parentID == expected.parentID)
+        #expect(compatible.jsonValue() == expected.jsonValue())
+        let unsupported: [Field<ChannelFlags>] = [.null, .value(.init(rawValue: 0)), .value(.requireTag), .value(.init(rawValue: .max))]
+        for flags in unsupported {
+            #expect(throws: DiscordError.validation(.invalidValue)) {
+                try GuildChannelPosition(id: id, flags: flags)
+            }
+        }
     }
 
     /// Member-add stores a typed credential safely and exposes it only during explicit outgoing serialization.

@@ -331,6 +331,16 @@ class CIHelpersTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 review_upstream.pinned_revisions(invalid)
 
+    def test_upstream_preserves_baseline_with_later_source_snapshots(self):
+        """A new semantic review pin cannot silently replace the discovery comparison base."""
+        sources = [{"authority": key, "revision": "a" * 40, "verifiedOn": "2026-10-15"}
+                   for key in review_upstream.REPOSITORIES]
+        sources.append({"authority": "written_docs", "revision": "b" * 40, "verifiedOn": "2026-11-05"})
+        self.assertEqual(review_upstream.pinned_revisions(sources, "2026-10-15"),
+                         {key: "a" * 40 for key in review_upstream.REPOSITORIES})
+        with self.assertRaises(ValueError):
+            review_upstream.pinned_revisions(sources, "2026-11-05")
+
     def test_android_always_selects_a_device_and_retains_fixed_remote_scope(self):
         """No operation can target whichever adb device happens to be attached."""
         with self.assertRaises(ValueError):

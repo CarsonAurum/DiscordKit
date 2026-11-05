@@ -122,7 +122,11 @@ snowflakes retain their original representations. Consumers can decode a drained
 `GatewayEvent` without coupling the heartbeat loop to user handlers.
 
 Sparse updates are presence-aware. An unavailable `GUILD_CREATE`/`GUILD_DELETE`
-is distinct from a full guild snapshot or permanent removal. A `MESSAGE_UPDATE`
+is distinct from a full guild snapshot or permanent removal. As clarified in the
+[Guild Delete reference](https://docs.discord.com/developers/events/gateway-events#guild-delete),
+`unavailable: true` means the guild is currently unavailable, and a subsequent
+`GUILD_CREATE` restores availability to the session. The availability payload keeps
+omitted and false values distinct without asserting why access was lost. A `MESSAGE_UPDATE`
 does not replace omitted fields with default values. Member chunks expose their
 nonce/index/count, and RATE_LIMITED preserves opcode/retry metadata. Voice channel
 status and start time are ephemeral event data, separate from persistent Channel

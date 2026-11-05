@@ -310,7 +310,7 @@ struct InventoryTests {
         }
     }
 
-    /// Requires the catalog, inventory and individual source verification dates to match.
+    /// Keeps the inventory and catalog baseline aligned and rejects sources predating it.
     ///
     /// - Parameter document: Selects the independently stale catalog or source record.
     @Test(arguments: ["catalog", "source"])
@@ -318,6 +318,35 @@ struct InventoryTests {
         var fixture = InventoryFixture.valid()
         if document == "catalog" { fixture.catalog["verifiedOn"] = "2026-10-14" }
         else { fixture.mutateSources { $0[0]["verifiedOn"] = "2026-10-14" } }
+        #expect(throws: InventoryFailure.self) { try fixture.validate() }
+    }
+
+    /// Accepts a later source snapshot without rewriting historical verification dates.
+    ///
+    /// Exact discovery membership still applies independently to both revisions. The
+    /// reviewed validator, which receives an audit date, owns freshness checks.
+    /// - Throws: Unexpected fixture encoding or validation errors fail the test.
+    @Test
+    func acceptsSupplementalSourceSnapshot() throws {
+        var fixture = InventoryFixture.valid()
+        fixture.mutateEntries { entries in
+            var addition = entries[0]
+            addition["id"] = "definition.new"
+            addition["sourceID"] = "source.new"
+            entries.append(addition)
+        }
+        fixture.mutateSources { sources in
+            var addition = sources[0]
+            addition["id"] = "source.new"
+            addition["revision"] = String(repeating: "b", count: 40)
+            addition["verifiedOn"] = "2026-11-05"
+            addition["entryIDs"] = ["definition.new"]
+            sources.append(addition)
+        }
+        #expect(try fixture.validate() == InventoryReport(
+            entries: 2, sources: 2, supported: 2, pendingReview: 0
+        ))
+        fixture.mutateSources { $0[1]["entryIDs"] = ["definition.missing"] }
         #expect(throws: InventoryFailure.self) { try fixture.validate() }
     }
 

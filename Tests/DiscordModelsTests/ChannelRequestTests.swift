@@ -364,12 +364,39 @@ import Testing
             MessageCreate(content: .value("x"), enforceNonce: .value(false)),
             MessageCreate(content: .value("x"), poll: .value(poll)),
             MessageCreate(content: .value("x"), sharedClientTheme: .value(theme)),
-            MessageCreate(flags: .value(.isVoiceMessage)),
-            MessageCreate(components: .value([]), flags: .value(.isComponentsV2))
+            MessageCreate(flags: .value(.isVoiceMessage))
         ]
         for message in messages {
             #expect(throws: DiscordError.validation(.invalidValue)) { try ForumThreadStart(name: "t", message: message) }
         }
+    }
+
+    /// Forum/media starters now accept Components V2 while retaining shared compatibility and upload checks.
+    /// - Throws: Unexpected component parsing or request serialization errors fail the test.
+    @Test func forumComponentsV2Messages() throws {
+        let text = try MessageComponent(data: Data("{\"type\":10,\"content\":\"Forum post\"}".utf8))
+        let flags: MessageCreateFlags = [.isComponentsV2, .suppressEmbeds, .suppressNotifications]
+        let message = try MessageCreate(components: .value([text]), flags: .value(flags))
+        let request = try ForumThreadStart(name: "post", message: message)
+        #expect(try request.jsonValue() == .object([
+            "name": .string("post"),
+            "message": .object(["components": .array([try text.jsonValue()]), "flags": number(36_868)])
+        ]))
+        let file = try MessageComponent(data: Data("{\"type\":13,\"file\":{\"url\":\"attachment://report.txt\"}}".utf8))
+        let attachment = try MessageAttachmentRequest(id: .upload(0), filename: "report.txt")
+        let uploaded = try ForumThreadStart(name: "file", message: MessageCreate(
+            components: .value([file]), attachments: .value([attachment]), flags: .value(.isComponentsV2)))
+        #expect(try object(uploaded.jsonValue(uploadIDs: [0]))["message"] == .object([
+            "components": .array([try file.jsonValue()]),
+            "attachments": .array([.object(["id": number(0), "filename": .string("report.txt")])]),
+            "flags": number(32_768)
+        ]))
+        #expect(throws: DiscordError.validation(.invalidValue)) { try uploaded.jsonValue() }
+        #expect(throws: DiscordError.validation(.invalidValue)) {
+            try MessageCreate(content: .value("legacy"), components: .value([text]), flags: .value(.isComponentsV2)).jsonValue()
+        }
+        let empty = try ForumThreadStart(name: "post", message: MessageCreate(flags: .value(.isComponentsV2)))
+        #expect(throws: DiscordError.validation(.missingValue)) { try empty.jsonValue() }
     }
 
     /// Builds one minimal field fixture for the table of documented channel-kind eligibility.

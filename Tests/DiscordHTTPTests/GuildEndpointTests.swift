@@ -119,6 +119,17 @@ import Testing
         let endpoint = try GuildEndpoints.modifyChannelPositions(guildID: guild, positions: [first, second])
         #expect(try JSONValue.parse(#require(endpoint.body?.storedBodyBytes)) == .array([first.jsonValue(), second.jsonValue()]))
         #expect(endpoint.auditReason == nil)
+        let reasoned = try GuildEndpoints.modifyChannelPositions(guildID: guild, positions: [first, second], auditReason: "reason +")
+        let wire = try reasoned.makeRequest(credential: .bot(try BotToken("synthetic")), userAgent: "test")
+        #expect(wire.headers.contains { $0.name == "X-Audit-Log-Reason" && $0.value == "reason%20%2B" })
+        #expect(reasoned.retrySafety == .unsafe)
+        #expect(reasoned.body?.storedBodyBytes == endpoint.body?.storedBodyBytes)
+        #expect(try GuildEndpoints.modifyChannelPositions(guildID: guild, positions: [first], auditReason: String(repeating: "a", count: 512)).auditReason != nil)
+        for reason in ["\n", String(repeating: "a", count: 513)] {
+            #expect(throws: DiscordError.validation(.invalidValue)) {
+                try GuildEndpoints.modifyChannelPositions(guildID: guild, positions: [first], auditReason: reason)
+            }
+        }
         #expect(throws: DiscordError.validation(.invalidValue)) { try GuildEndpoints.modifyChannelPositions(guildID: guild, positions: []) }
         #expect(throws: DiscordError.validation(.invalidValue)) { try GuildEndpoints.modifyChannelPositions(guildID: guild, positions: [first, first]) }
         let otherParent = try GuildChannelPosition(id: .init(rawValue: 3), parentID: .value(.init(rawValue: 4)))

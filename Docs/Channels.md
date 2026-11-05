@@ -7,13 +7,14 @@ https://aurum-studios.com
 
 # Channel and thread REST catalog
 
-DiscordKit provides all 24 operations in the official [Channel reference](https://docs.discord.com/developers/resources/channel)
+DiscordKit provides all 26 operations in the official [Channel reference](https://docs.discord.com/developers/resources/channel)
 and [active guild threads](https://docs.discord.com/developers/resources/guild#list-active-guild-threads).
-Contracts were verified **2026-10-16** against API **v10**, the
+The catalog was reviewed **2026-11-05** against API **v10**, the
 [API reference](https://docs.discord.com/developers/reference), official specification
 and [change log](https://docs.discord.com/developers/change-log).
 The two thread-start variants sharing a route remain separate typed operations.
-See [guild administration](Guilds.md) for related operations.
+See [guild administration](Guilds.md) for related operations and
+[computed permission reads](Permissions.md) for member/role calculations and masking semantics.
 Related catalogs cover [audit logs and Auto Moderation](Moderation.md),
 [emoji, stickers and soundboard](Expressions.md),
 [invites, templates, scheduled events and stages](DiscoveryEvents.md), and
@@ -45,6 +46,7 @@ if let update = try ChannelOperations.modifyIfChanged(current: channel, request:
 | `delete` | DELETE/close; guild MANAGE_CHANNELS or thread MANAGE_THREADS; returns Channel, retains category children |
 | `setVoiceStatus` | PUT nullable status, at most 500 characters; SET_VOICE_CHANNEL_STATUS plus MANAGE_CHANNELS if disconnected; empty 204 |
 | `editPermissions`, `deletePermission` | PUT/DELETE guild overwrite, MANAGE_ROLES and grant/hierarchy eligibility; empty 204 |
+| `memberPermissions`, `rolePermissions` | GET computed permissions with optional implicit masking; VIEW_CHANNEL plus CONNECT for voice/stage; threads use parent overwrites |
 | `invites` | GET invites plus metadata, MANAGE_CHANNELS; empty lists remain empty |
 | `createInvite` | POST required JSON object or CSV multipart, CREATE_INSTANT_INVITE; role grants also MANAGE_ROLES/hierarchy checks |
 | `follow` | POST announcement follow, MANAGE_WEBHOOKS in target; returns source channel/webhook IDs |
@@ -71,6 +73,12 @@ the common status check and cannot independently bind a shape to one status.
 Descriptors preserve exact large snowflakes and never attach credentials to response
 asset URLs.
 
+As clarified in the **2026-11-05** [voice-status reference](https://docs.discord.com/developers/resources/channel#set-voice-channel-status),
+a user already connected to the voice channel can set its status without retaining
+`CONNECT`. The existing `PermissionResolver` keeps `SET_VOICE_CHANNEL_STATUS` when
+applying the implicit CONNECT mask; `VIEW_CHANNEL`, timeout and operation-specific
+checks still apply. Connection state and current permission are enforced upstream.
+
 ## Models, requests and privacy
 
 `Channel` projects every documented field: guild/text/voice/category/DM/thread/
@@ -86,8 +94,10 @@ Requests validate field applicability, nullability, archive durations, slowmode,
 voice limits, tag counts, emoji exclusivity and writable flags. Guild boost level,
 existing state and current permissions are server facts; local validation does
 not invent them. `ForumThreadStart` permits the documented initial-message fields
-and flags, rejects unrelated message features, and reuses validated embeds,
-components, attachment metadata and bounded upload factories. Per-file and full
+and flags, including `IS_COMPONENTS_V2` as verified on 2026-11-05, rejects unrelated
+message features, and reuses validated embeds, components, attachment metadata
+and bounded upload factories. Components V2 starters enforce the shared message
+rules excluding traditional content, embeds and stickers. Per-file and full
 request caps remain separate: defaults are 20 MiB/file and 25 MiB/request.
 
 `ChannelInviteCreate` covers all non-file channel invite fields, validates target

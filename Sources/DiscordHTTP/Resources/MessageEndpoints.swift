@@ -8,7 +8,7 @@ import DiscordModels
 import DiscordTransport
 import Foundation
 
-/// Typed API v10 message operations, verified against the official reference on 2026-10-16.
+/// Typed API v10 message operations, reviewed against the official reference on 2026-11-05.
 ///
 /// Every descriptor uses bot authentication, the shared credential-global/route admission,
 /// bounded retries, cancellation and deadlines in `RESTClient`. Guild channel operations
@@ -196,15 +196,29 @@ public enum MessageEndpoints {
     }
 
     /// Deletes a message. Deleting another author's guild message requires MANAGE_MESSAGES.
+    /// The current API v10 reference does not support an audit-log reason on this operation.
+    /// Reviewed 2026-11-05: https://docs.discord.com/developers/resources/message#delete-message.
     /// - Parameters:
     ///   - channelID: Channel major-rate partition.
     ///   - messageID: Target message.
-    ///   - auditReason: Optional audit reason, at most 512 Unicode scalars, encoded once.
     /// - Returns: An unsafe DELETE descriptor expecting empty 204.
-    /// - Throws: Descriptor/audit validation errors; execution preserves API and ambiguous outcomes.
-    public static func delete(channelID: ChannelID, messageID: MessageID, auditReason: String? = nil) throws -> Endpoint<EmptyResponse> {
+    /// - Throws: Descriptor validation errors; execution preserves API and ambiguous outcomes.
+    public static func delete(channelID: ChannelID, messageID: MessageID) throws -> Endpoint<EmptyResponse> {
         try messageEmpty("DELETE", channelID: channelID, path: messagePath(channelID, messageID),
-            route: "/channels/{channel.id}/messages/{message.id}", auditReason: auditReason)
+            route: "/channels/{channel.id}/messages/{message.id}")
+    }
+
+    /// Preserves source compatibility for callers of the former audit-reason overload.
+    /// Discord's current API v10 reference no longer supports that header for single-message deletion.
+    /// - Parameters:
+    ///   - channelID: Channel major-rate partition.
+    ///   - messageID: Target message; deleting another author's guild message requires MANAGE_MESSAGES.
+    ///   - auditReason: Ignored, including nil or formerly invalid values; no audit header is emitted.
+    /// - Returns: The same unsafe, empty-204 DELETE descriptor as `delete(channelID:messageID:)`.
+    /// - Throws: Descriptor validation errors; execution preserves API failures and ambiguous outcomes.
+    @available(*, deprecated, message: "Discord no longer documents audit reasons for Delete Message; use delete(channelID:messageID:).")
+    public static func delete(channelID: ChannelID, messageID: MessageID, auditReason: String?) throws -> Endpoint<EmptyResponse> {
+        try delete(channelID: channelID, messageID: messageID)
     }
 
     /// Deletes one legal bulk chunk in a guild channel. Requires MANAGE_MESSAGES.

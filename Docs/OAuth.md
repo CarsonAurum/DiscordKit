@@ -60,6 +60,16 @@ HTTPS, loopback HTTP and documented `discord-<applicationID>:/authorize/callback
 redirects are supported. Redirect allowlisting/registration still belongs to the
 application and Discord.
 
+The **2026-11-05** [issuer-identification review](https://docs.discord.com/developers/topics/oauth2#issuer-identification)
+confirms that Discord includes `iss` in authorization responses. The existing flow
+already requires the exact Discord issuer for code and implicit callbacks, before
+exposing a code or token; this review changes no callback behavior. Discord also
+documents [authorization-server metadata](https://discord.com/.well-known/oauth-authorization-server)
+and [OpenID Connect discovery](https://discord.com/.well-known/openid-configuration).
+The flow retains its fixed Discord issuer rather than fetching discovery during
+authorization. Code authorization with S256 remains the default for production;
+implicit compatibility remains an explicit prototype/legacy choice.
+
 `OAuthBrowserAdapter` invokes an injected main-actor host operation and passes the
 returned URL through the same flow owner. The host supplies its presentation anchor,
 OS session, callback registration, timeout and cancellation cleanup. The adapter

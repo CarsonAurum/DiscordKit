@@ -1,58 +1,142 @@
 {
   "schemaVersion": 1,
-  "reviewedOn": "2026-10-28",
-  "nextReviewDue": "2026-11-04",
+  "reviewedOn": "2026-11-05",
+  "nextReviewDue": "2026-11-12",
   "unclassifiedEntries": [],
   "historyPath": "Docs/Parity/history.json",
-  "reviewScope": "Weekly maintenance review of the eight existing official release, HTTP transition, command-family, message/component, interaction and Gateway composition sources. No discovery-wide refresh or protocol implementation change.",
+  "reviewScope": "Complete main-branch diff since the pinned documentation baseline, plus the eight maintained API/Gateway/interaction sources. SDK-native clarifications remain separate from implemented REST and portable protocols.",
   "officialSources": [
     {
-      "url": "https://docs.discord.com/developers/reference.md",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "url": "https://docs.discord.com/developers/change-log",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     },
     {
-      "url": "https://docs.discord.com/developers/change-log.md",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "url": "https://docs.discord.com/developers/components/reference",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     },
     {
-      "url": "https://docs.discord.com/developers/interactions/application-commands.md",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-on-web",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     },
     {
-      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-with-discord",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     },
     {
-      "url": "https://docs.discord.com/developers/components/reference.md",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/managing-game-invites",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     },
     {
-      "url": "https://docs.discord.com/developers/resources/message.md",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "url": "https://docs.discord.com/developers/discord-social-sdk/development-guides/managing-lobbies",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway-events",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     },
     {
       "url": "https://docs.discord.com/developers/events/gateway",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     },
     {
-      "url": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
-      "verifiedOn": "2026-10-28",
-      "snapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
-      "sha256": "be225f72d6ef39ed55d1d812535969599586389f8ddea62ff1b3be9903ef814a"
+      "url": "https://docs.discord.com/developers/events/webhook-events",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/gateway/getting-started-with-privileged-intent-review",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/gateway/you-might-not-need-a-privileged-intent",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/application-commands",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/reference",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/audit-log",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/channel",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/guild",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/message",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/user",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/social-layer/game-stats-widgets/overview",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/topics/oauth2",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
+    },
+    {
+      "url": "https://docs.discord.com/developers/topics/permissions",
+      "verifiedOn": "2026-11-05",
+      "snapshotPath": "Docs/Release/sources/2026-11-05-api-docs.json",
+      "sha256": "fada60eabd12561452cc4c02ffd97fbb8a9ba1db903cf87395ff536d3bd0926d"
     }
   ],
   "transitions": [
@@ -81,5 +165,5 @@
       ]
     }
   ],
-  "reviewComparisonLimits": "Five original Markdown sources have different byte hashes. Three original HTML sources had semantic-only historical records. Previous raw response bodies were not committed, so no byte-identical or complete historical text-diff assertion is made."
+  "reviewComparisonLimits": "Exact Git revisions and SHA-256 hashes identify reviewed source bytes. Supplemental inventory membership covers selected current contracts; the original discovery inventory and unrelated source verification dates are retained. This review does not certify complete API parity, native SDK availability or live-service/platform qualification."
 }

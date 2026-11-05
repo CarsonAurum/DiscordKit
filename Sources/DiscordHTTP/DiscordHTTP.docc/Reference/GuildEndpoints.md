@@ -23,9 +23,10 @@
 - ``DiscordHTTP/GuildEndpoints/integrations(guildID:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/invites(guildID:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/member(guildID:userID:readPolicy:)``
+- ``DiscordHTTP/GuildEndpoints/memberPermissions(guildID:userID:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/members(guildID:after:limit:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/modify(guildID:request:auditReason:)``
-- ``DiscordHTTP/GuildEndpoints/modifyChannelPositions(guildID:positions:)``
+- ``DiscordHTTP/GuildEndpoints/modifyChannelPositions(guildID:positions:auditReason:)``
 - ``DiscordHTTP/GuildEndpoints/modifyCurrentMember(guildID:request:auditReason:)``
 - ``DiscordHTTP/GuildEndpoints/modifyCurrentUserNick(guildID:request:auditReason:)``
 - ``DiscordHTTP/GuildEndpoints/modifyIncidentActions(guildID:request:)``
@@ -43,6 +44,7 @@
 - ``DiscordHTTP/GuildEndpoints/removeMemberRole(guildID:userID:roleID:auditReason:)``
 - ``DiscordHTTP/GuildEndpoints/role(guildID:roleID:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/roleMemberCounts(guildID:readPolicy:)``
+- ``DiscordHTTP/GuildEndpoints/rolePermissions(guildID:roleID:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/roles(guildID:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/searchMembers(guildID:query:limit:readPolicy:)``
 - ``DiscordHTTP/GuildEndpoints/vanityURL(guildID:readPolicy:)``

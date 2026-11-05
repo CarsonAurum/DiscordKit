@@ -1351,14 +1351,23 @@ public struct MessageFlags: OptionSet, Sendable, Hashable {
 /// Documented embed response flags with unknown raw bits retained unchanged.
 /// Wrap `MessageEmbed.flags` with this value for named membership checks; it does not
 /// make a response-only flag valid in an outgoing rich-embed request.
+/// Content scanning can add the `contains*Content` bits after sending; inspect both
+/// the sent message and later Message Update events when reposting user media.
+/// See https://docs.discord.com/developers/resources/message#embed-object-embed-flags.
 public struct MessageEmbedFlags: OptionSet, Sendable, Hashable {
     /// Exact unsigned embed bitfield, including unrecognized future bits.
     public let rawValue: UInt64
     /// Retains any embed bitfield without I/O, mutation or permission inference.
     /// - Parameter rawValue: Any unsigned 64-bit combination, including zero and unknown bits.
     public init(rawValue: UInt64) { self.rawValue = rawValue }
+    /// Discord's content scanning flagged media in this embed as explicit.
+    public static let containsExplicitContent = Self(rawValue: 1 << 4)
     /// The embed is a fallback representation of a reply to an activity card.
     public static let isContentInventoryEntry = Self(rawValue: 1 << 5)
+    /// Discord's content scanning flagged media in this embed as gore.
+    public static let containsGoreContent = Self(rawValue: 1 << 6)
+    /// Discord's content scanning flagged media in this embed as self-harm.
+    public static let containsSelfHarmContent = Self(rawValue: 1 << 7)
 }
 
 /// Documented embed image/video response bits. Unknown bits remain available in rawValue.
@@ -1376,6 +1385,10 @@ public struct MessageEmbedMediaFlags: OptionSet, Sendable, Hashable {
 /// Documented message attachment response bits, including the deprecated mobile remix flag.
 /// Wrap `MessageAttachment.flags` for named checks. Response flags do not grant media access,
 /// preserve an expiring attachment, or authorize setting arbitrary outgoing attachment flags.
+/// Content scanning can add the `contains*Content` bits after sending; inspect both the
+/// sent message and later Message Update events when reposting user media. Attachments
+/// in interaction resolved data do not carry these bits before being sent in a message.
+/// See https://docs.discord.com/developers/resources/message#attachment-object-attachment-flags.
 public struct MessageAttachmentFlags: OptionSet, Sendable, Hashable {
     /// Exact unsigned attachment bitfield, including all future bits.
     public let rawValue: UInt64
@@ -1391,6 +1404,12 @@ public struct MessageAttachmentFlags: OptionSet, Sendable, Hashable {
     public static let isRemix = Self(rawValue: 1 << 2)
     /// The attachment is hidden behind spoiler blur until the viewer chooses to reveal it.
     public static let isSpoiler = Self(rawValue: 1 << 3)
+    /// Discord's content scanning flagged this attachment as explicit.
+    public static let containsExplicitContent = Self(rawValue: 1 << 4)
     /// The attachment is an animated image.
     public static let isAnimated = Self(rawValue: 1 << 5)
+    /// Discord's content scanning flagged this attachment as gore.
+    public static let containsGoreContent = Self(rawValue: 1 << 6)
+    /// Discord's content scanning flagged this attachment as self-harm.
+    public static let containsSelfHarmContent = Self(rawValue: 1 << 7)
 }

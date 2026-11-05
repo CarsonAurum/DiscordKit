@@ -19,6 +19,10 @@ the reviewed inventory; consumer builds fetch nothing. Related REST guides cover
 [discovery/events](DiscoveryEvents.md), [applications/users](ApplicationsUsers.md)
 and [lobbies/identity profiles](SocialGame.md).
 
+The 2026-11-05 review adds documented content-scan flags and component-media scan
+metadata, and aligns single-message deletion with the current reference. Source
+revision and chronological compatibility details are recorded in the parity history.
+
 ## Adoption
 
 Import `DiscordHTTP` and `DiscordModels`, inject a transport and shared rate authority
@@ -46,6 +50,12 @@ search does not invent a guild major bucket. Shards never increase REST quotas.
 Mutation descriptors conservatively disallow ambiguous replay, including nonce
 creation, PUT and DELETE operations. Rejected 429s remain subject to the common
 bounded retry policy. An uncertain send requires reconciliation by the caller.
+
+Single-message deletion omits `X-Audit-Log-Reason`, which the current official
+reference no longer documents for that operation. Use
+`MessageEndpoints.delete(channelID:messageID:)`; the deprecated overload accepting
+`auditReason` remains source compatible but ignores that argument. Bulk deletion
+retains its separately documented audit reason header and validation.
 
 ## Operations
 
@@ -97,6 +107,18 @@ Application and interaction-resolved resources) keep their named partial coverag
 Channel and expression resource APIs now expose their own complete written contracts;
 message-specific small projections retain their documented scope. Raw nested fields
 do not count as full typed parity for a related family.
+
+`MessageAttachmentFlags` and `MessageEmbedFlags` expose explicit, gore and
+self-harm content-scan bits. Component media exposes
+`UnfurledMediaItem.contentScanMetadata` and `UnfurledMediaContentScanFlags`, whose
+bit positions differ from the attachment and embed flags. Scanning can finish
+after sending, so inspect the returned message and later `GatewayMessageUpdate`
+payloads when reposting user media and take action on flagged media. Missing scan
+metadata does not establish that scanning has finished. Interaction resolved
+attachments, including File Upload inputs, do not carry content-scan flags before
+they are sent in a message. Scan metadata is response-only and is rejected by
+outgoing component validation. See the official [attachment flags](https://docs.discord.com/developers/resources/message#attachment-object-attachment-flags)
+and [component media scan metadata](https://docs.discord.com/developers/components/reference#unfurled-media-item-content-scan-metadata-structure).
 
 `MessageCreate` covers every current create field. `MessageEdit` preserves
 absent/null/value fields, includes retained/new attachment metadata and validates

@@ -23,6 +23,10 @@ operation counts.
 - [Source catalog](sources-2026-10-15.json) records exact documentation/specification
   revisions, SHA-256 hashes, verification dates, protocol versions and source membership.
   Resource-specific current-source records retain later reviews separately.
+  The 2026-11-05 API update also appends finite supplemental source memberships
+  pinned to documentation revision `da52492ced82d375981c46618cc3e182daada9a2`.
+  Each supplemental snapshot retains its own verification date; the catalog's
+  baseline date and older source dates remain unchanged.
 - [Ambiguities](ambiguities.json) names contradictions, adopted precedence and missing
   contracts. Unresolved schemas or access requirements remain explicit blockers.
 - [History](history.json) and the [change records](changes/) preserve dated support
@@ -65,7 +69,7 @@ specifications. Preserve contradictions in the ambiguity register rather than si
 adopting a generated schema. SDK reference pages may be unversioned, so source hashes,
 anchors and review dates identify the exact reviewed inputs.
 
-The discovery baseline pins official documentation revision
+The original discovery baseline pins official documentation revision
 `37148620d2324292b76047541d5f8331f81ea77a` and specification revision
 `ed014089afa986f2b532ae081c456a85de074d0c`. The retained index snapshot is a discovery
 boundary, not proof of coverage for future documentation. Acquire and verify those
@@ -81,6 +85,12 @@ python3 Tools/DiscordKitTools/scripts/harvest_inventory.py \
 diff -u Docs/Parity/inventory-v1.json /tmp/discordkit-inventory/inventory-v1.json
 diff -u Docs/Parity/sources-2026-10-15.json /tmp/discordkit-inventory/sources-2026-10-15.json
 ```
+
+The reproduction above describes the original baseline. Current committed records
+also include later support classifications and supplemental memberships; compare
+their original IDs and source pins when reproducing that baseline. Later source
+snapshots do not refresh unrelated verification dates or change the collector's
+baseline comparison revision.
 
 Harvesting is offline and uses Python's standard library. It records supplied source
 revisions and hashes without authenticating checkout acquisition. New prose or markup

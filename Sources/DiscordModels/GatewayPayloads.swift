@@ -7,8 +7,10 @@ import DiscordCore
 import Foundation
 
 
-/// Guild deletion or READY availability marker. Omitted unavailable on GUILD_DELETE means removal; true means outage. It never implies an available full Guild snapshot.
-/// API v10; verified 2026-10-16 against https://docs.discord.com/developers/events/gateway-events.
+/// Guild deletion or READY availability marker. On GUILD_DELETE, true means the guild is currently
+/// unavailable; a later GUILD_CREATE restores availability to the session. Omitted/false availability
+/// is preserved without inferring why the guild became inaccessible. This is never a full Guild snapshot.
+/// API v10; verified 2026-11-05 against https://docs.discord.com/developers/events/gateway-events.
 public struct GatewayGuildAvailability: MessageResponseValue, MessageTreeProjectable, Equatable {
     /// Required nonnull `id` wire value; unknown siblings remain in rawFields.
     public let id: GuildID
@@ -701,7 +703,8 @@ public struct GatewayAvailableGuild: MessageResponseValue, MessageTreeProjectabl
     }
 }
 
-/// Audit-log creation; requires VIEW_AUDIT_LOG and applicable intent. Entry fields retain their existing typed resource semantics.
+/// Audit-log creation; requires VIEW_AUDIT_LOG and applicable intent. Entry fields retain their existing
+/// typed resource semantics. Merged updates to an existing entry do not currently fire another event.
 /// API v10; verified 2026-10-16 against https://docs.discord.com/developers/events/gateway-events.
 public struct GatewayGuildAuditLogEntryCreate: MessageResponseValue, MessageTreeProjectable, Equatable {
     /// Typed AuditLogEntry view of this same event object; this is not a nested `entry` wire field.

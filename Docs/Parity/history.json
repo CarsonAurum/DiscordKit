@@ -1844,6 +1844,53 @@
       "provenance": "Local Swift implementation, checked-in SwiftLog source and offline test/build evidence; no new upstream source review claimed.",
       "details": "changes/2026-10-20-semantic-logging.md",
       "remainingGates": "../Logging.md"
+    },
+    {
+      "id": "2026-11-05-api-docs",
+      "recordedOn": "2026-11-05",
+      "upstreamVersions": {
+        "rest": "10",
+        "gateway": "10",
+        "voice": "8"
+      },
+      "upstreamAnnouncementDate": "unknown",
+      "upstreamEffectiveDate": "unknown",
+      "verifiedOn": "2026-11-05",
+      "localSupportDate": "2026-11-05",
+      "localRelease": "unknown",
+      "localCommit": "unknown",
+      "changeType": "upstream_api_update",
+      "previousBehavior": "No typed server-computed permission retrieval. Missing documented media scanning and reorder audit variants; forum starters rejected Components V2. Single-message delete accepted audit metadata, and channel-position updates could send undocumented flags.",
+      "currentBehavior": "Four computed permission GETs, bounded exact permission responses, typed media-scan flags/metadata, Components V2 forum starters, position audit codes 16/33, corrected mutation audit/field handling and current contract documentation. Existing issuer, role-connection and voice-status behavior reverified.",
+      "affectedSymbols": [
+        "ComputedPermissions",
+        "GuildEndpoints.memberPermissions",
+        "GuildEndpoints.rolePermissions",
+        "ChannelEndpoints.memberPermissions",
+        "ChannelEndpoints.rolePermissions",
+        "UnfurledMediaContentScanMetadata",
+        "UnfurledMediaContentScanFlags",
+        "UnfurledMediaItem.contentScanMetadata",
+        "MessageAttachmentFlags",
+        "MessageEmbedFlags",
+        "ForumThreadStart",
+        "AuditLogEvent",
+        "GuildChannelPosition",
+        "GuildEndpoints.modifyChannelPositions",
+        "MessageEndpoints.delete"
+      ],
+      "affectedPayloads": "API v10 computed permissions, attachments, embeds, unfurled media, forum/media thread starters, guild channel positions and audit-log action/count values.",
+      "breakingChanges": [
+        "GuildChannelPosition deprecated flags initializer rejects explicit null/value flags; flags are no longer sent.",
+        "MessageEndpoints.delete deprecated auditReason overload ignores the unsupported reason; callers should adopt the overload without that argument."
+      ],
+      "migration": "Use typed permission endpoints as snapshots. Remove channel-position flags and modify channels separately for writable flag changes. Remove single-delete auditReason arguments; bulk deletion retains them. Treat missing content-scan results as pending/unknown and inspect later message updates.",
+      "sources": [
+        "https://github.com/discord/discord-api-docs/compare/37148620d2324292b76047541d5f8331f81ea77a...da52492ced82d375981c46618cc3e182daada9a2",
+        "https://docs.discord.com/developers/change-log"
+      ],
+      "details": "changes/2026-11-05-api-docs.md",
+      "remainingGates": "coverage.md"
     }
   ]
 }

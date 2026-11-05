@@ -27,8 +27,10 @@ REPOSITORIES = {
 CHANGE_LOG = "https://docs.discord.com/developers/change-log"
 
 
-def pinned_revisions(sources):
-    """Require one exact frozen revision per official repository, without guessing refs."""
+def pinned_revisions(sources, baseline_date=None):
+    """Select exact baseline revisions; later supplemental snapshots do not move the base."""
+    if baseline_date is not None:
+        sources = [source for source in sources if source.get("verifiedOn") == baseline_date]
     result = {}
     for authority in REPOSITORIES:
         revisions = {source["revision"] for source in sources if source["authority"] == authority}
@@ -61,13 +63,13 @@ def main():
     parser.add_argument("--repository", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--output", type=Path, default=Path(".build/upstream-review"))
     arguments = parser.parse_args()
-    sources = json.loads((arguments.repository / "Docs/Parity/sources-2026-10-15.json").read_text())["sources"]
+    catalog = json.loads((arguments.repository / "Docs/Parity/sources-2026-10-15.json").read_text())
     output = arguments.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     report = {"collectedOn": datetime.datetime.now(datetime.timezone.utc).date().isoformat(),
               "scope": "Read-only official source collection; human semantic review and inventory updates still required",
               "sourceChangesApplied": False, "repositories": []}
-    for authority, revision in pinned_revisions(sources).items():
+    for authority, revision in pinned_revisions(catalog["sources"], catalog["verifiedOn"]).items():
         label, url = REPOSITORIES[authority]
         report["repositories"].append(collect_diff(url, revision, output, label))
     request = urllib.request.Request(CHANGE_LOG, headers={"User-Agent": "DiscordKit-upstream-review/0.14"})

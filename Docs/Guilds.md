@@ -7,10 +7,11 @@ https://aurum-studios.com
 
 # Guild administration REST catalog
 
-DiscordKit provides all **45 operations** in the current official
+DiscordKit provides all **47 operations** in the current official
 [Guild reference](https://docs.discord.com/developers/resources/guild), including
-active threads through the existing Channel implementation. Contracts were verified
-**2026-10-16** against REST **v10**, the [Permissions reference](https://docs.discord.com/developers/topics/permissions),
+active threads through the existing Channel implementation and
+[computed member/role permissions](Permissions.md). The catalog was reviewed
+**2026-11-05** against REST **v10**, the [Permissions reference](https://docs.discord.com/developers/topics/permissions),
 [Voice reference](https://docs.discord.com/developers/resources/voice),
 [API reference](https://docs.discord.com/developers/reference), official
 [OpenAPI specification](https://github.com/discord/discord-api-spec) and
@@ -48,6 +49,7 @@ if let edit = try GuildOperations.modifyIfChanged(current: guild, request: reque
 | `channels`, `createChannel`, `modifyChannelPositions` | Lists exclude threads; create/order require MANAGE_CHANNELS, overwrite grants require eligible permissions; GET accepts bot/bearer contexts; one parent move per ordering request |
 | `activeThreads` | Existing accessible active-thread envelope; no pagination or member fan-out |
 | `member`, `members`, `searchMembers` | User-specific or bounded member results; list requires privileged GUILD_MEMBERS eligibility; search prefix is explicit and no continuation is invented |
+| `memberPermissions`, `rolePermissions` | Server-computed guild bitfield: all member roles plus everyone, or specified role plus everyone; no local calculation or follow-up fetch |
 | `addMember` | Bot token of the same application plus separately body-carried user `guilds.join` grant; bot must be in guild with CREATE_INSTANT_INVITE; 201 new member or empty 204 existing member |
 | `modifyMember` | Per-field MANAGE_NICKNAMES, MANAGE_ROLES, MUTE/DEAFEN/MOVE_MEMBERS, MODERATE_MEMBERS or documented flags eligibility; hierarchy/state checked upstream |
 | `modifyCurrentMember`, `modifyCurrentUserNick` | Current nickname/profile settings; CHANGE_NICKNAME for nick; deprecated nick route remains available with migration guidance |
@@ -73,6 +75,13 @@ resource responses require 200; empty operations require exactly 204 and empty
 bytes. Member PATCH deliberately requires the written 200/member contract even
 though the preview also lists 204. No removed guild-creation/deletion endpoint,
 undocumented integration modification, or screening-form operation is introduced.
+
+The **2026-11-05** review of [Modify Guild Channel Positions](https://docs.discord.com/developers/resources/guild#modify-guild-channel-positions)
+adds its documented `auditReason` parameter. Channel-position entries now contain
+only ID, position, lock-permissions and parent ID. The former initializer with
+`flags` remains deprecated for source compatibility: `.absent` works, while null
+or supplied flag values throw before submission. Move flag changes to
+`ChannelModify` through `ChannelEndpoints.modify`.
 
 ## Models and validation
 

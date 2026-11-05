@@ -24,6 +24,27 @@ import Testing
         #expect(AuditLogEvent.allCases.count == AuditLogEventFixture.all.count)
     }
 
+    /// Position-update actions decode identically from REST entries and audit Gateway dispatches.
+    /// Their merged update counts remain string-valued, including values wider than native integers.
+    /// - Parameters:
+    ///   - event: The documented channel or role reorder action.
+    ///   - count: Exact upstream count text, including zero and a value wider than UInt64.
+    /// - Throws: Unexpected bounded parsing or model projection fails the test.
+    @Test(arguments: [AuditLogEvent.channelPositionUpdate, .rolePositionUpdate], ["0", "2", "18446744073709551616"])
+    func positionUpdateCounts(event: AuditLogEvent, count: String) throws {
+        let fields: [String: JSONValue] = ["id": .string("18446744073709551615"), "guild_id": .string("1"),
+            "target_id": .null, "user_id": .null, "action_type": .number(try JSONNumber(rawValue: String(event.rawValue))),
+            "options": .object(["count": .string(count)])]
+        let data = try JSONValue.object(fields).serialized()
+        let rest = try AuditLogEntry(data: data)
+        let gateway = try GatewayGuildAuditLogEntryCreate(data: data)
+        #expect(rest.actionType.knownValue == event)
+        #expect(rest.options.auditLogRegressionValue?.count == .value(count))
+        #expect(gateway.entry == rest)
+        #expect(gateway.guildID.rawValue == 1)
+        #expect(gateway.jsonValue() == .object(fields))
+    }
+
     /// Unknown action codes at both native integer boundaries remain exact and never resolve to a guessed case.
     /// Negative codes are retained as future raw values rather than silently converted to unsigned values.
     /// - Parameter raw: A currently unknown exact integral action discriminator.
@@ -169,6 +190,7 @@ private struct AuditLogEventFixture: Sendable {
         .init(event: .channelOverwriteCreate, rawValue: 13),
         .init(event: .channelOverwriteUpdate, rawValue: 14),
         .init(event: .channelOverwriteDelete, rawValue: 15),
+        .init(event: .channelPositionUpdate, rawValue: 16),
         .init(event: .memberKick, rawValue: 20),
         .init(event: .memberPrune, rawValue: 21),
         .init(event: .memberBanAdd, rawValue: 22),
@@ -181,6 +203,7 @@ private struct AuditLogEventFixture: Sendable {
         .init(event: .roleCreate, rawValue: 30),
         .init(event: .roleUpdate, rawValue: 31),
         .init(event: .roleDelete, rawValue: 32),
+        .init(event: .rolePositionUpdate, rawValue: 33),
         .init(event: .inviteCreate, rawValue: 40),
         .init(event: .inviteUpdate, rawValue: 41),
         .init(event: .inviteDelete, rawValue: 42),

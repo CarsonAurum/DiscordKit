@@ -134,6 +134,30 @@ state overflow/resync and PCM policy. They establish no authorized Discord/mobil
 console session, production purchase, physical device or sustained/fleet capacity.
 Required native SDK and unpublished Commerce contracts remain unavailable.
 
+The **2026-11-05** guide review clarifies native SDK lifecycles without publishing
+additional REST or RPC wire contracts. The
+[account-linking guide](https://docs.discord.com/developers/discord-social-sdk/development-guides/account-linking-with-discord)
+describes a token-expiration callback for proactive refresh and a status callback
+for tokens already expired or revoked when connecting. DiscordKit's existing
+`OAuthTokenCoordinator` retains explicit access-driven refresh; it does not expose
+those native callbacks.
+
+The [game-invite guide](https://docs.discord.com/developers/discord-social-sdk/development-guides/managing-game-invites)
+gives native cold-launch joins a 180-second window from the user's Join action:
+register the join callback before connecting and connect early during startup.
+For provisional accounts with desktop Rich Presence shared over RPC, invites to
+the full Discord account are accepted in Discord and delivered through the native
+join callback, rather than the provisional account's invite-created callback.
+These delivery and launch guarantees remain outside DiscordKit's public providers.
+
+The [lobby guide](https://docs.discord.com/developers/discord-social-sdk/development-guides/managing-lobbies)
+distinguishes membership from connection and availability from deletion. Native
+lobby-created callbacks may repeat after recovery; lobby-deleted callbacks may
+mean loss of access or an outage while the lobby still exists. Member-added and
+member-removed callbacks describe membership, while member-updated describes
+connection or metadata changes. REST lobby snapshots do not create an equivalent
+native event stream.
+
 Build/run the credential-free [independent Social example](../Examples/SocialApp/README.md).
 Its graph excludes Gateway, Client, Cache, Voice/MLS/DAVE and concrete adapters. Existing
 HTTP, RPC, Activities, Media and Voice remain independently adoptable and never depend

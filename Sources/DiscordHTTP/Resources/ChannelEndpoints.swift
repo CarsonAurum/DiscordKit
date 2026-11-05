@@ -60,7 +60,8 @@ public enum ChannelEndpoints {
     }
 
     /// Sets or clears a voice channel's status. Requires SET_VOICE_CHANNEL_STATUS and,
-    /// when the bot is disconnected, MANAGE_CHANNELS. Status is not a Channel response field.
+    /// when the bot is disconnected, MANAGE_CHANNELS. A connected user does not additionally
+    /// require CONNECT. Status is not a Channel response field; connection state is checked upstream.
     /// - Parameters:
     ///   - channelID: Voice channel major-rate partition.
     ///   - request: Validated required nullable status, up to 500 characters.

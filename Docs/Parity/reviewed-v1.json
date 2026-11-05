@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "verifiedOn": "2026-10-18",
+  "verifiedOn": "2026-11-05",
   "maxAgeDays": 30,
   "sources": [
     {
@@ -237,6 +237,56 @@
       "id": "developers/topics/voice-connections",
       "revision": "37148620d2324292b76047541d5f8331f81ea77a",
       "sha256": "02d901d73c3ec60236ec030bcf0b8e326fe0b7ab0ed7ab1203e3beb0593d8a79"
+    },
+    {
+      "id": "current/2026-11-05/developers/resources/channel",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "5f71708ea0de97b63d8ad2f1f62d0275ef97f736f955c5e5aee9a6564514a908"
+    },
+    {
+      "id": "current/2026-11-05/developers/resources/guild",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "fbd13144dda0541f0f80a9a286b8c1947b8d7b0a33d0aca45468a86ff4cfaf70"
+    },
+    {
+      "id": "current/2026-11-05/developers/resources/message",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "e4e2f2abb242096896b152e9c9d0d7e8b19e9ff07d4c337f0af580bd2d6d9a71"
+    },
+    {
+      "id": "current/2026-11-05/developers/components/reference",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "193faf3b0c57f4eabcb7a07382af92f2a3de8a13a73daa86ea319ee7511c12df"
+    },
+    {
+      "id": "current/2026-11-05/developers/resources/audit-log",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "4b4c3556ce4e880598c95bd184f181083967f951a8437db0567f0dc4b7ab5fa7"
+    },
+    {
+      "id": "current/2026-11-05/developers/resources/user",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "13cb7d08e88c573aca182b640d052fea715842b174c0dfa3148b99fb1d59a4c9"
+    },
+    {
+      "id": "current/2026-11-05/developers/topics/oauth2",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "4019da739dcd4361f9bb95b167b0d268351cd4e34404a81dd54b31b897e7de4b"
+    },
+    {
+      "id": "current/2026-11-05/developers/events/gateway-events",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "bca290a9ea7f7f49232a61f8e3ab5c48089cd613396e5d6ec08fd61a6eacc9cd"
+    },
+    {
+      "id": "current/2026-11-05/developers/events/webhook-events",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "cbcc8aaa48aecaade6d6616947514bf1c50bdb97877940181e24837e67206d21"
+    },
+    {
+      "id": "current/2026-11-05/developers/topics/permissions",
+      "revision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "sha256": "0f8b3a3ca850d25793b0eac96e45a5a594e12be5cb46e148fc1647868ae4d1a8"
     }
   ],
   "definitions": [
@@ -10118,7 +10168,7 @@
         "evidence.5a.model.UnfurledMediaItem.1",
         "evidence.5a.model.UnfurledMediaItem.2"
       ],
-      "notes": "API v10 semantic model, verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown.",
+      "notes": "API v10 semantic model, verified 2026-10-16. Structured fields link actual declarations to the original pinned discovery tables; current source verification hashes are recorded separately in Docs/Parity/message-poll-current-sources.json. Parent classification remains partial: typed message-owned projections do not establish full referenced resource-family or modal request parity. Unknown fields remain exact in response rawFields; outgoing request builders apply independent stricter validation. Upstream announcement/effective dates are unknown. Current 2026-11-05 additions and corrections are recorded separately under manual.api20261105 with their own source revision and verification date.",
       "manual": {
         "behavior": "Presence, null, default, type, bounds, access and unknown-value rules are explicit below. Source is handwritten and these contracts never emit generated Swift. Validation is synchronous and bounded; transport, permission and rate admission belong to endpoint execution.",
         "fields": [
@@ -11552,7 +11602,7 @@
       "evidenceIDs": [
         "evidence.5a.enum.MessageEmbedFlags"
       ],
-      "notes": "API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown.",
+      "notes": "API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown. Current 2026-11-05 additions and corrections are recorded separately under manual.api20261105 with their own source revision and verification date.",
       "manual": {
         "behavior": "Handwritten declaration mappings, never generated Swift: [{\"swiftName\":\"isContentInventoryEntry\",\"rawValue\":32,\"upstreamID\":\"d-e2391f8470725f8067a0515a\",\"symbolID\":\"symbol.5a.enum.MessageEmbedFlags.isContentInventoryEntry\"}]. OptionSet construction retains every UInt64 bit, including future high bits; response fields remain exact UInt64 projections and these wrappers grant no permissions. Unknown response bits survive combination, equality and rawValue access. No request writability is inferred."
       }
@@ -11610,7 +11660,7 @@
       "evidenceIDs": [
         "evidence.5a.enum.MessageAttachmentFlags"
       ],
-      "notes": "API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown. IS_REMIX remains available as a deprecated compatibility bit; the API preserves its original value without recommending new use.",
+      "notes": "API v10 current table variants mapped to exact production declarations and deterministic Swift Testing evidence, verified 2026-10-16. Current official source hashes are recorded in message-poll-current-sources.json. Scope remains partial at the parent resource-family level. Announcement and effective dates are unknown. IS_REMIX remains available as a deprecated compatibility bit; the API preserves its original value without recommending new use. Current 2026-11-05 additions and corrections are recorded separately under manual.api20261105 with their own source revision and verification date.",
       "manual": {
         "behavior": "Handwritten declaration mappings, never generated Swift: [{\"swiftName\":\"isClip\",\"rawValue\":1,\"upstreamID\":\"d-42063fff945706a1fc53e378\",\"symbolID\":\"symbol.5a.enum.MessageAttachmentFlags.isClip\"},{\"swiftName\":\"isThumbnail\",\"rawValue\":2,\"upstreamID\":\"d-a1ae21a7abefc433f56ea15d\",\"symbolID\":\"symbol.5a.enum.MessageAttachmentFlags.isThumbnail\"},{\"swiftName\":\"isRemix\",\"rawValue\":4,\"upstreamID\":\"d-d29b4a0fe8b6d7e1bb9c98f2\",\"symbolID\":\"symbol.5a.enum.MessageAttachmentFlags.isRemix\"},{\"swiftName\":\"isSpoiler\",\"rawValue\":8,\"upstreamID\":\"d-62709523cf386e3f32eb1361\",\"symbolID\":\"symbol.5a.enum.MessageAttachmentFlags.isSpoiler\"},{\"swiftName\":\"isAnimated\",\"rawValue\":32,\"upstreamID\":\"d-507911c2ee5651abc4f98d18\",\"symbolID\":\"symbol.5a.enum.MessageAttachmentFlags.isAnimated\"}]. OptionSet construction retains every UInt64 bit, including future high bits; response fields remain exact UInt64 projections and these wrappers grant no permissions. Unknown response bits survive combination, equality and rawValue access. No request writability is inferred."
       }
@@ -14882,7 +14932,7 @@
         "evidence.5b.forumThreadMessagesAndUploads",
         "evidence.5b.forumRejectsOtherMessageFields"
       ],
-      "notes": "API v10, verified 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial as documented by their resource contracts. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record.",
+      "notes": "API v10, verified 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial as documented by their resource contracts. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record. Current 2026-11-05 additions and corrections are recorded separately under manual.api20261105 with their own source revision and verification date.",
       "manual": {
         "behavior": "Immutable type-aware request validation and exact JSON encoding; API v10, verified and locally added 2026-10-16. Current official hashes are in Docs/Parity/channel-current-sources.json, independent of historical discovery pins. Channel-owned fields and operations are implemented; referenced resource families remain explicitly partial until their batches. No live API or platform qualification claim. Upstream announcement/effective dates are unknown unless recorded in the chronological Channel change record."
       }
@@ -22093,8 +22143,7 @@
         "d-042d59cd5459bd87bb817be7",
         "d-df60674fee104a4594ea694c",
         "d-bb0aec5b683268b6cd8c9dee",
-        "d-96c5bacd75226d3add3a3481",
-        "d-756f3d8636d85dd595058598"
+        "d-96c5bacd75226d3add3a3481"
       ],
       "status": "partial",
       "supportSince": "2026-10-16",
@@ -22130,9 +22179,9 @@
         "evidence.5c.GuildRequestTests.officialSchemaCompatibilityFields",
         "evidence.5c.GuildRequestTests.publishedSupplementalRequestBounds"
       ],
-      "notes": "API v10 verified 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement.",
+      "notes": "API v10 verified 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement. Current 2026-11-05 additions and corrections are recorded separately under manual.api20261105 with their own source revision and verification date.",
       "manual": {
-        "behavior": "Validated immutable request payload and exact JSON; optional/null behavior, numeric/ID bounds, field applicability, permission decimal strings, separate user OAuth grant, writable flags and time windows are tested. Official preview supplements finite limits and explicitly noted onboarding optional nulls; written reference controls documented conflicts. Private request fields are covered through their observable jsonValue rather than promoted as public properties. API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/guild-current-sources.json are separate from original discovery pins. Guild-owned written-reference contracts and explicit preview compatibility are implemented; related User/Application/Emoji/Sticker families retain partial projections. No live API or cross-platform qualification claim. Upstream dates are unknown except where the chronological Guild change record records an announcement."
+        "behavior": "Validated immutable channel reorder entry containing id, position, lock_permissions and parent_id with explicit absence/null semantics. Supplied flags are rejected by the deprecated compatibility initializer. Current field removal and source evidence are recorded in manual.api20261105.GuildChannelPosition.currentContract; historical discovery pins retain their original revision."
       }
     },
     {
@@ -25107,7 +25156,7 @@
         "evidence.5d.AuditLogValueTests.envelopePreservesOrder",
         "evidence.5d.AuditLogValueTests.partialIntegrationVariants"
       ],
-      "notes": "API v10 verified 2026-10-16. Current official hashes in Docs/Parity/moderation-current-sources.json remain separate from original discovery pins. Audit-owned and Auto Moderation schemas are explicit; related User/ApplicationCommand/ScheduledEvent/Webhook projections remain partial. Numeric audit code recognition does not implement the related resource or Gateway event. No live API, cross-platform or capacity qualification is claimed. Known upstream announcements are in the chronological moderation change record; other dates are unknown.",
+      "notes": "API v10 verified 2026-10-16. Current official hashes in Docs/Parity/moderation-current-sources.json remain separate from original discovery pins. Audit-owned and Auto Moderation schemas are explicit; related User/ApplicationCommand/ScheduledEvent/Webhook projections remain partial. Numeric audit code recognition does not implement the related resource or Gateway event. No live API, cross-platform or capacity qualification is claimed. Known upstream announcements are in the chronological moderation change record; other dates are unknown. Current 2026-11-05 additions and corrections are recorded separately under manual.api20261105 with their own source revision and verification date.",
       "manual": {
         "behavior": "Recognizes every named written numeric variant with exact raw-value fixtures and future integral RawValue retention. Written names control preview label differences; recognition does not add related Gateway or resource support. API v10 verified and locally added 2026-10-16. Current official hashes in Docs/Parity/moderation-current-sources.json remain separate from original discovery pins. Audit-owned and Auto Moderation schemas are explicit; related User/ApplicationCommand/ScheduledEvent/Webhook projections remain partial. Numeric audit code recognition does not implement the related resource or Gateway event. No live API, cross-platform or capacity qualification is claimed. Known upstream announcements are in the chronological moderation change record; other dates are unknown."
       }
@@ -39850,7 +39899,7 @@
       ],
       "notes": "API v10 verified 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
       "manual": {
-        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group \u2192 subcommand \u2192 leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in \u00b1(2^53-1), numbers in \u00b12^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
+        "behavior": "A validated option tree. Construction bounds every level and rejects unsupported discriminator combinations. Commands support at most group → subcommand → leaf; no unbounded recursion or hidden fetching occurs. Validates one complete option with type-specific fields and bounded children. - Parameters: - type: One of the eleven documented option kinds; unknown outgoing kinds are not accepted. - name: 1...32 scalars satisfying Discord's lowercase Unicode slash-name grammar. - description: Required 1...100 scalar explanation. - nameLocalizations: Omitted/null/dictionary of names following the same naming rules. - descriptionLocalizations: Omitted/null/dictionary of 1...100 scalar descriptions. - required: Optional leaf requirement, default nil; forbidden on subcommands/groups even when false. - choices: Optional 0...25 choices for string/integer/number, compatible with the selected kind. - options: Optional 0...25 children; groups contain only subcommands and subcommands only leaves. - channelTypes: Optional distinct known channel filters, permitted only for channel options. - minValue: Optional exact numeric minimum for integer/number options; must not exceed maxValue. - maxValue: Optional exact numeric maximum; integers are in ±(2^53-1), numbers in ±2^53. - minLength: Optional string minimum in 0...6000, no greater than maxLength. - maxLength: Optional string maximum in 1...6000. - autocomplete: Optional string/integer/number autocomplete; true is incompatible with any choices array. - fileTypes: Optional 0...10 attachment filters: image/video/audio or dot-prefixed extensions, at most 16 scalars each per preview. Case-insensitive duplicates are rejected; content validation remains caller-owned. - Throws: Invalid-value for incompatible fields, duplicate names/filters, ordering/nesting, locale/text/number limits; limitExceeded when the combined localized text exceeds 8000 scalars. Entire construction is synchronous and immutable. API v10 verified and locally added 2026-10-16. Current source hashes are in Docs/Parity/application-user-current-sources.json, independent of original discovery membership pins. Written references control conflicts with explicitly documented preview compatibility. No implicit hydration, live API, other-host, distributed-coordination or capacity qualification is claimed. Upstream announcement/effective dates are unknown except separately recorded chronology.",
         "fields": [
           {
             "wireName": "type",
@@ -70604,6 +70653,550 @@
       "manual": {
         "behavior": "Voice Gateway v8 supervised per-guild sessions/manager, either-order main-Gateway join rendezvous, bounded deadlines/resume, authenticated SSRC routing, paced encoded Opus/PCM and complete-frame DAVE before RTP/transport AEAD. Revocation, replay, membership, cancellation and deterministic cleanup are tested. Independently adopted DAVEVoiceSession preserves the DAVE-to-Voice dependency direction; no Client/Gateway/facade or native-runtime dependency is added. Verified and locally added 2026-10-18; official current hashes in Docs/Parity/voice-sessions-current-sources.json. Upstream grouped announcement/effective dates remain unknown. Authorized Discord, independent crypto/complete-client interoperability and broad platform/device qualification remain open; local UDP and injected-source evidence cannot establish them. See Docs/VoiceSessions.md and dated voice sessions validation."
       }
+    },
+    {
+      "id": "manual.api20261105.GuildEndpoints.memberPermissions",
+      "kind": "manual",
+      "name": "GuildEndpoints.memberPermissions",
+      "sourceID": "current/2026-11-05/developers/resources/guild",
+      "upstreamIDs": [
+        "d-96d9d73b8f25ff5ba80f2f9d",
+        "d-a37877ed539d55bc87efbf69",
+        "d-36d448a10cc396c02817a5c6",
+        "d-211cbb822d95efd07f275fcc"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-30",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.GuildEndpoints.memberPermissions"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.PermissionEndpointTests.descriptor",
+        "evidence.api20261105.PermissionEndpointTests.maskingAndReadPolicy",
+        "evidence.api20261105.PermissionEndpointTests.success",
+        "evidence.api20261105.PermissionEndpointTests.apiFailures",
+        "evidence.api20261105.PermissionEndpointTests.malformedSuccess",
+        "evidence.api20261105.PermissionEndpointTests.boundedRateRetry"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "API v10 safe GET for computed member permissions; bot authentication, exact guild/channel major rate partition, HTTP 200 bounded ComputedPermissions, credential-scoped optional read reuse, cancellation and finite retries through the existing HTTP owner. Guild role calculations include @everyone; channel calculations apply overwrites and use parent overwrites for threads. Channel implicit defaults to server true; false requests unmasked permissions, and member masking never applies to bot targets. Requires VIEW_CHANNEL and voice/stage CONNECT on channel operations. Snapshots never authorize a later operation."
+      }
+    },
+    {
+      "id": "manual.api20261105.GuildEndpoints.rolePermissions",
+      "kind": "manual",
+      "name": "GuildEndpoints.rolePermissions",
+      "sourceID": "current/2026-11-05/developers/resources/guild",
+      "upstreamIDs": [
+        "d-929754d1ea16d253bc962221",
+        "d-34320bf1042b2a2a53792e54",
+        "d-465af7be9a3cb753fde436aa",
+        "d-a5fc0747fcbb22fd433913bd"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-30",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.GuildEndpoints.rolePermissions"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.PermissionEndpointTests.descriptor",
+        "evidence.api20261105.PermissionEndpointTests.maskingAndReadPolicy",
+        "evidence.api20261105.PermissionEndpointTests.success",
+        "evidence.api20261105.PermissionEndpointTests.apiFailures",
+        "evidence.api20261105.PermissionEndpointTests.malformedSuccess",
+        "evidence.api20261105.PermissionEndpointTests.boundedRateRetry"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "API v10 safe GET for computed role permissions; bot authentication, exact guild/channel major rate partition, HTTP 200 bounded ComputedPermissions, credential-scoped optional read reuse, cancellation and finite retries through the existing HTTP owner. Guild role calculations include @everyone; channel calculations apply overwrites and use parent overwrites for threads. Channel implicit defaults to server true; false requests unmasked permissions, and member masking never applies to bot targets. Requires VIEW_CHANNEL and voice/stage CONNECT on channel operations. Snapshots never authorize a later operation."
+      }
+    },
+    {
+      "id": "manual.api20261105.ChannelEndpoints.memberPermissions",
+      "kind": "manual",
+      "name": "ChannelEndpoints.memberPermissions",
+      "sourceID": "current/2026-11-05/developers/resources/channel",
+      "upstreamIDs": [
+        "d-8f47da1353877a4c2c3fe0d9",
+        "d-5bfb5ab7ec24f5c06a68188e",
+        "d-65c2032b13413b2011d312e6",
+        "d-5c1001b9a15f19864db9fed8",
+        "d-a01a7c2059e3f6b2bc801948",
+        "d-7206b56e9eecd21ab221d4b3"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-30",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.ChannelEndpoints.memberPermissions"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.PermissionEndpointTests.descriptor",
+        "evidence.api20261105.PermissionEndpointTests.maskingAndReadPolicy",
+        "evidence.api20261105.PermissionEndpointTests.success",
+        "evidence.api20261105.PermissionEndpointTests.apiFailures",
+        "evidence.api20261105.PermissionEndpointTests.malformedSuccess",
+        "evidence.api20261105.PermissionEndpointTests.boundedRateRetry"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "API v10 safe GET for computed member permissions; bot authentication, exact guild/channel major rate partition, HTTP 200 bounded ComputedPermissions, credential-scoped optional read reuse, cancellation and finite retries through the existing HTTP owner. Guild role calculations include @everyone; channel calculations apply overwrites and use parent overwrites for threads. Channel implicit defaults to server true; false requests unmasked permissions, and member masking never applies to bot targets. Requires VIEW_CHANNEL and voice/stage CONNECT on channel operations. Snapshots never authorize a later operation."
+      }
+    },
+    {
+      "id": "manual.api20261105.ChannelEndpoints.rolePermissions",
+      "kind": "manual",
+      "name": "ChannelEndpoints.rolePermissions",
+      "sourceID": "current/2026-11-05/developers/resources/channel",
+      "upstreamIDs": [
+        "d-d4044e29e3e4640a474c94f7",
+        "d-95de4c604b6ac67e423ecdba",
+        "d-f2d99d5ec41d071153a4ea76",
+        "d-5aea9de99a9e45bc3d85b209",
+        "d-cc2744dcc32a5ecd82cc90b8",
+        "d-f65577e4ee407e767823a998"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-30",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.ChannelEndpoints.rolePermissions"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.PermissionEndpointTests.descriptor",
+        "evidence.api20261105.PermissionEndpointTests.maskingAndReadPolicy",
+        "evidence.api20261105.PermissionEndpointTests.success",
+        "evidence.api20261105.PermissionEndpointTests.apiFailures",
+        "evidence.api20261105.PermissionEndpointTests.malformedSuccess",
+        "evidence.api20261105.PermissionEndpointTests.boundedRateRetry"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "API v10 safe GET for computed role permissions; bot authentication, exact guild/channel major rate partition, HTTP 200 bounded ComputedPermissions, credential-scoped optional read reuse, cancellation and finite retries through the existing HTTP owner. Guild role calculations include @everyone; channel calculations apply overwrites and use parent overwrites for threads. Channel implicit defaults to server true; false requests unmasked permissions, and member masking never applies to bot targets. Requires VIEW_CHANNEL and voice/stage CONNECT on channel operations. Snapshots never authorize a later operation."
+      }
+    },
+    {
+      "id": "manual.api20261105.ComputedPermissions",
+      "kind": "manual",
+      "name": "ComputedPermissions",
+      "sourceID": "current/2026-11-05/developers/resources/guild",
+      "upstreamIDs": [
+        "d-211cbb822d95efd07f275fcc",
+        "d-a5fc0747fcbb22fd433913bd"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.ComputedPermissions",
+        "symbol.api20261105.ComputedPermissions.permissions"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.ComputedPermissionsTests.exactValuesAndDiagnostics",
+        "evidence.api20261105.ComputedPermissionsTests.malformedSchema",
+        "evidence.api20261105.ComputedPermissionsTests.parserBoundsAndSyntax"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Required nonnull nonempty ASCII decimal-string permissions; arbitrary width and leading zeroes remain exact. Complete unknown fields and numeric lexemes are retained under caller parser bounds; diagnostics redact payloads. No local permission calculation or authorization inference.",
+        "fields": [
+          {
+            "wireName": "permissions",
+            "swiftName": "permissions",
+            "valueType": "String",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "rejectMissing",
+            "constraints": [
+              "nonemptyASCIIDecimal",
+              "arbitraryWidth",
+              "boundedExactJSON"
+            ],
+            "access": "read-only server-computed permission snapshot; endpoint permissions apply",
+            "unknownValueBehavior": "preserveFutureBitsAndUnknownSiblingFields",
+            "upstreamIDs": [
+              "d-211cbb822d95efd07f275fcc",
+              "d-a5fc0747fcbb22fd433913bd"
+            ],
+            "symbolID": "symbol.api20261105.ComputedPermissions.permissions"
+          }
+        ]
+      }
+    },
+    {
+      "id": "manual.api20261105.MessageAttachmentFlags.contentScanning",
+      "kind": "manual",
+      "name": "MessageAttachmentFlags.contentScanning",
+      "sourceID": "current/2026-11-05/developers/resources/message",
+      "upstreamIDs": [
+        "d-b580da836205c464bbff1a8f",
+        "d-ad0ebdbca813dffeb7945057",
+        "d-b4fb4924eb074f1d6ca7d143"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-28",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.MessageAttachmentFlags.containsExplicitContent",
+        "symbol.api20261105.MessageAttachmentFlags.containsGoreContent",
+        "symbol.api20261105.MessageAttachmentFlags.containsSelfHarmContent"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.ContentScanTests.documentedContentScanBits",
+        "evidence.api20261105.ContentScanTests.metadataBoundariesAndUnknownFields",
+        "evidence.api20261105.ContentScanTests.malformedMetadata",
+        "evidence.api20261105.ContentScanTests.componentScanPresenceAndResponseOnlyContract",
+        "evidence.api20261105.ContentScanTests.delayedScanResultsInMessageUpdates"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Response-only content scan flags: containsExplicitContent=1<<4, containsGoreContent=1<<6, containsSelfHarmContent=1<<7. Unknown bits survive UInt64 projections. Initial and modal-upload responses may lack scan results; later Message Update payloads can carry them."
+      }
+    },
+    {
+      "id": "manual.api20261105.MessageEmbedFlags.contentScanning",
+      "kind": "manual",
+      "name": "MessageEmbedFlags.contentScanning",
+      "sourceID": "current/2026-11-05/developers/resources/message",
+      "upstreamIDs": [
+        "d-5df706ab5b34c0f28969c48d",
+        "d-a037e34635b3243bcc22ef71",
+        "d-351fc9309edace0d23df5795"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-28",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.MessageEmbedFlags.containsExplicitContent",
+        "symbol.api20261105.MessageEmbedFlags.containsGoreContent",
+        "symbol.api20261105.MessageEmbedFlags.containsSelfHarmContent"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.ContentScanTests.documentedContentScanBits",
+        "evidence.api20261105.ContentScanTests.metadataBoundariesAndUnknownFields",
+        "evidence.api20261105.ContentScanTests.malformedMetadata",
+        "evidence.api20261105.ContentScanTests.componentScanPresenceAndResponseOnlyContract",
+        "evidence.api20261105.ContentScanTests.delayedScanResultsInMessageUpdates"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Response-only content scan flags: containsExplicitContent=1<<4, containsGoreContent=1<<6, containsSelfHarmContent=1<<7. Unknown bits survive UInt64 projections. Initial and modal-upload responses may lack scan results; later Message Update payloads can carry them."
+      }
+    },
+    {
+      "id": "manual.api20261105.UnfurledMediaItem.contentScanning",
+      "kind": "manual",
+      "name": "UnfurledMediaItem.contentScanning",
+      "sourceID": "current/2026-11-05/developers/components/reference",
+      "upstreamIDs": [
+        "d-ef7e8cf8a74e3787d82455a7",
+        "d-e7fb73181fd95a65ea849633",
+        "d-b59edde3e7afad2e191b8e12",
+        "d-52056e8ea505004b5bfa4654",
+        "d-ef1e6c265ce84d2041b9b2c9",
+        "d-7f85471ce29d1de3babbbbbe",
+        "d-afeba704a8f582e31d32f239"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-28",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.UnfurledMediaItem.contentScanMetadata",
+        "symbol.api20261105.UnfurledMediaContentScanMetadata",
+        "symbol.api20261105.UnfurledMediaContentScanMetadata.flags",
+        "symbol.api20261105.UnfurledMediaContentScanFlags",
+        "symbol.api20261105.UnfurledMediaContentScanFlags.isExplicitContent",
+        "symbol.api20261105.UnfurledMediaContentScanFlags.isGoreContent",
+        "symbol.api20261105.UnfurledMediaContentScanFlags.isSelfHarmContent"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.ContentScanTests.documentedContentScanBits",
+        "evidence.api20261105.ContentScanTests.metadataBoundariesAndUnknownFields",
+        "evidence.api20261105.ContentScanTests.malformedMetadata",
+        "evidence.api20261105.ContentScanTests.componentScanPresenceAndResponseOnlyContract",
+        "evidence.api20261105.ContentScanTests.delayedScanResultsInMessageUpdates"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Optional nonnull response-only content_scan_metadata contains a required UInt64 flags integer. Explicit/gore/self-harm flags use bits 0/1/2, independent of attachment/embed bit positions. Missing metadata remains absent and may appear in later updates. Bounded exact parsing, unknown-field retention and payload-free diagnostics match enclosing components. Outgoing components continue rejecting response-only fields.",
+        "fields": [
+          {
+            "wireName": "content_scan_metadata",
+            "swiftName": "contentScanMetadata",
+            "valueType": "UnfurledMediaContentScanMetadata",
+            "optional": true,
+            "nullable": false,
+            "defaultBehavior": "absent",
+            "constraints": [
+              "boundedExactJSON",
+              "responseOnly"
+            ],
+            "access": "Discord-provided media scan result; absent metadata does not establish scan completion",
+            "unknownValueBehavior": "preserveUnknownSiblingFieldsAndFutureFlagBits",
+            "upstreamIDs": [
+              "d-ef7e8cf8a74e3787d82455a7"
+            ],
+            "symbolID": "symbol.api20261105.UnfurledMediaItem.contentScanMetadata"
+          },
+          {
+            "wireName": "flags",
+            "swiftName": "flags",
+            "valueType": "UInt64",
+            "optional": false,
+            "nullable": false,
+            "defaultBehavior": "rejectMissing",
+            "constraints": [
+              "boundedExactJSON",
+              "responseOnly"
+            ],
+            "access": "Discord-provided media scan result; absent metadata does not establish scan completion",
+            "unknownValueBehavior": "preserveUnknownSiblingFieldsAndFutureFlagBits",
+            "upstreamIDs": [
+              "d-b59edde3e7afad2e191b8e12"
+            ],
+            "symbolID": "symbol.api20261105.UnfurledMediaContentScanMetadata.flags"
+          }
+        ]
+      }
+    },
+    {
+      "id": "manual.api20261105.ForumThreadStart.componentsV2",
+      "kind": "manual",
+      "name": "ForumThreadStart.componentsV2",
+      "sourceID": "current/2026-11-05/developers/resources/channel",
+      "upstreamIDs": [
+        "d-317e3ce1c86605c9390748c5"
+      ],
+      "status": "partial",
+      "supportSince": "2026-11-05",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.ForumThreadStart"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.ChannelRequestTests.forumComponentsV2Messages"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Forum/media starter messages accept IS_COMPONENTS_V2 alongside SUPPRESS_EMBEDS and SUPPRESS_NOTIFICATIONS. Shared Components V2 validation rejects incompatible content/embeds/stickers/polls; multipart upload IDs and attachment URLs retain existing validation."
+      }
+    },
+    {
+      "id": "manual.api20261105.MessageEndpoints.delete.auditReason",
+      "kind": "manual",
+      "name": "MessageEndpoints.delete.auditReason",
+      "sourceID": "current/2026-11-05/developers/resources/message",
+      "upstreamIDs": [
+        "d-927b8dfa031599f345afdb58",
+        "d-8bf8b8c647e615959615da99"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.MessageEndpoints.delete"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.MessageEndpointTests.deleteMessageOmitsAuditReason"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Single-message DELETE omits the unsupported X-Audit-Log-Reason header. The preferred overload has no auditReason argument; the deprecated compatibility overload ignores that argument. Unsafe retry and message-scope invalidation remain unchanged. Bulk deletion retains its separate audit reason."
+      }
+    },
+    {
+      "id": "manual.api20261105.GuildChannelPosition.currentContract",
+      "kind": "manual",
+      "name": "GuildChannelPosition.currentContract",
+      "sourceID": "current/2026-11-05/developers/resources/guild",
+      "upstreamIDs": [
+        "d-9000901dc0886aec1c86e92d",
+        "d-75cb5a129ecf4b4f674a936f",
+        "d-a4f7461aae1bf884d04cf794",
+        "d-53e407aeb1311d3c3d742bc7",
+        "d-a9684d15c831a1108f8e4134",
+        "d-6a81ef282fb27f32dc0fa8b9",
+        "d-9c43f4f6600eb6c909763085"
+      ],
+      "status": "partial",
+      "supportSince": "2026-11-05",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.GuildChannelPosition",
+        "symbol.api20261105.GuildEndpoints.modifyChannelPositions"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.GuildRequestTests.channelPositionFlagsCompatibility",
+        "evidence.api20261105.GuildRequestTests.orderingEntries",
+        "evidence.api20261105.GuildEndpointTests.positionArrayRules"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Channel-position requests encode only id, position, lock_permissions and parent_id. Preferred initializer omits flags; deprecated explicit-flags initializer accepts only absent and rejects null/value locally. Reordering accepts a bounded audit reason and remains unsafe to replay ambiguously. Discord merges qualifying reorder audit entries; the first reason survives."
+      }
+    },
+    {
+      "id": "manual.api20261105.AuditLogEvent.positionUpdates",
+      "kind": "manual",
+      "name": "AuditLogEvent.positionUpdates",
+      "sourceID": "current/2026-11-05/developers/resources/audit-log",
+      "upstreamIDs": [
+        "d-a63834333af90b1edeb4d0a5",
+        "d-cbabed2628f058ced3499da7",
+        "d-156a064106bd17176f00c56b"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-29",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.AuditLogEvent.channelPositionUpdate",
+        "symbol.api20261105.AuditLogEvent.rolePositionUpdate"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.AuditLogValueTests.knownEvents",
+        "evidence.api20261105.AuditLogValueTests.positionUpdateCounts"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Recognize CHANNEL_POSITION_UPDATE = 16 and ROLE_POSITION_UPDATE = 33. Merged-entry count remains an exact decimal string, including values beyond UInt64. Later merged changes neither create a new audit entry nor emit another Guild Audit Log Entry Create event."
+      }
+    },
+    {
+      "id": "manual.api20261105.ApplicationRoleConnection.writtenContract",
+      "kind": "manual",
+      "name": "ApplicationRoleConnection.writtenContract",
+      "sourceID": "current/2026-11-05/developers/resources/user",
+      "upstreamIDs": [
+        "d-f2eaed062803553355f7b79c",
+        "d-5d22c97e661816df400e41df",
+        "d-b556d22c08453ae97dc8e5c0",
+        "d-9a58ea609f832d65b69039b1",
+        "d-a011fa23b2674614cc17fb32"
+      ],
+      "status": "partial",
+      "supportSince": "2026-11-05",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.ApplicationRoleConnection"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.UserCatalogModelTests.guildsConnectionsAndMetadata",
+        "evidence.api20261105.UserCatalogRequestTests.userRoleConnectionUpdates"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Written reference now confirms existing implementation: platform_name and platform_username are optional nullable strings; metadata is optional nonnull string-valued object. Unknown fields retain exact values. No wire or request behavior changed."
+      }
+    },
+    {
+      "id": "manual.api20261105.OAuth.issuerIdentification",
+      "kind": "manual",
+      "name": "OAuth.issuerIdentification",
+      "sourceID": "current/2026-11-05/developers/topics/oauth2",
+      "upstreamIDs": [
+        "d-01631cd3cf5225afd65039e4"
+      ],
+      "status": "supported",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-14",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.AuthorizationCodeFlow"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.AuthorizationFlowTests.codeAuthorizationAndSingleUse",
+        "evidence.api20261105.AuthorizationFlowTests.implicitCompatibility"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Existing authorization code and implicit flow validation already require the exact https://discord.com issuer and reject missing/wrong/duplicate values. New official issuer/discovery documentation requires no runtime change. Discovery URLs do not replace fixed trusted-origin or callback/state/PKCE checks."
+      }
+    },
+    {
+      "id": "manual.api20261105.Gateway.guildUnavailable",
+      "kind": "manual",
+      "name": "Gateway.guildUnavailable",
+      "sourceID": "current/2026-11-05/developers/events/gateway-events",
+      "upstreamIDs": [
+        "d-80368affcfb799e0af4ce52a",
+        "d-57b9139073457074c6180c04"
+      ],
+      "status": "partial",
+      "supportSince": "2026-11-05",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.GatewayGuildAvailability"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.GatewayDispatchTests.guildAvailability"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "unavailable=true means the guild is currently unavailable. Guild Create restores availability when sent. Do not infer an outage or removal cause solely from the availability field; existing typed sparse parsing is retained."
+      }
+    },
+    {
+      "id": "manual.api20261105.Webhook.pingHeaders",
+      "kind": "manual",
+      "name": "Webhook.pingHeaders",
+      "sourceID": "current/2026-11-05/developers/events/webhook-events",
+      "upstreamIDs": [
+        "d-b3a09991d2cbeda354f497d4"
+      ],
+      "status": "partial",
+      "supportSince": "2026-11-05",
+      "announcementDate": "unknown",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.WebhookEventProcessor"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.WebhookEventProcessorTests.signedPingAndDuplicateRetry"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "PING acknowledgment remains an empty HTTP 204. The existing compatible application/json header remains emitted, without claiming the written reference requires it. Signed ingress and durable admission behavior are unchanged."
+      }
+    },
+    {
+      "id": "manual.api20261105.VoiceStatus.implicitPermissions",
+      "kind": "manual",
+      "name": "VoiceStatus.implicitPermissions",
+      "sourceID": "current/2026-11-05/developers/topics/permissions",
+      "upstreamIDs": [
+        "d-4169513dc548f678969df104"
+      ],
+      "status": "partial",
+      "supportSince": "2026-11-05",
+      "announcementDate": "2026-10-29",
+      "effectiveDate": "unknown",
+      "symbolIDs": [
+        "symbol.api20261105.PermissionResolver"
+      ],
+      "evidenceIDs": [
+        "evidence.api20261105.PermissionResolverTests.voiceStatusExceptionRespectsOtherRestrictions"
+      ],
+      "notes": "Reviewed against official main revision da52492ced82d375981c46618cc3e182daada9a2 on 2026-11-05. See Docs/Parity/changes/2026-11-05-api-docs.md for migration and review scope. Historical pins and original support dates are retained separately. No live-service or other-platform qualification.",
+      "manual": {
+        "behavior": "Existing connect-denial masking already preserves SET_VOICE_CHANNEL_STATUS for connected users. Endpoint still requires that permission and additionally MANAGE_CHANNELS when disconnected. Cached calculations do not establish current server authority."
+      }
     }
   ],
   "symbols": [
@@ -70880,7 +71473,7 @@
     {
       "id": "symbol.5a.MessageEndpoints.delete",
       "path": "Sources/DiscordHTTP/Resources/MessageEndpoints.swift",
-      "declaration": "public static func delete(channelID: ChannelID, messageID: MessageID, auditReason: String? = nil) throws -> Endpoint<EmptyResponse> {"
+      "declaration": "public static func delete(channelID: ChannelID, messageID: MessageID) throws -> Endpoint<EmptyResponse> {"
     },
     {
       "id": "symbol.5a.MessageEndpoints.bulkDelete",
@@ -91031,6 +91624,156 @@
       "id": "symbol.voice sessions.MLSTentativeCommit.decodeDAVECommitWelcome",
       "path": "Sources/DiscordMLS/MLSDeliveryCandidate.swift",
       "declaration": "public static func decodeDAVECommitWelcome(_ bytes: Data, maximumBytes: Int = 1_048_576) throws -> Self {"
+    },
+    {
+      "id": "symbol.api20261105.GuildEndpoints.memberPermissions",
+      "path": "Sources/DiscordHTTP/Resources/PermissionEndpoints.swift",
+      "declaration": "public static func memberPermissions(guildID: GuildID, userID: UserID,"
+    },
+    {
+      "id": "symbol.api20261105.GuildEndpoints.rolePermissions",
+      "path": "Sources/DiscordHTTP/Resources/PermissionEndpoints.swift",
+      "declaration": "public static func rolePermissions(guildID: GuildID, roleID: RoleID,"
+    },
+    {
+      "id": "symbol.api20261105.ChannelEndpoints.memberPermissions",
+      "path": "Sources/DiscordHTTP/Resources/PermissionEndpoints.swift",
+      "declaration": "public static func memberPermissions(channelID: ChannelID, userID: UserID, implicit: Bool? = nil,"
+    },
+    {
+      "id": "symbol.api20261105.ChannelEndpoints.rolePermissions",
+      "path": "Sources/DiscordHTTP/Resources/PermissionEndpoints.swift",
+      "declaration": "public static func rolePermissions(channelID: ChannelID, roleID: RoleID, implicit: Bool? = nil,"
+    },
+    {
+      "id": "symbol.api20261105.ComputedPermissions",
+      "path": "Sources/DiscordModels/ComputedPermissions.swift",
+      "declaration": "public struct ComputedPermissions: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.api20261105.ComputedPermissions.permissions",
+      "path": "Sources/DiscordModels/ComputedPermissions.swift",
+      "declaration": "public let permissions: String"
+    },
+    {
+      "id": "symbol.api20261105.MessageAttachmentFlags.containsExplicitContent",
+      "path": "Sources/DiscordModels/MessageValues.swift",
+      "declaration": "public static let containsExplicitContent = Self(rawValue: 1 << 4)"
+    },
+    {
+      "id": "symbol.api20261105.MessageAttachmentFlags.containsGoreContent",
+      "path": "Sources/DiscordModels/MessageValues.swift",
+      "declaration": "public static let containsGoreContent = Self(rawValue: 1 << 6)"
+    },
+    {
+      "id": "symbol.api20261105.MessageAttachmentFlags.containsSelfHarmContent",
+      "path": "Sources/DiscordModels/MessageValues.swift",
+      "declaration": "public static let containsSelfHarmContent = Self(rawValue: 1 << 7)"
+    },
+    {
+      "id": "symbol.api20261105.MessageEmbedFlags.containsExplicitContent",
+      "path": "Sources/DiscordModels/MessageValues.swift",
+      "declaration": "public static let containsExplicitContent = Self(rawValue: 1 << 4)"
+    },
+    {
+      "id": "symbol.api20261105.MessageEmbedFlags.containsGoreContent",
+      "path": "Sources/DiscordModels/MessageValues.swift",
+      "declaration": "public static let containsGoreContent = Self(rawValue: 1 << 6)"
+    },
+    {
+      "id": "symbol.api20261105.MessageEmbedFlags.containsSelfHarmContent",
+      "path": "Sources/DiscordModels/MessageValues.swift",
+      "declaration": "public static let containsSelfHarmContent = Self(rawValue: 1 << 7)"
+    },
+    {
+      "id": "symbol.api20261105.UnfurledMediaItem.contentScanMetadata",
+      "path": "Sources/DiscordModels/Component.swift",
+      "declaration": "public let contentScanMetadata: Field<UnfurledMediaContentScanMetadata>"
+    },
+    {
+      "id": "symbol.api20261105.UnfurledMediaContentScanMetadata",
+      "path": "Sources/DiscordModels/ComponentContentScan.swift",
+      "declaration": "public struct UnfurledMediaContentScanMetadata: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.api20261105.UnfurledMediaContentScanMetadata.flags",
+      "path": "Sources/DiscordModels/ComponentContentScan.swift",
+      "declaration": "public let flags: UInt64"
+    },
+    {
+      "id": "symbol.api20261105.UnfurledMediaContentScanFlags",
+      "path": "Sources/DiscordModels/ComponentContentScan.swift",
+      "declaration": "public struct UnfurledMediaContentScanFlags: OptionSet, Sendable, Hashable {"
+    },
+    {
+      "id": "symbol.api20261105.ForumThreadStart",
+      "path": "Sources/DiscordModels/ChannelRequest.swift",
+      "declaration": "public struct ForumThreadStart: Sendable {"
+    },
+    {
+      "id": "symbol.api20261105.MessageEndpoints.delete",
+      "path": "Sources/DiscordHTTP/Resources/MessageEndpoints.swift",
+      "declaration": "public static func delete(channelID: ChannelID, messageID: MessageID) throws -> Endpoint<EmptyResponse> {"
+    },
+    {
+      "id": "symbol.api20261105.GuildChannelPosition",
+      "path": "Sources/DiscordModels/GuildRequest.swift",
+      "declaration": "public struct GuildChannelPosition: GuildRequestPayload {"
+    },
+    {
+      "id": "symbol.api20261105.GuildEndpoints.modifyChannelPositions",
+      "path": "Sources/DiscordHTTP/Resources/GuildEndpoints.swift",
+      "declaration": "public static func modifyChannelPositions(guildID: GuildID,"
+    },
+    {
+      "id": "symbol.api20261105.AuditLogEvent.channelPositionUpdate",
+      "path": "Sources/DiscordModels/AuditLogValues.swift",
+      "declaration": "case channelPositionUpdate = 16"
+    },
+    {
+      "id": "symbol.api20261105.AuditLogEvent.rolePositionUpdate",
+      "path": "Sources/DiscordModels/AuditLogValues.swift",
+      "declaration": "case rolePositionUpdate = 33"
+    },
+    {
+      "id": "symbol.api20261105.ApplicationRoleConnection",
+      "path": "Sources/DiscordModels/RoleConnection.swift",
+      "declaration": "public struct ApplicationRoleConnection: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.api20261105.AuthorizationCodeFlow",
+      "path": "Sources/DiscordOAuth/AuthorizationFlow.swift",
+      "declaration": "public actor OAuthAuthorizationFlow: CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {"
+    },
+    {
+      "id": "symbol.api20261105.GatewayGuildAvailability",
+      "path": "Sources/DiscordModels/GatewayPayloads.swift",
+      "declaration": "public struct GatewayGuildAvailability: MessageResponseValue, MessageTreeProjectable, Equatable {"
+    },
+    {
+      "id": "symbol.api20261105.WebhookEventProcessor",
+      "path": "Sources/DiscordInteractions/WebhookEventProcessor.swift",
+      "declaration": "public actor WebhookEventProcessor {"
+    },
+    {
+      "id": "symbol.api20261105.PermissionResolver",
+      "path": "Sources/DiscordCache/PermissionResolver.swift",
+      "declaration": "public enum PermissionResolver {"
+    },
+    {
+      "id": "symbol.api20261105.UnfurledMediaContentScanFlags.isExplicitContent",
+      "path": "Sources/DiscordModels/ComponentContentScan.swift",
+      "declaration": "public static let isExplicitContent = Self(rawValue: 1 << 0)"
+    },
+    {
+      "id": "symbol.api20261105.UnfurledMediaContentScanFlags.isGoreContent",
+      "path": "Sources/DiscordModels/ComponentContentScan.swift",
+      "declaration": "public static let isGoreContent = Self(rawValue: 1 << 1)"
+    },
+    {
+      "id": "symbol.api20261105.UnfurledMediaContentScanFlags.isSelfHarmContent",
+      "path": "Sources/DiscordModels/ComponentContentScan.swift",
+      "declaration": "public static let isSelfHarmContent = Self(rawValue: 1 << 2)"
     }
   ],
   "evidence": [
@@ -97423,6 +98166,146 @@
       "id": "evidence.voice sessions.VoiceStateMachineTests.authorizationMergeRejectsWrongIdentityAndUnreadyCopy",
       "path": "Tests/DiscordVoiceTests/VoiceStateMachineTests.swift",
       "anchor": "authorizationMergeRejectsWrongIdentityAndUnreadyCopy"
+    },
+    {
+      "id": "evidence.api20261105.PermissionEndpointTests.descriptor",
+      "path": "Tests/DiscordHTTPTests/PermissionEndpointTests.swift",
+      "anchor": "descriptor"
+    },
+    {
+      "id": "evidence.api20261105.PermissionEndpointTests.maskingAndReadPolicy",
+      "path": "Tests/DiscordHTTPTests/PermissionEndpointTests.swift",
+      "anchor": "maskingAndReadPolicy"
+    },
+    {
+      "id": "evidence.api20261105.PermissionEndpointTests.success",
+      "path": "Tests/DiscordHTTPTests/PermissionEndpointTests.swift",
+      "anchor": "success"
+    },
+    {
+      "id": "evidence.api20261105.PermissionEndpointTests.apiFailures",
+      "path": "Tests/DiscordHTTPTests/PermissionEndpointTests.swift",
+      "anchor": "apiFailures"
+    },
+    {
+      "id": "evidence.api20261105.PermissionEndpointTests.malformedSuccess",
+      "path": "Tests/DiscordHTTPTests/PermissionEndpointTests.swift",
+      "anchor": "malformedSuccess"
+    },
+    {
+      "id": "evidence.api20261105.PermissionEndpointTests.boundedRateRetry",
+      "path": "Tests/DiscordHTTPTests/PermissionEndpointTests.swift",
+      "anchor": "boundedRateRetry"
+    },
+    {
+      "id": "evidence.api20261105.ComputedPermissionsTests.exactValuesAndDiagnostics",
+      "path": "Tests/DiscordModelsTests/ComputedPermissionsTests.swift",
+      "anchor": "exactValuesAndDiagnostics"
+    },
+    {
+      "id": "evidence.api20261105.ComputedPermissionsTests.malformedSchema",
+      "path": "Tests/DiscordModelsTests/ComputedPermissionsTests.swift",
+      "anchor": "malformedSchema"
+    },
+    {
+      "id": "evidence.api20261105.ComputedPermissionsTests.parserBoundsAndSyntax",
+      "path": "Tests/DiscordModelsTests/ComputedPermissionsTests.swift",
+      "anchor": "parserBoundsAndSyntax"
+    },
+    {
+      "id": "evidence.api20261105.ContentScanTests.documentedContentScanBits",
+      "path": "Tests/DiscordModelsTests/ContentScanTests.swift",
+      "anchor": "documentedContentScanBits"
+    },
+    {
+      "id": "evidence.api20261105.ContentScanTests.metadataBoundariesAndUnknownFields",
+      "path": "Tests/DiscordModelsTests/ContentScanTests.swift",
+      "anchor": "metadataBoundariesAndUnknownFields"
+    },
+    {
+      "id": "evidence.api20261105.ContentScanTests.malformedMetadata",
+      "path": "Tests/DiscordModelsTests/ContentScanTests.swift",
+      "anchor": "malformedMetadata"
+    },
+    {
+      "id": "evidence.api20261105.ContentScanTests.componentScanPresenceAndResponseOnlyContract",
+      "path": "Tests/DiscordModelsTests/ContentScanTests.swift",
+      "anchor": "componentScanPresenceAndResponseOnlyContract"
+    },
+    {
+      "id": "evidence.api20261105.ContentScanTests.delayedScanResultsInMessageUpdates",
+      "path": "Tests/DiscordModelsTests/ContentScanTests.swift",
+      "anchor": "delayedScanResultsInMessageUpdates"
+    },
+    {
+      "id": "evidence.api20261105.ChannelRequestTests.forumComponentsV2Messages",
+      "path": "Tests/DiscordModelsTests/ChannelRequestTests.swift",
+      "anchor": "forumComponentsV2Messages"
+    },
+    {
+      "id": "evidence.api20261105.MessageEndpointTests.deleteMessageOmitsAuditReason",
+      "path": "Tests/DiscordHTTPTests/MessageEndpointTests.swift",
+      "anchor": "deleteMessageOmitsAuditReason"
+    },
+    {
+      "id": "evidence.api20261105.GuildRequestTests.channelPositionFlagsCompatibility",
+      "path": "Tests/DiscordModelsTests/GuildRequestTests.swift",
+      "anchor": "channelPositionFlagsCompatibility"
+    },
+    {
+      "id": "evidence.api20261105.GuildRequestTests.orderingEntries",
+      "path": "Tests/DiscordModelsTests/GuildRequestTests.swift",
+      "anchor": "orderingEntries"
+    },
+    {
+      "id": "evidence.api20261105.GuildEndpointTests.positionArrayRules",
+      "path": "Tests/DiscordHTTPTests/GuildEndpointTests.swift",
+      "anchor": "positionArrayRules"
+    },
+    {
+      "id": "evidence.api20261105.AuditLogValueTests.knownEvents",
+      "path": "Tests/DiscordModelsTests/AuditLogValueTests.swift",
+      "anchor": "knownEvents"
+    },
+    {
+      "id": "evidence.api20261105.AuditLogValueTests.positionUpdateCounts",
+      "path": "Tests/DiscordModelsTests/AuditLogValueTests.swift",
+      "anchor": "positionUpdateCounts"
+    },
+    {
+      "id": "evidence.api20261105.UserCatalogModelTests.guildsConnectionsAndMetadata",
+      "path": "Tests/DiscordModelsTests/UserCatalogModelTests.swift",
+      "anchor": "guildsConnectionsAndMetadata"
+    },
+    {
+      "id": "evidence.api20261105.UserCatalogRequestTests.userRoleConnectionUpdates",
+      "path": "Tests/DiscordModelsTests/UserCatalogRequestTests.swift",
+      "anchor": "userRoleConnectionUpdates"
+    },
+    {
+      "id": "evidence.api20261105.AuthorizationFlowTests.codeAuthorizationAndSingleUse",
+      "path": "Tests/DiscordOAuthTests/AuthorizationFlowTests.swift",
+      "anchor": "codeAuthorizationAndSingleUse"
+    },
+    {
+      "id": "evidence.api20261105.AuthorizationFlowTests.implicitCompatibility",
+      "path": "Tests/DiscordOAuthTests/AuthorizationFlowTests.swift",
+      "anchor": "implicitCompatibility"
+    },
+    {
+      "id": "evidence.api20261105.GatewayDispatchTests.guildAvailability",
+      "path": "Tests/DiscordModelsTests/GatewayDispatchTests.swift",
+      "anchor": "guildAvailability"
+    },
+    {
+      "id": "evidence.api20261105.WebhookEventProcessorTests.signedPingAndDuplicateRetry",
+      "path": "Tests/DiscordInteractionsTests/WebhookEventProcessorTests.swift",
+      "anchor": "signedPingAndDuplicateRetry"
+    },
+    {
+      "id": "evidence.api20261105.PermissionResolverTests.voiceStatusExceptionRespectsOtherRestrictions",
+      "path": "Tests/DiscordCacheTests/PermissionResolverTests.swift",
+      "anchor": "voiceStatusExceptionRespectsOtherRestrictions"
     }
   ]
 }

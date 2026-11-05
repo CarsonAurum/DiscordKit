@@ -19,11 +19,13 @@
 - ``DiscordHTTP/ChannelEndpoints/joinedPrivateArchivedThreads(channelID:before:limit:readPolicy:)``
 - ``DiscordHTTP/ChannelEndpoints/joinThread(channelID:)``
 - ``DiscordHTTP/ChannelEndpoints/leaveThread(channelID:)``
+- ``DiscordHTTP/ChannelEndpoints/memberPermissions(channelID:userID:implicit:readPolicy:)``
 - ``DiscordHTTP/ChannelEndpoints/modify(channelID:request:auditReason:)``
 - ``DiscordHTTP/ChannelEndpoints/privateArchivedThreads(channelID:before:limit:readPolicy:)``
 - ``DiscordHTTP/ChannelEndpoints/publicArchivedThreads(channelID:before:limit:readPolicy:)``
 - ``DiscordHTTP/ChannelEndpoints/removeRecipient(channelID:userID:)``
 - ``DiscordHTTP/ChannelEndpoints/removeThreadMember(channelID:userID:)``
+- ``DiscordHTTP/ChannelEndpoints/rolePermissions(channelID:roleID:implicit:readPolicy:)``
 - ``DiscordHTTP/ChannelEndpoints/setVoiceStatus(channelID:request:auditReason:)``
 - ``DiscordHTTP/ChannelEndpoints/startForumThread(channelID:request:files:limits:auditReason:)``
 - ``DiscordHTTP/ChannelEndpoints/startThread(channelID:request:auditReason:)``

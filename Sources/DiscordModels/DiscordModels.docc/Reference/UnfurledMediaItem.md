@@ -11,6 +11,7 @@
 ### Instance properties
 
 - ``DiscordModels/UnfurledMediaItem/attachmentID``
+- ``DiscordModels/UnfurledMediaItem/contentScanMetadata``
 - ``DiscordModels/UnfurledMediaItem/contentType``
 - ``DiscordModels/UnfurledMediaItem/customMirror``
 - ``DiscordModels/UnfurledMediaItem/debugDescription``

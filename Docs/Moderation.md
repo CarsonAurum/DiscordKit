@@ -74,12 +74,21 @@ events. Partial webhook projections deliberately retain sensitive raw fields, so
 ordinary diagnostics and reflection conceal payloads; deliberate raw JSON/property
 access remains caller-owned.
 
-All 69 written-reference audit action codes and seven preview-only codes are
+All 71 written-reference audit action codes and seven preview-only codes are
 recognized. Recognition describes values received in audit entries and does not
 claim the corresponding endpoints/events are implemented. Unknown action, trigger,
 preset and event integers remain representable in responses. Malformed known fields
 fail with sanitized errors. Parsing uses the shared finite JSON byte/depth/node
 bounds and preserves future fields without fetching more data.
+
+The **2026-11-05** [Audit Log review](https://docs.discord.com/developers/resources/audit-log#audit-log-entry-object-audit-log-events)
+adds `channelPositionUpdate` (16) and `rolePositionUpdate` (33). Their options may
+include a string `count` for the number of position updates. Discord can merge
+successive message deletes, bulk deletes, member disconnects/moves and channel/role
+position updates by the same actor into one entry. The first reason is retained;
+later merged updates currently emit no audit-log Gateway event. Consumers needing
+updated counts must explicitly retrieve the entry again; event delivery is not a
+complete stream of entry revisions.
 
 The [ambiguity register](Parity/ambiguities.json) records written/preview differences:
 nullable audit change keys and referenced rule elements, partial integration
