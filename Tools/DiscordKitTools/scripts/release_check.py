@@ -550,7 +550,13 @@ def validate_maintenance(repository, record, as_of, policy=None):
     """
     require(record.get("schemaVersion") == 1, "Unsupported maintenance record")
     reviewed, due = iso_date(record.get("reviewedOn")), iso_date(record.get("nextReviewDue"))
-    require(reviewed <= as_of <= due <= reviewed + dt.timedelta(days=7), "Weekly upstream review is overdue or future-dated")
+    dates = f"reviewedOn={reviewed}, nextReviewDue={due}, asOf={as_of}"
+    require(reviewed <= as_of, f"Weekly upstream review is future-dated ({dates})")
+    require(reviewed <= due <= reviewed + dt.timedelta(days=7),
+            f"Weekly upstream review window must end within seven days of review ({dates})")
+    require(as_of <= due,
+            f"Weekly upstream review is overdue ({dates}). Complete the maintainer semantic review "
+            "described in Docs/CI.md before advancing maintenance dates")
     require(record.get("unclassifiedEntries") == [], "Unclassified upstream changes remain")
     history = read_json(local_file(repository, record.get("historyPath")))
     require(isinstance(history, (dict, list)) and bool(history), "Missing append-only parity history")

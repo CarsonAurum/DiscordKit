@@ -17,6 +17,7 @@ let package = Package(
         .product(name: "DiscordGateway", package: "DiscordKit"),
         .product(name: "DiscordHTTP", package: "DiscordKit"),
         .product(name: "DiscordTransport", package: "DiscordKit"),
-        .product(name: "DiscordFoundationTransport", package: "DiscordKit"),
+        .product(name: "DiscordFoundationTransport", package: "DiscordKit", condition: .when(platforms: [.macOS])),
+        .product(name: "DiscordNIOTransport", package: "DiscordKit", condition: .when(platforms: [.linux])),
     ], swiftSettings: [.enableUpcomingFeature("ApproachableConcurrency"), .defaultIsolation(nil)])]
 )

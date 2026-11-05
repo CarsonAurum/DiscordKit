@@ -363,7 +363,7 @@ public struct ForumThreadStart: Sendable {
     ///   - name: Required 1...100 scalar thread name.
     ///   - message: Initial message; only content, embeds, allowed mentions, components, stickers, attachments and
     ///     SUPPRESS_EMBEDS/SUPPRESS_NOTIFICATIONS flags are accepted. TTS, nonce, references, polls, themes,
-    ///     voice messages and Components V2 are excluded by the forum/media endpoint's current schema.
+    ///     voice messages and Components V2 are excluded by this helper's current validation.
     ///   - autoArchiveDuration: Optional 60, 1440, 4320 or 10080 minute inactivity duration.
     ///   - rateLimitPerUser: Omitted/null or 0...21,600 second slowmode.
     ///   - appliedTags: Optional up to five distinct forum tag IDs; an empty array explicitly selects no tags.

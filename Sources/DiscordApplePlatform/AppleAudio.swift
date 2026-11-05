@@ -550,7 +550,8 @@ private final class AppleAudioStorage: Sendable {
 /// Real foreground AVAudioEngine implementation, isolated from portable media and deterministic tests.
 ///
 /// Input taps execute outside the realtime render callback contract. Existing installTap remains a
-/// fallback for the package's deployment minima; SDK 27 uses its throwing Sendable tap API. The SDK's
+/// fallback for the package's deployment minima and older SDKs. AVFAudio 794.106 (SDK 27) supplies
+/// the throwing Sendable tap API; compile-time module checks complement runtime availability. The SDK's
 /// realtime-safe source/sink callbacks are unavailable to Swift; no Swift render callback is installed.
 /// See https://developer.apple.com/documentation/avfaudio/avaudionode and
 /// https://developer.apple.com/documentation/avfaudio/responding-to-audio-route-changes.
@@ -745,6 +746,7 @@ private final class AppleAudioStorage: Sendable {
             captureFormat = try PCMFormat(sampleRate: Int(format.sampleRate),
                                           channelCount: configuration.captureChannelCount)
             let channels = configuration.captureChannelCount
+            #if canImport(AVFAudio, _version: 794.106)
             if #available(macOS 27, iOS 27, tvOS 27, watchOS 27, visionOS 27, *) {
                 try input.installAudioTap(onBus: 0, bufferSize: AVAudioFrameCount(configuration.captureBufferFrames),
                                           format: nil) { buffer, _ in
@@ -762,6 +764,14 @@ private final class AppleAudioStorage: Sendable {
                                      channelCount: channels, receive: callbacks.capture)
                 }
             }
+            #else
+            input.installTap(onBus: 0, bufferSize: AVAudioFrameCount(configuration.captureBufferFrames),
+                             format: nil) { buffer, _ in
+                Self.copyCapture(format: buffer.format, frameLength: Int(buffer.frameLength),
+                                 buffers: UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList),
+                                 channelCount: channels, receive: callbacks.capture)
+            }
+            #endif
             tapInstalled = true
         }
         if configuration.playbackEnabled {
@@ -771,11 +781,15 @@ private final class AppleAudioStorage: Sendable {
             }
             let player = AVAudioPlayerNode()
             outputNative.attach(player)
+            #if canImport(AVFAudio, _version: 794.106)
             if #available(macOS 27, iOS 27, tvOS 27, watchOS 27, visionOS 27, *) {
                 try outputNative.connectNode(player, to: outputNative.mainMixerNode, format: format)
             } else {
                 outputNative.connect(player, to: outputNative.mainMixerNode, format: format)
             }
+            #else
+            outputNative.connect(player, to: outputNative.mainMixerNode, format: format)
+            #endif
             self.player = player
             playbackFormat = format
         }
@@ -843,11 +857,15 @@ private final class AppleAudioStorage: Sendable {
         try AppleAudioHardwareBinding.verify(input: selectedInputID, output: selectedOutputID, using: bindingProperties)
         try AppleAudioDeviceLiveness.verify(input: selectedInputID, output: selectedOutputID, using: liveness)
         #endif
+        #if canImport(AVFAudio, _version: 794.106)
         if #available(macOS 27, iOS 27, tvOS 27, watchOS 27, visionOS 27, *) {
             try player?.playAudio()
         } else {
             player?.play()
         }
+        #else
+        player?.play()
+        #endif
         return captureFormat
     }
 
@@ -941,6 +959,7 @@ private final class AppleAudioStorage: Sendable {
             try AppleAudioHardwareCatalog.deviceID(uid: $0, direction: direction,
                                                    using: NativeAppleAudioHardwareProperties())
         }
+        #if canImport(AVFAudio, _version: 794.106)
         if #available(macOS 27, *) {
             try node.withAudioUnit { unit in
                 guard let unit else { throw AppleAudioError.nativeFailure }
@@ -952,6 +971,11 @@ private final class AppleAudioStorage: Sendable {
             try AppleAudioDirectionalBinding.configure(device: identifier, direction: direction,
                 using: NativeAppleAudioDirectionalUnitProperties(unit: unit))
         }
+        #else
+        guard let unit = node.audioUnit else { throw AppleAudioError.nativeFailure }
+        try AppleAudioDirectionalBinding.configure(device: identifier, direction: direction,
+            using: NativeAppleAudioDirectionalUnitProperties(unit: unit))
+        #endif
         return identifier
     }
 

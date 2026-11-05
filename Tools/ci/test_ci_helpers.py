@@ -257,6 +257,7 @@ class CIHelpersTests(unittest.TestCase):
                                                "DiscordCore", "DiscordTransport", "DiscordMedia", "DiscordApplePlatform"])
         command = compile_apple.compiler_command("DiscordBits", [Path("source with spaces.swift")],
                                                 "arm64-apple-ios16.0-simulator", "SDK path", Path("out"), Path("cache"))
+        self.assertEqual(command[:2], ["swiftc", "-target"])
         self.assertIn("ApproachableConcurrency", command)
         self.assertIn("nonisolated", command)
         self.assertIn("SDK path", command)

@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "analyzedOn": "2026-11-04",
+  "collectedOnUTC": "2026-11-05",
+  "reviewStatus": "automated_analysis_prepared_for_maintainer_review",
+  "maintainerAcceptance": "This collection does not attest human review. Acceptance and maintenance dates must be recorded by the repository maintainer in the maintenance ledger.",
+  "scope": "Weekly review preparation: eight existing maintenance sources, their canonical Markdown alternatives, four affected resource/permission sources, and all changes in the official written-doc and stable/preview-spec diffs from frozen discovery revisions. Support classifications below are proposals until maintainer acceptance. No discovery-wide freshness or live interoperability claim.",
+  "collectionMethod": "Official HTML documentation was opened and inspected. System curl fetched exact original and canonical Markdown URLs using normal HTTPS certificate validation. The read-only review_upstream.py collector fetched exact pinned/current official Git revisions and collected complete patches. Its Python request used the host trusted CA file through SSL_CERT_FILE after the default Python certificate store failed verification; certificate verification remained enabled.",
+  "comparisonLimits": "The 2026-10-28 snapshot committed response hashes and selected contract findings, not old raw response bodies. Current hashes can establish byte equality when identical; changed hashes do not provide a complete historical response-text diff. Git repository comparisons are exact pinned/current diffs and may overlap changes already reviewed after the frozen discovery pins.",
+  "protocolVersions": {
+    "REST": "10",
+    "Gateway": "10"
+  },
+  "sources": [
+    {
+      "url": "https://docs.discord.com/developers/reference.md",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/reference.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 31517,
+      "retrievedSHA256": "2ed3180963977cc17a3771255c1ddfc2b6c17e10a86f38a43dbf3c862383eb83",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "2ed3180963977cc17a3771255c1ddfc2b6c17e10a86f38a43dbf3c862383eb83",
+      "sameRemoteBytes": true
+    },
+    {
+      "url": "https://docs.discord.com/developers/change-log.md",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/change-log.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 268988,
+      "retrievedSHA256": "4f4fcdf788421a897fa848eb7345b9c0cace8fdfb4b3ab2953c9486e23eb7afc",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "8c4d922e00ad0b450a5def14b4f7fca2190c9d1e91076f22c6d7a825aa98bf43",
+      "sameRemoteBytes": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/application-commands.md",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/interactions/application-commands.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 80638,
+      "retrievedSHA256": "ebb9818c9b53c57ae80cab78382438d63ebf71c993dc9abb9707be78549753ef",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "f2089b2c0b35e2b4068e5d93aed2747c91a2c58da8712a6d2db4647fd1127eb0",
+      "sameRemoteBytes": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/interactions/receiving-and-responding",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "retrievedBytes": 383053,
+      "retrievedSHA256": "dd403d29e5231921163481e699f7c431d691f5153cb0e5cb320e67632a1c9b59",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "6f470f897d39fb26107399668fa553554052f5b76a8bfd6f5b85e8433b3e4d09",
+      "sameRemoteBytes": false,
+      "canonicalMarkdown": {
+        "url": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+        "resolvedURL": "https://docs.discord.com/developers/interactions/receiving-and-responding.md",
+        "status": 200,
+        "contentType": "text/markdown; charset=utf-8",
+        "bytes": 37448,
+        "sha256": "a708a80051966c4458692ff864755be2b90586103e89d38b76b98f743f1df374",
+        "previousSHA256": "cf7cc54085f5114e09df7d759327b652a5712d01a739ae3e4d5590ebffa16cd1",
+        "sameRemoteBytes": false
+      }
+    },
+    {
+      "url": "https://docs.discord.com/developers/components/reference.md",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/components/reference.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 106157,
+      "retrievedSHA256": "966ce6990ebaa1c17ad6cf1aac482e45d338d2f0b24dead6e8bb2ae621f15ea7",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "7728d3ebc2293cf025c9288af9b5f84052e56485773ae2be939487062eb892a0",
+      "sameRemoteBytes": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/message.md",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/resources/message.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 79744,
+      "retrievedSHA256": "6011910ee81b91c4ec2bbf3e360ca36153c0558a13da055f10ef9033627b75b1",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "888f00758fd6e7fc5a5e6229745a6dd83aedc4a15ec4492c979752498550f2ff",
+      "sameRemoteBytes": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/events/gateway",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "retrievedBytes": 530389,
+      "retrievedSHA256": "65cafdf8f7daf58446f0740e9c38c15d689317e4712da26713ce8716f2289b82",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "caceb12399488fa353e992a3e30661715abc0c5aaf352b8a125d7d1edc3f76c4",
+      "sameRemoteBytes": false,
+      "canonicalMarkdown": {
+        "url": "https://docs.discord.com/developers/events/gateway.md",
+        "resolvedURL": "https://docs.discord.com/developers/events/gateway.md",
+        "status": 200,
+        "contentType": "text/markdown; charset=utf-8",
+        "bytes": 54861,
+        "sha256": "26f576ed264a1bf960dd0585af40aeaf09212d9def426352e4376967a562e782",
+        "previousSHA256": "26f576ed264a1bf960dd0585af40aeaf09212d9def426352e4376967a562e782",
+        "sameRemoteBytes": true
+      }
+    },
+    {
+      "url": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
+      "analyzedOn": "2026-11-04",
+      "resolvedURL": "https://docs.discord.com/developers/events/gateway-events#interaction-create",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "retrievedBytes": 861521,
+      "retrievedSHA256": "bb810edb5e3d9b9837b6f089d4300203b3f820393a0222dcd12c34aea57e9e72",
+      "rawSnapshotCommitted": false,
+      "previousSnapshotPath": "Docs/Release/sources/2026-10-28-maintenance.json",
+      "previousRetrievedSHA256": "c5e1a20c1f2c8e301789621e2865f776f6d6da2ec80cf7293112446a8ceba34b",
+      "sameRemoteBytes": false,
+      "canonicalMarkdown": {
+        "url": "https://docs.discord.com/developers/events/gateway-events.md",
+        "resolvedURL": "https://docs.discord.com/developers/events/gateway-events.md",
+        "status": 200,
+        "contentType": "text/markdown; charset=utf-8",
+        "bytes": 85283,
+        "sha256": "e968f2b10c077a679bd65ae8a70a80acded6eb9fc092d7413f5882b41f91a75d",
+        "previousSHA256": "9352a77330d734831debdd043549120c74566906c3937d18bd5358ef21d51708",
+        "sameRemoteBytes": false
+      }
+    }
+  ],
+  "supplementalSources": [
+    {
+      "url": "https://docs.discord.com/developers/topics/permissions.md",
+      "resolvedURL": "https://docs.discord.com/developers/topics/permissions.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 22709,
+      "retrievedSHA256": "1d91b333dda7a2191988f817ac234f3db9416b2a4ed9b368d5a68b73dfa4962e",
+      "rawSnapshotCommitted": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/channel.md",
+      "resolvedURL": "https://docs.discord.com/developers/resources/channel.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 57614,
+      "retrievedSHA256": "d85219e9803fc5a0bb9121b61bd749412ebd3707055f8254bd6bb3a969b19fd5",
+      "rawSnapshotCommitted": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/guild.md",
+      "resolvedURL": "https://docs.discord.com/developers/resources/guild.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 80427,
+      "retrievedSHA256": "b4fad2d45ddaedaf24b47b20ebfef01704ed00dcf4adc32baa69da6414865089",
+      "rawSnapshotCommitted": false
+    },
+    {
+      "url": "https://docs.discord.com/developers/resources/audit-log.md",
+      "resolvedURL": "https://docs.discord.com/developers/resources/audit-log.md",
+      "httpStatus": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "retrievedBytes": 23764,
+      "retrievedSHA256": "7d87e677f5cd8b7ea5a21a81dc3de11d17782399753058ae99dc7fd26cb85509",
+      "rawSnapshotCommitted": false
+    }
+  ],
+  "repositoryComparisons": [
+    {
+      "repository": "https://github.com/discord/discord-api-docs.git",
+      "pinnedRevision": "37148620d2324292b76047541d5f8331f81ea77a",
+      "currentRevision": "da52492ced82d375981c46618cc3e182daada9a2",
+      "changed": true,
+      "semanticReview": "automated_classification_prepared; maintainer acceptance required",
+      "patchSHA256": "ddc154362c19f66428d1b96083c038d1ceed59b9a96d7f9fc5dc3f8639314a62",
+      "changedPaths": [
+        "developers/change-log.mdx",
+        "developers/components/reference.mdx",
+        "developers/discord-social-sdk/development-guides/account-linking-on-web.mdx",
+        "developers/discord-social-sdk/development-guides/account-linking-with-discord.mdx",
+        "developers/discord-social-sdk/development-guides/managing-game-invites.mdx",
+        "developers/discord-social-sdk/development-guides/managing-lobbies.mdx",
+        "developers/events/gateway-events.mdx",
+        "developers/events/webhook-events.mdx",
+        "developers/gateway/getting-started-with-privileged-intent-review.mdx",
+        "developers/gateway/you-might-not-need-a-privileged-intent.mdx",
+        "developers/resources/audit-log.mdx",
+        "developers/resources/channel.mdx",
+        "developers/resources/guild.mdx",
+        "developers/resources/message.mdx",
+        "developers/resources/user.mdx",
+        "developers/social-layer/game-stats-widgets/overview.mdx",
+        "developers/topics/oauth2.mdx",
+        "developers/topics/permissions.mdx",
+        "package-lock.json",
+        "package.json",
+        "snippets/youtube.jsx",
+        "styles/imagecard.css",
+        "styles/linkbutton.css",
+        "styles/route.css",
+        "styles/snowflake.css"
+      ],
+      "compareURL": "https://github.com/discord/discord-api-docs/compare/37148620d2324292b76047541d5f8331f81ea77a...da52492ced82d375981c46618cc3e182daada9a2"
+    },
+    {
+      "repository": "https://github.com/discord/discord-api-spec.git",
+      "pinnedRevision": "ed014089afa986f2b532ae081c456a85de074d0c",
+      "currentRevision": "4e75626a4cedfbc397d66f5491c79a9a62a71fd5",
+      "changed": true,
+      "semanticReview": "automated_classification_prepared; maintainer acceptance required",
+      "patchSHA256": "eb73a8664df95ef4ca6e62bbd178af7ef36c859758eea67b01a56ddfdc723ee5",
+      "changedPaths": [
+        "specs/openapi.json",
+        "specs/openapi_preview.json"
+      ],
+      "compareURL": "https://github.com/discord/discord-api-spec/compare/ed014089afa986f2b532ae081c456a85de074d0c...4e75626a4cedfbc397d66f5491c79a9a62a71fd5"
+    }
+  ],
+  "findings": [
+    {
+      "id": "voice-status-connect-exception",
+      "announcedOn": "2026-10-29",
+      "classification": "existing_behavior_corrected",
+      "sources": [
+        "https://docs.discord.com/developers/change-log#voice-channel-status-permission-clarification",
+        "https://docs.discord.com/developers/topics/permissions#implicit-permissions",
+        "https://docs.discord.com/developers/resources/channel#set-voice-channel-status"
+      ],
+      "finding": "A member already connected to a voice channel retains SET_VOICE_CHANNEL_STATUS even if CONNECT is denied. PermissionResolver previously removed bit 48 with the CONNECT-dependent mask.",
+      "implementation": "Remove bit 48 from the implicit CONNECT-denial mask. Preserve explicit overwrites, VIEW_CHANNEL denial and timeout masking. The arithmetic result does not establish connection state or authorize a server operation.",
+      "symbols": [
+        "PermissionResolver",
+        "VoiceChannelStatus"
+      ],
+      "testEvidence": [
+        "Tests/DiscordCacheTests/PermissionResolverTests.swift"
+      ]
+    },
+    {
+      "id": "permission-read-endpoints",
+      "announcedOn": "2026-10-30",
+      "classification": "unsupported_new_endpoints",
+      "sources": [
+        "https://docs.discord.com/developers/resources/guild#get-guild-member-permissions",
+        "https://docs.discord.com/developers/resources/guild#get-guild-role-permissions",
+        "https://docs.discord.com/developers/resources/channel#get-channel-member-permissions",
+        "https://docs.discord.com/developers/resources/channel#get-channel-role-permissions"
+      ],
+      "finding": "Four new GET routes return computed permissions as a string bitfield. Channel reads support implicit masking (default true), and target-bot member masking differs. Existing local permission arithmetic does not implement those network endpoints.",
+      "implementation": "No descriptors, authentication admission or response types for these routes are claimed. Keep these additions explicitly unsupported until a separate reviewed implementation."
+    },
+    {
+      "id": "audit-position-and-merging",
+      "announcedOn": "2026-10-29",
+      "classification": "raw_code_preservation_only",
+      "sources": [
+        "https://docs.discord.com/developers/resources/audit-log#audit-log-entry-object-audit-log-events",
+        "https://docs.discord.com/developers/resources/audit-log#audit-log-entry-object-audit-log-entry-merging"
+      ],
+      "finding": "New audit codes 16 and 33 describe channel/role position updates. Several actions can update an existing audit entry without another Gateway event; a merged batch retains its first reason.",
+      "implementation": "AuditLogEntry.actionType uses RawValue<AuditLogEvent>, preserving unknown integral codes, and options preserve exact raw fields. Named enum cases for 16/33 and complete audit-event coverage remain unsupported. Do not infer a complete immutable action stream from Gateway entry creation.",
+      "symbols": [
+        "AuditLogEntry",
+        "AuditLogEvent"
+      ]
+    },
+    {
+      "id": "media-content-scanning",
+      "announcedOn": "2026-10-28",
+      "classification": "raw_payload_preservation_only",
+      "sources": [
+        "https://docs.discord.com/developers/resources/message#attachment-object-attachment-flags",
+        "https://docs.discord.com/developers/resources/message#embed-object-embed-flags",
+        "https://docs.discord.com/developers/components/reference#unfurled-media-item"
+      ],
+      "finding": "Attachment/embed scanning bits include explicit, gore and self-harm content; unfurled media has a separate optional content_scan_metadata.flags object. Scan results can arrive after initial creation via Message Update, and modal uploaded files do not yet have final message scan flags.",
+      "implementation": "Existing raw UInt64 flags and rawFields preserve new bits/objects. Named scan flags, a typed scan-metadata projection and a host moderation policy are not implemented; do not classify raw retention as semantic safety coverage.",
+      "symbols": [
+        "MessageAttachment.flags",
+        "MessageEmbed.flags",
+        "UnfurledMediaItem.rawFields"
+      ]
+    },
+    {
+      "id": "forum-message-components-v2",
+      "classification": "known_helper_limitation",
+      "sources": [
+        "https://docs.discord.com/developers/resources/channel#start-thread-in-forum-or-media-channel"
+      ],
+      "finding": "The current forum/media starter-message flag table includes IS_COMPONENTS_V2. ThreadStartInForum currently rejects that bit.",
+      "implementation": "Retain the bounded helper limitation for this CI repair; a future extension must review response/component constraints and tests. Documentation must describe this as the helper limitation rather than the current upstream schema.",
+      "symbols": [
+        "ThreadStartInForum"
+      ]
+    },
+    {
+      "id": "written-request-clarifications",
+      "classification": "existing_partial_catalog_limits_retained",
+      "sources": [
+        "https://github.com/discord/discord-api-docs"
+      ],
+      "finding": "Other affected written resource changes clarify guild channel-position request fields and audit-reason support, optional role-connection request fields, and guild-unavailability descriptions.",
+      "implementation": "RoleConnectionUpdate already supports omitted platform fields and platform_username. Existing partial channel/guild catalog and cache contracts are not expanded by this review. Complete endpoint/protocol semantic parity is excluded."
+    },
+    {
+      "id": "oauth-and-social-sdk-guides",
+      "classification": "existing_oauth_contract_and_external_sdk_scope",
+      "sources": [
+        "https://docs.discord.com/developers/topics/oauth2#issuer-identification",
+        "https://github.com/discord/discord-api-docs"
+      ],
+      "finding": "Written diffs include previously announced OAuth iss guidance, implicit-grant cautions, native Social SDK token-expiry callbacks, cold-launch invite timing/provisional-account behavior and lobby callbacks.",
+      "implementation": "OAuthAuthorizationFlow already checks Discord issuer. Native Social SDK callbacks and client startup/lifecycle are outside the injected-provider Swift implementation support claim; this review does not add them.",
+      "symbols": [
+        "OAuthAuthorizationFlow"
+      ]
+    },
+    {
+      "id": "other-stable-preview-additions",
+      "classification": "raw_or_unsupported_additions_no_new_claims",
+      "sources": [
+        "https://github.com/discord/discord-api-spec"
+      ],
+      "finding": "Both stable/preview diffs also add optional nullable name fields to create/join/edit lobby requests, Letterboxd connection identification, embed audio schemas and additional unfurled-media metadata.",
+      "implementation": "Unknown response fields/values retain existing raw projections. New lobby name request fields and named connection/audio support are not claimed; the frozen discovery pins and historical verification rows are unchanged."
+    },
+    {
+      "id": "documentation-presentation",
+      "classification": "no_owned_protocol_change",
+      "sources": [
+        "https://github.com/discord/discord-api-docs"
+      ],
+      "finding": "Remaining written diff paths adjust links, a game-stats video, documentation styles/snippets and documentation site dependencies.",
+      "implementation": "No DiscordKit runtime or support claim change is required for these documentation presentation changes."
+    }
+  ],
+  "existingContractFindings": [
+    "The REST/Gateway reference still offers API version 10, and Gateway identity, heartbeat and resume ownership remain explicit.",
+    "Command identity remains application/type/name/scope with POST upsert, at most 25 options/choices, bounded group nesting, and partial autocomplete arguments with a focused marker.",
+    "Gateway/webhook interaction receipt stays mutually exclusive; initial responses retain the three-second deadline and continuation tokens retain fifteen-minute lifetime. Deferred message responses permit only EPHEMERAL, with Components V2 set by editing the original response.",
+    "Components V2 still uses IS_COMPONENTS_V2, allows forty total components, and disables legacy content, embeds, poll and stickers. Action-row and custom-ID limits remain unchanged in the selected contracts.",
+    "Message text and embed budgets remain 2000 content characters, ten embeds and a shared 6000-character text budget. Explicit allowed_mentions remains necessary for consistent edit behavior.",
+    "Interaction Create retains an Interaction inner payload. HTTP channel omission remains future-effective on 2026-11-16; no HTTP early opt-in is documented, and the transition fixtures remain unchanged."
+  ],
+  "proposedMaintenanceUpdate": {
+    "reviewedOn": "2026-11-04",
+    "nextReviewDue": "2026-11-11",
+    "unclassifiedEntries": [],
+    "status": "apply only after the repository maintainer accepts the recorded classifications; use the actual acceptance date if it differs"
+  },
+  "excludedClaims": [
+    "human maintainer acceptance",
+    "freshness of all discovery/reviewed inventory rows",
+    "new named protocol support except the documented permission arithmetic correction",
+    "live Discord/API qualification",
+    "platform/device qualification",
+    "production capacity"
+  ]
+}

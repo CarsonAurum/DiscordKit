@@ -5,7 +5,8 @@
 Adopt DiscordHTTP without starting a Gateway session.
 
 The [RESTOnly consumer](https://github.com/CarsonAurum/DiscordKit/tree/main/Examples/RESTOnly)
-selects Core/Models/Transport/HTTP and FoundationTransport. Build it independently:
+selects Core/HTTP and a platform adapter: FoundationTransport on macOS or
+NIOTransport on Linux. Build it independently:
 
 ```sh
 swift build --package-path Examples/RESTOnly

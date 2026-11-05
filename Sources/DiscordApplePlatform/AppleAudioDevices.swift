@@ -135,11 +135,13 @@ enum AppleAudioRouting {
     /// - Throws: `nativeFailure` for an absent unit, native query failure or unexpected byte length.
     func currentDevice(direction: AppleAudioDirection) throws -> AudioDeviceID {
         let node: AVAudioIONode = direction == .input ? inputEngine.inputNode : outputEngine.outputNode
+        // AVFAudio 794.106 is the SDK 27 module that adds scoped AudioUnit access.
+        #if canImport(AVFAudio, _version: 794.106)
         if #available(macOS 27, *) {
             return try node.withAudioUnit { unit in try Self.read(unit) }
-        } else {
-            return try Self.read(node.audioUnit)
         }
+        #endif
+        return try Self.read(node.audioUnit)
     }
 
     /// Copies one exact-sized CurrentDevice property without changing global or engine routing.

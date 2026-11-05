@@ -21,6 +21,9 @@ independent tooling/load packages and Python helpers, run browser-bridge tests,
 validate documentation/inventory/generation/parity, audit manifest/import isolation,
 validate release records and build independent consumers. Credential-bearing
 examples are built only; explicit offline modes use synthetic peers and payloads.
+Consumers keep independent manifests and import checks while sharing one sequential
+SwiftPM scratch directory to reuse compiled dependencies. Desktop jobs allow up to
+120 minutes for cold builds, documentation conversion and Linux release packages.
 
 Checks cover typed arguments, command-family routing, response ownership,
 message/mention safety, policies, bounded Gateway dispatch, supervised bot cleanup
@@ -35,6 +38,15 @@ commands and are compared only with matching hardware, toolchain and workload.
 API checks compare fresh compiler output to the applicable reviewed root, macro
 and extension baselines; changing an existing baseline requires compatibility
 review. None of these checks establishes publication or production capacity.
+
+The runtime API compatibility candidate is 0.20.0. Encoder injection adds the
+`OpusPCMEncoding` contract, packet construction and timing diagnostics, and changes
+the Voice initializers and error cases. These changes require an explicit pre-1.0
+minor increment under the conservative source API policy. CI compares fresh graphs
+against every retained baseline through 0.19.0; it does not replace the reviewed
+0.19.0 baseline or its historical release evidence. The candidate version records
+compatibility intent and makes no publication claim. The independently versioned
+macro and extension comparisons remain at 0.15.0.
 
 The macOS 26 hosted label selects an arm64 host; the initial baseline is scoped to
 arm64 macOS 13 module availability. If a runner architecture or platform scope
@@ -58,7 +70,7 @@ Archives and API evidence are downloadable workflow artifacts. The job publishes
 artifacts only; it does not deploy documentation or publish a package/tag.
 DocC public coverage cannot prove private declaration presence or accurate semantics.
 
-A separate Apple job resolves the root's pinned SwiftLog checkout, then uses installed
+A separate Apple job installs Swift 6.4.1, resolves the root's pinned SwiftLog checkout, then uses installed
 Xcode SDKs to compile Logging, DiscordLogging, DiscordLogHandlers and Bits/Core/Transport/
 Media/ApplePlatform in dependency order at package minima for macOS, iOS, tvOS, watchOS,
 visionOS and their applicable simulators. The eight modules produce 72 emissions
@@ -69,8 +81,10 @@ for managed hosts and inherits the caller's environment. `--skip-resolve` uses a
 existing checkout offline, requiring its SwiftPM state and Git revision to match
 `Package.resolved`; missing sources fail. A missing SDK or compiler error fails the job. These are module emissions,
 not a complete graph build, linked app, physical-device test, audio route test or
-minimum-OS runtime result. The toolchain's Xcode selection must provide Swift 6.4+
-and every named SDK; installation alone is never recorded as a passed compile.
+minimum-OS runtime result. The helper uses `swift` and `swiftc` from the selected
+toolchain on `PATH`, and `xcrun` only locates SDKs from the selected Xcode. The compiler
+must be Swift 6.4+ and Xcode must provide every named SDK; installation alone is never
+recorded as a passed compile.
 
 ## Manual Windows and Android qualification
 

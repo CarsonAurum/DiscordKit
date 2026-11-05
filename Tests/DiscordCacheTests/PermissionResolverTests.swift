@@ -250,16 +250,34 @@ import Testing
         #expect(value.rawPermissions.contains(12))
     }
 
-    /// Voice/stage connection denial suppresses connection-dependent actions without removing channel chat.
+    /// Voice/stage connection denial retains channel chat and SET_VOICE_CHANNEL_STATUS.
     /// - Parameter type: Both guild voice and Stage variants share the CONNECT restriction.
     /// - Throws: Fixture bitset validation or unexpected indeterminate-result errors.
     @Test(arguments: [ChannelType.guildVoice, .guildStageVoice])
     func implicitConnectDenial(type: ChannelType) throws {
         let raw = try bits([4, 8, 9, 10, 11, 16, 21, 22, 23, 24, 25, 32, 39, 42, 45, 48, 500])
         let value = try resolved(PermissionResolver.resolve(guild: guild(raw), member: member(), channel: channel(type)))
-        #expect(value.permissions == (try bits([10, 11, 16, 500])))
+        #expect(value.permissions == (try bits([10, 11, 16, 48, 500])))
         let connected = try resolved(PermissionResolver.resolve(guild: guild(raw.union(try bits([20]))), member: member(), channel: channel(type)))
         #expect(connected.permissions == raw.union(try bits([20])))
+    }
+
+    /// The status exception does not grant a denied bit, bypass VIEW_CHANNEL, or escape timeout.
+    /// - Parameter type: Guild voice and Stage channels both preserve the status bit without CONNECT.
+    /// - Throws: Fixture bitset validation or unexpected indeterminate-result errors.
+    @Test(arguments: [ChannelType.guildVoice, .guildStageVoice])
+    func voiceStatusExceptionRespectsOtherRestrictions(type: ChannelType) throws {
+        let status = try bits([10, 48])
+        let denied = PermissionOverwrite(target: .member(.init(rawValue: 2)), deny: try bits([48]))
+        let overwritten = try resolved(PermissionResolver.resolve(guild: guild(status), member: member(),
+            channel: channel(type, overwrites: [denied])))
+        #expect(overwritten.permissions == (try bits([10])))
+        let hidden = try resolved(PermissionResolver.resolve(guild: guild(try bits([48])), member: member(),
+            channel: channel(type)))
+        #expect(hidden.permissions.isEmpty)
+        let timedOut = try resolved(PermissionResolver.resolve(guild: guild(status), member: member(timeout: true),
+            channel: channel(type)))
+        #expect(timedOut.permissions == (try bits([10])))
     }
 
     /// Category parents never recursively overwrite a child's independently supplied synchronized permissions.

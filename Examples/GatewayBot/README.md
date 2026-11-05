@@ -9,6 +9,10 @@ https://aurum-studios.com
 
 Build from the repository root with `swift build --package-path Examples/GatewayBot`.
 Validation only builds the executable and never sends authenticated requests.
+The HTTP and WebSocket adapters use Foundation on macOS and NIO on Linux, where
+the Foundation adapters are unavailable. Conditional product dependencies select
+the platform's adapter. NIO allocates owned event loops and TLS contexts without
+opening sockets during construction.
 
 To opt in to live API v10 traffic, set `DISCORD_BOT_TOKEN` and the matching public
 `DISCORD_BOT_ID`, then use `swift run --package-path Examples/GatewayBot`. Keep the
@@ -24,3 +28,5 @@ Share these authorities across clients as described in [the client guide](../../
 Distributed deployments must inject shared external coordinators/leases; process-local
 defaults do not qualify worker failover or deployment capacity. The example owns its
 adapters and closes them once in its cleanup closure; shared adapters need separate ownership.
+If NIO WebSocket initialization fails, the example first closes the HTTP adapter
+that was already constructed.

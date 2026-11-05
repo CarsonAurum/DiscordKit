@@ -2,7 +2,7 @@
 
 @Tutorial(time: 20) {
     @Intro(title: "Build a REST consumer") {
-        Compose typed REST reads, a shared rate authority and an explicitly owned Foundation adapter.
+        Compose typed REST reads, a shared rate authority and an explicitly owned platform adapter.
 
         Inspect a complete API v10 consumer without running an authenticated request. The example reads the current bot and application only when DISCORD_BOT_TOKEN is set. Build it during this tutorial; choose a deliberately authorized environment for any later live run.
 
@@ -15,12 +15,12 @@
         }
         @Steps {
             @Step {
-                **Choose the independent REST graph.** Open the RESTOnly manifest. Its product selection uses Core, HTTP and FoundationTransport without a Gateway connection. Run `swift build --package-path Examples/RESTOnly` to compile the consumer; a build does not execute its main function.
+                **Choose the independent REST graph.** Open the RESTOnly manifest. Its product selection uses Core, HTTP and a conditional transport dependency: FoundationTransport on macOS or NIOTransport on Linux. Run `swift build --package-path Examples/RESTOnly` to compile the consumer; a build does not execute its main function.
 
                 @Code(name: "RESTOnly-Package.swift", file: "RESTOnly-Package.swift.txt")
             }
             @Step {
-                **Inject execution and shared authority.** Read the initialization of ContinuousClock, RateLimitCoordinator, FoundationHTTPTransport and RESTClient. The rate identity is opaque metadata, not a token string. Share the identity and corresponding credential/resource authorities when composing multiple clients for the same credential.
+                **Inject execution and shared authority.** Read the initialization of ContinuousClock, RateLimitCoordinator, the platform HTTP transport and RESTClient. The Linux NIO transport allocates an owned event loop and TLS context without opening sockets. The rate identity is opaque metadata, not a token string. Share the identity and corresponding credential/resource authorities when composing multiple clients for the same credential.
 
                 @Code(name: "RESTOnly.swift", file: "RESTOnly.swift.txt")
             }

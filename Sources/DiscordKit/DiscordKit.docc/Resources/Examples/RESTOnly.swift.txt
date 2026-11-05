@@ -4,11 +4,15 @@
 // https://aurum-studios.com
 
 import DiscordCore
-import DiscordFoundationTransport
 import DiscordHTTP
 import Foundation
+#if os(Linux)
+import DiscordNIOTransport
+#else
+import DiscordFoundationTransport
+#endif
 
-/// A REST-only consumer using an explicitly owned Foundation adapter and shared rate authority.
+/// A REST-only consumer using an explicitly owned platform adapter and shared rate authority.
 @main
 struct RESTOnly {
     /// Fetches the current bot and application, then awaits adapter cleanup on every exit path.
@@ -24,7 +28,11 @@ struct RESTOnly {
             let token = try BotToken(value)
             let clock = ContinuousClock()
             let coordinator = RateLimitCoordinator(clock: clock)
+            #if os(Linux)
+            let transport = try NIOHTTPTransport(configuration: .init())
+            #else
             let transport = FoundationHTTPTransport(configuration: try .init())
+            #endif
             let client = RESTClient(credential: .bot(token), identity: RateLimitIdentity(),
                 transport: transport, coordinator: coordinator, clock: clock)
             do {

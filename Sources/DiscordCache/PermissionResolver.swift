@@ -270,8 +270,10 @@ public enum PermissionResolver {
                                           36, 37, 38, 39, 42, 44, 45, 46, 48, 49, 50, 51, 52])
     /// Documented send-dependent capabilities, plus direct message payload capabilities.
     private static let sendMask = mask([12, 14, 15, 17, 46, 49])
-    /// Voice actions requiring connection; guild moderation and text-chat bits are retained.
-    private static let connectMask = mask([4, 8, 9, 21, 22, 23, 24, 25, 32, 39, 42, 45, 48])
+    /// Voice actions implicitly denied without CONNECT. SET_VOICE_CHANNEL_STATUS is retained:
+    /// an already connected member can set status after CONNECT is revoked (2026-10-29).
+    /// Connection state and the server's operation-specific checks remain authoritative.
+    private static let connectMask = mask([4, 8, 9, 21, 22, 23, 24, 25, 32, 39, 42, 45])
     /// Timeout explicitly removes every other permission, including future flags.
     private static let timeoutMask = mask([10, 16])
 

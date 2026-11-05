@@ -408,6 +408,20 @@ class ReleaseChecks(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "incorrect current status"):
             audit.validate_maintenance(self.root, record, dt.date(2026, 10, 18))
 
+    def test_maintenance_date_boundaries_and_actionable_failure(self):
+        """The due date is inclusive; adjacent invalid dates explain the failing review window."""
+        record = self.maintenance()
+        self.assertEqual(audit.validate_maintenance(self.root, record, dt.date(2026, 10, 25))["asOf"], "2026-10-25")
+        with self.assertRaisesRegex(ValueError, r"overdue \(reviewedOn=2026-10-18, nextReviewDue=2026-10-25, asOf=2026-10-26\).*maintainer semantic review"):
+            audit.validate_maintenance(self.root, record, dt.date(2026, 10, 26))
+        with self.assertRaisesRegex(ValueError, r"future-dated .*asOf=2026-10-17"):
+            audit.validate_maintenance(self.root, record, dt.date(2026, 10, 17))
+        for due in ("2026-10-17", "2026-10-26"):
+            with self.subTest(due=due):
+                record["nextReviewDue"] = due
+                with self.assertRaisesRegex(ValueError, "within seven days"):
+                    audit.validate_maintenance(self.root, record, dt.date(2026, 10, 18))
+
     def test_transition_missing_boundary_and_unsafe_domain(self):
         """Hash-valid but incomplete transition cases and lookalike upstream domains fail."""
         record = self.maintenance()

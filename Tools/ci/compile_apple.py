@@ -42,7 +42,9 @@ def compiler_command(module, sources, target, sdk, output, cache):
         settings = [argument for feature in LOGGING_FEATURES for argument in ["-enable-upcoming-feature", feature]]
         settings += ["-Xfrontend", "-require-explicit-sendable"]
     package = "swift_log" if module == "Logging" else "discordkit"
-    return ["xcrun", "swiftc", "-target", target, "-sdk", sdk, "-swift-version", "6", *settings,
+    # Use the selected Swift toolchain on PATH, just like SwiftPM resolution.
+    # xcrun swiftc can otherwise select Xcode's older bundled compiler.
+    return ["swiftc", "-target", target, "-sdk", sdk, "-swift-version", "6", *settings,
             "-package-name", package,
             "-default-isolation", "nonisolated", "-module-cache-path", str(cache),
             "-I", str(output), "-parse-as-library", "-emit-module", "-module-name", module,
@@ -105,7 +107,7 @@ def main():
     report = {"scope": "Selected-module device/simulator compile only; no runtime or full-package qualification",
               "modules": MODULES, "platforms": [], "sourceSHA256": {}, "dependencySourceSHA256": {},
               "loggingDependency": pin}
-    report["swiftVersion"] = subprocess.check_output(["xcrun", "swiftc", "--version"], text=True).strip()
+    report["swiftVersion"] = subprocess.check_output(["swiftc", "--version"], text=True).strip()
     with tempfile.TemporaryDirectory(prefix="discordkit-apple-compile-") as scratch:
         for name in arguments.sdk or DESTINATIONS:
             sdk = subprocess.check_output(["xcrun", "--sdk", name, "--show-sdk-path"], text=True).strip()

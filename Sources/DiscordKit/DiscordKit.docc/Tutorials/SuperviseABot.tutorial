@@ -15,7 +15,7 @@
         }
         @Steps {
             @Step {
-                **Select bot products.** Build with `swift build --package-path Examples/GatewayBot`. The package explicitly selects client, cache, Gateway, HTTP, transport and concrete adapters. Its optional cache selection is a consumer decision.
+                **Select bot products.** Build with `swift build --package-path Examples/GatewayBot`. The package explicitly selects client, cache, Gateway, HTTP, transport and concrete adapters: Foundation on macOS or NIO on Linux. Its optional cache selection is a consumer decision.
 
                 @Code(name: "GatewayBot-Package.swift", file: "GatewayBot-Package.swift.txt")
             }
@@ -30,7 +30,7 @@
                 @Code(name: "GatewayBot.swift", file: "GatewayBot.swift.txt")
             }
             @Step {
-                **End with awaited shutdown.** Trace READY through the service read and client.shutdown(). The cleanup closure closes the cache, rate coordinator and adapters. The error path also requests shutdown and the task group cancels remaining work. Use the product guides for multi-worker shared authorities and platform lifecycle policy.
+                **End with awaited shutdown.** Trace READY through the service read and client.shutdown(). The cleanup closure closes the cache, rate coordinator and adapters. If NIO WebSocket initialization fails, the HTTP adapter is closed before the error propagates. The runtime error path also requests shutdown and the task group cancels remaining work. Use the product guides for multi-worker shared authorities and platform lifecycle policy.
 
                 @Code(name: "GatewayBot.swift", file: "GatewayBot.swift.txt")
             }

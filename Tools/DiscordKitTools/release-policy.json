@@ -314,6 +314,7 @@
           "DiscordKit/DiscordFoundationTransport",
           "DiscordKit/DiscordGateway",
           "DiscordKit/DiscordHTTP",
+          "DiscordKit/DiscordNIOTransport",
           "DiscordKit/DiscordTransport"
         ]
       }
@@ -400,7 +401,8 @@
         "RESTOnly": [
           "DiscordKit/DiscordCore",
           "DiscordKit/DiscordFoundationTransport",
-          "DiscordKit/DiscordHTTP"
+          "DiscordKit/DiscordHTTP",
+          "DiscordKit/DiscordNIOTransport"
         ]
       }
     },
