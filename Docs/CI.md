@@ -16,22 +16,78 @@ been configured or executed. Review actual artifacts before changing support cla
 
 [Offline validation](../.github/workflows/ci.yml) runs on push, pull request and
 manual dispatch with read-only repository permissions and no Discord secrets.
-Hosted macOS 26/Ubuntu 24.04 jobs install Swift 6.4.1, build/test the root, test
+Separate macOS 26 and Ubuntu 24.04 jobs use Swift 6.4.1, build/test the root, test
 independent tooling/load packages and Python helpers, run browser-bridge tests,
 validate documentation/inventory/generation/parity, audit manifest/import isolation,
 validate release records and build independent consumers. Credential-bearing
 examples are built only; explicit offline modes use synthetic peers and payloads.
 Consumers keep independent manifests and import checks while sharing one sequential
-SwiftPM scratch directory to reuse compiled dependencies. Desktop jobs allow up to
-120 minutes for cold builds, documentation conversion and Linux release packages.
+SwiftPM scratch directory to reuse compiled dependencies. Each desktop job allows
+up to 120 minutes. The macOS job retains `setup-swift@v3`, Node 24, its existing
+build/test commands, public API comparisons and DocC conversion. Fixture helpers
+enforce committed dependency pins on both hosts; their optional job limit is
+applied explicitly only by the Ubuntu runner.
 
-Before installing Swift on Linux, the job imports the official Swift signing keys
-into the runner's GnuPG keyring, as described in the
-[Swiftly verification instructions](https://www.swift.org/install/linux/swiftly/).
-`setup-swift@v3` verifies the Swiftly archive before installing the toolchain but
-does not import those keys itself. A fresh Ubuntu runner otherwise fails with
-`gpg: Can't check signature: No public key` before any package build. Key-download,
-import and signature-verification failures all fail the job.
+The observed Ubuntu failure occurred before compilation: the signing-key import
+reported `gpg: no valid OpenPGP data found`. The Ubuntu job now uses the official
+`swift:6.4.1-noble` container, pinned to multi-architecture manifest digest
+`sha256:6304481cf2717966b7ba175162e397ea2f2cc3161909f2b2a5cf40036079a0f7`.
+This supplies the release compiler and Ubuntu runtime dependencies without a
+per-run Swiftly bootstrap or signing-key download. Node 24 is installed separately.
+
+[The Ubuntu runner](../Tools/ci/linux_ci.py) checks Ubuntu 24.04, the exact Swift
+version, a native Linux target and required executables, recording compiler,
+target, memory and disk evidence. Every Swift build/test/run uses two compiler
+jobs and `--force-resolved-versions`, including separate authoring/tooling graphs,
+consumers, external fixtures and optimized builds. Missing or stale committed
+resolution fails instead of silently updating dependencies. Root, authoring,
+tooling, benchmarks, audit, consumers and release stages execute sequentially;
+optimized root/macro/extension compilation also runs on pull requests.
+
+Each command has a finite timeout, streams output to a log and records progress
+and its result under `.build/linux-ci`. Timeout/interruption cleanup terminates
+the command's process group, including compiler/plugin descendants. The workflow
+always attempts to upload these logs and host evidence, including after failures.
+Only successful non-pull-request runs package the clean Git revision as a SwiftPM
+source archive with checksums and compiler/host metadata. This artifact contains
+source, not precompiled libraries, and does not publish a release.
+
+For a local reproduction, use a Docker-compatible Linux runtime and an ordinary
+Git checkout. Run from the repository root. This adds Node 24 to the same Swift
+image, mounts the checkout read-only, then copies it into the container without
+macOS SwiftPM caches. The default runner executes every stage, including optimized
+compilation, and leaves source packaging to the workflow:
+
+```sh
+docker build --platform linux/amd64 --tag discordkit-ubuntu-ci - <<'DOCKERFILE'
+FROM node:24-bookworm-slim AS node
+FROM swift:6.4.1-noble@sha256:6304481cf2717966b7ba175162e397ea2f2cc3161909f2b2a5cf40036079a0f7
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+DOCKERFILE
+
+docker run --rm --platform linux/amd64 \
+  --mount "type=bind,source=$PWD,target=/source,readonly" \
+  --workdir /workspace discordkit-ubuntu-ci bash -lc '
+    set -euo pipefail
+    tar -C /source --exclude=.build --exclude=.swiftpm --exclude=.air -cf - . | tar --no-same-owner -xf -
+    python3 Tools/ci/linux_ci.py
+  '
+```
+
+To retain local logs before the disposable container exits, copy `.build/linux-ci`
+to a mounted output directory or omit `--rm` and use `docker cp` afterward. Select
+one gate with, for example, `--stage authoring`; set `--jobs 1` to lower compiler
+concurrency. Every selected stage still performs preflight. Cold runs need network
+access to pull images and fetch the committed SwiftPM dependencies; offline refers
+to the Discord workload, not an air-gapped dependency bootstrap. On Apple silicon,
+the example's amd64 container may run under emulation and is not native arm64
+qualification. The editing host had no available Linux container runtime, so this
+repair's local helper checks do not establish a completed Ubuntu build. Review a
+successful native Linux run and its artifacts before changing platform claims.
+
+The maintenance freshness failure observed during this repair is a separate
+semantic-review gate. The Ubuntu build changes do not waive that gate or advance
+the maintenance ledger; a maintainer must complete the review described below.
 
 Checks cover typed arguments, command-family routing, response ownership,
 message/mention safety, policies, bounded Gateway dispatch, supervised bot cleanup

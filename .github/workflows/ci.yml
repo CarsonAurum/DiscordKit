@@ -25,20 +25,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-26, ubuntu-24.04]
+        os: [macos-26]
     env:
       SWIFTNIO_STRICT: '1'
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - name: Import Swift signing keys for Linux installer verification
-        if: runner.os == 'Linux'
-        shell: bash
-        run: |
-          curl --fail --show-error --silent --location --retry 3 \
-            --output "$RUNNER_TEMP/swift-signing-keys.asc" https://www.swift.org/keys/all-keys.asc
-          gpg --batch --import "$RUNNER_TEMP/swift-signing-keys.asc"
       - uses: swift-actions/setup-swift@v3
         with:
           swift-version: '6.4.1'
@@ -154,15 +147,62 @@ jobs:
           include-hidden-files: true
       - name: Verify tracked generated source remains unchanged
         run: git diff --exit-code
-      - name: Build Linux release packages after Linux checks
-        if: runner.os == 'Linux' && github.event_name != 'pull_request'
-        run: |
-          swift build --configuration release --force-resolved-versions
-          swift build --configuration release --package-path Packages/DiscordDSLMacros --force-resolved-versions
-          swift build --configuration release --package-path Packages/DiscordDSLExtensions --force-resolved-versions
-          python3 Tools/ci/package_source.py --repository . --output .build/packages
+
+  ubuntu:
+    name: Swift 6.4.1 / ubuntu-24.04
+    runs-on: ubuntu-24.04
+    # Official Swift release image: no per-run Swiftly bootstrap or key download.
+    # Pin the multi-architecture manifest as well as the human-readable version.
+    container:
+      image: swift:6.4.1-noble@sha256:6304481cf2717966b7ba175162e397ea2f2cc3161909f2b2a5cf40036079a0f7
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    env:
+      SWIFTNIO_STRICT: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Verify Ubuntu host, compiler and native target
+        run: python3 Tools/ci/linux_ci.py --stage preflight
+      - name: Build and test root
+        run: python3 Tools/ci/linux_ci.py --stage root
+      - name: Test authoring packages and external compile fixtures
+        run: python3 Tools/ci/linux_ci.py --stage authoring
+      - name: Test tooling, Python helpers and browser bridge
+        run: python3 Tools/ci/linux_ci.py --stage tooling
+      - name: Test DSL benchmark and finite offline smoke matrix
+        run: python3 Tools/ci/linux_ci.py --stage benchmarks
+      - name: Validate documentation, inventory, generation and parity
+        run: python3 Tools/ci/linux_ci.py --stage audit
+      - name: Build independent consumers and test offline examples
+        run: python3 Tools/ci/linux_ci.py --stage consumers
+      - name: Build optimized root, macro and extension packages
+        run: python3 Tools/ci/linux_ci.py --stage release
+      - name: Verify tracked generated source and dependency pins remain unchanged
+        run: git diff --exit-code
+      - name: Package checked Linux source
+        if: github.event_name != 'pull_request'
+        run: python3 Tools/ci/package_source.py --repository . --output .build/packages
+      - name: Upload Ubuntu logs and host evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ubuntu-build-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .build/linux-ci
+            .build/dsl-measurements/runtime-smoke.json
+          if-no-files-found: warn
+          include-hidden-files: true
+          retention-days: 14
       - name: Upload Linux SwiftPM source bundle
-        if: runner.os == 'Linux' && github.event_name != 'pull_request'
+        if: success() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v7
         with:
           name: DiscordKit-linux-source-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}

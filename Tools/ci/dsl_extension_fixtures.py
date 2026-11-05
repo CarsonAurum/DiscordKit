@@ -11,7 +11,7 @@ import math
 from pathlib import Path
 import subprocess
 
-from dsl_compile_fixtures import Fixture, Result, assess
+from dsl_compile_fixtures import Fixture, Result, assess, validate_jobs
 
 
 FIXTURES = (
@@ -21,16 +21,20 @@ FIXTURES = (
 )
 
 
-def compiler_command(repository, scratch_path, target, swift="swift", cache_path=None):
+def compiler_command(repository, scratch_path, target, swift="swift", cache_path=None, jobs=None):
     """Select exactly one real external target with explicit dependency imports and shared writable caches."""
-    return [swift, "build", "--disable-sandbox", "--skip-update", "--package-path",
+    validate_jobs(jobs)
+    command = [swift, "build", "--disable-sandbox", "--skip-update", "--force-resolved-versions", "--package-path",
             str(repository / "Tests/Fixtures/DSLExtensionsCompile"), "--scratch-path", str(scratch_path),
             "--cache-path", str(cache_path or repository / ".build/dsl-extension-cache"),
             "--explicit-target-dependency-import-check", "error", "--target", target]
+    if jobs is not None:
+        command += ["--jobs", str(jobs)]
+    return command
 
 
 def run_fixtures(repository, scratch_path, timeout=600, swift="swift", run=subprocess.run,
-                 fixtures=FIXTURES, cache_path=None):
+                 fixtures=FIXTURES, cache_path=None, jobs=None):
     """Require a real successful public consumer before accepting exact semantic failure diagnostics.
 
     The finite timeout bounds each compiler process. Infrastructure, crashes and unrelated failures
@@ -39,11 +43,12 @@ def run_fixtures(repository, scratch_path, timeout=600, swift="swift", run=subpr
     """
     if not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("timeout must be positive and finite")
+    validate_jobs(jobs)
     if not fixtures or fixtures[0].diagnostics:
         raise ValueError("external compilation must begin with a positive fixture")
     results = []
     for fixture in fixtures:
-        command = compiler_command(repository, scratch_path, fixture.target, swift, cache_path)
+        command = compiler_command(repository, scratch_path, fixture.target, swift, cache_path, jobs)
         try:
             completed = run(command, cwd=repository, capture_output=True, text=True, timeout=timeout)
             result = assess(fixture, completed)
@@ -65,11 +70,12 @@ def main():
     parser.add_argument("--cache-path", type=Path)
     parser.add_argument("--timeout", type=float, default=600)
     parser.add_argument("--swift", default="swift")
+    parser.add_argument("--jobs", type=int, help="optional positive SwiftPM compiler job count")
     arguments = parser.parse_args()
     repository = arguments.repository.resolve()
     try:
         results = run_fixtures(repository, arguments.scratch_path or repository / ".build/dsl-extension-fixtures",
-                               arguments.timeout, arguments.swift, cache_path=arguments.cache_path)
+                               arguments.timeout, arguments.swift, cache_path=arguments.cache_path, jobs=arguments.jobs)
     except ValueError as error:
         parser.error(str(error))
     for result in results:

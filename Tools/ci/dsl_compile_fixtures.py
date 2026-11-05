@@ -72,7 +72,13 @@ class Result:
     detail: str
 
 
-def compiler_command(repository, scratch_path, target, swift="swift", cache_path=None):
+def validate_jobs(jobs):
+    """Reject invalid compiler concurrency before starting a SwiftPM process."""
+    if jobs is not None and (isinstance(jobs, bool) or not isinstance(jobs, int) or jobs <= 0):
+        raise ValueError("jobs must be a positive integer")
+
+
+def compiler_command(repository, scratch_path, target, swift="swift", cache_path=None, jobs=None):
     """Create a shell-free command that selects exactly one external consumer target.
 
     Parameters:
@@ -81,15 +87,20 @@ def compiler_command(repository, scratch_path, target, swift="swift", cache_path
         target: Committed fixture target name, passed as one argument without shell expansion.
         swift: Swift executable name or absolute path, defaulting to PATH resolution.
         cache_path: Optional shared writable SwiftPM cache; default is checkout-local.
+        jobs: Optional positive compiler job count; omitted preserves SwiftPM's default.
     Returns:
         Argument list with explicit package, cache, scratch and target selection.
         SwiftPM sandboxing is disabled for compiler plugins in managed CI; this
         does not alter the surrounding environment's permission boundary.
     """
-    return [swift, "build", "--disable-sandbox", "--package-path",
+    validate_jobs(jobs)
+    command = [swift, "build", "--disable-sandbox", "--force-resolved-versions", "--package-path",
             str(repository / "Tests/Fixtures/DSLCompile"), "--scratch-path", str(scratch_path),
             "--cache-path", str(cache_path or repository / ".build/dsl-compile-cache"),
             "--explicit-target-dependency-import-check", "error", "--target", target]
+    if jobs is not None:
+        command += ["--jobs", str(jobs)]
+    return command
 
 
 def assess(fixture, completed):
@@ -118,7 +129,7 @@ def assess(fixture, completed):
     return Result(fixture.target, True, "expected compiler diagnostics observed")
 
 
-def run_fixtures(repository, scratch_path, timeout=600, swift="swift", run=subprocess.run, fixtures=FIXTURES, cache_path=None):
+def run_fixtures(repository, scratch_path, timeout=600, swift="swift", run=subprocess.run, fixtures=FIXTURES, cache_path=None, jobs=None):
     """Compile external fixtures sequentially through an injectable bounded process runner.
 
     Parameters:
@@ -129,21 +140,23 @@ def run_fixtures(repository, scratch_path, timeout=600, swift="swift", run=subpr
         run: subprocess.run-compatible injection used by deterministic runner unit tests.
         fixtures: Ordered fixture sequence; committed qualification begins with a positive consumer.
         cache_path: Optional shared writable SwiftPM cache; default is checkout-local.
+        jobs: Optional positive compiler job count applied to every fixture build.
     Returns:
         Results in fixture order. A failed positive build stops the run because
         plugin/toolchain infrastructure has not been established. Negative-case
         failures continue so a single run reports all semantic mismatches.
     Raises:
-        ValueError: Timeout is nonpositive, nonfinite, or the first fixture is not positive.
+        ValueError: Timeout/jobs are invalid, or the first fixture is not positive.
         KeyboardInterrupt: User interruption propagates instead of becoming qualification evidence.
     """
     if not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("timeout must be positive and finite")
+    validate_jobs(jobs)
     if not fixtures or fixtures[0].diagnostics:
         raise ValueError("external compilation must begin with a positive fixture")
     results = []
     for fixture in fixtures:
-        command = compiler_command(repository, scratch_path, fixture.target, swift, cache_path)
+        command = compiler_command(repository, scratch_path, fixture.target, swift, cache_path, jobs)
         try:
             completed = run(command, cwd=repository, capture_output=True, text=True, timeout=timeout)
             result = assess(fixture, completed)
@@ -165,11 +178,13 @@ def main():
     parser.add_argument("--cache-path", type=Path, help="optional shared writable SwiftPM dependency cache")
     parser.add_argument("--timeout", type=float, default=600, help="finite seconds per compiler invocation")
     parser.add_argument("--swift", default="swift")
+    parser.add_argument("--jobs", type=int, help="optional positive SwiftPM compiler job count")
     arguments = parser.parse_args()
     repository = arguments.repository.resolve()
     scratch_path = arguments.scratch_path or repository / ".build/dsl-compile-fixtures"
     try:
-        results = run_fixtures(repository, scratch_path, arguments.timeout, arguments.swift, cache_path=arguments.cache_path)
+        results = run_fixtures(repository, scratch_path, arguments.timeout, arguments.swift,
+                               cache_path=arguments.cache_path, jobs=arguments.jobs)
     except ValueError as error:
         parser.error(str(error))
     for result in results:

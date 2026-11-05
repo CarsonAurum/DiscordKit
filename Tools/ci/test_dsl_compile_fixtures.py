@@ -24,10 +24,43 @@ class CompileFixtureTests(unittest.TestCase):
         self.assertEqual(command[command.index("--package-path") + 1], str(root / "Tests/Fixtures/DSLCompile"))
         self.assertEqual(command[command.index("--scratch-path") + 1], str(root / "scratch directory"))
         self.assertIn("--disable-sandbox", command)
+        self.assertIn("--force-resolved-versions", command)
+        self.assertNotIn("--jobs", command)
         self.assertEqual(command[command.index("--explicit-target-dependency-import-check") + 1], "error")
         self.assertNotIn("-dump-macro-expansions", command)
         alternate = fixtures.compiler_command(root, root / "scratch", "PositiveExternal", cache_path=root / "shared cache")
         self.assertEqual(alternate[alternate.index("--cache-path") + 1], str(root / "shared cache"))
+
+    def test_jobs_and_pinned_resolution_apply_to_every_fixture(self):
+        """A bounded Linux build must keep the same job limit and pins for positive and negative cases."""
+        calls = []
+
+        def run(command, **options):
+            calls.append(command)
+            target = command[command.index("--target") + 1]
+            return subprocess.CompletedProcess(command, 0 if target == "Positive" else 1,
+                                               stdout="error: selected failure", stderr="")
+
+        cases = (fixtures.Fixture("Positive"), fixtures.Fixture("Negative", ("selected failure",)))
+        results = fixtures.run_fixtures(Path("/repo"), Path("/scratch"), run=run, fixtures=cases, jobs=2)
+        self.assertTrue(all(result.passed for result in results))
+        self.assertEqual(len(calls), 2)
+        for command in calls:
+            self.assertEqual(command[command.index("--jobs") + 1], "2")
+            self.assertIn("--force-resolved-versions", command)
+
+    def test_invalid_jobs_fail_before_compiler_execution(self):
+        """Invalid concurrency cannot accidentally select SwiftPM's unrestricted default."""
+        for jobs in [0, -1, 1.5, "2", True, False]:
+            with self.subTest(jobs=jobs):
+                with self.assertRaisesRegex(ValueError, "jobs must be a positive integer"):
+                    fixtures.compiler_command(Path("/repo"), Path("/scratch"), "Positive", jobs=jobs)
+
+                def run(command, **options):
+                    self.fail("invalid jobs must not start the compiler")
+
+                with self.assertRaisesRegex(ValueError, "jobs must be a positive integer"):
+                    fixtures.run_fixtures(Path("/repo"), Path("/scratch"), run=run, jobs=jobs)
 
     def test_success_and_semantic_failure_are_distinct(self):
         """A negative target needs compiler error text and every expected fragment in a nonzero result."""

@@ -20,8 +20,41 @@ class ExtensionFixtureTests(unittest.TestCase):
         command = compiler_command(Path("/repo"), Path("/scratch"), "PositiveDependencies", cache_path=Path("/cache"))
         self.assertIn("/repo/Tests/Fixtures/DSLExtensionsCompile", command)
         self.assertIn("--explicit-target-dependency-import-check", command)
+        self.assertIn("--force-resolved-versions", command)
+        self.assertNotIn("--jobs", command)
         self.assertEqual(command[-2:], ["--target", "PositiveDependencies"])
         self.assertNotIn("DiscordDSLMacros", " ".join(command))
+
+    def test_jobs_and_pinned_resolution_apply_to_every_fixture(self):
+        """Positive and negative consumers both inherit the explicitly bounded compiler concurrency."""
+        calls = []
+
+        def run(command, **options):
+            calls.append(command)
+            target = command[command.index("--target") + 1]
+            fixture = next(fixture for fixture in FIXTURES if fixture.target == target)
+            return subprocess.CompletedProcess(command, 1 if fixture.diagnostics else 0,
+                                               stdout="error: " + " ".join(fixture.diagnostics), stderr="")
+
+        results = run_fixtures(Path("/repo"), Path("/scratch"), run=run, jobs=2)
+        self.assertTrue(all(result.passed for result in results))
+        self.assertEqual(len(calls), len(FIXTURES))
+        for command in calls:
+            self.assertEqual(command[command.index("--jobs") + 1], "2")
+            self.assertIn("--force-resolved-versions", command)
+
+    def test_invalid_jobs_fail_before_compiler_execution(self):
+        """The extension helper rejects invalid concurrency at its command and runner boundaries."""
+        for jobs in [0, -1, 1.5, "2", True, False]:
+            with self.subTest(jobs=jobs):
+                with self.assertRaisesRegex(ValueError, "jobs must be a positive integer"):
+                    compiler_command(Path("/repo"), Path("/scratch"), "PositiveDependencies", jobs=jobs)
+
+                def run(command, **options):
+                    self.fail("invalid jobs must not start the compiler")
+
+                with self.assertRaisesRegex(ValueError, "jobs must be a positive integer"):
+                    run_fixtures(Path("/repo"), Path("/scratch"), run=run, jobs=jobs)
 
     def test_missing_and_wrong_typed_dependencies_need_semantic_diagnostics(self):
         for fixture in FIXTURES[1:]:
