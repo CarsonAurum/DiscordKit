@@ -10,8 +10,8 @@ https://aurum-studios.com
 DiscordKit is a modular, Swift-native library for Discord applications and bots,
 created by **Carson Rau** at [Aurum Studios](https://aurum-studios.com).
 Copyright (c) 2026 Aurum Studios. See [AUTHORS](AUTHORS.md) and
-[COPYRIGHT](COPYRIGHT). Original DiscordKit material is all rights reserved;
-see [LICENSE](LICENSE) for terms and licensing inquiries.
+[COPYRIGHT](COPYRIGHT). Licensed under the [Apache License, Version 2.0](LICENSE);
+see [licensing and attribution](#license-and-attribution) for redistribution guidance.
 
 Build a REST backend, a supervised Gateway bot, a signed HTTP command application,
 an OAuth integration or an embedded Activity using independently adoptable products.
@@ -186,6 +186,29 @@ before adopting these products.
 Applications register with the Discord Developer Portal and supply their own
 credentials, shared admission authorities and deployment configuration. See
 Discord's [getting started guide](https://docs.discord.com/developers/quick-start/getting-started).
+
+## License and attribution
+
+Original DiscordKit code, documentation, examples and tools are licensed under the
+[Apache License, Version 2.0](LICENSE), except for third-party material covered by
+separate notices. You may use, modify and distribute DiscordKit in open source or
+proprietary projects, including paid products, under those terms.
+
+When redistributing DiscordKit or derivative works, including within a paid product:
+
+- Include a copy of [LICENSE](LICENSE).
+- Preserve applicable copyright, patent, trademark and attribution notices,
+  including the credits for **Carson Rau** and **Aurum Studios** in [NOTICE](NOTICE).
+  A readable copy of applicable NOTICE credits can be included in bundled notices,
+  accompanying source or documentation, or a display where third-party notices
+  normally appear.
+- Mark modified files with prominent notices describing that you changed them and
+  retain the applicable third-party licenses and notices described in
+  [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+These requirements apply to both free and paid distributions. Paid products may
+keep their own source private while complying with the license and notice terms.
+Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Project guides
 

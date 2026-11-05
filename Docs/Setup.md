@@ -17,7 +17,7 @@ separate from the package's local test results.
 ## Package installation
 
 DiscordKit is available from the [official repository](https://github.com/Aurum-Studios/DiscordKit).
-For a licensed application, add a reviewed commit or a published release tag using
+Add a reviewed commit or a published release tag to your application using
 Swift Package Manager. The source currently carries the 0.19.0 API candidate; a
 version number in documentation does not create a release tag.
 
@@ -32,7 +32,9 @@ Replace the revision placeholder with the full commit you reviewed. For a local
 checkout, use `.package(path: "../DiscordKit")`. Add selected products such as
 `.product(name: "DiscordHTTP", package: "DiscordKit")` to your target dependencies.
 The separate macro package is selected through its own package manifest.
-See the [license](../LICENSE) before using or redistributing the library.
+DiscordKit is licensed under the [Apache License, Version 2.0](../LICENSE). See
+[licensing and attribution](../README.md#license-and-attribution) for redistribution
+guidance, including use in paid products.
 
 Successful Linux push CI also provides a tested SwiftPM source bundle with
 dependency pins, licenses, revision metadata and a checksum. Download it from

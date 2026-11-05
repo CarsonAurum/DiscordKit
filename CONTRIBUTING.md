@@ -12,6 +12,14 @@ Read the [architecture](Docs/Architecture.md), [concurrency](Docs/Concurrency.md
 before changing a public contract. Contributions should preserve independent
 product adoption and document observable behavior and compatibility.
 
+## Licensing of contributions
+
+Unless you explicitly state otherwise, contributions intentionally submitted for
+inclusion in DiscordKit are provided under the project's [Apache License, Version
+2.0](LICENSE), as described in Section 5 of that license. You retain copyright in
+your contributions. Submit only material you are authorized to contribute under
+those terms, and preserve applicable third-party attribution and license notices.
+
 ## Focus and evidence
 
 Inspect the working tree first and preserve unrelated changes. Use four-space

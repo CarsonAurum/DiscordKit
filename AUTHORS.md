@@ -9,7 +9,10 @@ https://aurum-studios.com
 
 DiscordKit was created by **Carson Rau**.
 
-Copyright (c) 2026 **Aurum Studios**. All rights reserved.
+Copyright (c) 2026 **Aurum Studios**.
+
+Original DiscordKit material is licensed under the [Apache License, Version 2.0](LICENSE).
+See [NOTICE](NOTICE) for project attribution to preserve when redistributing.
 
 [Aurum Studios](https://aurum-studios.com)
 

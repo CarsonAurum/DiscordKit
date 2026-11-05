@@ -7,7 +7,8 @@ https://aurum-studios.com
 
 # Third-party notices
 
-Original DiscordKit material is Copyright (c) 2026 Aurum Studios. All rights reserved.
+Original DiscordKit material is Copyright (c) 2026 Aurum Studios and licensed under
+the [Apache License, Version 2.0](LICENSE). See [NOTICE](NOTICE) for project attribution.
 Third-party material retains its original copyright and license terms.
 
 ## Swift package dependencies

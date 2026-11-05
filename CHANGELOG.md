@@ -9,6 +9,11 @@ https://aurum-studios.com
 
 ## Unreleased
 
+Original DiscordKit material is now licensed under the [Apache License, Version
+2.0](LICENSE), allowing use, modification and redistribution in open source and paid
+products with the required license and attribution notices. [NOTICE](NOTICE)
+credits Carson Rau and Aurum Studios; third-party material retains its own terms.
+
 DiscordKit's initial publication includes independently adoptable Swift libraries
 for Discord applications and bots:
 
