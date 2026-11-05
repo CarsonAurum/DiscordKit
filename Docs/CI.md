@@ -28,12 +28,22 @@ build/test commands, public API comparisons and DocC conversion. Fixture helpers
 enforce committed dependency pins on both hosts; their optional job limit is
 applied explicitly only by the Ubuntu runner.
 
-The observed Ubuntu failure occurred before compilation: the signing-key import
-reported `gpg: no valid OpenPGP data found`. The Ubuntu job now uses the official
-`swift:6.4.1-noble` container, pinned to multi-architecture manifest digest
-`sha256:6304481cf2717966b7ba175162e397ea2f2cc3161909f2b2a5cf40036079a0f7`.
-This supplies the release compiler and Ubuntu runtime dependencies without a
-per-run Swiftly bootstrap or signing-key download. Node 24 is installed separately.
+The Ubuntu job runs directly on the hosted `ubuntu-24.04` runner. The Swift
+container replacement failed before validation because it lacked `python3`;
+restoring the hosted runner retains its normal tooling, and an explicit apt step
+installs Python and the native build/runtime dependencies. Node 24 is installed
+separately, and `setup-swift@v3` installs exactly Swift 6.4.1.
+
+Earlier installer failures included `gpg: no valid OpenPGP data found` and a
+missing Swiftly signing key. Before invoking `setup-swift`, the workflow downloads
+the official [Swift signing-key bundle](https://www.swift.org/keys/all-keys.asc)
+with `curl --compressed`, imports it with `gpg --batch --import`, and checks for
+the Swiftly key fingerprint `E813C892820A6FA13755B268F167DF1ACF9CE069`. Compression
+handling follows the [official Swiftly installation guide](https://www.swift.org/install/linux/swiftly/).
+This addresses the response format and missing-key requirements without assuming
+compression was the proven cause of the invalid-key response. Installer and
+toolchain signature verification remain enabled; a failed download, import or key
+check stops setup before compilation.
 
 [The Ubuntu runner](../Tools/ci/linux_ci.py) checks Ubuntu 24.04, the exact Swift
 version, a native Linux target and required executables, recording compiler,
@@ -52,38 +62,29 @@ Only successful non-pull-request runs package the clean Git revision as a SwiftP
 source archive with checksums and compiler/host metadata. This artifact contains
 source, not precompiled libraries, and does not publish a release.
 
-For a local reproduction, use a Docker-compatible Linux runtime and an ordinary
-Git checkout. Run from the repository root. This adds Node 24 to the same Swift
-image, mounts the checkout read-only, then copies it into the container without
-macOS SwiftPM caches. The default runner executes every stage, including optimized
-compilation, and leaves source packaging to the workflow:
+For a local reproduction, use a native Ubuntu 24.04 host and an ordinary Git
+checkout with a clean Linux SwiftPM build directory. Follow the Ubuntu job's
+[dependency installation and signing-key setup](../.github/workflows/ci.yml),
+including the compressed key-bundle download, import and Swiftly fingerprint
+check. Install Swift 6.4.1 using the verified Swiftly installer, as
+`setup-swift@v3` does in CI, and install Node 24. Do not reuse macOS SwiftPM caches.
+Once those prerequisites are installed and on `PATH`, run from the repository
+root:
 
 ```sh
-docker build --platform linux/amd64 --tag discordkit-ubuntu-ci - <<'DOCKERFILE'
-FROM node:24-bookworm-slim AS node
-FROM swift:6.4.1-noble@sha256:6304481cf2717966b7ba175162e397ea2f2cc3161909f2b2a5cf40036079a0f7
-COPY --from=node /usr/local/bin/node /usr/local/bin/node
-DOCKERFILE
-
-docker run --rm --platform linux/amd64 \
-  --mount "type=bind,source=$PWD,target=/source,readonly" \
-  --workdir /workspace discordkit-ubuntu-ci bash -lc '
-    set -euo pipefail
-    tar -C /source --exclude=.build --exclude=.swiftpm --exclude=.air -cf - . | tar --no-same-owner -xf -
-    python3 Tools/ci/linux_ci.py
-  '
+python3 Tools/ci/linux_ci.py --stage preflight
+python3 Tools/ci/linux_ci.py
 ```
 
-To retain local logs before the disposable container exits, copy `.build/linux-ci`
-to a mounted output directory or omit `--rm` and use `docker cp` afterward. Select
-one gate with, for example, `--stage authoring`; set `--jobs 1` to lower compiler
-concurrency. Every selected stage still performs preflight. Cold runs need network
-access to pull images and fetch the committed SwiftPM dependencies; offline refers
-to the Discord workload, not an air-gapped dependency bootstrap. On Apple silicon,
-the example's amd64 container may run under emulation and is not native arm64
-qualification. The editing host had no available Linux container runtime, so this
-repair's local helper checks do not establish a completed Ubuntu build. Review a
-successful native Linux run and its artifacts before changing platform claims.
+The default runner executes every stage, including optimized compilation, and
+leaves source packaging to the workflow. Logs remain under `.build/linux-ci`.
+Select one gate with, for example, `--stage authoring`; set `--jobs 1` to lower
+compiler concurrency. Every selected stage still performs preflight. Cold runs
+need network access to install prerequisites and fetch the committed SwiftPM
+dependencies; offline refers to the Discord workload, not an air-gapped dependency
+bootstrap. Local helper checks on the macOS editing host do not establish a
+completed Ubuntu build. Review a successful native Linux run and its artifacts
+before changing platform claims.
 
 The maintenance freshness failure observed during this repair is a separate
 semantic-review gate. The Ubuntu build changes do not waive that gate or advance

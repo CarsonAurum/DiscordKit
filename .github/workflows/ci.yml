@@ -151,10 +151,6 @@ jobs:
   ubuntu:
     name: Swift 6.4.1 / ubuntu-24.04
     runs-on: ubuntu-24.04
-    # Official Swift release image: no per-run Swiftly bootstrap or key download.
-    # Pin the multi-architecture manifest as well as the human-readable version.
-    container:
-      image: swift:6.4.1-noble@sha256:6304481cf2717966b7ba175162e397ea2f2cc3161909f2b2a5cf40036079a0f7
     timeout-minutes: 120
     defaults:
       run:
@@ -166,6 +162,26 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - name: Install Ubuntu build and validation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends \
+            binutils ca-certificates clang curl git gnupg2 libc6-dev \
+            libcurl4-openssl-dev libedit2 libgcc-13-dev libncurses-dev \
+            libpython3-dev libsqlite3-0 libstdc++-13-dev libxml2-dev \
+            libz3-dev pkg-config python3 tzdata unzip zlib1g-dev
+      - name: Import Swift signing keys before verifying the Swiftly installer
+        run: |
+          # setup-swift v3 verifies Swiftly before it imports any signing keys.
+          # Decode compressed responses as in Swift's official signing guide.
+          curl --compressed --fail --show-error --silent --location --retry 3 \
+            --output "$RUNNER_TEMP/swift-signing-keys.asc" https://www.swift.org/keys/all-keys.asc
+          gpg --batch --import "$RUNNER_TEMP/swift-signing-keys.asc"
+          gpg --batch --list-keys E813C892820A6FA13755B268F167DF1ACF9CE069
+      - uses: swift-actions/setup-swift@v3
+        with:
+          swift-version: '6.4.1'
+          skip-verify-signature: false
       - uses: actions/setup-node@v6
         with:
           node-version: '24'

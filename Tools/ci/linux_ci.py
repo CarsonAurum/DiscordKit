@@ -120,8 +120,9 @@ def commands(stage, repository, jobs):
 def preflight(repository, output):
     """Record nonsecret host evidence and reject the wrong OS, compiler or target.
 
-    The official image supplies compiler and runtime dependencies. Nothing is
-    installed here, and the helper never changes the caller's toolchain or PATH.
+    The workflow installs the compiler and Ubuntu dependencies before this check.
+    Nothing is installed here, and the helper never changes the caller's toolchain
+    or PATH.
     """
     output.mkdir(parents=True, exist_ok=True)
     host = {"system": platform.system(), "machine": platform.machine(),
