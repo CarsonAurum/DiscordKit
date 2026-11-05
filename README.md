@@ -53,7 +53,8 @@ and [contribution guide](CONTRIBUTING.md) for ownership and validation requireme
 ## Documentation
 
 The DocC catalogs include product guides, tutorials, an example cookbook and public
-API references. Start with the [documentation contents](Sources/DiscordKit/DiscordKit.docc/TableOfContents.md)
+API references. Browse the [documentation website](https://aurum-studios.github.io/DiscordKit/)
+or start with the [documentation contents](Sources/DiscordKit/DiscordKit.docc/TableOfContents.md)
 or [getting started](Sources/DiscordKit/DiscordKit.docc/GettingStarted.md).
 
 Build the independent archives and merged library navigator locally:
@@ -68,6 +69,15 @@ python3 Tools/ci/build_docc.py
 Open `.build/documentation/DiscordKitLibrary.doccarchive` in Xcode. The
 [documentation build guide](Sources/DiscordKit/DiscordKit.docc/BuildingDocumentation.md)
 explains validation and hosting.
+
+The independent [Documentation workflow](.github/workflows/documentation.yml)
+builds the website on every push and pull request alongside CI, and publishes
+default-branch commits to GitHub Pages. It includes the runtime, macro and DSL
+extension references in one library navigator. To build the same site locally:
+
+```sh
+python3 Tools/ci/build_documentation_site.py --hosting-base-path /DiscordKit
+```
 
 ## Available products
 

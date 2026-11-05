@@ -19,7 +19,19 @@ python3 Tools/ci/build_docc.py
 
 Use the symbol graph directory printed by SwiftPM if it differs from the helper's default. The helper converts each root public library module, preserving its primary and owned extension graphs. It enables warnings as errors, diagnostic analysis and public documentation coverage. The umbrella catalog resolves cross-product contents links against those archives. DocC then merges them into `.build/documentation/DiscordKitLibrary.doccarchive` with one library navigator. The macro and extension packages emit separate graphs and catalogs; validate those packages explicitly as described in the repository release-tooling guide.
 
-Open the merged archive in Xcode, or preview the umbrella catalog with the installed DocC command and the appropriate symbol graphs. For web hosting, use DocC's static-hosting output and configure the hosting base path for your deployment; generation does not publish or deploy a site.
+Open the merged archive in Xcode, or preview the umbrella catalog with the installed DocC command and the appropriate symbol graphs.
+
+### Build the documentation website
+
+Browse the [hosted documentation](https://aurum-studios.github.io/DiscordKit/). The independent Documentation workflow builds on every push and pull request alongside CI, then publishes successful default-branch builds to GitHub Pages. Pull requests and other branches produce a site artifact without publishing.
+
+To reproduce the website build locally:
+
+```sh
+python3 Tools/ci/build_documentation_site.py --hosting-base-path /DiscordKit
+```
+
+The helper emits public symbol graphs for the root, macro and extension packages, validates curation and tutorial snapshots, converts the catalogs with strict diagnostics, and merges all public modules into one navigator. It exports `.build/documentation-site` using DocC's static-hosting transformation, including direct article and symbol routes and a root redirect to the library landing page. The local command generates files; the GitHub workflow handles publication. Use an empty hosting base path to serve at a domain root.
 
 ### Documentation layout
 
@@ -48,4 +60,4 @@ python3 Tools/DiscordKitTools/scripts/release_check.py graph --repository .
 
 Build each affected independent example, run its offline tests, and inspect representative rendered articles, tutorial listings and type pages. DocC validates syntax, resources and symbol links; it does not typecheck arbitrary fenced snippets or prove semantic completeness. Documentation coverage and source-comment presence are separate checks from live-service, device, platform and cryptographic qualification.
 
-See the [DocC documentation](https://www.swift.org/documentation/docc) for authoring directives and the [repository validation guide](https://github.com/CarsonAurum/DiscordKit/blob/main/Docs/CI.md) for the broader pipeline.
+See the [DocC documentation](https://www.swift.org/documentation/docc) for authoring directives and the [repository validation guide](https://github.com/Aurum-Studios/DiscordKit/blob/main/Docs/CI.md) for the broader pipeline.

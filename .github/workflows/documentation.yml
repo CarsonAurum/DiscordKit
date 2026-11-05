@@ -1,0 +1,72 @@
+# File: .github/workflows/documentation.yml
+# Created by Carson Rau.
+# Copyright (c) 2026 Aurum Studios.
+# https://aurum-studios.com
+
+name: Documentation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documentation-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) }}
+
+jobs:
+  build:
+    name: Build DocC website
+    runs-on: macos-26
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUNBUFFERED: '1'
+      DOCUMENTATION_BASE_PATH: /${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: swift-actions/setup-swift@v3
+        with:
+          swift-version: '6.4.1'
+          skip-verify-signature: false
+      - name: Test documentation helpers
+        run: python3 -m unittest discover -s Tools/ci -p 'test_*.py'
+      - name: Build public documentation and export static routes
+        run: python3 Tools/ci/build_documentation_site.py --hosting-base-path "$DOCUMENTATION_BASE_PATH"
+      - name: Verify documentation and dependency pins remain unchanged
+        run: git diff --exit-code
+      - name: Upload GitHub Pages site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .build/documentation-site
+          retention-days: 7
+          include-hidden-files: true
+
+  deploy:
+    name: Publish GitHub Pages
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+      - name: Deploy documentation
+        id: deployment
+        uses: actions/deploy-pages@v5

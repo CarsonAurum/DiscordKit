@@ -7,8 +7,8 @@ https://aurum-studios.com
 
 # Continuous validation and upstream review
 
-The repository defines two workflows: offline CI validation and weekly official
-upstream review. A workflow definition does not establish that a hosted runner
+The repository defines three workflows: offline CI validation, documentation
+publication and weekly official upstream review. A workflow definition does not establish that a hosted runner
 has executed. Review actual artifacts before changing support claims.
 
 ## Offline validation
@@ -150,6 +150,44 @@ minimum-OS runtime result. The helper uses `swift` and `swiftc` from the selecte
 toolchain on `PATH`, and `xcrun` only locates SDKs from the selected Xcode. The compiler
 must be Swift 6.4+ and Xcode must provide every named SDK; installation alone is never
 recorded as a passed compile.
+
+## Documentation website
+
+The independent [Documentation workflow](../.github/workflows/documentation.yml)
+runs on every push, pull request and manual dispatch. Its build job has no
+dependency on the offline certification jobs, so GitHub can schedule both
+workflows at the same time. It uses macOS 26 and Swift 6.4.1 to emit public symbol
+graphs, check curation and tutorial snapshots, and convert all root, macro and
+extension library catalogs with the same strict DocC helper used by CI.
+
+[The site builder](../Tools/ci/build_documentation_site.py) merges those public
+modules into one library navigator and exports static routes with the
+repository name as the hosting base path. The root URL redirects to the merged
+documentation landing page. The site is uploaded using GitHub's Pages artifact
+action, which preserves DocC filenames containing colons inside a tar archive.
+Generated website files remain build outputs and are not committed.
+
+Only a successful documentation build on the default branch can publish
+[the website](https://aurum-studios.github.io/DiscordKit/). Pull requests and
+other branches build an artifact without replacing the published site. The
+deployment job alone receives `pages: write` and `id-token: write`, and uses the
+`github-pages` environment. Deployments are serialized independently of CI;
+default-branch runs are not canceled while publishing. A failed documentation
+build leaves the previously deployed site available.
+
+In the repository's **Settings > Pages**, the publishing source must be
+**GitHub Actions**. No personal access token or additional repository secret is
+required by the workflow. For a local build, run:
+
+```sh
+python3 Tools/ci/build_documentation_site.py --hosting-base-path /DiscordKit
+```
+
+The output is `.build/documentation-site`. Change the base path for a different
+repository name or use an empty base path when serving at a domain root. A
+custom domain also requires updating `DOCUMENTATION_BASE_PATH` in the workflow.
+The documentation job compiles packages to emit symbol graphs; its success does
+not establish that the independent build/test certification has passed.
 
 ## Weekly official review
 
